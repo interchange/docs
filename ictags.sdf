@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.45 2001-05-31 17:10:19 bill Exp $
+# $Id: ictags.sdf,v 1.46 2001-05-31 18:25:45 heins Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.45 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.46 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -1734,18 +1734,8 @@ Called Routine for positonal:
 
 B<ASP-like Perl call:>
 
->    $Tag->and(
->        {
->         type => VALUE,
->         term => VALUE,
->         op => VALUE,
->         compare => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->and($type, $term, $op, $compare);
+Not applicable. The [and ...] tag only is used with [if ...], and Perl
+logic obviates the [if ...] tag.
 
 Attribute aliases
 
@@ -2401,16 +2391,7 @@ Called Routine:
 
 B<ASP-like Perl call:>
 
->    $Tag->bounce(
->        {
->         href => VALUE,
->         if => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->bounce($href, $if);
+None. This tag doesn't work with embedded Perl due to special processing.
 
  
 
@@ -4733,19 +4714,8 @@ Called Routine for positonal:
 
 B<ASP-like Perl call:>
 
->    $Tag->if(
->        {
->         type => VALUE,
->         term => VALUE,
->         op => VALUE,
->         compare => VALUE,
->        },
->        BODY
->    )
->
-> OR
->
->    $Tag->if($type, $term, $op, $compare, $BODY);
+Not applicable. Any [if ...] call can be better and more efficiently
+done with Perl.
 
 Attribute aliases
 
@@ -5179,17 +5149,7 @@ Called Routine:
 
 B<ASP-like Perl call:>
 
->    $Tag->include(
->        {
->         file => VALUE,
->         locale => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->include($file, $locale);
-
+Not applicable.
  
 
 H3: Description
@@ -5291,6 +5251,11 @@ Called Routine:
 
 B<ASP-like Perl call:>
 
+>    NOTE: This would not usually be used with embedded Perl -- a better
+>    choice would normally be:
+>
+>		 for(@$Items) { CODE }
+>
 >    $Tag->item_list(
 >        {
 >         name => VALUE,
@@ -5589,6 +5554,11 @@ Called Routine:
 
 B<ASP-like Perl call:>
 
+>    NOTE: This would not usually be used with embedded Perl -- a better
+>    choice would normally be:
+>
+>		 for(@list) { CODE }
+>
 >    $Tag->loop(
 >        {
 >         list => VALUE,
