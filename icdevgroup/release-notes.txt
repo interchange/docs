@@ -1,0 +1,50 @@
+RELEASING A NEW VERSION OF INTERCHANGE
+
+
+Pre-release:
+
+Check WHATSNEW against CVS logs, add release date
+Update copyright dates as appropriate if new year since last release
+Make sure version numbers are correct in all files
+Double-check MANIFEST
+Do one last CVS update
+Tag or re-tag CVS repository with REL_4_6_3 (or whatever)
+Run regression test catalog
+Build tarball, RPMs
+Test clean install of Foundation demo, place order, use admin
+Build docs tarball & RPMs (for stable releases)
+Sign RPMs with personal GnuPG key
+Have Racke build .deb packages
+Have people test the packages
+Make md5sums to mention in release notes, and in file on FTP server
+
+
+Upload tarball and RPMs to:
+
+ftp://www.icdevgroup.org/pub/interchange/
+Update interchange-latest.tar.gz symlinks for stable releases
+Update WHATSNEW file to latest (no need to keep old ones in same branch, as their contents are still included in the latest file)
+
+
+Update developer website:
+
+http://www.icdevgroup.org/i/dev/index.html
+http://www.icdevgroup.org/i/dev/download.html
+
+
+Make announcements at:
+
+interchange-users@icdevgroup.org
+interchange-announce@icdevgroup.org
+Freshmeat.net
+
+
+Update demo stores, one editable, one static:
+
+http://demo.icdevgroup.org/
+
+
+Post-release:
+
+Fork off stable branch if second version component is even, e.g. 4.8.0:
+tag STABLE_4_8-root, branch STABLE_4_8-branch.
