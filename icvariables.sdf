@@ -1,14 +1,13 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual" 
-# $Id: icvariables.sdf,v 1.3 2004-05-05 15:22:31 jon Exp $
+# $Id: icvariables.sdf,v 1.4 2004-05-05 16:21:17 jon Exp $
 
 !define DOC_NAME "Interchange Programmer Variables Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icvariables"
-!define DOC_VERSION substr('$Revision: 1.3 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.4 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/icvars.html"
-!define DOC_OWNER "2002-2004 Interchange Developers Group."
 
 !define SHOW_COMMENTS 0
 !define EXAMPLE_SESSION "6CZ2whqo"
