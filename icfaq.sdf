@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icfaq.sdf,v 1.10 2002-06-06 02:01:51 jon Exp $
+# $Id: icfaq.sdf,v 1.11 2002-06-08 19:15:41 danb Exp $
 
 !define DOC_NAME "Frequently Asked Questions"
 !define DOC_TYPE ""
 !define DOC_CODE "icfaq"
-!define DOC_VERSION substr('$Revision: 1.10 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.11 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icfaq.html"
@@ -291,6 +291,10 @@ available from Red Hat, but there are numerous anomalies and it may be difficult
 to get operating reliably. It is never recommended that you run a production
 catalog on a Windows system; if you do get it working you should only use 
 for catalog development. 
+
+H2: Error -- 'make: command not found'
+
+The error is caused when the system you are installing on does not have the program called "make".  It is recommended that you install make as well as a C compiler ("cc" or "gcc") for the installation of Interchange.  If you are unsure of how to do this for your operating system, it may help to ask a mailing list related to your operating system.
 
 H1: SSL problems
 
@@ -1778,6 +1782,12 @@ You may need to get the modules via ftp and install them by hand. For instance, 
 Use the same basic steps for any module not properly installed by using perl -MCPAN -e 'install Bundle::Interchange'
 
 Now, install Interchange as normal.
+
+H1: Other / Miscellaneous Questions
+
+H2: What does the "mv_pc" variabled added to every URL mean?
+
+Its purpose is to make each link unique so that users behind a proxy (e.g. AOL) will not have dynamic content cached. 
 
 Line:
 

@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.85 2002-06-08 01:06:06 jon Exp $
+# $Id: ictags.sdf,v 1.86 2002-06-08 19:15:41 danb Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.85 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.86 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -4939,9 +4939,9 @@ error format. The HTML formatting can be set
 via the global variable MV_ERROR_STD_LABEL with
 the default being:
 
->        <FONT COLOR=RED>label_str<SMALL><I>(%s)</I></SMALL></FONT>
+>        <FONT COLOR=RED>{LABEL}<SMALL><I>(%s)</I></SMALL></FONT>
 
-where <label_str> is what you set std_label to and %s
+where {LABEL} is what you set std_label to and %s
 is substituted with the error message. This option
 can not be used with the text= option.
 
@@ -14903,7 +14903,7 @@ B<Tag expansion example:>
 B<ASP-like Perl call:>
 
 !block example; lang="Perl"
-    $Tag->convert_date( { day => 1 } );
+    $Tag->convert_date( { days => 1 } );
 					   
     $Tag->convert_date( { body => "2001-05-19 15:35",
                        format => "%d-%m-%Y %H:%M", } );
@@ -15237,6 +15237,24 @@ H2: fedex_query
 
 H2: formel
 
+
+H2: fortune
+
+This tag uses the {{EX:fortune(1)}} command to display a random saying.
+
+!block example
+Options:
+
+        short=yes|no* Select only short (< 160 chars) fortunes
+        a=1           Select from all fortunes, even potentially offensive ones.
+        o=1           Select only from potentially offensive fortunes.
+        raw=1         Don't do any HTML formatting
+
+Example:
+
+        [fortune short=yes]
+
+!endblock
 
 H2: get-url
 
