@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.47 2001-06-05 20:10:04 jason Exp $
+# $Id: ictags.sdf,v 1.48 2001-06-05 20:13:14 jason Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.47 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.48 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -3513,6 +3513,10 @@ back. If you have C<fname> and C<lname>, then it will not.
 
 H2: either
 
+The [either]this[or]that[/either] implements a check for the first
+non-zero, non-blank value. It splits on [or], and then parses each
+piece in turn. If a value returns true (in the Perl sense: non-zero, non-blank)
+then subsequent pieces will be discarded without interpolation.
 
 H3: Summary
 
