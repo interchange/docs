@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icfaq.sdf,v 1.14 2002-07-12 13:26:20 kwalsh Exp $
+# $Id: icfaq.sdf,v 1.15 2002-08-05 23:17:10 kwalsh Exp $
 
 !define DOC_NAME "Frequently Asked Questions"
 !define DOC_TYPE ""
 !define DOC_CODE "icfaq"
-!define DOC_VERSION substr('$Revision: 1.14 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.15 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icfaq.html"
@@ -948,10 +948,9 @@ numbers by email.
 
 H2:How do I setup multiple shipping addresses?
 
-	Interchange has the functionality of handling multiple addresses,
-	give a look in the docs "User Database Functions"
-	
-	{{URL:http://interchange.redhat.com/cgi-bin/ic/docfly.html?mv_arg=icdatabase09%2e03}}
+Interchange has the facility to handle multiple addresses.
+See the {{C[jump="icdatabase.html#User Database Functions"]User Database Functions}}
+section of the Interchange Database manual.
 	
 H2:How do I change the order number from TEST0001, TEST0002 to something else?
 
@@ -1905,9 +1904,12 @@ to process the posted form vars according to the action set with mv_todo. The
 processing is not associated with any specific target page (though a page to
 display when processing is complete can be specified with mv_nextpage), so
 Interchange just builds a target URL that ends in an 'imaginary' page called
-'process.html'. There are other ways to handle a form post; more info is here:
+'process.html'.
 
-{{URL:http://interchange.redhat.com/cgi-bin/ic/docfly.html?mv_arg=ictemplates10.02}}
+There are other ways to handle a form post.
+For more information,
+see the {{C[jump="ictemplates.html#Form Actions"]Form Actions}}
+section Interchange Templates manual.
 
 Basically, when you submit a <form> using the [process] tag, you
 get sent to the 'imaginary' process.html page.  That page is derived
