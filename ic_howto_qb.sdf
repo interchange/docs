@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: ic_howto_qb.sdf,v 1.3 2003-06-04 08:54:44 danb Exp $
+# $Id: ic_howto_qb.sdf,v 1.4 2003-06-04 09:24:52 danb Exp $
 
 !define DOC_NAME "Interchange + QuickBooks HOWTO"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_howto_qb"
-!define DOC_VERSION substr('$Revision: 1.3 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.4 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ic_howto_qb.html"
@@ -162,9 +162,9 @@ cp -i $QB/usertag/* \
 
 # Variables that optionally modify the export process, along with 
 # their help entries.	  
-cat   $QB/variable.txt-additions >> \
+cat   $QB/products/variable.txt.append >> \
       $CATROOT/products/variable.txt
-cat   $QB/mv_metadata.asc-additions >> \
+cat   $QB/products/mv_metadata.asc.append >> \
       $CATROOT/products/mv_metadata.asc
 
 # Menu entries: start with the existing menu, then add ours.
