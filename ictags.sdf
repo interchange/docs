@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.121 2004-07-27 00:13:20 kwalsh Exp $
+# $Id: ictags.sdf,v 1.122 2004-11-29 19:29:04 jon Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.121 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.122 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ictags.html"
@@ -2745,6 +2745,16 @@ do:
 >        [bounce href="/"]
 >        [/if]
 
+The optional parameter 'if' allows the performance of the redirection to be
+dependent on the outcome of a logical test.  This test might be a simple as
+the presence or absence of a value, or as complex as multiple lines of Perl
+within a [calc] or [perl] construct. The bounce will only occur if the
+argument resolves to a non-false value:
+ 
+> [bounce href=ord/basket if="[calc][nitems] > 2[/calc]"]
+  
+...redirects the user's browser to the basket page if there are more than
+two items in his/her cart.
 
 
 
@@ -4893,9 +4903,10 @@ H4: {{CMD[id="ecml_name"]name}}
 H2: either
 
 The [either]this[or]that[/either] implements a check for the first
-non-zero, non-blank value. It splits on [or], and then parses each
-piece in turn. If a value returns true (in the Perl sense: non-zero, non-blank)
-then subsequent pieces will be discarded without interpolation.
+true, non-blank value. It splits on [or], then with each piece
+Interpolates and strips leading and trailing whitespace. If a piece is
+true (in the Perl sense) then it will be returned and subsequent pieces
+will be discarded without interpolation.
 
 H3: Summary
 
@@ -4912,8 +4923,6 @@ H3: Summary
 No parameters.
 
 Pass attribute hash as last to subroutine: B<no>
-
-Must pass named parameter interpolate=1 to cause interpolation.
 
 This is a container tag, i.e. [either] FOO [/either].
 \Nesting: NO
@@ -5215,7 +5224,7 @@ If 'verify' attribute also set, deletes column specified by 'field' attribute ra
 The column to add (or delete if delete and verify are true)
 >>|DEFAULT_VALUE
 {{CMD[jump="#export_file"]file}}|<<
-Filename to export to. Note that the NoAbsolute directive and other conditions may affect actual location of the output file.
+Filename to export to. Note that the NoAbsolute directive and other conditions may affect actual location of the output file. Default is taken from the catalog.cfg Database directive for this table.
 >>|DEFAULT_VALUE
 {{CMD[jump="#export_sort"]sort}}|<<
 Output sorted rows (N<usage:> sort="I<sort_field>:I<sort_option>") (see search/form variable 'mv_sort_option' for sort options)
@@ -5224,7 +5233,7 @@ Output sorted rows (N<usage:> sort="I<sort_field>:I<sort_option>") (see search/f
 The table to export
 >>|DEFAULT_VALUE
 {{CMD[jump="#export_type"]type}}|<<
-Specifies the [line, record] delimiter types. Either NOTES or one of the following:
+Specifies the [line, record] delimiter types. Default is taken from the catalog.cfg Database directive for this table. Either NOTES or one of the following:
 
 >  my %Delimiter = (
 >	2 => ["\n", "\n\n"],
