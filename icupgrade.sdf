@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icupgrade.sdf,v 1.14 2001-08-06 23:23:05 jon Exp $
+# $Id: icupgrade.sdf,v 1.15 2001-08-21 15:10:58 jon Exp $
 
 !define DOC_NAME "Interchange Upgrade Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "icupgrade"
-!define DOC_VERSION substr('$Revision: 1.14 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.15 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icupgrade.html"
@@ -525,7 +525,7 @@ It will ensure at least that the user loads one form from you for each update. F
 
 H2:Checkout changes
 
-Minivend 4 uses in-page error-flagging on the checkout page. Simplest way to convert is probably to use the checkout.html from the simple demo as a start, and move in any customization from the existing site's catalog.html (headers, footers, logos, etc.) A line-by-line comparison of the data fields in the checkout page should be performed, adding any custom fields as needed. Custom error checking in etc/order.profiles may have to be re-worked, or can be added into checkout.html using the in-page order profile capability.
+Minivend 4 uses in-page error-flagging on the checkout page. Simplest way to convert is probably to use the checkout.html from the simple demo as a start, and move in any customization from the existing site's catalog.html (headers, footers, logos, etc.) A line-by-line comparison of the data fields in the checkout page should be performed, adding any custom fields as needed. Custom error checking in etc/order.profiles may have to be re-worked, or can be added into checkout.html using the in-page order profile capability. (Note that etc/order.profiles is called etc/profiles.order in newly-built Interchange catalogs.)
 
 Remember to update receipt.html and report/report.html with any custom fields, as well.
 
