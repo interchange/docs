@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icfaq.sdf,v 1.11 2002-06-08 19:15:41 danb Exp $
+# $Id: icfaq.sdf,v 1.12 2002-06-11 03:18:04 danb Exp $
 
 !define DOC_NAME "Frequently Asked Questions"
 !define DOC_TYPE ""
 !define DOC_CODE "icfaq"
-!define DOC_VERSION substr('$Revision: 1.11 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.12 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icfaq.html"
@@ -1788,6 +1788,20 @@ H1: Other / Miscellaneous Questions
 H2: What does the "mv_pc" variabled added to every URL mean?
 
 Its purpose is to make each link unique so that users behind a proxy (e.g. AOL) will not have dynamic content cached. 
+
+H2: Where is process.html?
+
+(Answered by Ed LaFrance)
+
+It is in the guts of Interchange. The [process] form action tells interchange
+to process the posted form vars according to the action set with mv_todo. The
+processing is not associated with any specific target page (though a page to
+display when processing is complete can be specified with mv_nextpage), so
+Interchange just builds a target URL that ends in an 'imaginary' page called
+'process.html'. There are other ways to handle a form post; more info is here:
+
+{{URL:http://interchange.redhat.com/cgi-bin/ic/docfly.html?mv_arg=ictemplates10.02}} 
+
 
 Line:
 
