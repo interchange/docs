@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.60 2001-09-25 18:00:19 danb Exp $
+# $Id: ictags.sdf,v 1.61 2001-09-29 19:45:52 jon Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.60 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.61 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -3102,8 +3102,7 @@ H3: Description
                   value="value to set to"*
                   increment=1*                         ]
 
-Returns the value of the field in a database table, or (DEPRECATED) from
-the C<session>
+Returns the value of the field in a database table, or from the C<session>
 namespace. If the optional B<value> is supplied, the entry will be
 changed to that value. If the option increment* is present, the field
 will be atomically incremented with the value in B<value>. Use negative
@@ -3117,7 +3116,6 @@ on the page calling the write tag. Use [tag flag write]products[/tag]
 to mark the C<products> database writable, for example.
 B<This must be done before ANY access to that table.>
 
-N: Deprecated Behavior: (replace with C<session> tag).
 In addition, the C<[data ...]> tag can access a number of elements in
 the Interchange session database:
 
@@ -3139,7 +3137,7 @@ the Interchange session database:
 >    user               The REMOTE_USER string
 >    username           User name logged in as (UserDB feature)
 
-\NOTE: Databases will hide session values, so don't name a database "session".
+\Note: Databases will hide session values, so don't name a database "session".
 or you won't be able to use the [data ...] tag to read them. Case is
 sensitive, so in a pinch you could call the database "Session", but it
 would be better not to use that name at all.
