@@ -1,12 +1,15 @@
 This is the new documentation root.
 
 To set up your SDF environment do the following:
-1) install SDF using
-	perl -MCPAN -e '"install I/IA/IANC/sdf-2.001.tar.gz"'
-2) hack PERLSITELIB/sdf/macros.pl by adding this line
+
+(1) install SDF using
+
+    perl -MCPAN -e '"install I/IA/IANC/sdf-2.001.tar.gz"'
+
+(2) hack PERLSITELIB/sdf/macros.pl by adding this line
 
 1093a1094
 >         push(@text, "!inherit \"look/$value\"") if($name eq 'OPT_LOOK');
 
-3) create PERLSITELIB/sdf/home/look/akopia and add the files from the akopia
-   directory
+(3) create PERLSITELIB/sdf/home/look/akopia and add the files from the akopia
+    directory
