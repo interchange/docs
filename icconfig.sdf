@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.66 2002-07-26 02:52:27 mheins Exp $
+# $Id: icconfig.sdf,v 1.67 2002-07-26 22:14:45 mheins Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.66 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.67 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icconfig.html"
@@ -138,16 +138,6 @@ Adds a configuration directive that will be parsed for every C<catalog.cfg> file
 
 If the parser is not defined, the directive value will be scalar and the same as what the user passes in the config file. If defined, the parser must be extant before it can be referenced, is always resident in Vend::Config, and begins with the string C<parse_>. Examples can be found in the files in the distribution software directory C<compat/>.
 
-H2: AdminSub *global*
-
-Marks a global subroutine for use only by catalogs that are set to
-C<AllowGlobal> (see below). Normally global subroutines can be referenced (in
-embedded Perl) by any catalog.
-
-!block example
-   AdminSub  dangerous
-!endblock
-
 H2: AllowGlobal *global*
 
 Specifies catalog identifiers that may define subroutines and UserTag entries
@@ -175,6 +165,16 @@ characters or whitespace. Only single-level arrays and hashes are translated
 properly.
 
 See C<AutoVariable> in C<catalog.cfg>.
+
+H2: Capability *global*
+
+Just like Require or Suggest, but can never cause a warning or message. This
+allows a module to be loaded if available and for a program to check for
+that capability later and adapt itself to the configuration.
+
+!block example
+   Capability  module  Archive::Zip
+!endblock
 
 H2: Catalog *global*
 
@@ -230,6 +230,20 @@ Set to the name of an external program that will check the user's HTML when they
 !block example
    CheckHTML  /usr/local/bin/weblint
 !endblock
+
+H2: CodeDef *global*
+
+A generic subroutine mapper that allows mapping of a subroutine as a 
+{{CMD[jump="icconfig.html#ActionMap *global*"]ActionMap}},
+CoreTag,
+{{CMD[jump="icconfig.html#Filter"]Filter}},
+{{CMD[jump="icconfig.html#FormAction *global*"]FormAction}},
+{{CMD[jump="icconfig.html#GlobalSub *global*"]GlobalSub}},
+{{CMD[jump="icconfig.html#ItemAction"]ItemAction}},
+LocaleChange,
+OrderCheck,
+{{CMD[jump="icconfig.html#UserTag *global*"]UserTag}},
+Widget.
 
 H2: ConfigAllAfter *global*
 
@@ -545,6 +559,17 @@ A yes/no directive.
    Mall   Yes
 !endblock
 
+H2: MaxRequestsPerChild *global*
+
+The maximum number of requests a page server will handle before it commits
+suicide and asks for a replacement server.  This prevents runaway memory leaks.
+
+!block example
+	MaxRequestsPerChild  100
+!endblock
+
+Default is 50. Only applies in {{CMD[jump="icconfig.html#PreFork *global*"]PreFork}} mode.
+
 H2: MaxServers *global*
 
 The maximum number of servers that will be spawned to handle page
@@ -603,6 +628,26 @@ stopping or reconfiguring the server.
 
 This file must be writable by the Interchange server user ID.
 
+H2: PreFork *global*
+
+Causes Interchange to run in pre-forking server mode, where a number of
+Interchange server daemons (defined in
+{{CMD[jump="icconfig.html#StartServers *global*"]StartServers}}) will be
+pre-spawned to handle page requests. Each server will handle the number
+of requests defined in
+{{CMD[jump="icconfig.html#MaxRequestsPerChild *global*"]MaxRequestsPerChild}}
+before committing suicide and causing another server to pre-fork to replace it.
+
+!block example
+	PreFork Yes
+!endblock
+
+This reduces system overhead due to forking and is the fastest and
+best way to run a busy Interchange server.
+settings that will apply for all catalogs.
+
+A yes/no directive, default is C<No>.
+
 H2: Profiles *global*
 
 Names a file (or files) which contain C<OrderProfile> and C<SearchProfile>
@@ -634,23 +679,23 @@ H2: SOAP *global*
 
 If set to Yes, allows handling of SOAP rpc requests.
 
-H2: SOAP_Host
+H2: SOAP_Host *global*
 
 The list of hosts that are allowed to connect to for SOAP rpc requests. Default
 is C<localhost 127.0.0.1>.
 
-H2: SOAP_MaxRequests
+H2: SOAP_MaxRequests *global*
 
 The maximum number of requests a SOAP rpc server will handle before it commits
 suicide and asks for a replacement server. This prevents runaway memory leaks.
 
-H2: SOAP_Perms
+H2: SOAP_Perms *global*
 
 The permissions that should be set on a SOAP UNIX-domain socket. Default is
 C<0660>, which allows only programs running as the same UID as Interchange
 to access the socket.
 
-H2: SOAP_Socket
+H2: SOAP_Socket *global*
 
 A list of sockets which should be monitored for SOAP requests. If they
 fit the form NNN.NNN.NNN.NNN:PPPP, they are IP addresses and ports for
@@ -661,7 +706,7 @@ name for monitoring in the UNIX domain.
    SOAP_Socket 12.23.13.31:7770 1.2.3.4:7770 /var/run/interchange/soap
 !endblock
 
-H2: SOAP_StartServers
+H2: SOAP_StartServers *global*
 
 The number of SOAP servers which should be started to handle SOAP
 requests. Default is 1.
@@ -693,13 +738,14 @@ The permissions (prepend a 0 to use octal notation) that should be used for the 
    bin/interchange -r SocketPerms=0666
 !endblock
 
-H2: StartServers
+H2: StartServers *global*
 
 The number of Interchange page servers which should be started to handle
-page requests when in C<PreFork> mode. Default is 1.
+page requests when in {{CMD[jump="icconfig.html#PreFork *global*"]PreFork}} mode.
+Default is 1.
 
 !block example
-   SOAP_StartServers   10
+   StartServers   8
 !endblock
 
 H2: SubCatalog *global*
