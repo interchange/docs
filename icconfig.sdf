@@ -1,4 +1,4 @@
-!init OPT_LOOK="akopia"; OPT_STYLE="manual"
+init OPT_LOOK="akopia"; OPT_STYLE="manual"
 
 !define DOC_NAME "Interchange Installation"
 !define DOC_TYPE ""
@@ -3556,7 +3556,7 @@ H2: Can I run Interchange on my Macintosh?
 Interchange will not run on a Macintosh running System 7 or other
 "Finder" operating system. 
 
-Interchange has been tested on the Macintosh OS/X server.
+After some manual effort to install the proper Perl modules, Interchange has been run on the Macintosh OS/X server (DP 3). Given the degree of effort involved this is not considered a tested configuration.
 
 Interchange's *files* can be manipulated by any computer. As long as
 uploads/downloads of database source, pages, and configuration files
@@ -3999,7 +3999,7 @@ WHEN IN DOUBT, RE-START THE SERVER. It won't take but a few seconds, and changes
 
 H1: AVAILABILITY AND COMPATIBILITY
 
-Interchange 4.5.6 has been tested on Solaris 2, Linux, FreeBSD, and Digital
+Interchange 4.6 has been tested on Solaris 2, Linux, FreeBSD, and Digital
 UNIX/Tru64. Its predecessor, Minivend 3, also reportedly runs on SCO, AIX,
 and other Unix ports. It should work on any UNIX or Win32 OS with Perl
 5.005 or higher.
