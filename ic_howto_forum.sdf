@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: ic_howto_forum.sdf,v 1.1 2002-10-06 02:49:03 mheins Exp $
+# $Id: ic_howto_forum.sdf,v 1.2 2002-10-06 03:18:33 mheins Exp $
 
 !define DOC_NAME "Interchange + Forum/Blog HOWTO"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_howto_forum"
-!define DOC_VERSION substr('$Revision: 1.1 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.2 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc-4.9/ic_howto_forum.html"
@@ -15,8 +15,9 @@ H1:Introduction
 
 H2:Preamble
 
-N:Copyright 2002 Mike Heins <mike.heins@perusion.net>.  This document is
-freely redistributable under terms of the GNU General Public License. 
+N:Copyright 2002 Mike Heins <mike.heins@perusion.net> and Michael
+Wilk <mwilk@steppenwolf.com>. Freely redistributable under terms of the GNU
+General Public License.
 
 H2:Purpose
 
@@ -28,7 +29,7 @@ H2:Audience
 
 N:Anyone who is using an Interchange catalog. This is not rocket science.
 
-H2:Contact the author
+H2:Contact the authors
 
 N:If you find any spelling errors, technical slip-ups, mistakes, subliminal 
 messages, or if you wish to send feedback, critique, remarks, comments, or if
@@ -39,6 +40,7 @@ N:The preferred method of submitting changes is in the form of a context
 diff against the SDF source file (ic_howto_forum.sdf). Please address
 your correspondence to:
 
+N:Michael Wilk {{EMAIL:mwilk@steppenwolf.com}}
 N:Mike Heins {{EMAIL:mike.heins@perusion.net}}
 
 H2:What it does
@@ -289,8 +291,9 @@ The following values are available for templating:
    USERINFO      User information based on login status and anonymity
 !endblock
 
-You can see how the templates are used by examining the
-file C<pages/forum/display.html> and playing around with those templates.
+You can see how the above are used by examining the
+file C<pages/forum/display.html> and playing around with the
+provided templates.
 
 H2: Templating rules
 
@@ -318,5 +321,6 @@ H4: E<lbrace>KEY:} false text {/KEY:}
 Displays C<false text> if the value of {KEY} is blank or zero, and nothing
 otherwise.
 
-N:Copyright 2002 Mike Heins <mike.heins@perusion.net>.  Freely
-redistributable under terms of the GNU General Public License. 
+N:Copyright 2002 Mike Heins <mike.heins@perusion.net> and Michael
+Wilk <mwilk@steppenwolf.com>. Freely redistributable under terms of the GNU
+General Public License.
