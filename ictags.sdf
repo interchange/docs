@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.118 2004-05-05 15:22:30 jon Exp $
+# $Id: ictags.sdf,v 1.119 2004-07-25 15:31:22 mheins Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.118 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.119 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ictags.html"
@@ -1892,7 +1892,7 @@ Invalidates cache: B<no>
  
 
 # BEGIN ############### and Summary Tables ####################
-Note: This tag has special positional parameter handling.
+.Note: This tag has special positional parameter handling.
 
 !block example;
     [B<and> type term op compare]
@@ -7126,8 +7126,153 @@ tags only if the image is present.
 >    <IMG SRC="[item-code].gif">
 >    [/if]
 
-The C<file> test requires that the I<SafeUntrap> directive contains
-C<ftfile> (which is the default).
+H4: {{CMD[id="if_file_A"]file-A}}
+
+Compares against a file's access time (in days).
+
+> [if file-A foofile.ext > 1]
+> foofile.ext has not been accessed in over a day.
+> [/if]
+
+Same as Perl's -A test.
+
+
+H4: {{CMD[id="if_file_B"]file-B}}
+
+Compares against a file's binary status.
+
+> [if file-B foofile.ext]
+> foofile.ext is a binary file.
+> [/if]
+
+Same as Perl's -B test. Note that the test only examines the first 1000
+bytes or so, and it can be fooled.
+
+H4: {{CMD[id="if_file_d"]file-d}}
+
+Tests whether a file is a directory.
+
+> [if file-d foodir/bardir]
+> foodir/bardir is a directory.
+> [/if]
+
+Same as Perl's -d test.
+
+H4: {{CMD[id="if_file_e"]file-e}}
+
+Tests whether a file exists at all, whether file or directory.
+
+> [if file-e foodir/bardir]
+> foodir/bardir is some type of file.
+> [/if]
+
+Same as Perl's -e test.
+
+H4: {{CMD[id="if_file_f"]file-f}}
+
+Tests whether a file is a plain file (even following a symbolic link).
+
+> [if file-f foodir/bardir]
+> foodir/bardir is a file.
+> [/if]
+
+Same as Perl's -f test, and the default for C<[if file ...]>. The
+following are the same:
+
+> [if file-f error.log]
+> error.log is a file.
+> [/if]
+>
+> [if file error.log]
+> error.log is a file.
+> [/if]
+
+H4: {{CMD[id="if_file_l"]file-l}}
+
+Tests whether a file is a symbolic link.
+
+> [if file-l foodir/bardir]
+> foodir/bardir is a symbolic link.
+> [/if]
+
+Same as Perl's -l test.
+
+H4: {{CMD[id="if_file_M"]file-M}}
+
+Allows tests against the number of days since the file has been modified.
+
+> [if file-M error.log > 0.5]
+> There have been no errors in 12 hours.
+> [/if]
+> 
+> [if file-M error.log < 1]
+> There have been errors in the last day.
+> [/if]
+
+Same as Perl's -M test.
+
+H4: {{CMD[id="if_file_r"]file-r}}
+
+Tests whether file is readable by the Interchange user.
+
+> [if file-r error.log]
+> We can read error.log.
+> [/if]
+
+Same as Perl's -r test.
+
+H4: {{CMD[id="if_file_s"]file-s}}
+
+Allows tests against the size of a file.
+
+> [if file-s error.log > 1024]
+> There have been more than a kilobyte of errors.
+> [/if]
+>
+> [if file-s error.log < 100000]
+> There have been than less than 100,000 bytes of errors.
+> [/if]
+
+Same as Perl's -s test.
+
+H4: {{CMD[id="if_file_T"]file-T}}
+
+Tests whether a file is a text file.
+
+> [if file-T error.log]
+> error.log is a text file.
+> [/if]
+
+Same as Perl's -T test. Note that the test only examines the first 1000
+bytes or so, and it can be fooled.
+
+H4: {{CMD[id="if_file_w"]file-w}}
+
+Tests whether file is writeable by the Interchange user.
+
+> [if file-w error.log]
+> We can log errors.
+> [else]
+> Danger, Will Robinson! We can't log errors.
+> [/else]
+> [/if]
+
+Same as Perl's -w test.
+
+H4: {{CMD[id="if_file_x"]file-x}}
+
+Tests whether file is executable by the Interchange user.
+
+> [if file-x error.log]
+> error.log is not executable (not that it needs to be.
+> [/if]
+>
+> [if !file-x pages]
+> There is no way to use a page in the pages directory, as it is
+> not searchable.
+> [/if]
+
+Same as Perl's -x test.
 
 H4: {{CMD[id="if_items"]items}}
 
@@ -12543,7 +12688,11 @@ Does a query to find the C<shipmodes> column of the state based on the
 user value C<state>, and/or the C<shipmodes> column of the country based
 on the value C<country>
 
+<<<<<<< ictags.sdf
+.NOTE: You can set the following, though most will use the Interchange
+=======
 \NOTE: You can set the following, though most will use the Interchange
+>>>>>>> 1.116
 defaults:
 
 !block example
@@ -16689,7 +16838,7 @@ Another way of providing the field names would be:
          separated by option separator][/xml-generator]
 !endblock
 
-Note: Field name list B<must> be tab delimited. 
+.Note: Field name list B<must> be tab delimited. 
 
 N:Ton Verhagen's humble opinion: This should change in future versions! Use option delimiter instead.
 
