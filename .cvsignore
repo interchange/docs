@@ -1,5 +1,6 @@
 *.8
 *.html
+*.mif
 *.pdf
 *.pod
 *.txt
