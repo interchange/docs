@@ -1,4 +1,4 @@
-# $Id: html.sdn,v 1.7 2000-10-17 20:04:19 zarko Exp $
+# $Id: html.sdn,v 1.8 2000-10-18 20:20:54 zarko Exp $
 #
 # >>Title::     HTML Tuning
 #
@@ -65,6 +65,7 @@ sub ::_HtmlFinalise {
         '[set members_only][/set]',
         '[set page_title]'.$title.'[/set]',
         '[set document]'.$document.'[/set]',
+        '[set version]'.$var{'DOC_VERSION'}.'[/set]',
         '__LOGOBAR__',
         '__MENUBAR__',
         '__LEFTSIDE__',
@@ -112,11 +113,7 @@ sub ::_HtmlFinalise {
 
 # Macro for building the title of the document and/or topic
 !macro HTML_BUILD_TITLE
-    !if HTML_SUBTOPICS_MODE
-        !define HTML_TITLE "$var{'HTML_MAIN_TITLE'}: $var{'DOC_TITLE'}"
-    !else
-        !define HTML_TITLE DOC_TITLE
-    !endif
+    !define HTML_TITLE DOC_TITLE
 !endmacro
 
 !macro HTML_HEADER
@@ -150,12 +147,18 @@ sub ::_HtmlFinalise {
 
 </td>
 </tr>
+[calc]
+        $Scratch->{doc_code} = $Scratch->{document};
+        $Scratch->{document} =~ s/_\d+$//;
+        return;
+[/calc]
 [query
-        base=docnote
+        base=annotation
         list=1
         sql=|
                 SELECT * FROM annotation
-                WHERE code = '[scratch document]'
+                WHERE document = '[scratch document]'
+                AND section = '[scratch page_title]'
         |][sql-change 1][condition]1[/condition]
 <TR>
         <TD BGCOLOR="__BARBG__" COLSPAN=2 ALIGN=center>
@@ -184,9 +187,12 @@ sub ::_HtmlFinalise {
 <td colspan=2 valign=center><br>
 <A HREF="[area
                         href=add_annotation
-                        form=|
-        code=[scratch document]
-                        |
+                        form="
+                              document=[scratch document]
+                              code=[scratch doc_code]
+                              section=[scratch page_title]
+                              version=[scratch version]
+                        "
 ]"><IMG SRC="admin/icon_pages.gif" border=0 align=textmiddle> Add note</A>
 </td>
 </tr>
@@ -236,5 +242,5 @@ sub ::_HtmlFinalise {
 !enddiv
 !endmacro
 
-!default DOC_OWNER "1996-2000 Akopia, Inc. E<lt>info@akopia.comE<gt>"
+!default DOC_OWNER "1996-2000 Akopia, Inc. E<lt>{{EMAIL:info@akopia.com}}E<gt>"
 !default DOC_ID_SEP "-"
