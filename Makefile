@@ -1,13 +1,15 @@
-VERSION=4.7.6
+VERSION=4.7.7
 TARGETS=icadvanced iccattut icconfig icfoundation ictemplates icdatabase ictags icupgrade ic_howto_cvs
-SUFFIXES=txt mif html pdf pod 8
+SUFFIXES=txt html pdf pod 8
+MAXSUFFIXES=mif
 SDFBIN=sdf/bin/sdf
 FRAMESDIR=frames
 FRAMESPARENT=..
 DEVDIR=dev
 DOCDBNAME=documentation.txt
-TARNAME=icdocs.tar.gz
+PKGNAME=interchange-doc-$(VERSION)
 INSTALLDIR=/var/www/html/doc
+IMAGES=bullet.gif pdf.gif pod.gif rh-ic-logo.gif text.gif
 
 .SUFFIXES: .sdf .frames $(addprefix .,$(SUFFIXES))
 
@@ -35,6 +37,8 @@ INSTALLDIR=/var/www/html/doc
 
 all :: $(SUFFIXES) frames_html icfull
 
+max :: all $(EXTRASUFFIXES)
+
 install :: all
 	@mkdir -p $(INSTALLDIR)
 	@for i in $(TARGETS) icfull ; do \
@@ -47,40 +51,44 @@ install :: all
 docdb :: pod
 	perl scripts/makedocdb.pl
 
-tardist :: all dev_html docdb
-	@rm -f $(TARNAME)
-	@echo packing files into $(TARNAME)
+tardist :: all
+	@echo Packing documentation files into $(PKGNAME).tar.gz
+	@rm -rf $(PKGNAME).tar.gz $(PKGNAME)
+	@mkdir -p $(PKGNAME)
 	@( for i in $(TARGETS) icfull ; do \
 		for j in $(SUFFIXES) ; do \
 			echo $$i.$$j ; \
 		done ; \
 	done ; \
-	echo index.html $(DEVDIR) $(FRAMESDIR) $(DOCDBNAME) ) | \
-	xargs tar czf $(TARNAME)
+	echo index.html $(FRAMESDIR) interchange-doc.spec $(IMAGES) ) | \
+	xargs tar cf - | (cd $(PKGNAME) && tar xf -)
+	@tar cf $(PKGNAME).tar $(PKGNAME)
+	@rm -rf $(PKGNAME)
+	@gzip -9f $(PKGNAME).tar
 
 dev_html:
 	@mkdir -p $(DEVDIR)
 	@for target in $(addsuffix .sdf,$(TARGETS)) ; do \
 		base=`basename $$target .sdf`; \
-		echo building $$base; \
+		echo Building $$base; \
 		( echo '1s/OPT_LOOK="akopia"/OPT_LOOK="developer_site"/' ; echo 'wq $(DEVDIR)/'$$target ) | ed $$target > /dev/null 2>&1 ; \
 		$(SDFBIN) -2html_topics -DITL_ESCAPE -n2 -k=developer_site -O$(DEVDIR) $$target ; \
 	done
-	@echo building index
+	@echo Building index
 	@( echo '1s/akopia/developer_site/' ; echo 'wq dev_index.sdf' ) | ed index.sdf > /dev/null 2>&1
 	@make dev_index.html
 	@rm dev_index.sdf
 	@mv dev_index.html $(DEVDIR)/index.html
 
 %_toc.html: %.sdf
-	@echo making $@
+	@echo Making $@
 	@mkdir -p $(FRAMESDIR)
 	@( cd $(FRAMESDIR) ; ln -sf ../bullet.gif )
 	@$(SDFBIN) -2html_topics -n2 -DFULL_TARGETS="$(TARGETS)" -DHTML_FRAMES=1 -DFRAMES_DIR=$(FRAMESDIR)/ -DSDF_ROOT=$(FRAMESPARENT)/ -O$(FRAMESDIR) $<
 	@( cd $(FRAMESDIR) ; mv $(basename $<).html $@ )
 
 %_frames.html: %.sdf
-	@echo making $@
+	@echo Making $@
 	@mkdir -p $(FRAMESDIR)
 	@echo '\
 <html><head>\
@@ -129,6 +137,8 @@ clean:
 	@rm -f $(DOCDBNAME)
 	@rm -rf icdocdb
 	@rm -f *~
-	@rm -f $(TARNAME)
+	@rm -f $(PKGNAME).tar
+	@rm -f $(PKGNAME).tar.gz
+	@rm -rf $(PKGNAME)
 	@rm -rf $(DEVDIR)
 	@rm -rf $(FRAMESDIR)
