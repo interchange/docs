@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.54 2002-01-03 00:06:44 jon Exp $
+# $Id: icconfig.sdf,v 1.55 2002-01-09 16:57:08 racke Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.54 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.55 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
@@ -1090,6 +1090,24 @@ subdirectory of pages, set:
 !block example
    Autoload   [perl] $CGI->{mv_nextpage} =~ s:^private/:public/:; [/perl]
 !endblock
+
+You can temporarily change any of the catalog configuration settings,
+for example use a different flypage.
+
+!block example
+   Autoload	  <<EOA
+   [perl] 
+   if ($Session->{browser} =~ /msie/i) {
+      $Config->{Special}->{flypage}='ms_flypage'};
+   }
+   [/perl]
+   EOA
+!endblock
+
+Please note that C<SpecialPage> is the corresponding directive in 
+the catalog configuration, not C<Special>. This is an exceptional case.
+Usually the hash key has the same name as the catalog configuration
+directive.
 
 H2: AutoModifier
 
