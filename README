@@ -12,5 +12,23 @@ To set up your SDF environment do the following:
 1093a1094
 >         push(@text, "!inherit \"look/$value\"") if($name eq 'OPT_LOOK');
 
-(3) create PERLSITELIB/sdf/home/look/akopia and add the files from the akopia
+(3) hack PERLSITELIB/sdf/topod.pl like so:
+314,318c314,319
+<         if (@_pod_tbl_state || $_pod_in_example) {
+<             $para .= $text;
+<         }
+< 
+<         elsif ($sect_type eq 'string') {
+---
+> #        if (@_pod_tbl_state || $_pod_in_example) {
+> #            $para .= $text;
+> #        }
+> #
+> #        elsif ($sect_type eq 'string') {
+>         if ($sect_type eq 'string') {
+
+(I am note sure if this is some feature, or a bug, but this seems to make
+the "E<lbracket>" behave as expected.)
+
+(4) create PERLSITELIB/sdf/home/look/akopia and add the files from the akopia
     directory
