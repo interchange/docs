@@ -1,0 +1,26 @@
+!init OPT_LOOK="akopia"
+# $Id: icfull.sdf,v 1.1 2001-04-25 21:44:03 jon Exp $
+
+!define DOC_NAME "Interchange Documentation (Full)"
+!define DOC_CODE "icfull"
+!define DOC_VERSION substr('$Revision: 1.1 $',11, -2)
+!define DOC_TOC  0
+!define HTML_URL_CATALOG ''
+!build_title
+
+# Include the document register
+!include "manuals.reg"; references; data
+
+This is the documentation for Interchange, all in one large file.
+
+!script 'print $var{OPT_TARGET},"\n";'
+!if $var{OPT_TARGET} eq 'html'
+    !on phrase 'TOC' ;; \
+        my $jump = &Value("references", $text, "Jump", undef); \
+        $style = '__inline'; \
+        $text = qq{<A HREF="#$jump">go</A>};
+!endif
+
+!catalog references ''; columns="DOC:Document"
+
+!execute "perl scripts/full.pl $var{FULL_TARGETS}"
