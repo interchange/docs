@@ -1,42 +1,38 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.19 2001-04-10 21:03:01 alison Exp $
+# $Id: icdatabase.sdf,v 1.20 2001-04-10 21:34:43 jon Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.19 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.20 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icdatabase.html"
 !build_title
 
-H1: Interchange Databases
+H1: Databases and Interchange
 
-Interchange is the industry's most widely distributed and implemented open source e-commerce platform. This document discusses databases, SQL support, the Interchange search engine, frequently asked questions, and usertags.
+As with most powerful shopping cart programs, Interchange is all about databases. Interchange can use GDBM, DB_File, SQL, LDAP, or in-memory databases. In most cases, these different database formats should operate the same when called by Interchange's access methods.
 
-H2: A Typical User Session
+Interchange does not require an external SQL database. If you have a small database with no particular desire to integrate your own tool set, you may be more comfortable using Interchange's internal database.
 
-The customer discovers a merchant site using the Interchange catalog with a search engine, a link from another page, or a click-through from a banner ad. He or she clicks the link, which is a URL pointing to the Interchange CGI link program (generically called VLINK or TLINK). The link calls the Interchange server through a socket. The Interchange server detects the path information from the link, and loads the corresponding page.
+Bear in mind that the order management functions of Interchange will be slower and not as robust without an SQL database. SQL is strongly recommended for at least these three tables:
 
-The displayed page contains links to either locate or order items from the merchant's catalog. When the customer clicks a link to purchase an item, Interchange searches the product database, finds the item, and places it in the customer's shopping cart. (Each user has a separate shopping cart, which is attached to their session.)
-
-Once the customer decides to purchase the items in their shopping cart, he or she checks out by completing a form with their name, address, payment information, shipping information, and any other information that may be required. Interchange has the capacity to compute sales taxes and shipping cost. The order is then submitted. The customer's payment can be taken online by real-time electronic payment, or their order information may be transmitted using encrypted email or FAX to a processing center.
-
-The customer's order is saved to a file or to a database table as backup. In the case of fully automated systems, it can be sent directly to an order entry program or database link.
-
-All of these operations are fully configurable. The Interchange demo program includes a sample store called Construct Something. Some users have actually customized the text and images inside Construct Something's sample catalogs, changed the database entries, and opened their store. Most users, however, have built their catalogs using their own distinctive look and feel.
-
-H1: Databases
-
-As with most powerful shopping cart programs, Interchange is all about databases. Interchange can use GDBM, DB_File, SQL, LDAP, or in-memory database formats. In most cases, these different database formats should operate the same when called by Interchange's access methods.
-
-Note: No other database besides Interchange's internal one is required.
+!block example
+       orderline
+       transactions
+       userdb
+!endblock
 
 Keeping a database in an SQL manager makes it easier to integrate Interchange with other tools. Interchange can be used to maintain a spreadsheet containing product information by only modifying the file C<products.txt> as needed. References to SQL, DBI, and DBD can be ignored.
 
 H2: Text Source Files
 
 Interchange reads delimited text files to obtain data. However, the text files are not the database. They are the source information for the database tables.
+
+By default all database source files are located in the C<products> subdirectory of the catalog directory. The main products database is in the file C<products/products.txt> in the supplied demo catalogs.
+
+If using one of the internal database methods, any changes made to the ASCII source file will be reflected in the database in the next user session. If the product database contains less than a thousand records, updates will be instantaneous. If the product database is substantially larger, updates will take longer. Use the C<NoImport> reference tag to stop auto updating.
 
 Note the following configuration directive:
 
@@ -293,8 +289,7 @@ For easy HTML compatibility, it is not recommended that a / be used in a part nu
 
 H2: Database Attributes
 
-Especially in SQL databases, there are certain functions that can be set with
-additional database attributes. For text import, the CONTINUE extended database import attribute allows additional control over the format of imported text.
+Especially in SQL databases, there are certain functions that can be set with additional database attributes. For text import, the CONTINUE extended database import attribute allows additional control over the format of imported text.
 
 Note: CONTINUE applies to all types except CSV. (Do not use NOTES unless using type LINE.)
 
@@ -735,6 +730,46 @@ To use an existing SQL database instead of importing, set the NoImport directive
 !endblock
 
 Note[label='WARNING: '] If Interchange has write permission on the products database, be careful to set the NoImport directive or create the proper .sql file. If that is not done, and the database source file is changed, the SQL database could be overwritten. In any case, always back up the database before enabling it for use by Interchange.
+
+
+H1: Managing DBM Databases
+
+H2: Making the Database
+
+The DBM databases can be built offline with the C<offline> command. The directory to be used for output is specified either on the command line with the C<-d> option, or is taken from the C<catalog.cfg> directive C<OfflineDir> -- C<offline> in the catalog directory by default. The directory must exist. The source ASCII files should be present in that directory, and the DBM files are created there. Existing files will be overwritten.
+
+!block example
+   offline -c catalog [-d offline_dir]
+!endblock
+
+Do a C<perldoc VENDROOT/bin/offline> for full documentation.
+
+H2: Updating Individual Records
+
+If it takes a long time to build a very large DBM database, consider using the C<bin/update> script to change just one field in a record, or to add from a corrections list.
+
+The database is specified with the C<-n> option, or is 'products' by default.
+
+The following updates the products database C<price> field for item 19-202 with the new value 25.00:
+
+!block example
+   update -c catalog -f price 25.00
+!endblock
+
+More than one field can be updated on a single command line.
+
+!block example
+   update -c catalog -f price -f comment 25.00 "That pitchfork couple"
+!endblock
+
+The following takes input from C<file>, which must be formatted exactly like the original database, and adds/corrects any records contained therein.
+
+!block example
+   update -c catalog -i file
+!endblock
+
+Invoke the command without any arguments for a usage message describing the options.
+
 
 H1: The Search Engine
 
@@ -3112,20 +3147,7 @@ Access can be disallowed with:
 Of course, a pre-existing database with the ACL values will work as well. It need not be in the UserDB setup.
 
 
-
 H1: Frequently Asked Questions
-
-H2: Does Interchange require an SQL database?
-
-No. Interchange does not require an external SQL database. If you have a small database with no particular desire to integrate your own tool set, you may be more comfortable using Interchange's internal database.
-
-Bear in mind that the order management functions of Interchange will be slow and not as robust without SQL. SQL is strongly recommended for at least these three tables:
-
-!block example
-       orderline
-       transactions
-       userdb
-!endblock
 
 H2: I can't get SQL to work: Undefined subroutine &Vend::Table::DBI::create ...
 
@@ -3176,7 +3198,7 @@ LI1: No DBD.
     use DBD::XXXXX;
 !endblock
 
-.Then you don't have one of the above, and Interchange will never run a SQL type.
+.Then you don't have one of the above, and Interchange can't use an SQL database until you get one installed.
 
 LI1: I don't like the column types that Interchange defines!
 
@@ -3272,154 +3294,3 @@ Here is a quick procedure that might get you started:
 .You install this package on your Windows 95 or NT box. It is a simple setup.exe process which leads you to the control panel for setting up an ODBC data source. Set up a data source named C<test_odbc> that points to the database C<test_odbc> on the UNIX box. You will need to know the host name and the port (usually 3306).
 
 *With Microsoft Access, you can then open a blank database and select: File/Get External Data/Link Tables. Select File Type of 'ODBC databases' and the proper data source, and you should have access to the database residing on the UNIX side.
-
-H1: Interchange Database Usertags
-
-H2: Data
-
-.Named Parameters: [data table=db_table column=column_name key=key filter=``uc|lc|name|namecase|no_white|etc.''* append=1* value=``value to set to''* increment=1* ]
-
-.Positional parameters: [data db_table column key]
-
-.The attribute hash reference is passed to the subroutine after the parameters as the last argument. This may mean that there are parameters not shown here.
-
-.Must pass named parameter interpolate=1 to cause interpolation.
-
-.Invalidates cache: no
-
-.Called Routine:
-
-.ASP/perl tag calls:
-
-!block example; listitem=2
-   $Tag->data(
-       {
-        table => VALUE,
-        field => VALUE,
-        key => VALUE,
-       }
-   )
-!endblock
-
-.OR
-
-!block example; listitem=2
-   $Tag->data($table, $field, $key, $ATTRHASH);
-!endblock
-
-.Attribute aliases:
-
-!block example; listitem=2
-           base ==> table
-           code ==> key
-           col ==> field
-           column ==> field
-           database ==> table
-           name ==> field
-           row ==> key
-!endblock
-
-.Returns the value of the field in a database table, or (DEPRECATED) from the session namespace. If the optional value is supplied, the entry will be changed to that value. If the option increment* is present, the field will be  automatically incremented with the value in value. Use negative numbers in value to decrement. The append attribute causes the value to be appended. The filter attribute is a set of Interchange filters that are applied to the data 1) after it is read; or 2) before it is placed in the table.
-
-.If a DBM-based database is to be modified, it must be flagged writable on the page calling the write tag. Use [tag flag write]products[/tag] to mark the products database writable, for example. This must be done before ANY access to that table.
-
-.DEPRECATED BEHAVIOR: (replace with session tag). In addition, the [data ...]  tag can access a number of elements in the Interchange session database:
-
-!block example; listitem=2
-    accesses           Accesses within the last 30 seconds
-    arg                The argument passed in a [page ...] or [area ...] tag
-    browser            The user browser string
-    cybercash_error    Error from last CyberCash operation
-    cybercash_result   Hash of results from CyberCash (access with usertag)
-    host               Interchange's idea of the host (modified by DomainTail)
-    last_error         The last error from the error logging
-    last_url           The current Interchange path_info
-    logged_in          Whether the user is logged in (add-on UserDB feature)
-    pageCount          Number of unique URLs generated
-    prev_url           The previous path_info
-    referer            HTTP_REFERER string
-    ship_message       The last error messages from shipping
-    source             Source of original entry to Interchange
-    time               Time (seconds since Jan 1, 1970) of last access
-    user               The REMOTE_USER string
-    username           User name logged in as (UserDB feature)
-!endblock
-
-Note: Databases will hide session values, so don't name a database `session''. or you won't be able to use the [data ...] tag to read them. Case is sensitive, so in a pinch you could call the database ``Session'', but it would be better not to use that name at all.
-
-H2: db_date
-
-!block example; listitem=1
-   # [db-date table format]
-   #
-   # This tag returns the last-modified time of a database table,
-   # 'products' by default. Accepts a POSIX strftime value for
-   # date format; uses '%A %d %b %Y' by default.
-   #
-   UserTag  db-date  Order table format
-   UserTag  db-date  PosNumber 2
-   UserTag  db-date  Routine <<EOF
-   sub {
-       my ($db, $format) = @_;
-       my ($dbfile, $mtime);
-
-       # use defaults if necessary
-       $db = 'products' unless $db;
-       $format = '%A %d %b %Y' unless $format;
-
-       # build database file name
-       $dbfile = $Vend::Cfg->{ProductDir} . '/'
-               . $Vend::Cfg->{Database}{$db}{'file'};
-
-       # get last modified time
-       $mtime = (stat ($dbfile))[9];
-
-       if (defined ($mtime)) {
-               return POSIX::strftime($format, localtime($mtime));
-       } else {
-               logError ("Couldn't stat $dbfile: $!\n");
-       }
-   }
-   EOF
-!endblock
-
-H2: search_region
-
-.Named Parameters: [search_region arg="arg"]
-
-.Positional Parameters: [search_region arg]
-
-.The attribute hash reference is passed after the parameters but before the container text argument. This may mean that there are parameters not shown here.
-
-.Must pass named parameter interpolate=1 to cause interpolation.
-
-.This is a container tag, i.e. [search_region] FOO [/search_region]. Nesting: NO
-
-.Invalidates cache: no
-
-.Called Routine:
-
-.ASP/perl tag calls:
-
-!block example; listitem=2
-    $Tag->search_region(
-        {
-         arg => VALUE,
-        },
-        BODY
-    )
-!endblock
-
-.OR
-
-!block example; listitem=2
-    $Tag->search_region($arg, $ATTRHASH, $BODY);
-!endblock
-
-.Attribute aliases:
-
-!block example; listitem=2
-            args ==> arg
-            params ==> arg
-            search ==> arg
-!endblock
