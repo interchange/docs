@@ -469,3 +469,295 @@ If you do this wrong, you'll get an error that looks like this:
 
 115.202.115.237 H8gbq6oK:115.202.115.237 - [28/February/2001:18:58:50 -0500] testcat /cgi-bin/testcat.cgi Safe: Undefined subroutine &MVSAFE::myfunsub called at (eval 283) line 2.
 
+
+
+
+
+
+------------------------------------------------------------------------------
+
+Appendix
+
+Minivend 3 compatibility usertags (originally in compat/ directory)
+
+
+UserTag body PosNumber 2 
+UserTag body Order type extra
+UserTag body Routine <<EOR
+use vars qw($C);
+sub parse_color {
+    my ($var, $value) = @_;
+    return '' unless $value;
+    $var = lc $var;
+    $C->{Color}->{$var} = [];
+    @{$C->{'Color'}->{$var}} = split /\s+/, $value;
+    return $value;
+}
+
+sub {
+    my($scheme, $extra) = @_;
+    my $r = '<BODY';
+    my ($var,$tag);
+    #return '<BODY>' unless (int($scheme) < 16 and int($scheme) > 1);
+    
+    my %color = qw( mv_bgcolor BGCOLOR mv_textcolor TEXT
+                    mv_linkcolor LINK mv_vlinkcolor VLINK
+                     mv_alinkcolor ALINK mv_background BACKGROUND );
+    if (defined $::Values->{mv_resetcolors}
+            and $::Values->{mv_resetcolors}) {
+        delete $::Values->{mv_customcolors};
+        undef $::Values->{mv_resetcolors};
+    }
+    if (defined $::Values->{mv_customcolors}) {
+        foreach $var (keys %color) {
+            $r .= qq| $color{$var}="| . $::Values->{$var} . '"'
+                if $::Values->{$var};
+        }
+    }
+    else {
+        foreach $var (keys %color) {
+            $r .= qq| $color{$var}="| . ${$Vend::Cfg->{Color}->{$var}}[$scheme] . '"'
+                if defined ${$Vend::Cfg->{Color}->{$var}}[$scheme]
+                    &&  ${$Vend::Cfg->{Color}->{$var}}[$scheme] !~ /\bnone\b/;
+        }
+    }
+    $r =~ s#(BACKGROUND="(?!http:))([^/])#$1$Vend::Cfg->{ImageDir}$2#;
+    $r .= " $extra" if defined $extra;
+    $r .= '>';
+}
+EOR
+
+AddDirective Mv_Background   color
+AddDirective Mv_BgColor      color
+AddDirective Mv_TextColor    color
+AddDirective Mv_LinkColor    color
+AddDirective Mv_AlinkColor   color
+AddDirective Mv_VlinkColor   color
+
+# Returns a buttonbar by number
+UserTag buttonbar Order type
+UserTag buttonbar PosNumber 1
+UserTag buttonbar Interpolate 1
+UserTag buttonbar Routine <<EOR
+
+sub get_files {
+	my($dir, @files) = @_;
+	my(@out);
+	my($file, $contents);
+	foreach $file (@files) {
+		config_error(
+		  "No leading ../.. allowed if NoAbsolute set. Contact administrator.\n")
+		if $file =~ m#^\.\./.*\.\.# and $Global::NoAbsolute;
+		push(@out,"\n") unless
+			push(@out,readfile("$dir/$file.html"));
+	}
+	
+	@out;
+}
+
+sub parse_buttonbar {
+	my ($var, $value) = @_;
+	return [] unless $value;
+	my @c;
+	my @vals = grep /\S/, split /\s+/, $value;
+	for(@vals) {
+		push @c, Vend::Util::readfile("pages/$_.html");
+	}
+	return \@c;
+}
+
+sub {
+	my($buttonbar) = @_;
+    if (defined $Vend::Cfg->{'ButtonBars'}->[$buttonbar]) {
+		return $Vend::Cfg->{'ButtonBars'}->[$buttonbar];
+	}
+	else {
+		return '';
+	}
+}
+EOR
+
+AddDirective ButtonBars  buttonbar
+GlobalSub <<EndOfSub
+sub form_mail {
+    my($to, $subject, $reply, $body) = @_;
+    my($ok);
+
+    $subject = '<no subject>' unless defined $subject && $subject;
+
+    $reply = '' unless defined $reply;
+    $reply = "Reply-to: $reply\n" if $reply;
+
+    $ok = 0;
+    SEND: {
+        open(Vend::MAIL,"|$Vend::Cfg->{'SendMailProgram'} -t") or last SEND;
+        print Vend::MAIL
+			"To: $to\n",
+			$reply,
+			"Subject: $subject\n",
+			"Errors-To: $Vend::Cfg->{MailOrderTo}\n\n",
+			$body
+            or last SEND;
+        close Vend::MAIL or last SEND;
+        $ok = ($? == 0);
+    }
+
+    if (!$ok) {
+        logError("Unable to send mail using $Vend::Cfg->{'SendMailProgram'}\n" .
+            "To '$to'\n" .
+            "With subject '$subject'\n" .
+            "With reply-to '$reply'\n" .
+            "And body:\n$body");
+    }
+    $ok;
+}
+EndOfSub
+
+UserTag help PosNumber 1 
+UserTag help Order name
+UserTag help Routine <<EOR
+sub parse_help {
+	my ($var, $value) = @_;
+	my (@files);
+	my (@items);
+	my ($c, $chunk, $item, $help, $key);
+	unless (defined $value && $value) { 
+		$c = {};
+		return $c;
+	}
+	$c = $C->{'Help'};
+	$var = lc $var;
+	$C->{'Source'}->{'Help'} = $value;
+	@files = get_files($C->{'PageDir'}, split /\s+/, $value);
+	foreach $chunk (@files) {
+		@items = split /\r?\n\r?\n/, $chunk;
+		foreach $item (@items) {
+			($key,$help) = split /\s*\n/, $item, 2;
+			if(defined $c->{$key}) {
+				$c->{$key} .= $help;
+			}
+			else {
+				$c->{$key} = $help;
+			}
+				
+		}
+	}
+	return $c;
+}
+
+sub {
+	my($help) = shift;
+	# Move this to control section?
+	if ($::Values->{mv_helpon}) {
+		delete $::Values->{mv_helpoff};
+		undef $::Values->{mv_helpon};
+	}
+	return '' if defined $::Values->{'mv_helpoff'};
+    if (defined $Vend::Cfg->{'Help'}{$help}) {
+		return $Vend::Cfg->{'Help'}{$help};
+	}
+	else {
+		return '';
+	}
+}
+
+EOR
+
+AddDirective Help help
+
+UserTag random PosNumber 0
+UserTag random Interpolate 1
+UserTag random Routine <<EOR
+package Vend::Config;
+sub parse_random {
+    my ($var, $value) = @_;
+    return '' unless (defined $value && $value); 
+    my $c = [];
+    $var = lc $var;
+	my @files = grep /\S/, split /\s+/, $value;
+	for (@files) { push @$c, Vend::Util::readin($_) }
+	return $c;
+}
+
+package Vend::Interpolate;
+sub {
+	my $random = int rand(scalar(@{$Vend::Cfg->{'Random'}}));
+    if (defined $Vend::Cfg->{'Random'}->[$random]) {
+		return $Vend::Cfg->{'Random'}->[$random];
+	}
+	else {
+		return '';
+	}
+}
+EOR
+
+UserTag rotate PosNumber 2
+UserTag rotate Order ceiling floor
+UserTag rotate Interpolate 1
+UserTag rotate Routine <<EOR
+sub {
+	return '' unless $Vend::Cfg->{Rotate};
+	my $ceiling = $_[0] || @{$Vend::Cfg->{'Rotate'}} || return '';
+	my $floor   = $_[1] || 1;
+
+	$ceiling--;
+	$floor--;
+
+	my $marker = "rotate$floor$ceiling";
+
+	if($ceiling < 0 or $floor < 0) {
+		$floor = 0;
+		$ceiling = scalar  @{$Vend::Cfg->{'Rotate'}} - 1;
+		logError "Bad ceiling or floor for rotate";
+	}
+
+    my $rotate;
+	$rotate = $Vend::Session->{$marker} || $floor;
+
+	if($rotate > $ceiling or $rotate < $floor ) {
+		$rotate = $floor;
+	}
+
+	$Vend::Session->{$marker} = $rotate + 1;
+	return $Vend::Cfg->{'Rotate'}->[$rotate];
+}
+EOR
+
+AddDirective Random random
+AddDirective Rotate random
+GlobalSub <<EOS
+sub AsciiBackend {
+	package Vend::Order;
+	$Vend::Order::override_track_order = \&track_order;
+	sub track_order_backend {
+		my ($order_no,$order_report) = @_;
+		my ($c,$i);
+		my (@backend);
+		
+		@backend = split /\s*,\s*/, $Vend::Cfg->{BackendOrder};
+		
+		if(@backend and $Vend::Cfg->{AsciiBackend}) {
+			my(@ary);
+			push @ary, $order_no;
+			for(@backend) {
+				push @ary, $::Values->{$_};
+			}
+			foreach $i (0 .. $#$Vend::Items) {
+				push @ary, $Vend::Items->[$i]{'code'};
+				push @ary, $Vend::Items->[$i]{'quantity'};
+				if ($Vend::Cfg->{UseModifier}) {
+					foreach $j (@{$Vend::Cfg->{UseModifier}}) {
+						push @ary, $Vend::Items->[$i]->{$j}
+					}
+				}
+			}
+			logData ($Vend::Cfg->{AsciiBackend}, @ary);
+		}
+		$Vend::Order::override_track_order->($order_no, $order_report);
+	}
+	*track_order = \&Vend::Order::override_track_order;
+}
+EOS
+
+AddDirective BackendOrder
+AddDirective AsciiBackend
