@@ -1,10 +1,9 @@
 Reference,Document,Jump
-ICINTRO,Interchange Introduction,icintro
-ICINSTALL,Interchange Installation,icinstall
+ICADVANCED,Interchange Advanced Topics,icadvanced
+ICCATTUT,Interchange Catalog-Building Tutorial,iccattut
 ICCONFIG,Interchange Configuration,icconfig
 ICDATABASE,Interchange Database,icdatabase
+ICFOUNDATION,Interchange Foundation Store,icfoundation
 ICTEMPLATES,Interchange Templates,ictemplates
-ICBACKOFFICE,Interchange Back-Office,icbackoffice
-ICCATTUT,Interchange Catalog-Building Tutorial,iccattut
 ICTAGS,Interchange Tags Reference,ictags
 ICUPGRADE,Interchange Upgrade Guide,icupgrade
