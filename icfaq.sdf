@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icfaq.sdf,v 1.6 2001-12-11 20:41:44 racke Exp $
+# $Id: icfaq.sdf,v 1.7 2001-12-21 03:30:08 danb Exp $
 
 !define DOC_NAME "Frequently Asked Questions"
 !define DOC_TYPE ""
 !define DOC_CODE "icfaq"
-!define DOC_VERSION substr('$Revision: 1.6 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.7 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/doc/icfaq.html"
@@ -890,6 +890,50 @@ On your pages (this is from a search results page, the [item-.... ...] notation 
 !endblock
 
 Any questions? Read the docs about "Internationalization."
+
+H2: How do I empty the shopping cart?
+
+N: Here are three examples of ways to empty/drop/clear the shopping cart contents. 
+
+H3: Empty shopping cart
+!block example
+[calc]
+	@{$Carts->{$CGI->{mv_cartname} || 'main'}} = ();
+[/calc]
+!endblock
+
+H3: Empty shopping cart
+!block example
+[set clear_basket]
+	[calc]
+		@{$Carts->{$CGI->{mv_cartname} || 'main'}} = ();
+	[/calc]
+[/set]
+
+[button
+	text="Clear Basket"
+	src="clear_basket.gif"
+	hidetext=1
+	form=basket
+	]
+		mv_todo=refresh
+		mv_click=clear_basket
+[/button]
+!endblock
+
+H3: Erase the user session (includes shopping cart)
+!block example
+[button
+	text="Clear Basket"
+	src="clear_basket.gif"
+	hidetext=1
+	form=basket
+	]
+		mv_todo=cancel
+		mv_nextpage=index
+[/button]
+!endblock
+
 
 H1: Errors
 
