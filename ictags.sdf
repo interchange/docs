@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.44 2001-05-30 23:34:16 bill Exp $
+# $Id: ictags.sdf,v 1.45 2001-05-31 17:10:19 bill Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.44 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.45 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -740,7 +740,9 @@ C<mv_return_field> or C<rf>. The default is only to return the code of
 the search result, but by setting those parameters you can return more
 than one item.
 
-In a [query ...] ITL tag you can select multiple return fields with
+E<lbracket>PREFIX-pos N] outputs the I<N>th field as returned; E<lbracket>PREFIX-param] returns it by name.
+
+In a E<lbracket>query ...] ITL tag you can select multiple return fields with
 something like:
 
 >    [query prefix=prefix sql="select foo, bar from baz where foo=buz"]
@@ -749,7 +751,7 @@ something like:
 
 In this case, [prefix-code] and [prefix-param foo] are synonymns, for
 C<foo> is the first returned parameter and becomes the code for this row.
-Another synonym is [prefix-param 0]; and [prefix-param 1] is the same
+Another synonym is [prefix-pos 0]; and [prefix-pos 1] is the same
 as [prefix-param bar].
 
 H3: E<lbracket>{{CMD[id="sub_PREFIX-price"]PREFIX-price}}]
