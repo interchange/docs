@@ -1,6 +1,7 @@
 VERSION=4.7.0
 TARGETS=icintro icinstall iccattut icconfig ictemplates icdatabase ictags icbackoffice icupgrade
 SUFFIXES=txt html pdf pod 8
+TARNAME=icdocs.tar.gz
 FULLSUFFIXES=txt html
 FULLDOCNAME=icfull
 
@@ -26,6 +27,17 @@ FULLDOCNAME=icfull
 		$< > $@
 
 all :: $(SUFFIXES)
+
+tardist :: all dev_html
+	@rm -f $(TARNAME)
+	@echo packing files into $(TARNAME)
+	@( for i in $(TARGETS) ; do \
+		for j in $(SUFFIXES) ; do \
+			echo $$i.$$j ; \
+		done ; \
+	done ; \
+	echo index.html dev ) | \
+	xargs tar czf $(TARNAME)
 
 dev_html:
 	@mkdir -p dev
@@ -100,4 +112,5 @@ clean:
 	@for i in $(FULLSUFFIXES) ; do \
 		rm -f $(FULLDOCNAME).$$i ; \
 	done
+	@rm -f $(TARNAME)
 	@rm -rf dev

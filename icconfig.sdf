@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.33 2001-03-16 05:01:26 jon Exp $
+# $Id: icconfig.sdf,v 1.34 2001-03-16 09:06:36 jon Exp $
 
 !define DOC_NAME "Interchange Configuration"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.33 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.34 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icconfig.html"
@@ -88,7 +88,7 @@ H2: Tree design
 
 Determine how users will enter and exit the catalog. Complex and intelligent conditional schemes are possible, especially if the Cookies capability is used. However, it is recommended that simplicity be used. Consumers will not buy if they can't navigate their way around the catalog.
 
-It is important to remember is that users will lose their session (and items in their shopping cart) if their browser does not accept cookies. Interchange addresses this problem by using of the C<area> and C<page> tags. If using frames, source all frame panes containing Interchange links from an initial page served by Interchange. If not, the user may have multiple session IDs depending on which frame generated the link. Note that Interchange can work properly with browsers that do not support cookies. In this situation Interchange inserts a session ID into each URL; if the ID is preserved as the user navigates from page to page then the session will remain intact.
+It is important to remember that users will lose their session (and items in their shopping cart) if their browser does not accept cookies. Interchange addresses this problem by using of the C<area> and C<page> tags. If using frames, source all frame panes containing Interchange links from an initial page served by Interchange. If not, the user may have multiple session IDs depending on which frame generated the link. Note that Interchange does work properly even if the browser doesn't store cookies. In this situation Interchange inserts a session ID into each URL; if the ID is preserved as the user navigates from page to page then the session will remain intact.
 
 H2: The Essentials
 
@@ -1844,7 +1844,7 @@ H2: Database *global*
 Defines a database which is global and available to all catalogs. Writing can
 be controlled by catalog. See C<Database>.
 
-H2: DebugFile
+H2: DebugFile *global*
 
 Names a file, relative to the Interchange root directory, which should store
 the output of C<logDebug> statements, and warnings if warnings are enabled.
@@ -3114,7 +3114,7 @@ Sets a products database column which can be used to select the on-the-fly templ
 
 H2: ParseVariables
 
-Determines whether global and catalog variables will be parsed in the configuration file. Default is No. The foundation catalog.cfg turns ParseVariables on and usually expects it to be on. If you need to turn it off, you should probably turn it back on as soon as possible.
+Determines whether global and catalog variables will be parsed in the configuration file. Default is No. The foundation catalog.cfg turns ParseVariables on and usually expects it to be on.
 
 !block example
    Variable STORE_ID  topshop
@@ -3169,35 +3169,35 @@ There are currently only two pragmas:
 
 LI1: no_html_parse
 
-.Disallows HTML tag parsing. This is a {{B:big}} parser performance gain and is enabled in the demo catalog.
+Disallows HTML tag parsing. This is a {{B:big}} parser performance gain and is enabled in the demo catalog.
 
-.When this pragma is set, you can't encapsulate Interchange tags inside HTML tags like this:
+When this pragma is set, you can't encapsulate Interchange tags inside HTML tags like this:
 
 !block example
    <P MV="if scratch something"> ... </P>
 !endblock
 
-.Note that a page with no HTML parsing is a good place to put a DTD (document type descriptor).
+Note that a page with no HTML parsing is a good place to put a DTD (document type descriptor).
 
 LI1: no_image_rewrite
 
-.Prevents image locations in pages from being altered by Interchange. Added in Interchange 4.7.0.
+Prevents image locations in pages from being altered by Interchange. Added in Interchange 4.7.0.
 
-.Interchange normally rewrites image locations to point to ImageDir. This applies to image locations mentioned in <img src="...">, <body background="...">, and <tr/th/td background="...">.
+Interchange normally rewrites image locations to point to ImageDir. This applies to image locations mentioned in <img src="...">, <input src="...">, <body background="...">, <table background="...">, and <tr/th/td background="...">.
 
-.When this pragma is {{B:not}} set, the following tag:
+When this pragma is {{B:not}} set, the following tag:
 
 !block example
    <img src="fancy.gif">
 !endblock
 
-.Would, assuming an ImageDir set to /foundation/images, be transformed into:
+Would, assuming an ImageDir set to /foundation/images, be transformed into:
 
 !block example
    <img src="/foundation/images/fancy.gif">
 !endblock
 
-.When pragma no_image_rewrite {{B:is}} set, the <img> tag would remain unchanged.
+When pragma no_image_rewrite {{B:is}} set, the <img> tag would remain unchanged.
 
 H2: PriceCommas
 

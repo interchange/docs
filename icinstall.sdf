@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icinstall.sdf,v 1.16 2001-03-16 05:53:26 jon Exp $
+# $Id: icinstall.sdf,v 1.17 2001-03-16 09:06:37 jon Exp $
 
 !define DOC_NAME "Interchange Installation"
 !define DOC_TYPE ""
 !define DOC_CODE "icinstall"
-!define DOC_VERSION substr('$Revision: 1.16 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.17 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icinstall.html"
@@ -245,21 +245,23 @@ Each catalog can be completely independent with different databases, or catalogs
 
 H2: Manual Installation of Catalogs
 
-An Interchange installation is complex, and requires quite a few distinct steps. That is why there is an interactive configuration script that is included with Interchange. It merely does automatically what is described below. It makes the process much easier, and will install the demo catalog. This configuration script has been tested on many UNIX systems.
+An Interchange installation is complex, and requires quite a few distinct steps. Please see the C<iccattut> document for a full tutorial on build a catalog by hand.
 
-The installation program (makecat) can be used to install a custom catalog template. See the supplied demo template C<construct> for examples.
+Normally you will want to use the interactive configuration script C<makecat> that is included with Interchange. It merely does automatically what is described below. It makes the process much easier, and will install the demo catalog. It can also be used to install from a custom catalog template. See the supplied demo template C<foundation> (C<construct> for Interchange 4.6) for examples.
 
 H2: Needed Directories
 
-The Interchange program, and its supporting libraries, should go into one directory as installed by the installation program. User catalog pages, user databases, and user configuration files should all go into their private directories. Because the catalog pages are served through the Interchange CGI-bin program and contain nonstandard elements, they should not be put into a public Web directory, nor do they need to have world-readable file permissions.
+The Interchange program, and its supporting libraries, should go into one directory as installed by the installation program. User catalog pages, user databases, and user configuration files should all go into their private directories. Because the catalog pages are served through the Interchange CGI program and contain nonstandard elements, they should not be put into a public Web directory, nor do they need to have world-readable file permissions.
 
-Note[label='IMPORTANT NOTE: '] Since catalogs are all run under one server, permissions are complex and very important. The Interchange configuration program is capable of doing the work!
+Since catalogs are all run under one server, permissions are complex and very important.
 
-A public Web directory for inline image graphic files is needed. Interchange does not serve the images, only the HTML tags calling them. A useful convention is to place all buttonbars, backgrounds, and icons in the /images directory, with the catalog items located in the /images/catalog directory. Regardless of the directory structure, an I<absolute path> must be used. Relative paths are unacceptable. Interchange supports the I<ImageDir> directive, which places that as the absolute path in front of all relative IMG and INPUT SRC specifications.
+A public Web directory for inline image graphic files is needed. Interchange does not serve the images, only the HTML tags calling them. A useful convention is to place all buttonbars, backgrounds, and icons in the /images directory, with the catalog items located in the /images/catalog directory. Regardless of the directory structure, an I<absolute path> must be used. Relative paths are unacceptable. Use the I<ImageDir> directive, which places that as the absolute path in front of all relative IMG and INPUT SRC, and BODY, TABLE, TR, TH, and TD BACKGROUND specifications.
 
 A cgi-bin directory in which to put the vlink or tlink program is also needed.
 
 H1: Building the Demo Store
+
+Note: Red Hat can set up a server with Interchange pre-installed. See the our Web site at C<http://www.akopia.com/> for more details.
 
 This detailed process describes the entire installation and setup process of the demo store. The text seen during this process will be displayed with <-- next to it. The text marked with --> identifies the required response.
 
@@ -269,8 +271,6 @@ In order to begin, the following permissions on the server are needed:
 *Write on the Interchange install directory
 *Write on the cgi-bin directory
 *Write on the httpd document root
-
-Note: Red Hat can set up a server with Interchange pre-installed. See the our Web site at C<http://www.akopia.com/> for more details.
 
 ^Change to the directory in which Interchange is installed:
 !block example; listitem=2

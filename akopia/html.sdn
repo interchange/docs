@@ -1,4 +1,4 @@
-# $Id: html.sdn,v 1.5 2001-01-12 19:52:08 jon Exp $
+# $Id: html.sdn,v 1.6 2001-03-16 09:06:39 jon Exp $
 #
 # >>Title::     HTML Tuning
 #
@@ -178,5 +178,5 @@ sub _html_mdnav {
 !default HTML_LINK_COLOR '3399ff'
 !default HTML_URL_CATALOG 'index.html'
 !default DOC_HTML_LOGO 'akopia-logo.gif'
-!default DOC_OWNER "1996-2001 Akopia, Inc. E<lt>{{EMAIL:info@akopia.com}}E<gt>"
+!default DOC_OWNER "1996-2001 Red Hat, Inc. E<lt>{{EMAIL:info@akopia.com}}E<gt>"
 !default DOC_ID_SEP "-"

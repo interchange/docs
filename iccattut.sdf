@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: iccattut.sdf,v 1.7 2001-03-16 05:53:25 jon Exp $
+# $Id: iccattut.sdf,v 1.8 2001-03-16 09:06:36 jon Exp $
 
 !define DOC_NAME "Catalog-Building Tutorial"
 !define DOC_TYPE ""
 !define DOC_CODE "iccattut"
-!define DOC_VERSION substr('$Revision: 1.7 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.8 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/iccattut.html"
@@ -140,7 +140,7 @@ chmod 770 tutorial
 
 H2:Become the Interchange user
 
-N:From here on out, you should be able to do everything you need to do as the 'interch' user. So do {{EX:su interch}} now. You'll have to supply user interch's password if you weren't root. (If you installed Interchange from RPM, user interch probably doesn't have a password. You'll have to set it with the {{FILE:passwd}} command while root.)
+N:From here on out, you should be able to do everything you need to do as the 'interch' user. So do {{EX:su interch}} now. You'll have to supply user interch's password if you weren't root. (If you installed Interchange from RPM, user interch probably doesn't have a password. You'll have to set it with a command like {{EX:passwd interch}} command while root.)
 
 H2:Go to the tutorial catalog directory
 

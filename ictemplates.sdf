@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ictemplates.sdf,v 1.11 2001-03-16 05:53:26 jon Exp $
+# $Id: ictemplates.sdf,v 1.12 2001-03-16 09:06:37 jon Exp $
 
 !define DOC_NAME "Interchange Templates"
 !define DOC_TYPE ""
 !define DOC_CODE "ictemplates"
-!define DOC_VERSION substr('$Revision: 1.11 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.12 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/ictemplates.html"
@@ -2062,17 +2062,19 @@ A "memory" for drop-down menus, radio buttons, and checkboxes can be provided wi
 
 LI1: [checked var_name value]
 
-.named attributes: [checked name="var_name" value="value" multiple=0|1 default=0|1]
+.named attributes: C<[checked name="var_name" value="value" cgi=0|1 multiple=0|1 default=0|1 case=0|1]>
 
-.This will output CHECKED if the variable C<var_name> is equal to C<value>. Not case sensitive.
+.This will output CHECKED if the variable C<var_name> is equal to C<value>. Set the C<cgi> attribute to use cgi instead of values data. Not case sensitive unless C<case> is set.
 
 .If the C<multiple> attribute is defined and set to a non-zero value (1 is implicit) and if the value matches on a word/non-word boundary, it will be CHECKED. If the C<default> attribute is set to a non-zero value, the box will be checked if the variable C<var_name> is empty or zero.
 
-LI1: [selected var_name value MULTIPLE*]
+LI1: [selected var_name value]
 
-.named attributes: C<[selected name=var_name value="value" multiple=1]>
+.named attributes: C<[selected name="var_name" value="value" cgi=0|1 multiple=0|1 default=0|1 case=0|1]>
 
-.This will output SELECTED if the variable C<var_name> is equal to C<value>. If the optional MULTIPLE argument is present, it will look for any of a variety of values. Not case sensitive.
+.This will output SELECTED if the variable C<var_name> is equal to C<value>. Set the C<cgi> attribute to use cgi instead of values data. Not case sensitive unless C<case> is set.
+
+.If the C<multiple> argument is present, it will look for any of a variety of values. If the C<default> attribute is set, SELECT will be output if the variable is empty or zero. Not case sensitive unless C<case> is set.
 
 .Here is a drop-down menu that remembers an item-modifier color selection:
 
@@ -2144,8 +2146,7 @@ To place a "delete" checkbox on the shopping basket display:
 </FORM>
 !endblock
 
-In this case, first instance of the variable name set by C<[quantity-name]>
-will be used as the order quantity, deleting the item from the form.
+In this case, first instance of the variable name set by C<[quantity-name]> will be used as the order quantity, deleting the item from the form.
 
 Of course, not all variables are stackable. Check the documentation for which ones can be stacked or experiment.
 
