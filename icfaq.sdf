@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icfaq.sdf,v 1.17 2002-09-23 11:15:19 racke Exp $
+# $Id: icfaq.sdf,v 1.18 2002-10-14 16:52:19 danb Exp $
 
 !define DOC_NAME "Frequently Asked Questions"
 !define DOC_TYPE ""
 !define DOC_CODE "icfaq"
-!define DOC_VERSION substr('$Revision: 1.17 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.18 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icfaq.html"
@@ -1135,7 +1135,90 @@ Example question: "How come I can't use [sql-param tablename.fieldname] notation
 DBI simply does not support tablename.fieldname in the return value.
 
 You can just refer to them by the fieldname. In the case of field names that are the same but need to be selected from different tables, you can use "SELECT orderline.quantity as o_quan,..." and refer to it as [sql-param o_quan].
- 
+
+H2: How do I modify the Save Cart and Recurring Cart feature?  How do they work?
+
+The code for these features is in templates/components/cart.  The relative portion that is executed first when you call the basket page is this:
+
+!block example
+      [button
+          text="Save This Cart"
+          src="__THEME__/savecart.gif"
+          extra="class=contentbar2"
+          hidetext=1
+          form=basket
+          mv_check="Save This Cart"
+      ]
+          mv_todo=return
+          mv_nextpage=ord/basket
+          save_cart=cart
+      [/button]
+      [button
+          text="Set As Recurring Order"
+          src="__THEME__/saverecur.gif"
+          extra="class=contentbar2"
+          hidetext=1
+          form=basket
+          mv_check="Set As Recurring Order"
+      ]
+          [set save_cart]recurring[/set]
+          mv_todo=return
+          mv_nextpage=ord/basket
+          save_cart=recurring
+      [/button]
+!endblock
+
+This creates two buttons that set save_cart to either 'cart' or 'recurring', then go to the ord/basket page (where you are already).  When clicked, one of these two code blocks will be executed:
+
+!block example
+ [if value save_cart eq 'recurring']
+    	    <FORM ACTION="[process-target]" METHOD=POST>
+    	    To save this recurring order, give it a nickname, then press 'Save Cart'.<br>
+    	    Nickname:
+    	    <INPUT TYPE=TEXT NAME="c_nickname" SIZE=11 VALUE="[scratch just_nickname]">
+    	    <input type=hidden name=mv_session_id value="[data session id]">
+			<INPUT TYPE=HIDDEN NAME="c_recurring" VALUE="1">
+    	    <INPUT TYPE=HIDDEN NAME="save_cart" VALUE="recurring">
+    	    <INPUT TYPE=HIDDEN NAME="mv_todo" VALUE="return">
+    	    <INPUT TYPE=HIDDEN NAME="mv_check" VALUE="Save Cart">
+    	    <INPUT TYPE=SUBMIT VALUE="Save Cart">
+    	    </FORM>
+  [elsif value save_cart eq 'cart']
+    	    <FORM ACTION="[process-target]" METHOD=POST>
+    	    To save this cart, give it a nickname, then press 'Save Cart'.<br>
+    	    Nickname:
+    	    <INPUT TYPE=TEXT NAME="c_nickname" SIZE=11 VALUE="[scratch just_nickname]">
+    	    <INPUT TYPE=HIDDEN NAME="c_recurring" VALUE="0">
+    	    <INPUT TYPE=HIDDEN NAME="save_cart" VALUE="cart">
+    	    <INPUT TYPE=HIDDEN NAME="mv_todo" VALUE="return">
+    	    <INPUT TYPE=HIDDEN NAME="mv_check" VALUE="Save Cart">
+			<input type=hidden name=mv_session_id vlaue="[data session id]">
+    	    <INPUT TYPE=SUBMIT VALUE="Save Cart">
+	    </FORM>
+  [/elsif]
+!endblock  
+
+The "nickname" for the cart is set earlier via:
+
+!block example
+[if !scratch just_nickname]
+  [seti just_nickname][tag time]%b-%d-%Y[/tag][/seti]
+[/if]
+!endblock
+
+The real work is done because of this:  {{EX:<INPUT TYPE=HIDDEN NAME="mv_check" VALUE="Save Cart">}} which calls the following code after the the user clicks "Save Cart":
+
+!block example
+  [set Save Cart]
+   mv_todo=return
+   mv_nextpage=ord/basket
+   save_cart=none
+   [save_cart nickname="[value c_nickname]" recurring="[value c_recurring]"]
+  [/set]
+!endblock
+
+Which in turn calls the usertag "save_cart" with a nickname parameter and a recurring parameter.  Depending on which button was clicked, recurring will either be 0 (for "Save This Cart") or 1 (for "Set As Recurring Order").  The save_cart usertag adds the cart to the userdb.carts field as a Perl data structure (hashes, arrays, etc.).
+
 H1: Errors
 
 H2: Sorting doesn't work across multiple pages.
@@ -1987,7 +2070,7 @@ H1: Other / Miscellaneous Questions
 
 H2: What does the "mv_pc" variable added to every URL mean?
 
-Its purpose is to make each link unique so that users behind a proxy (e.g. AOL) will not have dynamic content cached. 
+It can be used to prevent the users' browser from caching dynamic content, or, combined with the session 'id', it can make every link unique so that the users behind a proxy (e.g. AOL) will not have dynamic content cached. 
 
 H2: Where is process.html?
 
