@@ -37,7 +37,9 @@ Interchange reads delimited text files to obtain data. However, the text files a
 
 Note the following configuration directive:
 
->    Database  products  products.txt   TAB
+!block example
+   Database  products  products.txt   TAB
+!endblock
 
 This says that the C<products> table will obtain its source information from the file C<products.txt>. What is done with it depends on the type of underlying database being used. The different types:
 
@@ -64,7 +66,7 @@ B<DB_File>
 .DB_File is the default type if you do not have the GDBM_File Perl module installed. This is typical on FreeBSD. To explicitly specify DB_File as the type, specify it with a Database directive in C<catalog.cfg>:
 
 !block example; listitem=2
->    Database  products  DB_FILE   1
+   Database  products  DB_FILE   1
 !endblock
 
 B<DBI/SQL>
@@ -173,25 +175,29 @@ H2: Multiple Database Tables
 
 Interchange can manage an unlimited number of arbitrary database tables. They use the TAB delimiter by default, but several flexible delimiter schemes are available. These are defined by default:
 
->    Type 1      DEFAULT - uses default TAB delimiter
->    Type 2      LINE
->                Each field on its own line, a blank line
->                separates the record. Watch those carriage
->                returns! Also has a special format when CONTINUE
->                is set to be NOTES.
->    Type 3      %%
->                Fields separated by a \n%%\n combination, records by
->                \n%%%\n (where \n is a newline). Watch those carriage
->                returns!
->    Type 4      CSV
->    Type 5      PIPE
->    Type 6      TAB
->    Type 7      reserved
->    Type 8      SQL
+!block example
+   Type 1      DEFAULT - uses default TAB delimiter
+   Type 2      LINE
+               Each field on its own line, a blank line
+               separates the record. Watch those carriage
+               returns! Also has a special format when CONTINUE
+               is set to be NOTES.
+   Type 3      %%
+               Fields separated by a \n%%\n combination, records by
+               \n%%%\n (where \n is a newline). Watch those carriage
+               returns!
+   Type 4      CSV
+   Type 5      PIPE
+   Type 6      TAB
+   Type 7      reserved
+   Type 8      SQL
+!endblock
 
 The databases are specified in Database directives, as:
 
->    Database    arbitrary arbitrary.csv CSV
+!block example
+   Database    arbitrary arbitrary.csv CSV
+!endblock
 
 This specifies a Type 4 database, the ASCII version of which is located in the
 file arbitrary.csv, and the identifier it will be accessed under in Interchange is "arbitrary". The DBM file, if any, will be created in the same directory if the ASCII file is newer, or if the DBM file does not exist. The files will be created as arbitrary.db or arbitrary.gdbm, depending on DBM type.
@@ -255,12 +261,14 @@ H2: Character Usage Restrictions
 
 To review, database identifiers, field names, and product codes (database keys) are restricted in the characters they may use. The following table shows the restrictions:
 
->                                       Legal characters
->                                       ---------------------
->    Database identifiers               A-Z a-z 0-9 _
->    Field names                        A-Z a-z 0-9 _
->    Database keys (product code/SKU)   A-Z a-z 0-9 _ # - . /
->    Database values                    Any (subject to field/record delimiter)
+!block example
+                                      Legal characters
+                                      ---------------------
+   Database identifiers               A-Z a-z 0-9 _
+   Field names                        A-Z a-z 0-9 _
+   Database keys (product code/SKU)   A-Z a-z 0-9 _ # - . /
+   Database values                    Any (subject to field/record delimiter)
+!endblock
 
 Some SQL databases have reserved words which cannot be used as field names; Interchange databases do not have this restriction.
 
@@ -388,24 +396,30 @@ Interchange will automatically build index files for a fast binary search of an 
 
 Such a search requires a dictionary ordered index with the field to be searched contained in the first field and the database key (product code) in the second field. If the C<INDEX field> modifier is specified, Interchange will build the index upon database import:
 
->   Database  products  products.txt   TAB
->   Database  products  INDEX          title
+!block example
+  Database  products  products.txt   TAB
+  Database  products  INDEX          title
+!endblock
 
 If the C<title> field is the fourth column in the C<products> database table,
 a file C<products.txt.4> will be built, containing two tab-separated fields
 something like:
 
->    American Gothic   19-202
->    Mona Lisa         00-0011
->    Sunflowers        00-342
->    The Starry Night  00-343
+!block example
+   American Gothic   19-202
+   Mona Lisa         00-0011
+   Sunflowers        00-342
+   The Starry Night  00-343
+!endblock
 
 Options can be appended to the field name after a colon (:). The most useful will be C<f>, which does a case-insensitive sort. The C<mv_dict_fold> option must be added to the search in this case.
 
 Another option is C<c>, which stands for "comma index." To index on comma-separated sub-fields within a field, use the :c option:
 
->   Database  products  products.txt   TAB
->   Database  products  INDEX          category:c
+!block example
+  Database  products  products.txt   TAB
+  Database  products  INDEX          category:c
+!endblock
 
 This can get slow for larger databases and fields. Interchange will split the field on a comma (stripping surrounding whitespace) and make index entries for each one. This allows multiple categories in one field while retaining the fast category search mechanism. It might also be useful for a C<keywords> field.
 
@@ -416,8 +430,10 @@ H2: MEMORY For Memory-Only Databases
 Interchange's memory-based databases are the fastest possible way to organize
 and store frequently used data. To force a database to be built in memory instead of DBM, use the MEMORY modifier:
 
->   Database  country  country.asc   TAB
->   Database  country  MEMORY        1
+!block example
+  Database  country  country.asc   TAB
+  Database  country  MEMORY        1
+!endblock
 
 Obviously, large tables will use a great deal of memory, and the data will need to be re-imported from the ASCII source file at every catalog reconfiguration or Interchange restart. The big advantage of using MEMORY is that the database remains open at all times and does not need to be reinitialized at every connect. Use it for smaller tables that will be frequently accessed.
 
@@ -430,8 +446,10 @@ The IMPORT_ONCE modifier tells Interchange not to re-import the database from th
 IMPORT_ONCE tells it only to import on a server restart or catalog
 reconfiguration:
 
->   Database  products  products.txt   TAB
->   Database  products  IMPORT_ONCE    1
+!block example
+  Database  products  products.txt   TAB
+  Database  products  IMPORT_ONCE    1
+!endblock
 
 SQL databases don't normally need this. They will only be imported once in normal operation. Also see NoImport for a way to guarantee that the table will never be imported.
 
@@ -459,17 +477,19 @@ The import type selected need not match the type the database was specified. Dif
 The C<type> of C<LINE> and C<continue> setting of C<NOTES> is particularly
 useful, for it allows fields to be named and not have to be in any particular order of appearance in the database. The following two imports are identical in effect:
 
->    [import table=orders]
->             code: [value mv_order_number]
->    shipping_mode: [shipping-description]
->           status: pending
->    [/import]
->
->    [import table=orders]
->    shipping_mode: [shipping-description]
->    status:        pending
->    code:          [value mv_order_number]
->    [/import]
+!block example
+   [import table=orders]
+            code: [value mv_order_number]
+   shipping_mode: [shipping-description]
+          status: pending
+   [/import]
+
+   [import table=orders]
+   shipping_mode: [shipping-description]
+   status:        pending
+   code:          [value mv_order_number]
+   [/import]
+!endblock
 
 The C<code> or key must always be present, and is always named C<code>. If C<NOTES> mode is not used, the fields must be imported in the same order as they appear in the ASCII source file.
 
@@ -488,28 +508,40 @@ using the C<[import ...]> tag or with a tag like C<[data table=table column=fiel
 
 To enable write control:
 
->    Database   products  WRITE_CONTROL  1
+!block example
+   Database   products  WRITE_CONTROL  1
+!endblock
 
 Once this is done, to make a database read only, which won't allow writing even if C<[tag flag write]products[/tag]> is specified:
 
->    Database   products  READ_ONLY  1
+!block example
+   Database   products  READ_ONLY  1
+!endblock
 
 To have control with C<[tag flag write]products[/tag]>:
 
->    Database   products  WRITE_TAGGED  1
+!block example
+   Database   products  WRITE_TAGGED  1
+!endblock
 
 To limit write to certain catalogs, set:
 
->    Database   products  WRITE_CATALOG  simple=0, sample=1
+!block example
+   Database   products  WRITE_CATALOG  simple=0, sample=1
+!endblock
 
 The "simple" catalog will not be able to write, while "sample" will if C<[tag flag write]products[/tag]> is enabled. If a database is to always be writable, without having to specify C<[tag flag write] ... [/tag]>, then define:
 
->    Database   products  WRITE_ALWAYS  1
+!block example
+   Database   products  WRITE_ALWAYS  1
+!endblock
 
 The default behavior of SQL datbases is equivalent to WRITE_ALWAYS, while the default for GDBM_File, DB_File, and Memory databases is equivalent to:
 
->    Database   products  WRITE_CONTROL 1
->    Database   products  WRITE_TAGGED  1
+!block example
+   Database   products  WRITE_CONTROL 1
+   Database   products  WRITE_TAGGED  1
+!endblock
 
 H2: Global Databases
 
@@ -531,12 +563,16 @@ additional Database directives after the initial defining line as described abov
 as a DBI database, sets the data source (DSN) to an appropriate value for an
 mSQL database named C<minivend> on port 1114 of the local machine:
 
->    Database arbitrary arbitrary.asc SQL
->    Database arbitrary DSN           dbi:mSQL:minivend:localhost:1114
+!block example
+   Database arbitrary arbitrary.asc SQL
+   Database arbitrary DSN           dbi:mSQL:minivend:localhost:1114
+!endblock
 
 As a shorthand method, include the DSN as the type:
 
->    Database arbitrary arbitrary.asc dbi:mSQL:minivend:localhost:1114
+!block example
+   Database arbitrary arbitrary.asc dbi:mSQL:minivend:localhost:1114
+!endblock
 
 Supported configuration attributes include (but are not limited to):
 
@@ -595,31 +631,35 @@ B<ChopBlanks,LongReadLen,LongTruncOK,RaiseError, etc.>
 Here is an example of a completely set up DBI database on mySQL, using a comma-separated value input, setting the DBI attribute LongReadLen to retrieve an entire field, and changing some field definitions from the default char(128):
 
 
->  Database   products  products.csv  dbi:mysql:minivend
->  Database   products  USER          minivend
->  Database   products  PASS          nevairbe
->  Database   products  DELIMITER     CSV
->
->  # Set a DBI attribute
->  Database   products  LongReadLen   128
->
->  # change some fields from the default field type of char(128)
->  # Only applies if Interchange is importing from ASCII file
->  # If you set a field to a numeric type, you must set the
->  # NUMERIC attribute
->  Database   products  COLUMN_DEF    "code=char(20) NOT NUL primary key"
->  Database   products  COLUMN_DEF    price=float, discount=float
->  Database   products  COLUMN_DEF    author=char(40), title=char(64)
->  Database   products  COLUMN_DEF    nontaxable=char(3)
->  Database   products  NUMERIC       price
->  Database   products  NUMERIC       discount
+!block example
+ Database   products  products.csv  dbi:mysql:minivend
+ Database   products  USER          minivend
+ Database   products  PASS          nevairbe
+ Database   products  DELIMITER     CSV
+
+ # Set a DBI attribute
+ Database   products  LongReadLen   128
+
+ # change some fields from the default field type of char(128)
+ # Only applies if Interchange is importing from ASCII file
+ # If you set a field to a numeric type, you must set the
+ # NUMERIC attribute
+ Database   products  COLUMN_DEF    "code=char(20) NOT NUL primary key"
+ Database   products  COLUMN_DEF    price=float, discount=float
+ Database   products  COLUMN_DEF    author=char(40), title=char(64)
+ Database   products  COLUMN_DEF    nontaxable=char(3)
+ Database   products  NUMERIC       price
+ Database   products  NUMERIC       discount
+!endblock
 
 mySQL, DBI, and DBD::mysql must be completely installed and tested, and have created the database C<minivend>, for this to work. Permissions are difficult on mySQL. if having trouble, try starting the mySQL daemon with C<safe_mysqld --skip-grant-tables &> for testing purposes.
 
 To change to ODBC, the only changes required might be:
 
->    Database products  DSN         dbi:ODBC:TCP/IP localhost 1313
->    Database products  ChopBlanks  1
+!block example
+   Database products  DSN         dbi:ODBC:TCP/IP localhost 1313
+   Database products  ChopBlanks  1
+!endblock
 
 The DSN setting is specific to a ODBC setup. The B<ChopBlanks> setting takes
 care of the space-padding in Solid and some other databases. It is not specific to ODBC. Once again, DBI, DBD::ODBC, and the appropriate ODBC
@@ -634,31 +674,43 @@ H2: Importing From An ASCII File
 
 When importing a file for SQL, Interchange by default uses the first column of the ASCII file as the primary key, with a C<char(16)> type, and assigns all other columns a C<char (128)> definition. These definitions can be changed by placing the proper definitions in COLUMN_DEF Database directive attribute:
 
->  Database  products  COLUMN_DEF  price=char(20), nontaxable=char(3)
+!block example
+ Database  products  COLUMN_DEF  price=char(20), nontaxable=char(3)
+!endblock
 
 This can be set as many times as desired, if it will not fit on the line. 
 
->  Database  products  COLUMN_DEF  price=char(20), nontaxable=char(3)
->  Database  products  COLUMN_DEF  description=char(254)
+!block example
+ Database  products  COLUMN_DEF  price=char(20), nontaxable=char(3)
+ Database  products  COLUMN_DEF  description=char(254)
+!endblock
 
 To create an index automatically, append the information when the value is in quotes:
 
->  Database  products  COLUMN_DEF  "code=char(14) primary key"
+!block example
+ Database  products  COLUMN_DEF  "code=char(14) primary key"
+!endblock
 
 The field delimiter to use is TAB by default, but can be changed with the Database DELIMITER directive:
 
->  Database  products products.csv dbi:mSQL:minivend:localhost:1114
->  Database  products DELIMITER  CSV
+!block example
+ Database  products products.csv dbi:mSQL:minivend:localhost:1114
+ Database  products DELIMITER  CSV
+!endblock
 
 To create other secondary keys to speed sorts and searches, do so in the COLUMN_DEF:
 
->  Database  products COLUMN_DEF  "author=char(64) secondary key"
+!block example
+ Database  products COLUMN_DEF  "author=char(64) secondary key"
+!endblock
 
 Or use external database tools. NOTE: Not all SQL databases use the same index commands.
 
 To use an existing SQL database instead of importing, set the NoImport directive in catalog.cfg to include any database identifiers not to be imported:
 
->    NoImport  products inventory
+!block example
+   NoImport  products inventory
+!endblock
 
 \WARNING: If Interchange has write permission on the products database, be careful to set the NoImport directive or create the proper .sql file. If that is not done, and the database source file is changed, the SQL database could be overwritten. In any case, always back up the database before enabling it for use by Interchange.
 
@@ -684,34 +736,44 @@ behavior will be.
 
 Here is a simple search form:
 
->  <FORM ACTION="[area search]" METHOD=POST>
->  <INPUT TYPE="text" SIZE="30" NAME="mv_searchspec">
->  <INPUT TYPE="submit" VALUE="Search">
->  </FORM>
+!block example
+ <FORM ACTION="[area search]" METHOD=POST>
+ <INPUT TYPE="text" SIZE="30" NAME="mv_searchspec">
+ <INPUT TYPE="submit" VALUE="Search">
+ </FORM>
+!endblock
 
 When the "Search" submit button is pressed (or <ENTER> is pressed), Interchange will search the C<products.txt> file for the string entered into the text field C<mv_searchspec>, and return the product code pertaining to that line.
 
 The same search for a fixed string, say "shirt," could be performed with the use of a hot link, using the special scan URL:
 
->  [page search="se=shirt"]See our shirt collection![/page]
+!block example
+ [page search="se=shirt"]See our shirt collection![/page]
+!endblock
 
 The default is to search every field on the line. To match on the string "shirt" in the product database field "description," modify the search:
 
->  <INPUT TYPE="hidden" NAME="mv_search_field" VALUE="description">
+!block example
+ <INPUT TYPE="hidden" NAME="mv_search_field" VALUE="description">
+!endblock
 
 In the hot-linked URL search:
 
->  [page search="
->                se=shirt
->                sf=category
->            "]See our shirt collection![/page]
+!block example
+ [page search="
+               se=shirt
+               sf=category
+           "]See our shirt collection![/page]
+!endblock
 
 To let the user decide on the search parameters, use checkboxes or radiobox fields to set the fields:
 
->    Search by author
->       <INPUT TYPE="checkbox" NAME="mv_search_field" VALUE="author">
->    Search by title
->        <INPUT TYPE="checkbox" NAME="mv_search_field" VALUE="title">
+!block example
+   Search by author
+      <INPUT TYPE="checkbox" NAME="mv_search_field" VALUE="author">
+   Search by title
+       <INPUT TYPE="checkbox" NAME="mv_search_field" VALUE="title">
+!endblock
 
 Fields can be stacked. If more than one is checked, all checked fields will be searched.
 
@@ -719,13 +781,17 @@ H2: Glimpse
 
 To use the Glimpse search, the Glimpse index must be built based on files in the ProductDir, or wherever the files to be searched will be located. If Interchange was installed in the default C</usr/local/lib/minivend>, the command line to build the index for the products file would be:
 
->    chdir products
->    glimpseindex -b -H . products.txt
+!block example
+   chdir products
+   glimpseindex -b -H . products.txt
+!endblock
 
 There are several ways to improve search speed for large catalogs. One method that works well for large C<products.txt> files is to split the C<products.txt> file into small index files (in the example, 100 lines) with the split(1) UNIX/POSIX command. Then, index it with glimpse:
 
->    split -100 products.txt index.txt.
->    glimpseindex -H /usr/local/lib/minivend/products index.txt.*
+!block example
+   split -100 products.txt index.txt.
+   glimpseindex -H /usr/local/lib/minivend/products index.txt.*
+!endblock
 
 This will dramatically increase search speeds for large catalogs, at least if the search term is relatively unique. If it is a common string, in a category search, for example, it is better to use the text-based search.
 
@@ -750,37 +816,47 @@ The search must be done on a dictionary-ordered pre-built index, which can be pr
 
 If using the C<mv_dict_look> parameter by itself, and the proper index file is present, Interchange will set the options:
 
->    mv_return_fields=1
->    mv_dict_limit=-1
+!block example
+   mv_return_fields=1
+   mv_dict_limit=-1
+!endblock
 
 This will make the search behave much like the simple search described above, except it will be much faster on large files and will match only from the beginning of the field. Here is an example. A C<title> index has been built by including in catalog.cfg:
 
->    Database   products   INDEX    title
+!block example
+   Database   products   INDEX    title
+!endblock
 
-\NOTE: The ASCII source file must be "touched" to rebuild the index and the database.
+Note: The ASCII source file must be "touched" to rebuild the index and the database.
 
 Now, specify in a form:
 
->    <FORM ACTION="[process href=search]" METHOD=POST>
->    <INPUT TYPE=hidden NAME=mv_dict_limit VALUE=title>
->    <INPUT NAME=mv_dict_look>
->    </FORM>
+!block example
+   <FORM ACTION="[process href=search]" METHOD=POST>
+   <INPUT TYPE=hidden NAME=mv_dict_limit VALUE=title>
+   <INPUT NAME=mv_dict_look>
+   </FORM>
+!endblock
 
 or in a URL:
 
->    [page search="dl=Van Gogh/di=title"]
+!block example
+   [page search="dl=Van Gogh/di=title"]
+!endblock
 
 This search is case-sensitive. To do the same thing case-insensitively:
 
->    Database   products   INDEX    title:f
->
->    <FORM ACTION="[process href=search]" METHOD=POST>
->    <INPUT TYPE=hidden NAME=mv_dict_limit VALUE=title>
->    <INPUT TYPE=hidden NAME=mv_dict_fold  VALUE=1>
->    <INPUT NAME=mv_dict_look>
->    </FORM>
->
->    [page search="dl=Van Gogh/di=title/df=1"]
+!block example
+   Database   products   INDEX    title:f
+
+   <FORM ACTION="[process href=search]" METHOD=POST>
+   <INPUT TYPE=hidden NAME=mv_dict_limit VALUE=title>
+   <INPUT TYPE=hidden NAME=mv_dict_fold  VALUE=1>
+   <INPUT NAME=mv_dict_look>
+   </FORM>
+
+   [page search="dl=Van Gogh/di=title/df=1"]
+!endblock
 
 H2: Coordinated And Joined Searching
 
@@ -788,17 +864,19 @@ Interchange will do a complete range of tests on individual columns in the datab
 
 To make sure that is the case, use the C<mv_search_map> variable. It allows variables to be mapped to others in the search specification. For example:
 
->    <INPUT TYPE=hidden NAME=mv_search_map VALUE="
->        mv_searchspec=search1
->        mv_searchspec=search2
->        mv_searchspec=search3
->        ">
->    <INPUT TYPE=hidden NAME=mv_search_field VALUE=title>
->    <INPUT TYPE=hidden NAME=mv_search_field VALUE=artist>
->    <INPUT TYPE=hidden NAME=mv_search_field VALUE=category>
->    Artist: <INPUT NAME=search1 VALUE="">
->    Title:  <INPUT NAME=search2 VALUE="">
->    Genre:  <INPUT NAME=search3 VALUE="">
+!block example
+   <INPUT TYPE=hidden NAME=mv_search_map VALUE="
+       mv_searchspec=search1
+       mv_searchspec=search2
+       mv_searchspec=search3
+       ">
+   <INPUT TYPE=hidden NAME=mv_search_field VALUE=title>
+   <INPUT TYPE=hidden NAME=mv_search_field VALUE=artist>
+   <INPUT TYPE=hidden NAME=mv_search_field VALUE=category>
+   Artist: <INPUT NAME=search1 VALUE="">
+   Title:  <INPUT NAME=search2 VALUE="">
+   Genre:  <INPUT NAME=search3 VALUE="">
+!endblock
 
 Even if the user leaves one blank, the search will work.
 
@@ -810,66 +888,72 @@ Coordinated searches may be joined with the output of another table if set one o
 Individual field operations can then be specified with the C<mv_column_op>
 (or B<op>) parameter. The operations include:
 
->    operation            string     numeric   equivalent
->    ---------           
->    equal to               eq         ==           =
->    not equal              ne         !=           <>
->    greater than           gt         > 
->    less than              lt         < 
->    less than/equal to     le         <= 
->    greater than/equal to  ge         >= 
->    regular expression     rm                       =~ , LIKE
->    regular expression NOT rn                       !~
->    exact match            em
+!block example
+   operation            string     numeric   equivalent
+   ---------           
+   equal to               eq         ==           =
+   not equal              ne         !=           <>
+   greater than           gt         > 
+   less than              lt         < 
+   less than/equal to     le         <= 
+   greater than/equal to  ge         >= 
+   regular expression     rm                       =~ , LIKE
+   regular expression NOT rn                       !~
+   exact match            em
+!endblock
 
 An example:
 
->    [page scan
->            co=yes
->            sf=title
->            se=Sunflowers
->            op=em
->            sf=artist
->            se=Van Gogh
->            op=rm          ] Sunflowers, Van Gogh [/page]
->
->    [page search="
->            co=yes
->
->            sf=title
->            se=Sunflowers
->            nu=0
->            op=!~
->
->            sf=artist
->            se=Van Gogh
->            op=rm    
->            nu=0
->
->            sf=inventory:qty
->            se=1
->            op=>=
->            nu=1 
->        "] Any in stock except Sunflowers, Van Gogh [/page]
+!block example
+   [page scan
+           co=yes
+           sf=title
+           se=Sunflowers
+           op=em
+           sf=artist
+           se=Van Gogh
+           op=rm          ] Sunflowers, Van Gogh [/page]
+
+   [page search="
+           co=yes
+
+           sf=title
+           se=Sunflowers
+           nu=0
+           op=!~
+
+           sf=artist
+           se=Van Gogh
+           op=rm    
+           nu=0
+
+           sf=inventory:qty
+           se=1
+           op=>=
+           nu=1 
+       "] Any in stock except Sunflowers, Van Gogh [/page]
+!endblock
 
 Note that in the second example, nu=0 must be specified even though that is the default. This is to set the proper correspondence. To avoid having to do this, use Interchange's option array feature:
 
->    [page search.0="
->                    sf=title
->                    se=Sunflowers
->                    op=!~
->                "
->          search.1="
->                    sf=artist
->                    se=Van Gogh
->                "
->          search.2="
->                    sf=inventory:qty
->                    se=1
->                    op=>=
->                    nu=1 
->                "
->        ] Any in stock except Sunflowers, Van Gogh [/page]
+!block example
+   [page search.0="
+                   sf=title
+                   se=Sunflowers
+                   op=!~
+               "
+         search.1="
+                   sf=artist
+                   se=Van Gogh
+               "
+         search.2="
+                   sf=inventory:qty
+                   se=1
+                   op=>=
+                   nu=1 
+               "
+       ] Any in stock except Sunflowers, Van Gogh [/page]
+!endblock
 
 The C<co=yes> is assumed when specifying a multiple search.
 
@@ -883,67 +967,75 @@ If Jochen Wiedmann's C<SQL::Statement> module is installed, a SQL syntax can be 
 
 This syntax allows this form setup:
 
->    Artist: <INPUT NAME="artist">
->    Title:  <INPUT NAME="title">
->    <INPUT TYPE=hidden NAME="mv_sql_query"
->            VALUE="
->                SELECT code FROM products
->                WHERE artist LIKE artist
->                AND    title LIKE title">                             
+!block example
+   Artist: <INPUT NAME="artist">
+   Title:  <INPUT NAME="title">
+   <INPUT TYPE=hidden NAME="mv_sql_query"
+           VALUE="
+               SELECT code FROM products
+               WHERE artist LIKE artist
+               AND    title LIKE title">                             
+!endblock
 
 If the right hand side of an expression looks like a column, i.e., is not
 quoted, the appropriate form variable is substituted. (If used in a one-click, the corresponding scratch variable is used instead.) The assumption is reversed for the left-hand side. If it is a quoted string, the column name is read from the passed values. Otherwise, the column name is literal.                     
 
->    Search for: <INPUT NAME="searchstring"><BR>                
->    Search in   <INPUT TYPE="radio" NAME="column" VALUE="title"> title
->        <INPUT TYPE="radio" NAME="column" VALUE="artist"> artist
->        <INPUT TYPE=hidden NAME="mv_sql_query"                            
->          VALUE="SELECT code FROM products WHERE 'column' LIKE searchstring">
+!block example
+   Search for: <INPUT NAME="searchstring"><BR>                
+   Search in   <INPUT TYPE="radio" NAME="column" VALUE="title"> title
+       <INPUT TYPE="radio" NAME="column" VALUE="artist"> artist
+       <INPUT TYPE=hidden NAME="mv_sql_query"                            
+         VALUE="SELECT code FROM products WHERE 'column' LIKE searchstring">
+!endblock
 
 Once again, this does not conduct a search on an SQL database, but formats a corresponding text-based search. Parentheses will have no effect, and an OR condition will cause all conditions to be OR. The searches above would be similar to:
 
->    [page search="
->                co=yes
->                sf=artist
->                op=rm
->                se=[value artist]
->                sf=title
->                op=rm
->                se=[value title]
->            "  ]
->        Search for [value artist], [value title]
->    [/page]
->
->    [page search="
->                co=yes
->                sf=[value column]
->                op=rm
->                se=[value searchstring]
->            "  ] 
->    Search for [value searchstring]
->           in  [value column]
->    [/page]
+!block example
+   [page search="
+               co=yes
+               sf=artist
+               op=rm
+               se=[value artist]
+               sf=title
+               op=rm
+               se=[value title]
+           "  ]
+       Search for [value artist], [value title]
+   [/page]
+
+   [page search="
+               co=yes
+               sf=[value column]
+               op=rm
+               se=[value searchstring]
+           "  ] 
+   Search for [value searchstring]
+          in  [value column]
+   [/page]
+!endblock
 
 H2: Range Searching
 
 Range searching allows qualification of search returns with a field that must be within a certain numeric or alphanumeric range. To use it, set the mv_range_look variable to the products database field, or a column/field number for another file. Then, set the corresponding C<mv_range_min> and C<mv_range_max> variables with a selectable field.
 
->    <INPUT TYPE="hidden" NAME="mv_range_look" VALUE="price">
->        Search on Price
->    Min <SELECT NAME="mv_range_min">
->             <OPTION value=0 SELECTED> Free
->             <OPTION value=1000000> $1,000,000
->             <OPTION value=10000000> $10,000,000
->             <OPTION value=20000000> $20,000,000
->             <OPTION value=40000000> $40,000,000
->        </SELECT><BR>
->    Max <SELECT NAME="mv_range_max">
->            <OPTION value=0 SELECTED> no object
->            <OPTION value=1000000> $1,000,000
->            <OPTION value=10000000> $10,000,000
->            <OPTION value=20000000> $20,000,000
->            <OPTION value=40000000> $40,000,000
->        </SELECT>
+!block example
+   <INPUT TYPE="hidden" NAME="mv_range_look" VALUE="price">
+       Search on Price
+   Min <SELECT NAME="mv_range_min">
+            <OPTION value=0 SELECTED> Free
+            <OPTION value=1000000> $1,000,000
+            <OPTION value=10000000> $10,000,000
+            <OPTION value=20000000> $20,000,000
+            <OPTION value=40000000> $40,000,000
+       </SELECT><BR>
+   Max <SELECT NAME="mv_range_max">
+           <OPTION value=0 SELECTED> no object
+           <OPTION value=1000000> $1,000,000
+           <OPTION value=10000000> $10,000,000
+           <OPTION value=20000000> $20,000,000
+           <OPTION value=40000000> $40,000,000
+       </SELECT>
+!endblock
 
 The value of 0 for mv_range_max is equivalent to infinity if doing a
 numeric search. This makes it impossible to search for a ceiling of 0
@@ -960,101 +1052,111 @@ H2: One-Click Searches
 
 Interchange allows a search to be passed in a URL, as shown above. Just specify the search with the special page parameter search or special page C<scan>. Here is an example:
 
->     [page search="
->                se=Impressionists
->                sf=category
->            "]
->        Impressionist Paintings
->     [/page]
+!block example
+    [page search="
+               se=Impressionists
+               sf=category
+           "]
+       Impressionist Paintings
+    [/page]
+!endblock
 
 This is the same:
 
->     [page scan se=Impressionists/sf=category]
->        Impressionist Paintings
->     [/page]
+!block example
+    [page scan se=Impressionists/sf=category]
+       Impressionist Paintings
+    [/page]
+!endblock
 
 Here is the same thing from a home page (assuming /cgi-bin/vlink is
 the CGI path for Interchange's vlink):
 
->     <A HREF="/cgi-bin/vlink/scan/se=Impressionists/sf=category">
->        Impressionist Paintings
->     </A>
+!block example
+    <A HREF="/cgi-bin/vlink/scan/se=Impressionists/sf=category">
+       Impressionist Paintings
+    </A>
+!endblock
 
 The two-letter abbreviations are mapped with these letters:
 
->  ac  mv_all_chars
->  bd  mv_base_directory
->  bs  mv_begin_string
->  co  mv_coordinate
->  cs  mv_case
->  cv  mv_verbatim_columns
->  de  mv_dict_end
->  df  mv_dict_fold
->  di  mv_dict_limit
->  dl  mv_dict_look
->  DL  mv_raw_dict_look
->  do  mv_dict_order
->  dr  mv_record_delim
->  em  mv_exact_match
->  er  mv_spelling_errors
->  ff  mv_field_file
->  fi  mv_search_file
->  fm  mv_first_match
->  fn  mv_field_names
->  hs  mv_head_skip
->  ix  mv_index_delim
->  lb  mv_search_label
->  lo  mv_list_only
->  lr  mv_search_line_return
->  md  mv_more_decade
->  ml  mv_matchlimit
->  mm  mv_max_matches
->  MM  mv_more_matches
->  mp  mv_profile
->  ms  mv_min_string
->  ne  mv_negate
->  ng  mv_negate
->  np  mv_nextpage
->  nu  mv_numeric
->  op  mv_column_op
->  os  mv_orsearch
->  ra  mv_return_all
->  rd  mv_return_delim
->  rf  mv_return_fields
->  rg  mv_range_alpha
->  rl  mv_range_look
->  rm  mv_range_min
->  rn  mv_return_file_name
->  rr  mv_return_reference
->  rs  mv_return_spec
->  rx  mv_range_max
->  SE  mv_raw_searchspec
->  se  mv_searchspec
->  sf  mv_search_field
->  sg  mv_search_group
->  si  mv_search_immediate
->  sp  mv_search_page
->  sq  mv_sql_query
->  sr  mv_search_relate
->  st  mv_searchtype
->  su  mv_substring_match
->  tc  mv_sort_command
->  td  mv_table_cell
->  tf  mv_sort_field
->  th  mv_table_header
->  to  mv_sort_option
->  tr  mv_table_row
->  un  mv_unique
->  va  mv_value
+!block example
+ ac  mv_all_chars
+ bd  mv_base_directory
+ bs  mv_begin_string
+ co  mv_coordinate
+ cs  mv_case
+ cv  mv_verbatim_columns
+ de  mv_dict_end
+ df  mv_dict_fold
+ di  mv_dict_limit
+ dl  mv_dict_look
+ DL  mv_raw_dict_look
+ do  mv_dict_order
+ dr  mv_record_delim
+ em  mv_exact_match
+ er  mv_spelling_errors
+ ff  mv_field_file
+ fi  mv_search_file
+ fm  mv_first_match
+ fn  mv_field_names
+ hs  mv_head_skip
+ ix  mv_index_delim
+ lb  mv_search_label
+ lo  mv_list_only
+ lr  mv_search_line_return
+ md  mv_more_decade
+ ml  mv_matchlimit
+ mm  mv_max_matches
+ MM  mv_more_matches
+ mp  mv_profile
+ ms  mv_min_string
+ ne  mv_negate
+ ng  mv_negate
+ np  mv_nextpage
+ nu  mv_numeric
+ op  mv_column_op
+ os  mv_orsearch
+ ra  mv_return_all
+ rd  mv_return_delim
+ rf  mv_return_fields
+ rg  mv_range_alpha
+ rl  mv_range_look
+ rm  mv_range_min
+ rn  mv_return_file_name
+ rr  mv_return_reference
+ rs  mv_return_spec
+ rx  mv_range_max
+ SE  mv_raw_searchspec
+ se  mv_searchspec
+ sf  mv_search_field
+ sg  mv_search_group
+ si  mv_search_immediate
+ sp  mv_search_page
+ sq  mv_sql_query
+ sr  mv_search_relate
+ st  mv_searchtype
+ su  mv_substring_match
+ tc  mv_sort_command
+ td  mv_table_cell
+ tf  mv_sort_field
+ th  mv_table_header
+ to  mv_sort_option
+ tr  mv_table_row
+ un  mv_unique
+ va  mv_value
+!endblock
 
 These can be treated just the same as form variables on the page, except that
 they can't contain a new line. If using the multi-line method of specification, the characters will automatically be escaped for a URL.
 
 IMPORTANT NOTE: An incompatibility in earlier Interchange catalogs is specifying C<[page scan/se=searchstring]>. This is interpreted by the parser as C<[page scan/se="searchstring"]> and will cause a bad URL. Change this to C<[page scan se=searchstring]>, or perhaps better yet:
 
->    [page search="
->                    se=searchstring
->            "]
+!block example
+   [page search="
+                   se=searchstring
+           "]
+!endblock
           
 cause a bad URL. Change this to C<[page scan se=searchstring]>.
 
@@ -1103,11 +1205,13 @@ H2: Setting Display Options With mv_value
 A value can be specified that will be set in the link with the C<mv_value>
 parameter. It takes an argument of C<var=value>, just as setting a normal variable in an Interchange profile. Actually C<mv_value> is a misnomer, it will almost never be used in a form where variable values can be set. Always specify it in a one-click search with C<va=var=value>. Example:
 
->    [page href=scan
->          arg="se=Renaissance
->               se=Impressionists
->               va=category_name=Renaissance and Impressionist Paintings
->               os=yes"]Renaissance and Impressionist Paintings[/page]
+!block example
+   [page href=scan
+         arg="se=Renaissance
+              se=Impressionists
+              va=category_name=Renaissance and Impressionist Paintings
+              os=yes"]Renaissance and Impressionist Paintings[/page]
+!endblock
 
 Display the appropriate category on the search results page with C<[value category_name]>.
 
@@ -1118,15 +1222,17 @@ To specify a search inside a page with the C<[search-region parameters*]> tag. T
 The C<[loop ...]> tag directly accepts a search parameter. To search for
 all products in the categories "Americana" and "Contemporary," do:
 
->    [loop search="
->        se=Americana
->        se=Contemporary
->        os=yes
->        sf=category9
->        "]
->    Artist: [loop-field artist]<BR>
->    Title: [loop-field title]<P>
->    [/loop]
+!block example
+   [loop search="
+       se=Americana
+       se=Contemporary
+       os=yes
+       sf=category9
+       "]
+   Artist: [loop-field artist]<BR>
+   Title: [loop-field title]<P>
+   [/loop]
+!endblock
 
 The advantage of the in-page search is that searches can be embedded within
 searches, and there can be straight unchanging links from static HTML pages.
@@ -1135,21 +1241,23 @@ To place an in-page search with the full range of display in a normal
 results page, use the C<[search-region]> tag the same as above, except 
 that C<[search-list]>, C<[more-list]>, and C<[more]> tags can be placed within it. Use them to display and format the results, including paging. For example:
 
->    [search-region  more=1
->                    search="
->                         se=Americana
->                         sf=category
->                         ml=2
->                    "]
->    [more-list][more][/more-list]
->    [search-list]
->    <A MV="page [item-code]" HREF="flypage.html">
->        [item-field title]<A>, by [item-field artist]
->    [/search-list]
->    [no-match]
->        Sorry, no matches for [value mv_searchspec].
->    [/no-match]
->    [/search-region]
+!block example
+   [search-region  more=1
+                   search="
+                        se=Americana
+                        sf=category
+                        ml=2
+                   "]
+   [more-list][more][/more-list]
+   [search-list]
+   <A MV="page [item-code]" HREF="flypage.html">
+       [item-field title]<A>, by [item-field artist]
+   [/search-list]
+   [no-match]
+       Sorry, no matches for [value mv_searchspec].
+   [/no-match]
+   [/search-region]
+!endblock
 
 To use the same page for search paging, make sure tou set the C<sp=page> parameter.
 
@@ -1179,7 +1287,9 @@ os=yes
 
 Then, in the search form, set a variable with the name of the profile:
 
->    <INPUT TYPE=hidden NAME=mv_profile VALUE=artist_profile>
+!block example
+   <INPUT TYPE=hidden NAME=mv_profile VALUE=artist_profile>
+!endblock
 
 In a one-click search, use the C<mp> modifier:
 
@@ -1187,17 +1297,21 @@ In a one-click search, use the C<mp> modifier:
 
 They can also be placed in a file. Define the file name in the SearchProfile directive. The catalog must be reconfigured for Interchange to read it. The profile is named by placing a name following a __NAME__ pragma:
 
->  __NAME__ title_search
+!block example
+ __NAME__ title_search
+!endblock
 
 The __NAME__ must begin the line, and be followed by whitespace and the name.
 
 The special variable C<mv_last> stops interpretation of search variables. The following variables are always interpreted:
 
->    mv_dict_look
->    mv_searchspec
->    mv_range_look
->    mv_range_min
->    mv_range_max
+!block example
+   mv_dict_look
+   mv_searchspec
+   mv_range_look
+   mv_range_min
+   mv_range_max
+!endblock
 
 Other than that, if mv_last is set in a search profile, and there are other variables on the search form, they will not be interpreted.
 
@@ -1661,29 +1775,33 @@ H1: SORTING
 
 Interchange has standard sorting options for sorting the search lists, loop lists, and item lists based on the contents of database fields. In addition, it adds list slices for limiting the displayed entries based on a start value and chunk size (or start and end value, from which a chunk size is determined). All accept a standard format sort tag which must be directly after the list call:
 
->    [loop 4 3 2 1]
->    [sort -2 +2]
->        [loop-code]
->    [/loop]
->
->    [search-list]
->    [sort products:category:f]
->        [item-price] [item-description]<BR>
->    [/search-list]
->
->    [item-list]
->    [sort products:price:rn]
->        [item-price] [item-code]<BR>
->    [/item-list]
->
->    [loop search="ra=yes"]
->    [sort products:category products:title]
->    [loop-field category] [loop-field title] <BR>
->    [/loop]
+!block example
+   [loop 4 3 2 1]
+   [sort -2 +2]
+       [loop-code]
+   [/loop]
+
+   [search-list]
+   [sort products:category:f]
+       [item-price] [item-description]<BR>
+   [/search-list]
+
+   [item-list]
+   [sort products:price:rn]
+       [item-price] [item-code]<BR>
+   [/item-list]
+
+   [loop search="ra=yes"]
+   [sort products:category products:title]
+   [loop-field category] [loop-field title] <BR>
+   [/loop]
+!endblock
 
 All sort situations, C<[search list]>, C<[loop list]>, C<[tag each table]>, and C<[item-list]>, take options of the form:
 
->  [sort database:field:option* -n +n =n-n ... ]
+!block example
+ [sort database:field:option* -n +n =n-n ... ]
+!endblock
 
 B<database>
 .The Interchange database identifier. This must be supplied and should normally be 'products' if using the default name for the database.
@@ -1835,7 +1953,9 @@ To define the shipping database in a catalog configuration file, set the Variabl
 To set the file to be something other than shipping.asc in the products
 directory, set the C<Special> directive:
 
->    Special  shipping.asc  /home/user/somewhere/shipping_defs
+!block example
+   Special  shipping.asc  /home/user/somewhere/shipping_defs
+!endblock
 
 There are two styles of setting which can be mixed in the same file. The first is line-based and expects six or more TAB-separated fields. They would look like:
 
@@ -1848,35 +1968,39 @@ upsg    UPS Ground  weight  150 999999  e @@TOTAL@@ lbs too heavy for UPS
 The second is a freeform method with a C<mode: Description text> introducing
 the mode line. The special encoding is called out by indented parameters. The below is identical to the above:
 
->    upsg: UPS Ground
->        criteria    weight
->        min         0
->        max         0
->        cost        e Nothing to ship!
->
->        min         0
->        max         150
->        cost        u
->        table       2ndDayAir
->        geo         zip
->        default_geo 98366
->        adder       3
->
->        min         150
->        max         999999
->        cost        e @@TOTAL@@ lbs too heavy for UPS
+!block example
+   upsg: UPS Ground
+       criteria    weight
+       min         0
+       max         0
+       cost        e Nothing to ship!
+
+       min         0
+       max         150
+       cost        u
+       table       2ndDayAir
+       geo         zip
+       default_geo 98366
+       adder       3
+
+       min         150
+       max         999999
+       cost        e @@TOTAL@@ lbs too heavy for UPS
+!endblock
 
 The second format has several advantages. Multiple lines can be spanned with the <<HERE document format, like so:
 
->    upsg: UPS Ground
->        criteria    <<EOF
->    [perl]
->        return 'weight' if $Values->{country} eq 'US';
->        return 'weight' if ! $Values->{country};
->        # Return blank, don't want UPS
->        return '';
->    [/perl]
->    EOF
+!block example
+   upsg: UPS Ground
+       criteria    <<EOF
+   [perl]
+       return 'weight' if $Values->{country} eq 'US';
+       return 'weight' if ! $Values->{country};
+       # Return blank, don't want UPS
+       return '';
+   [/perl]
+   EOF
+!endblock
     
 The definable fields are, in order, for the tab-separated format:
 
@@ -2197,7 +2321,9 @@ The zone file is a file that is usually specific to the originating location. Fo
 
 It has a format similar to:
 
->    low - high, zone,zone,zone,zone
+!block example
+   low - high, zone,zone,zone,zone
+!endblock
 
 The C<low> entry is the low bound of the geographic location; C<high> is the high bound. (By geographic location, the zip code is meant.) If the first digits of the zip code, compared alphanumerically, fall between the low and high values, that zone is used as the column name for a lookup in the rate database. The weight is used as the row key. 
 
@@ -2211,11 +2337,15 @@ DestZIP,Ground,3DaySelect,2ndDayAir,2ndDayAirAM,NextDayAirSaver,NextDayAir
 
 Therefore, the zone column (shipping type) that would be used for UPS ground would be "Ground," and that is what the database should be named. To support the above, use a C<shipping.asc> line that reads:
 
->    upsg  UPS Ground  weight  0  150  u Ground [default zip 983]
+!block example
+   upsg  UPS Ground  weight  0  150  u Ground [default zip 983]
+!endblock
 
 and a C<catalog.cfg> database callout of:
 
->    Database  Ground  Ground.csv  CSV
+!block example
+   Database  Ground  Ground.csv  CSV
+!endblock
 
 These column names can be changed as long as they correspond to the C<identifier> of the rate database.
 
@@ -2223,49 +2353,57 @@ The rate database is a standard Interchange database. For US shippers, UPS distr
 
 To adapt other shipper zone files to Interchange's lookup, they will need to fit the UPS US format. (Most of the UPS international files don't follow the US format). For example, the 1998 Ohio-US to Canada file begins:
 
->    Canada Standard Zone Charts from Ohio
->    Locate the zone by cross-referencing the first three
->    characters of the destination Postal Code in the Postal
->    Range column.
->
->    Postal Range  Zone
->    A0A  A9Z      54
->    B0A  B9Z      54
->    C0A  C9Z      54
->    E0A  E9Z      54
->    G0A  G0A      51
->    G0B  G0L      54
->    G0M  G0S      51
->    G0T  G0W      54
+!block example
+   Canada Standard Zone Charts from Ohio
+   Locate the zone by cross-referencing the first three
+   characters of the destination Postal Code in the Postal
+   Range column.
+
+   Postal Range  Zone
+   A0A  A9Z      54
+   B0A  B9Z      54
+   C0A  C9Z      54
+   E0A  E9Z      54
+   G0A  G0A      51
+   G0B  G0L      54
+   G0M  G0S      51
+   G0T  G0W      54
+!endblock
 
 It will need to be changed to: 
  
->    Destination,canstnd
->    A0A-A9Z, 54
->    B0A-B9Z, 54
->    C0A-C9Z, 54
->    E0A-E9Z, 54
->    G0A-G0A, 51
->    G0B-G0L, 54
->    G0M-G0S, 51
->    G0T-G0W, 54
+!block example
+   Destination,canstnd
+   A0A-A9Z, 54
+   B0A-B9Z, 54
+   C0A-C9Z, 54
+   E0A-E9Z, 54
+   G0A-G0A, 51
+   G0B-G0L, 54
+   G0M-G0S, 51
+   G0T-G0W, 54
+!endblock
 
 Match it with a C<canstnd> CSV database that looks like this:
 
->    Weight,51,52,53,54,55,56
->    1,7.00,7.05,7.10,11.40,11.45,11.50
->    2,7.55,7.65,7.75,11.95,12.05,12.10
->    3,8.10,8.15,8.40,12.60,12.70,12.85
->    4,8.65,8.70,9.00,13.20,13.30,13.55
->    5,9.20,9.25,9.75,13.85,13.85,14.20
->    6,9.70,9.85,10.35,14.45,14.50,14.90
->    7,10.25,10.40,11.10,15.15,15.15,15.70
->    8,10.80,10.95,11.70,15.70,15.75,16.35
->    9,11.35,11.55,12.30,16.40,16.45,17.20
+!block example
+   Weight,51,52,53,54,55,56
+   1,7.00,7.05,7.10,11.40,11.45,11.50
+   2,7.55,7.65,7.75,11.95,12.05,12.10
+   3,8.10,8.15,8.40,12.60,12.70,12.85
+   4,8.65,8.70,9.00,13.20,13.30,13.55
+   5,9.20,9.25,9.75,13.85,13.85,14.20
+   6,9.70,9.85,10.35,14.45,14.50,14.90
+   7,10.25,10.40,11.10,15.15,15.15,15.70
+   8,10.80,10.95,11.70,15.70,15.75,16.35
+   9,11.35,11.55,12.30,16.40,16.45,17.20
+!endblock
 
 It is called out in catalog.cfg with:
 
->    Database canstnd canstnd.csv CSV
+!block example
+   Database canstnd canstnd.csv CSV
+!endblock
 
 With the above, a 4-pound shipment to postal code E5C 4TL would yield a cost of 13.20.
 
@@ -2273,9 +2411,11 @@ H2:  Geographic Qualification
 
 If the return value in the main criterion includes whitespace, the remaining information in the field is used as a qualifier for the subsidiary shipping modes. This can be used to create geographic qualifications for shipping, as in:
 
-> upsg   UPS Ground   weight [value state]   0     0     e No items selected
-> upsg   UPS Ground   AK HI                  0     150   u Ground [value zip] 12.00
-> upsg   UPS Ground                          0     150   u Ground [value zip] 3.00
+!block example
+upsg   UPS Ground   weight [value state]   0     0     e No items selected
+upsg   UPS Ground   AK HI                  0     150   u Ground [value zip] 12.00
+upsg   UPS Ground                          0     150   u Ground [value zip] 3.00
+!endblock
 
 If C<upsg> is the mode selected, the value of the user session variable C<state> is examined to see if it matches the geographic qualification on a whole-word boundary. If it is C<AK> or C<HI>, UPS Ground with an adder of 12 will be selected. If it "falls through," UPS Ground with an adder of 3 will be selected.
 
@@ -2289,14 +2429,16 @@ values will all be applied. NOTE: This should not be done in an item-list unless
 
 To only process a handling charge once, do the following:
 
->    [item-list]
->    [if-item-field very_heavy]
->    [perl values]
->        return '' if $Values->{mv_handling} =~ /very_heavy/;
->        return "<INPUT TYPE=hidden NAME=mv_handling VALUE=very_heavy>";
->    [/perl]
->    [/if-item-field]
->    [/item-list]
+!block example
+   [item-list]
+   [if-item-field very_heavy]
+   [perl values]
+       return '' if $Values->{mv_handling} =~ /very_heavy/;
+       return "<INPUT TYPE=hidden NAME=mv_handling VALUE=very_heavy>";
+   [/perl]
+   [/if-item-field]
+   [/item-list]
+!endblock
 
 A non-blank/non-zero value in the database field B<very_heavy> will trigger Perl code which will only set mv_handling once.
 
@@ -2304,11 +2446,15 @@ H2: Default Shipping Mode
 
 If a default shipping mode other than C<default> is desired, enter it into the DefaultShipping directive:
 
->    DefaultShipping     upsg
+!block example
+   DefaultShipping     upsg
+!endblock
 
 This will make the entry on the order form checked by default when the user starts the order process, if it is put in the form:
 
->  <INPUT TYPE=RADIO NAME=mv_shipmode VALUE=upsg [checked mv_shipmode upsg]> 
+!block example
+ <INPUT TYPE=RADIO NAME=mv_shipmode VALUE=upsg [checked mv_shipmode upsg]> 
+!endblock
 
 To force a choice by the user, make mv_shipmode a required form variable (with RequiredFields or in an order profile) and set DefaultShipping to zero.
 
@@ -2325,44 +2471,46 @@ The ASCII file for the database will not reflect changes unless the file is expo
 
 The field names to be used are not set in concrete. They may be changed with options. Fields may be added or subtracted at any time. Most users will choose to keep the default demo fields for simplicity sake, as they cover most common needs. As distributed in the demo, the fields are:
 
->    code
->    accounts
->    acl
->    address
->    address_book
->    b_address
->    b_city
->    b_country
->    b_name
->    b_nickname
->    b_phone
->    b_state
->    b_zip
->    carts
->    city
->    country
->    db_acl
->    email
->    email_copy
->    fax
->    fax_order
->    file_acl
->    mv_credit_card_exp_month
->    mv_credit_card_exp_year
->    mv_credit_card_info
->    mv_credit_card_type
->    mv_shipmode
->    name
->    order_numbers
->    p_nickname
->    password
->    phone_day
->    phone_night
->    preferences
->    s_nickname
->    state
->    time
->    zip
+!block example
+   code
+   accounts
+   acl
+   address
+   address_book
+   b_address
+   b_city
+   b_country
+   b_name
+   b_nickname
+   b_phone
+   b_state
+   b_zip
+   carts
+   city
+   country
+   db_acl
+   email
+   email_copy
+   fax
+   fax_order
+   file_acl
+   mv_credit_card_exp_month
+   mv_credit_card_exp_year
+   mv_credit_card_info
+   mv_credit_card_type
+   mv_shipmode
+   name
+   order_numbers
+   p_nickname
+   password
+   phone_day
+   phone_night
+   preferences
+   s_nickname
+   state
+   time
+   zip
+!endblock
 
 A few of those fields are special in naming, though all can be changed via an option. A couple of the fields are reserved for Interchange's use.
 
@@ -2370,16 +2518,18 @@ IMPORTANT NOTE: If not running with PGP or other encryption for credit card numb
 
 The special database fields are:
 
->    accounts         Storage for billing accounts book
->    address_book     Storage for shipping address book
->    b_nickname       Nickname of current billing account
->    carts            Storage for shopping carts
->    p_nickname       Nickname for current preferences
->    preferences      Storage for preferences
->    s_nickname       Nickname for current shipping address
->    db_acl           Storage for database access control lists
->    file_acl         Storage for file access control lists
->    acl              Storage for simple integrated access control
+!block example
+   accounts         Storage for billing accounts book
+   address_book     Storage for shipping address book
+   b_nickname       Nickname of current billing account
+   carts            Storage for shopping carts
+   p_nickname       Nickname for current preferences
+   preferences      Storage for preferences
+   s_nickname       Nickname for current shipping address
+   db_acl           Storage for database access control lists
+   file_acl         Storage for file access control lists
+   acl              Storage for simple integrated access control
+!endblock
 
 If not defined, the corresponding capability is not available.
 
@@ -2388,76 +2538,86 @@ be defined as a BLOB type, if using SQL. This is also suggested for the acl fiel
 
 Reserved fields include:
 
->    code        The username (key for the database)
->    password    Password storage
->    time        Last time of login
+!block example
+   code        The username (key for the database)
+   password    Password storage
+   time        Last time of login
+!endblock
 
 H2: The [userdb ...] Tag
 
 Interchange provides a C<[userdb ...]> tag to access the UserDB functions.
 
-> [userdb
->        function=function_name
->        username="username"*
->        assign_username=1
->        username_mask=REGEX*
->        password="password"*
->        verify="password"*
->        oldpass="old password"*
->        crypt="1|0"*
->        shipping="fields for shipping save"
->        billing="fields for billing save"
->        preferences="fields for preferences save"
->        ignore_case="1|0"*
->        force_lower=1
->        param1=value*
->        param2=value*
->        ...
->        ]
+!block example
+[userdb
+       function=function_name
+       username="username"*
+       assign_username=1
+       username_mask=REGEX*
+       password="password"*
+       verify="password"*
+       oldpass="old password"*
+       crypt="1|0"*
+       shipping="fields for shipping save"
+       billing="fields for billing save"
+       preferences="fields for preferences save"
+       ignore_case="1|0"*
+       force_lower=1
+       param1=value*
+       param2=value*
+       ...
+       ]
+!endblock
 
 \* Optional
 
 It is normally called in an C<mv_click> or C<mv_check> setting, as in:
 
->    [set Login]
->    mv_todo=return
->    mv_nextpage=welcome
->    [userdb function=login]
->    [/set]
->
->    <FORM ACTION="[process-target]" METHOD=POST>
->    <INPUT TYPE=hidden NAME=mv_click VALUE=Login>
->    Username <INPUT NAME=mv_username SIZE=10>
->    Password <INPUT NAME=mv_password SIZE=10>
->    </FORM>
+!block example
+   [set Login]
+   mv_todo=return
+   mv_nextpage=welcome
+   [userdb function=login]
+   [/set]
+
+   <FORM ACTION="[process-target]" METHOD=POST>
+   <INPUT TYPE=hidden NAME=mv_click VALUE=Login>
+   Username <INPUT NAME=mv_username SIZE=10>
+   Password <INPUT NAME=mv_password SIZE=10>
+   </FORM>
+!endblock
 
 There are several global parameters that apply to any use of the C<userdb> functions. Most importantly, by default, the database table is set to be userdb. If another table name must be used, include a C<database=table> parameter with any call to C<userdb>. The global parameters (default in parens):
 
->    database     Sets user database table (userdb)
->    show         Show the return value of certain functions
->                 or the error message, if any (0)
->    force_lower  Force possibly upper-case database fields
->                 to lower case session variable names (0)
->    billing      Set the billing fields (see Accounts)
->    shipping     Set the shipping fields (see Address Book)
->    preferences  Set the preferences fields (see Preferences)
->    bill_field   Set field name for accounts (accounts)
->    addr_field   Set field name for address book (address_book)
->    pref_field   Set field name for preferences (preferences)
->    cart_field   Set field name for cart storage (carts)
->    pass_field   Set field name for password (password)
->    time_field   Set field for storing last login time (time)
->    expire_field Set field for expiration date (expire_date)
->    acl          Set field for simple access control storage (acl)
->    file_acl     Set field for file access control storage (file_acl)
->    db_acl       Set field for database access control storage (db_acl)
+!block example
+   database     Sets user database table (userdb)
+   show         Show the return value of certain functions
+                or the error message, if any (0)
+   force_lower  Force possibly upper-case database fields
+                to lower case session variable names (0)
+   billing      Set the billing fields (see Accounts)
+   shipping     Set the shipping fields (see Address Book)
+   preferences  Set the preferences fields (see Preferences)
+   bill_field   Set field name for accounts (accounts)
+   addr_field   Set field name for address book (address_book)
+   pref_field   Set field name for preferences (preferences)
+   cart_field   Set field name for cart storage (carts)
+   pass_field   Set field name for password (password)
+   time_field   Set field for storing last login time (time)
+   expire_field Set field for expiration date (expire_date)
+   acl          Set field for simple access control storage (acl)
+   file_acl     Set field for file access control storage (file_acl)
+   db_acl       Set field for database access control storage (db_acl)
+!endblock
 
 By default the system crypt() call will be used to compare the password. This is best for security, but the passwords in the user database will not be human readable.
 
 If no critical information is kept and Interchange administration is not done via the C<UserDB> capability, then use the UserDB directive (described below) to set
 encryption off by default:
 
->    UserDB   default   crypt   0
+!block example
+   UserDB   default   crypt   0
+!endblock
 
 Encryption can still be set on by passing C<crypt=1> with any call to a C<new_account>, C<change_pass>, or C<login> call.
 
@@ -2466,7 +2626,9 @@ H2: Setting Defaults With The UserDB Directive
 The UserDB directive provides a way to set defaults for the user database. For example, to save and recall the scratch variable C<tickets> in the user database
 instead of the form variable C<tickets>, set:
 
->    UserDB   default   scratch  tickets
+!block example
+   UserDB   default   scratch  tickets
+!endblock
 
 That makes every call to C<[userdb function=login]> equivalent to C<[userdb function=login scratch=tickets]>.
 
@@ -2474,37 +2636,45 @@ To override that default for one call only, use C<[userdb function=login scratch
 
 To log failed access authorizations, set the C<UserDB> profile parameter C<log_failed> true:
 
->    UserDB  default  log_failed 1
+!block example
+   UserDB  default  log_failed 1
+!endblock
 
 To disable logging of failed access authorizations (the default), set the C<UserDB> profile parameter C<log_failed> to 0:
 
->    UserDB  default  log_failed 0
+!block example
+   UserDB  default  log_failed 0
+!endblock
 
 The UserDB directive uses the same key-value pair settings as the Locale and Route directives. If there are more than one set of defaults, set them in a hash structure:
 
->    UserDB  crypt_case  <<EOF
->    {
->        'scratch'        => 'tickets',
->        'crypt'          => '1',
->        'ignore_case'    => '0',
->    }
->    EOF
->
->    UserDB  default  <<EOF
->    {
->        'scratch'        => 'tickets',
->        'crypt'          => '1',
->        'ignore_case'    => '1',
->    }
->    EOF
+!block example
+   UserDB  crypt_case  <<EOF
+   {
+       'scratch'        => 'tickets',
+       'crypt'          => '1',
+       'ignore_case'    => '0',
+   }
+   EOF
 
-\NOTE: The usual here-document caveats apply. The "EOF" must be on a line by itself with no leading/trailing whitespace.
+   UserDB  default  <<EOF
+   {
+       'scratch'        => 'tickets',
+       'crypt'          => '1',
+       'ignore_case'    => '1',
+   }
+   EOF
+!endblock
+
+Note: The usual here-document caveats apply. The "EOF" must be on a line by itself with no leading/trailing whitespace.
 
 The last one to be set becomes the default.
 
 The option C<profile> selects the set to use. For usernames and passwords to be case sensitive with no encryption, pass this call:
 
->    [userdb function=new_account profile=case_crypt]
+!block example
+   [userdb function=new_account profile=case_crypt]
+!endblock
 
 The username and password will be stored as typed in, and the password will be encrypted in the database.
 
@@ -2723,20 +2893,22 @@ H2: Address Book
 
 Address_book is a shipping address book. The shipping address book saves information relevant to shipping the order. In its simplest form, this can be the only address book needed. By default these form values are included:
 
->   s_nickname
->   name
->   fname
->   lname
->   address
->   address1
->   address2
->   address3
->   city
->   state
->   zip
->   country
->   phone_day
->   mv_shipmode
+!block example
+  s_nickname
+  name
+  fname
+  lname
+  address
+  address1
+  address2
+  address3
+  city
+  state
+  zip
+  country
+  phone_day
+  mv_shipmode
+!endblock
 
 The first field is always the name of the form variable that contains the key for the entry. The values are saved with the C<[userdb function=set_shipping]> tag call, and are recalled with C<[userdb function=get_shipping]>. A list of the keys
 available is kept in the form value C<address_book>, suitable for iteration in
@@ -2744,36 +2916,44 @@ an HTML select box or in a set of links.
 
 To get the names of the addresses, use the get_shipping_names function:
 
->    [userdb function=get_shipping_names]
+!block example
+   [userdb function=get_shipping_names]
+!endblock
 
 By default, they are placed in the variable C<address_book>. Here is a little snippet that builds a select box:
 
->    <FORM ACTION="[process-target]" METHOD=POST>
->    [userdb function=get_shipping_names]
->    [if value address_book]
->    <SELECT NAME="s_nickname">
->    [loop arg="[value address_book]"] <OPTION> [loop-code] [/loop]
->    </SELECT>
->    <INPUT TYPE=submit NAME=mv_check VALUE="Recall Shipping">
->    </FORM>
+!block example
+   <FORM ACTION="[process-target]" METHOD=POST>
+   [userdb function=get_shipping_names]
+   [if value address_book]
+   <SELECT NAME="s_nickname">
+   [loop arg="[value address_book]"] <OPTION> [loop-code] [/loop]
+   </SELECT>
+   <INPUT TYPE=submit NAME=mv_check VALUE="Recall Shipping">
+   </FORM>
+!endblock
 
 The same principle works with accounts, carts, and preferences.
 
 To restore a cart based on the above, put in an C<mv_check> routine:
 
->    [set Recall Shipping]
->    mv_todo=return
->    mv_nextpage=ord/basket
->    [userdb function=get_shipping nickname="[value s_nickname]"]
->    [/set]
+!block example
+   [set Recall Shipping]
+   mv_todo=return
+   mv_nextpage=ord/basket
+   [userdb function=get_shipping nickname="[value s_nickname]"]
+   [/set]
+!endblock
 
 When the mv_check variable is encountered, the contents of the scratch variable C<Recall Shipping> are processed and the shipping address information inserted into the user form values. This is destructive of any current values of those user session variables, of course.
 
 To change the fields that are recalled or saved, use the C<shipping> parameter:
 
->    [userdb function=get_shipping
->            nickname=city_and_state
->            shipping="city state"]
+!block example
+   [userdb function=get_shipping
+           nickname=city_and_state
+           shipping="city state"]
+!endblock
 
 Only the values of the C<city> and C<state> variables will be replaced.
 
@@ -2781,24 +2961,26 @@ H2: Accounts Book
 
 The accounts book saves information relevant to billing the order. By default these form values are included:
 
->   b_nickname
->   b_name
->   b_fname
->   b_lname
->   b_address
->   b_address1
->   b_address2
->   b_address3
->   b_city
->   b_state
->   b_zip
->   b_country
->   b_phone
->   purchase_order
->   mv_credit_card_type
->   mv_credit_card_exp_month
->   mv_credit_card_exp_year
->   mv_credit_card_info
+!block example
+  b_nickname
+  b_name
+  b_fname
+  b_lname
+  b_address
+  b_address1
+  b_address2
+  b_address3
+  b_city
+  b_state
+  b_zip
+  b_country
+  b_phone
+  purchase_order
+  mv_credit_card_type
+  mv_credit_card_exp_month
+  mv_credit_card_exp_year
+  mv_credit_card_info
+!endblock
 
 The values are saved with the C<[userdb function=set_billing]> tag call, and are recalled with C<[userdb function=get_billing]>. A list of the keys available is kept in the form value C<accounts>, suitable for iteration in an HTML select box or in a set of links.
 
@@ -2806,21 +2988,27 @@ H2: Preferences
 
 Preferences are miscellaneous session information. They include, by default, the following fields:
 
->    email
->    fax
->    phone_night
->    fax_order
->    email_copy
+!block example
+   email
+   fax
+   phone_night
+   fax_order
+   email_copy
+!endblock
 
 The field p_nickname acts as a key to select the preference set. To change
 the values that are included with the C<preferences> parameter:
     
->    [userdb function=set_preferences
->            preferences="email_copy email fax_order fax"]
+!block example
+   [userdb function=set_preferences
+           preferences="email_copy email fax_order fax"]
+!endblock
 
 or in catalog.cfg:
 
->    UserDB default preferences "mail_list email fax_order music_genre"
+!block example
+   UserDB default preferences "mail_list email fax_order music_genre"
+!endblock
 
 H2: Carts
 
@@ -2833,8 +3021,10 @@ Interchange can implement a simple access control scheme with the user database.
 
 Set the following variables in C<catalog.cfg>:
 
->    Variable   MV_USERDB_ACL_TABLE  userdb
->    Variable   MV_USERDB_ACL_COLUMN acl
+!block example
+   Variable   MV_USERDB_ACL_TABLE  userdb
+   Variable   MV_USERDB_ACL_COLUMN acl
+!endblock
 
 The C<MV_USERDB_ACL_TABLE> is the table which controls access, and likewise the C<MV_USERDB_ACL_TABLE> names the column in that database which will be checked for authorization.
 
@@ -2842,27 +3032,37 @@ The database entry should contain the complete Interchange-style page name of th
 
 For example, if the user C<flycat> followed this link:
 
->    <A HREF="[area cartcfg/master_edit]">Edit</A>
+!block example
+   <A HREF="[area cartcfg/master_edit]">Edit</A>
+!endblock
 
 Access would be allowed if the contents of the userdb were:
 
->    code    acl
->    flycat  cartcfg/master_edit
+!block example
+   code    acl
+   flycat  cartcfg/master_edit
+!endblock
 
 and disallowed if it were:
 
->    code    acl
->    flycat  cartcfg/master_editor
+!block example
+   code    acl
+   flycat  cartcfg/master_editor
+!endblock
 
 Access can be enabled with:
 
->    [userdb function=set_acl location="cartcfg/master_edit"]
+!block example
+   [userdb function=set_acl location="cartcfg/master_edit"]
+!endblock
 
 Access can be disallowed with:
 
->    [userdb function=set_acl
->            delete=1
->            location="cartcfg/master_edit"]
+!block example
+   [userdb function=set_acl
+           delete=1
+           location="cartcfg/master_edit"]
+!endblock
 
 Of course, a pre-existing database with the ACL values will work as well. It need not be in the UserDB setup.
 
@@ -2874,9 +3074,11 @@ No. Interchange does not require SQL. If you have a small database with no parti
 
 Bear in mind that the order management functions of Interchange will be slow and not as robust without SQL. SQL is strongly recommended for at least these three tables:
 
->        orderline
->        transactions
->        userdb
+!block example
+       orderline
+       transactions
+       userdb
+!endblock
 
 H2: I can't get SQL to work: Undefined subroutine &Vend::Table::DBI::create ...
 
@@ -3037,27 +3239,31 @@ Called Routine:
 
 ASP/perl tag calls: 
 
->    $Tag->data(
->        {
->         table => VALUE,
->         field => VALUE,
->         key => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->data($table, $field, $key, $ATTRHASH);
+!block example
+   $Tag->data(
+       {
+        table => VALUE,
+        field => VALUE,
+        key => VALUE,
+       }
+   )
+
+OR
+
+   $Tag->data($table, $field, $key, $ATTRHASH);
+!endblock
 
 Attribute aliases 
 
->            base ==> table
->            code ==> key
->            col ==> field
->            column ==> field
->            database ==> table
->            name ==> field
->            row ==> key
+!block example
+           base ==> table
+           code ==> key
+           col ==> field
+           column ==> field
+           database ==> table
+           name ==> field
+           row ==> key
+!endblock
  
 DESCRIPTION 
 \Syntax: [data table=db_table column=column_name key=key filter=``uc|lc|name|namecase|no_white|etc.''* append=1* value=``value to set to''* increment=1* ] 
@@ -3089,37 +3295,39 @@ DEPRECATED BEHAVIOR: (replace with session tag). In addition, the [data ...]  ta
 
 H2: db_date 
 
->    # [db-date table format]
->    #
->    # This tag returns the last-modified time of a database table,
->    # 'products' by default. Accepts a POSIX strftime value for
->    # date format; uses '%A %d %b %Y' by default.
->    #
->    UserTag  db-date  Order table format
->    UserTag  db-date  PosNumber 2
->    UserTag  db-date  Routine <<EOF
->    sub {
->        my ($db, $format) = @_;
->        my ($dbfile, $mtime);
->
->        # use defaults if necessary
->        $db = 'products' unless $db;
->        $format = '%A %d %b %Y' unless $format;
->
->        # build database file name
->        $dbfile = $Vend::Cfg->{ProductDir} . '/' 
->                . $Vend::Cfg->{Database}{$db}{'file'};
->
->        # get last modified time
->        $mtime = (stat ($dbfile))[9];
->
->        if (defined ($mtime)) {
->                return POSIX::strftime($format, localtime($mtime));
->        } else {
->                logError ("Couldn't stat $dbfile: $!\n");
->        }
->    }
->    EOF
+!block example
+   # [db-date table format]
+   #
+   # This tag returns the last-modified time of a database table,
+   # 'products' by default. Accepts a POSIX strftime value for
+   # date format; uses '%A %d %b %Y' by default.
+   #
+   UserTag  db-date  Order table format
+   UserTag  db-date  PosNumber 2
+   UserTag  db-date  Routine <<EOF
+   sub {
+       my ($db, $format) = @_;
+       my ($dbfile, $mtime);
+
+       # use defaults if necessary
+       $db = 'products' unless $db;
+       $format = '%A %d %b %Y' unless $format;
+
+       # build database file name
+       $dbfile = $Vend::Cfg->{ProductDir} . '/' 
+               . $Vend::Cfg->{Database}{$db}{'file'};
+
+       # get last modified time
+       $mtime = (stat ($dbfile))[9];
+
+       if (defined ($mtime)) {
+               return POSIX::strftime($format, localtime($mtime));
+       } else {
+               logError ("Couldn't stat $dbfile: $!\n");
+       }
+   }
+   EOF
+!endblock
 
 H2: Search
 
@@ -3139,15 +3347,17 @@ Called Routine:
 
 ASP/perl tag calls: 
 
->    $Tag->search(
->        {
->         arg => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->search($arg);
+!block example
+   $Tag->search(
+       {
+        arg => VALUE,
+       }
+   )
+
+OR
+
+   $Tag->search($arg);
+!endblock
 
 
 

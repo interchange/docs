@@ -32,38 +32,42 @@ A good model is to place a single record in a database summarizing the order and
 
 The following would summarize a sample order number S00001 for part number 00-0011 and 99-102:
 
->    code     order_number part_number  quantity   price    shipping  tax
->    S00001   S00001                    3          2010     12.72     100.50
->    S00001-1 S00001       00-0011      2          1000     UPS       yes
->    S00001-2 S00001       99-102       1          10       UPS       yes
+!block example
+   code     order_number part_number  quantity   price    shipping  tax
+   S00001   S00001                    3          2010     12.72     100.50
+   S00001-1 S00001       00-0011      2          1000     UPS       yes
+   S00001-2 S00001       99-102       1          10       UPS       yes
+!endblock
 
 Fields can be added where needed, perhaps with order status, shipping tracking number, address, customer number, or other information.
 
 The above is accomplished with Interchange's C<[import ....]> tag using the convenient C<NOTES> format:
 
->    [set import_status]
->    [import table=orders type=LINE continue=NOTES]
->
->    code: [value mv_order_number]
->    order_number: [value mv_order_number]
->    quantity: [nitems]
->    price: [subtotal noformat=1]
->    shipping: [shipping noformat=1]
->    tax: [salestax noformat=1]
->
->    [/import]
->
->    [item-list]
->    [import table=orders type=LINE continue=NOTES]
->
->    code: [value mv_order_number]-[item-increment]
->    order_number: [value mv_order_number]
->    quantity: [item-quantity]
->    price: [item-price noformat=1]
->    shipping: [shipping-description]
->    tax: [if-item-field nontaxable]No[else]Yes[/else][/if]
->
->    [/import][/item-list]
+!block example
+   [set import_status]
+   [import table=orders type=LINE continue=NOTES]
+
+   code: [value mv_order_number]
+   order_number: [value mv_order_number]
+   quantity: [nitems]
+   price: [subtotal noformat=1]
+   shipping: [shipping noformat=1]
+   tax: [salestax noformat=1]
+
+   [/import]
+
+   [item-list]
+   [import table=orders type=LINE continue=NOTES]
+
+   code: [value mv_order_number]-[item-increment]
+   order_number: [value mv_order_number]
+   quantity: [item-quantity]
+   price: [item-price noformat=1]
+   shipping: [shipping-description]
+   tax: [if-item-field nontaxable]No[else]Yes[/else][/if]
+
+   [/import][/item-list]
+!endblock
 
 H2: Custom Order Routing
 
@@ -71,12 +75,14 @@ Interchange can send order emails and perform custom credit card charges and/or 
 
 Routes are established with the Route directive, which is similar to the Locale directive. Each route is like a locale, so that key-value pairs can be set. Here is an example setting:
 
->    Route  VEN  pgp_key         0x67798115
->    Route  VEN  email           orders@akopia.com
->    Route  VEN  reply           service@akopia.com
->    Route  VEN  encrypt         1
->    Route  VEN  encrypt_program "/usr/bin/pgpe -fat -q -r %s"
->    Route  VEN  report          etc/report_mail
+!block example
+   Route  VEN  pgp_key         0x67798115
+   Route  VEN  email           orders@akopia.com
+   Route  VEN  reply           service@akopia.com
+   Route  VEN  encrypt         1
+   Route  VEN  encrypt_program "/usr/bin/pgpe -fat -q -r %s"
+   Route  VEN  report          etc/report_mail
+!endblock
 
 This route would be used whenever the value C<VEN> was contained in the form variable C<mv_order_route>.
 
@@ -96,9 +102,11 @@ The attributes that can be set are:
 *{{N[bold]cybermode}}
 .If this is set, enables I<CyberCash> for the route. Variables can also be set for CYBER_CONFIGFILE, CYBER_SECRET, and all other normal CYBERCASH variables. For example:
 
->    Route VEN cybermode         mauthonly
->    Route VEN CYBER_CONFIGFILE  config/vendor1_cfg
->    Route VEN CYBER_VERSION     3.2
+!block example
+   Route VEN cybermode         mauthonly
+   Route VEN CYBER_CONFIGFILE  config/vendor1_cfg
+   Route VEN CYBER_VERSION     3.2
+!endblock
 
 *{{N[bold]email}}
 .The email address(es) where the order should be sent. Set just like the I<MailOrderTo> directive, which is also the default.
@@ -123,7 +131,9 @@ If C<credit_card> is set, then the credit card will first be encrypted, then the
 .The extension that will be added to the file name for C<individual_track>.
 Must contain a period (C<.>) if that is desired.
 
->    individual_track_ext     .pgp
+!block example
+   individual_track_ext     .pgp
+!endblock
 
 *{{N[bold]pgp_cc_key}}
 .The PGP key selector that is used to determine which public key is used for encryption of credit cards only. With PGP 5 and 6, see appropriate values by using the command C<pgpk -l>.
@@ -157,53 +167,59 @@ An individual item routing causes all items labeled with that route to be placed
 
 Here is an example of an order routing:
 
->    Route  HARD  pgp_key          0x67798115
->    Route  HARD  email            hardgoods@akopia.com
->    Route  HARD  reply            service@akopia.com
->    Route  HARD  encrypt          1
->    Route  HARD  encrypt_program  "/usr/bin/pgpe -fat -q -r %s"
->    Route  HARD  report           etc/report_mail
->
->    Route  SOFT  email            ""
->    Route  SOFT  profile          create_download_link
->    Route  SOFT  empty            1
->
->    Route  main  cybermode        mauthonly
->    Route  main  CYBER_VERSION    3.2
->    Route  main  CYBER_CONFIGFILE etc/cybercash.cfg
->    Route  main  pgp_key          0x67798115
->    Route  main  email            orders@akopia.com
->    Route  main  reply            service@akopia.com
->    Route  main  encrypt          1
->    Route  main  encrypt_program  "/usr/bin/pgpe -fat -q -r %s"
->    Route  main  report           etc/report_all
+!block example
+   Route  HARD  pgp_key          0x67798115
+   Route  HARD  email            hardgoods@akopia.com
+   Route  HARD  reply            service@akopia.com
+   Route  HARD  encrypt          1
+   Route  HARD  encrypt_program  "/usr/bin/pgpe -fat -q -r %s"
+   Route  HARD  report           etc/report_mail
+
+   Route  SOFT  email            ""
+   Route  SOFT  profile          create_download_link
+   Route  SOFT  empty            1
+
+   Route  main  cybermode        mauthonly
+   Route  main  CYBER_VERSION    3.2
+   Route  main  CYBER_CONFIGFILE etc/cybercash.cfg
+   Route  main  pgp_key          0x67798115
+   Route  main  email            orders@akopia.com
+   Route  main  reply            service@akopia.com
+   Route  main  encrypt          1
+   Route  main  encrypt_program  "/usr/bin/pgpe -fat -q -r %s"
+   Route  main  report           etc/report_all
+!endblock
  
 To tell Interchange that order routing is in effect, the variable
 mv_order_route is set on the final order submission form:
 
->    <INPUT TYPE="hidden" NAME="mv_order_route" VALUE="main">
+!block example
+   <INPUT TYPE="hidden" NAME="mv_order_route" VALUE="main">
+!endblock
 
 To set the order routing for individual items, some method of determining their status must be made and the C<mv_order_route> attribute must be set. This could be set at the time of the item being placed in the basket, or have a database field called C<goods_type> set to the appropriate value. The following example uses a Perl routine on the final order form:
 
-> [perl arg=carts interpolate=1]
->    my $string = <<'EOF';
-> [item-list][item-code]  [item-field goods_type]
-> [/item-list]
-> EOF
->    my @items;
->    my %route;
->    @items = grep /\S/, split /\n+/, $string;
->    for(@items) {
->        my ($code, $keycode) = split /\t/, $_;
->        $route{$code} = $keycode;
->    }
->    my $cart = $Carts->{'main'};
->    my $item;
->    foreach $item ( @{ $Carts->{'main'} } ) {
->        $item->{mv_order_route} = $route{$item->{'code'}} || undef;
->    }
->    return '';
-> [/perl]
+!block example
+[perl arg=carts interpolate=1]
+   my $string = <<'EOF';
+[item-list][item-code]  [item-field goods_type]
+[/item-list]
+EOF
+   my @items;
+   my %route;
+   @items = grep /\S/, split /\n+/, $string;
+   for(@items) {
+       my ($code, $keycode) = split /\t/, $_;
+       $route{$code} = $keycode;
+   }
+   my $cart = $Carts->{'main'};
+   my $item;
+   foreach $item ( @{ $Carts->{'main'} } ) {
+       $item->{mv_order_route} = $route{$item->{'code'}} || undef;
+   }
+   return '';
+[/perl]
+!endblock
 
 Now the individual items are labeled with a C<mv_order_route> value which causes their inclusion in the appropriate order routing.
 
@@ -217,13 +233,15 @@ H1: ADMINISTERING INTERCHANGE
 
 Some utilities are supplied with Interchange and are located in the VendRoot/bin directory:
 
->  compile_link Compiles an Interchange vlink or tlink CGI link
->  dump         Dumps the session file for a particular catalog
->  expire       Expires sessions for a particular catalog
->  expireall    Expires all catalogs
->  offline      Does offline build of the database(s)
->  update       Does in-place update of the database(s)
->  makecat      Make catalog
+!block example
+ compile_link Compiles an Interchange vlink or tlink CGI link
+ dump         Dumps the session file for a particular catalog
+ expire       Expires sessions for a particular catalog
+ expireall    Expires all catalogs
+ offline      Does offline build of the database(s)
+ update       Does in-place update of the database(s)
+ makecat      Make catalog
+!endblock
 
 Some example scripts for other functions are in the C<eg/> directory of the software distribution.
 
@@ -231,7 +249,9 @@ Some thought should be given to where the databases, error logs, and session fil
 
 To test the format of user catalog configuration files before restarting the server, perform the following test (from VendRoot):
 
->    bin/interchange -test
+!block example
+   bin/interchange -test
+!endblock
 
 This will check all configuration files for syntax errors, which might otherwise prevent a catalog from loading. Once a catalog configures properly, user reconfiguration will not crash it; but cause an error. But it must load when the server is started.
 
@@ -245,17 +265,23 @@ Do a C<perldoc VENDROOT/bin/interchange> for full documentation.
 
 To start the server with default settings:
 
->    VENDROOT/bin/interchange
+!block example
+   VENDROOT/bin/interchange
+!endblock
 
 It is recommended to issue a restart, otherwise the server will not run anew if a server is already running.
 
->    VENDROOT/bin/interchange -restart
+!block example
+   VENDROOT/bin/interchange -restart
+!endblock
 
 Assuming the server starts correctly, the names of catalogs as they are configured will be displayed, along with a message stating the process ID it is running under.
 
 To re-start the server:
 
->    VENDROOT/bin/interchange -restart
+!block example
+   VENDROOT/bin/interchange -restart
+!endblock
 
 C<-r> is the same as C<-restart>.
 
@@ -263,7 +289,9 @@ This is typically done to force Interchange to re-read its configuration. A mess
 
 To stop the server:
 
->    VENDROOT/bin/interchange -stop
+!block example
+   VENDROOT/bin/interchange -stop
+!endblock
 
 A message will be displayed stating that a TERM signal has been sent to the process ID the server is running under. This information is also sent to /usr/local/interchange/error.log.
 
@@ -271,7 +299,9 @@ Because processes waiting for selection on some operating systems block signals,
 
 To terminate the Interchange server with prejudice, in case it will not stop, set:
 
->    VENDROOT/bin/interchange -kill
+!block example
+   VENDROOT/bin/interchange -kill
+!endblock
 
 H2: UNIX and INET Modes
 
@@ -281,11 +311,13 @@ IMPORTANT NOTE: When sending sensitive information like credit card numbers over
 
 If only running a site with one method of communication, use the C<->i and C<->u flags.
 
->    # Start only in UNIX mode
->    VENDROOT/bin/interchange -r -u
->
->    # Start only in INET mode
->    VENDROOT/bin/interchange -r -i
+!block example
+   # Start only in UNIX mode
+   VENDROOT/bin/interchange -r -u
+
+   # Start only in INET mode
+   VENDROOT/bin/interchange -r -i
+!endblock
 
 H2: User Reconfiguration
 
@@ -293,7 +325,9 @@ The individual catalogs can be reconfigured by the user by running the [reconfig
 
 Use reconfigure from the command line (as the Interchange user) with:
 
->    VENDROOT/bin/interchange -reconfig <catalog>
+!block example
+   VENDROOT/bin/interchange -reconfig <catalog>
+!endblock
 
 It is easy to manually reconfigure a catalog as an administrator. Interchange simply looks for a file C<etc/reconfig> (based in the Interchange software directory) at HouseKeeping time. If it finds a script name that matches one of the catalogs, it will reconfigure that catalog.
 
@@ -301,7 +335,9 @@ H2: Making the Product Database
 
 The DBM product databases can be built off-line with the C<offline> command. The directory to be used for output is specified either on the command line with the C<-d> option, or is taken from the C<catalog.cfg> directive OfflineDir -- C<offline> in the catalog directory by default. The directory must exist. The source ASCII files should be present in that directory, and the DBM files are created there. Existing files will be overwritten.
 
->    offline -c catalog [-d offline_dir]
+!block example
+   offline -c catalog [-d offline_dir]
+!endblock
 
 Do a C<perldoc VENDROOT/bin/offline> for full documentation.
 
@@ -311,15 +347,21 @@ If a site has a very large DBM database that takes time to build, consider using
 
 The following updates the products database C<price> field for item 19-202 with the new value 25.00
 
->    update -c catalog -k 19-202 -f price 25.00
+!block example
+   update -c catalog -k 19-202 -f price 25.00
+!endblock
 
 More than one field can be updated on a single command line.
 
->    update -c catalog -k 19-202 -f price -f comment 25.00 "That pitchfork couple"
+!block example
+   update -c catalog -k 19-202 -f price -f comment 25.00 "That pitchfork couple"
+!endblock
 
 The following takes input from C<file>, which must be B<formatted exactly like the original database> and adds/corrects any records contained therein.
 
->    update -c catalog -i file
+!block example
+   update -c catalog -i file
+!endblock
 
 Invoke the command without any arguments for a usage message describing the options.
 
@@ -327,7 +369,9 @@ H2: Expiring Sessions
 
 If a site has DBM capability and Interchange is using it to store the sessions, periodically expire old sessions to keep the session database file from growing too large.
 
->    expire -c catalog
+!block example
+   expire -c catalog
+!endblock
 
 There is also an C<expireall> script which reads all catalog entries in C<interchange.cfg> and runs C<expire> on them.
 
@@ -335,41 +379,47 @@ The C<expire> script accepts a C<-r> option which tells it to recover lost disk 
 
 On a UNIX server, add a crontab entry such as the following:
 
->    # once a day at 4:40 am
->    40 4 * * *    perl /usr/local/interchange/bin/expireall -r
+!block example
+   # once a day at 4:40 am
+   40 4 * * *    perl /usr/local/interchange/bin/expireall -r
+!endblock
 
 Interchange will wait until the current transaction is finished before expiring, so that this can be done at any time without disabling web access. Any search paging files for the affected session (kept in ScratchDir) will be removed as well.
 
 If not running DBM sessions, a Perl script can be used to delete all files not modified in the last one or two days. The following will work if given an argument of the session directory or session files:
 
->    #!perl
->    # expire_sessions.pl -- delete files 2 days old or older
->
->    my @files;
->    my $dir;
->    foreach $dir (@ARGV) {
->        # just push files on the list
->        if (-f $dir) { push @files, $_; next; }
->
->        next unless -d $dir;
->
->        # get all the file names in the directory
->        opendir DIR, $dir or die "opendir $dir: $!\n";
->        push @files, ( map { "$dir/$_" } grep(! /^\.\.?$/, readdir DIR) ) ;
->    }
->
->    for (@files) {
->        unless (-f $_) {
->            warn "skipping $_, not a file.\n";
->            next;
->        }
->        next unless -M $_ >= 2;
->        unlink $_ or die "unlink $_: $!\n";
->    }
+!block example
+   #!perl
+   # expire_sessions.pl -- delete files 2 days old or older
+
+   my @files;
+   my $dir;
+   foreach $dir (@ARGV) {
+       # just push files on the list
+       if (-f $dir) { push @files, $_; next; }
+
+       next unless -d $dir;
+
+       # get all the file names in the directory
+       opendir DIR, $dir or die "opendir $dir: $!\n";
+       push @files, ( map { "$dir/$_" } grep(! /^\.\.?$/, readdir DIR) ) ;
+   }
+
+   for (@files) {
+       unless (-f $_) {
+           warn "skipping $_, not a file.\n";
+           next;
+       }
+       next unless -M $_ >= 2;
+       unlink $_ or die "unlink $_: $!\n";
+   }
+!endblock
 
 It would be run with a command invocation like:
 
->    perl expire_sessions.pl /usr/local/interchange/catalogs/construct/session
+!block example
+   perl expire_sessions.pl /usr/local/interchange/catalogs/construct/session
+!endblock
 
 Give it multiple directory names, if there is more than one catalog.
 
@@ -455,8 +505,10 @@ Interchange incorporates additional security for credit card numbers. The field 
 
 To enable automated encryption of the credit card information, the directive CreditCardAuto needs to be defined as yes. EncryptProgram also needs to be defined with some value, one which will, hopefully, encrypt the number. PGP is now recommended above all other encryption program. The entries should look something like:
 
->  CreditCardAuto   Yes
->  EncryptProgram   /usr/bin/pgpe -fat -r sales@company.com
+!block example
+ CreditCardAuto   Yes
+ EncryptProgram   /usr/bin/pgpe -fat -r sales@company.com
+!endblock
 
 See CreditCardAuto for more information on how to set the form variables.
 
@@ -472,31 +524,37 @@ If the directory containing the page has a file C<.access> and that file's size 
 
 ^If the file C<.access_gate> is present, it will be read and scanned for page-based access. The file has the form:
 
->   page: condition
->   *: condition
+!block example
+  page: condition
+  *: condition
+!endblock
 
 .The C<page> is the file name of the file to be controlled (the .html extension is optional). The C<condition> is either a literal C<Yes/No> or Interchange tags which would produce a C<Yes> or C<No> (1/0 work just fine, as do true/false).
 
 .The entry for C<*> sets the default action if the page name is not found. If pages will be allowed by default, set it to C<1> or C<Yes>. If pages are to be denied by default in this directory, leave blank or set to C<No>. Here is an example, for the directory C<controlled>, having the following files:
 
->  -rw-rw-r--   1 mike     mike            0 Jan  8 14:19 .access
->  -rw-rw-r--   1 mike     mike          185 Jan  8 16:00 .access_gate
->  -rw-rw-r--   1 mike     mike          121 Jan  8 14:59 any.html
->  -rw-rw-r--   1 mike     mike          104 Jan  8 14:19 bar.html
->  -rw-rw-r--   1 mike     mike          104 Jan  8 14:19 baz.html
->  -rw-rw-r--   1 mike     mike          104 Jan  8 14:19 foo.html
+!block example
+ -rw-rw-r--   1 mike     mike            0 Jan  8 14:19 .access
+ -rw-rw-r--   1 mike     mike          185 Jan  8 16:00 .access_gate
+ -rw-rw-r--   1 mike     mike          121 Jan  8 14:59 any.html
+ -rw-rw-r--   1 mike     mike          104 Jan  8 14:19 bar.html
+ -rw-rw-r--   1 mike     mike          104 Jan  8 14:19 baz.html
+ -rw-rw-r--   1 mike     mike          104 Jan  8 14:19 foo.html
+!endblock
 
 .The contents of C<.access_gate>:
 
->    foo.html: [if session username eq 'flycat']
->                Yes
->              [/if]
->    bar:      [if session username eq 'flycat']
->              [or scratch allow_bar]
->                Yes
->              [/if]
->    baz:      yes
->    *:        [data session logged_in]
+!block example
+   foo.html: [if session username eq 'flycat']
+               Yes
+             [/if]
+   bar:      [if session username eq 'flycat']
+             [or scratch allow_bar]
+               Yes
+             [/if]
+   baz:      yes
+   *:        [data session logged_in]
+!endblock
 
 .The page C<controlled/foo> is only allowed for the logged-in user B<flycat>.
 
@@ -514,120 +572,126 @@ H1: USERTAG REFERENCE
 
 H2: email 
 
->    UserTag email Order to subject reply from extra
->    UserTag email hasEndTag
->    UserTag email Interpolate
->    UserTag email Routine <<EOR
->    sub {
->        my($to, $subject, $reply, $from, $extra, $body) = @_;
->        my($ok);
->
->        $subject = '<no subject>' unless defined $subject && $subject;
->
->        $reply = '' unless defined $reply;
->        $reply = "Reply-to: $reply\n" if $reply;
->        if (! $from) {
->                $from = $Vend::Cfg->{MailOrderTo};
->                $from =~ s/,.*//;
->        }
->
->        $extra =~ s/\s*$/\n/ if $extra;
->        $ok = 0;
->        SEND: {
->            open(Vend::MAIL,"|$Vend::Cfg->{SendMailProgram} -t") or last SEND;
->            print Vend::MAIL
->                        "To: $to\n",
->                        "From: $from\n",
->                        $reply,
->                        $extra || '',
->                        "Subject: $subject\n\n",
->                        $body
->                or last SEND;
->            close Vend::MAIL or last SEND;
->            $ok = ($? == 0);
->        }
->
->        if (!$ok) {
->            logError("Unable to send mail using $Vend::Cfg->{'SendMailProgram'}\n" .
->                "To '$to'\n" .
->                "From '$from'\n" .
->                "With extra headers '$extra'\n" .
->                "With reply-to '$reply'\n" .
->                "With subject '$subject'\n" .
->                "And body:\n$body");
->        }
->        $ok;
->    }
->    EOR
+!block example
+   UserTag email Order to subject reply from extra
+   UserTag email hasEndTag
+   UserTag email Interpolate
+   UserTag email Routine <<EOR
+   sub {
+       my($to, $subject, $reply, $from, $extra, $body) = @_;
+       my($ok);
+
+       $subject = '<no subject>' unless defined $subject && $subject;
+
+       $reply = '' unless defined $reply;
+       $reply = "Reply-to: $reply\n" if $reply;
+       if (! $from) {
+               $from = $Vend::Cfg->{MailOrderTo};
+               $from =~ s/,.*//;
+       }
+
+       $extra =~ s/\s*$/\n/ if $extra;
+       $ok = 0;
+       SEND: {
+           open(Vend::MAIL,"|$Vend::Cfg->{SendMailProgram} -t") or last SEND;
+           print Vend::MAIL
+                       "To: $to\n",
+                       "From: $from\n",
+                       $reply,
+                       $extra || '',
+                       "Subject: $subject\n\n",
+                       $body
+               or last SEND;
+           close Vend::MAIL or last SEND;
+           $ok = ($? == 0);
+       }
+
+       if (!$ok) {
+           logError("Unable to send mail using $Vend::Cfg->{'SendMailProgram'}\n" .
+               "To '$to'\n" .
+               "From '$from'\n" .
+               "With extra headers '$extra'\n" .
+               "With reply-to '$reply'\n" .
+               "With subject '$subject'\n" .
+               "And body:\n$body");
+       }
+       $ok;
+   }
+   EOR
+!endblock
 
 H2: email_raw 
 
->    UserTag email_raw Documentation <<EOD
->
->    This tag takes a raw email message, *including headers*, and
->    users the SendmailProgram with -t option. Example:
->
->    [email-raw]
->    From: foo@bar.com
->    To: bar@foo.com
->    Subject: baz
->
->    The text of the message.
->    [/email-raw]
->
->    The headers must be at the beginning of the line, and the header
->    must have a valid To: or it will not be delivered.
->
->    EOD
->
->    UserTag email-raw hasEndTag
->    UserTag email-raw Interpolate
->    UserTag email-raw Routine <<EOR
->    sub {
->        my($body) = @_;
->        my($ok);
->        $body =~ s/^\s+//;
->
->        SEND: {
->            open(Vend::MAIL,"|$Vend::Cfg->{SendMailProgram} -t") or last SEND;
->            print Vend::MAIL $body 
->                or last SEND;
->            close Vend::MAIL
->                or last SEND;
->            $ok = ($? == 0);
->        }
->
->        if (!$ok) {
->            ::logError("Unable to send mail using $Vend::Cfg->{SendMailProgram}\n" .
->                "Message follows:\n\n$body");
->        }
->        $ok;
->    }
->    EOR
+!block example
+   UserTag email_raw Documentation <<EOD
+
+   This tag takes a raw email message, *including headers*, and
+   users the SendmailProgram with -t option. Example:
+
+   [email-raw]
+   From: foo@bar.com
+   To: bar@foo.com
+   Subject: baz
+
+   The text of the message.
+   [/email-raw]
+
+   The headers must be at the beginning of the line, and the header
+   must have a valid To: or it will not be delivered.
+
+   EOD
+
+   UserTag email-raw hasEndTag
+   UserTag email-raw Interpolate
+   UserTag email-raw Routine <<EOR
+   sub {
+       my($body) = @_;
+       my($ok);
+       $body =~ s/^\s+//;
+
+       SEND: {
+           open(Vend::MAIL,"|$Vend::Cfg->{SendMailProgram} -t") or last SEND;
+           print Vend::MAIL $body 
+               or last SEND;
+           close Vend::MAIL
+               or last SEND;
+           $ok = ($? == 0);
+       }
+
+       if (!$ok) {
+           ::logError("Unable to send mail using $Vend::Cfg->{SendMailProgram}\n" .
+               "Message follows:\n\n$body");
+       }
+       $ok;
+   }
+   EOR
+!endblock
 
 H2: loc
 
->    # [loc locale*] message [/loc]
->    #
->    # This tag is the equivalent of [L] ... [/L] localization, except
->    # it works with contained tags
->    #
->    UserTag loc hasEndTag   1
->    UserTag loc Interpolate 1
->    UserTag loc Order locale
->    UserTag loc Routine <<EOF
->    sub {
->        my ($locale, $message) = @_;
->        return $message unless $Vend::Cfg->{Locale};
->        my $ref;
->        if($locale) {
->            return $message
->                unless defined $Vend::Cfg->{Locale_repository}{$locale};
->            $ref = $Vend::Cfg->{Locale_repository}{$locale}
->        }
->        else {
->            $ref = $Vend::Cfg->{Locale};
->        }
->        return defined $ref->{$message} ? $ref->{$message} : $message;
->    }
->    EOF
+!block example
+   # [loc locale*] message [/loc]
+   #
+   # This tag is the equivalent of [L] ... [/L] localization, except
+   # it works with contained tags
+   #
+   UserTag loc hasEndTag   1
+   UserTag loc Interpolate 1
+   UserTag loc Order locale
+   UserTag loc Routine <<EOF
+   sub {
+       my ($locale, $message) = @_;
+       return $message unless $Vend::Cfg->{Locale};
+       my $ref;
+       if($locale) {
+           return $message
+               unless defined $Vend::Cfg->{Locale_repository}{$locale};
+           $ref = $Vend::Cfg->{Locale_repository}{$locale}
+       }
+       else {
+           $ref = $Vend::Cfg->{Locale};
+       }
+       return defined $ref->{$message} ? $ref->{$message} : $message;
+   }
+   EOF
+!endblock
