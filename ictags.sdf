@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.13 2001-03-29 02:40:35 bill Exp $
+# $Id: ictags.sdf,v 1.14 2001-03-29 04:02:01 bill Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.13 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.14 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -16,6 +16,8 @@
 !define EXAMPLE_SECURE_DOMAIN "secure.here.com"
 !define EXAMPLE_SKU "os28044"
 !define EXAMPLE_SIZE "15oz"
+!define EXAMPLE_SIZE1 "10oz"
+!define EXAMPLE_SIZE2 "20oz"
 !define EXAMPLE_PRODUCT "Framing Hammer"
 !build_title
 
@@ -70,7 +72,7 @@ its end tag will delimit contained body text:
   [B<tagname> I<parameters> I<attributes>]Contained Body Text[/tagname]
 !endblock
 
-!block note; label="Caveat -- macros: "
+!block note; label="CaveatE<nbspace>E<emdash> macros: "
 Some macros look like tags or end tags. For example,
 E<lbracket>{{C[jump="#page"]/page}}E<rbracket> is a macro for
 E<lt>/AE<gt>). This allows you to conveniently write
@@ -111,8 +113,8 @@ delimiters and the square brackets if you wish to actually comment out
 tag output in the browser.  For example, if
 E<lbracket>{{C[jump="#value"]value}}E<nbspace>name] expands to 'Bill':
 
-E: E<lt>!--[value name]-->  becomes  Bill
-E: E<lt>!-- [value name] -->  becomes  <!-- Bill -->
+E: 'E<lt>!--[value name]-->'  becomes  'Bill'
+E: 'E<lt>!-- [value name] -->'  becomes  '<!-- Bill -->'
 
 H5: Technical notes
 
@@ -165,7 +167,7 @@ in the cart.
     [/if]
 !endblock
 
-!block note; label="Note -- Disabling HTML-embedded tags for performance: "
+!block note; label="NoteE<nbspace>E<emdash> Disabling HTML-embedded tags for performance: "
 
 Avoid the HTML-embedded usage if you can.
 
@@ -778,18 +780,19 @@ choose or access product options such as a shirt's size or color).
 Can build selection objects (radio, check, select boxes, etc) or
 forms, or can simply return a value.
 
-Or more-- see also {{CMD[jump="#Item_Attributes"]Item_Attributes}} and
+Or moreE<nbspace>E<emdash> see also {{CMD[jump="#Item_Attributes"]Item_Attributes}} and
 {{CMD[jump="#subtags"]Looping tags and Sub-tags}}.
 
 
 H3: Summary
 
 !block example;
-    [B<accessories> code arg I<other named attributes>]
-    [B<accessories> code=[[EXAMPLE_SKU]] arg=color I<other named attributes>]
+    [B<accessories> code arg I<other_named_attributes>]
+    [B<accessories> code=[[EXAMPLE_SKU]] arg="size, radio, ... " I<other_named_attributes>]
+    [B<accessories> code=[[EXAMPLE_SKU]] attribute=size type=radio ... I<other_named_attributes>]
 !endblock
 
-!block table; colvaligns="TTT"
+!block table; colvaligns="TTT"; format="262"
 Parameters|Description|Default
 {{CMD[jump="#accessories_code"]code}}|<<
 Value of the master key in the product (or specified other) table
@@ -853,9 +856,14 @@ Container tag|I<No>
 
 B<Tag expansion example:>
 
-E:    E<lbracket>accessories [[EXAMPLE_SKU]] color]
+!block example
+    E<lbracket>accessories os28044 size]
 
-This will search the product database for a field named "color". If
+    <SELECT NAME="mv_order_size"><OPTION VALUE="10oz">10oz\
+    <OPTION VALUE="15oz">15oz<OPTION VALUE="20oz">20oz</SELECT>
+!endblock
+
+The following will search the product database for a field named "color". If
 an entry "beige=Almond, gold=Harvest Gold, White*, green=Avocado" is found,
 a select box like this will be built:
 
@@ -1083,9 +1091,14 @@ H4: Examples
 B<Tag expansion example:>
 
 !block example
-   [accessories code=[[EXAMPLE_SKU]] arg=color]
-
-   TAGRESULT
+   [accessories code="os28044"
+                type=radio
+           attribute=size
+               table=products]
+---
+   <INPUT TYPE="radio" NAME="mv_order_size" VALUE="10oz" >&nbsp;10oz
+   <INPUT TYPE="radio" NAME="mv_order_size" VALUE="15oz" >&nbsp;15oz
+   <INPUT TYPE="radio" NAME="mv_order_size" VALUE="20oz" >&nbsp;20oz
 !endblock
 
 Positional call example:
@@ -1451,13 +1464,13 @@ equivalent:
 H3: Summary
 
 !block example;
-    [B<area> href arg I<other named attributes>]
-    [B<area> href=dir/page arg=page_arguments I<other named attributes>]
+    [B<area> href arg I<other_named_attributes>]
+    [B<area> href=dir/page arg=page_arguments I<other_named_attributes>]
 !endblock
 
 
-#!block table; style="plain"; colvaligns="TTT"
-!block table; colvaligns="TTT"
+#!block table; style="plain"; colvaligns="TTT"; format="262"
+!block table; colvaligns="TTT"; format="262"
 Parameters|Description|Default
 href|<<
 Path to Interchange page or action
@@ -5130,13 +5143,13 @@ equivalent:
 H3: Summary
 
 !block example;
-    [B<page> href arg I<other named attributes>]
-    [B<page> href=dir/page arg=page_arguments I<other named attributes>]
+    [B<page> href arg I<other_named_attributes>]
+    [B<page> href=dir/page arg=page_arguments I<other_named_attributes>]
 !endblock
 
 
-#!block table; style="plain"; colvaligns="TTT"
-!block table; colvaligns="TTT"
+#!block table; style="plain"; colvaligns="TTT"; format="262"
+!block table; colvaligns="TTT"; format="262"
 Parameters|Description|Default
 href|<<
 Path to Interchange page or action
@@ -5414,7 +5427,7 @@ They can be treated just the same as form variables on the
 page, except that they can't contain spaces, '/' in a file
 name, or quote marks. These characters can be used
 in URL hex encoding, i.e. %20 is a space, %2F is a
-C</>, etc. -- C<&sp;> or C<&#32;> will not be recognized.
+C</>, etc.E<nbspace>E<emdash> C<&sp;> or C<&#32;> will not be recognized.
 If you use one of the methods below to escape these "unsafe"
 characters, you won't have to worry about this.
 
@@ -6598,7 +6611,7 @@ Attribute aliases
 H3: Description
 
 
-The shipping cost of the items in the basket via C<mode> -- the default
+The shipping cost of the items in the basket via C<mode>E<nbspace>E<emdash> the default
 mode is the shipping mode currently selected in the C<mv_shipmode>
 variable. See I<SHIPPING>.
 
@@ -8386,8 +8399,8 @@ not an actual tag.
 A3: Summary
 
 !block example;
-    [B<dummy> first second I<other named attributes>][/dummy]
-    [B<dummy> first=first_args second=second_args I<other named attributes>][/dummy]
+    [B<dummy> first second I<other_named_attributes>][/dummy]
+    [B<dummy> first=first_args second=second_args I<other_named_attributes>][/dummy]
 !endblock
 
 !block note; label="Positional parameters"
@@ -8395,8 +8408,8 @@ The first line shows the usage with positional parameters (given in
 order). The second line shows usage with named parameters.
 !endblock
 
-#!block table; style="plain"; colvaligns="TTT"
-!block table; colvaligns="TTT"
+#!block table; style="plain"; colvaligns="TTT"; format="262"
+!block table; colvaligns="TTT"; format="262"
 Parameters|Description|Default
 first|<<
 The first positional parameter
