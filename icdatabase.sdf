@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.7 2000-10-18 20:56:39 zarko Exp $
+# $Id: icdatabase.sdf,v 1.8 2000-10-19 18:28:30 alison Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "ICDATABASE_D2a_100800"
-!define DOC_VERSION substr('$Revision: 1.7 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.8 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
@@ -14,15 +14,21 @@ H1: INTERCHANGE DATABASES
 
 Akopia Interchange is the industry's most widely distributed and implemented open source e-commerce platform. This document discusses databases, SQL support, the Interchange search engine, frequently asked questions, and usertags.
 
-H2: Overview
+H2: A Typical User Session
 
-Interchange is a database access and retrieval system that allows customers to select items to buy from catalog pages with complete database functionality. It is suitable for many applications besides shopping carts, such as a complete database-oriented content display system. 
+The customer discovers a merchant site using the Interchange catalog with a search engine, a link from another page, or a click-through from a banner ad. He or she clicks the link, which is a URL pointing to the Interchange CGI link program (generically called VLINK or TLINK). The link calls the Interchange server through a socket. The Interchange server detects the path information from the link, and loads the corresponding page. 
 
-Whenever the user clicks on a product link, Interchange looks in the products database, finds the item, and places it in the user's shopping cart. If the page doesn't exist, and corresponds to a part number in the database, it is built "on the fly" using a template page. In the process, it may read or modify any number of database tables. 
+The displayed page contains links to either locate or order items from the merchant's catalog. When the customer clicks a link to purchase an item, Interchange searches the product database, finds the item, and places it in the customer's shopping cart. (Each user has a separate shopping cart, which is attached to their session.)
 
-The customer's order is saved either to a file or database table as backup, or, in the case of fully-automated systems, sent directly to an order entry program or database link.
+Once the customer decides to purchase the items in their shopping cart, he or she checks out by completing a form with their name, address, payment information, shipping information, and any other information that may be required. Interchange has the capacity to compute sales taxes and shipping cost. The order is then submitted. The customer's payment can be taken online by real-time electronic payment, or their order information may be transmitted using encrypted email or FAX to a processing center. 
 
+<<<<<<< icdatabase.sdf
+The customer's order is saved to a file or to a database table as backup. In the case of fully automated systems, it can be sent directly to an order entry program or database link.
+=======
 Interchange can have an unlimited number of attached databases, either in one of its own internal formats or attached via SQL/ODBC. The contents of a database can be referenced with tags like C<E<lbracket>data table=products column=name key=334-12]> or C<E<lbracket>query sql="select * from products where category = 'Clothing'"]>. In addition, Interchange supports different search engines, including Glimpse, or user-created SQL database queries. Interchange will process the output.
+>>>>>>> 1.7
+
+All of these operations are fully configurable. The Interchange demo program includes a sample store called Construct Something. Some users have actually customized the text and images inside Construct Something's sample catalogs, changed the database entries, and opened their store. Most users, however, have built their catalogs using their own distinctive look and feel.
 
 H1: DATABASES
 
@@ -60,13 +66,13 @@ LI1: GDBM
     Database products IMPORT_ONCE 1
 !endblock
 
-.GDBM is the default type if the GDBM_File Perl module is installed (as it will be on Linux).
+.GDBM is the default type if the GDBM_File Perl module is installed (as it will be on LINUX).
 
 LI1: DB_File
 
 .The database source file is checked to see if it is newer than the actual database file, which would be C<products.db>. If it is, then the database table is re-imported from the file. You can change this behavior in the same way as with GDBM_File (above).
 
-.DB_File is the default type if you do not have the GDBM_File Perl module installed. This is typical on FreeBSD. To explicitly specify DB_File as the type, specify it with a Database directive in C<catalog.cfg>:
+.DB_File is the default type if the GDBM_File Perl module is not installed. This is typical on FreeBSD. To explicitly specify DB_File as the type, specify it with a Database directive in C<catalog.cfg>:
 
 !block example; listitem=2
    Database  products  DB_FILE   1
@@ -74,13 +80,17 @@ LI1: DB_File
 
 LI1: DBI/SQL
 
+<<<<<<< icdatabase.sdf
+.If a file named C<products.sql> is present in the same directory as C<products.txt>, the database table will not be imported from ASCII source. If there is no C<products.sql>, the following will occur:
+=======
 .If a file named C<products.sql> is present in the same directory as C<products.txt>, the database table will not be imported from ASCII source. If there is no C<products.sql>, then the following will occur:
+>>>>>>> 1.7
 
 .DBI/SQL imports only happen at catalog configuration time.
 
 .^Interchange will connect to the SQL database using the specified DSN. (DBI parameter meaning "Database Source Name".)
 
-.+The table will be dropped with "DROP TABLE products;". This will occur without warning! NOTE: This can be prevented in several ways. See NoImport External or the SQL documentation.
+.+The table will be dropped with "DROP TABLE products;". This will occur without warning! NOTE: This can be prevented in several ways. See C<NoImport External> or the SQL documentation.
 
 .+The table will be created. If there are COLUMN_DEF specifications in C<catalog.cfg>, they will be used. Otherwise, the key (first field in the text file by default) will be created with a C<char(16)> type and all other fields will be created as C<char(128)>. The table creation statement will be written to the C<error.log> file.
 
@@ -88,7 +98,11 @@ LI1: DBI/SQL
 
 LI1: In-Memory
 
+<<<<<<< icdatabase.sdf
+.Every time the catalog is configured, the C<products.txt> file is imported into memory and forms the database. The database is not changed otherwise. In-memory is the default type if there is no GDBM_File or DB_File Perl module installed; specify it with:
+=======
 .Every time the catalog is configured, the C<products.txt> file is imported into memory and forms the database. The database is not changed otherwise. In-memory is the default type if there is no GDBM_File or DB_File Perl module installed; you can also specify it with:
+>>>>>>> 1.7
 
 !block example; listitem=2
    Database   products   MEMORY   1
@@ -121,7 +135,7 @@ IMPORTANT NOTE: The items must be separated by a single delimiter. The items are
 
 LI1: TAB
 
-.Fields separated by ^I characters. No whitespace should be at the beginning of the line.
+.Fields separated by C<^I> characters. No whitespace should be at the beginning of the line.
 
 !block example; listitem=2
     code    description             price   image
@@ -156,29 +170,45 @@ Note[label='IMPORTANT NOTE: '] Field names are usually case-sensitive. Unless th
 
 LI2: shipping.asc
 
+<<<<<<< icdatabase.sdf
+..The database of shipping options if the C<CustomShipping> directive is in use.  This is a fixed-format database, and must be created as specified. See C<SHIPPING>.
+=======
 ..The database of shipping options if the CustomShipping directive is in use.  This is a fixed-format database, and must be created as specified. See SHIPPING.
+>>>>>>> 1.7
 
 LI2: salestax.asc
 
+<<<<<<< icdatabase.sdf
+..The database of sales tax information if the C<[salestax]> tag is to be used. A default is supplied. NOTE: Caution, these things change! This is a fixed-format database, and must be created as specified. See C<Sales Tax>.
+=======
 ..The database of sales tax information if the C<E<lbracket>salestax]> tag is to be used. A default is supplied. NOTE: Caution, these things change! This is a fixed-format database, and must be created as specified. See Sales Tax.
+>>>>>>> 1.7
 
 .These are never stored in SQL or DBM.
 
 H2: The Product Database
 
-Each product being sold should be given a product code, usually referred to as SKU, a short code that identifies the product on the ordering page and in the catalog. The products.txt file is a ASCII-delimited list of all the product codes, along with an arbitrary number of fields which must contain at least the fields C<description> and C<price> (or however the PriceField and DescriptionField directives have been set). Any additional information needed in the catalog can be placed in any arbitrary field. See Interchange Database Capability for details on the format.
+Each product being sold should be given a product code, usually referred to as SKU, a short code that identifies the product on the ordering page and in the catalog. The products.txt file is a ASCII-delimited list of all the product codes, along with an arbitrary number of fields which must contain at least the fields C<description> and C<price> (or however the C<PriceField> and C<DescriptionField> directives have been set). Any additional information needed in the catalog can be placed in any arbitrary field. See Interchange Database Capability for details on the format.
 
+<<<<<<< icdatabase.sdf
+Field names can be case-sensitive depending on the underlying database type. Unless there are fields with the names "description" and "price" field, set the C<PriceField> and C<DescriptionField> directives to use the C<[item-price]> and C<[item-description]> tags.
+=======
 Field names can be case-sensitive depending on the underlying database type. Unless there are fields with the names "description" and "price" field, set the PriceField and DescriptionField directives to use the C<E<lbracket>item-price]> and C<E<lbracket>item-description]> tags.
+>>>>>>> 1.7
 
 The product code, or SKU, must be the first field in the line, and must be unique. Product codes can contain the characters B<A-Za-z0-9>, along with hyphen (C<->), underscore (C<_>), pound sign/hash mark (C<#>), slash (C</>), and period (C<.>). Note that slash (/) will interfere with on-the-fly page references. Avoid if at all possible.
 
-The words should be separated by one of the approved delimiting schemes (TAB, PIPE, or CSV), and are case-sensitive in some cases. If the case of the "description" or "price" fields have been modified, the PriceField and DescriptionField directives must be appropriately set.
+The words should be separated by one of the approved delimiting schemes (TAB, PIPE, or CSV), and are case-sensitive in some cases. If the case of the "description" or "price" fields have been modified, the C<PriceField> and C<DescriptionField> directives must be appropriately set.
 
 Note: CSV is not recommended as the scheme for the products database. It is much slower than TAB- or PIPE-delimited, and dramatically reduces search engine functionality. No field-specific searches are possible. Using CSV for any small database that will not be searched is fine.
 
 Note[label='IMPORTANT NOTE: ']The field names must be on the first line of the C<products.txt> file. These field names must match exactly the field names of the C<E<lbracket>item-field]> tags in the catalog pages, or the Interchange server will not access them properly. Field names can contain the characters A-Za-z0-9 and underscore (C<_>).
 
+<<<<<<< icdatabase.sdf
+More than one database may be used as a products database. If the catalog directive, C<ProductFiles>, is set to a space-separated list of valid Interchange database identifiers, those databases will be searched (in the order specified) for any items that are ordered, or for product information (as in the C<[price code]> and C<[field code]> tags).
+=======
 More than one database may be used as a products database. If the catalog directive, ProductFiles, is set to a space-separated list of valid Interchange database identifiers, those databases will be searched (in the order specified) for any items that are ordered, or for product information (as in the C<E<lbracket>price code]> and C<E<lbracket>field code]> tags).
+>>>>>>> 1.7
 
 When the database table source file (i.e., products.txt) changes after import or edit, a DBM database is re-built upon the next user access. No restart of the server is necessary.
 
@@ -206,14 +236,14 @@ Interchange can manage an unlimited number of arbitrary database tables. They us
    Type 8      SQL
 !endblock
 
-The databases are specified in Database directives, as:
+The databases are specified in C<Database> directives, as:
 
 !block example
    Database    arbitrary arbitrary.csv CSV
 !endblock
 
 This specifies a Type 4 database, the ASCII version of which is located in the
-file arbitrary.csv, and the identifier it will be accessed under in Interchange is "arbitrary". The DBM file, if any, will be created in the same directory if the ASCII file is newer, or if the DBM file does not exist. The files will be created as arbitrary.db or arbitrary.gdbm, depending on DBM type.
+file C<arbitrary.csv>, and the identifier it will be accessed under in Interchange is "arbitrary." The DBM file, if any, will be created in the same directory if the ASCII file is newer, or if the DBM file does not exist. The files will be created as C<arbitrary.db> or C<arbitrary.gdbm>, depending on DBM type.
 
 The C<identifier> is case sensitive, and can only contain characters in the class E<lbracket>A-Za-z0-9_]. Fields are accessed with the E<lbracket>item_data C<identifier> field] or E<lbracket>data C<identifier> field key] elements. NOTE: Use of lower-case letters is strongly recommended.
 
@@ -225,25 +255,33 @@ The order of preference is:
 
 LI1: GDBM
 
+<<<<<<< icdatabase.sdf
+.This uses the Perl C<GDBM_File> module to build a GDBM database. The following command will indicate if GDBM is in Perl:
+=======
 .This uses the Perl GDBM_File module to build a GDBM database. The following command will indicate if GDBM is in Perl:
+>>>>>>> 1.7
 
 !block example; listitem=2
     perl -e 'require GDBM_File and print "I have GDBM.\n"'
 !endblock
 
-.Installing GDBM_File requires rebuilding Perl after obtaining the GNU GDBM package, and is beyond the scope of this document. Linux will typically have this by default; most other operating systems will need to specifically build in this capability.
+.Installing GDBM_File requires rebuilding Perl after obtaining the GNU GDBM package, and is beyond the scope of this document. LINUX will typically have this by default; most other operating systems will need to specifically build in this capability.
 
 LI1: DB_File (Berkeley DB)
 
+<<<<<<< icdatabase.sdf
+.This uses the C<DB_File> module to build a Berkeley DB (hash) database. The following command will indicate if DB_File is in Perl:
+=======
 .This uses the DB_File module to build a Berkeley DB (hash) database. The following command will indicate if DB_File is in Perl:
+>>>>>>> 1.7
 
 !block example; listitem=2
     perl -e 'require DB_File and print "I have Berkeley DB.\n"'
 !endblock
 
-.Installing DB_File requires rebuilding Perl after obtaining the Berkeley DB package, and is beyond the scope of this document. BSDI, FreeBSD, and Linux will typically have it by default; most other operating systems will need to specifically build this in.
+.Installing C<DB_File> requires rebuilding Perl after obtaining the Berkeley DB package, and is beyond the scope of this document. BSDI, FreeBSD, and LINUX will typically have it by default; most other operating systems will need to specifically build this in.
 
-.If using DB_File, even though GDBM_File is in Perl, set the environment variable MINIVEND_DBFILE to a true (non-zero, non-blank) value:
+.If using C<DB_File>, even though C<GDBM_File> is in Perl, set the environment variable MINIVEND_DBFILE to a true (non-zero, non-blank) value:
 
 !block example; listitem=2
     # csh or tcsh
@@ -255,7 +293,7 @@ LI1: DB_File (Berkeley DB)
 
 .Then, re-start the server.
 
-.Or, to set a particular table to use Berkeley DB, the DB_FILE class in catalog.cfg can be specified:
+.Or, to set a particular table to use Berkeley DB, the DB_FILE class in C<catalog.cfg> can be specified:
 
 !block example; listitem=2
     Database arbitrary  DB_FILE  1
@@ -265,7 +303,7 @@ LI1: In-memory
 
 .This uses Perl hashes to store the data directly in memory. Every time the Interchange server is restarted, it will re-import all in-memory databases for every catalog. 
 
-.If this is used, despite the presence of GDBM_File or DB_File, set the environment variable MINIVEND_NODBM as above or specify the memory type in the Database directive:
+.If this is used, despite the presence of C<GDBM_File> or C<DB_File>, set the environment variable MINIVEND_NODBM as above or specify the memory type in the Database directive:
 
 !block example; listitem=2
     Database arbitrary  MEMORY  1
@@ -443,7 +481,7 @@ This can get slow for larger databases and fields. Interchange will split the fi
 
 The fast binary search is described in greater detail in THE SEARCH ENGINE below.
 
-H2: MEMORY For Memory-Only Databases
+H2: MEMORY for Memory-Only Databases
 
 Interchange's memory-based databases are the fastest possible way to organize
 and store frequently used data. To force a database to be built in memory instead of DBM, use the MEMORY modifier:
@@ -461,21 +499,24 @@ H2:  IMPORT_ONCE
 
 The IMPORT_ONCE modifier tells Interchange not to re-import the database from the ASCII file every time it changes. Normally, Interchange does a comparison of the database file modification time with the ASCII source every time it is accessed, and if the ASCII source is newer it will re-import the file. 
 
-IMPORT_ONCE tells it only to import on a server restart or catalog
-reconfiguration:
+IMPORT_ONCE tells it only to import on a server restart or catalog reconfiguration:
 
 !block example
   Database  products  products.txt   TAB
   Database  products  IMPORT_ONCE    1
 !endblock
 
-SQL databases don't normally need this. They will only be imported once in normal operation. Also see NoImport for a way to guarantee that the table will never be imported.
+SQL databases don't normally need this. They will only be imported once in normal operation. Also see C<NoImport> for a way to guarantee that the table will never be imported.
 
 IMPORT_ONCE is always in effect for MEMORY databases. A catalog reconfiguration is required to force a change.
 
-H2: Importing In A Page
+H2: Importing in a Page
 
+<<<<<<< icdatabase.sdf
+To add a data record to a database as a result of an order or other operation, use Interchange's C<[import ...]> tag.
+=======
 To add a data record to a database as a result of an order or other operation, use Interchange's C<E<lbracket>import ...]> tag.
+>>>>>>> 1.7
 
 LI1: E<lbracket>import table type*] RECORD E<lbracket>/import]
 
@@ -516,7 +557,7 @@ The C<file> option overrides the container text and imports directly from a name
 
 The C<E<lbracket>import ....] TEXT E<lbracket>/import]> region may contain multiple records. If using C<NOTES> mode, a separator must be used, which, by default, is a form-feed character (^L). See Import Attributes for more information.
 
-H2: Exporting From A Database
+H2: Exporting from a Database
 
 To export an existing database to a file suitable for searching by Interchange, create an AdminPage (or any page, for that matter) that contains a C<E<lbracket>tag export ...]E<lbracket>/tag]> element. Perhaps a better method is to define the same sort of tags in an OrderProfile, and use forms and buttons to access the profile.
 
@@ -549,7 +590,11 @@ To limit write to certain catalogs, set:
    Database   products  WRITE_CATALOG  simple=0, sample=1
 !endblock
 
+<<<<<<< icdatabase.sdf
+The "simple" catalog will not be able to write, while "sample" will if C<[tag flag write]products[/tag]> is enabled. If a database is to always be writable, without having to specify C<[tag flag write] ... [/tag]>, define:
+=======
 The "simple" catalog will not be able to write, while "sample" will if C<E<lbracket>tag flag write]productsE<lbracket>/tag]> is enabled. If a database is to always be writable, without having to specify C<E<lbracket>tag flag write] ... E<lbracket>/tag]>, then define:
+>>>>>>> 1.7
 
 !block example
    Database   products  WRITE_ALWAYS  1
@@ -564,23 +609,27 @@ The default behavior of SQL datbases is equivalent to WRITE_ALWAYS, while the de
 
 H2: Global Databases
 
-If a database is to be available to all catalogs on the Interchange server, it may be defined in minivend.cfg. Any catalog running under that server will be able to use it. NOTE: It is writable by any catalog unless WRITE_CONTROL is used.
+If a database is to be available to all catalogs on the Interchange server, it may be defined in C<minivend.cfg>. Any catalog running under that server will be able to use it. NOTE: It is writable by any catalog unless WRITE_CONTROL is used.
 
 H1: SQL SUPPORT
 
 Interchange can use any of a number of SQL databases through the powerful
 Perl DBI/DBD access methods. This allows transparent access to any database engine that is supported by a DBD module. The current list includes mSQL, mySQL, Solid, Postgres, Oracle, Sybase, Informix, Ingres, Dbase, DB2, Fulcrum, and others. Any ODBC (with appropriate driver) should also be supported.
 
-No SQL database is included with Interchange, but there are a number widely available on the Internet. Many are free for non-commercial use. Some examples include mSQL, mySQL, Sybase, and Qbase. It is beyond the scope of this document to describe SQL or DBI/DBD. Sufficient familiarity is assumed.
+No SQL database is included with Interchange, but there are a number widely available on the Internet. Many are free for non-commercial use, such as mSQL, mySQL, Sybase, and Qbase. It is beyond the scope of this document to describe SQL or DBI/DBD. Sufficient familiarity is assumed.
 
 In most cases, Interchange cannot perform administrative functions, like creating a database or setting access permissions. This must be done with the tools provided with a SQL distribution. But, if given a blank database and the permission to read and write it, Interchange can import ASCII files and bootstrap from there.
 
-H2: SQL Support Via DBI
+H2: SQL Support via DBI
 
 The configuration of the DBI database is accomplished by setting attributes in
+<<<<<<< icdatabase.sdf
+additional Database directives after the initial defining line as described above. For example, the following defines the database B<arbitrary> as a DBI database, sets the data source (DSN) to an appropriate value for an mSQL database named C<minivend> on port 1114 of the local machine:
+=======
 additional Database directives after the initial defining line as described above. For example, the following defines the database B<arbitrary>
 as a DBI database, sets the data source (DSN) to an appropriate value for an
 mSQL database named C<minivend> on port 1114 of the local machine:
+>>>>>>> 1.7
 
 !block example
    Database arbitrary arbitrary.asc SQL
@@ -605,15 +654,27 @@ LI1: DSN
 
 .where mSQL selects the driver (case IS important), C<minivend> selects the database, C<othermachine.my.com> selects the host, and 1112 is the port. On many systems, C<dbi:mSQL:minivend> will work fine. Of course, the C<minivend> database must already exist.
 
+<<<<<<< icdatabase.sdf
+.This is the same as the DBI_DSN environment variable, if the DSN parameter is not set. Then, the value of DBI_DSN will be used to try and find the proper database to connect to.
+=======
 .This is the same as the B<DBI_DSN> environment variable, if the DSN parameter is not set. Then, the value of B<DBI_DSN> will be used to try and find the proper database to connect to.
+>>>>>>> 1.7
 
 LI1: USER
 
+<<<<<<< icdatabase.sdf
+.The user name used to log into the database. It is the same as the environment variable DBI_USER. If a user name is not needed, just don't set the USER directive.
+=======
 .The user name used to log into the database. It is the same as the environment variable B<DBI_USER>. If a user name is not needed, just don't set the USER directive.
+>>>>>>> 1.7
 
 LI1: PASS
 
+<<<<<<< icdatabase.sdf
+.The password used to log into the database. It is the same as the environment variable DBI_PASS. If a password is not needed, just don't set the PASS directive.
+=======
 .The password used to log into the database. It is the same as the environment variable B<DBI_PASS>. If a password is not needed, just don't set the PASS directive.
+>>>>>>> 1.7
 
 LI1: COLUMN_DEF
 
@@ -621,7 +682,11 @@ LI1: COLUMN_DEF
 
 LI1: NAME
 
+<<<<<<< icdatabase.sdf
+.A space-separated field of column names for a table. Normally not used. Interchange should resolve the column names properly upon query. Set this if a catalog errors out with "dbi: can't find field names" or the like. The first field should always be C<code>. This is not a DBI parameter, it is specific to Interchange. All columns must be listed, in order of their position in the table.
+=======
 .A space-separated field of column names for a table. Normally not used. Interchange should resolve the column names properly upon query. Set this if a catalog errors out with "dbi: can't find field names" or the like. The first field should always be B<code>. This is not a DBI parameter, it is specific to Interchange. All columns must be listed, in order of their position in the table.
+>>>>>>> 1.7
 
 LI1: NUMERIC
 
@@ -641,7 +706,11 @@ LI1: KEY
 
 LI1: ChopBlanks,LongReadLen,LongTruncOK,RaiseError, etc.
 
+<<<<<<< icdatabase.sdf
+.Sets the corresponding DBI attribute. Of particular interest is C<ChopBlanks>, which should be set on drivers which by default return space-padded fixed-length character fields (Solid is an example).
+=======
 .Sets the corresponding DBI attribute. Of particular interest is ChopBlanks, which should be set on drivers which by default return space-padded fixed-length character fields (Solid is an example).
+>>>>>>> 1.7
 
 .The supported list as of this release of Interchange is:
 
@@ -657,8 +726,7 @@ LI1: ChopBlanks,LongReadLen,LongTruncOK,RaiseError, etc.
 
 .Issue the shell command C<perldoc DBI> for more information.
 
-Here is an example of a completely set up DBI database on mySQL, using a comma-separated value input, setting the DBI attribute LongReadLen to retrieve an entire field, and changing some field definitions from the default char(128):
-
+Here is an example of a completely set up DBI database on mySQL, using a comma-separated value input, setting the DBI attribute C<LongReadLen> to retrieve an entire field, and changing some field definitions from the default char(128):
 
 !block example
  Database   products  products.csv  dbi:mysql:minivend
@@ -690,16 +758,18 @@ To change to ODBC, the only changes required might be:
    Database products  ChopBlanks  1
 !endblock
 
-The DSN setting is specific to a ODBC setup. The B<ChopBlanks> setting takes
-care of the space-padding in Solid and some other databases. It is not specific to ODBC. Once again, DBI, DBD::ODBC, and the appropriate ODBC
-driver must be installed and tested.
+The DSN setting is specific to a ODBC setup. The C<ChopBlanks> setting takes care of the space-padding in Solid and some other databases. It is not specific to ODBC. Once again, DBI, DBD::ODBC, and the appropriate ODBC driver must be installed and tested.
 
 H2: SQL Access Methods
 
+<<<<<<< icdatabase.sdf
+An Interchange SQL database can be accessed with the same tags as any of the other databases can. Arbitrary SQL queries can be passed with the C<[query sql="SQL STATEMENT"]> MML tag.
+=======
 An Interchange SQL database can be accessed with the same tags as any of
 the other databases can. Arbitrary SQL queries can be passed with the C<E<lbracket>query sql="SQL STATEMENT"]> MML tag.
+>>>>>>> 1.7
 
-H2: Importing From An ASCII File
+H2: Importing from an ASCII File
 
 When importing a file for SQL, Interchange by default uses the first column of the ASCII file as the primary key, with a C<char(16)> type, and assigns all other columns a C<char (128)> definition. These definitions can be changed by placing the proper definitions in COLUMN_DEF Database directive attribute:
 
@@ -751,7 +821,7 @@ If the search is implemented in a link or a form, it will always display formatt
 
 Note: Examples of search forms and result pages are included in the demos.
 
-Two search engine interfaces are provided, and five types of searching are available. The default is a text-based search of the first products database source file (i.e., products.txt). A binary search of a dictionary-ordered file can be specified. An optional Glimpse search is enabled by placing the command specification for Glimpse in the C<catalog.cfg> directive Glimpse. There is a range-based search, used in combination with one of the above. And finally, there is a fully-coordinated search with grouping.
+Two search engine interfaces are provided, and five types of searching are available. The default is a text-based search of the first products database source file (i.e., products.txt). A binary search of a dictionary-ordered file can be specified. An optional Glimpse search is enabled by placing the command specification for Glimpse in the C<catalog.cfg> directive C<Glimpse>. There is a range-based search, used in combination with one of the above. And finally, there is a fully-coordinated search with grouping.
 
 The default, a text based search, sequentially scans the lines in the target file. By default it returns the first field (delineated by the delimiter for that database, for every line matching the search specification. This corresponds to the product code, which is then used to key specific accesses to the database.
 
@@ -759,9 +829,7 @@ The text-based search is capable of sophisticated field-specific searches with f
 
 H2: The Search Form
 
-A number of variables can be set on search forms to determine which search
-will be used, what fields in the database it will search, and what search
-behavior will be.
+A number of variables can be set on search forms to determine which search will be used, what fields in the database it will search, and what search behavior will be.
 
 Here is a simple search form:
 
@@ -815,7 +883,7 @@ To use the Glimpse search, the Glimpse index must be built based on files in the
    glimpseindex -b -H . products.txt
 !endblock
 
-There are several ways to improve search speed for large catalogs. One method that works well for large C<products.txt> files is to split the C<products.txt> file into small index files (in the example, 100 lines) with the split(1) UNIX/POSIX command. Then, index it with glimpse:
+There are several ways to improve search speed for large catalogs. One method that works well for large C<products.txt> files is to split the C<products.txt> file into small index files (in the example, 100 lines) with the split(1) UNIX/POSIX command. Then, index it with Glimpse:
 
 !block example
    split -100 products.txt index.txt.
@@ -828,10 +896,9 @@ To search for numbers, add the C<-n> option to the Glimpse command line.
 
 Note: A large catalog is one of more than several thousand items; smaller ones have acceptable speed in any of the search modes.
 
-If the Glimpse executable is not found at Interchange startup, the Glimpse
-search will be disabled and the regular text-based search used instead.
+If the Glimpse executable is not found at Interchange startup, the Glimpse search will be disabled and the regular text-based search used instead.
 
-There are several things to watch for while using B<glimpse>, and a liberal dose of the Glimpse documentation is suggested. In particular, the spelling error capability will not work in combination with the field-specific search. Glimpse selects the line, but Interchange's text-based search routines disqualify it when checking to see if the search string is within one of the specified fields.
+There are several things to watch for while using Glimpse, and a liberal dose of the Glimpse documentation is suggested. In particular, the spelling error capability will not work in combination with the field-specific search. Glimpse selects the line, but Interchange's text-based search routines disqualify it when checking to see if the search string is within one of the specified fields.
 
 To use field-specific searching on Glimpse, tell it what the field names are. If the search is on the products database (file), nothing is needed for the default is to use the field names from the products database. If it is some other field layout, specify the file to get the field names from with C<mv_field_file> (ff).
 
@@ -839,7 +906,7 @@ H2: Fast Binary Search
 
 Fast binary searching is useful for scanning large databases for strings that match the beginning of a line. They use the standard Perl module Search::Dict, and are enabled through use of the C<mv_dict_look>, C<mv_dict_end>, C<mv_dict_limit>, C<mv_dict_fold>, and C<mv_dict_order> variables.
 
-The field to search is the first field in the file, then the product code should be in the second field, delimited by TAB. Set the mv_return_fields=1 to return the product code in the search.
+The field to search is the first field in the file, the product code should be in the second field, delimited by TAB. Set the C<mv_return_fields=1> to return the product code in the search.
 
 The search must be done on a dictionary-ordered pre-built index, which can be produced with the database INDEX modifier. See Dictionary indexing with INDEX.
 
@@ -850,7 +917,7 @@ If using the C<mv_dict_look> parameter by itself, and the proper index file is p
    mv_dict_limit=-1
 !endblock
 
-This will make the search behave much like the simple search described above, except it will be much faster on large files and will match only from the beginning of the field. Here is an example. A C<title> index has been built by including in catalog.cfg:
+This will make the search behave much like the simple search described above, except it will be much faster on large files and will match only from the beginning of the field. Here is an example. A C<title> index has been built by including in C<catalog.cfg>:
 
 !block example
    Database   products   INDEX    title
@@ -887,9 +954,9 @@ This search is case-sensitive. To do the same thing case-insensitively:
    E<lbracket>page search="dl=Van Gogh/di=title/df=1"]
 !endblock
 
-H2: Coordinated And Joined Searching
+H2: Coordinated and Joined Searching
 
-Interchange will do a complete range of tests on individual columns in the database. To use this function, set C<mv_coordinate> to B<yes> (co=yes in the one-click syntax). In order to use coordinated searching, the number of search fields must equal the number of search strings. 
+Interchange will do a complete range of tests on individual columns in the database. To use this function, set C<mv_coordinate> to Yes (co=yes in the one-click syntax). In order to use coordinated searching, the number of search fields must equal the number of search strings. 
 
 To make sure that is the case, use the C<mv_search_map> variable. It allows variables to be mapped to others in the search specification. For example:
 
@@ -909,13 +976,12 @@ To make sure that is the case, use the C<mv_search_map> variable. It allows vari
 
 Even if the user leaves one blank, the search will work.
 
-Leading/trailing whitespace is stripped from all lines in the mv_search_map
-variable, so it can be positioned as shown for convenience.
+Leading/trailing whitespace is stripped from all lines in the C<mv_search_map> variable, so it can be positioned as shown for convenience.
 
 Coordinated searches may be joined with the output of another table if set one of the C<mv_search_field> values is set to a C<table:column> pair. Note that this will slow down large searches considerably unless there is another search specification, as the database must be accessed for every search line If there is a search field that qualifies for a regular expression search function, or conducting a binary search with C<mv_dict_look>, or are not doing an C<OR> search, the penalty should not be too great as only matching lines will cause an access to the database.
 
 Individual field operations can then be specified with the C<mv_column_op>
-(or B<op>) parameter. The operations include:
+(or op) parameter. The operations include:
 
 !block example
    operation            string     numeric   equivalent
@@ -986,11 +1052,11 @@ Note that in the second example, nu=0 must be specified even though that is the 
 
 The C<co=yes> is assumed when specifying a multiple search.
 
-The second search will check the stock status of the painting provided there is an C<inventory> table as in some of the Interchange demo catalogs. If the C<qty> field is greater than or equal to 1, then the product will be picked. If out of stock, it will not be found.
+The second search will check the stock status of the painting provided there is an C<inventory> table as in some of the Interchange demo catalogs. If the C<qty> field is greater than or equal to 1, the product will be picked. If out of stock, it will not be found.
 
 It always helps to have an C<rm> type included in the search. This is used to pre-screen records so that database accesses only need be made for already-matching entries. If accesses must be made for every record, large searches can get quite slow.
 
-H2: Specifying A Text-Based Search With SQL-Like Syntax
+H2: Specifying a Text-Based Search with SQL-Like Syntax
 
 If Jochen Wiedmann's C<SQL::Statement> module is installed, a SQL syntax can be specified for the text-based search. (This is not the same as the SQL search, treated below separately. It would work on an SQL table, but only on the ASCII text source file, not on the actual database.)
 
@@ -1045,7 +1111,7 @@ Once again, this does not conduct a search on an SQL database, but formats a cor
 
 H2: Range Searching
 
-Range searching allows qualification of search returns with a field that must be within a certain numeric or alphanumeric range. To use it, set the mv_range_look variable to the products database field, or a column/field number for another file. Then, set the corresponding C<mv_range_min> and C<mv_range_max> variables with a selectable field.
+Range searching allows qualification of search returns with a field that must be within a certain numeric or alphanumeric range. To use it, set the C<mv_range_look> variable to the products database field, or a column/field number for another file. Then, set the corresponding C<mv_range_min> and C<mv_range_max> variables with a selectable field.
 
 !block example
    <INPUT TYPE="hidden" NAME="mv_range_look" VALUE="price">
@@ -1066,14 +1132,17 @@ Range searching allows qualification of search returns with a field that must be
        </SELECT>
 !endblock
 
+<<<<<<< icdatabase.sdf
+The value of 0 for C<mv_range_max> is equivalent to infinity if doing a numeric search. This makes it impossible to search for a ceiling of 0 with a negative C<mv_range_min>.
+=======
 The value of 0 for mv_range_max is equivalent to infinity if doing a
 numeric search. This makes it impossible to search for a ceiling of 0
 with a negative mv_range_min.
+>>>>>>> 1.7
 
 The fields are stackable, so more than one range to check can be set. The order is significant, in the sense that the array of field names and minimum/maximum values must be kept in order to achieve correspondence.
 
-The optional C<mv_range_alpha> specification allows alphanumeric range
-matching for the corresponding field. If it is set, and the fields are stacked, they must all be set. The C<mv_case> field does apply if it is set. Otherwise, the comparison is without regard to case.
+The optional C<mv_range_alpha> specification allows alphanumeric range matching for the corresponding field. If it is set, and the fields are stacked, they must all be set. The C<mv_case> field does apply if it is set. Otherwise, the comparison is without regard to case.
 
 If ONLY a range search is required, all lines with C<mv_return_all>=yes must be selected in order to make the search operate. Range-only searches will be quite slow for large databases since every line must be scanned. It should be quite usable for catalogs of less than 10,000 items in size on a fast machine. Using it in combination with another search technique (in the same query) will yield faster search returns.
 
@@ -1098,8 +1167,12 @@ This is the same:
     E<lbracket>/page]
 !endblock
 
+<<<<<<< icdatabase.sdf
+Here is the same thing from a home page (assuming /cgi-bin/vlink is the CGI path for Interchange's vlink):
+=======
 Here is the same thing from a home page (assuming /cgi-bin/vlink is
 the CGI path for Interchange's vlink):
+>>>>>>> 1.7
 
 !block example
     <A HREF="/cgi-bin/vlink/scan/se=Impressionists/sf=category">
@@ -1189,11 +1262,15 @@ IMPORTANT NOTE: An incompatibility in earlier Interchange catalogs is specifying
           
 cause a bad URL. Change this to C<E<lbracket>page scan se=searchstring]>.
 
-You may specify a one-click search in three different ways.
+A one-click search may be specified in three different ways.
 
 LI1: Original
 
+<<<<<<< icdatabase.sdf
+.To do an OR search on the fields category and artist for the strings "Surreal" and "Gogh," while matching substrings, do:
+=======
 .To do an OR search on the fields category and artist for the strings "Surreal" and "Gogh", while matching substrings, do:
+>>>>>>> 1.7
 
 !block example; listitem=2
  E<lbracket>page scan se=Surreal/se=Gogh/os=yes/su=yes/sf=artist/sf=category]
@@ -1201,7 +1278,11 @@ LI1: Original
  E<lbracket>/page]
 !endblock
 
+<<<<<<< icdatabase.sdf
+.In this method of specification, to replace a C</> (slash) in a file name (for the sp, bd, or fi parameter), the shorthand of :: must be used, i.e., sp=results::standard. (This may not work for some browsers, so put the page in the main pages directory or define the page in a search profile.)
+=======
 .In this method of specification, to replace a / (slash) in a file name (for the sp, bd, or fi parameter), the shorthand of :: must be used, i.e., sp=results::standard. (This may not work for some browsers, so put the page in the main pages directory or define the page in a search profile.)
+>>>>>>> 1.7
 
 LI1: Multi-Line
 
@@ -1222,7 +1303,11 @@ LI1: Multi-Line
 
 LI1: Ampersand
 
+<<<<<<< icdatabase.sdf
+.Substitute C<&> for C</> in the specification and be able to use C</> and quotes and spaces in the specification.
+=======
 .Substitute & for / in the specification and be able to use / and quotes and spaces in the specification.
+>>>>>>> 1.7
 
 !block example; listitem=2
  E<lbracket>page href=scan se="Van Gogh"&sp=lists/surreal&os=yes&su=yes&sf=artist&sf=category]
@@ -1232,10 +1317,9 @@ LI1: Ampersand
 
 .Any "unsafe" characters will be escaped. 
 
-H2: Setting Display Options With mv_value
+H2: Setting Display Options with mv_value
 
-A value can be specified that will be set in the link with the C<mv_value>
-parameter. It takes an argument of C<var=value>, just as setting a normal variable in an Interchange profile. Actually C<mv_value> is a misnomer, it will almost never be used in a form where variable values can be set. Always specify it in a one-click search with C<va=var=value>. Example:
+A value can be specified that will be set in the link with the C<mv_value> parameter. It takes an argument of C<var=value>, just as setting a normal variable in an Interchange profile. Actually C<mv_value> is a misnomer, it will almost never be used in a form where variable values can be set. Always specify it in a one-click search with C<va=var=value>. Example:
 
 !block example
    E<lbracket>page href=scan
@@ -1251,8 +1335,12 @@ H2: In-Page Searches
 
 To specify a search inside a page with the C<E<lbracket>search-region parameters*]> tag. The parameters are the same as the one-click search, and the output is always a newline-separated list of the return objects, by default, a series of item codes.
 
+<<<<<<< icdatabase.sdf
+The C<[loop ...]> tag directly accepts a search parameter. To search for all products in the categories "Americana" and "Contemporary," do:
+=======
 The C<E<lbracket>loop ...]> tag directly accepts a search parameter. To search for
 all products in the categories "Americana" and "Contemporary," do:
+>>>>>>> 1.7
 
 !block example
    E<lbracket>loop search="
@@ -1266,12 +1354,18 @@ all products in the categories "Americana" and "Contemporary," do:
    E<lbracket>/loop]
 !endblock
 
+<<<<<<< icdatabase.sdf
+The advantage of the in-page search is that searches can be embedded within searches, and there can be straight unchanging links from static HTML pages.
+
+To place an in-page search with the full range of display in a normal results page, use the C<[search-region]> tag the same as above, except that C<[search-list]>, C<[more-list]>, and C<[more]> tags can be placed within it. Use them to display and format the results, including paging. For example:
+=======
 The advantage of the in-page search is that searches can be embedded within
 searches, and there can be straight unchanging links from static HTML pages.
 
 To place an in-page search with the full range of display in a normal
 results page, use the C<E<lbracket>search-region]> tag the same as above, except 
 that C<E<lbracket>search-list]>, C<E<lbracket>more-list]>, and C<E<lbracket>more]> tags can be placed within it. Use them to display and format the results, including paging. For example:
+>>>>>>> 1.7
 
 !block example
    E<lbracket>search-region  more=1
@@ -1291,7 +1385,7 @@ that C<E<lbracket>search-list]>, C<E<lbracket>more-list]>, and C<E<lbracket>more
    E<lbracket>/search-region]
 !endblock
 
-To use the same page for search paging, make sure tou set the C<sp=page> parameter.
+To use the same page for search paging, make sure to set the C<sp=page> parameter.
 
 H2: Search Profiles
 
@@ -1335,7 +1429,7 @@ In a one-click search, use the C<mp> modifier:
 E<lbracket>page scan se=Leonardo/mp=artist_profile]A left-handed artistE<lbracket>/page]
 !endblock
 
-They can also be placed in a file. Define the file name in the SearchProfile directive. The catalog must be reconfigured for Interchange to read it. The profile is named by placing a name following a __NAME__ pragma:
+They can also be placed in a file. Define the file name in the C<SearchProfile> directive. The catalog must be reconfigured for Interchange to read it. The profile is named by placing a name following a __NAME__ pragma:
 
 !block example
  __NAME__ title_search
@@ -1353,7 +1447,7 @@ The special variable C<mv_last> stops interpretation of search variables. The fo
    mv_range_max
 !endblock
 
-Other than that, if mv_last is set in a search profile, and there are other variables on the search form, they will not be interpreted.
+Other than that, if C<mv_last> is set in a search profile, and there are other variables on the search form, they will not be interpreted.
 
 To place multiple search profiles in the same file, separate them with __END__, which must be on a line by itself.
 
@@ -1369,7 +1463,11 @@ LI1: ProductFiles
 
 .If the file to be searched is left empty in the search form or definition (it is set with C<mv_search_file (fi)>), the text files associated with the products databases will be searched, and field names are already available as named in the first line of the file(s). This is defined to be C<products.txt> in the Interchange demonstrations.
 
+<<<<<<< icdatabase.sdf
+.Be Careful if using SQL! If the database is change and not exporte with C<[tag export products][/tag]>, searches will not be successful.
+=======
 .Be Careful if using SQL! If the database is change and not exporte with C<E<lbracket>tag export products]E<lbracket>/tag]>, searches will not be successful.
+>>>>>>> 1.7
 
 LI1: Other database files
 
@@ -1383,11 +1481,19 @@ Fields can also always be specified by an integer column number, with 0 as the f
 
 LI1: mv_all_chars
 
+<<<<<<< icdatabase.sdf
+.Scan abbreviation: ac=[1|0]. Set this if searching is anticipated for lots of punctuation characters that might be special characters for Perl. The characters ()[]\$^ are included.
+=======
 .Scan abbreviation: ac=E<lbracket>1|0]. Set this if searching is anticipated for lots of punctuation characters that might be special characters for Perl. The characters ()E<lbracket>]\$^ are included.
+>>>>>>> 1.7
 
 LI1: mv_base_directory
 
+<<<<<<< icdatabase.sdf
+.Scan abbreviation: bd=/directory/name. In the text search, set to the directory from which to base file searches. File names without leading C</> characters will be based from there. In the Glimpse search, passed to Glimpse with the C<-H> option, and Glimpse will look for its indices there. Default is C<ProductDir>.
+=======
 .Scan abbreviation: bd=/directory/name. In the text search, set to the directory from which to base file searches. File names without leading / characters will be based from there. In the Glimpse search, passed to Glimpse with the C<-H> option, and Glimpse will look for its indices there. Default is ProductDir.
+>>>>>>> 1.7
 
 .If an absolute path directory is used, for security enable it in the users session with:
 
@@ -1401,17 +1507,32 @@ LI1: mv_begin_string
 
 .If this is set, the string will only match if it is at the beginning of a field. The handling is a bit different for the default AND search compared to the OR search. With OR searches all words are searched for from the beginning of the field, with AND searches all are.
 
-.This is a multiple parameter. If mv_coordinate is in force, it should be set as many times as necessary to match the field/searchstring combination. If set only once, it applies to all fields. If set more than once but not as many times as the fields, it will default to off.
+<<<<<<< icdatabase.sdf
+.This is a multiple parameter. If C<mv_coordinate> is in force, it should be set as many times as necessary to match the field/searchstring combination. If set only once, it applies to all fields. If set more than once but not as many times as the fields, it will default to off.
+=======
+>>>>>>> 1.7
 
 LI1: mv_case
 
+<<<<<<< icdatabase.sdf
+.If this item is set to C<No>, the search will return items without regard to upper or lower case. This is the default. Set to C<Yes> if case should be matched. Implement with a checkbox <INPUT TYPE=CHECKBOX> field.
+=======
 .If this item is set to C<no>, the search will return items without regard to upper or lower case. This is the default -- set to C<yes> if case should be matched. Implement with a checkbox <INPUT TYPE=CHECKBOX> field.
+>>>>>>> 1.7
 
+<<<<<<< icdatabase.sdf
+.If stacked to match the C<mv_search_field> and C<mv_searchspec> variables, and C<mv_coordinate> is set, it will operate only for the corresponding field.
+=======
 .If stacked to match the mv_search_field and mv_searchspec variables, and C<mv_coordinate> is set, it will operate only for the corresponding field.
+>>>>>>> 1.7
 
 LI1: mv_coordinate
 
+<<<<<<< icdatabase.sdf
+.If this item is set to C<Yes>, and the number of search fields equals the number of search specs, the search will return only items that match field to spec. (The search specifications are set by stacked C<mv_searchspec> and C<mv_search_field> variables.)
+=======
 .If this item is set to yes, and the number of search fields equals the number of search specs, the search will return only items that match field to spec. (The search specifications are set by stacked C<mv_searchspec> and C<mv_search_field> variables.)
+>>>>>>> 1.7
 
 .Case sensitivity, substring matching, and negation all work on a field-by field basis according to the following:
 
@@ -1425,12 +1546,21 @@ LI1: mv_coordinate
 
 LI1: mv_dict_end
 
+<<<<<<< icdatabase.sdf
+.If the string at the beginning of a line lexically exceeds this value, matching will stop. Ignored without C<mv_dict_look>.
+=======
 .If the string at the beginning of a line lexically exceeds this value, matching will stop. Ignored without mv_dict_look.
+>>>>>>> 1.7
 
 LI1: mv_dict_fold
 
+<<<<<<< icdatabase.sdf
+.Make dictionary matching case-insensitive. Ignored without C<mv_dict_look>.
+Note: This is the reverse sense from C<mv_case>.
+=======
 .Make dictionary matching case-insensitive. Ignored without mv_dict_look.
 Note: This is the reverse sense from mv_case.
+>>>>>>> 1.7
 
 LI1: mv_dict_limit
 
@@ -1438,7 +1568,7 @@ LI1: mv_dict_limit
 
 Note: The order of this and the C<mv_dict_end> variable is significant. Each will overwrite the other.
 
-.If this is set to a non-numeric value, an automatic mode is entered which looks for a dictionary-indexed file that corresponds to the file name plus C<.field>, where C<field> is whatever C<mv_dict_limit> is set to. The actual value of mv_dict_limit is set to C<-1>. If the file does not exist, then the original file is silently used. Also, the value of C<mv_return_fields> is set to C<1> to correspond to the location of the key in the auto-indexed file.  
+.If this is set to a non-numeric value, an automatic mode is entered which looks for a dictionary-indexed file that corresponds to the file name plus C<.field>, where C<field> is whatever C<mv_dict_limit> is set to. The actual value of mv_dict_limit is set to C<-1>. If the file does not exist, the original file is silently used. Also, the value of C<mv_return_fields> is set to C<1> to correspond to the location of the key in the auto-indexed file.  
 
 .To illustrate:
 
@@ -1471,11 +1601,19 @@ Note: The order of this and the C<mv_dict_end> variable is significant. Each wil
 
 LI1: mv_dict_look
 
+<<<<<<< icdatabase.sdf
+.The string at which to begin matching at in a dictionary-based search. If not set, the C<mv_dict_end>, C<mv_dict_fold>, and C<mv_dict_case> variables will be ignored. May be set in a search profile based on other form variables.
+=======
 .The string at which to begin matching at in a dictionary-based search. If not set, the mv_dict_end, mv_dict_fold, and mv_dict_case variables will be ignored. May be set in a search profile based on other form variables.
+>>>>>>> 1.7
 
 LI1: mv_dict_order
 
+<<<<<<< icdatabase.sdf
+.Make dictionary matching follow dictionary order, where only word characters and whitespace matter. Ignored without C<mv_dict_look>.
+=======
 .Make dictionary matching follow dictionary order, where only word characters and whitespace matter. Ignored without mv_dict_look.
+>>>>>>> 1.7
 
 LI1: mv_doit
 
@@ -1483,13 +1621,21 @@ LI1: mv_doit
 
 LI1: mv_exact_match
 
+<<<<<<< icdatabase.sdf
+.Normally Interchange searches match words, as opposed to sentences. This behavior can be overridden with C<mv_exact_match>, which when set will place quotes around any value in C<mv_searchspec> or C<mv_dict_look>.
+=======
 .Normally Interchange searches match words, as opposed to sentences. This behavior can be overridden with mv_exact_match, which when set will place quotes around any value in mv_searchspec or mv_dict_look.
+>>>>>>> 1.7
 
 LI1: mv_field_names
 
 .Deprecated in favor of in-list sorting. Defines the field names for the file being searched. This guarantees that they will be available, and prevents a disk access if using named fields on a search file (that is not the product database ASCII source, where field names are already known). This must be exactly correct, or it will result in anomalous search operation. Usually passed in a hidden field or search profile as a comma-separated list.
 
+<<<<<<< icdatabase.sdf
+Note: Use this on the product database only if planning on both pre-sorting with C<mv_sort_field> and then post-sorting C<with [sort]field:opt[/sort]>.
+=======
 Note: Use this on the product database only if planning on both pre-sorting with C<mv_sort_field> and then post-sorting C<with E<lbracket>sort]field:optE<lbracket>/sort]>.
+>>>>>>> 1.7
 
 LI1: mv_first_match
 
@@ -1509,7 +1655,11 @@ LI1: mv_matchlimit
 
 LI1: mv_max_matches
 
+<<<<<<< icdatabase.sdf
+.The maximum number of records that will be returned in a search. Default is 2000. This only applies to Glimpse. Use C<mv_matchlimit> to set the search page size.
+=======
 .The maximum number of records that will be returned in a search. Default is 2000. This only applies to Glimpse. Use mv_matchlimit to set the search page size.
+>>>>>>> 1.7
 
 LI1: mv_min_string
 
@@ -1519,31 +1669,59 @@ LI1: mv_negate
 
 .Specifies that records NOT matching the search criteria will be returned. Default is no. It is not operative for the Glimpse search.
 
+<<<<<<< icdatabase.sdf
+.If stacked to match the C<mv_search_field> and C<mv_searchspec> variables, and C<mv_coordinate> is set, it will operate only for the corresponding field.
+=======
 .If stacked to match the mv_search_field and mv_searchspec variables, and mv_coordinate is set, it will operate only for the corresponding field.
+>>>>>>> 1.7
 
 LI1: mv_orsearch
 
+<<<<<<< icdatabase.sdf
+.If this item is set to C<Yes>, the search will return items matching any of the words in C<searchspec>. The default is No.
+=======
 .If this item is set to yes, the search will return items matching any of the words in searchspec. The default is no.
+>>>>>>> 1.7
 
 LI1: mv_profile
 
+<<<<<<< icdatabase.sdf
+.Selects one of the pre-defined search specifications set by the C<SearchProfile> directive. If the special variable within that file, C<mv_last>, is defined, it will prevent the scanning of the form input for further search modifications. The values of C<mv_searchspec> and C<mv_dict_look> are always scanned, so specify this to do the equivalent of setting multiple checkboxes or radioboxes with one click, while still reading the search input text.
+=======
 .Selects one of the pre-defined search specifications set by the SearchProfile directive. If the special variable within that file, C<mv_last>, is defined, it will prevent the scanning of the form input for further search modifications. The values of C<mv_searchspec> and C<mv_dict_look> are always scanned, so you can specify this to do the equivalent of setting multiple checkboxes or radioboxes with one click, while still reading the search input text.
+>>>>>>> 1.7
 
 LI1: mv_range_alpha
 
+<<<<<<< icdatabase.sdf
+.Sets the type of match, numeric or alphanumeric, for the range search in its corresponding range field. The search will return true, assuming it is greater than the C<mv_range_min> specification, if the field searched is less than or equal to C<mv_range_max>, in an alphanumeric sense.
+=======
 .Sets the type of match, numeric or alphanumeric, for the range search in its corresponding range field. The search will return true, assuming it is greater than the mv_range_min specification, if the field searched is less than or equal to mv_range_max, in an alphanumeric sense.
+>>>>>>> 1.7
 
 LI1: mv_range_look
 
+<<<<<<< icdatabase.sdf
+.This sets a field to scan for a range of numbers. It must be accompanied with corresponding C<mv_range_min> and C<mv_range_max> variables. It can be specified with either a field name or a column number. 
+=======
 .This sets a field to scan for a range of numbers. It must be accompanied with corresponding mv_range_min and mv_range_max variables. It can be specified with either a field name or a column number. 
+>>>>>>> 1.7
 
 LI1: mv_range_max
 
+<<<<<<< icdatabase.sdf
+.Sets the high bound for the range search in its corresponding range field. The search will return true, assuming it is greater than the C<mv_range_min> specification, if the field searched is less than or equal to C<mv_range_max>. To set the bound at infinity, or whatever your integer limit is, set C<mv_range_min> to 0.
+=======
 .Sets the high bound for the range search in its corresponding range field. The search will return true, assuming it is greater than the mv_range_min specification, if the field searched is less than or equal to mv_range_max. To set the bound at infinity, or whatever your integer limit is, set mv_range_min to 0.
+>>>>>>> 1.7
 
 LI1: mv_range_min
 
+<<<<<<< icdatabase.sdf
+.Sets the low bound for the range search in its corresponding range field. The search will return true, assuming it is less than the C<mv_range_max> specification, if the field searched is less than or equal to C<mv_range_min>.
+=======
 .Sets the low bound for the range search in its corresponding range field. The search will return true, assuming it is less than the mv_range_max specification, if the field searched is less than or equal to mv_range_min.
+>>>>>>> 1.7
 
 LI1: mv_record_delim
 
@@ -1579,7 +1757,11 @@ LI1: mv_search_over_msg
 
 LI1: mv_search_page
 
+<<<<<<< icdatabase.sdf
+.The Interchange-style name of the page that should display the search results. Overrides the C<FrameSearchPage> directive, and the default value of C<search>.
+=======
 .The Interchange-style name of the page that should display the search results. Overrides the FrameSearchPage directive, and the default value of C<search>.
+>>>>>>> 1.7
 
 LI1: mv_searchspec
 
@@ -1587,7 +1769,7 @@ LI1: mv_searchspec
 
 .The user can place quotes around words to specify that they match as a string. To enable this by default, use the C<mv_exact_match> variable.
 
-.If C<mv_dict_look> has a value, and C<mv_searchspec> does not, then mv_searchspec will be set to the value of mv_dict_look.
+.If C<mv_dict_look> has a value, and C<mv_searchspec> does not, then C<mv_searchspec> will be set to the value of C<mv_dict_look>.
 
 .If the number of instances matches the number of fields specified in the C<mv_search_field> variable and C<mv_coordinate> is set to true, each search field (in order specified on the form) will be matched with each search spec (again in that order).
 
@@ -1621,7 +1803,11 @@ LI1: mv_spelling_errors
 
 LI1: mv_substring_match
 
+<<<<<<< icdatabase.sdf
+.If C<mv_substring_match> is set to C<Yes>, matches on substrings as well as whole words. Typically set this for dictionary-based searches.
+=======
 .If C<mv_substring_match> is set to yes, matches on substrings as well as whole words. Typically set this for dictionary-based searches.
+>>>>>>> 1.7
 
 .If stacked to match the C<mv_search_field> and C<mv_searchspec> variables and C<mv_coordinate> is set, it will operate only for the corresponding field.
 
@@ -1635,7 +1821,7 @@ LI1: mv_value
 
 H2: The Results Page
 
-Once a search has been completed, there needs to be a way of presenting the output. By default, the I<SpecialPage> search is used. It is set to C<results> in the distribution demo, but any number of search pages can be specified by passing the value in the search form specified in the variable C<mv_search_page>.
+Once a search has been completed, there needs to be a way of presenting the output. By default, the C<SpecialPage> search is used. It is set to C<results> in the distribution demo, but any number of search pages can be specified by passing the value in the search form specified in the variable C<mv_search_page>.
 
 On the search page, some special Interchange tags are used to format the otherwise standard HTML. Each of the iterative tags is applied to every code returned from the search. This is normally the product code, but could be a key to any of the arbitrary databases. The value placed by the C<E<lbracket>item-code]> tag is set to the first field returned from the search.
 
@@ -1721,9 +1907,17 @@ LI1: E<lbracket>sort database:field:option* database:field:option*]
 
 LI1: E<lbracket>item-change marker]
 
+<<<<<<< icdatabase.sdf
+.Active only within C<[search-list][/search-list]>.
+=======
 .Active only within C<E<lbracket>search-list]E<lbracket>/search-list]>.
+>>>>>>> 1.7
 
+<<<<<<< icdatabase.sdf
+.Along with the companion C<[/item-change marker]>, surrounds a region which should only be output when a field (or other repeating value) changes its value. This allows indented lists similar to database reports to be easily formatted. The repeating value must be a tag interpolated in the search process, such as C<[item-field field]> or C<[item-data database field]>.
+=======
 .Along with the companion C<E<lbracket>/item-change marker]>, surrounds a region which should only be output when a field (or other repeating value) changes its value. This allows indented lists similar to database reports to be easily formatted. The repeating value must be a tag interpolated in the search process, such as C<E<lbracket>item-field field]> or C<E<lbracket>item-data database field]>.
+>>>>>>> 1.7
 
 .Of course, this will only work as expected when the search results are properly sorted.
 
@@ -1767,19 +1961,35 @@ LI1: E<lbracket>item-change marker]
 
 LI1: E<lbracket>/item-change marker]
 
+<<<<<<< icdatabase.sdf
+.Companion to C<[item-change marker]>.
+=======
 .Companion to C<E<lbracket>item-change marker]>.
+>>>>>>> 1.7
 
 LI1: E<lbracket>matches]
 
+<<<<<<< icdatabase.sdf
+.Replaced with the range of match numbers displayed by the search page. Looks something like "1-50". Make sure to insert this item between a C<[more-list]> and C<[/more-list]> element pair.
+=======
 .Replaced with the range of match numbers displayed by the search page. Looks something like "1-50". Make sure to insert this item between a C<E<lbracket>more-list]> and C<E<lbracket>/more-list]> element pair.
+>>>>>>> 1.7
 
 LI1: E<lbracket>more-list next_img* prev_img* page_img* border* border_current*]
 
+<<<<<<< icdatabase.sdf
+.Starts the section of the search page which is only displayed if there are more matches than specified in C<mv_matchlimit>. If there are less matches than the number in mv_matchlimit, all text/html between the C<[more_list]> and C<[/more_list]> elements is stripped.
+
+.Use in conjunction with the C<[more]> element to place pointers to additional pages of matches.
+
+.If the optional arguments C<next_img>, C<prev_img>, and/or C<page_img> are present, they represent image files that will be inserted instead of the standard 'Next,' 'Previous,' and page number. If C<prev_img> is C<none>, no previous link will be output. If C<page_img> is C<none>, no links to pages of matches will be output. These are URLs, are substituted for with I<ImageDir> and friends, and will be encased in IMG tags. Lastly, C<border> is the border number to put.
+=======
 .Starts the section of the search page which is only displayed if there are more matches than specified in C<mv_matchlimit>. If there are less matches than the number in mv_matchlimit, all text/html between the C<E<lbracket>more_list]> and C<E<lbracket>/more_list]> elements is stripped.
 
 .Use in conjunction with the C<E<lbracket>more]> element to place pointers to additional pages of matches.
 
 .If the optional arguments C<next_img>, C<prev_img>, and/or C<page_img> are present, they represent image files that will be inserted instead of the standard 'Next,' 'Previous,' and page number. If C<prev_img> is C<none>, then no previous link will be output. If C<page_img> is C<none>, then no links to pages of matches will be output. These are URLs, are substituted for with I<ImageDir> and friends, and will be encased in IMG tags. Lastly, C<border> is the border number to put.
+>>>>>>> 1.7
 
 .In addition, if C<page_img> is used, it will be passed an argument of the digit that is to be represented. This would allow an image generator program to be used, generating page numbers on the fly. The C<border> and C<border_selected> values are integers indicating the border that should be put around images in the C<page_img> selection. The <border_selected> is used for the current page if set.
 
@@ -1812,7 +2022,11 @@ LI1: E<lbracket>more-list next_img* prev_img* page_img* border* border_current*]
      Next       <IMG SRC="next.gif" Border=0>
 !endblock
 
+<<<<<<< icdatabase.sdf
+.To set custom text for the "Previous" and "Next" usually used, define the C<next_img>, C<prev_img>, and C<page_img> with C<[next-anchor][/next-anchor]>, C<[prev-anchor][/prev-anchor]> and C<[page-anchor][/page-anchor]>. The string $PAGE$ will be replaced with the page number in the latter. The same example:
+=======
 .To set custom text for the "Previous" and "Next" usually used, define the next_img, prev_img, and page_img with C<E<lbracket>next-anchor]E<lbracket>/next-anchor]>, C<E<lbracket>prev-anchor]E<lbracket>/prev-anchor]> and C<E<lbracket>page-anchor]E<lbracket>/page-anchor]>. The string $PAGE$ will be replaced with the page number in the latter. The same example:
+>>>>>>> 1.7
 
 !block example; listitem=2
     E<lbracket>more-list 0 0 0]
@@ -1861,7 +2075,11 @@ LI1: E<lbracket>more]
 
 .The current page will not be a hyperlink. Every time the new link is pressed, the list is re-built to correspond to the current page. If there is no C<Next> or C<Previous> page, that link will not be shown.
 
+<<<<<<< icdatabase.sdf
+.See the C<fr_resul.html> or C<search.html> files for examples. Make sure to insert this item between a C<[more-list]> and C<[/more-list]> element pair.
+=======
 .See the C<fr_resul.html> or C<search.html> files for examples. Make sure to insert this item between a C<E<lbracket>more-list]> and C<E<lbracket>/more-list]> element pair.
+>>>>>>> 1.7
 
 LI1: E<lbracket>process-search]
 
@@ -1897,7 +2115,11 @@ Interchange has standard sorting options for sorting the search lists, loop list
    E<lbracket>/loop]
 !endblock
 
+<<<<<<< icdatabase.sdf
+All sort situations, C<[search list]>, C<[loop list]>, C<[tag each table]>, and C<[item-list]>, take options of the form:
+=======
 All sort situations, C<E<lbracket>search list]>, C<E<lbracket>loop list]>, C<E<lbracket>tag each table]>, and C<E<lbracket>item-list]>, take options of the form:
+>>>>>>> 1.7
 
 !block example
  E<lbracket>sort database:field:option* -n +n =n-n ... ]
@@ -1942,7 +2164,6 @@ Multiple levels of sort are supported, and database boundaries on different sort
 Examples, all based on the C<simple> demo:
 
 LI1: Loop list
-
 
 !block example; listitem=2
     E<lbracket>loop 00-0011 19-202 34-101 99-102]
@@ -2057,9 +2278,9 @@ H2: Shipping Cost Database
 
 The shipping cost database (located in ProductDir/shipping.asc) is a tab-separated ASCII file with six fields: code, text description, criteria (quantity or weight, for example), minimum number, maximum number, and cost. None of the fields are case-sensitive.
 
-To define the shipping database in a catalog configuration file, set the Variable MV_SHIPPING to what would be its contents.
+To define the shipping database in a catalog configuration file, set the Variable C<MV_SHIPPING> to what would be its contents.
 
-To set the file to be something other than shipping.asc in the products
+To set the file to be something other than C<shipping.asc> in the products
 directory, set the C<Special> directive:
 
 !block example
@@ -2165,7 +2386,11 @@ LI1: QUAL
 
 LI1: PERL
 
+<<<<<<< icdatabase.sdf
+.Perl code that is read and determines the criterion, not the cost. Use the C<cost> option with "f" as the prelim to supply Perl code to determine cost.
+=======
 .Perl code that is read and determines the B<criterion>, not the cost. Use the C<cost> option with "f " as the prelim to supply Perl code to determine cost.
+>>>>>>> 1.7
 
 LI1: TOTAL
 
@@ -2177,28 +2402,39 @@ LI1: OPT
 
 H2: Criteria Determination
 
-The criteria field varies according to whether it is the first field in the shipping file exactly matching the mode identifier. In that case, it is called the main criterion. If it is in subsidiary shipping lines matching the mode (with optional appended digits), it is called a qualifying criterion.  The difference is that the main criterion returns the basis for the calculation (i.e., weight or quantity), while the qualifying criterion determines whether the individual line may match the conditions.
+The criteria field varies according to whether it is the first field in the shipping file exactly matching the mode identifier. In that case, it is called the main criterion. If it is in subsidiary shipping lines matching the mode (with optional appended digits), it is called a qualifying criterion. The difference is that the main criterion returns the basis for the calculation (i.e., weight or quantity), while the qualifying criterion determines whether the individual line may match the conditions.
 
 The return must be one of:
 
 LI1: quantity
 
+<<<<<<< icdatabase.sdf
+.The literal value quantity as the main criterion will simply count the number of items in the shopping cart and return it as the accumulated criteria. If using a database table field named C<quantity>, use the C<table::field> notation.
+=======
 .The literal value quantity as the main criterion will simply count the number of items in the shopping cart and return it as the accumulated criteria. If using a database table field named C<quantity>, then use the C<table::field> notation.
+>>>>>>> 1.7
 
-LI1: o <field name> or <table>::<field name>
 
 .A valid database field (column) name as main criterion will cause the number of items in the shopping cart to be multiplied by the value of the field for each item to obtain the accumulated criteria. If the table is not supplied, defaults to the first C<ProductFiles> table.
 
 LI1: o n.nn
 
+<<<<<<< icdatabase.sdf
+.Where B<n.nn> is any number, it will be directly used as the accumulated criteria. This can be effectively returned from a Perl subroutine or Interchange C<[calc][item-list] ... [/item-list][/calc]> to create custom shipping routines.
+=======
 .Where B<n.nn> is any number, it will be directly used as the accumulated criteria. This can be effectively returned from a Perl subroutine or Interchange C<E<lbracket>calc]E<lbracket>item-list] ... E<lbracket>/item-list]E<lbracket>/calc]> to create custom shipping routines.
+>>>>>>> 1.7
 
 Note[label='IMPORTANT NOTE: '] The above only applies to the first field that matches the shipping mode exactly. Following criteria fields contain qualifier matching strings.
 
 H2: Shipping Calculation Modes
 
+<<<<<<< icdatabase.sdf
+There are eight ways that shipping cost may be calculated. The method used depends on the first character of the C<cost> field in the shipping database.
+=======
 There are eight ways that shipping cost may be calculated. The method used
 depends on the first character of the C<cost> field in the shipping database.
+>>>>>>> 1.7
 
 LI1: N.NN (digits)
 
@@ -2222,7 +2458,11 @@ LI1: m
 
 LI1: u
 
+<<<<<<< icdatabase.sdf
+.Calls the UPS-style lookup. Can pre-define as many as desired. Though if want to do the hundreds available, it is best done on-the-fly.
+=======
 .Calls the UPS-style lookup. Can pre-define as many as desired. Though if want to do the hundreds available, it is best done on the fly.
+>>>>>>> 1.7
 
 LI1: x
 
@@ -2232,11 +2472,15 @@ LI1: A-Z
 
 .If the first character is a capital letter, calls one of the 26 secondary UPS-style lookup zones. (Deprecated now that zones can be named directly).
 
-H2: How Shipping Is Calculated
+H2: How Shipping is Calculated
 
-^The base code is selected by reading the value of mv_shipmode in the user session. If it has not been explicitly set, either by means of the DefaultShipping directive or by setting the variable on a form (or in an order profile), it will be C<default>.
+^The base code is selected by reading the value of C<mv_shipmode> in the user session. If it has not been explicitly set, either by means of the DefaultShipping directive or by setting the variable on a form (or in an order profile), it will be C<default>.
 
+<<<<<<< icdatabase.sdf
+.The C<mv_shipmode> must be in the character class [A-Za-z0-9_]. If there are spaces, commas, or nulls in the value, they will be read as multiple shipping modes.
+=======
 .The mv_shipmode must be in the character class E<lbracket>A-Za-z0-9_]. If there are spaces, commas, or nulls in the value, they will be read as multiple shipping modes.
+>>>>>>> 1.7
 
 +The modes are selected from the d
 
@@ -2299,7 +2543,11 @@ LI1: rpsg
 
 LI1: usps
 
+<<<<<<< icdatabase.sdf
+.The next mode, C<usps>, is a more complicated formula using price as the criteria. If the total price of all items in the shopping cart (same as C<[subtotal]> without quantity price breaks in place) is from 1 to 50, the cost will be 7.00 plus 10 percent of the order. If the total is from 50.01 to 100, the cost will be 12.00 plus 9 percent of the order total. If the cost is 100.01 or greater, 5 percent of the order total will be used as the shipping cost.
+=======
 .The next mode, C<usps>, is a more complicated formula using price as the criteria. If the total price of all items in the shopping cart (same as C<E<lbracket>subtotal]> without quantity price breaks in place) is from 1 to 50, the cost will be 7.00 plus 10% of the order. If the total is from 50.01 to 100, the cost will be 12.00 plus 9% of the order total. If the cost is 100.01 or greater, 5% of the order total will be used as the shipping cost.
+>>>>>>> 1.7
 
 LI1: upsg
 
@@ -2319,13 +2567,13 @@ LI1: upsg
 
 .UPS weights are always rounded up if any fraction is present. 
 
-.The routines use standard UPS lookup tables. First, the UPS Zone file must be present. That is a standard UPS document specific to the retailer's area that must be obtained from UPS. It is entered into and made available to Interchange in TAB-delimited format. (As of March 1997, use the standard .csv file distributed by UPS on their Web site at www.ups.com.) Specify it with the UpsZoneFile directive. It is usually named something like C<NNN.csv>, where NNN is the first three digits of the originating zip code. If placed in the products directory, the directive would look like:
+.The routines use standard UPS lookup tables. First, the UPS Zone file must be present. That is a standard UPS document specific to the retailer's area that must be obtained from UPS. It is entered into and made available to Interchange in TAB-delimited format. (As of March 1997, use the standard .csv file distributed by UPS on their Web site at C<www.ups.com>.) Specify it with the UpsZoneFile directive. It is usually named something like C<NNN.csv>, where NNN is the first three digits of the originating zip code. If placed in the products directory, the directive would look like:
 
 !block example; listitem=2
     UPSZoneFile  products/450.csv
 !endblock
 
-.Second, obtain the cost tables from UPS (again, get them from www.ups.com) and place them into an Interchange database. That database, its identifier specified with the first argument (Ground in the example) of the cost specification, is consulted to determine the UPS cost for that weight and rate schedule.
+.Second, obtain the cost tables from UPS (again, get them from C<www.ups.com>) and place them into an Interchange database. That database, its identifier specified with the first argument (Ground in the example) of the cost specification, is consulted to determine the UPS cost for that weight and rate schedule.
 
 .In the example below, use a database specification like:
 
@@ -2343,19 +2591,19 @@ LI1: upsg
     @@TOTAL@@ is replaced with the total weight
 !endblock
 
-.The example above also illustrates geographic qualification. If the value of the form variable state on the checkout form is AK or HI, the U.S. states Alaska and Hawaii, a $10.00 additional charge (over and above the normal 2.00 handling charge) is made.  This can also be used to select on country, product type, or any other qualification that can be encoded in the file.
+.The example above also illustrates geographic qualification. If the value of the form variable state on the checkout form is AK or HI, the U.S. states Alaska and Hawaii, a $10.00 additional charge (over and above the normal $2.00 handling charge) is made.  This can also be used to select on country, product type, or any other qualification that can be encoded in the file.
 
 LI1: upsca
 
 .The next entry is just like the UPS definition except it defines a different lookup zone file (C<products/can.csv>) and uses a different database, C<upsca>. It also disables the global PriceDivide option for itself only, not allowing currency conversion. Otherwise, the process is the same.
 
-.Up to 27 different lookup zones can be defined in the same fashion. If one of the cost lines (the last field) in the C<shipping.asc> file begins with a "c," it configures another lookup zone which must be lettered from C<A to Z>.  It takes the format:
+.Up to 27 different lookup zones can be defined in the same fashion. If one of the cost lines (the last field) in the C<shipping.asc> file begins with a C<c>, it configures another lookup zone which must be lettered from C<A to Z>.  It takes the format:
 
 !block example; listitem=2
     c X name file* length* multiplier*
 !endblock
 
-.where X is the letter from C<A-Z>. The name is used internally as an identifier and must be present. The optional C<file> is relative to the catalog root (like I<UpsZoneFile> is). If it is not present, the file equal to C<name> in the products directory (ProductDir) will be used as the zone file. If the optional digit C<length> is present, that determines the number of significant digits in the passed postal/geo code.
+.where X is the letter from C<A-Z>. The name is used internally as an identifier and must be present. The optional C<file> is relative to the catalog root (like C<UpsZoneFile> is). If it is not present, the file equal to C<name> in the products directory (ProductDir) will be used as the zone file. If the optional digit C<length> is present, that determines the number of significant digits in the passed postal/geo code.
 
 .When the optional C<multiplier> is present, the weight is multiplied by it before doing the table lookup. This allows shipping weights in pounds or kilograms to be adapted to a table using the opposite as the key. Remember, the match on weight must be exact, and Interchange rounds the weight up to the next even unit.
 
@@ -2369,7 +2617,11 @@ LI1: upsca
 
 LI1: fedex
 
+<<<<<<< icdatabase.sdf
+.The last entry, C<fedex>, uses a named subroutine. The example is designed to work with this subroutine defined in C<catalog.cfg>:
+=======
 .The last entry, C<fedex>, uses a named subroutine. The example is designed to work with this subroutine defined in catalog.cfg:
+>>>>>>> 1.7
 
 !block example; listitem=2
     Sub <<EOF
@@ -2387,17 +2639,21 @@ LI1: fedex
     EOF
 !endblock
 
-Note: The text above appears indented, but in the catalog.cfg file it must begin at the beginning of the line. Also, make sure to upload in ASCII mode. Carriage returns are not tolerated.
+Note: The text above appears indented, but in the C<catalog.cfg> file it must begin at the beginning of the line. Also, make sure to upload in ASCII mode. Carriage returns are not tolerated.
 
 .It will simply return a cost of 20 if the country the user has entered is US or USA. Otherwise, it will return a cost of 50. Obviously, much more complicated routines can be defined. Read the following only if familiar with Perl.
 
+<<<<<<< icdatabase.sdf
+.Named subroutines can be called with any of the methods defined with C<[set name] your_perl_code_here [/set]>, C<Sub>, or C<GlobalSub>.
+=======
 .Named subroutines can be called with any of the methods defined with C<E<lbracket>set name] your_perl_code_here E<lbracket>/set]>, Sub, or GlobalSub.
+>>>>>>> 1.7
 
 .If parameters are specified, separated by commas, they will be taken as either fixed values or as database fields to be sent to the subroutine in an anonymous hash keyed on the item code (for each item in the *current* shopping cart).
 
 .If a database other than the products database is to be used, the database name should be prepended with a colon (C<:>) separator. If a key other than the item code is to be used, it should be appended with a semi-colon separator.
 
-.To send fixed value to the subroutine (appended to the call reference as an array of fixed scalar parameters), begin the parameter with a semicolon. B<They will be appended globally after the hash reference>. 
+.To send fixed value to the subroutine (appended to the call reference as an array of fixed scalar parameters), begin the parameter with a semicolon. They will be appended globally after the hash reference. 
 
 .\Examples:
 
@@ -2441,7 +2697,7 @@ Note: The text above appears indented, but in the catalog.cfg file it must begin
   UK        0    0     0       1            1 
 !endblock
 
-.This will call the subroutine C<item_cost> and will send the weight of each item, along with the value of the modes database column corresponding to the shipping mode the user has selected, keyed with the value of C<country> on their order form. If the user has selected mode postal_air and is in the country coded as C<UK>, the subroutine will be called as if it was:
+.This will call the subroutine C<item_cost> and will send the weight of each item, along with the value of the modes database column corresponding to the shipping mode the user has selected, keyed with the value of C<country> on their order form. If the user has selected C<mode postal_air> and is in the country coded as C<UK>, the subroutine will be called as if it was:
 
 !block example; listitem=2
       item_cost( {
@@ -2488,9 +2744,9 @@ and a C<catalog.cfg> database callout of:
 
 These column names can be changed as long as they correspond to the C<identifier> of the rate database.
 
-The rate database is a standard Interchange database. For US shippers, UPS distributes their rates in a fairly standard comma-separated value format, with weight being the first (or key) column and the remainder of the columns corresponding to the zone which was obtained from the lookup in the zone file.
+The rate database is a standard Interchange database. For U.S. shippers, UPS distributes their rates in a fairly standard comma-separated value format, with weight being the first (or key) column and the remainder of the columns corresponding to the zone which was obtained from the lookup in the zone file.
 
-To adapt other shipper zone files to Interchange's lookup, they will need to fit the UPS US format. (Most of the UPS international files don't follow the US format). For example, the 1998 Ohio-US to Canada file begins:
+To adapt other shipper zone files to Interchange's lookup, they will need to fit the UPS US format. (Most of the UPS international files don't follow the U.S. format). For example, the 1998 Ohio-US to Canada file begins:
 
 !block example
    Canada Standard Zone Charts from Ohio
@@ -2560,11 +2816,15 @@ If C<upsg> is the mode selected, the value of the user session variable C<state>
 
 H2:  Handling Charges
 
+<<<<<<< icdatabase.sdf
+Additional handling charges can be defined in the shipping file by setting the form variable C<mv_handling> to a space, comma, or null-separated set of valid shipping modes. The lookup and charges are created in the same fashion, and the additional charges are added to the order. (The user is responsible for displaying the charge on the order report or receipt with a C<[shipping handling]> tag, or the like.) All of the shipping modes found in C<mv_handling> will be applied. If multiple instances are found on a form, the accordingly null-separated values will all be applied. NOTE: This should not be done in an item-list unless the multiple setting of the variables is accounted for.
+=======
 Additional handling charges can be defined in the shipping file by setting the form variable C<mv_handling> to a space, comma, or null-separated set of valid shipping modes. The lookup and charges are created in the same fashion, and the additional charges are added to the order. (The user is responsible for
 displaying the charge on the order report or receipt with a C<E<lbracket>shipping handling]>
 tag, or the like.) All of the shipping modes found in mv_handling will be
 applied. If multiple instances are found on a form, the accordingly null-separated 
 values will all be applied. NOTE: This should not be done in an item-list unless the multiple setting of the variables is accounted for.
+>>>>>>> 1.7
 
 To only process a handling charge once, do the following:
 
@@ -2579,11 +2839,11 @@ To only process a handling charge once, do the following:
    E<lbracket>/item-list]
 !endblock
 
-A non-blank/non-zero value in the database field B<very_heavy> will trigger Perl code which will only set mv_handling once.
+A non-blank/non-zero value in the database field will trigger Perl code which will only set C<mv_handling> once.
 
 H2: Default Shipping Mode
 
-If a default shipping mode other than C<default> is desired, enter it into the DefaultShipping directive:
+If a default shipping mode other than C<default> is desired, enter it into the C<DefaultShipping> directive:
 
 !block example
    DefaultShipping     upsg
@@ -2595,18 +2855,19 @@ This will make the entry on the order form checked by default when the user star
  <INPUT TYPE=RADIO NAME=mv_shipmode VALUE=upsg E<lbracket>checked mv_shipmode upsg]> 
 !endblock
 
-To force a choice by the user, make mv_shipmode a required form variable (with RequiredFields or in an order profile) and set DefaultShipping to zero.
+To force a choice by the user, make C<mv_shipmode> a required form variable (with RequiredFields or in an order profile) and set C<DefaultShipping> to zero.
 
 H1: USER DATABASE
 
-Interchange has a user database function which allows customers to save any
-pertinent values from their session. It also allows the setting of database
-or file access control lists for use in controlling access to pages and 
-databases on a user-by-user basis.
+Interchange has a user database function which allows customers to save any pertinent values from their session. It also allows the setting of database or file access control lists for use in controlling access to pages and databases on a user-by-user basis.
 
 The database field names in the user database correspond with the form variable names in the user session. If there is a column named C<address>, when the user logs in the contents of that field will be placed in the form variable C<address>, and will be availabe for display with C<E<lbracket>value address]>. Similarly, the database value is available with C<E<lbracket>data table=userdb column=address key=username]>.
 
+<<<<<<< icdatabase.sdf
+The ASCII file for the database will not reflect changes unless the file is exported with C<[tag export userdb][/tag]>. It is not advisable to edit the ASCII file, as it will overwrite the real data that is in the DBM table. User logins and changes would be lost. NOTE: This would not happen with SQL, but editing the ASCII file would have no effect. It is recommended that the C<NoImport> configuration directive be set accordingly.
+=======
 The ASCII file for the database will not reflect changes unless the file is exported with C<E<lbracket>tag export userdb]E<lbracket>/tag]>. It is not advisable to edit the ASCII file, as it will overwrite the real data that is in the DBM table. User logins and changes would be lost. NOTE: This would not happen with SQL, but editing the ASCII file would have no effect. It is recommended that the NoImport configuration directive be set accordingly.
+>>>>>>> 1.7
 
 The field names to be used are not set in concrete. They may be changed with options. Fields may be added or subtracted at any time. Most users will choose to keep the default demo fields for simplicity sake, as they cover most common needs. As distributed in the demo, the fields are:
 
@@ -2653,7 +2914,11 @@ The field names to be used are not set in concrete. They may be changed with opt
 
 A few of those fields are special in naming, though all can be changed via an option. A couple of the fields are reserved for Interchange's use.
 
+<<<<<<< icdatabase.sdf
+IMPORTANT NOTE: If not running with PGP or other encryption for credit card numbers, which should NEVER be done anyway, it is important that the C<mv_credit_card_info> field be removed from the database. 
+=======
 Note[label='IMPORTANT NOTE: '] If not running with PGP or other encryption for credit card numbers, which should NEVER be done anyway, it is important that the mv_credit_card_info field be removed from the database. 
+>>>>>>> 1.7
 
 The special database fields are:
 
@@ -2751,8 +3016,7 @@ There are several global parameters that apply to any use of the C<userdb> funct
 
 By default the system crypt() call will be used to compare the password. This is best for security, but the passwords in the user database will not be human readable.
 
-If no critical information is kept and Interchange administration is not done via the C<UserDB> capability, then use the UserDB directive (described below) to set
-encryption off by default:
+If no critical information is kept and Interchange administration is not done via the C<UserDB> capability, use the C<UserDB> directive (described below) to set encryption off by default:
 
 !block example
    UserDB   default   crypt   0
@@ -2760,9 +3024,9 @@ encryption off by default:
 
 Encryption can still be set on by passing C<crypt=1> with any call to a C<new_account>, C<change_pass>, or C<login> call.
 
-H2: Setting Defaults With The UserDB Directive
+H2: Setting Defaults with the UserDB Directive
 
-The UserDB directive provides a way to set defaults for the user database. For example, to save and recall the scratch variable C<tickets> in the user database
+The C<UserDB> directive provides a way to set defaults for the user database. For example, to save and recall the scratch variable C<tickets> in the user database
 instead of the form variable C<tickets>, set:
 
 !block example
@@ -2785,7 +3049,7 @@ To disable logging of failed access authorizations (the default), set the C<User
    UserDB  default  log_failed 0
 !endblock
 
-The UserDB directive uses the same key-value pair settings as the Locale and Route directives. If there are more than one set of defaults, set them in a hash structure:
+The C<UserDB> directive uses the same key-value pair settings as the C<Locale> and C<Route> directives. If there are more than one set of defaults, set them in a hash structure:
 
 !block example
    UserDB  crypt_case  <<EOF
@@ -2817,7 +3081,7 @@ The option C<profile> selects the set to use. For usernames and passwords to be 
 
 The username and password will be stored as typed in, and the password will be encrypted in the database.
 
-H2: User Database functions
+H2: User Database Functions
 
 The user database features are implemented as a series of functions attached to the C<userdb> tag. The functions are:
 
@@ -2829,7 +3093,11 @@ LI1: login
 
 .This will recall the values of all non-special fields in the user database and place them in their corresponding user form variables.
 
+<<<<<<< icdatabase.sdf
+.The C<CookieLogin> directive (catalog.cfg) allows users to save their username/password in a cookie. Expiration time is set by C<SaveExpire>, renewed every time they log in. To cause the cookie to be generated originally, the form variable C<mv_cookie_password> or C<mv_cookie_username> must be set in the login form. The former causes both username and password to be saved, the latter just the username.
+=======
 .The I<CookieLogin> directive (catalog.cfg) allows users to save their username/password in a cookie. Expiration time is set by I<SaveExpire>, renewed every time they log in. To cause the cookie to be generated originally, the form variable C<mv_cookie_password> or C<mv_cookie_username> must be set in the login form. The former causes both username and password to be saved, the latter just the username.
+>>>>>>> 1.7
 
 LI1: logout
 
@@ -2841,7 +3109,7 @@ LI1: new_account
 
 .Create a new account. It requires the C<username>, C<password>, and C<verify> parameters, which are by default contained in the form variables C<mv_username>, C<mv_password>, C<mv_verify> respectively.
 
-.If the C<assign_username> parameter is set, UserDB will assign a sequential username. The C<counter> parameter can be used to set the filename (must be absolute), or the default of CATALOG_DIR/etc/username.counter can be accepted. The first username will be "U0001" if the counter doesn't exist already.
+.If the C<assign_username> parameter is set, C<UserDB> will assign a sequential username. The C<counter> parameter can be used to set the filename (must be absolute), or the default of CATALOG_DIR/etc/username.counter can be accepted. The first username will be "U0001" if the counter doesn't exist already.
 
 .The C<ignore_case> parameter forces the username and password to lower case in the database, in effect rendering the username and password case-insensitive.
 
@@ -2853,9 +3121,9 @@ LI1: new_account
             ]
 !endblock
 
-.The CookieLogin directive (catalog.cfg) allows users to save their username/password in a cookie. Expiration time is set by SaveExpire, renewed every time they log in. To cause the cookie to be generated originally, the form variable C<mv_cookie_password> or C<mv_cookie_username> must be set in the login form. The former causes both username and password to be saved, the latter just the username.
+.The C<CookieLogin> directive (catalog.cfg) allows users to save their username/password in a cookie. Expiration time is set by C<SaveExpire>, renewed every time they log in. To cause the cookie to be generated originally, the form variable C<mv_cookie_password> or C<mv_cookie_username> must be set in the login form. The former causes both username and password to be saved, the latter just the username.
 
-.To automatically create an account for every order, set the following in the OrderReport file:
+.To automatically create an account for every order, set the following in the C<OrderReport> file:
 
 !block example; listitem=2
     E<lbracket>userdb function=new_account
@@ -3013,7 +3281,7 @@ LI1: set_file_acl, set_db_acl
             location=products/inventory.txt]
 !endblock
 
-.where mode is any value to be checked with check_file_acl. As with the simple ACL, you can use delete=1 to delete the location entirely.
+.where mode is any value to be checked with C<check_file_acl>. As with the simple ACL, use delete=1 to delete the location entirely.
 
 LI1: check_file_acl, check_db_acl
 
@@ -3027,7 +3295,7 @@ LI1: check_file_acl, check_db_acl
             location=inventory]
 !endblock
 
-.where mode is any value to be checked with check_file_acl. It will return true, if the mode string is contained within the entry for that location. For example:
+.where mode is any value to be checked with C<check_file_acl>. It will return true, if the mode string is contained within the entry for that location. For example:
 
 !block example; listitem=2
     E<lbracket>if type=explicit
@@ -3069,7 +3337,7 @@ The first field is always the name of the form variable that contains the key fo
 available is kept in the form value C<address_book>, suitable for iteration in
 an HTML select box or in a set of links.
 
-To get the names of the addresses, use the get_shipping_names function:
+To get the names of the addresses, use the C<get_shipping_names> function:
 
 !block example
    E<lbracket>userdb function=get_shipping_names]
@@ -3100,7 +3368,7 @@ To restore a cart based on the above, put in an C<mv_check> routine:
    E<lbracket>/set]
 !endblock
 
-When the mv_check variable is encountered, the contents of the scratch variable C<Recall Shipping> are processed and the shipping address information inserted into the user form values. This is destructive of any current values of those user session variables, of course.
+When the C<mv_check> variable is encountered, the contents of the scratch variable C<Recall Shipping> are processed and the shipping address information inserted into the user form values. This is destructive of any current values of those user session variables, of course.
 
 To change the fields that are recalled or saved, use the C<shipping> parameter:
 
@@ -3151,7 +3419,7 @@ Preferences are miscellaneous session information. They include, by default, the
    email_copy
 !endblock
 
-The field p_nickname acts as a key to select the preference set. To change
+The field C<p_nickname> acts as a key to select the preference set. To change
 the values that are included with the C<preferences> parameter:
     
 !block example
@@ -3172,7 +3440,7 @@ See the Simple demo application C<ord/basket.html> page for an example.
 
 H2: Controlling Page Access With UserDB
 
-Interchange can implement a simple access control scheme with the user database. Controlled pages must reside in a directory which has a file named C<.access> that is zero bytes in length. (If it is more than 0 bytes, then only the RemoteUser or MasterHost may access files in that directory.)
+Interchange can implement a simple access control scheme with the user database. Controlled pages must reside in a directory which has a file named C<.access> that is zero bytes in length. (If it is more than 0 bytes, only the RemoteUser or MasterHost may access files in that directory.)
 
 Set the following variables in C<catalog.cfg>:
 
@@ -3245,7 +3513,11 @@ LI1: No SQL database.
 
 LI1: No DBI.
 
+<<<<<<< icdatabase.sdf
+.You must install Perl's DBI module before using Interchange with SQL. You can see where to get it at C<http://www.cpan.org>, or try:
+=======
 .You must install Perl's DBI module before using Interchange with SQL. You can see where to get it at http://www.cpan.org, or try:
+>>>>>>> 1.7
 
 !block example; listitem=2
     perl -MCPAN -e 'install DBI'
@@ -3253,7 +3525,11 @@ LI1: No DBI.
 
 LI1: No DBD.
 
+<<<<<<< icdatabase.sdf
+.You must install the specific Perl DBD module for your database before using Interchange with SQL. You can see where to get it at C<http://www.cpan.org>, or try:
+=======
 .You must install the specific Perl DBD module for your database before using Interchange with SQL. You can see where to get it at http://www.cpan.org, or try:
+>>>>>>> 1.7
 
 !block example; listitem=2
     perl -MCPAN -e 'install DBD::XXXXX'
@@ -3288,17 +3564,29 @@ LI1: No DBD.
 
 LI1: I don't like the column types that Interchange defines!
 
+<<<<<<< icdatabase.sdf
+.They can be changed. See the C<simple/mysql> directory for some examples under MySQL.
+=======
 .They can be changed. See the simple/mysql directory for some examples under MySQL.
+>>>>>>> 1.7
 
 LI1: I change the ASCII file, but the table is not updated. Why?
 
+<<<<<<< icdatabase.sdf
+.Interchange writes an empty file C<TABLE.sql> (where TABLE is the name of the table). When this is present, Interchange will never update the table from disk.
+=======
 .Interchange writes an empty file TABLE.sql (where TABLE is the name of the table). When this is present, Interchange will never update the table from disk.
+>>>>>>> 1.7
 
 .Also, if you have changed the field names in the file, you must restart the catalog (Apply Changes) before they will be picked up.
 
 LI1: Why do I even need an ASCII file?
 
+<<<<<<< icdatabase.sdf
+.Interchange wants some source for column names initially. If you don't want to have one, just create a C<TABLENAME.sql> file in the C<products> directory. For example, if you have this:
+=======
 .Interchange wants some source for column names initially. If you don't want to have one, just create a TABLENAME.sql file in the C<products> directory. For example, if you have this:
+>>>>>>> 1.7
 
 !block example; listitem=2
     Database products products.txt dbi:mysql:test_minivend
@@ -3316,7 +3604,12 @@ LI1: Why do I even need an ASCII file?
 
 LI1: Interchange overwrites my predefined table!
 
+<<<<<<< icdatabase.sdf
+B<Interchange overwrites my predefined table!>
+.Yes, it will if you don't create a file called C<TABLENAME.sql>, where C<TABLENAME> is the name of the Interchange table. If you want this to happen by default, then set C<NoImport TABLENAME>.
+=======
 .Yes, it will if you don't create a file called TABLENAME.sql, where C<TABLENAME> is the name of the Interchange table. If you want this to happen by default, then set C<NoImport TABLENAME>.
+>>>>>>> 1.7
 
 H2: How can I use Interchange with Microsoft Access?
 
@@ -3379,7 +3672,7 @@ Here is a quick procedure that might get you started:
 
 .You install this package on your Windows 95 or NT box. It is a simple setup.exe process which leads you to the control panel for setting up an ODBC data source.  Set up a data source named C<test_odbc> that points to the database C<test_odbc> on the UNIX box. You will need to know the host name and the port (usually 3306).
 
-*With MS-Access, you can then open a blank database and select: File/Get External Data/Link Tables. Select File Type of 'ODBC databases', and the proper data source, and you should have access to the database residing on the UNIX side.
+*With MS-Access, you can then open a blank database and select: File/Get External Data/Link Tables. Select File Type of 'ODBC databases' and the proper data source, and you should have access to the database residing on the UNIX side.
 
 H1: INTERCHANGE DATABASE USERTAGS
 
