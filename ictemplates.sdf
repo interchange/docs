@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ictemplates.sdf,v 1.29 2001-12-28 16:53:34 jon Exp $
+# $Id: ictemplates.sdf,v 1.30 2001-12-29 21:14:04 jon Exp $
 
 !define DOC_NAME "Template Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "ictemplates"
-!define DOC_VERSION substr('$Revision: 1.29 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.30 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictemplates.html"
@@ -125,7 +125,7 @@ is the same as
 !endblock
 
 
-Pipes can also be used as quoting characters, but have the unique behavior of stripping leading and trailing whitespace. For example:
+Vertical bars can also be used as quoting characters, but have the unique behavior of stripping leading and trailing whitespace. For example:
 
 !block example
        [loop list="code        field    field2  field3
@@ -140,17 +140,17 @@ could be better expressed as:
 !block example
     [loop list=|
             k1    A1    A2    A3
-            k2    B1    B2    B3"]
+            k2    B1    B2    B3
     |]
         [loop-increment][loop-code]
     [/loop]
 !endblock
 
-How the result of the tag is displayed depends on if it is a container or a standalone tag. A container tag has a closing tag (for example, C<[tag] stuff [/tag]>). A standalone tag has no end tag (for example, C<[area href=somepage]>). C<[page ...]> and C<[order ..]> are B<not> container tags.
+How the result of the tag is displayed depends on if it is a container or a standalone tag. A container tag has a closing tag (for example, C<[tag] stuff [/tag]>). A standalone tag has no end tag (for example, C<[area href=somepage]>). Note that C<[page ...]> and C<[order ..]> are B<not> container tags. (C<[/page]> and C<[/order]> are simple macros.)
 
 A container tag will have its output re-parsed for more Interchange tags by default. To inhibit this behavior, set the attribute reparse to 0.  However, it has been found that the default re-parsing is almost always desirable. On the other hand, the output of a standalone tag will not be re-interpreted for Interchange tag constructs (with some exceptions, like (C<[include file]>).
 
-Most container tags will not have their contents interpreted before being passed the container text. Exceptions include C<[calc]> .. C<[/calc]> and C<[currency]> ... C<[/currency]>. All tags accept the INTERPOLATE=1 tag modifier, which causes the interpretation to take place. It is not necessary to interpret the contents of a C<[set variable]> TAGS C<[/set]> pair, as they might contain tags which should only be upon evaluating an order profile, search profile, or C<mv_click> operation. If the evaluation is performed at the time a variable is set, use C<[set name=variable interpolate=1] TAGS [/set]>.
+Most container tags will not have their contents interpreted (Interchange tags parsed) before being passed the container text. Exceptions include C<calc>, C<currency>, and C<seti>. All tags accept the C<interpolate=1> tag modifier, which causes the interpretation to take place.
 
 H2: The DATA and FIELD Tags
 
@@ -159,9 +159,9 @@ The C<[data ...]> and C<[field ...]> tags access elements of Interchange databas
 The following are equivalent for attribute names:
 
 !block example
-   table ---> base
-   col   ---> field --> column
-   key   ---> code  --> row
+   table --> base
+   col   --> field --> column
+   key   --> code  --> row
 !endblock
 
 The [field ...] tag looks in any tables defined as C<ProductFiles>, in that order, for the data and returns the first non-empty value. In most catalogs, where C<ProductFiles> is not defined, i.e., the demo, C<[field title 00-0011]> is equivalent to C<[data products title 00-0011]>. For example, [field col=foo key=bar] will not display something from the table "category" because "category" is not in the directive ProductFiles or there are multiple ProductFiles and an earlier one has an entry for that key.
@@ -206,7 +206,7 @@ H2: set, seti, scratch and scratchd
 
 Scratch variables are maintained in the user session, which is separate from the form variable values set on HTML forms. Many things can be controlled with scratch variables, particularly search and order processing, the C<mv_click> multiple variable setting facility, and key Interchange conditions session URL display.
 
-There are three tags that are used to set the space, C<[set name]value[/set]>, [seti name]value[/seti], [tmp name]value[/tmp], and two variations (or shortcuts).
+There are three tags that are used to set the scratch space, C<[set name]value[/set]>, [seti name]value[/seti], [tmp name]value[/tmp], and two tags for reading scratch space.
 
 LI1: [set variable]value[/set]
 
@@ -264,7 +264,7 @@ LI1: [scratch name]
 
 LI1: [scratchd]
 
-.The same as [scratch name], except it deletes the value. Same as [scratch foo][set foo][/set].
+.The same as [scratch name], except it deletes the value after returning it. Same as [scratch foo][set foo][/set].
 
 LI1: [if scratch name op* compare*] yes [else] no [/else] [/if]
 
@@ -2908,8 +2908,6 @@ H2: Setting the Locale
 The locale could be set to C<fr_FR> (French for France) in one of two ways:
 
 LI1: [setlocale locale=locale* currency=locale* persist=1*]
-
-.This tag is for new-style tags only and will not work for C<[old]>.
 
 .Immediately sets the locale to C<locale>, and will cause it to persist in future user pages if the C<persist> is set to a non-zero, non-blank value. If the C<currency> attribute is set, the pricing and currency-specific locale keys and Interchange configuration directives are modified to that locale. If there are no arguments, it sets it back to the user's default locale as defined in the scratch variables C<mv_locale> and C<mv_currency>.
 
