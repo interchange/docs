@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.9 2001-03-24 02:18:17 bill Exp $
+# $Id: ictags.sdf,v 1.10 2001-03-24 16:18:17 bill Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.9 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.10 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -70,7 +70,7 @@ its end tag will delimit contained body text:
   [B<tagname> I<parameters> I<attributes>]Contained Body Text[/tagname]
 !endblock
 
-!block note; label="Caveats -- macros: "
+!block note; label="Caveat -- macros: "
 Some macros look like tags or end tags. For example,
 E<lbracket>{{C[jump="#page"]/page}}E<rbracket> is a macro for
 E<lt>/AE<gt>). This allows you to conveniently write
@@ -87,12 +87,51 @@ If a tag name includes an underscore or dash, as in
 ending tag must match the tag (i.e., don't use
 C<E<lbracket>item-list]E<nbspace>listE<nbspace>[/item_list]>).
 
+H4: HTML-Comment
+
+ITL also allows you to use 'E<lt>!--[' and ']--E<gt>' as
+interchangeable alternatives to plain square brackets:
+C<E<lbracket>tagname]> and C<E<lt>!--[tagname]--E<gt>> are
+equivalent.
+
+This allows you make your raw tags appear as comments to HTML browsers
+or editors.  You might want to do this if your editor has trouble with
+ITL tags when editing Interchange page templates, or alternatively, if
+you want to use one .html file both as an Interchange template and as
+a static page delivered directly by your web server, without
+Interchange processing.
+
+To properly HTML-comment contained body text, place your comment-style
+brackets appropriately, for example:
+
+E: E<lt>!--[tagname] Contained Body Text E<lbracket>/tagname]-->
+
+Note that you must include whitespace between the HTML comment
+delimiters and the square brackets if you wish to actually comment out
+tag output in the browser.  For example, if
+E<lbracket>{{C[jump="#value"]value}}E<nbspace>name] expands to 'Bill':
+
+E: E<lt>!--[value name]-->  becomes  Bill
+E: E<lt>!-- [value name] -->  becomes  <!-- Bill -->
+
+H5: Technical notes
+
+While '<!--[' and '[' are interchangeable, the Interchange parser
+does not replace ']-->' with ']' unless it sees '<!--[' elsewhere in
+the page.
+
+See the {{CMD[jump="#Template Parsing Order"]Template Parsing Order}}
+appendix if you are modifying the special administrative interface
+pages and intend to use this syntax.
+
+
 H3: HTML-Embedded
 
 As an alternative syntax, you can usually embed an Interchange tag as
 an attribute within an HTML tag.  This allows some HTML editors to
-work more easily with Interchange templates.  The following is a basic
-example:
+work more easily with Interchange templates (though you should
+consider the above HTML-comment-style brackets first).  The following
+is a basic example of HTML-Embedded syntax:
 
 !block example
   <C<HTMLtag> MV="B<tagname> I<positional parameters>" C<other HTML attributes>>
@@ -127,6 +166,8 @@ in the cart.
 !endblock
 
 !block note; label="Note -- Disabling HTML-embedded tags for performance: "
+
+Avoid the HTML-embedded usage if you can.
 
 The foundation catalog included with interchange disables parsing of
 the HTML-embedded syntax.  This is for better performance, since it
