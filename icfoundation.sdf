@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icfoundation.sdf,v 1.14 2001-05-15 14:17:02 larry Exp $
+# $Id: icfoundation.sdf,v 1.15 2001-05-24 14:32:44 bill Exp $
 
 !define DOC_NAME "Foundation Store"
 !define DOC_TYPE ""
 !define DOC_CODE "icfoundation"
-!define DOC_VERSION substr('$Revision: 1.14 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.15 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/doc/icfoundation.html"
@@ -3642,7 +3642,7 @@ Unique product ID
 Short description for list display
 >>
 {{CMD[jump="#products_title"]title}}|<<
-Deprecated
+Full title for book, CD, artwork, I<etc.>
 >>
 {{CMD[jump="#products_template_page"]template_page}}|<<
 Not used in foundation catalog. No description.
@@ -3675,10 +3675,10 @@ Boolean. Set true (1) if nontaxable
 Weight in your units. Should match shipping table.
 >>
 {{CMD[jump="#products_size"]size}}|<<
-Deprecated list of options used with {{CMD[jump="ictags.html#accessories"]accessories}} tag.
+List of options used with {{CMD[jump="ictags.html#accessories"]accessories}} tag.
 >>
 {{CMD[jump="#products_color"]color}}|<<
-Deprecated list of options used with {{CMD[jump="ictags.html#accessories"]accessories}} tag.
+List of options used with {{CMD[jump="ictags.html#accessories"]accessories}} tag.
 >>
 {{CMD[jump="#products_gift_cert"]gift_cert}}|<<
 Boolean. Set true (1) if this is a gift certificate.
@@ -3744,7 +3744,9 @@ Example Data
    Trim Brush
 !endblock
 
-Despite the redundant duplication of the description field's data, this column is not used in the foundation catalog. Previously used in the Art store (simple) demo for a painting title. You probably want to use B<description> instead. You probably do not need this column in the table at all.
+Despite the redundant duplication of the description field's data, this column is not used in the foundation catalog. Previously used in the Art store (simple) demo for a painting title. You probably want to use B<description> instead.
+
+Note that you should modify the products and other tables to suit your catalog's requirements. You might use this field if you want to show titles for books, music, or other titled merchandise. If you do not use a title that is distinct from the short description, then you probably do not need this column in the table at all.
 
 
 H3: {{CMD[id="products_template_page"]template_page}}
@@ -3893,9 +3895,11 @@ Example Data
    standard, metric
 !endblock
 
-The foundation catalog now uses the B<options> table to handle product options (also sometimes called product attributes).
+This is where the old Construct Something demo store kept the 'size' options for a product.  The foundation catalog now uses the B<options> table instead to handle product options (also sometimes called product attributes).
 
 The {{C[jump="ictags.html#accessories"]accessories}} tag can build HTML widgets from the comma-delimited list of product options.  You can use a delimiter other than comma (if compatible with the table) as long as you also set the {{C[jump="ictags.html#accessories_delimiter"]delimiter}} in the {{C[jump="ictags.html#accessories"]accessories}} tag.
+
+You probably do not need this field if you use the options table (for example, if you are building from the foundation catalog).
 
 
 H3: {{CMD[id="products_color"]color}}

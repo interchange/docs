@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.39 2001-05-18 17:51:41 jon Exp $
+# $Id: ictags.sdf,v 1.40 2001-05-24 14:32:44 bill Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.39 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.40 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -2548,13 +2548,13 @@ total, subtotal, shipping, and nitems tags.
 
 
 
-
-
 H2: catch
 
-See also E<lbracket>{{C[jump="#try"]try}}.
+The page content contained within the E<lbracket>C<catch> I<label>]E<lbracket>C</catch>] block executes if the correspondingly labelled  {{C[jump="#try"]try}} block fails.
 
-Process body text if the  E<lbracket>{{C[jump="#try"]try}} block generates an error.
+See also E<lbracket>{{C[jump="#try"]try}}].
+
+Process body text if the corresponding E<lbracket>{{C[jump="#try"]try}} block generates an error.
 
 H3: Summary
 
@@ -2563,15 +2563,6 @@ H3: Summary
 * label
 ** The label specifying the corresponding E<lbracket>{{C[jump="#try"]try}} block. Defaults to 'default'.
 
-
-ONLY THE B<> PARAMETERS ARE POSITIONAL.
-
-
-B<The attribute hash reference is passed> after the parameters but before
-the container text argument.
-B<This may mean that there are parameters not shown here.>
-
-Must pass named parameter interpolate=1 to cause interpolation.
 
 This is a container tag, i.e. [catch] FOO [/catch].
 \Nesting: NO
@@ -3383,60 +3374,63 @@ from other companies.
 
 It translates into ECML from the following Interchange variables:
 
-  Ecom_BillTo_Online_Email            b_email
-  Ecom_BillTo_Postal_City             b_city
-  Ecom_BillTo_Postal_CountryCode      b_country
-  Ecom_BillTo_Postal_Name_First       b_fname
-  Ecom_BillTo_Postal_Name_Last        b_lname
-  Ecom_BillTo_Postal_Name_Middle      b_mname
-  Ecom_BillTo_Postal_Name_Prefix      b_title
-  Ecom_BillTo_Postal_Name_Suffix      b_name_suffix
-  Ecom_BillTo_Postal_PostalCode       b_zip
-  Ecom_BillTo_Postal_StateProv        b_state
-  Ecom_BillTo_Postal_Street_Line1     b_address1
-  Ecom_BillTo_Postal_Street_Line2     b_address2
-  Ecom_BillTo_Postal_Street_Line3     b_address3
-  Ecom_BillTo_Telecom_Phone_Number    b_phone_day
-  Ecom_ConsumerOrderID                mv_order_number
-  Ecom_Payment_Card_ExpDate_Day       mv_credit_card_exp_day
-  Ecom_Payment_Card_ExpDate_Month     mv_credit_card_exp_month
-  Ecom_Payment_Card_ExpDate_Year      mv_credit_card_exp_year
-  Ecom_Payment_Card_Name              c_name
-  Ecom_Payment_Card_Number            mv_credit_card_number
-  Ecom_Payment_Card_Protocol          payment_protocols_available
-  Ecom_Payment_Card_Type              mv_credit_card_type
-  Ecom_Payment_Card_Verification      mv_credit_card_verify
-  Ecom_ReceiptTo_Online_Email         r_email
-  Ecom_ReceiptTo_Postal_City          r_city
-  Ecom_ReceiptTo_Postal_CountryCode   r_country
-  Ecom_ReceiptTo_Postal_Name_First    r_fname
-  Ecom_ReceiptTo_Postal_Name_Last     r_lname
-  Ecom_ReceiptTo_Postal_Name_Middle   r_mname
-  Ecom_ReceiptTo_Postal_Name_Prefix   r_title
-  Ecom_ReceiptTo_Postal_Name_Suffix   r_name_suffix
-  Ecom_ReceiptTo_Postal_PostalCode    r_zip
-  Ecom_ReceiptTo_Postal_StateProv     r_state
-  Ecom_ReceiptTo_Postal_Street_Line1  r_address1
-  Ecom_ReceiptTo_Postal_Street_Line2  r_address2
-  Ecom_ReceiptTo_Postal_Street_Line3  r_address3
-  Ecom_ReceiptTo_Telecom_Phone_Number r_phone
-  Ecom_SchemaVersion                  ecml_version
-  Ecom_ShipTo_Online_Email            email
-  Ecom_ShipTo_Postal_City             city
-  Ecom_ShipTo_Postal_CountryCode      country
-  Ecom_ShipTo_Postal_Name_Combined    name
-  Ecom_ShipTo_Postal_Name_First       fname
-  Ecom_ShipTo_Postal_Name_Last        lname
-  Ecom_ShipTo_Postal_Name_Middle      mname
-  Ecom_ShipTo_Postal_Name_Prefix      title
-  Ecom_ShipTo_Postal_Name_Suffix      name_suffix
-  Ecom_ShipTo_Postal_PostalCode       zip
-  Ecom_ShipTo_Postal_StateProv        state
-  Ecom_ShipTo_Postal_Street_Line1     address1
-  Ecom_ShipTo_Postal_Street_Line2     address2
-  Ecom_ShipTo_Postal_Street_Line3     address3
-  Ecom_ShipTo_Telecom_Phone_Number    phone
-  Ecom_TransactionComplete            end_transaction_flag
+!block table; colvaligns="TT"; format="64"
+ECML|Interchange_variable
+Ecom_BillTo_Online_Email|b_email
+Ecom_BillTo_Postal_City|b_city
+Ecom_BillTo_Postal_CountryCode|b_country
+Ecom_BillTo_Postal_Name_First|b_fname
+Ecom_BillTo_Postal_Name_Last|b_lname
+Ecom_BillTo_Postal_Name_Middle|b_mname
+Ecom_BillTo_Postal_Name_Prefix|b_title
+Ecom_BillTo_Postal_Name_Suffix|b_name_suffix
+Ecom_BillTo_Postal_PostalCode|b_zip
+Ecom_BillTo_Postal_StateProv|b_state
+Ecom_BillTo_Postal_Street_Line1|b_address1
+Ecom_BillTo_Postal_Street_Line2|b_address2
+Ecom_BillTo_Postal_Street_Line3|b_address3
+Ecom_BillTo_Telecom_Phone_Number|b_phone_day
+Ecom_ConsumerOrderID|mv_order_number
+Ecom_Payment_Card_ExpDate_Day|mv_credit_card_exp_day
+Ecom_Payment_Card_ExpDate_Month|mv_credit_card_exp_month
+Ecom_Payment_Card_ExpDate_Year|mv_credit_card_exp_year
+Ecom_Payment_Card_Name|c_name
+Ecom_Payment_Card_Number|mv_credit_card_number
+Ecom_Payment_Card_Protocol|payment_protocols_available
+Ecom_Payment_Card_Type|mv_credit_card_type
+Ecom_Payment_Card_Verification|mv_credit_card_verify
+Ecom_ReceiptTo_Online_Email|r_email
+Ecom_ReceiptTo_Postal_City|r_city
+Ecom_ReceiptTo_Postal_CountryCode|r_country
+Ecom_ReceiptTo_Postal_Name_First|r_fname
+Ecom_ReceiptTo_Postal_Name_Last|r_lname
+Ecom_ReceiptTo_Postal_Name_Middle|r_mname
+Ecom_ReceiptTo_Postal_Name_Prefix|r_title
+Ecom_ReceiptTo_Postal_Name_Suffix|r_name_suffix
+Ecom_ReceiptTo_Postal_PostalCode|r_zip
+Ecom_ReceiptTo_Postal_StateProv|r_state
+Ecom_ReceiptTo_Postal_Street_Line1|r_address1
+Ecom_ReceiptTo_Postal_Street_Line2|r_address2
+Ecom_ReceiptTo_Postal_Street_Line3|r_address3
+Ecom_ReceiptTo_Telecom_Phone_Number|r_phone
+Ecom_SchemaVersion|ecml_version
+Ecom_ShipTo_Online_Email|email
+Ecom_ShipTo_Postal_City|city
+Ecom_ShipTo_Postal_CountryCode|country
+Ecom_ShipTo_Postal_Name_Combined|name
+Ecom_ShipTo_Postal_Name_First|fname
+Ecom_ShipTo_Postal_Name_Last|lname
+Ecom_ShipTo_Postal_Name_Middle|mname
+Ecom_ShipTo_Postal_Name_Prefix|title
+Ecom_ShipTo_Postal_Name_Suffix|name_suffix
+Ecom_ShipTo_Postal_PostalCode|zip
+Ecom_ShipTo_Postal_StateProv|state
+Ecom_ShipTo_Postal_Street_Line1|address1
+Ecom_ShipTo_Postal_Street_Line2|address2
+Ecom_ShipTo_Postal_Street_Line3|address3
+Ecom_ShipTo_Telecom_Phone_Number|phone
+Ecom_TransactionComplete|end_transaction_flag
+!endblock
 
 Once the form variables are input and sent to Interchange, the [ecml function=mapback]
 tag will cause the input results to be mapped back from the ECML names to the
@@ -4349,45 +4343,80 @@ Builds a tax rate from C<taxarea>, C<taxrate>, C<taxshipping>, variable values, 
 
 
 
-
 H2: goto
 
-(I think this is deprecated, but I'm not sure)
+Skips page content between E<lbracket>C<goto> I<name>] and E<lbracket>{{C[jump="#label"]label}} I<name>]. Note that the C<goto> tag is not interpreted in the standard way, and you cannot use the '$Tag->goto()' Perl syntax. Note also that skipping endtags with C<goto> will probably break your page.
 
 H3: Summary
 
-\Parameters: B<name if>
+!block example
+   [goto name=I<label_name> if=I<condition>]
+     I<content to skip>
+   [label name=I<label_name>]
+!endblock
 
-Positional parameters in same order.
+or positionally,
 
+!block example
+   [goto name if]
+     I<content to skip>
+   [label name]
+!endblock
 
-Pass attribute hash as last to subroutine: B<no>
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#goto_name"]name}}|<<
+The name set in the corresponding E<lbracket>label] tag
+>>|I<none>
+{{CMD[jump="#goto_if"]if}}|<<
+Condition for C<goto>. Should evaluate to truth value before tag is parsed.
+>>|I<true>
+!endblock
 
-Must pass named parameter interpolate=1 to cause interpolation.
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Container tag|<<
+I<No>, but you use it like N<this:>
+. E<lbracket>goto name=I<label_name> if=I<condition>]
+..I<body text>
+.E<lbracket>label I<label_name>]
+>>
+Has Subtags|E<lbracket>label] interpreted by C<goto>
+!endblock
 
-Invalidates cache: B<no>
-
-Called Routine: 
 
 B<ASP-like Perl call:>
 
->    $Tag->goto(
->        {
->         name => VALUE,
->         if => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->goto($name, $if);
+No Perl call available (Note that this tag is not parsed in the standard way).
 
- 
 
 H3: Description
 
-B<NO Description>
+Skips page content between E<lbracket>C<goto> I<name>] and E<lbracket>{{C[jump="#label"]label}} I<name>]. Note that the C<goto> tag is not interpreted in the standard way, and you cannot use the '$Tag->goto()' Perl syntax. Note also that skipping endtags with C<goto> will probably break your page.
 
+The correspondingly named E<lbracket>C<label>] tag marks the end of the page content the C<goto> should skip. Note that the E<lbracket>C<label>] tag is not an end tag, but simply a marker for the end of the text to skip.
+
+!block note; label="Technical note (Interchange 4.8): "
+This tag may not work properly if you have more than one goto/label pair on a page.
+!endblock
+
+
+H4: {{CMD[id="goto_name"]name}}
+
+This should match the name set in a E<lbracket>label] tag I<after> the goto tag in the page (i.e., don't create loops).
+
+
+H4:  {{CMD[id="goto_if"]if}}
+
+Condition for goto. If the argument to 'C<if>' is true, the tag will skip the text between the C<goto> and <label>.  Note that the tag itself does not evaluate the condition. The condition must evaluate to a true or false value before the C<goto> tag processes it.
+
+For example, this will not execute the goto:
+
+!block example
+   [set go]0[/set]
+   [goto name="there" if="[scratch go]"]
+!endblock
 
 
 
@@ -5397,40 +5426,16 @@ customer can enter the quantity to order.
 
 H2: label
 
-The page label for goto. I believe this is deprecated.
+The page label for goto. See E<lbracket>{{C[jump="#goto"]goto}}] tag for description.  Note that this is not a standard tag, but is simply a marker used by {{C[jump="#goto"]goto}}.
 
-H3: Summary
+\Parameter: B<name>
 
-\Parameters: B<name>
+!block example
+   [goto name=I<label_name> if=I<condition>]
+     I<content to skip>
+   [label name=I<label_name>]
+!endblock
 
-Positional parameters in same order.
-
-
-Pass attribute hash as last to subroutine: B<no>
-
-Must pass named parameter interpolate=1 to cause interpolation.
-
-Invalidates cache: B<no>
-
-Called Routine: 
-
-B<ASP-like Perl call:>
-
->    $Tag->label(
->        {
->         name => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->label($name);
-
- 
-
-H3: Description
-
-The page label for goto. I believe this is deprecated.
 
 
 H2: log
@@ -9343,68 +9348,171 @@ in force. For example, you can set a "SELECTED" value on an option list
 with C<option=1>, set the tag prefix with C<prefix>, etc.
 
 
-
-
-
 H2: try
 
-See {{C[jump="#catch"]catch}} for description.
+Allows you to trap errors. Interchange processes the body text of the E<lbracket>C<try>]E<lbracket>C</try>] block and returns it normally if it does not generate an error. If it does generate an error, interchange executes and returns the E<lbracket>C<catch>]E<lbracket>C</catch>] block.
+
+See also '{{C[jump="#catch"]catch}}'.
 
 H3: Summary
 
-\Parameters: B<label>
+!block example;
+    [B<try> label=I<my_label> I<other_named_attributes>]
+        I<Body text to return if no error>
+    [B</try>]
+    .
+    .
+    .
+    [B<catch> I<my_label>]
+        I<Body text to return if try block caused an error>
+    [B</catch>]
+!endblock
 
-Positional parameters in same order.
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#try_label"]label}}|<<
+The label shared by the paired C<try> and {{C[jump="#catch"]catch}} blocks
+>>|'default'
+!endblock
 
+!block table; colvaligns="TTT"
+Attributes|Description|Default
+{{CMD[jump="#try_status"]status}}|<<
+Returns 0 (failed) or 1 (succeeded) instead of page output
+>>|I<none>
+{{CMD[jump="#try_hide"]hide}}|Suppresses page output|I<No>
+{{CMD[jump="#try_partial"]partial}}|Return C<try> block output even if it has an error|I<No>
+{{CMD[jump="#attr_interpolate"]interpolate}}|<<
+See {{CMD[jump="#attr_interpolate"]Interpolating Parameters}}
+>>|I<No>
+{{CMD[jump="#attr_reparse"]reparse}}|<<
+See {{CMD[jump="#attr_reparse"]Interpolating Parameters}}
+>>|I<Yes>
+!endblock
 
-B<The attribute hash reference is passed> after the parameters but before
-the container text argument.
-B<This may mean that there are parameters not shown here.>
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<No>
+Container tag|I<Yes>
+!endblock
 
-Must pass named parameter interpolate=1 to cause interpolation.
+B<Tag expansion example:>
 
-This is a container tag, i.e. [try] FOO [/try].
-\Nesting: NO
+!block example
+   [set divisor]0[/set]
+   [try label=div]
+      [calc] 1 / [scratch divisor] [/calc]
+   [/try]
+   [catch div]Division error[/catch]
+---
+   Division Error
+!endblock
 
-Invalidates cache: B<no>
-
-Called Routine: 
 
 B<ASP-like Perl call:>
 
->    $Tag->try(
->        {
->         label => VALUE,
->        },
->        BODY
->    )
->
-> OR
->
->    $Tag->try($label, $ATTRHASH, $BODY);
+!block example; lang="Perl"
+    $Tag->try(    { label  => 'I<try_catch_label>',
+                    status => 1, },
+                  $try_body  );
 
- 
+    $Tag->catch(  { label  => 'I<try_catch_label>', },
+                  $catch_body )
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->try($label, $attribute_hash_reference, $try_body);
+    $Tag->catch($label, $attribute_hash_reference, $try_body);
+!endblock
+
+H4: See Also
+
+{{C[jump="#catch"]catch}}
+
 
 H3: Description
 
-B<NO Description>
+Allows you to trap errors. Interchange processes the body text of the E<lbracket>C<try>]E<lbracket>C</try>] block and returns it normally if it does not generate an error. If it does generate an error, interchange executes and returns the E<lbracket>C<catch>]E<lbracket>C</catch>] block.
 
+Note that the C<catch> block must occur after the [try] block in the document.
+
+!block note; label="Documentation note (Interchange 4.73): "
+At the time this documentation is being written, the 'partial' option is not implemented yet (try blocks behave as if 'partial=1' set rather than suppressing output in case of an error). The C<catch> block executes on error in any case.
+!endblock
+
+H4: {{CMD[id="try_label"]label}}
+
+The try and catch blocks are matched by this label.  The try tag will also place a result in the $Session object.  For example, the following returns the 'Illegal division by zero...' error message if it N<occurs:>
+
+!block example
+   [try label=I<divide>][calc] 1 / [scratch divisor] [/calc][/try]
+
+   [catch label=I<divide> interpolate=1]
+      [calc]$Session->{try}{I<divide>}[/calc]
+   [/catch]
+!endblock
+
+Note that the $Session->{try}{I<divide>} object will be set to the empty string ('') if there was no error, or it will contain the error message if there was an error.
+
+Note also the E<lbracket>{{C[jump="#catch"]catch}} interpolate=1] setting. The {{C[jump="#catch"]catch}} tag excises anything between tag/endtag pairs as part of its support for specific error handling (see the {{C[jump="#catch"]catch}} tag documentation for more detail).
+
+
+H4: {{CMD[id="try_status"]status}}
+
+Suppresses C<try> block output and returns 1 if no error or 0 if an error occurred instead.  Executes the C<catch> block in case of an error.
+
+H4: {{CMD[id="try_hide"]hide}}
+
+Suppresses C<try> block output (regardless of success or failure).  Executes the C<catch> block in case of an error.
+
+
+H4: {{CMD[id="try_partial"]partial}}
+
+Setting 'C<partial=1>' will cause the C<try> block to return its output even if it has an error. Otherwise, the C<try> block will return output only if there is no error.  The {{C[jump="#catch"]catch}} block will work as usual.
 
 
 
 H2: update
 
+Forces an update of the specified interchange function. Function may be one of the N<following:>
+* B<cart> (updates current or named cart)
+* B<process> (updates order or search)
+* B<values> (updates user-entered fields)
+* B<data> (updates database, using current B<mv_> CGI form variables)
 
 H3: Summary
 
 \Parameters: B<function>
 
-ONLY THE B<> PARAMETERS ARE POSITIONAL.
+* function
+** cart
+*** Upates current or named cart (see C<name> attribute)
 
+** process
+*** Updates an order or a search page
 
-B<The attribute hash reference is passed> to the subroutine after
-the parameters as the last argument.
-B<This may mean that there are parameters not shown here.>
+** values
+*** Updates user-entered fields
+
+** data
+*** Updates database, using current B<mv_> CGI form variables, for N<example:>
+**** B<mv_data_table> Table to update
+**** B<mv_data_key> Key into table
+**** B<mv_data_fields> Fields to update (space or null delimited)
+**** B<mv_data_function> One of the N<following:>
+***** delete
+***** update
+***** insert
+***** delete
+**** etc.
+
+* name
+** Cart name to update (if 'function=cart')
+** Default is current cart
+
 
 Must pass named parameter interpolate=1 to cause interpolation.
 
@@ -9428,9 +9536,11 @@ B<ASP-like Perl call:>
 
 H3: Description
 
-B<NO Description>
-
-
+Forces an update of the specified interchange function. Function may be one of the N<following:>
+* B<cart> (updates current or named cart)
+* B<process> (updates order or search)
+* B<values> (updates user-entered fields)
+* B<data> (updates database, using current B<mv_> CGI form variables)
 
 
 H2: userdb
@@ -11798,8 +11908,12 @@ the HTML comment delimiters and the tag, like this, '<!--E<nbspace>E<nbspace>E<l
 {{C[jump="ictags.html#attr_interpolate"]interpolate}} settings, of course).
 
 ** Some tags (e.g., E<lbracket>{{C[jump="ictags.html#loop"]loop}}])
-process I<prefix>-tags in their contained body text. The I<prefix>-tags are
+process I<prefix>-tags in their contained body text. Hence, the I<prefix>-tags are
 not handled recursively.
+
+** Some tags are interpreted in the lib/Vend/Parse.pm:start routine. You cannot call them with the '$Tag->I<tagname>' syntax. They N<are:>
+*** The E<lbracket>{{C[jump="#goto"]goto}}] tag. Note also that the {{C[jump="#goto"]goto}} tag handles the E<lbracket>{{C[jump="#label"]label}}] tag.
+*** The E<lbracket>{{C[jump="#bounce"]bounce}}] tag.
 
 .{{}}
 
