@@ -149,27 +149,35 @@ H2: Perl Modules
 
 The core functions of Interchange can run with a stock Perl, but some features of Interchange (like the administrative interface) require additional modules. If using a UNIX server, use the CPAN module and run the following command:
 
->    perl -MCPAN -e 'install Bundle::Interchange'
+!block example
+   perl -MCPAN -e 'install Bundle::Interchange'
+!endblock
 
 This command should install all of the necessary modules, except DBM/DBI. The following modules are strongly recommended:
 
->    Digest::MD5
->    MIME::Base64
->    SQL::Statement
->    URI::URL
->    Safe::Hole
->    Bundle::LWP (contains MIME::Base64 and URI::URL)
->    GDBM or DB_File (comes with most i386 Perls)
+!block example
+   Digest::MD5
+   MIME::Base64
+   SQL::Statement
+   URI::URL
+   Safe::Hole
+   Bundle::LWP (contains MIME::Base64 and URI::URL)
+   GDBM or DB_File (comes with most i386 Perls)
+!endblock
 
 The following modules are required:
 
->    Storable
->    Business::UPS (comes with Interchange)
+!block example
+   Storable
+   Business::UPS (comes with Interchange)
+!endblock
 
 The following modules are not essential:
 
->    Term::ReadLine::Perl
->    Term::ReadKey
+!block example
+   Term::ReadLine::Perl
+   Term::ReadKey
+!endblock
 
 The DBI module is required if using SQL, along with the appropriate DBD module for your database.
 
@@ -190,7 +198,9 @@ Akopia is interested in making Interchange as reliable and trouble-free as possi
 
 Interchange offers fee-based technical support through it's Technical Services Group. Help can also be found through the community of developers subscribing to the user group on the Akopia Developer Resource site.  Akopia makes full source code of the current version of Interchange available on the Akopia web site :
 
->    http://www.akopia.com
+!block example
+   http://www.akopia.com
+!endblock
 
 Frequently Asked Questions, and documentation are also available on the Akopia web site. There is a search feature that encompasses the documentation, FAQs, and an archived mailing list.
 
@@ -294,12 +304,14 @@ H2: What HTML editors work with Interchange?
 
 None, though by accepting a performance penalty many Interchange tags can be embedded inside of regular HTML. For example:
 
->    [pragma no_html_parse 0]
->    <A HREF="[href minivend_page]">Link</A>
->    <SCRIPT LANGUAGE=MV MV="set Action">
->        mv_todo=return
->        mv_nextpage=your_page
->    </SCRIPT>
+!block example
+   [pragma no_html_parse 0]
+    <A HREF="[href minivend_page]">Link</A>
+    <SCRIPT LANGUAGE=MV MV="set Action">
+        mv_todo=return
+        mv_nextpage=your_page
+    </SCRIPT>
+!endblock
 
 Many Interchange pages will have to be edited by hand. Some HTML editors have a tag like <NOTOUCH></NOTOUCH> that defines regions which should not be wrapped or reformatted by the editor. It is recommended that these tags be used. 
 

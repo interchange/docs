@@ -65,19 +65,25 @@ To install Interchange, there are two required steps: downloading the program an
 
 ^Obtain, decompress, and untar the distribution on a UNIX server:
 
->        gzip -dc interchange-4.5.x.tar.gz | tar xvf -
+!block example
+       gzip -dc interchange-4.5.x.tar.gz | tar xvf -
+!endblock
 
 Note: Check the Interchange developer site at {{URL:http://developer.akopia.com/}} for any patches that might have been issued since the last release.
 
 +Run the configuration script:
 
->        cd interchange-4*
->        ./configure
+!block example
+       cd interchange-4*
+       ./configure
+!endblock
 
 +When asked where to install Interchange, indicate any directory with write privileges. The defaults are:
 
->        Installed as root: /usr/local/interchange
->        Installed as user: ~/interchange
+!block example
+       Installed as root: /usr/local/interchange
+       Installed as user: ~/interchange
+!endblock
 
 Note: ~ is shorthand for the home directory. This directory is referred to later in the documentation as VendRoot or the Interchange software directory.
 
@@ -116,23 +122,27 @@ diff -r construct catalogs/construct
 
 The files are mostly identical, except that certain macro strings have been replaced with the answers given to the script. For example, if C<www.mydomain.com> was answered at the prompt for a server name, this difference would appear in the catalog.cfg file:
 
->        # template
->        Variable SERVER_NAME  &#32;_MVC_SERVERNAME__
-> 
->        # configured catalog
->        Variable SERVER_NAME  www.mydomain.com
+!block example
+       # template
+       Variable SERVER_NAME  &#32;_MVC_SERVERNAME__
+
+       # configured catalog
+       Variable SERVER_NAME  www.mydomain.com
+!endblock
 
 The macro string &#32;_MVC_SERVERNAME__ was substituted with the answer to the question about server name. In the same way, other variables are substituted, and include:
 
-> MVC_BASEDIR      MVC_IMAGEDIR
-> MVC_CATROOT      MVC_IMAGEURL
-> MVC_CATUSER      MVC_MAILORDERTO
-> MVC_CGIBASE      MVC_MINIVENDGROUP
-> MVC_CGIDIR       MVC_MINIVENDUSER
-> MVC_CGIURL       MVC_SAMPLEHTML
-> MVC_DEMOTYPE     MVC_SAMPLEURL
-> MVC_DOCUMENTROOT MVC_VENDROOT
-> MVC_ENCRYPTOR
+!block example
+MVC_BASEDIR      MVC_IMAGEDIR
+MVC_CATROOT      MVC_IMAGEURL
+MVC_CATUSER      MVC_MAILORDERTO
+MVC_CGIBASE      MVC_MINIVENDGROUP
+MVC_CGIDIR       MVC_MINIVENDUSER
+MVC_CGIURL       MVC_SAMPLEHTML
+MVC_DEMOTYPE     MVC_SAMPLEURL
+MVC_DOCUMENTROOT MVC_VENDROOT
+MVC_ENCRYPTOR
+!endblock
 
 Note: Not all of these variables are present in the "construct" template, and more may be defined. In fact, any environment variable that is set and begins with MVC_ will be substituted for by the C<makecat> script. For example, to set up a configurable parameter to customize the COMPANY variable in catalog.cfg, run a pre-qualifying script that set the environment variable MVC_COMPANY and then place in the catalog.cfg file:
 
@@ -144,49 +154,63 @@ Note: The template directory is located in the Interchange software directory, i
 
 In addition to the standard parameters prompted for by Interchange, and the standard catalog creation procedure, four other files in the C<config> directory of the template may be defined:
 
-> additional_fields -- file with more parameters for macro substitution
-> additional_help   -- extended description for the additional_fields
-> precopy_commands  -- commands passed to the system prior to catalog copy
-> postcopy_commands -- commands passed to the system after catalog copy
+!block example
+additional_fields -- file with more parameters for macro substitution
+additional_help   -- extended description for the additional_fields
+precopy_commands  -- commands passed to the system prior to catalog copy
+postcopy_commands -- commands passed to the system after catalog copy
+!endblock
 
 All files are paragraph-based. In other words, a blank line (with no spaces) terminates the individual setting. 
 
 The additional_fields file contains:
 
-> PARAM
-> The prompt. Set PARAM to?
-> The default value of PARAM
+!block example
+PARAM
+The prompt. Set PARAM to?
+The default value of PARAM
+!endblock
 
 This would cause a question during makecat:
 
-> The prompt. Set PARAM to?.....[The default value of PARAM]
+!block example
+The prompt. Set PARAM to?.....[The default value of PARAM]
+!endblock
 
 If the additional_help file is present, additional instructions for PARAM may be provided.
 
-> PARAM
-> 
-> These are additional instructions for PARAM, and they 
-> may span multiple lines up to the first blank line.
+!block example
+PARAM
+
+These are additional instructions for PARAM, and they 
+may span multiple lines up to the first blank line.
+!endblock
 
 The prompt would now be:
 
-> These are additional instructions for PARAM, and they
-> may span multiple lines up to the first blank line.
-> 
-> The prompt. Set PARAM to?.....[The default value of PARAM]
+!block example
+These are additional instructions for PARAM, and they
+may span multiple lines up to the first blank line.
+
+The prompt. Set PARAM to?.....[The default value of PARAM]
+!endblock
 
 If the file config/precopy_commands exists, it will be read as a command followed by the prompt/help value.
 
-> mysqladmin create __MVC_CATALOGNAME__
-> We need to create an SQL database for your Interchange
-> database tables.
+!block example
+mysqladmin create __MVC_CATALOGNAME__
+We need to create an SQL database for your Interchange
+database tables.
+!endblock
 
 This will cause the prompt:
 
-> We need to create an SQL database for your Interchange
-> database tables.
->      
-> Run command "mysqladmin create simple"?
+!block example
+We need to create an SQL database for your Interchange
+database tables.
+     
+Run command "mysqladmin create simple"?
+!endblock
 
 If the response is "y" or "yes," the command will be run by passing it through the Perl system() function. As with any of the additional configuration files, MVC_PARAM macro substitution is performed on the command and help. Proper permissions for the command are required.
 
@@ -195,7 +219,9 @@ The file config/postcopy_commands is exactly the same as <precopy_commands>, exc
 
 There may also be SubCatalog directives:
 
->SubCatalog easy simple /home/catalogs/simple /cgi-bin/easy
+!block example
+SubCatalog easy simple /home/catalogs/simple /cgi-bin/easy
+!endblock
 
 easy
 .The name of the subcatalog, which also controls the name of the subcatalog configuration file,in this case C<easy.cfg>.
@@ -687,12 +713,14 @@ when it starts up.
 
 .Text similar to this should be displayed on the monitor screen:
 
->        Low traffic settings.
->        Calling UI....
->        ....UI is loaded....
->        Interchange V4.5.x
->        Configuring catalog example...done.
->        Interchange server started in INET and UNIX mode(s) (process id 22200)
+!block example; listitem=2
+       Low traffic settings.
+        Calling UI....
+        ....UI is loaded....
+        Interchange V4.5.x
+        Configuring catalog example...done.
+        Interchange server started in INET and UNIX mode(s) (process id 22200)
+!endblock
 
 At this point the Interchange is running and waiting for connections.
 
@@ -708,7 +736,9 @@ Check the two error log files: C<error.log> in the Interchange home directory (w
 
 Check the README file, the FAQ, and mail list archive at the official Interchange web site for information:
 
->        http://developer.akopia.com/
+!block example
+       http://developer.akopia.com/
+!endblock
 
 Double check the following items:
 
@@ -748,18 +778,26 @@ Interchange, by default, uses an C<ImageDir> for a prefix. In the demo, image sp
 
 In an Interchange page, this tag:
 
->        <IMG SRC="ordernow.gif">
+!block example
+       <IMG SRC="ordernow.gif">
+!endblock
 
 will become this:
 
->        <IMG SRC="/simple/images/ordernow.gif">
+!block example
+       <IMG SRC="/simple/images/ordernow.gif">
+!endblock
 
 This tag: 
 
->        <IMG SRC="items/00-0011.jpg">
+!block example
+       <IMG SRC="items/00-0011.jpg">
+!endblock
 
 will become this:
 
->        <IMG SRC="/simple/images/items/00-0011.jpg">
+!block example
+       <IMG SRC="/simple/images/items/00-0011.jpg">
+!endblock
 
 Absolute image paths are not affected. An image, such as </other/images/whatever.gif>, will not be changed.

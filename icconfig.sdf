@@ -26,13 +26,16 @@ The first step is to develop a product database. This can contain all of the inf
 
 The following is a list of other elements that can be included:
 
-B<Image>
+LI1: Image
+
 .A database field listing the name of an image file that displays the product. Specify a name here, or omit this field from the database and store images in files that are named for the product code. If using images, they will be displayed by using the C<[if file file.gif] TAG [/if]> construct).
 
-B<Nontaxable>
+LI1: Nontaxable
+
 .If the catalog contains any items that are non-taxable, use this field to flag items that do not need to have sales tax calculated.
 
-B<Size>
+LI1: Size
+
 .A comma-separated string containing product size information, for example:
 
 !block example; listitem=2
@@ -41,13 +44,16 @@ Small, Medium, Large, XL
 
 .Other attribute information may be defined in a database field.
 
-B<Weight>
+LI1: Weight
+
 .Used to enter the weight of products being shipped. This is useful for UPS lookup or other weight-based shipping calculations.
 
-B<Category>
+LI1: Category
+
 .Used to select one-click category searches to build product directories.
 
-B<Related>
+LI1: Related
+
 .Elements related to the item in the record. Using the Interchange C<[loop item]> tag, product subclasses and accessory sets can be built.
 
 .By default all database source files are located in the C<products> subdirectory of the catalog directory. The main products database is in the file C<products/products.txt> in the supplied demo catalogs. 
@@ -60,16 +66,20 @@ The Interchange demo catalog shows many features of Interchange, such as list an
 
 The following is a list of some popular features:
 
-B<Category Searches>
+LI1: Category Searches
+
 .If a catalog contains a small number of products, hard coded pages are sufficient, though they can be more difficult to maintain compared to database definitions. Regardless of the number of products in a catalog, consider categorizing them so they can easily be found. Pick a field in the database, perhaps named C<category>, and classify the products for search using Interchange.
 
-B<Images>
+LI1: Images
+
 .Place a thumbnail image (perhaps with a link to a blowup) for the items that have images. To do this, add an image field in the database. Requiring file tests for every image in a large list can degrade system performance.
 
-B<Related Items>
+LI1: Related Items
+
 .On a product's individual display page, embed searches of similar products with the C<[query ...]> or C<[loop ...]> tags. Or, if customer data is developed, search a past order database and display products that would be of interest to that customer. 
 
-B<Reviews/Testimonials>
+LI1: Reviews/Testimonials
+
 .Key the placement on the existence of a file in a certain directory. This is reasonable to do when a user is viewing a single product.
 
 H2: Use the Demo Catalogs
@@ -162,101 +172,133 @@ like Amazon.com or another site.
 As stated previously, Interchange catalogs are all about the database. The
 C<simple> demo has several tables:
 
-B<area>
+LI1: area
+
 .A table designed to implement a dynamic navigation bar. It is read and parsed to display the areas C<Galleries>, C<Other Stuff>, and C<Links> as distributed. Simply by changing the contents of the C<area> table, the left side navigation bar can be modified. The value of the field C<selector> is used to search the C<cat> table to find which categories belong in each area.
 
-B<cat>
+LI1: cat
+
 .The product structure of C<simple> follows a single-level categorization. Categories are listed in the C<cat> database table. The C<cat> table is designed to allow the display of meta-information about each category. The fields are:
 
-.B<code>
+LI2: code
+
 ..The category code. Must be unique.
 
-.B<area>
+LI2: area
+
 ..Where the area in this category should be displayed.
 
-.B<selector>
+LI2: selector
+
 ..The selector that is used to scan the C<products> table for products in the category.
 
-.B<name>
+LI2: name
+
 ..A display label to replace C<code> or C<selector>.
 
-.B<banner_text>
+LI2: banner_text
+
 ..Text to display in a banner or heading.
 
-.B<subs>
+LI2: subs
+
 ..Placeholder in the demo that is intended to allow selection of certain subcategories within the category.
 
-.B<sort>
+LI2: sort
+
 ..The sort order if an alphanumeric sort on C<name> is not desired.
 
-.B<url>
+LI2: url
+
 ..A URL to link to instead of the default search in the products database.
 
-B<country>
+LI1: country
+
 .A list of countries used to build select boxes and select shipping modes based on countries.
 
-B<inventory>
+LI1: inventory
+
 .Two fields: code and quantity. The Interchange demo will decrement the quantity based on the sale. It is recommended that a field be added with the usual shipping time of the product. For example, "ships within 24 hours" or "Back ordered. Allow 2-4 weeks for delivery."
 
-B<pricing>
+LI1: pricing
+
 .A database that works in conjunction with the C<CommonAdjust> directive to allow quantity pricing, either for one product or for a group of products (sometimes known as mix-and-match). The fields C<q2,q5,q10,etc.> are for the quantity levels; the C<price_group> field selects the mix-and-match category for the product.
 
-B<products>
+LI1: products
+
 .The main product table. This is where product information is stored. Add, delete, or ignore fields as desired. Field by field:
 
-.B<sku>
+LI2: sku
+
 ..The unique identifier for the product. Though theoretically it can contain
 most any character, use only characters of the class C<A-Z a-z 0-9 _ -> in order to be compatible with SQL databases, file systems, and URL encoding. Other characters can cause problems. A slash (C</>) can interfere with URLs and filenames. A colon (C<:>) can interfere with database representations (or file names on some operating systems). There are other possible compatibility situations with other characters.
 
-.B<description>
+LI2: description
+
 ..A short description for the product that is used for displaying in the shopping cart, receipt, and order report. Keep it short.
 
-.B<title>
+LI2: title
+
 ..This is usually catalog-specific since it applies to art. However, it would also apply to books, CDs, or other items.
 
-.B<artist>
+LI2: artist
+
 ..This is usually catalog-specific since it applies to art. However, it would also apply to CDs, or some other items. It can be changed as long as the field names in the catalog pages are changed to match it. Simply look for all occurrences of the string "artist" in the C<pages>, C<special_pages>, and C<etc> directories.
 
-.B<comment>
+LI2: comment
+
 ..A long description of the product. If using the Interchange internal database, the field size is unlimited; if using another type of database, then the length will be dependent on the field type selected. 
 
-.B<display>
+LI2: display
+
 ..Catalog-specific to show the museum where the art work is displayed. This field can be used or deleted if not needed.
 
-.B<image>
+LI2: image
+
 ..The image filename for the product. Many users add a C<thumb> field to contain the name of a small image for search list display.
 
-.B<price>
+LI2: price
+
 ..The quantity-one price of the product.
 
-.B<category>
+LI2: category
+
 ..The category used for selection in lists. It is possible to place a product in more than one category, although this will require decisions about display and banner headings. Embedded Perl or other methods can be used.
 
-.B<nontaxable>
+LI2: nontaxable
+
 ..If set to C<1>, the product is not taxable and its price will not be used in a sales tax calculation.
 
-.B<weight>
+LI2: weight
+
 ..A numeric value of the weight used for determining shipping costs. Normally in pounds, it can be anything the shipping routines will handle.
 
-.B<size>
+LI2: size
+
 ..A comma-separated list of options as used in C<Accessories>. See the C<flypage.html> and C<ord/basket.html> pages for examples of how it is used.
 
-.B<color>
+LI2: color
+
 ..A comma-separated list of options as used in C<Accessories>. See the C<flypage.html> and C<ord/basket.html> pages for examples of how it is used.
 
-.B<related>
+LI2: related
+
 ..Used in the demo to display "upsells." This refers to opportunities to purchase an additional item when this one is purchased. Contains a comma-separated list of SKUs to be offered.
 
-.B<featured>
+LI2: featured
+
 ..As used in this demo, the only meaningful value is C<front>. If this is contained in the field, this product may be featured on the front page via random selection. See the C<index.html> page for how it integrates with C<[loop search=something random=3]>.
 
-B<orderline>
+LI1: orderline
+
 .Every line item that is actually ordered is detailed in this table. See the page C<query/check_orders.html> for how it might be used. See C<etc/report> for how to add to it.
 
-B<transactions>
+LI1: transactions
+
 .Each individual customer order is detailed in this table. See the page C<query/check_orders.html> for how it might be used. See C<etc/report> for how to add to it.
 
-B<userdb>
+LI1: userdb
+
 .The user database used for maintaining customer address information, account information, preferences, and more. See C<UserDB>.
 
 H2: IML -- Interchange Markup Language
@@ -344,7 +386,7 @@ H2: Images
 Inline images are placed in Interchange pages in the normal fashion with
 <IMG SRC="URL">. But since Interchange pages are served by a CGI program, do not use relative links. Interchange has the capability of defining an image directory (with the ImageDir and ImageDirSecure directives) that automatically adjusts the image path to a set base directory.
 
-H2: Cookies
+H2: Browser Cookies
 
 Enable the Cookies directive so that users with cookie-capable browsers will retain session context. Then, standard HREF and Interchange page links can be intermixed without fear of losing the shopping basket. Cookie capability is also required to use search caching, page caching, and statically generated pages. If the user's browser does not support cookies, the cache will be ignored.
 
@@ -380,12 +422,14 @@ The optional C<form> argument is used to encode a form in the link.
 
 See above for more information.
 
-B<[/page], [/order]>
+LI1: [/page], [/order]
+
 .Expands into </a>. Used with the page element, such as:
 .{{EX:[page shirts]Our shirt collection[/page].}}
 .\TIP: A small efficiency boost in large pages is to just use the </A> tag.
 
-B<[page ...]>
+LI1: [page ...]
+
 .\Named: {{EX:[page href="dir/page" arg="argument" secure=1* form="form string"]}}
 
 .\Positional: {{EX:[page dir/page arg*] (only two positional parameters)}}
@@ -431,7 +475,8 @@ when appropriate. (mv_arg is the C<arg> parameter for the tag.)
 
 .At the same time, C<mv_orderpage=yourpage> could be set to go to C<yourpage>.  Theoretically, any form can be submitted with this, though none of the included values can have newlines or trailing whitespace. To do so requires the writing of a UserTag. Foreign forms can also be submitted, but they will not touch the href if it begins with http:, ftp:, or the like.
 
-B<[/page], [/order]>
+LI1: [/page], [/order]
+
 .Expands into </a>. Used with the page element, such as:
 
 !block example; listitem=2
@@ -444,7 +489,8 @@ H2: How To Order An Item
 
 Interchange can either use a form-based order or a link-based order to place an item in the shopping cart. The link-based order uses the special C<[order item-code]> tag:
 
-B<[order code]>
+LI1: [order code]
+
 .Named attributes:
 
 !block example; listitem=2
@@ -465,7 +511,8 @@ B<[order code]>
 
 .{{EX:Order a <A HREF="[area order TK112]" TARGET=newframe>Toaster</A> today.}}
 
-B<[/order]>
+LI1: [/order]
+
 .Expands into </a>. Used with the order element, such as: Buy a C<[order TK112]>ToasterC<[/order]> today.
 
 To order with a form, you set the form variable C<mv_order_item> to the item-code/SKU and use the C<refresh> action:
@@ -523,7 +570,8 @@ will make the C<[value foo]> tag equal to C<bar> on the next page, then, send yo
                     ']">Make foo=bar</A>
 !endblock
 
-B<[value name=field set="new value" filter="filter" hide=1]>
+LI1: [value name=field set="new value" filter="filter" hide=1]
+
 .\Positional:  C<[value varname]>
 
 .The C<[value ...]> MML tag expands into the current value of the customer/form input field named by field. If the C<set> value is present, the form variable value will be set to it and the new value returned. Use this to "uncheck" a checkbox or set other form variable values to defaults. If HIDE is set, the value will be set but not returned to the page.
@@ -535,23 +583,28 @@ H2: The Catalog Directory
 Interchange pages are NOT in normal HTML space. They are contained in the
 catalog directory. Each individual catalog must have its own base directory. The catalog directory has the following structure by default:
 
-B<catalog.cfg>
+LI1: catalog.cfg
+
 .File containing configuration directives for this catalog. (Subcatalogs have differing information in a file named for the subcatalog.)
 
-B<config>
+LI1: config
+
 .Directory that will be read when directives are set with the <filename notation. For example, the file C<config/static.pages> will be read when the following directive is encountered in the catalog.cfg file.
 
 .{{EX:StaticPage  <static.pages}}
 
 .This directory also contains template information used with the makecat program.
 
-B<error.log>
+LI1: error.log
+
 .File which contains catalog-specific errors. It is also where any syntax errors in embedded Perl code will be shown.
 
-B<etc>
+LI1: etc
+
 .Directory normally used for tracking files, order profiles, and other configuration and log information.
 
-B<pages>
+LI1: pages
+
 .Directory that contains the pages of your catalog. This can be considered to be the "document root" of the catalog. Pages contained therein are called with the path information after the script name. For example: 
 
 !block example; listitem=2
@@ -559,13 +612,16 @@ C</cgi-bin/simple/products/gold> will call the page in the file
 C<pages/products/gold.html>.
 !endblock
 
-B<products>
+LI1: products
+
 .Directory containing database source files, including the special Interchange databases shipping.asc, pricing.asc (and other shipping database files).
 
-B<session>
+LI1: session
+
 .Directory which contains session files.
 
-B<tmp>
+LI1: tmp
+
 .The temporary or scratch directory for various uses like retired ID numbers, search paging files, sort tests, import temporary files, etc. This is the default set by ScratchDir. It can be redefined to be located on another partition.
 
 H2: Setting Up Multiple Catalogs
@@ -582,13 +638,17 @@ Here is an example Catalog directive:
 
 Catalog simple /home/catalogs/simple /cgi-bin/simple /secure-bin/simple
 
-B<simple>
-.The catalog identifier, used as the name of the catalog on command lines. In the supplied demo configuration this would be C<simple>.  The identifier can contain characters from the set [B<A-Za-z0-9_>].
+LI1: simple
 
-B</home/catalogs/simple>
+.The catalog identifier, used as the name of the catalog on command lines. In the supplied demo configuration this would be C<simple>.  The identifier can contain characters from the set [LI1: A-Za-z0-9_>]
+
+
+LI1: /home/catalogs/simple
+
 .The directory where the catalog.cfg file may be found, and usually the directory where pages and databases are kept.
 
-B</cgi-bin/simple  /secure-bin/simple>
+LI1: /cgi-bin/simple  /secure-bin/simple
+
 .The script names which, when containing an Interchange link program, will cause that catalog to be called. At least one must be supplied, and the same name may not be used for more than one catalog unless the I<FullURL> directive is specified. In this case, the parameter may be specified as: 
 
 !block example; listitem=2
@@ -604,7 +664,8 @@ H2: Setting the Locale
 
 The locale could be set to C<fr_FR> (French for France) in one of two ways:
 
-B<[setlocale locale=locale* currency=locale* persist=1*]>
+LI1: [setlocale locale=locale* currency=locale* persist=1*]
+
 .This tag is for new-style tags only and will not work for C<[old]>.
 
 .Immediately sets the locale to C<locale>, and will cause it to persist in future user pages if the C<persist> is set to a non-zero, non-blank value. If the C<currency> attribute is set, modifies the pricing and currency-specific locale keys and Interchange configuration directives to that locale. If there are no arguments, sets it back to the user's default locale as defined in the scratch variables C<mv_locale> and C<mv_currency>.
@@ -632,10 +693,12 @@ B<[setlocale locale=locale* currency=locale* persist=1*]>
 
 .This tag is only available in new mode ("NewTags Yes" or C<[new]>).
 
-B<[page process/locale/fr_FR/page/catalog]>
+LI1: [page process/locale/fr_FR/page/catalog]
+
 .This is the same as C<[page catalog]>, except when the link is followed it will set the locale to C<fr_FR> before displaying the page. This is persistent.
 
-B<[page process/locale/fr_FR/currency/en_US/page/catalog]>
+LI1: [page process/locale/fr_FR/currency/en_US/page/catalog]
+
 .This is the same as C<[page catalog]>, except when the link is followed it will set the locale to C<fr_FR> and the pricing/number display to the locale C<en_US> before displaying the page. This is persistent.
 
 Once the locale is persistently set for a user, it is in effect for the
@@ -712,7 +775,8 @@ Interchange honors the standard POSIX keys:
 
 See the POSIX setlocale(3) man page for more information. These will be used for formatting prices and will approximate the number format used in most countries. To set the price format to a custom format, use these special keys:
 
-B<price_picture>
+LI1: price_picture
+
 .Interchange will format a currency number based on a "picture" given to it. The basic form is:
 
 !block example; listitem=2
@@ -747,14 +811,16 @@ Note[label='IMPORTANT NOTE: '] The decimal point in use, set by C<mon_decimal_po
 
 .If the number of digits is greater than the # locations in the picture, the digits will be changed to asterisks. An overflow number above would show as C<**.***,** fr>.
 
-B<picture>
+LI1: picture
+
 .Same as C<price_picture>, but sets the value returned if the C<[currency]> tag is not used. If the number of digits is greater than the # locations in the picture, the digits will be changed to asterisks, displaying something like C<**,***.**>.
 
 H2: Dynamic Locale Directive Changes
 
 If Locale keys are set to correspond to some Interchange C<catalog.cfg> directives, those values will be set when setting the locale.
 
-B<PageDir>
+LI1: PageDir
+
 .To use a different page directory for different locales, set the PageDir
 key. To have two separate language page sets, French and English, set:
 
@@ -765,7 +831,8 @@ key. To have two separate language page sets, French and English, set:
     Locale en_US  PageDir  english
 !endblock
 
-B<ImageDir>
+LI1: ImageDir
+
 .To use a different image directory for different locales, set the ImageDir key. To have two separate language button sets, French and English, set:
 
 !block example; listitem=2
@@ -775,10 +842,12 @@ B<ImageDir>
     Locale en_US  ImageDir   /images/english/
 !endblock
 
-B<ImageDirSecure>
+LI1: ImageDirSecure
+
 .Same as ImageDir.
 
-B<PriceField>
+LI1: PriceField
+
 .To use a different field in the products database for pricing based on locale, set the PriceField locale setting.
 
 !block example; listitem=2
@@ -791,7 +860,8 @@ B<PriceField>
 
 .If PriceBreaks is enabled, then the field C<prix> from the C<pricing> database will be used to develop the quantity pricing. NOTE: If no Locale settings are present, it will always be C<price>, regardless of the C<PriceField> setting. Otherwise it will always match C<PriceField>.
 
-B<PriceDivide>
+LI1: PriceDivide
+
 .Normally used to enable penny pricing with a setting of 100, this can be used to do an automatic conversion factor based on locale.
 
 !block example; listitem=2
@@ -802,7 +872,8 @@ B<PriceDivide>
 
 .The price will now be divided by C<.20>, yielding franc prices five times that of the dollar.
 
-B<PriceCommas>
+LI1: PriceCommas
+
 .This controls whether the C<mon_thousands_sep> will be used for standard currency formatting. Ignored if using C<price_picture>. Set to 1 or 0, to enable and disable respectively. DO NOT USE Yes and No.
 
 !block example; listitem=2
@@ -812,7 +883,8 @@ B<PriceCommas>
     Locale en_US  PriceCommas  1
 !endblock
 
-B<UseModifier>
+LI1: UseModifier
+
 .Changes the fields from the set shopping cart options.
 
 !block example; listitem=2
@@ -824,7 +896,8 @@ B<UseModifier>
 
 .If a previous setting was made for an item based on another locale, it will be maintained.
 
-B<PriceAdjustment>
+LI1: PriceAdjustment
+
 .Changes the fields from UseModifier that will be used to adjust pricing to an automatic conversion factor based on locale.
 
 !block example; listitem=2
@@ -833,10 +906,12 @@ B<PriceAdjustment>
     Locale fr_FR  PriceAdjustment  formats
 !endblock
 
-B<TaxShipping,SalesTax>
+LI1: TaxShipping,SalesTax
+
 .Same as the standard directives.
 
-B<DescriptionField>
+LI1: DescriptionField
+
 .This changes the field accessed by default with the C<[item-description]> and C<[description code]> tags.
 
 !block example; listitem=2
@@ -845,7 +920,8 @@ B<DescriptionField>
     Locale fr_FR  DescriptionField desc_fr
 !endblock
 
-B<The [locale] tag>
+LI1: The [locale] tag
+
 .Standard error messages can be set based on Locale settings. Make sure not to use any of the predefined keys. It is safer to begin a key with msg_ or such. The default message is set between the C<[locale key]> and C<[/locale]> tags. See the example above.
 
 H2: Sorting Based on Locale
@@ -975,15 +1051,18 @@ Required attributes: none
 
 Attribute information:
 
-B<global>
+LI1: global
+
 .When set to C<1>, and when the catalog is allowed to use global permissions via the C<interchange.cfg> directive C<AllowGlobal>, Safe.pm checking is turned off. In this case, the embedded Perl code can do anything that the user ID running it can! This is not recommended when a single Interchange server is shared by multiple companies/user ids.
 
 .When in global mode, full C<use strict> checking is on. Optionally, it can be turned off with C<no strict;>. In fact, this is recommended since strict errors will cause silent failure.
 
-B<subs>
+LI1: subs
+
 .When set to C<1>, any C<GlobalSub> routines can be accessed by name.
 
-B<tables>
+LI1: tables
+
 .Opens specified Interchange database tables, preparing them for access inside the Perl code. 
 
 .When running under C<Safe>, some database operations are restricted due to the inability to create objects in this mode. For SQL, most operations can be performed if the C<Safe::Hole> module is installed. Otherwise, use C<global> to use data from SQL tables. Interchange databases can be accessed as long as they are pre-opened by using an item first.
@@ -1101,7 +1180,8 @@ This will also cause a trap, and the code will fail to compile. However, Interch
 
 The standard objects are:
 
-B<$CGI>
+LI1: $CGI
+
 .This is a hash reference to C<%CGI::values>, the value of user variables as submitted in the current page/form. To get the value of a variable submitted as
 
 !block example; listitem=2
@@ -1116,7 +1196,8 @@ B<$CGI>
 
 .Remember, multiple settings of the same variable are separated by a NULL character. To get the array value, use $CGI_array.
 
-B<$CGI_array>
+LI1: $CGI_array
+
 .This is a hash reference to C<%CGI::values_array>, arrays containing the value or values of user variables as submitted in the current page/form. To get the value of a variable submitted as
 
 !block example; listitem=2
@@ -1132,7 +1213,8 @@ B<$CGI_array>
 
 .Remember, multiple settings of the same variable are separated by a NULL character. To get the array value, use $CGI_array.
 
-B<$Carts>
+LI1: $Carts
+
 .A reference to the shopping cart hash $Vend::Session->{carts}. The normal default cart is "main". An alias is $Items in the normal course of events.
 
 .Shopping carts are an array of hash references. Here is an example of a session cart array containing a C<main> and a C<layaway> cart.
@@ -1169,7 +1251,8 @@ B<$Carts>
 
 .In this cart array, $Carts->{main}[1]{code} is equal to C<99-102>. In the normal course of events, it would be equivalent to $Items->[1]{code}.
 
-B<$Config>
+LI1: $Config
+
 .A reference to the $Vend::Cfg array. Normally use this with a liberal dose of the Interchange source code, but for simple things use something like:
 
 !block example; listitem=2
@@ -1179,7 +1262,8 @@ B<$Config>
 
 .Changes are not persistent except when running in the foreground (Debug mode or on Windows).
 
-B<%Db>
+LI1: %Db
+
 .A hash of databases shared with the C<[mvasp tables="foo"]> parameter to the tag call. Once the database is shared, it is opened and can be accessed by any of its methods. Again, this will not work with SQL unless AllowGlobal is set for the catalog.
 
 .To get a reference to a particular table, specify its hash element:
@@ -1248,7 +1332,8 @@ B<%Db>
     $ref->delete_record($key);
 !endblock
 
-B<%Sql>
+LI1: %Sql
+
 .A hash of SQL databases that you shared with the C<[mvasp tables="foo"]> parameter to the tag call. It returns the DBI database handle, so things like the following can be done:
 
 !block example; listitem=2
@@ -1273,7 +1358,8 @@ B<%Sql>
 
 .Again, this will not work with unless AllowGlobal is set for your catalog.
 
-B<$DbSearch>
+LI1: $DbSearch
+
 .A search object which will search a database without using the text file. It is the same as Interchange's C<db> searchtype. Options are specified in a hash and passed to the object. All multiple-field options should be passed as array references. Before using the $DbSearch object, it must be told which table to search. For example, to use the table C<foo>, it must have been shared with C<[mvasp foo]>.
 
 .There are three search methods: C<array>, C<hash>, and C<list>.
@@ -1306,7 +1392,8 @@ B<$DbSearch>
     for(@$ary) {
 !endblock
 
-B<$Document>
+LI1: $Document
+
 .This is an object that has several routines associated with it.
 
 !block example; listitem=2
@@ -1325,10 +1412,12 @@ B<$Document>
  $ary_ref = $Document->ref();   # Return ref to output buffer
 !endblock
 
-B<$Document->write($foo)>
+LI1: $Document->write($foo)
+
 .Write $foo to the page in a buffered fashion. The buffer is an array containing the results of all previous C<$Document->>C<write()> operations. If $Document->hot(1) has been set, the output immediately goes to the user. 
 
-B<$Document->insert($foo)>
+LI1: $Document->insert($foo)
+
 .Insert $foo to the page buffer.
 
 !block example; listitem=2
@@ -1347,7 +1436,8 @@ B<$Document->insert($foo)>
 
 .will output "231".
 
-B<$Document->header($foo, $opt)>
+LI1: $Document->header($foo, $opt)
+
 .Add the header line $foo to the HTTP header. Use this to change the page content type, cache options, or other attributes. The code below changes the content type (MIME type) to text/plain:
 
 !block example; listitem=2
@@ -1362,23 +1452,28 @@ B<$Document->header($foo, $opt)>
 
 .Once output has been sent with $Document->send(), this can no longer be done.
 
-B<$Document->hot($foo)>
+LI1: $Document->hot($foo)
+
 .If the value of $foo is true (in a Perl sense), then all $Document->write() operations will be immediately sent until a $Document->hot(0) is executed.
 
-B<$Document->send()>
+LI1: $Document->send()
+
 .Causes the document write buffer to be sent to the browser and empties the buffer. Any further $Document->header() calls will be ignored. Can be used to implement non-parsed-header operation.
 
-B<$Document->review()>
+LI1: $Document->review()
+
 .Returns the value of the write buffer.
 
 !block example; listitem=2
     @ary = $Document->review();
 !endblock
 
-B<$Document->replace(@new)>
+LI1: $Document->replace(@new)
+
 .Completely replaces the write buffer with the arguments.
 
-B<$Document->ref()>
+LI1: $Document->ref()
+
 .Returns a reference to the write buffer.
 
 !block example; listitem=2
@@ -1387,7 +1482,8 @@ B<$Document->ref()>
     shift @$ary_ref;
 !endblock
 
-B<HTML>
+LI1: HTML
+
 .Writes a string (or list of strings) to the write buffer array. The call
 
 !block example; listitem=2
@@ -1402,10 +1498,12 @@ B<HTML>
 
 .Honors the $Document->hot() setting.
 
-B<$Items>
+LI1: $Items
+
 .A reference to the current shopping cart. Unless an Interchange C<[cart ...]> tag is used, it is normally the same as $Carts->{main}.
 
-B<$Scratch>
+LI1: $Scratch
+
 .A reference to the scratch values ala C<[scratch foo]>.
 
 !block example; listitem=2
@@ -1418,7 +1516,8 @@ B<$Scratch>
     [set foo]bar[/set]
 !endblock
 
-B<$Session>
+LI1: $Session
+
 .A reference to the session values ala C<[data session username]>.
 
 !block example; listitem=2
@@ -1442,7 +1541,8 @@ B<$Session>
     %>
 !endblock
 
-B<$Tag>
+LI1: $Tag
+
 .Using the $Tag object, any Interchange tag including user-defined tags can be accessed.
 
 Note[label='IMPORTANT NOTE: '] If the tag will access a database that has not been previously opened, the table name must be passed in the ASP call. For example: 
@@ -1525,7 +1625,8 @@ Note[label='IMPORTANT NOTE: '] If the tag will access a database that has not be
 
 .Parameter names are ALWAYS lower case.
 
-B<$Values>
+LI1: $Values
+
 .A reference to the user form values ala C<[value foo]>.
 
 !block example; listitem=2
@@ -1538,7 +1639,8 @@ B<$Values>
     [value foo]
 !endblock
 
-B<&Log>
+LI1: &Log
+
 .Send a message to the error log (same as ::logError in GlobalSub or global UserTag).
 
 !block example; listitem=2
@@ -1571,11 +1673,11 @@ The VendRoot directory, specified in the main program C<interchange>, is the def
 
 The directives defined in interchange.cfg affect the entire Interchange server and all catalogs running under it. Multiple Interchange servers may be run on the same machine with totally independent operation.
 
-H2: ActionMap
+H2: ActionMap *global*
 
 Specifies an action for use as a default. If the same action is specified in C<catalog.cfg>, it will pertain. See ActionMap in that section.
 
-H2: AddDirective
+H2: AddDirective *global*
 
 Adds a configuration directive that will be parsed for every C<catalog.cfg>
 file. Accepts three parameters: the name of the directive, the name of the
@@ -1587,19 +1689,19 @@ value of "Hello, world!":
 
 If the parser is not defined, the directive value will be scalar and the same as what the user passes in the config file. If defined, the parser must be extant before it can be referenced, is always resident in Vend::Config, and begins with the string C<parse_>. Examples can be found in the files in the distribution software directory C<compat/>.
 
-H2: AdminSub
+H2: AdminSub *global*
 
 Marks a global subroutine for use only by catalogs that are set to C<AllowGlobal> (see below). Normally global subroutines can be referenced (in embedded Perl) by any catalog.
 
 >    AdminSub  dangerous
 
-H2: AllowGlobal
+H2: AllowGlobal *global*
 
 Specifies catalog identifiers that may define subroutines and UserTag entries that can operate with the full permissions of the server. DON'T USE THIS UNLESS THE CATALOG USER IS TRUSTED IMPLICITLY.> Default is blank.
 
 >    AllowGlobal  simple
 
-H2: Catalog
+H2: Catalog *global*
 
 Specifies a catalog that can run using this Interchange server. There are three required parameters, separated by spaces and/or tabs.
 
@@ -1623,25 +1725,25 @@ Global directives may be specified that will change I<for that catalog only>. Th
 
 >    Catalog simple directive ErrorFile /var/log/interchange/simple_error.log
 
-H2: CheckHTML
+H2: CheckHTML *global*
 
 Set to the name of an external program that will check the users HTML when they set C<[flag checkhtml]> or C<[tag flag checkhtml][/tag]> in their page.
 
 >    CheckHTML  /usr/local/bin/weblint
 
-H2: ConfigAllAfter
+H2: ConfigAllAfter *global*
 
 The name of a file (or files) which should be read as a part of every catalog's configuration, after any other configuration files are read. Default is catalog_after.cfg.
 
 >    ConfigAllAfter   check_actions.cfg check_variables.cfg
 
-H2: ConfigAllBefore
+H2: ConfigAllBefore *global*
 
 The name of a file (or files) which should be read as a part of every catalog's configuration, before any other configuration files are read. Default is catalog_before.cfg.
 
 >    ConfigAllBefore   set_actions.cfg set_variables.cfg
 
-H2: DisplayErrors
+H2: DisplayErrors *global*
 
 While all errors are reported in the error log file, errors can also be displayed by the browser. This is convenient while testing a configuration. Unless this is set, the DisplayErrors setting in the user catalogs will have no effect. Default is No.
 
@@ -1650,7 +1752,7 @@ While all errors are reported in the error log file, errors can also be displaye
 \NOTE: This changes the value of $SIG{__DIE__} and may have other effects
 on program operation. This should NEVER be used for normal operation.
 
-H2: DomainTail
+H2: DomainTail *global*
 
 Implements the domain/IP session qualifiers so that only the major domain is used to qualify the session ID. This is a compromise on security, but it allows non-cookie-accepting browsers to use multiple proxy servers in the same domain. Default is yes.
 
@@ -1658,18 +1760,18 @@ Implements the domain/IP session qualifiers so that only the major domain is use
 
 If encrypting credit cards with PGP or GPG, or are using a payment service like CyberCash, look at the WideOpen directive, which enables more browser compatibility at the cost of some security.
 
-H2: DumpStructure
+H2: DumpStructure *global*
 
 Tells Interchange to dump the structure of catalogs and the Interchange server
 to a file with the catalog name and the extension C<.structure>. Use this to see how directives have been set.
 
-H2: Environment
+H2: Environment *global*
 
 Environment variables to inherit from the calling CGI link program. An example might be PGPPATH, used to set the directory which PGP will use to find its key ring.
 
 >    Environment  MOD_PERL REMOTE_USER PGPPATH
 
-H2: ErrorFile
+H2: ErrorFile *global*
 
 Sets the name of the global error log. The default is C<error.log> in the
 Interchange software directory.
@@ -1681,7 +1783,7 @@ write that file.
 
 Optionally, syslog error logging can be set up as well. See C<SysLog>.
 
-H2: FormAction
+H2: FormAction *global*
 
 Allows a form action (like the standard ones C<return, submit, refresh,> etc.) to be set up. It requires a Perl subroutine as a target:
 
@@ -1695,7 +1797,7 @@ If it returns a true (non-zero, non-empty) value, Interchange will display the
 page defined in $CGI->{mv_nextpage}. Otherwise, Interchange will not display
 any page. The default Interchange actions can be overridden, if desired. There is also a catalog-specific version of this directive, which overrides any action of the same name.
 
-H2: FullUrl
+H2: FullUrl *global*
 
 Normally Interchange determines which catalog to call by determining the
 SCRIPT_NAME from the CGI call. This means that different (and maybe virtual) hosts cannot use the same SCRIPT_NAME to call different catalogs. Set FullUrl to Yes to differentiate based on the calling host. Then, set the server name in the Catalog directive accordingly, such as yourdomain.com/cgi-bin/simple. A yes/no directive, the default is No.
@@ -1704,7 +1806,7 @@ SCRIPT_NAME from the CGI call. This means that different (and maybe virtual) hos
 
 If it is set in this fashion, C<all> catalogs must be defined in this fashion. NOTE: The individual catalog setting will not work, as this is used before the catalog name is known.
 
-H2: GlobalSub
+H2: GlobalSub *global*
 
 Defines a <global> subroutine for use by the C<[perl sub] subname arg /perl]>
 construct. Use the "here document" capability of Interchange configuration
@@ -1725,19 +1827,19 @@ IMPORTANT NOTE: These global subroutines are not subject to security checks. The
 
 GlobalSub routines are subject to full Perl use strict checking, so errors are possible if lexical variables or complete package qualifications are not used for the variables.
 
-H2: HammerLock
+H2: HammerLock *global*
 
 The number of seconds after which a locked session could be considered to be lost due to malfunction. This will kill the lock on the session. Only here for monitoring of session hand-off. If this error shows up in the error log, the system setup should be examined. Default is 30.
 
 >    HammerLock          60
 
-H2: HouseKeeping
+H2: HouseKeeping *global*
 
 How often, in seconds, the Interchange server will "wake up" and look for user reconfiguration requests and hung search processes. On some systems, this wakeup is the only time the server will terminate in response to a stop command. Default is 60.
 
 >    HouseKeeping    5
 
-H2: IpHead
+H2: IpHead *global*
 
 Implements the domain/IP session qualifiers so that only the first C<IpQuad> dot-quads of the IP address are used to qualify the session ID. The default is 1. This is a slight compromise on security, but it allows non-cookie-accepting browsers, like AOL's V2.0, to use multiple proxy servers.
 
@@ -1745,22 +1847,22 @@ DomainTail is preferable unless one of your HTTP servers does not do host name l
 
 >    IpHead Yes
 
-H2: IpQuad
+H2: IpQuad *global*
 
 The number of dot-quads that IpHead will look at. Default is 1.
 
 >    IpQuad  2
 
-H2: Legacy
+H2: Legacy *global*
 
 Makes a few optimizations for newer catalogs. Set to C<Yes> for the maximum
 compatibility with older Interchange catalogs.
 
-H2: Locale
+H2: Locale *global*
 
 Sets the global C<Locale> for use in error messages.
 
-H2: LockoutCommand
+H2: LockoutCommand *global*
 
 The name of a command (as you would enter it from the shell) that will lock out the host IP of an offending system. The IP address will be substituted for the first occurrence of the string %s. This will be executed with the user ID that Interchange runs under, so any commands that require root access will have to be wrapped with an SUID program.
 
@@ -1774,13 +1876,13 @@ A script can be written which modifies an appropriate access control file, such 
 
 >    LockoutCommand   lockout %s
 
-H2: Mall
+H2: Mall *global*
 
 Set to C<Yes> to issue cookies only for the current catalog's script. By default, when Interchange issues a cookie it does so for the base domain. This will allow multiple catalogs to operate on the same domain without interfering with each others session ID.
 
 A yes/no directive.
 
-H2: MaxServers
+H2: MaxServers *global*
 
 The maximum number of servers that will be spawned to handle page requests. If more than MaxServers requests are pending, they will be queued (within the defined capability of the operating system, usually five pending requests) until the number of active servers goes below that value.
 
@@ -1788,13 +1890,13 @@ The maximum number of servers that will be spawned to handle page requests. If m
 
 Default is 10.
 
-H2: NoAbsolute
+H2: NoAbsolute *global*
 
 Whether Interchange C<[file ...]> and other tags can read any file on the system (that is readable by the user id running the Interchange daemon). The default is No, which allows any file to be read. This should be changed in a multi-user environment to minimize security problems.
 
 >    NoAbsolute     Yes
 
-H2: PIDcheck
+H2: PIDcheck *global*
 
 If non-zero, enables a check of running Interchange processes during the housekeeping routine. If a process has been running (or is hung) for longer than PIDcheck seconds then a kill -9 will be issued and the server count decremented. During the housekeeping routine, the number of servers checked by I<MaxServers> will be recounted based on PID files.
 
@@ -1804,7 +1906,7 @@ Default is 0, disabling the check.
 
 If have long-running database builds, this needs to be disabled. Set it to a high value (perhaps 600, for 10 minutes), or use the offline script.
 
-H2: PIDfile
+H2: PIDfile *global*
 
 The file which will contain the Interchange server process ID so that it
 can be read to determine which proces should be sent a signal for stopping
@@ -1814,13 +1916,13 @@ or reconfiguring the server.
 
 This file must be writable by the Interchange server user ID.
 
-H2: SafeUntrap
+H2: SafeUntrap *global*
 
 Sets the codes that will be untrapped in the Safe.pm module and used for embedded Perl and conditional operations. The Safe.pm documentation is visible by typing C<perldoc Safe> at the command prompt. The default is C<249 148> for Perl 5.003, and C<ftfile sort> for Perl 5.003_20 and above, which untraps the file existence test operator and the sort operator. Define it as blank to prevent any operators but the default restrictive ones.
 
 >    SafeUntrap     ftfile sort ftewrite
 
-H2: SendMailProgram
+H2: SendMailProgram *global*
 
 Specifies the program used to send email. Defaults to '/usr/lib/sendmail'. If it is not found at startup, Interchange will return an error message and refuse to start.
 
@@ -1828,7 +1930,7 @@ Specifies the program used to send email. Defaults to '/usr/lib/sendmail'. If it
 
 A value of 'none' will disable the sending of emailed orders. Orders must be read from a tracking file, log, or by other means.
 
-H2: SocketFile
+H2: SocketFile *global*
 
 The name of the file which is used for UNIX-domain socket communications. Must be in a directory where the Interchange user has write permission.
 
@@ -1838,13 +1940,13 @@ Default is C<etc/socket> or the value of the environment variable MINIVEND_SOCKE
 
 >    bin/interchange -r SocketFile=/tmp/interchange.socket
 
-H2: SocketPerms
+H2: SocketPerms *global*
 
 The permissions (prepend a 0 to use octal notation) that should be used for the UNIX-domain socket. Temporarily set this to 666 on the command line to debug a permission problem on C<vlink>.
 
 >    bin/interchange -r SocketPerms=0666
 
-H2: SubCatalog
+H2: SubCatalog *global*
 
 Allows definition of a catalog which shares most of the characteristics of
 another catalog. Only the directives that are changed from the base catalog
@@ -1854,7 +1956,7 @@ The main reason that this would be used would be to conserve memory in a series 
 
 >    SubCatalog   sample2 sample /usr/catalogs/sample /cgi-bin/sample2
 
-H2: SysLog
+H2: SysLog *global*
 
 Allows you to set up syslog(8) error logging for Interchange.
 
@@ -1878,7 +1980,7 @@ and cause system log entries something like:
 
 You can create a custom wrapper around it to get it to behave as desired.
 
-H2: TcpHost
+H2: TcpHost *global*
 
 When running in INET mode, using C<tlink>, specifies the hosts that are
 allowed to send/receive transactions from any catalog on this Interchange
@@ -1887,7 +1989,7 @@ specified in a space-separated list. Default is localhost.
 
 >    TcpHost         localhost secure.domain.com
 
-H2: TcpMap
+H2: TcpMap *global*
 
 When running in INET mode, using C<tlink> or the internal HTTP server, specifies the port(s) which will be monitored by the Interchange server. Default is 7786>.
 
@@ -1916,7 +2018,7 @@ To bind to specific IP addresses, add them in the same fashion that they would a
 \NOTE: As usual, the EOF should be at the beginning of a line with no leading
 or trailing whitespace.
 
-H2: TemplateDir
+H2: TemplateDir *global*
 
 Sets a directory which will be searched for pages if not found in the users
 C<pages> directory. Interchange uses this; use it to supply some default pages so the user will not have them in their directory.
@@ -1925,11 +2027,11 @@ C<pages> directory. Interchange uses this; use it to supply some default pages s
 
 The user's page, if it exists, will take precedence. There is also a catalog-specific version of this directive. If a page is found in that directory (or directories), it will take precedence.
 
-H2: UserTag
+H2: UserTag *global*
 
 This defines a UserTag which is global in nature, meaning not limited by the Safe.pm module, and is is available to all Interchange catalogs running on the server. Otherwise, this is the same as a catalog UserTag.
 
-H2: Variable
+H2: Variable *global*
 
 Defines a global variable that will be available in B<all> catalogs with the notation @@Variable@@. Variable identifiers must begin with a capital letter, and can contain only word characters (B<A-Z,a-z,0-9> and underscore). They are case-sensitive. If using the I<ParseVariables> directive, only variables in ALL CAPS will be parsed. These are substituted first in any Interchange page, and can contain any valid Interchange tags including catalog variables.
 
@@ -1937,22 +2039,27 @@ Defines a global variable that will be available in B<all> catalogs with the not
 
 There are several standard variables which should not be used:
 
-B<MV_FILE>
+LI1: MV_FILE
+
 .Name of the last file read in, as in C<[file ...]> or an externally located perl routine.
 
-B<MV_NO_CRYPT>
+LI1: MV_NO_CRYPT
+
 .Set this to 1 to disable encrypted passwords for the C<AdminUser>.
 
-B<MV_PAGE>
+LI1: MV_PAGE
+
 .Name of the last page read in, as in the page called with mv_nextpage or mv_orderpage.
 
-B<CURRENCY>
+LI1: CURRENCY
+
 .The current locale for currency.
 
-B<LANG>
+LI1: LANG
+
 .The current locale for language.
 
-H2: VarName
+H2: VarName *global*
 
 Sets the names of variables that will be remapped to and from the URL when
 Interchange writes it. For instance, to display the variable mv_session_id as C<session> in the users URL:
@@ -1987,7 +2094,8 @@ Values can be defined in multiline form by using the <<HERE document method:
 As with all here documents, the terminating string must be the ONLY THING
 ON THE LINE. No leading or trailing characters are allowed, even whitespace.
 
-B<Include single setting from file>
+LI1: Include single setting from file
+
 .Value can be pulled from a file with <file:
 
 !block example; listitem=2
@@ -1996,7 +2104,8 @@ B<Include single setting from file>
 
 .This works well for includes that must be of the highest possible performance. They can be simply placed in a page with __VARIABLE__.
 
-B<Include multiple settings from file>
+LI1: Include multiple settings from file
+
 .Common settings can be set in one file:
 
 !block example; listitem=2
@@ -2009,7 +2118,8 @@ B<Include multiple settings from file>
     #include usertag/*
 !endblock
 
-B<#ifdef and #ifndef>
+LI1: #ifdef and #ifndef
+
 .\#ifdef / #endif and #ifndef / #endif pairs can be used:
 
 !block example; listitem=2
@@ -2040,7 +2150,8 @@ B<#ifdef and #ifndef>
     #endif
 !endblock
 
-B<Define subroutine watches>
+LI1: Define subroutine watches
+
 .Almost any configuration variable can be set up to be tied to a subroutine if the Tie::Watch module is installed. It uses a notation like the <<HERE document, but <&HERE is the notation. See C<Interchange Programming> for details.
 
 H2: Programming Watch Points in Catalog.cfg
@@ -2248,31 +2359,40 @@ H2: CreditCardAuto
 
 If set to Yes, enables the automatic encryption and saving of credit card information. In order for this to work properly, the EncryptProgram directive must be set to properly encode the field. The best way to set EncryptProgram is with PGP in the ASCII armor mode. This option uses the following standard fields on Interchange order processing forms:
 
-B<C<mv_credit_card_number>>
+LI1: C<mv_credit_card_number>
+
 .The actual credit card number, which will be wiped from memory after checking to see if it is a valid Amex, Visa, MC, or Discover card number. This variable will never be carried forward in the user session.
  
-B<C<mv_credit_card_exp_all>>
+LI1: C<mv_credit_card_exp_all>
+
 .The expiration date, as a text field in the form MM/YY (will take a four-digit year as well). If it is not present, the fields C<mv_credit_card_exp_month> and C<mv_credit_card_exp_year> are looked at. It is set by Interchange when the card validation returns, if not previously set.
  
-B<C<mv_credit_card_exp_month>>
+LI1: C<mv_credit_card_exp_month>
+
 .The expiration date month, used if the C<mv_credit_card_exp_all> field is not present. It is set by Interchange when the card validation returns, if not previously set.
  
-B<C<mv_credit_card_exp_year>>
+LI1: C<mv_credit_card_exp_year>
+
 .The expiration date year, used if the C<mv_credit_card_exp_all> field is not present. It is set by Interchange when the card validation returns, if not previously set.
  
-B<C<mv_credit_card_error>>
+LI1: C<mv_credit_card_error>
+
 .Set by Interchange to indicate the error if the card does not validate properly. The error message is not too enlightening if validation is the problem.
  
-B<C<mv_credit_card_force>>
+LI1: C<mv_credit_card_force>
+
 .Set this value to 1 to force Interchange to encrypt the card despite its idea of validity. Will still set the flag for validity to 0 if the number/date does not validate. Still won't accept badly formatted expiration dates.
 
-B<C<mv_credit_card_separate>>
+LI1: C<mv_credit_card_separate>
+
 .Set this value to 1 to cause Interchange encrypt only the card number and not accompany it with the expiration date and card type.
 
-B<C<mv_credit_card_info>>
+LI1: C<mv_credit_card_info>
+
 .Set by Interchange to the encrypted card information if the card validates properly. If PGP is used in ASCII armor mode, this field can be placed on the order report and embedded in the order email, replete with markers. This allows a secure order to be read for content, without exposing the credit card number to risk.
 
-B<C<mv_credit_card_valid>>
+LI1: C<mv_credit_card_valid>
+
 .Set by Interchange to true, or 1, if the the card validates properly. Set to 0 otherwise.
 
 PGP is recommended as the encryption program, though remember that U.S. commercial organizations may require a license for RSA. Interchange will work with GPG, the Gnu Privacy Guard.
@@ -2601,7 +2721,8 @@ H2: Pragma
 
 Sets the default value of an Interchange pragma. The only one to date is: 
 
-B<no_html_parse>
+LI1: no_html_parse
+
 .Disallows HTML tag parsing. This is a BIG parser performance gain and is enabled in the demo catalog. 
 
 To enable a pragma for only a particular page, set it anywhere in the page:
@@ -3330,16 +3451,20 @@ can be set to secure permissions (user read-write only). It is normally
 not necessary for the user to do anything. They will be compiled by
 the configuration program. If the Interchange daemon is not running, either of the programs will display a message indicating that the server is not available. The following defines in the produced C<config.h> should be set:
 
-B<LINK_FILE>
+LI1: LINK_FILE
+
 .Set this to the name of the socket file that will be used for configuration, usually "/usr/local/lib/interchange/etc/socket" or the "etc/socket" under the directory chosen for the VendRoot.
 
-B<LINK_HOST>
+LI1: LINK_HOST
+
 .Set this to the IP number of the host which should be contacted. The default of 127.0.0.1 (the local machine) is probably best for many installations.
 
-B<LINK_PORT>
+LI1: LINK_PORT
+
 .Set this to the TCP port number that the Interchange server will monitor.  The default is 7786 (the ASCII codes for 'M' and 'V') and does not normally need to be changed.
 
-B<LINK_TIMEOUT>
+LI1: LINK_TIMEOUT
+
 .Set this to the number of seconds vlink or tlink should wait before announcing that the Interchange server is not running. The default of 45 is probably a reasonable value.
 
 H2: Compiling VLINK and TLINK
@@ -3399,17 +3524,20 @@ H2: Configuration Problems
 Most Interchange configuration and setup problems are due to one
 of the following:
 
-B<Wrong information given to makecat program.>
+LI1: Wrong information given to makecat program.
+
 .THIS IS BY FAR THE MOST COMMON PROBLEM. To install a working demo, Interchange needs to know what the DocumentRoot is and how to run CGI programs. Details of this setup are server- and site-specific, which may require some research.
 
 .Re-run the configuration again, and pay close attention to the prompts given. There are examples given which apply to most systems.
 
 .If the web server is Apache or NCSA, Interchange will try and parse its C<httpd.conf> file to help you along, but many ISPs don't allow users to read these and it may fail.
 
-B<Too-low version of Perl.>
+LI1: Too-low version of Perl.
+
 .If you have a Perl earlier than 5.005, Interchange will not work. Don't even try an earlier version. You must update.
 
-B<Perl compiled with USE_THREADS.>
+LI1: Perl compiled with USE_THREADS.
+
 .Run C<perl -V>. If you see -DUSE_THREADS in the compilation definition, you might run into problems with Interchange.
 
 H2: VLINK or TLINK Compile Problems
@@ -3445,7 +3573,7 @@ of commands:
 
 There is also a C<compile_link> program which has docmentation embedded and which will compile an approprate link. If you cannot compile, try using the C<tlink.pl> script which should work on most any system.
 
-H2: We're sorry, the Interchange server is unavailable...
+H2: We're sorry, the Interchange server is unavailable....
 
 This is the most common problem on UNIX systems. It almost always means that permissions are not properly set up, or that the VLINK program is not setuid. Try temporarily changing the permission of the MINIVEND_ROOT/etc/socket file to be read/write to all groups (C<chmod 666 etc/socket>). This must be done after the server is started, as Interchange deletes and recreates the socket every time it starts. If Interchange then works, make sure the user that runs the VLINK program matches the user who is running the Interchange daemon.
 
@@ -3728,10 +3856,12 @@ As always, check the error log. The most common problem is something like:
 
 Probable causes:
 
-B<Interchange user ID doesn't have keyring>
+LI1: Interchange user ID doesn't have keyring
+
 .You must have a C<.pgp> or C<.gnupg> directory in the home directory of the user running Interchange. It is also possible to set an environment variable (variously PGPPATH or GNUPGPATH) to orient the program correctly.
 
-B<Trust problems>
+LI1: Trust problems
+
 .If the key you are sending has not been signed by another (trusted) user, then you will get error returns from some flavors of PGP, which causes the problem.  Sometimes the fix is to route the error output to /dev/null (at least on UNIX) by changing the EncryptProgram directive in catalog.cfg:
 
 !block example; listitem=2
@@ -3926,15 +4056,18 @@ H1: PERFORMANCE ISSUES
 
 Interchange is not a lightweight program. If you are running it on a low-end ISP, whose major selling point is low cost, you will frequently find that Interchange performance is very poor. This is due to either:
 
-B<Not enough memory>
+LI1: Not enough memory
+
 .If memory is low, the program will "swap" to disk. If lots of swap is used, you can expect very bad performance. This is the most common speed problem.
 
 .If your ISP uses IDE hard disks, you can expect REALLY bad performance. IDE disks are very slow for multi-user machines, which should have SCSI if ANY swapping is to be done.
 
-B<Too many domains>
+LI1: Too many domains
+
 .If there is a huge amount of traffic on the system, then it can run at a very high "load average." If the machine's load average is routinely above 2, you can expect problems.
 
-B<Underpowered machine>
+LI1: Underpowered machine
+
 .If it is an old machine, it may be too slow for Interchange. A Pentium of less than 300MHz is probably not good enough unless it is completely dedicated to Interchange. The faster the processor, the happier you will be.
 
 H2: Interchange runs, but it's sooo sllooowww...

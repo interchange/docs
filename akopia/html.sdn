@@ -1,4 +1,4 @@
-# $Id: html.sdn,v 1.2 2000-10-13 21:08:20 zarko Exp $
+# $Id: html.sdn,v 1.3 2000-10-17 23:00:56 zarko Exp $
 #
 # >>Title::     HTML Tuning
 #
@@ -50,14 +50,14 @@ sub _html_mdnav {
                 for(my $i = 0; $i <= $#text; $i++) {
                     if($text[$i] =~ s/^L1\[/N:{{[bold;/) {
                         $text[$i] .= '}}';
-                    } elsif($text[$i] =~ s!^L2\[!E<nl>{{IMPORT[base=DOC_HTML_LOGO_BASE]bullet.gif}}{{[size="-1";!) {
+                    } elsif($text[$i] =~ s!^L2\[!E<nl>{{IMPORT:bullet.gif}}{{[size="-1";!) {
                         $text[$i-1] .= splice(@text,$i,1) . '}}';
                         $i--;
                     }
                 }
 
                 # Prepend an "all in one file" link
-                unshift(@text, 'N[noevents;notoc]({{INLINE:<A HREF="index.html" TARGET="_top">all in one file</A>}})');
+                unshift(@text, 'N[noevents;notoc]({{INLINE:<A HREF="'.$var{'DOC_SHORT'}.'" TARGET="_top">all in one file</A>}})');
 
                 # Prepend a section separator and a title
                 $toc_text = $var{'DOC_TOC_TITLE'};
@@ -176,8 +176,7 @@ sub _html_mdnav {
 
 !default HTML_BG_COLOR COLOR_WHITE
 !default HTML_LINK_COLOR '3399ff'
-!default HTML_URL_CATALOG '..'
-!default DOC_HTML_LOGO_BASE '../'
+!default HTML_URL_CATALOG 'index.html'
 !default DOC_HTML_LOGO 'akopia-logo.gif'
 !default DOC_OWNER "1996-2000 Akopia, Inc. E<lt>info@akopia.comE<gt>"
 !default DOC_ID_SEP "-"
