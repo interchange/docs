@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.70 2001-12-28 16:53:34 jon Exp $
+# $Id: ictags.sdf,v 1.71 2002-01-16 02:30:25 jon Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.70 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.71 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -16609,7 +16609,6 @@ The two-letter abbreviations are mapped with these letters:
 Abbr|Long name
 DL|{{CMD[jump="#mv_raw_dict_look"]mv_raw_dict_look}}
 MM|{{CMD[jump="#mv_more_matches"]mv_more_matches}}
-SE|{{CMD[jump="#mv_raw_searchspec"]mv_raw_searchspec}}
 ac|{{CMD[jump="#mv_all_chars"]mv_all_chars}}
 ar|{{CMD[jump="#mv_arg"]mv_arg}}
 bd|{{CMD[jump="#mv_base_directory"]mv_base_directory}}

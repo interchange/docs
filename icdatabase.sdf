@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.35 2002-01-09 15:04:01 racke Exp $
+# $Id: icdatabase.sdf,v 1.36 2002-01-16 02:30:25 jon Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.35 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.36 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
@@ -1190,7 +1190,6 @@ The two-letter abbreviations are mapped with these letters:
  rr  mv_return_reference
  rs  mv_return_spec
  rx  mv_range_max
- SE  mv_raw_searchspec
  se  mv_searchspec
  sf  mv_search_field
  sg  mv_search_group
