@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: icprogrammer.sdf,v 1.3 2002-07-26 02:54:59 mheins Exp $
+# $Id: icprogrammer.sdf,v 1.4 2002-07-26 16:47:09 mheins Exp $
 
 !define DOC_NAME "Interchange Programmer Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icprogrammer"
-!define DOC_VERSION substr('$Revision: 1.3 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.4 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icvars.html"
@@ -231,10 +231,16 @@ first one to answer gets the task, runs it, then returns to listen
 again. After MaxChildRequests requests, it dies and causes another
 new instance to take its place.
 
+LI1: mod_perl mode
+
+Interchange can be loaded into {{CMD[jump="http://perl.apache.org"]mod_perl}}.
+See the documentation in C<scripts/ic_mod_perl.PL> for information.
+
 LI1: SOAP mode
 
 Interchange can listen to a socket designed to accept a SOAP connection --
-those always run in prefork mode.
+those always run in prefork mode. This mode can co-exist with other modes,
+so the same Interchange server can serve both page and SOAP requests.
 
 H2: Talking to Interchange over the command line
 
@@ -391,12 +397,13 @@ Navigating the Interchange source requires a couple of clues. The
 main program invocation point is C<bin/interchange> in the Interchange
 software directory. 
 
+H2: From startup to serving content
+
 Once Interchange is invoked, it does some basic program
 configuration at the top of that file. The types of available
-database facilities and modules is determined, and the base 
+database facilities and modules are determined, and the base 
 modules are brought in with "use" or "require". Execution by
 a non-root user ID is checked.
-
 
 After the initial program configuration, execution goes to the
 main_loop() subroutine in bin/interchange. Some more initialization is
@@ -416,6 +423,130 @@ files with appropriate extensions under the C<code> directory.
 Sets of tags to be used can be set with the
 {{CMD[jump="icconfig.html#TagGroup *global*"]TagGroup}} and
 {{CMD[jump="icconfig.html#TagInclude *global*"]TagInclude}} directives.
+
+Global configuration also includes specifying the catalogs that will be
+configured and loaded in the next phase. This is done via the
+{{CMD[jump="icconfig.html#Catalog *global*"]Catalog}} directive. An
+important part of that directive is supplying the C<script> parameter,
+which is used to initialize the pointer structure which will select the
+catalog based on the URL coming in.
+
+After Global configuration, catalog configuration commences, via the
+::config_named_catalog() routine, which calls Vend::Config::config().
+Each catalog specified in the global configuration has a base directory.
+Interchange does a chdir() to that directory and parses the various
+configuration files, databases and specified command-line parameters.
+
+After the catalog is configured, the database is opened
+to ensure that database table objects are initialized properly. It
+is then immediately closed.
+
+The resulting Catalog configuration structure reference is then saved
+in $Global::Selector and $Global::SelectorAlias so that the calling
+URL can map to the proper catalog.
+
+Once all configuration is done, Interchange determines the program
+mode. There are only two modes -- C<test> and C<serve>. The test
+mode simply exits the program at this point -- it is used to test
+validity of the configuration.
+
+If the mode is C<serve>, ::main_loop() calls Vend::Server::run_server().
+Based on global configuration, one of the server modes discussed
+previously is initialized and Interchange starts listening on one or
+more sockets for a connection from a client. (This is not true
+for mod_perl mode -- Interchange simply exits at that point
+and the code is waiting for mod_perl to call it.)
+
+While waiting for a connection, signals are disabled and handlers
+are set up for TERM, HUP, INT, USR1, and USR2. TERM and INT both
+cause the main server to exit; HUP signals Interchange to look
+for a reconfiguration event; and USR1 and USR2 are optionally used
+to keep track of how many servers are running.
+
+B<NOTE>: Because signals are not especially safe in Perl prior to 5.8.0,
+occasionally a core dump can occur on receipt of USR1 or USR2. This is
+especially true for BSD with its reentrant system calls. They can be
+disabled by setting
+{{CMD[jump="icconfig.html#MaxServers *global*"]MaxServers}} to 0 --
+{{CMD[jump="icconfig.html#PreFork *global*"]PreFork}} mode is strongly
+suggested if that is done.
+
+Once a connection is received, the connector parameters are checked
+for security constraints and Vend::Server::connection() is called.
+It reads the input from the client and constructs the environment,
+%CGI::values array, and any passed entity like an HTTP POST or 
+multipart form (for file upload). Those are stored and and object
+referring to them and containing the connection file handle is
+constructed. That object is passed to main::dispatch() for
+processing.
+
+The main::dispatch() routine performs more transaction setup then
+determines the catalog that will process the request. It sets $Vend::Cfg
+to the preset configuration for that catalog, sets file permissions
+as appropriate, and the catalog's database is opened. 
+
+Once initialiation of the catalog configuraion is complete, user
+initialization begins. Interchange determines the user session ID, if
+any, and restores the user session from the session database or starts a
+new session as appropriate. Perl objects that will be used in the
+session are initialized or constructed, auto-login is run, and the
+locale is determined and set. After that, the URI path is parsed,
+{{CMD[jump="icconfig.html#Autoload"]Autoload}} and
+{{CMD[jump="icconfig.html#Filter"]Filter}} routines are run.
+
+Finally a transaction action is determined. The action is the
+first path component of the path passed to Interchange. The remainder
+is passed to the subroutine implementing the action, and may be
+used as default path information for content or for other purposes.
+
+For example, if the catalog VendURL is C</cgi-bin/foundation> and the
+URI sent to Interchange is
+C</cgi-bin/foundation/order/something/or/another>, the action is
+C<order>, and the path sent to the action routine is is
+C<something/or/another>.
+
+If the transaction action is not mapped via standard system
+actions defined in the variable %action, or in the
+{{CMD[jump="ActionMap *icconfig.html#global*"]ActionMap *global*}}
+or {{CMD[jump="icconfig.html#ActionMap"]ActionMap}} directives,
+then the action path component is restored to the content path,
+and that page is served (C<order/something/or/another> in the
+example above).
+
+If the action is mapped, it is run. If it returns a true value, the page
+to be served is determined by the setting of $CGI::values::mv_nextpage.
+The action can produce send its own output and return a non-true value,
+in which case Interchange will terminate the transaction at that time.
+
+After the action is run and/or content is served, Interchange
+runs AutoEnd, saves the user session, closes the catalog database, and 
+finally main::dispatch() returns. The calling Vend::Server::connection()
+does some cleanup and returns to the server loop. If the server was
+forked for that transaction only, it sends a signal indicating
+it is done, cleans up PID files, and exits. If it is in the foreground
+or in PreFork mode, it scrubs the Vend:: and CGI:: namespaces and
+returns to waiting for the next connection.
+
+H2: Notes about databases
+
+Interchange maintains objects for all of its database tables
+defined in {{CMD[jump="icconfig.html#Database"]Database}}. These
+can be of diverse SQL, DBM, and LDAP types. 
+
+When the database is initialized at catalog configuration time, the
+individual database tables may be opened depending on type. In general,
+SQL and LDAP types are always opened, and DBM types are not.
+
+Opening a database table can be expensive in terms of CPU and
+IO time. So when the database is opened for a page transaction,
+Interchange creates a "dummy" table object that waits for a real
+access. Those objects are trivial to create, and a fast processor
+can create hundreds of thousands per second.
+
+When  access is made, the database table is really opened
+and the expensive initialization is done. This allows many tables
+to be ready for access while only the ones used take up CPU and
+IO time.
 
 H1: Interchange Special Variables
 
