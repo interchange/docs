@@ -1,14 +1,14 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: ic_howto_qb.sdf,v 1.2 2002-10-30 17:24:00 mheins Exp $
+# $Id: ic_howto_qb.sdf,v 1.3 2003-06-04 08:54:44 danb Exp $
 
 !define DOC_NAME "Interchange + QuickBooks HOWTO"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_howto_qb"
-!define DOC_VERSION substr('$Revision: 1.2 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.3 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ic_howto_qb.html"
-!define DOC_OWNER "2001,2002 Mike Heins E<lt>{{EMAIL:mike@perusion.com}}E<gt>, minor additions by Dan Browning E<lt>{{EMAIL:dan.browning@kavod.com}}E<gt>"
+!define DOC_OWNER "2001,2002 Mike Heins E<lt>{{EMAIL:mike@perusion.com}}E<gt>, Dan Browning E<lt>{{EMAIL:db@kavod.com}}E<gt>"
 !build_title
 
 H1:Introduction
@@ -33,7 +33,7 @@ N:The preferred method of submitting changes is in the form of a context diff
 against the SDF source file (ic_howto_qb.sdf).  Please address your correspondence
 to:
 
-N:Volunteer Maintainer, Dan Browning {{EMAIL:dan.browning@kavod.com}}
+N:Volunteer Maintainer, Dan Browning {{EMAIL:db@kavod.com}}
 
 or 
 
@@ -57,10 +57,9 @@ Interchange Format. Fitting, eh?
 
 The standard capabilities of Interchange allow production of IIF files
 for transaction passing.  With some support from Interchange UserTags,
-can even import and export item listings.
+it can even import and export item listings.
 
 =head1 Contents
-
 
 The extension files can be found in the Interchange tarball under the 
 'C<extensions/quickbooks>' directory.  The following files are used with this 
@@ -70,22 +69,21 @@ extension:
   usertag/import_quicken_items  UserTag for importing items
   usertag/export_quicken_items  UserTag for exporting items
   pages/admin/quickbooks/*      Menu support for Interchange UI
-  etc/trans_quickbooks          Report file used with quickbooks route
-  qb.catalog.cfg                Route for quickbooks transaction logging
+  qb.catalog.cfg                Quickbooks configuration.
 !endblock
   
 =head1 Installation
 
 To set up this extension, the basic steps are:
 
-    * Create and copy directories and files.
-    * Add additional database fields.
-    * Modify catalog.cfg with additions.
-    * Add "quickbooks" order route to checkout pages.
-    * Restart Interchange.
-    * Export your items from Interchange catalog (or import your
-      existing QuickBooks items to Interchange).
-    * Test.
+ * Create and copy directories and files.
+ * Add additional database fields.
+ * Modify catalog.cfg with additions.
+ * Add "quickbooks" order route to checkout pages.
+ * Restart Interchange.
+ * Export your items from Interchange catalog (or import your existing 
+   QuickBooks items to Interchange).
+ * Test.
 
 =head2 Terms and locations
 
@@ -118,6 +116,11 @@ C<interchange.cfg> resides. Common locations:
 
 We will use the path C</usr/lib/interchange> in these examples.
 
+=item Interchange tarball directory
+
+The quickbooks files are located in the untarred distribution file, before
+installation of Interchange is performed.
+
 =item Interchange User
 
 The Interchange daemon runs as a user ID that cannot be root. It will require
@@ -135,6 +138,58 @@ It is assumed you have tools and knowledge to create directories with the
 proper permissions. Any directories that will contain varying files like
 order transaction logs will require write permission for the Interchange
 daemon user; pages and configuration only need have read permission.
+
+=head2 Quick Installation Script
+
+This script will install the necessary files for you, provided that you modify
+the variables to your environment.  Alternately, you can follow the more
+detailed installation instructions that follow it.
+
+!block example
+
+# Modify these three variables to match your environment.
+export QB=/path/to/interchange/extensions/quickbooks
+export VENDROOT=/usr/local/interchange
+export CATROOT=/home/interch/catalogs/foundation
+
+mkdir -p $CATROOT/include/menus $CATROOT/vars
+cp -r $QB/TRANS_QUICKBOOKS \
+      $CATROOT/vars
+cp -r $QB/pages/admin/quickbooks \
+      $CATROOT/pages/admin
+cp -i $QB/usertag/* \
+      $VENDROOT/code/UI_Tag
+
+# Variables that optionally modify the export process, along with 
+# their help entries.	  
+cat   $QB/variable.txt-additions >> \
+      $CATROOT/products/variable.txt
+cat   $QB/mv_metadata.asc-additions >> \
+      $CATROOT/products/mv_metadata.asc
+
+# Menu entries: start with the existing menu, then add ours.
+cp -i $VENDROOT/lib/UI/pages/include/menus/Admin.txt \
+      $CATROOT/include/menus
+cat   $QB/menus/Admin.txt.append >> \
+      $CATROOT/include/menus/Admin.txt
+
+# Some configuration changes.
+cat >> $CATROOT/catalog.cfg <<EOF
+# Allows vars/TRANS_QUICKBOOKS
+DirConfig vars
+# You can remove these requires if you don't want to use the
+# Quickbooks UI menu items
+Require usertag import_quicken_items
+Require usertag export_quicken_items
+EOF
+
+!endblock
+
+=head2 Admin UI Usage
+
+After successful installation, there should be a "Quickbooks" menu item under
+the "Admin" category.  From there, you can "generate IIF files", download them,
+and perform other Quickbooks-related tasks.
 
 =over 4
 
@@ -165,15 +220,17 @@ You will want the Interchange UI support if you are using the UI. It provides
 links for importing/exporting items, downloading and viewing IIF files, and
 possibly other functions over time. At the UNIX command line:
 
-    cp -r /usr/lib/interchange/extensions/quickbooks/pages/admin/quickbooks \
+    cd /usr/lib/interchange/
+	 cp -r extensions/quickbooks/pages/admin/quickbooks \
           /var/lib/interchange/foundation/pages
 
 =item Copy report generation file etc/trans_quickbooks
 
-This file is used to generate the IIF file(s) for transaction oimport
+This file is used to generate the IIF file(s) for transaction import
 into QuickBooks.
 
-    cp /usr/lib/interchange/extensions/quickbooks/etc/trans_quickbooks \
+    cd /usr/lib/interchange/
+	 cp extensions/quickbooks/etc/trans_quickbooks \
        /var/lib/interchange/foundation/etc
 
 =item Copy usertags
@@ -185,14 +242,15 @@ part of the UI configuration file.
 
     cd /usr/lib/interchange
     cp -i extensions/quickbooks/usertag/* lib/UI/usertag
-
+	 
 =back
 
 =head2 Additional database fields -- userdb
 
-Quickbooks requires a couple more fields than Interchange has. If you
-want the user to retain their customer number, add the following field to the
-"userdb" table:
+If your catalog is not based on a 4.6+ version of the foundation catalog, you 
+may not have some of the additional database fields necessary.  If you want the 
+user to retain their customer number, add the following field to the "userdb" 
+table:
 
     customer_number
 
@@ -236,7 +294,7 @@ restart Interchange.
 
 =head2 Modify catalog.cfg with additions:
 
-Add the entries in qb.catalog.cfg to catalog.cfg (you can use a #include
+Add the entries in qb.catalog.cfg to catalog.cfg (you can use an include
 statement if you wish).
 
 There are some Require directives to ensure that the needed UserTag definitions
@@ -260,42 +318,13 @@ reference documentation.
 =head2 Additional Variables
 
 Optionally, you may specify some variables that modify the behavior of the
-Quickbooks export feature.  Below is a command that will append the empty variables to
-your variable.txt file.
+Quickbooks export feature.  Documentation for these variables is provided via 
+item-specific meta data, which can be added to your mv_metadata.asc file for 
+automatic display by the Admin UI.
 
-!block example
-cat >>/path/to/your/products/variable.txt  <<EOF
-QB_DISABLE_DOCNUM		Quickbooks
-QB_ITEM_PREFIX		Quickbooks
-QB_ITEM_LENGTH		Quickbooks
-QB_FILE_SUFFIX		Quickbooks
-QB_SHIPPING_ACCOUNT		Quickbooks
-QB_SHIPPING_ITEM		Quickbooks
-QB_DEFAULT_ACCOUNT		Quickbooks
-QB_SALES_TAX_ACCOUNT		Quickbooks
-QB_SALES_TAX_AGENCY		Quickbooks
-QB_SALES_TAX_ITEM		Quickbooks
-EOF
-!endblock
-
-Documentation for these variables is provided via item-specific meta data, which can
-be added to your mv_metadata.asc file in a similar way as above for automatic 
-display by the Admin UI:
-
-!block example
-cat >>/path/to/your/products/mv_metadata.asc  <<EOF
-variable::Variable::QB_DISABLE_DOCNUM	yesno										<b>Yes</b> will cause the invoice number (AKA DOCNUM & Document Number) to be blank.  No by default.  <b>No</b> will cause etc/trans_quickbooks the use of the Interchange order number as the Quickbooks invoice number.  Some prefer to have the number left blank so as not to cause Quickbooks to change its auto-count.
-variable::Variable::QB_ITEM_PREFIX	text										A prefix applied to all product names (the unique identifier in Quickbooks).  Empty by default.  For example, some Quickbooks users may have a category for all the products sold on their website such as "E-Commerce Products:" (the colon is a category deliniator for Quickbooks).  Other Quickbooks users may use the same category scheme in in their Interchange store as they do in their Quickbooks item lists, in which case something to this effect would be applicable:  "[item-field category]:"  
-variable::Variable::QB_ITEM_LENGTH	text										The item name maximum length for product line items (any characters past this length will be truncated).  30 by default.  Quickbooks versions 6.0 and 99 may have a problem with item names that are longer than 30 characters; however, lengths of 45 and longer have been known to work on Quickbooks 2000 and later version.  Please report any compatibility problems/information to the interchange-users@icdevgroup.org mailing list.
-variable::Variable::QB_FILE_SUFFIX	text										If left blank, the current date will be used and each order will be appended to the file.  <BR><BR>Another option is to use [value mv_order_number] to cause the creation of a separate file for each order.
-variable::Variable::QB_SHIPPING_ACCOUNT	text										The income account associated with shipping.  "Other Income" by default.
-variable::Variable::QB_SHIPPING_ITEM	text										The item name given for the shipping.  "Shipping" by default.
-variable::Variable::QB_DEFAULT_ACCOUNT	text										The income account associated with each product line item.  "Other Income" by default; however, the highest precence is 'account' field in the 'inventory' table. 
-variable::Variable::QB_SALES_TAX_ACCOUNT	text										The liability account associated with sales tax.  "Sales Tax Payable" by default.
-variable::Variable::QB_SALES_TAX_AGENCY	text										The name of the sales tax agency for your locality.  "State Board of Equalization" by default (the name given in the Quickbooks 2000 sample products based business).
-variable::Variable::QB_SALES_TAX_ITEM	text										The item name (Quickbooks unique identifier) for the sales tax.  "Sales Tax Item" by default (from Quickbooks 2000 sample products based business).
-EOF
-!endblock
+See the installation script at the top of this document for commands that will 
+append the empty variables to your variable.txt and the help information to your
+mv_metadata.asc files.
 
 =head2 Restart the catalog
 
@@ -356,13 +385,20 @@ customer information. Since QuickBooks uses the customer name or company
 to generate the unique listing, we place the Interchange username in
 parentheses after the company or name.
 
+=head2 IIF generation at time of order
+
+As of 4.9, the IIF generation was moved from an order route into the Admin UI.
+This was done so that the IIF generation process could be fine tuned without
+restarting Interchange and placing an order.  If you need the IIF file generated
+at the time of order, you can still access the pre-4.9.6 files in 
+C<extensions/quickbooks/legacy>.  
+
 A1:Credits
 
 *{{B:Mike Heins}}: This document was copied from the original POD documentation
 ({{EX:extensions/quickbooks/ic_qb.pod}}) written by Mike Heins {{EMAIL:mike@perusion.com}}.
 
-*{{B:Dan Browning}}: Slightly modified by Dan Browning
-{{EMAIL:dan.browning@kavod.com}}.
+*{{B:Dan Browning}}: Updated by Dan Browning {{EMAIL:db@kavod.com}}.
 
 A1:Document history
 
@@ -373,6 +409,6 @@ A1:Resources
 A2:Documentation
 
 	* What are the IIF File Headers? {{URL:http://www.quickbooks.com/support/faqs/qbw2000/121756.html}}
-	* See the Quickbooks Help item, "Reference guide to import files"
+	* Also see the Quickbooks Help item, "Reference guide to import files"
 
 N:Copyright 2002 ICDEVGROUP. Freely redistributable under terms of the GNU General Public License.

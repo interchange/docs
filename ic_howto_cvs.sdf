@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: ic_howto_cvs.sdf,v 1.12 2002-10-30 17:23:59 mheins Exp $
+# $Id: ic_howto_cvs.sdf,v 1.13 2003-06-04 08:54:44 danb Exp $
 
 !define DOC_NAME "Interchange + CVS HOWTO"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_howto_cvs"
-!define DOC_VERSION substr('$Revision: 1.12 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.13 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ic_howto_cvs.html"
@@ -15,7 +15,7 @@ H1:Introduction
 
 H2:Preamble
 
-N:Copyright 2001,2002 Dan Browning <dan.browning@kavod.com>.  This document is
+N:Copyright 2001-2003 Dan Browning <dan.browning@kavod.com>.  This document is
 freely redistributable under terms of the GNU General Public License. 
 
 H2:Purpose
@@ -55,7 +55,7 @@ N:Dan Browning {{EMAIL:dan.browning@kavod.com}}
 H2:The advantages of using CVS
 
 N:CVS is a very useful tool and can help you in your development, no matter if
-you are one developer or are part of a team of developers.  
+you are an independant developer or are part of a team of developers.  
 
 *What is CVS all about?
 
@@ -139,48 +139,63 @@ N:There shouldn't be any reason why you could not do everything I mention here
 on other Linux distributions, Unices or Windows (using cygwin). However, my
 statements will reflect Red Hat Linux 7.x. Additionally, Red Hat Linux 6.x is
 for the most part the same as 7.x, except for the difference of using inetd
-instead of xinetd to setup pserver.    
+instead of xinetd to setup pserver.
 
 H2:Install CVS
 
 N:This is the easy part.  For Red Hat Linux systems, download the CVS rpms and 
 install them.  You can search for rpms for your system using 
-{{URL:http://www.rpmfind.net}}.  
+{{URL:http://www.rpmfind.net}}.
 
 N:Create the user and group that will administrate the Interchange repository.
 For this document, it will be the interch user, (which was setup during the
 installation of Interchange).  But if you understand the mechanics of Unix
 users/groups, then you can use whatever username and group scheme you prefer.
-For example, some create a cvs user and cvs group, then add the Interchange
-user and catalog owner to its group or vice-versa.  The integration of
-Interchange and CVS in the latter portion of this document will require that
-the CVS user can write to the catalog directory.       
+For example, some create a cvs user and add it to the same group that 
+interchange uses (e.g. interch), or add the Interchange user and catalog owner 
+to its group or vice-versa.  The integration of Interchange and CVS in the 
+latter portion of this document will require that the CVS user can write to the
+catalog directory.       
 
 H2:Create the CVS repository directory
 
-N:You will need to create a repository directory such as {{F:/rep}}, which is
-used here and in the rest of the document, but it can be any directory you
-desire, and must be owned by the cvs user.  Many use {{F:/var/rep}} or
-{{F:/home/cvs/rep}}.    
+N:You will need to create a repository directory such as 
+{{F:/home/interch/rep}}, which is used here and in the rest of the 
+document, but it can be any directory you desire, and must be owned by the cvs
+user.    
 
 !block example;
-	su - root
-	mkdir /rep
-	chown interch.interch /rep
+	mkdir /home/interch/rep
 !endblock
 
-H2:Setup environment variables
+H2:Setup environment variables & .cvsrc
 
-N:The CVSROOT and EDITOR environment variables should be setup for all users in
-/etc/profile.  Of course, EDITOR can be whatever Unix text editor you prefer,
-such as {{F:vi}}, {{F:emacs}}, {{F:pico}}, or {{F:joe}}.   
+N:The CVSROOT environment variable can be setup for your user (in {{F:~/.bashrc}} or {{F:~/.profile}}, or for all users in {{F:/etc/profile}}.
 
 !block example;
-{{B:/etc/profile:}}
+{{B:~/.profile:}}
 
-export CVSROOT=/rep
-export EDITOR=vi
+export CVSROOT=${HOME}/rep
 !endblock
+
+H3: .cvsrc
+
+We recommend these default options for CVS.
+
+!block example;
+{{B:~/.cvsrc:}}
+
+cvs -q
+diff -u
+update -Pd
+checkout -P
+!endblock
+
+N: This directs CVS to (1) automatically compress all data communicated between
+you and our server (saving bandwidth), and be quieter; (2) show 
+context-sensitive diffs; (3) prune empty directories and create any new 
+directories added to the repository since your checkout; and (4) prune empty 
+directories during your checkouts.
 
 Note:You will need to logout/login for the profile changes to take effect. 
 
@@ -190,8 +205,7 @@ N:Initialize the repository as the CVS user, which is {{EX:interch}} for this
 document. 
 
 !block example;
-	su - interch
-	cvs -d /rep init
+	cvs -d /home/interch/rep init
 !endblock
 
 H2:CVS Authentication
@@ -200,7 +214,8 @@ H3:Background
 
 N:Authentication is done in CVS through the {{F:$CVSROOT/CVSROOT/passwd}} file.  
 It can be easily manipulated through some of the CVS administration tools that 
-are available.    
+are available.  An alternate authentication method is ssh, which requires no 
+extra setup on the server side. 
 
 H3:CVS administration tools
 
@@ -219,9 +234,10 @@ N:You can find a tarball to install on your system using the above address, but
 here is the address of a recent RPM package of the version. This package is
 intended for Mandrake systems, but is compatible with Red Hat Linux 7.1:  
 
-*{{URL:ftp://speakeasy.rpmfind.net/linux/Mandrake-devel/contrib/RPMS/cvsadmin-1.0.1-1mdk.i586.rpm}}
+*{{URL:ftp://rpmfind.net/linux/Mandrake/9.0/contrib/RPMS/cvsadmin-1.0.2-1mdk.i586.rpm}}
 
-N:After installing, create a password file ({{touch $CVSROOT/CVSROOT/passwd}}), 
+N:After installing, create a password file 
+({{touch $CVSROOT/CVSROOT/passwd, touch $CVSROOT/CVSROOT/users}}), 
 and execute {{EX:cvsadmin add <usernames>}}.
 
 H2:Setup CVS modules
@@ -235,10 +251,16 @@ own branches, trees,  and other features.
 H3:Add your project to the {{F:modules}} configuration file
 
 N:The format of the modules file is explained in detail in the CVS
-documentation, here is the simplest way to use it: 
+documentation, here is the simplest way to use it.  First you will need to 
+checkout your CVSROOT directory, then modify and commit the 'modules' file. 
 
 !block example;
-{{B:/rep/CVSROOT/modules:}}
+
+cvs co CVSROOT
+cd CVSROOT
+
+{{B:modules:}}
+
 
 <Module name><TAB><Module Directory>
 !endblock
@@ -249,17 +271,10 @@ will create later under /rep.  We'll want a module for the template catalog
 
 E:foundation	foundation
 
-H3:Create the module directory
-
-N: This is the directory that is referred to in the {{F:CVSROOT/modules}} file
-we just modified. 
-
-E:mkdir /rep/foundation
-
 H2:Setup binary file types
 
 N:This isn't necessary if you aren't going to manage any binary files (e.g. if
-you plan on excluding your /images/ directory).  But I recommend including it.
+you plan on excluding your images/ directory).  But I recommend including it.
 The following is an example including many binary file types (by extension)
 used in web development.   
 
@@ -291,21 +306,11 @@ used in web development.
 *.zip   -k 'b' -m 'COPY'
 !endblock
 
-H2:Testing your repository
+H3: Commit changes
 
-N:At this point, you should have a working (though empty) CVS repository.
-Before we continue with setting up the pserver or importing source code, try
-logging in as one of the CVS users listed in your CVSROOT/passwd and test the
-checkout.   
+Remember to commit the changes you made to 'modules' and 'cvswrappers'.
 
-!block example;
-#test checkout in home directory of any cvs user
-mkdir ~/src
-cd ~/src
-cvs co foundation
-!endblock
-
-This should create {{F:foundation/}} and {{F:foundation/CVS}}.
+E:cvs commit -m "Update modules and binary types" modules cvswrappers  
 
 H2:Setup the CVS pserver
 
@@ -314,18 +319,18 @@ the Internet for setting up a CVS pserver, hopefully you wont have any trouble
 doing it on your particular operating system.  See the {{SECT:Resources}}
 Appendix for more information.   
 
-H3:Setup pserver in Red Hat Linux 7.1 using xinetd. 
+H3:Setup pserver in Red Hat Linux 7.x using xinetd. 
 
 N:For Red Hat Linux 7.x, edit {{F:/etc/xinetd.d/cvspserver}} (create a new one
 if none exists).  The following works for me, but customization may be required
 for your environment (see the next section below for an inetd-based system
-example).  This also must be done as root.   
+example).  This also must be done as root.   Remember to substitue 
+/home/interch/rep with your repository directory below. 
 
 !block example;
 su - root
 {{B:/etc/xinetd.d/cvspserver:}}
 
-# default: on
 service cvspserver
 {
         disable = no
@@ -334,18 +339,8 @@ service cvspserver
         wait   = no
         user    = root
         server   = /usr/bin/cvs
-        server_args  = -f --allow-root=/rep pserver
+        server_args  = -f --allow-root=/home/interch/rep pserver
 }
-!endblock
-
-N:Also unset the HOME variable in xinetd.  This was required for my repository
-to work correctly, but if anyone has a better suggestion, I would appreciate a
-note.  
-
-!block example;
-{{B:/etc/xinetd.d/cvspserver:}}
-
-unset HOME
 !endblock
 
 N:Now, restart xinetd for the changes to take effect. 
@@ -366,7 +361,7 @@ cvspserver	2401/tcp
 !block example;
 N:{{B:/etc/inetd.conf:}}
 
-cvspserver stream tcp nowait root /usr/sbin/tcpd /usr/bin/cvs --allow-root=/rep pserver 
+cvspserver stream tcp nowait root /usr/sbin/tcpd /usr/bin/cvs --allow-root=/home/interch/rep pserver 
 !endblock
 
 H3:Testing your pserver
@@ -375,6 +370,10 @@ N:At this point, you should be able to use a CVS client to use your pserver and
 execute all the same commands that you can locally (which we tested before).
 You may wish to take advantage of a graphical CVS client, which can be
 particularly helpful in leveling the learning curve.   
+
+Your pserver connection string will something along the lines of:
+
+E: :pserver:<USERNAME>@<SERVER>:/home/interch/rep
 
 N:See the {{SECT:Resources}} Appendix for links to some graphical CVS tools.
 
@@ -402,19 +401,13 @@ E:/usr/local/interchange/bin/interchange --stop
 H2:Remove old CVS folders
 
 N:If, for any reason, you already have {{EX:CVS/}} directories in your catalog,
-they must be removed because they might interfere with the new CVS setup.  For
-example, maybe you moved servers and you are setting up CVS again.  You might
-use the following {{EX:find}} command, which will find any folders named
-{{EX:CVS}} in the current directory and remove them.  There is probably a
-better way to deal with old {{EX:CVS/}} folders, but the following works for me
-(again, suggestions welcome).      
+they must be removed because they might interfere with the new CVS setup.  
+You might use the following {{EX:find}} command, which will find any folders 
+named {{EX:CVS}} in the current directory and remove them.
 
-Note:You should make a backup of the catalog directory before you do this.
+sNote:You should make a backup of the catalog directory before you do this.
 
 !block example;
-
-#Become Interchange catalog user
-su - interch
 
 #backup catalog folder first
 tar czf ~/foundation_backup.tgz /var/lib/interchange/foundation
@@ -446,11 +439,9 @@ because of several reasons:
 
 *Will the file be modified by another source?
 
-N:For example, {{EX:/etc/order.number}} is modified by Interchange when run.
-But not everyone will use a local development model that includes running
-Interchange on a directly checked-out copy of their source.  Which means this
-specific issue is avoided if you upload every edit before viewing your changes
-on a server.    
+N:For example, {{EX:/etc/order.number}} is modified by Interchange when run.  
+It is recommended that the CVSIGNORE features be used to handle these types of 
+files.  See {{SECT:CVSIGNORE}}. 
 
 *The likelihood that you will modify the file.
 
@@ -463,48 +454,49 @@ catalogs.
 
 N:Managing less files in the repository takes away from the amount of time
 required for CVS checkout, update, branching, and other CVS actions.  For most,
-this amount of time is small already, but it is a consideration for some.   
-
-*Ease of use.
-
-N:Ease of use is one reason not to remove anything from your catalog before
-importing it, because it creates the ability to have a completely working
-catalog from just one checkout (much like the CVS tree at
-cvs.icdevgroup.org).  Whereas if you leave out other directories like etc/
-session/ orders/, etc., then you must first combine your checkout with the
-other working parts of a catalog before the catalog is viable.  But this is
-slower and will bring up lots of harmless notification and warning messages
-(about changed local versions) if you run Interchange on your local source copy
-(because Interchange will touch etc/ session/ orders/, etc. directly, and then
-warn that your local copy has changed from the CVS copy).  You may be able to
-manage some of these notifications and warnings with {{F:CVSROOT/cvsignore}} or
-{{EX:$CVSIGNORE}}, see the {{SECT:Resources}} appendix for more details.
- 
-
-#TODO:CVSIGNORE
+this amount of time is small already, but it is a consideration for some.  
+If you have a very large image directory, it may be benificial to leave it out 
+at first.  Note that you can add or remove anything later on.  
 		
 H3:Remove files that aren't needed in CVS
 
-N:Here is an example of some directories to remove.  If you do move more
+N:Here is an example of some things to remove from your catalog.  If you do move more
 directories, be sure to move them to a directory that you can later use to
 re-unite with a checked-out copy for a working catalog.  But here I chose just
 to move files that are not needed for a template "skeleton" catalog.    
 
-N:The images directory is typically symlinked to
+N:If you want to add images to your repository, the images directory is typically symlinked to
 /var/www/html/foundation/images, so I remove this symlink from the working
 copy, and replace it with an exact copy which will go into the CVS repository.  
 
 !block example;
-cd /tmp/import_foundation
-mkdir /tmp/import_foundation_nonCVS
-
 #Setup images directory
 rm images
 cp -a /var/www/html/foundation/images .
 
 #Remove 
-mv error.log logs/* orders/* session/* tmp/* upload/*  \
-	/tmp/import_foundation_nonCVS
+rm -Rf \
+	error.log \
+	*.structure \
+	orders/* \
+	logs/* \
+	session/* \
+	tmp/* \
+	upload/* \
+	backup/* \
+	logs/* \
+	#done.
+	
+# The ".empty" files make it so that CVS will still checkout the directory, even though it is empty.
+touch \
+	orders/.empty \ 
+	logs/.empty \ 
+	session/.empty \ 
+	tmp/.empty \ 
+	upload/.empty \
+	backup/.empty \
+	#done.
+
 !endblock
 
 H2:Import the streamlined catalog
@@ -522,11 +514,7 @@ catalog...") is fine.
 N:This example {{EX:import}} command includes renaming the foundation "working"
 directory back to "foundation" for the import. 
 
-!block example;
-su - interch
-cd /tmp/import_foundation
-cvs import foundation foundation start
-!endblock
+E:cvs import foundation foundation start
 
 H2:Testing the new CVS module
 
@@ -678,10 +666,7 @@ out of sync with the remote CVS version (e.g. when Interchange runs it updates
 {{F:etc/status.foundation}}).  Normally this is corrected by uploading your
 "modified" version to the server, but in this case, the modification was done
 by Interchange instead of the programmer, and wasn't meant to be committed back
-to the CVS repository.  These types of messages can be handled with
-{{EX:$CVSIGNORE}} and {{EX:$CVSROOT/CVSROOT/cvsignore}}.      
-
-#TODO: CVSIGNORE
+to the CVS repository.  See {{SECT:CVSIGNORE}}.  
 
 N:Now, check to make sure that your change has taken effect by refreshing the
 homepage on the site.  To see the comment, use {{EX:View->Page Source}} or
@@ -713,47 +698,84 @@ documentation in the {{SECT:Resources}} Appendix for more details.
 H2:Automatic e-mail on commit
 
 N:Often it is very helpful to have a commit mailing list that keeps developers
-up-to-date on every commit happening to the CVS.  To setup automatic e-mails on
-every commit, put the following in   
+up-to-date on every commit happening to the CVS.  Perform these steps:
 
-!block example;
-{{B:/rep/CVSROOT/loginfo:}}
+ * Download syncmail
+ 
 
-ALL     /usr/bin/cvs-log     $CVSROOT/CVSROOT/commitlog $USER "%{sVv}"
+!block example
+mkdir ~/src; cd ~/src
+cvs co CVSROOT
+cd CVSROOT
+cvs up
+wget \
+	http://www.icdevgroup.org/~danb/log_accum.pl \
+	http://www.icdevgroup.org/~danb/mailout \
+	#done.
+chmod u+x log_accum.pl mailout
+cvs add log_accum.pl mailout
+touch updatelog
+cvs add updatelog
+cat >>checkoutlist <<EOF
+log_accum.pl
+mailout
+updatelog
+EOF
+# Fix Permissions for updatelog
+cd $CVSROOT/CVSROOT
+chmod g+w *
+echo 'ALL $CVSROOT/CVSROOT/log_accum.pl %s' >> loginfo
+cvs commit -m "Automatic E-mail" checkoutlist loginfo ${FN} 
 !endblock
-This tells CVS to pipe the commit output to a shell script, which in turn
-updates a log file and e-mails an update (typically to a mailing list address).
-Create the shell script at {{F:/usr/bin/cvs-log}} that is executable by the cvs
-user (using {{EX:"chmod 755 /usr/bin/cvs-log"}}).   
 
-!block example;
-{{B:/usr/bin/cvs-log:}}
+As root, you must setup the "cvs-log" alias to go to the correct e-mail address(es).
 
-#!/bin/sh
-(echo "----------------------------------------------";
- echo -n $2"  ";
- date;
- echo;
- cat) | tee -a $1 | /usr/bin/Mail -s "[foundation-cvs] $3" foundation-cvs@example.com 
+!block example
+echo 'cvs-log: email_one@yahoo.com,email_two@yahoo.com' >> /etc/aliases
+newaliases
 !endblock
 
-N:Your commit logs will now be archived in the CVSROOT/commitlog file and
-e-mailed to the  foundation-cvs@example.com address (which is especially useful
-when you have a {{SECT:Mailserver for CVS updates}}).  Here is what a sample
-e-mail looks like:   
+See {{SECT:Mailserver for CVS updates}}.
+
+Here is what a sample e-mail looks like:   
 
 !block example;
-Subject: [foundation-cvs] 'directory/subdirectory filename.c,1.7,1.8'
+User:      danb
+Date:      2003-01-16 23:40:47 GMT
+Modified:  pages    index.html
+Log:
+Testing...
 
 
-----------------------------------------------
-cvs Fri Mar 16 21:14:09 PST 2001
-Update of directory/subdirectory
-In directory cvs.foundationsomething.com:/tmp/cvs-serv7721
-Modified Files:
-filename.c
-Log Message:
-test
+Revision  Changes    Path
+1.10      +1 -8      hoopstore/pages/index.html
+
+
+
+rev 1.10, prev_rev 1.9
+Index: index.html
+===================================================================
+RCS file: /home/interch/rep/hoopstore/pages/index.html,v
+retrieving revision 1.9
+retrieving revision 1.10
+diff -u -r1.9 -r1.10
+--- index.html  16 Jan 2003 22:47:55 -0000      1.9
++++ index.html  16 Jan 2003 23:40:47 -0000      1.10
+@@ -31,7 +31,7 @@
+   [control-set]
+     [component]none[/component]
+   [/control-set]
+- 
++
+ 
+   [control reset=1]
+ 
+@@ -51,10 +51,3 @@
+ <!-- END CONTENT -->
+ 
+ @_LEFTRIGHT_BOTTOM_@
+-
+-
 !endblock
 
 N:Now you have a working CVS development system.  At this point it may be
@@ -902,15 +924,12 @@ Catalog foundation_dev /var/lib/interchange/foundation_dev /cgi-bin/foundation_d
 H3:Configure the catalog specifics
 
 N:The development catalog will differ at least a little bit from the standard
-catalog, such as in the CGI_URL and database parameters.  You can also
-modify/add the foundation_dev/variable.txt instead of the following.  
+catalog, such as in the CGI_URL and database parameters.  I recommend using a separate "local" configuration file to hold the separate values, such as {{F:config/local.cfg}}, and then include it from catalog.cfg.
 
 !block example;
-{{B:/var/lib/interchange/catalog.cfg:}}
+{{B:/var/lib/interchange/config/local.cfg:}}
 Variable CGI_URL   /cgi-bin/foundation_dev
 Variable IMAGE_DIR /foundation_dev/images
-Variable SQLDSN    dbi:Pg:dbname=foundation_dev
-Variable SQLDB     foundation_dev
 !endblock
 
 N:Now you can restart Interchange to make your changes take effect.
@@ -1001,35 +1020,93 @@ editor and see the results immediately through your local catalog.  Setting up
 the catalog initially is quite easy.  Just follow the same steps used to setup 
 the CVS catalog.  Which is:    
 
-*Stop Interchange.
+ * Checkout from CVS into a new CVS catalog directory and link the images/
+directory.
 
-*bin/makecat a new catalog.
+ * Make localized configuration modifications.  I recommend creating a {{F:config/local.cfg}} file and then {{EX:include}} it at the top of catalog.cfg, with the contents of:
 
-*Checkout from CVS into a new CVS catalog directory and link the images/
-directory. 
-
-*Move any needed files back into the CVS catalog directory.
-
-*Make modifications to products/variable.txt and catalog.cfg (e.g. CGI_URL,
-HOSTNAME, DBI_USER, DBI_PASSWORD). 
+!block example
+Variable CGI_URL	/cgi-bin/foundation
+Variable SERVER	testserver
+Variable SECURE_ENABLE	0
+Variable IMAGE_DIR	/foundation/images
+!endblock
 
 *Restart Interchange.
 
-N:One aspect of this local configuration is managing the differences between
-the main Interchange daemon which runs on the CVS server and the local
-Interchange daemon.  The differences are probably hostname, database
-information, etc.  That will all need to be managed (usually through
-catalog.cfg entries) and database exports & imports (i.e. the postgres pg_dump
-command).     
+N:You may need to remove all *.sql files from the products directory, to create all of the database files again.  Additionally, you may need to create the database, username/password for your database again as well.
+
+N:You will need to recreate any symbolic links that previously existed, such as templates/default -> templates/foundation
 
 N:Another thing that you might have noticed at this point is all the files that
 are modified locally by the Interchange daemon will report ? or M when you run
-an update.  This can be handled with {{F:CVSROOT/cvsignore}} and
-{{EX:$CVSIGNORE}}, which are beyond the scope of this document.   
+an update.  To fix this, see {{SECT:CVSIGNORE}}.
+ 
+H2:CVSIGNORE
 
-#CVSIGNORE update
+N: On the heals of a workstation installation is the requirement to setup CVSIGNORE.  For all files that change, but you want to ignore (such as {{F:etc/foundation.status}}), create an entry in the .cvsignore file in that directory.  Note that the file must be removed from the cvs repository before it will work.
+
+Here is a script that will create some sample files:
+
+!block example
+
+cat >.cvsignore <<EOF
+error.log
+*.structure
+timed
+tmp
+EOF
+
+cat >etc/.cvsignore <<EOF
+status.*
+*.counter
+*.number
+*.recordnumber
+EOF
+
+cat >products/.cvsignore <<EOF
+*.lnk
+*.sql
+*.autonumber
+*.[1-9]*
+*.csv.numeric
+*.name
+*.sort
+*.txt.*
+EOF
+
+
+echo "local.cfg" > config/.cvsignore
+echo "*" > backup/.cvsignore
+echo "*" > logs/.cvsignore
+echo "*" > orders/.cvsignore
+echo "*" > session/.cvsignore
+echo "*" > upload/.cvsignore
+echo "*" > tmp/.cvsignore
+
+cvs add \
+	.cvsignore \
+	etc/.cvsignore \
+	products/.cvsignore \
+	config/.cvsignore \
+	backup/.cvsignore \
+	logs/.cvsignore \
+	orders/.cvsignore \
+	session/.cvsignore \
+	upload/.cvsignore \
+	tmp/.cvsignore \
+	#done.
+
+
+!endblock
 
 H2:Mailserver for CVS updates
+
+N:An easy alternative to setting up a mailserver is to merely alias the addresses that you would like updated.  If you don't have many users following your commit list, it is recommended.  In {{F:/etc/aliases}}, merely put:
+
+E: cvs-log:	address_one@yahoo.com,address_two@yahoo.com,address_three@yahoo.com
+
+Then run {{EX: newaliases}} and your "mini" mailing list will be all setup. 
 
 N:To setup a mailserver for CVS updates, first download and install Mailman.
 For RPM-based systems, check on rpmfind.net for a precompiled binary package.  
@@ -1197,6 +1274,3 @@ Line:
 
 N:Copyright 2001,2002 Dan Browning <dan.browning@kavod.com>.  Freely
 redistributable under terms of the GNU General Public License. 
-
-N:Copyright 2002 ICDEVGROUP. Freely redistributable under terms of the GNU General Public License.
-
