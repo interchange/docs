@@ -18,7 +18,7 @@ H1: CREATING A CATALOG
 
 Interchange uses its own tags to implement catalog functions. They are similar to normal HTML, but are in C<[square brackets]>. They will be referred to as either tags or elements in this document.
 
-There are a number of step required to set up a custom catalog. Refer to ICTAGS.POD for detailed information about Interchange tags and directives while setting up a catalog for the first time. The foundation demo catalogs are a good starting point, but are not a finished product.
+There are a number of steps required to set up a custom catalog. Refer to ICTAGS.POD for detailed information about Interchange tags and directives while setting up a catalog for the first time. The foundation demo catalogs are a good starting point, but are not a finished product.
 
 H2:  Start with a database
 
@@ -27,10 +27,10 @@ The first step is to develop a product database. This might contain all of the i
 Other elements that may be included:
 
 B<Image>
-.A database field listing the name of an image file that displays the product. Alternatively, images can be kept in files that are named for the product code. The images will be displayed if they exist by using the C<[if file file.gif] TAG [/if]> construct).
+.A database field listing the name of an image file that displays the product. You can specify a name here, or you can omit this field from your database and simply store images in files that are named for the product code. The images will be displayed if they exist by using the C<[if file file.gif] TAG [/if]> construct).
 
 B<Nontaxable>
-.This field should be present for items that do not need to have sales tax calculated.
+.If the catalog contains any items that are non-taxable, then this field should be present to flag items that do not need to have sales tax calculated.
 
 B<Size>
 .A comma-separated string containing product size information, for example:
@@ -74,13 +74,13 @@ B<Reviews/Testimonials>
 
 H2: Use the Demo Catalogs
 
-The demo catalogs supplied with Interchange are a starting point for the creation of custom catalog. They can be modified and renamed. New icons can be added. Pages and the catalog.cfg file can be modified. Each demo catalog is independent, so any modifications to a particular catalog will not harm the others.
+The demo catalogs supplied with Interchange are a starting point for the creation of a custom catalog. They can be modified and renamed. New icons can be added. Individual pages and the catalog.cfg file can be modified. Each demo catalog is independent, so any modifications to a particular catalog will not harm the others.
 
 H2: Tree design
 
 Determine how users will enter and exit the catalog. Complex and intelligent conditional schemes are possible, especially if the Cookies capability is used. However, simplicity should be the aim. No one can buy if they cannot navigate their way around the catalog.
 
-The most important thing to remember is that users will lose their session (and items in their shopping cart) if their browser does not accept cookies. Interchange addresses this situation by the use of the C<area> and C<page> tags. If using frames, be careful to source all frame panes containing Interchange links from an initial page served by Interchange. If not, the user may have multiple session IDs depending on which frame generated the link.
+The most important thing to remember is that users will lose their session (and items in their shopping cart) if their browser does not accept cookies. Interchange addresses this situation by the use of the C<area> and C<page> tags. If using frames, be careful to source all frame panes containing Interchange links from an initial page served by Interchange. If not, the user may have multiple session IDs depending on which frame generated the link. Note that Interchange can work properly with browsers that do not support cookies. In this situation Interchange inserts a session ID into each URL; if the ID is preserved as the user navigates from page to page then the session will remain intact.
 
 H2: The Essentials
 
@@ -98,7 +98,7 @@ To install the demo and name it C<foo>:
 
 bin/makecat foo
 
-Answer the prompts supplied by the program. Note that there are two types of paths requested: URL paths, like /cgi-bin inside ttp://www.machine.com/cgi-bin/simple, and file paths that are complete fully-qualified file path names like C</home/user/catalogs/simple> and C</home/httpd/cgi-bin>.
+Answer the prompts supplied by the program. Note that there are two types of paths requested: URL paths, like /cgi-bin inside http://www.machine.com/cgi-bin/simple, and file paths that are complete fully-qualified file path names like C</home/user/catalogs/simple> and C</home/httpd/cgi-bin>. Be prepared to do some investigation to determine the proper paths for installation.
 
 H2: More About "simple"
 
@@ -135,7 +135,7 @@ The following illustration shows how this looks on the page.
 >    |   __COPYRIGHT__                                        |
 >    +--------------------------------------------------------+
 
-In HTML, the __RIGHTSIDE__ is simply defined to be empty, closing table in most cases. The following illustration is actually how the page looks.
+In HTML, the __RIGHTSIDE__ is simply defined to be empty, closing the table row in most cases. The following illustration is actually how the page looks.
 
 >    +--------------------------------------------------------+
 >    |   __LOGOBAR__                                          |
@@ -154,7 +154,7 @@ In HTML, the __RIGHTSIDE__ is simply defined to be empty, closing table in most 
 
 The variables are defined in C<catalog.cfg>, and come from files in the config directory. There are conditional templates with different color schemes.
 
-Once familiar with this method, it can be quite convenient. But other methods may be chosen, such as using a HTML editor. Interchange can coexist with editors that use the <NOTOUCH> </NOTOUCH> or <NOEDIT> </NOEDIT> pairs to define areas. Bear in mind that this templating method and the database layout of the simple catalog is only a suggestion on how a catalog might be organized. Many users decide to create their own database structure for product display. 
+Once familiar with this method, it can be quite convenient. But other methods may be chosen, such as using an HTML editor. Interchange can coexist with editors that use the <NOTOUCH> </NOTOUCH> or <NOEDIT> </NOEDIT> pairs to delimit information that should not be altered or interpreted by the editor. Bear in mind that this templating method and the database layout of the simple catalog is only a suggestion on how a catalog might be organized. Many users decide to create their own database structure for product display. 
 
 Yet, most users stick with the userdb and checkout strategies employed in this catalog. This is because these strategies have been developed and proven successful over a period of years. Still, they can be customized to operate
 like Amazon.com or another site.
@@ -187,7 +187,7 @@ B<cat>
 ..Placeholder in the demo that is intended to allow selection of certain subcategories within the category.
 
 .B<sort>
-..The sort order if an alphanumeric on C<name> is not desired.
+..The sort order if an alphanumeric sort on C<name> is not desired.
 
 .B<url>
 ..A URL to link to instead of the default search in the products database.
@@ -206,7 +206,7 @@ B<products>
 
 .B<sku>
 ..The unique identifier for the product. Though theoretically it can contain
-most any character, only use characters of the class C<A-Z a-z 0-9 _ -> in order to be compatible with SQL databases and URL encoding. Other characters can cause problems. A slash (C</>) can interfere with URLs and filenames. A colon (C<:>) can interfere with database representations (or file names on some operating systems). There are other possible compatibility situations with other characters.
+most any character, use only characters of the class C<A-Z a-z 0-9 _ -> in order to be compatible with SQL databases, file systems, and URL encoding. Other characters can cause problems. A slash (C</>) can interfere with URLs and filenames. A colon (C<:>) can interfere with database representations (or file names on some operating systems). There are other possible compatibility situations with other characters.
 
 .B<description>
 ..A short description for the product that is used for displaying in the shopping cart, receipt, and order report. Keep it short.
@@ -230,7 +230,7 @@ most any character, only use characters of the class C<A-Z a-z 0-9 _ -> in order
 ..The quantity-one price of the product.
 
 .B<category>
-..The category used for selection in lists. It is possible to place a product in more than one category, though there will require decisions about display and banner headings. Embedded Perl or other methods can be used.
+..The category used for selection in lists. It is possible to place a product in more than one category, although this will require decisions about display and banner headings. Embedded Perl or other methods can be used.
 
 .B<nontaxable>
 ..If set to C<1>, the product is not taxable and its price will not be used in a sales tax calculation.
@@ -245,7 +245,7 @@ most any character, only use characters of the class C<A-Z a-z 0-9 _ -> in order
 ..A comma-separated list of options as used in C<Accessories>. See the C<flypage.html> and C<ord/basket.html> pages for examples of how it is used.
 
 .B<related>
-..Used in the demo to display "upsells." This refers to opportunities to purchase an additional item when this one is purchased. Contains a list of SKUs to be offered.
+..Used in the demo to display "upsells." This refers to opportunities to purchase an additional item when this one is purchased. Contains a comma-separated list of SKUs to be offered.
 
 .B<featured>
 ..As used in this demo, the only meaningful value is C<front>. If this is contained in the field, this product may be featured on the front page via random selection. See the C<index.html> page for how it integrates with C<[loop search=something random=3]>.
@@ -272,19 +272,19 @@ This tag inserts the user's name, providing it has been provided in a form. A co
 >    You have a name.
 >    [/if]
 
-These tags perform various display and modification operations for the user session. There are over 80 standard predefined tags, and the C<UserTag> facility permits the creation of tags as powerful to perform user-defined functions. 
+These tags perform various display and data modification operations for the user session. There are over 80 standard predefined tags; the C<UserTag> facility permits the creation of new tags to perform user-defined functions. The user tags can be every bit as powerful as the standard tags.
 
-As an introduction, a few of the the tag names and their general function follow:
+As an introduction, a few of the tag names and their general function follow:
 
 > [accessories]     Access product accessory functions
 > [area]            Insert a re-written Interchange URL
 > [checked]         Conditionally check an HTML check/radio box
-> [currency]        Formats a number like currency for current locale
+> [currency]        Formats a number as currency for current locale
 >   [/currency]    
 > [data]            Access a database or user session element
 > [error]           Check/display form processing errors
 > [file]            Insert the contents of a file
-> [flag]            Set a minivend flag
+> [flag]            Set an Interchange flag
 > [fly-list]        Show an item "on-the-fly" in an arbitrary page
 >   [/fly-list]      
 > [html_table]      create an HTML table from a query or list
@@ -329,7 +329,7 @@ A complete list of tags and all tag syntax is available in ICTAGS.POD.
 
 H2: HTML Hypertext links
 
-Normally, regular hypertext links are not used in Interchange pages. These kinds of links will not include the session id. If the customer follows an external link back to the catalog, the list of products ordered so far will have been lost.
+Normally, regular hypertext links are not used in Interchange pages. These kinds of links will not include the session id. If the customer follows an external link back to the catalog, the list of products ordered so far will have been lost. The C<area> tag is used to generate a hypertext link which includes a session id.
 
 Instead of:
 
@@ -348,7 +348,7 @@ H2: Cookies
 
 Enable the Cookies directive so that users with cookie-capable browsers will retain session context. Then, standard HREF and Interchange page links can be intermixed without fear of losing the shopping basket. Cookie capability is also required to use search caching, page caching, and statically generated pages. If the user's browser does not support cookies, the cache will be ignored.
 
-If planning to use more than one host name within the same domain for
+If you are planning to use more than one host name within the same domain for
 naming purposes (perhaps a secure server and non-secure server), then
 set the domain with the CookieDomain directive. This must contain at least two periods (.) as per the cookie specification, and must be located in the same server as the domain.
 
@@ -571,11 +571,11 @@ B<tmp>
 H2: Setting Up Multiple Catalogs
 
 Interchange has multiple catalog capability, and therefore breaks the
-configuration files into two pieces. One is global (C<minivend.cfg>)
+configuration files into two pieces. One is global (C<interchange.cfg>)
 and affects every catalog running under it. The other (C<catalog.cfg>)
 is specific to an individual catalog, and has no effect on other catalogs.
 
-The global C<minivend.cfg> file is located in the main Interchange directory,
+The global C<interchange.cfg> file is located in the main Interchange directory,
 and has only a few server-wide configuration parameters. The most important is the Catalog directive, which defines the catalogs will be created at server startup. The Catalog directive is often set up by the C<makecat> program, which can be used to configure a catalog.
 
 Here is an example Catalog directive:
@@ -611,7 +611,7 @@ B<[setlocale locale=locale* currency=locale* persist=1*]>
 
 .This allows:
 
-!block exmaple; listitem=2
+!block example; listitem=2
     Dollar Pricing:
 
     [setlocale en_US]
@@ -687,11 +687,11 @@ syntax describing a series of settings, the text will be matched. It can
 contain any arbitrary set of characters that don't contain C<[L]> and C<[/L]>.
 If using double quotes, string literals like \n and \t are recognized.
 
-A database can also be used to set locale information. It is added to any database in the catalog.cfg file, and values in it will overwrite previous
+A database can also be used to set locale information. It can be added to any database in the catalog.cfg file, and values in it will overwrite previous
 settings. See I<LocaleDatabase>. The C<[L]default text[/L]> is set before any other page processing. It is equivalent to the characters "default text" or the appropriate Locale translation for all intents and purposes. Interchange tags and Variable values can be embedded.
 
 Since the C<[L] message [/L]> substitution is done before any tag processing,
-the command C<[L][item-data table field][/L]> will fail. There is an add-on C<[loc] message [/loc]> I<UserTag> supplied with the distribution beginning at V3.09. It does the same thing as C<[L] [/L]> except after all tag substitution is done. See <minivend.cfg.dist> for the definition.
+the command C<[L][item-data table field][/L]> will fail. There is an add-on C<[loc] message [/loc]> I<UserTag> supplied with the distribution beginning at V3.09. It does the same thing as C<[L] [/L]> except after all tag substitution is done. See <interchange.cfg.dist> for the definition.
 
 Care is required when editing pages with localization information. Changing even one character of the message will change the key value and invalidate the message for other languages. To prevent this, use:
 
@@ -719,7 +719,7 @@ B<price_picture>
     Locale en_US price_picture "$ ###,###,###.##"
 !endblock
 
-.This is locale C<en_US>, the United States, and it would display C<4452.3> as C<$ 4,445.30>. The same display can be achieved with:
+.This is locale C<en_US>, the United States, and it would display C<4452.3> as C<$ 4,452.30>. The same display can be achieved with:
 
 !block example; listitem=2
      Locale en_US mon_thousands_sep ,
@@ -923,7 +923,7 @@ H1: PROGRAMMING
 
 Interchange has a powerful paradigm for extending and enhancing its functionality. It uses two mechanisms, user-defined tags and user subroutines on two different security levels, global and catalog. In addition, C<Embedded Perl Code> may be used to build functionality into pages.
 
-User-defined tags are defined with the UserTag directive in either C<minivend.cfg> or C<catalog.cfg>. The tags in C<minivend.cfg> are global,
+User-defined tags are defined with the UserTag directive in either C<interchange.cfg> or C<catalog.cfg>. The tags in C<interchange.cfg> are global,
 i.e., they are not constrained by the C<Safe> perl module as to which opcodes and routines they may use. Normally, the user-defined tags in C<catalog.cfg> are constrained by Safe, but if the C<AllowGlobal> global directive is set for the particular catalog in use, its UserTag and C<Sub> definitions will have global capability.
 
 Many of the internal Interchange routines can be accessed by the savvy programmer who reads the source and finds the entry points. Also, many internal Interchange routines can be overridden:
@@ -938,7 +938,7 @@ Many of the internal Interchange routines can be accessed by the savvy programme
 >    }
 >    EOS
 
-The effect of the above is to override the C<to_override> routine in the module C<Vend::Module>. This is preferable to hacking the code for functionality changes that are not expected to change frequently. In most cases, updating the Interchange code in most cases will not affect the hacked code.
+The effect of the above is to override the C<to_override> routine in the module C<Vend::Module>. This is preferable to hacking the code for functionality changes that are not expected to change frequently. In most cases, updating the Interchange code will not affect the hacked code. Note that internal entry points are not guaranteed to exist in future versions of Interchange.
 
 H2: Embedded Perl Code
 
@@ -976,7 +976,7 @@ Required attributes: none
 Attribute information:
 
 B<global>
-.When set to C<1>, and when the catalog is allowed to use global permissions via the C<minivend.cfg> directive C<AllowGlobal>, Safe.pm checking is turned off. In this case, the embedded Perl code can do anything that the user ID running it can! This is not recommended when the same Interchange server is used by different companies/user ids.
+.When set to C<1>, and when the catalog is allowed to use global permissions via the C<interchange.cfg> directive C<AllowGlobal>, Safe.pm checking is turned off. In this case, the embedded Perl code can do anything that the user ID running it can! This is not recommended when a single Interchange server is shared by multiple companies/user ids.
 
 .When in global mode, full C<use strict> checking is on. Optionally, it can be turned off with C<no strict;>. In fact, this is recommended since strict errors will cause silent failure.
 
@@ -986,7 +986,7 @@ B<subs>
 B<tables>
 .Opens specified Interchange database tables, preparing them for access inside the Perl code. 
 
-.When running under C<Safe>, some database operations are restricted due to inability to create objects. For SQL, most operations can be performed if the C<Safe::Hole> module is installed. Otherwise, use C<global> to use data from SQL tables. Interchange databases can be accessed as long as they are pre-opened by using an item first.
+.When running under C<Safe>, some database operations are restricted due to the inability to create objects in this mode. For SQL, most operations can be performed if the C<Safe::Hole> module is installed. Otherwise, use C<global> to use data from SQL tables. Interchange databases can be accessed as long as they are pre-opened by using an item first.
 
 .\Example:
 
@@ -1009,9 +1009,9 @@ Any Interchange tag (except ones using SQL) can be accessed via the $Tag object.
 >    $comments = $Values->{comments};
 >    [/perl]
 
-IMPORTANT NOTE: Global subroutines are not subject to the stringent security checking of the Safe module, so almost anything goes there. The subroutine will be able to modify any variable in Interchange, and will be able to write to read and write any file that the Interchange daemon has permission to write. Though this gives greater power, it should be used with caution. They are defined in the main minivend.cfg file, so should be safe from individual users in a multi-catalog system.
+IMPORTANT NOTE: Global subroutines are not subject to the stringent security checking of the Safe module, so almost anything goes there. The subroutine will be able to modify any variable in Interchange, and will be able to write to read and write any file that the Interchange daemon has permission to write. Though this gives greater power, it should be used with caution. They are defined in the main interchange.cfg file, so should be safe from individual users in a multi-catalog system.
 
-Global subroutines are defined in minivend.cfg with the GlobalSub directive, or in user catalogs which have been enabled via AllowGlobal. 
+Global subroutines are defined in interchange.cfg with the GlobalSub directive, or in user catalogs which have been enabled via AllowGlobal. 
 Catalog subroutines are defined in catalog.cfg, with the Sub directive. They are subject to the stringent Safe.pm security restrictions that are controlled by the global directive SafeUntrap. 
 
 The code can be as complex as desired, but cannot use any operators that modify the file system or use "unsafe" operations like "system," "exec," or backticks. These constraints are enforced with the default permissions of the standard Perl module Safe. Operations may be untrapped on a system-wide basis with the SafeUntrap directive.
@@ -1074,7 +1074,7 @@ There is a shorthand <% = $foo %>, which is exactly equivalent to <% $Document->
 The __VARIABLE__ will be replaced by the value of C<Variable VARIABLE>, but
 \[value name] will be shown unchanged.
 
-IMPORTANT NOTE: If using the SQL::Statement module, the catalog must be set to AllowGlobal in C<minivend.cfg>. It will not work in "Safe" mode due to limitations of object creation in Safe. Also, the Safe::Hole module must be installed to have SQL databases work in Safe mode.
+IMPORTANT NOTE: If using the SQL::Statement module, the catalog must be set to AllowGlobal in C<interchange.cfg>. It will not work in "Safe" mode due to limitations of object creation in Safe. Also, the Safe::Hole module must be installed to have SQL databases work in Safe mode.
 
 H1: Interchange Perl Objects
 
@@ -1293,7 +1293,7 @@ B<$DbSearch>
 
             mv_searchspec => 'Mona Lisa',
             mv_search_field => [ 'title', 'artist', 'price' ],
-            mv_return_fields    => ['
+            mv_return_fields    => [ 'title' ]
 
         }; 
 
@@ -1326,7 +1326,7 @@ B<$Document>
 !endblock
 
 B<$Document->write($foo)>
-.Write $foo to the page in a buffered fashion. The buffer is an array that is the results of all previous C<$Document->>C<write()> operations. If $Document->hot(1) has been set, the output immediately goes to the user. 
+.Write $foo to the page in a buffered fashion. The buffer is an array containing the results of all previous C<$Document->>C<write()> operations. If $Document->hot(1) has been set, the output immediately goes to the user. 
 
 B<$Document->insert($foo)>
 .Insert $foo to the page buffer.
@@ -1354,7 +1354,7 @@ B<$Document->header($foo, $opt)>
     $Document->header("Content-type: text/plain");
 !endblock
 
-.There is an option hash that can be sent, with the only valid value being "replace." The below code scrubs all previous header lines:
+.There is an optional hash that can be sent, with the only valid value being "replace." The below code scrubs all previous header lines:
 
 !block example; listitem=2
     $Document->header("Content-type: text/plain", { replace => 1 } );
@@ -1487,7 +1487,7 @@ Note[label='IMPORTANT NOTE: '] If the tag will access a database that has not be
     $Tag->shipping_desc('upsg');
 !endblock
 
-.There are two ways of specifying parameters. Either use the positional parameters as documented (for an authoritative look at the parameters, trace the %Routine value in Vend::Parse), or specify it all with an option hash parameter names as in any named parameters as specified in an Interchange tag. The calls
+.There are two ways of specifying parameters. Either use the positional parameters as documented (for an authoritative look at the parameters, inspect the %Routine value in Vend::Parse), or specify it all with an option hash parameter names as in any named parameters as specified in an Interchange tag. The calls
 
 !block example; listitem=2
     $Tag->data('products', 'title', '00-0011');
@@ -1561,15 +1561,15 @@ H1: INTERCHANGE CONFIGURATION FILES
 
 Interchange can and usually does run multiple catalogs on the same server.
 
-Normally call configuration directives with the directive as the first word on the line, with it's value or values following. Leading whitespace is stripped from the value. Additional files may be called with an #include file statement. Files are relative to the catalog directory (or Interchange software directory, if in the main minivend.cfg file).
+Cconfiguration directives are normally called with the directive as the first word on the line, with it's value or values following. Leading whitespace is stripped from the value. Additional files may be called with an #include file statement. Files are relative to the catalog directory (or Interchange software directory, if in the main interchange.cfg file).
 
-A type of "here document" can be used to specify Interchange directives, with the usual <<MARKER syntax. No semicolon is used to terminate the marker.
+A type of "here document" can be used to specify Interchange directives, with the usual Perl <<MARKER syntax. No semicolon is used to terminate the marker.
 
-H1: MINIVEND.CFG
+H1: INTERCHANGE.CFG
 
-The VendRoot directory, specified in the main program C<minivend>, is the default location of all of the Interchange program, configuration, special, and library files. Unless changed in the call to C<minivend>, the main Interchange server configuration file will be minivend.cfg in the VendRoot directory.
+The VendRoot directory, specified in the main program C<interchange>, is the default location of all of the Interchange program, configuration, special, and library files. Unless changed in the call to C<interchange>, the main Interchange server configuration file will be interchange.cfg in the VendRoot directory.
 
-The directives defined in minivend.cfg affect the entire Interchange server and all catalogs running under it. Multiple Interchange servers may be run on the same machine with totally independent operation.
+The directives defined in interchange.cfg affect the entire Interchange server and all catalogs running under it. Multiple Interchange servers may be run on the same machine with totally independent operation.
 
 H2: ActionMap
 
@@ -1609,19 +1609,19 @@ The second is the base directory of the catalog. If the directory does not conta
 
 The third directive is very important to get right. It is the SCRIPT_NAME of the vlink program that runs the catalog. This name must be unique from other CGI program paths that run on this server because this is how the catalog is selected for operation.
 
->    Catalog  simple /home/minivend/simple /cgi-bin/simple /simple
+>    Catalog  simple /home/interchange/simple /cgi-bin/simple /simple
 
 Any number of alias script names may be specified as additional parameters. This allows the calling path to be different while still calling the same catalog. This useful when calling an SSL server or a members-only executable that requires a username/password via HTTP Basic authorization. All branched links will be called using the aliased URL.
 
 Optionally, individual C<Catalog> lines that specify the different parameters may be called. The equivalent of the above is:
 
->    Catalog simple directory /home/minivend/simple
+>    Catalog simple directory /home/interchange/simple
 >    Catalog simple script    /cgi-bin/simple
 >    Catalog simple alias     /simple
 
 Global directives may be specified that will change I<for that catalog only>. This is mostly useful for C<ErrorFile> and C<DisplayErrors>:
 
->    Catalog simple directive ErrorFile /var/log/mvend/simple_error.log
+>    Catalog simple directive ErrorFile /var/log/interchange/simple_error.log
 
 H2: CheckHTML
 
@@ -1643,7 +1643,7 @@ The name of a file (or files) which should be read as a part of every catalog's 
 
 H2: DisplayErrors
 
-While all errors are reported in the error log file, errors can also be displayed by the browser. This is convenient while testing configuration. Unless this is set, the DisplayErrors setting in the user catalogs will have no effect. Default is No.
+While all errors are reported in the error log file, errors can also be displayed by the browser. This is convenient while testing a configuration. Unless this is set, the DisplayErrors setting in the user catalogs will have no effect. Default is No.
 
 >    DisplayErrors       Yes
 
@@ -1660,7 +1660,7 @@ If encrypting credit cards with PGP or GPG, or are using a payment service like 
 
 H2: DumpStructure
 
-Tells Interchange to dump the structure of catalogs and the minivend server
+Tells Interchange to dump the structure of catalogs and the Interchange server
 to a file with the catalog name and the extension C<.structure>. Use this to see how directives have been set.
 
 H2: Environment
@@ -1674,7 +1674,7 @@ H2: ErrorFile
 Sets the name of the global error log. The default is C<error.log> in the
 Interchange software directory.
 
->    ErrorFile  /var/log/mvendlog
+>    ErrorFile  /var/log/interchange/log
 
 Of course, the user ID running the Interchange server must have permission to
 write that file.
@@ -1719,7 +1719,7 @@ files to make it easy to define:
 >    }
 >    EOF
 
-As with Perl "here documents," the EOF (or other end marker) must be the ONLY thing on the line, with no leading or trailing white space. Do not append a semicolon to the marker. (The above appears indented. It should not be that way in the file!)
+As with Perl "here documents," the EOF (or other end marker) must be the ONLY thing on the line, with no leading or trailing white space. Do not append a semicolon to the marker. (The above marker appears indented. It should not be that way in the file!)
 
 IMPORTANT NOTE: These global subroutines are not subject to security checks. They can do most anything! For most purposes, scratch subroutines or catalog subroutines (also Sub) are better. 
 
@@ -1810,7 +1810,7 @@ The file which will contain the Interchange server process ID so that it
 can be read to determine which proces should be sent a signal for stopping
 or reconfiguring the server.
 
->    PIDfile  /var/run/mvend/minivend.pid
+>    PIDfile  /var/run/interchange/interchange.pid
 
 This file must be writable by the Interchange server user ID.
 
@@ -1832,17 +1832,17 @@ H2: SocketFile
 
 The name of the file which is used for UNIX-domain socket communications. Must be in a directory where the Interchange user has write permission.
 
->    SocketFile  /var/run/mvend/minivend.socket
+>    SocketFile  /var/run/interchange/interchange.socket
 
 Default is C<etc/socket> or the value of the environment variable MINIVEND_SOCKET. If set, it will override the environment. It can be set on the command line as well:
 
->    bin/minivend -r SocketFile=/tmp/mv.socket
+>    bin/interchange -r SocketFile=/tmp/interchange.socket
 
 H2: SocketPerms
 
 The permissions (prepend a 0 to use octal notation) that should be used for the UNIX-domain socket. Temporarily set this to 666 on the command line to debug a permission problem on C<vlink>.
 
->    bin/minivend -r SocketPerms=0666
+>    bin/interchange -r SocketPerms=0666
 
 H2: SubCatalog
 
@@ -1859,24 +1859,24 @@ H2: SysLog
 Allows you to set up syslog(8) error logging for Interchange.
 
 >    SysLog  command  /usr/bin/logger
->    SysLog  tag      mv1
+>    SysLog  tag      int1
 >    SysLog  alert    local3.warn
 >    SysLog  warn     local3.info
 >    SysLog  info     local3.info
 
 This would cause global errors to be logged with the command:
 
->    /usr/bin/logger -t mv1 -p local3.alert
+>    /usr/bin/logger -t int1 -p local3.alert
 
 and cause system log entries something like:
 
->    Oct 26 17:30:11 bill mv1: Config 'co' at server startup 
->    Oct 26 17:30:11 bill mv1: Config 'homefn' at server startup 
->    Oct 26 17:30:11 bill mv1: Config 'simple' at server startup 
->    Oct 26 17:30:11 bill mv1: Config 'test' at server startup 
->    Oct 26 17:30:13 bill mv1: START server (2345) (INET and UNIX) 
+>    Oct 26 17:30:11 bill int1: Config 'co' at server startup 
+>    Oct 26 17:30:11 bill int1: Config 'homefn' at server startup 
+>    Oct 26 17:30:11 bill int1: Config 'simple' at server startup 
+>    Oct 26 17:30:11 bill int1: Config 'test' at server startup 
+>    Oct 26 17:30:13 bill int1: START server (2345) (INET and UNIX) 
 
-Wrap a custom wrapper around it to get it to behave however necessary.
+You can create a custom wrapper around it to get it to behave as desired.
 
 H2: TcpHost
 
@@ -1891,11 +1891,11 @@ H2: TcpMap
 
 When running in INET mode, using C<tlink> or the internal HTTP server, specifies the port(s) which will be monitored by the Interchange server. Default is 7786>.
 
-To use the internal HTTP server (perhaps only for password-protected queries), a catalog may be mapped to a port. If three catalogs were running on the server I<www.minivend.com>, named C<simple>, C<sample>, and C<search>, the directive might look like this::
+To use the internal HTTP server (perhaps only for password-protected queries), a catalog may be mapped to a port. If three catalogs were running on the server I<www.akopia.com>, named C<simple>, C<sample>, and C<search>, the directive might look like this::
 
 >    TcpMap    7786 -  7787 simple 7788 sample 7789 search
 
-\NOTE: To map large numbers of ports, use the <<MARKER here document notation in minivend.cfg. With this in effect, the internal HTTP server would map the following addresses:
+\NOTE: To map large numbers of ports, use the <<MARKER here document notation in interchange.cfg. With this in effect, the internal HTTP server would map the following addresses:
 
 >    *:7786   mv_admin
 >    *:7787   simple
@@ -1904,13 +1904,13 @@ To use the internal HTTP server (perhaps only for password-protected queries), a
 
 \NOTE: This does not pertain to the use of C<tlink>, which still relies on the CGI SCRIPT_PATH. To enable this, the SCRIPT_PATH aliases /simple, /sample, etc. must be set in the C<Catalog> directive. This would look like:
 
->  Catalog  simple  /home/minivend/catalogs/simple /cgi-bin/simple /simple
+>  Catalog  simple  /home/interchange/catalogs/simple /cgi-bin/simple /simple
 
 To bind to specific IP addresses, add them in the same fashion that they would as an Apache Listen directive:
 
 >    TcpMap <<EOF
 >        127.0.0.1:7786         -
->        www.minivend.com:7787  -
+>        www.akopia.com:7787  -
 >    EOF
 
 \NOTE: As usual, the EOF should be at the beginning of a line with no leading
@@ -1919,9 +1919,9 @@ or trailing whitespace.
 H2: TemplateDir
 
 Sets a directory which will be searched for pages if not found in the users
-C<pages> directory. MiniMate uses this; use it to supply some default pages so the user will not have them in their directory.
+C<pages> directory. Interchange uses this; use it to supply some default pages so the user will not have them in their directory.
 
->    TemplateDir    /usr/local/minivend/default_pages
+>    TemplateDir    /usr/local/interchange/default_pages
 
 The user's page, if it exists, will take precedence. There is also a catalog-specific version of this directive. If a page is found in that directory (or directories), it will take precedence.
 
@@ -1959,7 +1959,7 @@ Interchange writes it. For instance, to display the variable mv_session_id as C<
 
 >    VarName   mv_session_id  session
 
-The default can also be set in the C<etc/varnames> file after the first time Interchange is run. Setting it in minivend.cfg is probably better for clarity.
+The default can also be set in the C<etc/varnames> file after the first time Interchange is run. Setting it in interchange.cfg is probably better for clarity.
 There is also a catalog-specific version of this setting.
 
 H1: CATALOG.CFG
@@ -1970,7 +1970,7 @@ In the catalog configuration file, the directives MailOrderTo and VendURL are re
 
 Many powerful procedures are available in the catalog.cfg file. First, set a C<Variable> and use its results in a subsequent configuration setting if C<ParseVariables> is on:
 
->    Variable   SERVER_NAME  www.minivend.com
+>    Variable   SERVER_NAME  www.akopia.com
 >    Variable   CGI_URL      /cgi-bin/demo
 >
 >    ParseVariables Yes
@@ -2050,13 +2050,13 @@ if the Tie::Watch module installed. It uses a notation like the <<HERE document,
 
 Here is a simple case:
 
->    MailOrderTo orders@minivend.com
+>    MailOrderTo orders@akopia.com
 >
 >    MailOrderTo <&EOF
 >    sub {
 >        my($self, $default) = @_;
 >        if($Values->{special_handling}) {
->            return 'vip@minivend.com';
+>            return 'vip@akopia.com';
 >        }
 >        else {
 >            return $default;
@@ -2064,7 +2064,7 @@ Here is a simple case:
 >    }
 >    EOF
 
-When the order is mailed out, if the user has a variable called  C<special_handling> set in their session (from UserDB, perhaps), the order will be sent to 'vip@minivend.com.' Note the single quotes to prevent problems with the @ sign. Otherwise, the order will get sent to the previously defined value of C<orders@minivend.com>.
+When the order is mailed out, if the user has a variable called  C<special_handling> set in their session (from UserDB, perhaps), the order will be sent to 'vip@akopia.com.' Note the single quotes to prevent problems with the @ sign. Otherwise, the order will get sent to the previously defined value of C<orders@akopia.com>.
 
 If the configuration value being watched is a SCALAR, the subroutine gets the following call:
 
@@ -2086,7 +2086,7 @@ If the configuration value being watched is a HASH, the subroutine gets the foll
 
 >    &{$subref}(SELF, KEY, PREVIOUS_VALUE)
 
-KEY is the index into the hash, an example of HASH type Interchange configuration values. NOTE: The following is not recommended for performance reasons. The Variable is a commonly used thing and should not bear the extra overhead, but it illustrates the power of this operation:
+KEY is the index into the hash, an example of HASH type Interchange configuration values. NOTE: The following is not recommended for performance reasons. The Variable is a commonly used thing and should not bear the extra overhead of tieing, but it illustrates the power of this operation:
 
 >    Variable TESTIT Unwatch worked.
 >
@@ -2136,7 +2136,7 @@ the C<order> action, set:
 
 When the leading part of the incoming path is equal to C<order>, it will
 trigger an action. The page name will be shifted up, and the C<order> 
-stripped from the page name. So this custome C<order> action would essentially perform a no-op, and a URL like:
+stripped from the page name. So this custom C<order> action would essentially perform a no-op, and a URL like:
 
 >    <A HREF="[area order/nextpage]"> Go to the next page </A>
 
@@ -2225,7 +2225,7 @@ More than one domain can be set. It must have at least two periods or browsers w
 
 H2: CookieLogin
 
-Allows users to save their username/password (for Vend::UserDB) in a cookie. Expiration set by SaveExpire and renewed every time they log in. To cause the cookie to be generated originally, the CGI variable C<mv_cookie_password> or C<mv_cookie_username> must be set. The former causes both username and password to be saved; the latter just the username.
+Allows users to save their username/password (for Vend::UserDB) in a cookie. Expiration is set by SaveExpire and is renewed each time they log in. To cause the cookie to be generated originally, the CGI variable C<mv_cookie_password> or C<mv_cookie_username> must be set. The former causes both username and password to be saved; the latter just the username.
 
 >    CookieLogin  Yes
 
@@ -2336,7 +2336,7 @@ Usually, this will be used during development or debugging. Default is no.
 H2: DynamicData
 
 When set to one or more Interchange database identifiers, any pages using data
-items from the specified database(s) will not be cached or built statically. This allows dynamic updating of certain arbitrary (or even product) databases while still allowing static/cached page performance gains on pages not using those data items.
+items from the specified database(s) will not be cached or built statically. This allows dynamic updating of certain arbitrary databases (even the products database) while still allowing static/cached page performance gains on pages not using those data items.
 
 >    DynamicData         inventory
 
@@ -2361,7 +2361,7 @@ This is where Interchange will write its runtime errors for THIS CATALOG
 ONLY. It can be shared with other catalogs or the main Interchange error
 log, but if it is root-based, permission to write the file is required.
 
->    ErrorFile   /home/minivend/error.log
+>    ErrorFile   /home/interchange/error.log
 
 H2: ExtraSecure
 
@@ -2432,11 +2432,11 @@ A value for ImageDir only when the internal HTTP server is in use. It must have 
 
 H2: ImageDirSecure
 
-A value for ImageDir only the pages are being served via HTTPS. It must have a trailing / to work, and should always begin with a fully-qualified path starting with C<http://>.
+A value for ImageDir only when the pages are being served via HTTPS. It must have a trailing / to work, and should always begin with a fully-qualified path starting with C<http://>.
 
 >    ImageDirSecure   /secure/images/
 
-This is useful if you are using a separate HTTPS and HTTP server, and cannot make the image directory path heads match.
+This is useful if you are using separate HTTPS and HTTP servesr, and you cannot make the image directory path heads match.
 
 H2: Locale
 
@@ -2486,7 +2486,7 @@ When set to one or more Interchange database identifiers, those database(s) will
 H2: NonTaxableField
 
 The name of the field in the products database that is set (to 1 or yes)
-if an item is not to be taxed. Will log an error and tax it anyway if the field doesn't exist in the database. Blank by default, disabling the feature.
+if an item is not to be taxed. Interchange will log an error and tax it anyway if the field doesn't exist in the database. Blank by default, disabling the feature.
 
 >    NonTaxableField    wholesale
 
@@ -2495,7 +2495,7 @@ H2: OfflineDir
 The location of the offline database files for use with the Interchange
 offline database build command. Set to "offline" as the default, and is relative to VendRoot if there is no leading slash.
 
->    OfflineDir          /usr/data/minivend/offline
+>    OfflineDir          /usr/data/interchange/offline
 
 H2: OnFly
 
@@ -2672,7 +2672,7 @@ H2: RemoteUser
 
 The value of the HTTP environment variable REMOTE_USER that will enable catalog reconfiguration. HTTP basic authentication must be enabled for this to work. Default is blank, disabling this check.
 
->    RemoteUser   minivend
+>    RemoteUser   interchange
 
 H2: Replace
 
@@ -2680,7 +2680,7 @@ Causes a directive to be emptied and re-set (to its default if no value is speci
 
 >    Replace NoCache ord special multi reconfig query
 
-Capitalization must be exact on the directive.
+Capitalization must be exact on each directive.
 
 H2: Require
 
@@ -2825,7 +2825,7 @@ When storing sessions, specify the name of the directory or DBM file to use. The
 
 Can be an absolute path name, if desired.
 
-It is possible for multiple catalogs to share the same session file, as well as for multiple Interchange servers to serve the same catalogs. If serving a massively busy store, multiple parallel Interchange servers can share the same NFS-based file system and serve users in a "ping-pong" fashion using the file-based sessions. On huge systems, the level of directory hashing may be changed. By default, only 48 * 48 hashing is done. See the source for SessionFile.pm. 
+It is possible for multiple catalogs to share the same session file, as well as for multiple Interchange servers to serve the same catalogs. If serving a extremely busy store, multiple parallel Interchange servers can share the same NFS-based file system and serve users in a "ping-pong" fashion using the file-based sessions. On huge systems, the level of directory hashing may be changed. By default, only 48 * 48 hashing is done. See the source for SessionFile.pm. 
 
 H2: SessionDB
 
@@ -3031,7 +3031,7 @@ The file containing the UPS zone information, specified relative to the catalog 
 
 IMPORTANT NOTE: Zone information and updated pricing from UPS must be obtained in order for this to work properly. The zone information is specific to a region!
 
->    UpsZoneFile         /usr/minivend/data/ups_zone.asc
+>    UpsZoneFile         /usr/interchange/data/ups_zone.asc
 
 H2: UseModifier
 
@@ -3123,43 +3123,43 @@ Some thought should be given to where the databases, error logs, and session fil
 
 To test the format of user catalog configuration files before restarting the server, set (from VendRoot):
 
->    bin/minivend -test
+>    bin/interchange -test
 
 This will check all configuration files for syntax errors, which might otherwise prevent a catalog from booting. Once a catalog configures properly, user reconfiguration will not crash it. It will just cause an error. But, it must come up when the server is started.
 
 H2: Starting, Stopping, and Re-starting the Servers
 
-The following commands need to have VENDROOT changed to the main directory where Interchange is installed. If the Interchange base directory is  /home/minivend/mvend, the start command would be C</home/minivend/mvend/bin/minivend>.
+The following commands need to have VENDROOT changed to the main directory where Interchange is installed. If the Interchange base directory is  /home/interchange/, the start command would be C</home/interchange/bin/interchange>.
 
-Do a C<perldoc VENDROOT/bin/minivend> for full documentation.
+Do a C<perldoc VENDROOT/bin/interchange> for full documentation.
 
 To start the server with default settings:
 
->    VENDROOT/bin/minivend
+>    VENDROOT/bin/interchange
 
 It is usually best to issue a restart, otherwise the server will not run anew if a server is already running.
 
->    VENDROOT/bin/minivend -restart
+>    VENDROOT/bin/interchange -restart
 
 Assuming the server starts correctly, the names of catalogs as they are configured will be displayed, along with a message stating the process ID it is running under.
 
 To re-start the server:
 
->    VENDROOT/bin/minivend -restart
+>    VENDROOT/bin/interchange -restart
 
 C<-r> is the same as C<-restart>.
 
 This is typically done to force Interchange to re-read its configuration.
 A message will be displayed stating that a TERM signal has been sent to the
-process ID the servers are running under. This information is also sent to /home/minivend/error.log. Check the error.log file for confirmation that the server has restarted properly.
+process ID the servers are running under. This information is also sent to /home/interchange/error.log. Check the error.log file for confirmation that the server has restarted properly.
 
 To stop the server:
 
->    VENDROOT/bin/minivend -stop
+>    VENDROOT/bin/interchange -stop
 
 A message will be displayed stating that a TERM signal has been sent to
 the process ID the server is running under. This information is also sent
-to /home/minivend/error.log.
+to /home/interchange/error.log.
 
 Because processes waiting for selection on some operating systems block
 signals, they may have to wait for HouseKeeping seconds to stop. The
@@ -3167,7 +3167,7 @@ default is 60.
 
 To terminate the Interchange server with prejudice, in the event it will not stop:
 
->    VENDROOT/bin/minivend -kill
+>    VENDROOT/bin/interchange -kill
 
 H2: UNIX and INET modes
 
@@ -3179,10 +3179,10 @@ IMPORTANT NOTE: When sending sensitive information like credit card numbers over
 If only running with one method of communication, use the C<->i and C<->u flags.
 
 >    # Start only in UNIX mode
->    VENDROOT/bin/minivend -r -u
+>    VENDROOT/bin/interchange -r -u
 >
 >    # Start only in INET mode
->    VENDROOT/bin/minivend -r -i
+>    VENDROOT/bin/interchange -r -i
 
 H2: User Reconfiguration
 
@@ -3190,7 +3190,7 @@ The individual catalogs can be reconfigured by the user by running the [reconfig
 
 The command line can be reconfigured (as the Interchange user) with:
 
->    VENDROOT/bin/minivend -reconfig <catalog>
+>    VENDROOT/bin/interchange -reconfig <catalog>
 
 It is easy for the administrator to manually reconfigure a catalog. Interchange simply looks for a file C<etc/reconfig> (based in the Interchange
 software directory) at HouseKeeping time. If it finds a script name
@@ -3228,12 +3228,12 @@ If Interchange is using DBM capability to store the sessions, periodically expir
 
 >    expire -c catalog
 
-There is also an C<expireall> script which reads all catalog entries in C<minivend.cfg> and runs C<expire> on them. The C<expire> script accepts a C<-r> option which tells it to recover lost disk space.
+There is also an C<expireall> script which reads all catalog entries in C<interchange.cfg> and runs C<expire> on them. The C<expire> script accepts a C<-r> option which tells it to recover lost disk space.
 
 On a UNIX server, add a crontab entry such as the following:
 
 >    # once a day at 4:40 am
->    40 4 * * *    perl /home/minivend/bin/expireall -r
+>    40 4 * * *    perl /home/interchange/bin/expireall -r
 
 Interchange will wait until the current transaction is finished before
 expiring, so this can be done at any time without disabling web access.
@@ -3279,7 +3279,7 @@ This script can be adjusted as necessary. Refinements might include reading the 
 
 H1: DEBUGGING
 
-No debug is provided by default. The source files and uncomment '::logDebug(SOMETHING)' statements can be edited there. Set the value of C<DebugFile> to a file that will be written to:
+No debug output is provided by default. The source files contain commented-out '::logDebug(SOMETHING)' statements which can be edited to activate them. Set the value of C<DebugFile> to a file that will be written to:
 
 >    DebugFile /tmp/mvdebug
 
@@ -3302,7 +3302,7 @@ This is a socket which is not reachable from the Internet directly, but which mu
 The most important issue with UNIX-domain sockets on Interchange is the
 permissions with which the CGI program and the Interchange server run. To improve security, Interchange normally runs with the socket file having 0600 permissions (rw-------), which mandates that the CGI program and the server run I<as the same user ID>. This means that the C<vlink> program must be SUID to the same user ID as the server executes under. (Or that CGIWRAP is used on a single catalog system).
 
-With Interchange multiple catalog capability, the permissions situation
+With Interchange's multiple catalog capability, the permissions situation
 gets a bit tricky. Interchange comes with a program, C<makecat>, which
 configures catalogs for a multiple catalog system. It should properly set
 up ownership and permissions for multiple users if run as the superuser.
@@ -3331,7 +3331,7 @@ not necessary for the user to do anything. They will be compiled by
 the configuration program. If the Interchange daemon is not running, either of the programs will display a message indicating that the server is not available. The following defines in the produced C<config.h> should be set:
 
 B<LINK_FILE>
-.Set this to the name of the socket file that will be used for configuration, usually "/usr/local/lib/minivend/etc/socket" or the "etc/socket" under the directory chosen for the VendRoot.
+.Set this to the name of the socket file that will be used for configuration, usually "/usr/local/lib/interchange/etc/socket" or the "etc/socket" under the directory chosen for the VendRoot.
 
 B<LINK_HOST>
 .Set this to the IP number of the host which should be contacted. The default of 127.0.0.1 (the local machine) is probably best for many installations.
@@ -3378,7 +3378,7 @@ On some systems, the executable can be made smaller with the strip program, if a
 
 If Interchange is to run under a different user account than the individual configuring the program, make that user the owner of vlink. Do not make vlink owned by root, because making vlink setuid root is an huge and unnecessary security risk. It should also not normally run as the default WWW user (often C<nobody> or C<http>)).
 
->    chown minivend vlink
+>    chown interchange vlink
 
 Move the vlink executable to the cgi-bin directory:
 
@@ -3400,7 +3400,7 @@ Most Interchange configuration and setup problems are due to one
 of the following:
 
 B<Wrong information given to makecat program.>
-.THIS IS BY FAR THE MOST COMMON PROBLEM. To install a working demo, Interchange needs to know what DocumentRoot is and how to run CGI programs. Details of this setup are server- and site-specific, which may require some research.
+.THIS IS BY FAR THE MOST COMMON PROBLEM. To install a working demo, Interchange needs to know what the DocumentRoot is and how to run CGI programs. Details of this setup are server- and site-specific, which may require some research.
 
 .Re-run the configuration again, and pay close attention to the prompts given. There are examples given which apply to most systems.
 
@@ -3429,6 +3429,7 @@ the following systems:
 >    Solaris 2.x (Sun compiler and GCC)
 >    Solaris 7 (Sun compiler and GCC)
 >    SunOS 4.1.4
+>    Red Hat 6.2, 7.0
 
 Some problems may occur. In general, ignore warnings about pointers.
 
@@ -3460,19 +3461,19 @@ and for the socket file it should be:
 
 Once you have set up the software, you can easily install catalogs as root B<as long as your C<umask> is set to 2 or 22>.
 
-(The following assumes you have made the Interchange software owned and run by the special user C<mvend> and that each user has a Interchange catalogs directory C</home/user/catalogs>).
+(The following assumes you have made the Interchange software owned and run by the special user C<interchange> and that each user has a Interchange catalogs directory C</home/user/catalogs>).
 
-The best way to set permissions on a multi-user system is to make all files group readable and writable (660 or 664 mode). If you have a system setup that places each user in their own group, make C<mvend> a member of each user's group and set ownership and permissions with:
+The best way to set permissions on a multi-user system is to make all files group readable and writable (660 or 664 mode). If you have a system setup that places each user in their own group, make C<interchange> a member of each user's group and set ownership and permissions with:
 
 >        find /home/user/catalogs -print | xargs chown user
 >        find /home/user/catalogs -print | xargs chgrp user
 >        find /home/user/catalogs -print | xargs chmod g+rw
 
 For best results, set the user's default umask to 2, so that they will,
-by default, create files that have the proper permissions. If you have all users in the same group, the above is not secure. You should put C<mvend> in a group of which no user is a member (perhaps mvend would be a good choice) and then make all files owned by the group mvend and all directories be set to mode 2770:
+by default, create files that have the proper permissions. If you have all users in the same group, the above is not secure. You should put C<interchange> in a group of which no user is a member (perhaps interchange would be a good choice) and then make all files owned by the group interchange and all directories be set to mode 2770:
 
 >        find /home/user/catalogs -print | xargs chown user
->        find /home/user/catalogs -print | xargs chgrp mvend
+>        find /home/user/catalogs -print | xargs chgrp interchange
 >        find /home/user/catalogs -print | xargs chmod g+rw
 >        find /home/user/catalogs -type d -print | xargs chmod g+s
 
@@ -3481,7 +3482,7 @@ UNIX versions, anyway).
 
 If you are on a virtual hosting system, the procedure varies. Making
 the program setuid should work for most systems. If your setup uses
-CGI-WRAP or another setuid scheme, it should still work. Though, you
+CGI-WRAP or another setuid scheme, it should still work. However, you
 may have to unset the setuid bit with C<chmod u-s cgi-bin/simple>
 or the like. If you have a non-standard CGI setup, as some virtual host
 systems do, you will need to know something about UNIX and the web or
@@ -3503,8 +3504,8 @@ The server must be running, first of all. If you didn't start it, you can do so 
 
 You can check to see if your server is running by typing:
 
->    Linux, SunOS, BSD:    ps -ax | grep minivend
->    Most other systems:   ps -elf | grep minivend
+>    Linux, SunOS, BSD:    ps -ax | grep interchange
+>    Most other systems:   ps -elf | grep interchange
 
 \NOTE: Solaris and IRIX truncate the string, and don't allow setting of the $0 parameter. You may have to grep for 'perl' instead.
 
@@ -3552,10 +3553,10 @@ system, then either moved or removed the library directory. Contact your system 
 
 H2: Can I run Interchange on my Macintosh?
 
-No. Interchange will not run on a Macintosh running System 7 or other
-"Finder" operating system. If some technically-oriented user would
-port it, or someone will give Interchange's author a PowerMac, then
-it might. 
+Interchange will not run on a Macintosh running System 7 or other
+"Finder" operating system. 
+
+Interchange has been tested on the Macintosh OS/X server.
 
 Interchange's *files* can be manipulated by any computer. As long as
 uploads/downloads of database source, pages, and configuration files
@@ -3563,7 +3564,7 @@ are done in ASCII mode, there is no reason why they can't be edited on a Mac. An
 
 H2: Shopping cart is dropped when using SSL.
 
-This is usually due to the HostnameLookups (Stronghold/Apache parameter) not matching for the two servers, secure and non-secure. It can also be caused by the user having different web proxy addresses for HTTP and HTTPS. If it still does not work, try changing some of the appropriate configuration parameters in minivend.cfg:
+This is usually due to the HostnameLookups (Stronghold/Apache parameter) not matching for the two servers, secure and non-secure. It can also be caused by the user having different web proxy addresses for HTTP and HTTPS. If it still does not work, try changing some of the appropriate configuration parameters in interchange.cfg:
 
 >    DomainTail   No
 >    IpHead       Yes
@@ -3579,7 +3580,7 @@ secure server, you will have problems after accessing the second one. (The first
 
 H2: Segmentation fault or other core dump.
 
-If this happens when you run the Interchange test or server, it is always a Perl that has a problem. Not sometimes, always. A proper Perl should never have a segmentation violation, period. And it should not dump core (unless you passed it a C<-u> option somehow).
+If this happens when you run the Interchange test or server, it is always Perl that has a problem. Not sometimes, always. A proper Perl should never have a segmentation violation, period. And it should not dump core (unless you passed it a C<-u> option somehow).
 
 You will need to either update Perl or report the bug to the proper personnel. Depending on your situation and technical ability, this may be your system admin, ISP, or the Perl porters.
 
@@ -3678,15 +3679,15 @@ On SVR4 systems, it is quite a bit more complex. Look for the /etc/rc.d director
 
 IMPORTANT NOTE: Interchange must not run as root, which is the user identity that the startup file executes. The technique to start up depends on the facility of your su(1) command. This should work on most operating systems:
 
->    su minivend <<EOF
->    /your/minivend/dir/bin/restart
+>    su interchange <<EOF
+>    /your/interchange/dir/bin/restart
 >    EOF
 
 The B<EOF> must be the only thing on the line (no leading or trailing whitespace). If your su(1) command has a C<-c> option (as most System 5 UNIXes do), you can just set:
 
->    su -c /your/minivend/dir/bin/restart minivend
+>    su -c /your/interchange/dir/bin/restart interchange
 
-Interchange supplies a C<restart> script which tries to do the above portably. It works on many operating systems (Linux and Solaris have been tested by the authors.)
+Interchange supplies a C<restart> script which tries to do the above portably. It works on many operating systems.
 
 H2: How do I set up a Mall?
 
@@ -3721,7 +3722,7 @@ H2: PGP encryption -- Server Error
 
 As always, check the error log. The most common problem is something like:
 
->    minivend.com 3Ex5lvta:minivend.com - [01/Sep/1997:09:08:43] simple /cgi-bin/simple
+>    akopia.com 3Ex5lvta:akopia.com - [01/Sep/1997:09:08:43] simple /cgi-bin/simple
 >    > Encryption error:
 >    >
 
@@ -3853,7 +3854,7 @@ This URL:
 
 will yield C<Source1> from the Interchange tag [data session source].
 
-The Interchange 3 idiom ?;;Source1 continues to be supported, so existing partner sites should work without change.
+The Interchange 3 idiom C<?;;Source1> continues to be supported, so existing partner sites should work without change.
 
 H2: How can I send an email copy of the receipt to a user?
 
@@ -3910,6 +3911,8 @@ You can use Interchange's II8N facilty via the Locale directive. In catalog.cfg:
 > Locale de_DE p_cs_precedes  0
 > Locale de_DE p_sep_by_space 2
 
+(Note: Be sure to use the latest exchange rates when you establish your catalog.)
+
 On your pages (this is from a search results page, the [item-.... ...] notation may be different depending on your context):
 
 > [item-price]<br><!-- german is default -->
@@ -3929,7 +3932,7 @@ B<Not enough memory>
 .If your ISP uses IDE hard disks, you can expect REALLY bad performance. IDE disks are very slow for multi-user machines, which should have SCSI if ANY swapping is to be done.
 
 B<Too many domains>
-.If there is a huge amount of traffic on the system, then it can run at a very high "load average." IF load average runs routinely above 2, you can expect problems.
+.If there is a huge amount of traffic on the system, then it can run at a very high "load average." If the machine's load average is routinely above 2, you can expect problems.
 
 B<Underpowered machine>
 .If it is an old machine, it may be too slow for Interchange. A Pentium of less than 300MHz is probably not good enough unless it is completely dedicated to Interchange. The faster the processor, the happier you will be.
@@ -4003,7 +4006,7 @@ and other Unix ports. It should work on any UNIX or Win32 OS with Perl
 
 IMPORTANT NOTE FOR BSD USERS: Interchange has been known to segfault when
 reading sockets on Perl. This occurs more frequently on a busy system.
-The workaround is to set in minivend.cfg:
+The workaround is to set in interchange.cfg:
 
 >    MaxServers   0
 >    Housekeeping 1
@@ -4016,7 +4019,7 @@ H1: FOUNDATION DEMO
 
 There are two demo applications included. One is not so aptly named "simple," while the other other is named "barry."
 
-To install the demo, go to the directory where Interchange is installed (default is "mvend" in the home directory or /usr/local/minivend for root installations) and run:
+To install the demo, go to the directory where Interchange is installed (default is "mvend" in the home directory or /usr/local/interchange for root installations) and run:
 
 >    bin/makecat barry
 
@@ -4033,7 +4036,7 @@ Follow the prompts and after restarting the Interchange server, the demo catalog
 H1: KNOWN PROBLEMS
 
 BSDI, FreeBSD, Net BSD: make sure the following are in effect
-in minivend.cfg:
+in interchange.cfg:
 
 >        MaxServers 0
 >        Housekeeping 1
