@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icfoundation.sdf,v 1.5 2001-05-11 14:59:48 larry Exp $
+# $Id: icfoundation.sdf,v 1.6 2001-05-11 15:10:50 bill Exp $
 
 !define DOC_NAME "Foundation Store"
 !define DOC_TYPE ""
 !define DOC_CODE "icfoundation"
-!define DOC_VERSION substr('$Revision: 1.5 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.6 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/doc/icfoundation.html"
@@ -154,10 +154,7 @@ Once familiar with this method, it can be quite convenient. But other methods ma
 Yet, most users stick with the userdb and checkout strategies employed in this catalog. This is because these strategies have been developed and proven successful over a period of years. Still, they can be customized to operate like Amazon.com or another site.
 
 
-H2: Templates in the Foundation Catalog
-
-
-H3: Directory Structure
+H2: Template Locations
 
 This diagram shows the directory and file structure used for the
 default Foundation 'templates' directory. The base will be a directory
@@ -199,147 +196,147 @@ with the name of your catalog, here called CATROOT.
     	      |----leftonly
     	      |----leftright
     	      |----regions/
-    		   |----LEFTONLY_BOTTOM
-    		   |----LEFTONLY_TOP
-    		   |----LEFTRIGHT_BOTTOM
-    		   |----LEFTRIGHT_TOP
-    		   |----NOLEFT_BOTTOM
-    		   |----NOLEFT_TOP
+    		  |----LEFTONLY_BOTTOM
+    		  |----LEFTONLY_TOP
+    		  |----LEFTRIGHT_BOTTOM
+    		  |----LEFTRIGHT_TOP
+    		  |----NOLEFT_BOTTOM
+    		  |----NOLEFT_TOP
     	      |----simple
     	      |----theme.cfg
          |----fullwidth
          |----leftonly
          |----leftright
          |----regions/
-          |----LEFTONLY_BOTTOM
-          |----LEFTONLY_TOP
-          |----LEFTRIGHT_BOTTOM
-          |----LEFTRIGHT_TOP
-          |----NOLEFT_BOTTOM
-          |----NOLEFT_TOP
+         |----LEFTONLY_BOTTOM
+         |----LEFTONLY_TOP
+         |----LEFTRIGHT_BOTTOM
+         |----LEFTRIGHT_TOP
+         |----NOLEFT_BOTTOM
+         |----NOLEFT_TOP
          |----sampledata/
-          |----computers/
-               |----images/
-                    |----items/
-                         |----generic.gif
-                         |----gift_certificate_large.gif
-                         |----yourimage.gif
-                    |----thumb/
-                         |----generic_thumb.gif
-                         |----gift_certificate.gif
-                         |----thumb.gif
-               |----products/
-                    |----inventory.txt
-                    |----merchandising.txt
-                    |----mv_metadata.asc
-                    |----options.txt
-                    |----pricing.txt
-                    |----products.txt
-                    |----userdb.txt
-          |----reports/
-               |----download/
-                    |----00352as.pdf
-                    |----11993ab.pdf
-                    |----22083da.pdf
-                    |----49503cg.pdf
-                    |----59330rt.pdf
-                    |----59402fw.pdf
-                    |----66548ch.pdf
-                    |----73358ee.pdf
-                    |----83491vp.pdf
-                    |----90773sh.pdf
-               |----products/
-                    |----mv_metadata.asc
-                    |----products.txt
-                    |----userdb.txt
-          |----tools/
-               |----etc/
-                    |----after.cfg
-                    |----before.cfg
-               |----images/
-                    |----items/
-                         |----os28004.gif
-                         |----os28005.gif
-                         |----os28006.gif
-                         |----os28007.gif
-                         |----os28008.gif
-                         |----os28009.gif
-                         |----os28011.gif
-                         |----os28044.gif
-                         |----os28057a.gif
-                         |----os28057b.gif
-                         |----os28057c.gif
-                         |----os28062.gif
-                         |----os28064.gif
-                         |----os28065.gif
-                         |----os28066.gif
-                         |----os28068.gif
-                         |----os28068a.gif
-                         |----os28068b.gif
-                         |----os28069.gif
-                         |----os28070.gif
-                         |----os28072.gif
-                         |----os28073.gif
-                         |----os28074.gif
-                         |----os28075.gif
-                         |----os28076.gif
-                         |----os28077.gif
-                         |----os28080.gif
-                         |----os28081.gif
-                         |----os28082.gif
-                         |----os28084.gif
-                         |----os28085.gif
-                         |----os28086.gif
-                         |----os28087.gif
-                         |----os28108.gif
-                         |----os28109.gif
-                         |----os28110.gif
-                         |----os28111.gif
-                         |----os28112.gif
-                         |----os28113.gif
-                         |----os29000.gif
-                    |----thumb/
-                         |----gift_certificate.gif
-                         |----os28004_b.gif
-                         |----os28005_b.gif
-                         |----os28006_b.gif
-                         |----os28007_b.gif
-                         |----os28008_b.gif
-                         |----os28009_b.gif
-                         |----os28011_b.gif
-                         |----os28044_b.gif
-                         |----os28057a_b.gif
-                         |----os28057b_b.gif
-                         |----os28057c_b.gif
-                         |----os28062_b.gif
-                         |----os28064_b.gif
-                         |----os28065_b.gif
-                         |----os28066_b.gif
-                         |----os28068_b.gif
-                         |----os28068a_b.gif
-                         |----os28068b_b.gif
-                         |----os28069_b.gif
-                         |----os28070_b.gif
-                         |----os28072_b.gif
-                         |----os28073_b.gif
-                         |----os28074_b.gif
-                         |----os28075_b.gif
-                         |----os28076_b.gif
-                         |----os28077_b.gif
-                         |----os28080_b.gif
-                         |----os28081_b.gif
-                         |----os28082_b.gif
-                         |----os28084_b.gif
-                         |----os28085_b.gif
-                         |----os28086_b.gif
-                         |----os28087_b.gif
-                         |----os28108_b.gif
-                         |----os28109_b.gif
-                         |----os28110_b.gif
-                         |----os28111_b.gif
-                         |----os28112_b.gif
-                         |----os28113_b.gif
-                         |----os29000_b.gif
+         |----computers/
+              |----images/
+                   |----items/
+                        |----generic.gif
+                        |----gift_certificate_large.gif
+                        |----yourimage.gif
+                   |----thumb/
+                        |----generic_thumb.gif
+                        |----gift_certificate.gif
+                        |----thumb.gif
+              |----products/
+                   |----inventory.txt
+                   |----merchandising.txt
+                   |----mv_metadata.asc
+                   |----options.txt
+                   |----pricing.txt
+                   |----products.txt
+                   |----userdb.txt
+         |----reports/
+              |----download/
+                   |----00352as.pdf
+                   |----11993ab.pdf
+                   |----22083da.pdf
+                   |----49503cg.pdf
+                   |----59330rt.pdf
+                   |----59402fw.pdf
+                   |----66548ch.pdf
+                   |----73358ee.pdf
+                   |----83491vp.pdf
+                   |----90773sh.pdf
+              |----products/
+                   |----mv_metadata.asc
+                   |----products.txt
+                   |----userdb.txt
+         |----tools/
+              |----etc/
+                   |----after.cfg
+                   |----before.cfg
+              |----images/
+                   |----items/
+                        |----os28004.gif
+                        |----os28005.gif
+                        |----os28006.gif
+                        |----os28007.gif
+                        |----os28008.gif
+                        |----os28009.gif
+                        |----os28011.gif
+                        |----os28044.gif
+                        |----os28057a.gif
+                        |----os28057b.gif
+                        |----os28057c.gif
+                        |----os28062.gif
+                        |----os28064.gif
+                        |----os28065.gif
+                        |----os28066.gif
+                        |----os28068.gif
+                        |----os28068a.gif
+                        |----os28068b.gif
+                        |----os28069.gif
+                        |----os28070.gif
+                        |----os28072.gif
+                        |----os28073.gif
+                        |----os28074.gif
+                        |----os28075.gif
+                        |----os28076.gif
+                        |----os28077.gif
+                        |----os28080.gif
+                        |----os28081.gif
+                        |----os28082.gif
+                        |----os28084.gif
+                        |----os28085.gif
+                        |----os28086.gif
+                        |----os28087.gif
+                        |----os28108.gif
+                        |----os28109.gif
+                        |----os28110.gif
+                        |----os28111.gif
+                        |----os28112.gif
+                        |----os28113.gif
+                        |----os29000.gif
+                   |----thumb/
+                        |----gift_certificate.gif
+                        |----os28004_b.gif
+                        |----os28005_b.gif
+                        |----os28006_b.gif
+                        |----os28007_b.gif
+                        |----os28008_b.gif
+                        |----os28009_b.gif
+                        |----os28011_b.gif
+                        |----os28044_b.gif
+                        |----os28057a_b.gif
+                        |----os28057b_b.gif
+                        |----os28057c_b.gif
+                        |----os28062_b.gif
+                        |----os28064_b.gif
+                        |----os28065_b.gif
+                        |----os28066_b.gif
+                        |----os28068_b.gif
+                        |----os28068a_b.gif
+                        |----os28068b_b.gif
+                        |----os28069_b.gif
+                        |----os28070_b.gif
+                        |----os28072_b.gif
+                        |----os28073_b.gif
+                        |----os28074_b.gif
+                        |----os28075_b.gif
+                        |----os28076_b.gif
+                        |----os28077_b.gif
+                        |----os28080_b.gif
+                        |----os28081_b.gif
+                        |----os28082_b.gif
+                        |----os28084_b.gif
+                        |----os28085_b.gif
+                        |----os28086_b.gif
+                        |----os28087_b.gif
+                        |----os28108_b.gif
+                        |----os28109_b.gif
+                        |----os28110_b.gif
+                        |----os28111_b.gif
+                        |----os28112_b.gif
+                        |----os28113_b.gif
+                        |----os29000_b.gif
                |----products/
                     |----affiliate.txt
                     |----area.txt
@@ -356,7 +353,7 @@ with the name of your catalog, here called CATROOT.
 !endblock
 
 
-H3: Themes
+H2: Themes
 
 What is a theme in Interchange? How is a theme defined?
 
@@ -381,7 +378,7 @@ defined in the file templates/theme.cfg [or is it
 templates/foundation/theme.cfg?].
 
 
-H3: Template Definition Files
+H2: Template Definition Files
 
 The template definition files store the name and description of the
 template as well as components and options for that template.
@@ -400,7 +397,7 @@ template as well as components and options for that template.
 !endblock
 
 
-H4: leftonly
+H3: Template Walkthrough -- leftonly
 
 Walkthrough of the 'leftonly' template definition N<file:>
 
@@ -696,7 +693,7 @@ the featured column of the merchandising table as N<follows:>
 !endblock
 
 
-H3: Edit Page function
+H2: Edit Page function
 
  What is generated when we create a page using the Edit Page content
   editor?
@@ -755,7 +752,7 @@ leftonly template definition N<file:>
 However, note that you are free to change the region templates used in
 the file, simply by editing the file itself.
 
-H3: Region Templates
+H2: Region Templates
 
 Interchange region templates ("regions") are portions of HTML and ITL
 that are included in pages within a catalog. Using regions allows you
@@ -806,7 +803,7 @@ section.
 
 > /home/ic/catalogs/ft/templates/regions:
 
-H4: LEFTONLY_TOP
+H3: LEFTONLY_TOP
 
 The LEFTONLY_TOP template region is used in the following template N<pages:>
 
@@ -848,7 +845,7 @@ The LEFTONLY_TOP template region is used in the following N<templates:>
     templates/foundation/simple
 !endblock
 
-H4: LEFTONLY_BOTTOM
+H3: LEFTONLY_BOTTOM
 
 The LEFTONLY_BOTTOM template region is used in the following template N<pages:>
 
@@ -890,7 +887,7 @@ The LEFTONLY_BOTTOM template region is used in the following N<templates:>
     templates/foundation/simple
 !endblock
 
-H4: LEFTRIGHT_TOP
+H3: LEFTRIGHT_TOP
 
 The LEFTRIGHT_TOP template region is used in the following template N<pages:>
 
@@ -908,7 +905,7 @@ The LEFTRIGHT_TOP template region is used in the following N<templates:>
     templates/foundation/leftright
 !endblock
 
-H4: LEFTRIGHT_BOTTOM
+H3: LEFTRIGHT_BOTTOM
 
 The LEFTRIGHT_BOTTOM template region is used in the following template N<pages:>
 
@@ -926,7 +923,7 @@ The LEFTRIGHT_BOTTOM template region is used in the following N<templates:>
     templates/foundation/leftright
 !endblock
 
-H4: NOLEFT_BOTTOM
+H3: NOLEFT_BOTTOM
 
 The NOLEFT_BOTTOM template region is used in the following template N<pages:>
 
@@ -941,7 +938,7 @@ The NOLEFT_BOTTOM template region is used in the following N<templates:>
     templates/foundation/fullwidth
 !endblock
 
-H4: NOLEFT_TOP
+H3: NOLEFT_TOP
 
 The NOLEFT_TOP template region is used in the following template N<pages:>
 
@@ -956,7 +953,7 @@ The NOLEFT_TOP template region is used in the following N<templates:>
     templates/foundation/fullwidth
 !endblock
 
-H3: Template Page List
+H2: Template Page List
 
 N</home/ic/catalogs/ft/pages/:>
 
@@ -1032,7 +1029,7 @@ N</home/ic/catalogs/ft/pages/query:>
 !endblock
 
 
-H3: Special Page List
+H2: Special Page List
 
 N</home/ic/catalogs/ft/special_pages/:>
 
@@ -1055,7 +1052,7 @@ N</home/ic/catalogs/ft/special_pages/:>
     violation.html
 !endblock
 
-H3: Components
+H2: Components
 
 Interchange components are portions of HTML and ITL that are included
 in pages within a catalog depending on options set in the Admin
@@ -1089,11 +1086,11 @@ UI. The default component set includes the N<following:>
 
 N</home/ic/catalogs/ft/templates/components:>
 
-H4: affiliate_receptor
+H3: affiliate_receptor
 
 Not used in Foundation demo
 
-H4: best_horizontal
+H3: best_horizontal
 
 The best_horizontal component is used in the following N<templates:>
 
@@ -1105,7 +1102,7 @@ The best_horizontal component is used in the following N<templates:>
 
 Not used in Foundation demo pages
 
-H4: best_vertical
+H3: best_vertical
 
 The best_vertical component is used in the following N<template:>
 
@@ -1115,7 +1112,7 @@ The best_vertical component is used in the following N<template:>
 
 Not used in Foundation demo pages
 
-H4: cart
+H3: cart
 
 The cart component is used in the following N<page:>
 
@@ -1123,7 +1120,7 @@ The cart component is used in the following N<page:>
     pages/ord/basket.html
 !endblock
 
-H4: cart_display
+H3: cart_display
 
 The cart_display component is used in the following N<pages:>
 
@@ -1131,7 +1128,7 @@ The cart_display component is used in the following N<pages:>
     pages/results.html
 !endblock
 
-H4: cart_tiny
+H3: cart_tiny
 
 The cart_tiny component is used in the following N<pages:>
 
@@ -1156,11 +1153,11 @@ The cart_tiny component is used in the following N<pages:>
     pages/ship_addresses.html
 !endblock
 
-H4: category_horizontal
+H3: category_horizontal
 
 Not used in Foundation demo pages or templates.
 
-H4: category_vertical
+H3: category_vertical
 
 The category_vertical component is used in the following N<pages:>
 
@@ -1197,7 +1194,7 @@ The category_vertical component is used in the following N<pages:>
     pages/swap_results.html
 !endblock
 
-H4: cross_horizontal
+H3: cross_horizontal
 
 The cross_horizontal component is used in the following N<pages:>
 
@@ -1216,7 +1213,7 @@ The cross_horizontal component is used in the following N<templates:>
     templates/foundation/leftright
 !endblock
 
-H4: cross_vertical
+H3: cross_vertical
 
 Not used in Foundation demo pages.
 
@@ -1226,7 +1223,7 @@ The cross_horizontal component is used in the following N<templates:>
     templates/foundation/leftright
 !endblock
 
-H4: modular_buy
+H3: modular_buy
 
 The modular_buy component is used in the following N<pages:>
 
@@ -1240,7 +1237,7 @@ The modular_buy component is used in the following N<templates:>
     templates/components/modular_update
 !endblock
 
-H4: modular_update
+H3: modular_update
 
 The modular_update component is used in the following N<pages:>
 
@@ -1248,11 +1245,11 @@ The modular_update component is used in the following N<pages:>
     pages/modular_modify.html
 !endblock
 
-H4: none
+H3: none
 
  What's this ??
 
-H4: promo
+H3: promo
 
 The promo component is used in the following N<pages:>
 
@@ -1261,7 +1258,7 @@ The promo component is used in the following N<pages:>
     pages/results_big.html
 !endblock
 
-H4: promo_horizontal
+H3: promo_horizontal
 
 The promo_horizontal component is used in the following N<pages:>
 
@@ -1278,7 +1275,7 @@ The promo_horizontal component is used in the following N<templates:>
     templates/foundation/leftright
 !endblock
 
-H4: promo_vertical
+H3: promo_vertical
 
 Not used in Foundation demo pages.
 
@@ -1288,7 +1285,7 @@ The promo_horizontal component is used in the following N<templates:>
     templates/foundation/leftright
 !endblock
 
-H4: random
+H3: random
 
 The random component is used in the following N<pages:>
 
@@ -1302,7 +1299,7 @@ The random component is used in the following N<pages:>
     pages/swap_results.html
 !endblock
 
-H4: random_horizontal
+H3: random_horizontal
 
 Not used in Foundation demo pages.
 
@@ -1314,7 +1311,7 @@ The random_horizontal component is used in the following N<templates:>
     templates/foundation/leftright
 !endblock
 
-H4: random_vertical
+H3: random_vertical
 
 Not used in Foundation demo pages.
 
@@ -1324,7 +1321,7 @@ The random_vertical component is used in the following N<templates:>
     templates/foundation/leftright
 !endblock
 
-H4: saved_carts_list_small
+H3: saved_carts_list_small
 
 The saved_carts_list_small component is used in the following N<pages:>
 
@@ -1332,7 +1329,7 @@ The saved_carts_list_small component is used in the following N<pages:>
     pages/ord/basket.html
 !endblock
 
-H4: search_box_small
+H3: search_box_small
 
 The search_box_small component is used in the following N<pages:>
 
@@ -1376,11 +1373,11 @@ The search_box_small component is used in the following N<templates:>
     templates/regions/LEFTRIGHT_TOP
 !endblock
 
-H4: upsell
+H3: upsell
 
 Not used in Foundation demo pages.
 
-H4: upsell_horizontal
+H3: upsell_horizontal
 
 The upsell_horizontal component is used in the following N<pages:>
 
@@ -1396,7 +1393,7 @@ The upsell_horizontal component is used in the following N<templates:>
     templates/foundation/leftright
 !endblock
 
-H4: upsell_vertical
+H3: upsell_vertical
 
 Not used in Foundation demo pages.
 
