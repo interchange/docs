@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.36 2001-03-23 00:26:35 jon Exp $
+# $Id: icconfig.sdf,v 1.37 2001-03-23 00:53:03 jon Exp $
 
 !define DOC_NAME "Interchange Configuration"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.36 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.37 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icconfig.html"
@@ -3201,7 +3201,7 @@ To disable a pragma for a particular page, set it anywhere in the page:
    [pragma my_pragma_name 0]
 !endblock
 
-There are currently only two pragmas:
+There are currently only three pragmas:
 
 LI1: no_html_parse
 
@@ -3234,6 +3234,12 @@ Would, assuming an ImageDir set to /foundation/images, be transformed into:
 !endblock
 
 When pragma no_image_rewrite {{B:is}} set, the <img> tag would remain unchanged.
+
+LI1: strip_white
+
+Set this to strip whitespace from the tops of HTML pages output by Interchange. Such whitespace usually comes from Interchange tags at the top of the page. The pragma's purpose is mostly to make 'view source' in the browser a slightly more tolerable experience.
+
+Default is off; whitespace is unchanged.
 
 H2: PriceCommas
 
