@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.16 2001-03-31 04:16:23 bill Exp $
+# $Id: ictags.sdf,v 1.17 2001-03-31 04:35:25 bill Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.16 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.17 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -4941,7 +4941,7 @@ the &HTML or $Document->write() functions.
 
 You can also retrieve the return value of the perl code from the
 session hash via
-E<lbracket>{{C[jump="#data"]data}}E<nbspace>sessionE<nbspace>mv_perl_result].
+C<E<lbracket>{{CMD[jump="#data"]data}}E<nbspace>sessionE<nbspace>mv_perl_result]>.
 See {{C[jump="#perl_no_return"]perl}} tag.
 
 H4: {{CMD[id="mvasp_subs"]subs}}
@@ -5624,7 +5624,7 @@ table|Alias for C<tables>|I<none>
 !block table; colvaligns="TT"
 Attributes|Default
 {{CMD[jump="#perl_failure"]failure}}|I<none>
-{{CMD[jump="#perl_no_return"]no_return}}|I<Always true>
+{{CMD[jump="#perl_no_return"]no_return}}|I<No>
 {{CMD[jump="#perl_subs"]subs}}|I<No>
 {{CMD[jump="#perl_subs"]arg}}="subs"|I<Same as> C<subs>
 {{CMD[jump="#perl_global"]global}}|I<No>
@@ -5796,10 +5796,10 @@ under the Safe module (see {{CMD[jump="#perl_tables"]tables}} above).
 
 H4: {{CMD[id="perl_no_return"]no_return}}
 
-If C<no_return=1> set, this attribute suppresses the return value of the perl code.
+If C<no_return=1>, this attribute suppresses the return value of the perl code.
 
 You can retrieve the return value from the session hash via
-E<lbracket>{{C[jump="#data"]data}}E<nbspace>sessionE<nbspace>mv_perl_result]
+C<E<lbracket>{{CMD[jump="#data"]data}}E<nbspace>sessionE<nbspace>mv_perl_result]>
 until it gets overwritten by another C<perl> tag.
 
 If C<no_return> is set, the C<perl> tag I<will> return any output
@@ -5831,7 +5831,7 @@ Here is an example:
 !endblock
 
 This will put the same price on the page as our earlier example, but
-$Session->{mv_perl_result} will be either 'too low' or 'ok'.
+C<$Session-E<gt>{mv_perl_result}> will be either 'too low' or 'ok'.
 
 The [{{C[jump="#mvasp"]mvasp}}] tag is very similar to
 E<lbracket>perlE<nbspace>no_return=1].
