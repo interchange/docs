@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: ic_ecommerce.sdf,v 1.23 2003-07-08 19:12:58 mheins Exp $
+# $Id: ic_ecommerce.sdf,v 1.24 2004-05-05 14:24:33 jon Exp $
 
 !define DOC_NAME "Interchange Ecommerce Functions"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_ecommerce"
-!define DOC_VERSION substr('$Revision: 1.23 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.24 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ic_ecommerce.html"
@@ -528,7 +528,7 @@ an error. (The maximum iterations is specified with
 the {{CMD[jump="icconfig.html#Limit"]Limit}} directive.)
 
 B<NOTE>:  Common needs are easily shown but not so easily explained;
-skip to the examples if the reference below if your vision starts to
+skip to the examples in the reference below if your vision starts to
 blur when reading the next section. 8-)
 
 \USAGE: Optional items below have asterisks appended. The asterisk should
