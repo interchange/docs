@@ -1,14 +1,14 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: icprogrammer.sdf,v 1.1 2002-07-25 20:33:51 mheins Exp $
+# $Id: icprogrammer.sdf,v 1.2 2002-07-26 00:41:13 mheins Exp $
 
-!define DOC_NAME "Interchange Vars Reference"
+!define DOC_NAME "Interchange Programmer Reference"
 !define DOC_TYPE ""
-!define DOC_CODE "icvars"
-!define DOC_VERSION substr('$Revision: 1.1 $', 11, -2)
+!define DOC_CODE "icprogrammer"
+!define DOC_VERSION substr('$Revision: 1.2 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icvars.html"
-!define DOC_OWNER "1996-2002 Red Hat, Inc. {{EMAIL:interchange@redhat.com}}"
+!define DOC_OWNER "2002 Interchange Developers Group. {{EMAIL:interchange-users@icdevgroup.org}}"
 
 !define SHOW_COMMENTS 0
 !define EXAMPLE_SESSION "6CZ2whqo"
@@ -24,7 +24,270 @@
 !define EXAMPLE_DESCRIPTION "Framing Hammer"
 !build_title
 
-H1:Interchange Variable Reference
+H1: Introduction
+
+Interchange is a highly-complex but very powerful web application server
+focused on ecommerce. It is built on the power of Perl, using many of its
+standard modules and capabilities while defining many more.
+
+While Interchange focuses on e-commerce, it is really a general-purpose
+database access, retrieval, and templating systems. Besides online stores,
+here are some of the applications have been built on top of it:
+
+!block example
+    Auction
+    Calendar
+    Configuration management
+    Content management
+    Document archival and rental
+    Guestbook
+    Image archival and download
+    Intranet
+    MP3 jukebox
+    Poll
+    Quiz
+    Software repository
+    Web log
+!endblock
+
+This reference attempts to illuminate the source code of Interchagne
+and how you can write Perl enhancements, gadgets, and applications
+that integrate with Interchange.
+
+H2: Software installation
+
+To follow along, it is recommended you get the latest release of
+Interchange (4.9.1 as of this writing), unpack it from the tar file, and
+install it at a private directory. For the purposes of this document, it
+will be assumed that Interchange is installed at C</usr/tmp/interchange>
+and that the catalogs are installed at C</usr/tmp/catalogs>.
+
+H2: Software prerequisites
+
+Interchange only I<requires> a few added Perl modules, which can
+be installed by getting the Perl CPAN bundle C<Bundle::Interchange>.
+Install that (usually as root) with:
+
+!block example
+	perl -MCPAN -e 'install Bundle::Interchange'
+!endblock
+
+To get most of the modules Interchange can use, you can get a more
+complete set:
+
+!block example
+	perl -MCPAN -e 'install Bundle::InterchangeKitchenSink'
+!endblock
+
+H2: Audience
+
+This reference is not meant for casual users of Interchange. Though
+they might learn something from reading it, it would probably not
+do them much targeted good. A reasonable set of prerequisites to
+make reading this document profitable include:
+
+LI1: Programming knowledge
+
+A good knowledge of Perl or B<strong> knowledge of other programming
+languages is needed.
+
+LI1: Database knowledge
+
+Interchange is all about databases, and a knowledge of the concepts of
+database programming and SQL is strongly recommended.
+
+LI1: Networking knowledge
+
+The more you know about networking and the web, the more comfortable
+you will be with this document.
+
+LI1: UNIX knowledge
+
+Almost all production Interchange servers are UNIX-based, so knowledge
+of that is helpful.
+
+H1: Overview of Interchange
+
+Interchange is a daemon server, similar to a web server. Its entry
+point is usually talking to it over a socket via its own protocol.
+That socket can be either UNIX domain or INET domain, or an infinite
+number of either.
+
+H2: Catalogs
+
+Interchange as a server dispatches connections to a C<catalog>, an
+independently-configurable set of data and templates. These are for
+the most part completely independent of each other, though they inherit
+common global characteristics and settings. Almost all of those can
+be overridden by the catalog.
+
+H2: Hacking
+
+Of course Interchange's source is completely open and available. You
+could, if you wished, hack on it all you wanted. However this is strongly
+discouraged, for the simple reason that you can override almost any
+behavior with configurations and tag definitions of your own. In
+fact, if you want to override a core routine you can even do that.
+
+So if you are tempted to hack a routine in the core, simply override
+it with:
+
+!block example
+GlobalSub <<EOR
+sub override_me {
+	package Vend::Interpolate;
+	sub shipping {
+		your_code();
+	}
+}
+EOR
+
+!endblock
+
+H2: ITL -- Interchange Tag Language
+
+Interchange delivers its content by parsing templates that contain
+text and ITL, tags in the Interchange Tag Language.
+
+ITL takes the form of HTML-like tags using C<[square brackets]> as
+the tag introduction. Here is an ITL tag sequence:
+
+!block example
+	[if value name]
+	Your name is [value name], in case you forgot.
+	[/if]
+!endblock
+
+The above will show the contents of the C<[if ...] [/if]> container
+providing a non-blank, non-zero value is present in the user
+session.
+
+ITL provides direct access to Perl via the ITL container tags
+C<[perl]>, C<[calc]> and C<[calcn]>, and C<[mvasp]>. This allows
+ITL like:
+
+!block example
+	[calc]
+		my $out = '';
+		if($Values->{name}) {
+			$out = "Your name is $Values->{name}, in case you forgot.";
+		}
+		return $out;
+	[/calc]
+!endblock
+
+The above is completely identical to the ITL-only snippet above in
+effect.
+
+In addition, you can call defined ITL tags in your embedded Perl:
+
+!block example
+	[calc]
+		my $out = '';
+		my $name = $Tag->value('name');
+		if($name) {
+			$out = "Your name is $Values->{name}, in case you forgot.";
+		}
+		return $out;
+	[/calc]
+!endblock
+
+Again, the result is identical to the previous two examples.
+
+H3: User Defined Tags
+
+ITL is comprehensibly extensible. You can produce your own ITL tags that
+are fully as powerful as the ones supplied with the distribution. In fact
+they are indistinguishable, as you will see when you examine the C<code>
+hierarchy.
+
+These tags can use any Perl module, use external programs, or basically
+do most anything Perl can, providing you define them in the Global
+configuration. Tags defined in the Catalog configuration are restricted
+by Perl's standard Opcode and Safe facilities, though they can optionally
+be allowed global capability.
+
+See L<ictags> for complete information on ITL.
+
+H2: Talking to Interchange via socket
+
+Interchange can run in any of several modes:
+
+LI1: Foreground
+
+The foreground, meaning the same Interchange server listens for
+connections and then runs the tasks those connections cause.
+
+LI1: Forking mode
+
+One master Interchange listens for connections, then forks instances
+to handle the tasks those connections cause. The forked instance
+terminates at the end of the task.
+
+LI1: Prefork mode
+
+Similar to the way Apache does, Interchange can fork off a number
+of instances that all listen to the sockets open for connections. The
+first one to answer gets the task, runs it, then returns to listen
+again. After MaxChildRequests requests, it dies and causes another
+new instance to take its place.
+
+LI1: SOAP mode
+
+Interchange can listen to a socket designed to accept a SOAP connection --
+those always run in prefork mode.
+
+H2: Talking to Interchange over the command line
+
+Interchange starts its servers by being invoked from the command line. Other
+command line invocations can stop the server via signal, cause addition of
+additional catalogs to respond to, remove catalogs from the list to respond
+to, or cause execution of "cron" jobs.
+
+H2: Data structure overview
+
+Interchange has three major data stuctures, which correspond to the
+master server, the catalog, and the user.
+
+You can examine two of these structures by setting in interchange.cfg:
+
+!block example
+	DumpStructure  Yes
+!endblock
+
+This will by default dump an interchange.structure file which shows
+the global configuration, and a CATALOGNAME.structure file in each 
+catalog directory showing that catalog's configuration.
+
+The third structure, the user data session, can be viewed with
+the following ITL placed in a page:
+
+!block example
+	<XMP>[dump]</XMP>
+!endblock
+
+H3: The Global configuration
+
+This is held in a set of variables inhabiting the Global package.
+They define overall server behavior, and contain pointers to the
+catalog structures.
+
+The Global configuration is defined in C<interchange.cfg> and
+any files that it reads via C<include> statements. The configuration is
+produced by parsing interchange.cfg with the routine
+C<Vend::Config::global_config>.
+
+Directives can be defined for parsing by the catalog configuration
+within the global configuration. The only way to define new global
+directives is via hacking the source.
+but the 
+H3: The Catalog configuration
+
+Each Interchange catalog has its own configuration completely
+independent from others. It is produced by parsing the file
+C<catalog.cfg> in the directory defined as the base for the catalog --
+it is parsed by the subroutine C<Vend::Config::config>.
+
 
 Interchange defines some special variables which control behavior. They
 can be of several types, and the conventions for using them depend on
