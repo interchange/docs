@@ -1,5 +1,5 @@
 VERSION=4.7.0
-TARGETS=icbackoffice icconfig icdatabase icinstall icintro ictemplates iccattut ictags
+TARGETS=icbackoffice icconfig icdatabase icinstall icintro ictemplates iccattut ictags icupgrade
 
 .SUFFIXES: .html .pod .sdf .txt .pdf .8
 
