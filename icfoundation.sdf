@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icfoundation.sdf,v 1.23 2001-09-17 17:24:10 jon Exp $
+# $Id: icfoundation.sdf,v 1.24 2001-12-29 21:31:13 jon Exp $
 
 !define DOC_NAME "Foundation Store"
 !define DOC_TYPE ""
 !define DOC_CODE "icfoundation"
-!define DOC_VERSION substr('$Revision: 1.23 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.24 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icfoundation.html"
@@ -1740,16 +1740,11 @@ The foundation catalog includes the following tables, organized here by content:
 .. options.txt
 .. pricing.txt
 .. products.txt
-.. products.txt.category
-
-. {{}}
 
 * Customer data
 .. access.asc
 .. gift_certs.txt
 .. userdb.txt
-
-. {{}}
 
 * Transaction-related data
 .. inventory.txt
@@ -1757,13 +1752,9 @@ The foundation catalog includes the following tables, organized here by content:
 .. order_returns.txt
 .. transactions.txt
 
-. {{}}
-
 * Third-party relationship data
 .. affiliate.txt
 .. banner.txt
-
-. {{}}
 
 * Site administrative data
 .. component.txt
@@ -1771,14 +1762,12 @@ The foundation catalog includes the following tables, organized here by content:
 .. ichelp.txt
 .. icmenu.txt
 .. locale.txt
-.. mv_metadata
+.. mv_metadata.asc
 .. route.txt
 .. shipping.asc
 .. variable.txt
 
-. {{}}
-
-* Ancillary data
+* Shipping and tax
 .. 2ndDayAir.csv
 .. 450.csv
 .. country.txt
@@ -1786,6 +1775,9 @@ The foundation catalog includes the following tables, organized here by content:
 .. NextDayAir.csv
 .. salestax.asc
 .. state.txt
+
+
+You may also see symbolic links pointing to index tables, for example C<products.category.txt> linking to products.txt.10. These are automatically generated indexes, in this case into the products table to speed category searches. See {{CMD[jump="icdatabase.html#Dictionary Indexing With INDEX"]Dictionary Indexing With INDEX}} in the database documentation for details about auto-indexing of text databases.
 
 
 The following dictionary lists and describes each table used in the Foundation demo.
@@ -3964,10 +3956,6 @@ H3: {{CMD[id="products_url"]url}}
 Not Documented
 
 
-H2: products.category.txt
-
-The products.category.txt table (actually a link to products.txt.10) is an automatically generated index into the products table to speed category searches.  See {{CMD[jump="icdatabase.html#Dictionary Indexing With INDEX"]Dictionary Indexing With INDEX}} in the database documentation for details about auto-indexing of text databases.
-
 H2:route.txt
 
 !block example
@@ -4208,7 +4196,7 @@ Instead of:
 
 H1: Images
 
-Inline images are placed in Interchange pages in the normal fashion with <IMG SRC="URL">. But since Interchange pages are served by a CGI program, do not use relative links. The Foundation store defines an image directory with the C<ImageDir> and C<ImageDirSecure> directives that automatically adjusts the image path to a set base directory.
+Inline images are placed in Interchange pages in the normal fashion with <IMG SRC="URL">. But since Interchange pages are served by a CGI program, it will by default automatically rewrite relative image links as absolute ones based on the C<ImageDir> and C<ImageDirSecure> directives.
 
 
 H1: Browser Cookies
@@ -4219,7 +4207,7 @@ If planning to use more than one host name within the same domain for naming pur
 
 H1: Dependencies in administration
 
-In general, it's a good idea to leave fields empty if you don't want to use them, instead of removing them from the database altogether. That way nothing in admin or demo will break.
+In general, it's a good idea to leave fields empty if you don't want to use them, instead of removing them from the database altogether. That way nothing in the administration interface or the Foundation pages will break.
 
 Line:
 
