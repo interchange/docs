@@ -1,4 +1,4 @@
-# $Id: html.sdn,v 1.8 2000-10-18 20:20:54 zarko Exp $
+# $Id: html.sdn,v 1.9 2000-11-30 20:04:32 jon Exp $
 #
 # >>Title::     HTML Tuning
 #
@@ -8,12 +8,13 @@
 #
 # >>History::
 # -----------------------------------------------------------------------
-# Date      Who     Change
-# 02-Oct-00 zarko   Akopia 1.0
+# Date        Who      Change
+# 2000-10-02  zarko    Akopia 1.0
+# 2000-11-30  jon      Replace [ with &#91; to prevent Interchange parsing
 # -----------------------------------------------------------------------
 #
 # >>Purpose::
-# The {{look/develoepr_site/html.sdn}} module defines [[SDF]] configuration
+# The {{look/developer_site/html.sdn}} module defines [[SDF]] configuration
 # details for generating [[HTML]] files with the Akopia Developer Site look.
 #
 # >>Description::
@@ -21,7 +22,7 @@
 # >>Limitations::
 #
 
-#!message "Using akopia developer site look & feel"
+#!message "Using Akopia developer site look & feel"
 
 # Inherit the standard configuration
 !use 'stdlib/html.sdn'
@@ -50,7 +51,7 @@ sub ::_HtmlFinalise {
     $version = $var{'SDF_VERSION'};
     @head = (
         '[comment]',
-        "ui_template_description: Standard page with top and left areas. Menu bar and copyright at bottom.  This file was generated using SDF $version by Ian Clatworthy (ianc\@mincom.com). SDF is freely available from http://www.mincom.com/mtr/sdf.",
+        "ui_template_description: Standard page with top and left areas. Menu bar and copyright at bottom. This file was generated using SDF $version by Ian Clatworthy (ianc\@mincom.com). SDF is freely available from http://www.mincom.com/mtr/sdf.",
         'ui_template_layout: LOGOBAR, MENUBAR, UI_CONTENT, RIGHTSIDE, MENUBOTTOM, COPYRIGHT',
         'ui_control_description: members_only : Members only',
         'ui_control_description: page_title : Page title',
@@ -73,11 +74,19 @@ sub ::_HtmlFinalise {
         '<!-- BEGIN CONTENT -->',
     );
 
+	# Escape body left brackets so Interchange doesn't interpret them.
+	# Do it before processing, lest the ITL header & footer get escaped too.
+	s/\[/&#91;/g for @body;
+
     # Build the body contents, unless we're generating an input file for
     # the HTMLDOC package
     unless ($var{'HTMLDOC'}) {
         &::_HtmlFinaliseBodyContents(*body, *contents);
     }
+
+	# Escape contents left brackets after processing so they don't get
+	# double-escaped.
+	s/\[/&#91;/g for @contents;
 
     # Return result
     push(@body,
