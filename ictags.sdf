@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.56 2001-08-06 23:23:05 jon Exp $
+# $Id: ictags.sdf,v 1.57 2001-08-15 19:31:31 heins Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.56 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.57 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -9490,7 +9490,7 @@ H4: {{CMD[id="tree_key_mv_spacing"]mv_spacing}}
 A multiple of level times the spacing option. Useful for setting width of
 spacer images.
 
-The above sample data would produce:
+The above sample data placed in a table named "tree" would produce:
 
 >    a           mv_level=0, mv_increment=1, mv_children=4
 >        b       mv_level=1, mv_increment=1, mv_children=0
@@ -9510,10 +9510,11 @@ from the tag call:
 
 >        <table>
 >    [tree   start=99
->            master=parent_fld
->            subordinate=child_fld
+>            table=tree
+>            master=parent
+>            subordinate=child
 >            autodetect=1
->                        spacing=4
+>            spacing=4
 >            full=1]
 >        <tr>
 >        <td>
@@ -9522,7 +9523,7 @@ from the tag call:
 >                        return '&nbsp' x [item-param mv_spacing];
 >                [/item-calc]
 >        [/if-item-param]
->        [item-param child_fld]
+>        [item-param child]
 >        </td>
 >        <td>
 >                mv_level=[item-param mv_level],
