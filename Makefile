@@ -1,5 +1,7 @@
 VERSION=4.7.0
-TARGETS=icbackoffice icconfig icdatabase icinstall icintro ictemplates iccattut ictags icupgrade
+TARGETS=icintro icinstall iccattut icconfig ictemplates icdatabase ictags icbackoffice icupgrade
+FULLSUFFIXES=txt html
+FULLDOCNAME=icfull
 
 .SUFFIXES: .html .pod .sdf .txt .pdf .8
 
@@ -66,11 +68,26 @@ man: $(addsuffix .8,$(TARGETS))
 
 pdf: $(addsuffix .pdf,$(TARGETS))
 
+full :: txt html
+	@for i in $(FULLSUFFIXES) ; do \
+		echo "" > $(FULLDOCNAME).$$i ; \
+		echo "Interchange $(VERSION)" >> $(FULLDOCNAME).$$i ; \
+		echo "Complete reference documentation in one file" >> $(FULLDOCNAME).$$i ; \
+		echo "Generated `date`" >> $(FULLDOCNAME).$$i ; \
+		for j in $(TARGETS) ; do \
+			perl -e "print qq{\n\n\n\n}, '-' x 78, qq{\n\n\n$$j\n\n\n}, '-' x 78, qq{\n\n\n}" >> $(FULLDOCNAME).$$i ; \
+			cat $$j.$$i >> $(FULLDOCNAME).$$i ; \
+		done ; \
+	done
+
 clean:
 	@for i in $(TARGETS) ; do \
 		for j in pod txt pdf 8 html ; do \
 			rm -fv $$i.$$j ; \
 		done ; \
 		rm -fv $$i_*.html ; \
+	done
+	@for i in $(FULLSUFFIXES) ; do \
+		rm -fv $(FULLDOCNAME).$$i ; \
 	done
 	rm -rf dev
