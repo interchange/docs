@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.69 2002-08-12 02:09:52 mheins Exp $
+# $Id: icconfig.sdf,v 1.70 2002-09-01 15:07:06 mheins Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.69 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.70 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icconfig.html"
@@ -111,6 +111,33 @@ The VendRoot directory, specified in the main program C<interchange>, is the def
 The directives defined in C<interchange.cfg> affect the entire Interchange server and all catalogs running under it. Multiple Interchange servers may be run on the same machine with totally independent operation.
 
 Following is an alphabetical listing of all global configuration directives.
+
+H2: AcceptRedirect *global*
+
+Enables processing of HTTP server redirects, i.e. when handling ErrorDocument
+for Apache. For instance, if you have in Apache httpd.conf:
+
+!block example
+	## Setting in httpd.conf
+	ErrorDocument 404 /cgi-bin/foundation
+!endblock
+
+At that point, a request for /somedir/index.html that is not found will be
+equivalent to /cgi-bin/foundation/somedir/index.html and will be
+indistinguishable from the Apache-served page by the client.
+
+!block example
+	AcceptRedirect  Yes
+!endblock
+
+A Yes/No directive, default C<No>.
+
+Caution should be taken not to enable the ErrorDocument to redirect to
+Interchange globally -- it would render you subject to a
+denial-of-service attack at random URLs, i.e. a flood of MS Windows
+"Code Red" attacks. It is recommended that you enable it only for
+specific directories, as Apache or another HTTP server will stand up
+much better under such a flood.
 
 H2: ActionMap *global*
 
@@ -1510,10 +1537,28 @@ first to see if the source file is defined. If there is a key
 present, even if its contents are blank, it is returned. Example: in
 the case of this catalog.cfg entry:
 
-        DirConfig   Variable   templates/foundation/regions
+!block example
+	DirConfig Variable templates/foundation/regions
+!endblock
 
 If the file NOLEFT_TOP is present at catalog config time, __NOLEFT_TOP__ will
 equal C<[include templates/foundation/regions/NOLEFT_TOP]>.
+
+H2: DirectoryIndex
+
+If C<DirectoryIndex> is set, and a page would normally be defined as
+missing, it's value is appended (with a separating / if appropriate) and
+the resulting page is looked for. To get the behavior normally
+associated with an HTTP server, where "index.html" is looked for in a
+directory, do:
+
+!block example
+	DirectoryIndex   index.html
+!endblock
+
+Default is blank, disabling the behavior.
+
+.NOTE: Unlike Apache, only one value is accepted.
 
 H2: DisplayErrors
 
@@ -1899,6 +1944,97 @@ LI1: dynamic_variables
 
 LI1: dynamic_variables_file_only
 
+LI1: init_page
+
+Defines a {{CMD[jump="icconfig.html#Sub"]Sub}} or
+{{CMD[jump="icconfig.html#GlobalSub *global*"]GlobalSub}} which will run
+before page Variable processing. A *reference* to the contents of the
+page is passed to the routine.
+
+For instance, if a page was found that did not have a @_VARIABLE_@ in
+it, you could wrap it with a template:
+
+!block example
+    Pragma  init_page  
+	Sub <<EOS
+	sub wrap_page {
+		my $pref = shift;
+		return if $$pref =~ m{\@_[A-Z][\w+]_\@};
+		$$pref =~ m{<!--+ title:\s*(.*?)\s+-->}
+			and $Scratch->{page_title} = $1;
+		$$pref = <<EOF;
+	\@_MYTEMPLATE_TOP_\@
+	<!--BEGIN CONTENT -->
+	$$pref
+	<!-- END CONTENT -->
+	\@_MYTEMPLATE_BOTTOM_\@
+	EOF
+		
+		return;
+	}
+	EOS
+!endblock
+
+
+LI1: post_page
+
+Defines a {{CMD[jump="icconfig.html#Sub"]Sub}} or
+{{CMD[jump="icconfig.html#GlobalSub *global*"]GlobalSub}} which will run
+after page Variable processing but before tag interpolation. A
+*reference* to the contents of the page is passed to the routine.
+
+Example -- you want your users to be able to edit pages and just put
+in <A href="someotherpage.html">. You can use post_page to handle
+this. To do so, put in catalog.cfg:
+
+!block example
+  Pragma   post_page=relative_urls
+
+  ### Take hrefs like <A HREF="about.html"> and make relative to current
+  ### directory
+  Sub <<EOR
+  sub relative_urls {
+      my $page = shift;
+      my @dirs = split "/", $Tag->var('MV_PAGE', 1);
+      pop @dirs;
+      my $basedir = join  "/", @dirs;
+      $basedir ||= '';
+      $basedir .= '/' if $basedir;
+
+      my $sub = sub {
+          my ($entire, $pre, $url) = @_;
+          return $entire if $url =~ /^\w+:/;
+          my($page, $form) = split /\?/, $url, 2;
+          my $u = $Tag->area({
+                    href => "$basedir$page",
+                    form => $form,
+                });
+          return qq{$pre"$u"};
+      };
+      $$page =~ s{
+              (
+                  (
+                  <a \s+ (?:[^>]+?\s+)?
+                      href \s*=\s*
+                  )
+                      (["']) ([^\s"'>]+) \3
+
+              )}
+              {
+                  $sub->($1,$2,$4)
+              }gsiex;
+      return;
+  }
+  EOR
+!endblock
+
+LI1: pre_page
+
+Defines a {{CMD[jump="icconfig.html#Sub"]Sub}}
+or {{CMD[jump="icconfig.html#GlobalSub *global*"]GlobalSub}} which will
+run after page Variable processing but before tag interpolation. A
+*reference* to the contents of the page is passed to the routine.
+
 LI1: no_image_rewrite
 
 Prevents image locations in pages from being altered by Interchange. Added in Interchange 4.7.0.
@@ -2266,7 +2402,9 @@ See also the global directive LockType.
 
 H2: SpecialPage
 
-Sets a special page to other than its default value. Can be set as many times as necessary. Will have no effect if not one of the Interchange Required Pages.
+Sets a special page to other than its default value. Can be set as many
+times as necessary. Will have no effect if not one of the Interchange
+Required Pages.
 
 !block example
    SpecialPage         checkout ord/checkout
