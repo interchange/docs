@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.4 2001-03-20 18:40:05 bill Exp $
+# $Id: ictags.sdf,v 1.5 2001-03-21 18:17:53 jon Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.4 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.5 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -2243,8 +2243,6 @@ B<NO DESCRIPTION>
 
 H2: error
 
-=over 4
-
 =item CALL INFORMATION
 
 \Parameters: B<name>
@@ -2310,8 +2308,6 @@ To check errors without clearing them, you can use the idiom:
 
 The options are:
 
-=over 4
-
 =item all=1
 
 Display all error messages, not just the one
@@ -2335,15 +2331,24 @@ Default is '\n', a newline.
 keep=1 means don't delete the error messages after
 copy; anything else deletes them.
 
-=item show_var=1
+=item show_error=1
 
-show_var=1 means include the variable relating to the
-error message as part of the error message (E.g.:
-"email: not a valid email address".)
-
-show_error=1
 show_error=1 means return the error message text;
 otherwise just the number of errors found is returned.
+
+=item show_label=1
+
+show_label=1 causes the field label set by a previous [error] tag's std_label attribute (see below) to be included as part of the error message, like this:
+
+E:First Name: blank
+
+If no std_label was set, the variable name will be used instead. This can also be used in combination with show_var to show both the label and the variable name.
+
+=item show_var=1
+
+show_var=1 includes the name of the variable the error was found in as part of the error message, like this:
+
+E:email: 'bob#nothing,net' not a valid email address
 
 =item std_label
 
@@ -2367,10 +2372,6 @@ In the std_label format, it means the field will be bolded.
 If you specify your own label string, it will insert HTML anywhere
 you have {REQUIRED: HTML}, but only when the field is required.
 
-=back
-
-
-=back
 
 
 
