@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.48 2001-06-05 20:13:14 jason Exp $
+# $Id: ictags.sdf,v 1.49 2001-06-06 13:02:19 jason Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.48 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.49 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -6620,6 +6620,10 @@ Attributes|Default
 {{CMD[jump="#perl_subs"]arg}}="subs"|I<Same as> C<subs>
 {{CMD[jump="#perl_global"]global}}|I<No>
 {{CMD[jump="#perl_file"]file}}|I<none>
+{{CMD[jump="#perl_number_errors"]number_errors}}|I<none>
+{{CMD[jump="#perl_eval_label"]eval_label}}|I<none>
+{{CMD[jump="#perl_short_errors"]short_errors}}|I<none>
+{{CMD[jump="#perl_trim_errors"]trim_errors}}|I<none>
 {{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
 {{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
 !endblock
@@ -6911,6 +6915,32 @@ the current directory, then in the list set with the
 directive. If it fails to find a file by that name, it then looks for
 an entry by that name in the database specified with the
 {{C[jump="icconfig.html#FileDatabase *global*"]FileDatabase}} catalog directive.
+
+H4: {{CMD[id="perl_number_errors"]file}}
+
+Add line numbers to the source code displayed in the error.log, amazingly
+useful if some of the perl is being generated elsewhere and interpolated.
+
+H4: {{CMD[id="perl_eval_label"]eval_label}}
+
+Set to a string, will replace the (eval ###) in the error message with
+this label, handy to quickly track down bugs when you have more than
+one perl block in the page, especially if you are using {{CMD[jump="#perl_short_errors"]short_errors}}.
+
+H4: {{CMD[id="perl_short_errors"]short_errors}}
+
+If set to a true value, syntax errors and the like in perl tags will
+log just the error, not the whole source code of the block in question,
+handy when you have the code open in an editor anyway and don't want
+the error itself to get scrolled away when running 'tail -f error.log'.
+
+H4: {{CMD[id="perl_trim_errors"]trim_errors}}
+
+If set to a number, and the error produced includes a line number, then
+only that number of lines before and after the broken line itself will be
+displayed, instead of the whole block.
+
+
 
 
 H2: price
