@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: icadvanced.sdf,v 1.11 2002-10-30 17:24:00 mheins Exp $
+# $Id: icadvanced.sdf,v 1.12 2003-01-14 21:50:52 mheins Exp $
 
 !define DOC_NAME "Advanced Interchange Topics"
 !define DOC_TYPE ""
 !define DOC_CODE "icadvanced"
-!define DOC_VERSION substr('$Revision: 1.11 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.12 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/icadvanced.html"
@@ -695,7 +695,10 @@ Note: Not all of these variables are present in the "construct" template, and mo
 
 Variable   COMPANY   __MVC_COMPANY__
 
-All files within a template directory are substituted for macros, not just the catalog.cfg file. There are two special directories named C<html> and C<images>. These will be recursively copied to the directories defined as SampleHTML and ImageDir.
+All files within a template directory are substituted for macros, not
+just the catalog.cfg file. There are two special directories named
+C<html> and C<images>. These will be recursively copied to the
+directories defined as SampleHTML and ImageDir.
 
 Note: The template directory is located in the Interchange software directory,
 i.e., where C<interchange.cfg> resides. Avoid editing files in the template
@@ -705,7 +708,9 @@ used as a starting point. Templates are normally placed in the Interchange base
 directory, but can be located anywhere. The script will prompt for the location
 if it cannot find a template.
 
-In addition to the standard parameters prompted for by Interchange, and the standard catalog creation procedure, four other files in the C<config> directory of the template may be defined:
+In addition to the standard parameters prompted for by Interchange, and
+the standard catalog creation procedure, four other files in the
+C<config> directory of the template may be defined:
 
 !block example
 additional_fields -- file with more parameters for macro substitution
@@ -714,14 +719,17 @@ precopy_commands  -- commands passed to the system prior to catalog copy
 postcopy_commands -- commands passed to the system after catalog copy
 !endblock
 
-All files are paragraph-based. In other words, a blank line (with no spaces) terminates the individual setting.
+All files are paragraph-based. In other words, a blank line (with no
+spaces) terminates the individual setting.
+
+H3: Additional fields
 
 The additional_fields file contains:
 
 !block example
 PARAM
 The prompt. Set PARAM to?
-The default value of PARAM
+The default value of PARAM^IAlternate value of PARAM
 !endblock
 
 This would cause a question during makecat:
@@ -729,6 +737,34 @@ This would cause a question during makecat:
 !block example
 The prompt. Set PARAM to?.....[The default value of PARAM]
 !endblock
+
+The default value line can contain alternate values, separated by tabs from
+the default value. (The default value may not contain a TAB character.)
+This will allow command-line editing to cycle between the different values --
+usually with the UP and DOWN arrow keys.
+
+If you wish to set the parameter to the default value in this file without a
+prompt, precede the parameter with an exclamation point, i.e.:
+
+	!PARAM
+	The prompt. Set PARAM to?
+	default value^Ialternate value
+
+If you wish only to prompt for a value if a previous parameter was set,
+put the previous parameter to set in curly brackets before the actual
+parameter:
+
+    {MYSQL}SQLDSN
+	Data source name (DSN) for MySQL?
+	dbi:mysql:test___MVC_CATALOGNAME__
+
+The above will be ignored if the MYSQL parameter was not previously
+set to a true value.
+
+Note that information collected in the main makecat run (in this case, the
+catalog name) can be inserted via macro substitution.
+
+H3: Additional help
 
 If the additional_help file is present, additional instructions for PARAM may be provided.
 
@@ -747,6 +783,8 @@ may span multiple lines up to the first blank line.
 
 The prompt. Set PARAM to?.....[The default value of PARAM]
 !endblock
+
+H3: Command files
 
 If the file config/precopy_commands exists, it will be read as a command followed by the prompt/help value.
 
