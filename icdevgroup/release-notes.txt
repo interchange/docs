@@ -1,28 +1,39 @@
 RELEASING A NEW VERSION OF INTERCHANGE
+$Id: release-notes.txt,v 1.2 2004-05-05 15:22:03 jon Exp $
 
 
 Pre-release:
 
 Check WHATSNEW against CVS logs, add release date
 Update copyright dates as appropriate if new year since last release
-Make sure version numbers are correct in all files
-Double-check MANIFEST
-Do one last CVS update
+Make sure version numbers are correct in all files:
+	README
+	README.rpm-dist
+	configure
+	Makefile.PL
+	scripts/interchange.PL
+	dist/foundation/products/mv_metadata.asc (ui-version)
+	SPECS/interchange.spec
+Double-check MANIFEST (create using LC_ALL=C)
+Do a clean checkout from CVS to make sure no sticky tags exist in local checkout
 Tag or re-tag CVS repository with REL_4_6_3 (or whatever)
 Run regression test catalog
-Build tarball, RPMs
+Build tarball and note MD5 sum
+Build RPMs
 Test clean install of Foundation demo, place order, use admin
 Build docs tarball & RPMs (for stable releases)
 Sign RPMs with personal GnuPG key
-Have Racke build .deb packages
+Have Racke build and sign Debian packages (using same tarball so MD5 sum is identical)
 Have people test the packages
-Make md5sums to mention in release notes, and in file on FTP server
+Make md5sums to mention in release notes, and in files on FTP server
 
 
-Upload tarball and RPMs to:
+Upload tarball, RPMs, README, WHATSNEW to:
 
-ftp://www.icdevgroup.org/pub/interchange/
+root@ftp.icdevgroup.org:/var/ftp/pub/interchange...
 Update interchange-latest.tar.gz symlinks for stable releases
+Rename README to README.txt so Apache will display it
+Rename README.rpm-dist to README.txt in rpm directory
 Update WHATSNEW file to latest (no need to keep old ones in same branch, as their contents are still included in the latest file)
 
 
