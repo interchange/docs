@@ -1,18 +1,18 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.14 2000-10-19 20:43:12 zarko Exp $
+# $Id: icconfig.sdf,v 1.15 2000-10-19 22:55:52 alison Exp $
 
 !define DOC_NAME "Interchange Configuration"
 !define DOC_TYPE ""
 !define DOC_CODE "ICCONFIG_D2_100800"
-!define DOC_VERSION substr('$Revision: 1.14 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.15 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
 !build_title
 
-H1: CONFIGURATION OF INTERCHANGE
+H1: CONFIGURATION OF AKOPIA INTERCHANGE TM
 
-Akopia Interchange is the industry's most widely distributed and implemented open source e-commerce platform. This document provides detailed configuration instructions for Interchange and the demo store demo included with the program, and answers a variety of frequently asked questions. The Interchange program must be installed before continuing. For more information on the Installation process, see the Installation (ICINSTALL.SDF) manual.
+Akopia Interchange is the industry's most widely distributed and implemented open source e-commerce platform. This document provides detailed configuration instructions for Interchange and the Construct Something demo store demo included with the program, and answers a variety of frequently asked questions. The Interchange TM program must be installed before continuing. For more information on the Installation process, see the Installation (ICINSTALL.SDF) manual.
 
 H1: CREATING A CATALOG
 
@@ -1802,7 +1802,7 @@ Global directives may be specified that will change for that catalog only. This 
 
 H2: Catch
 
-E<lbracket>BOOKMARK]
+
 
 H2: CheckHTML *global*
 
@@ -1838,7 +1838,7 @@ Inserts the value of a persistent counter. The counter value is stored in the gi
 
 H2: Discount-Subtotal
 
-E<lbracket>BOOKMARK]
+Inserts the discounted subtotal of the ordered items.
 
 H2: DisplayErrors *global*
 
@@ -1890,7 +1890,7 @@ Optionally, syslog error logging can be set up as well. See C<SysLog>.
 
 H2: Export
 
-[BOOKMARK]
+
 
 H2: Filter
 
@@ -1903,9 +1903,9 @@ Another way to do this would be:
 
 H2: Fly-Tax
 
-Builds a tax rate from C<taxarea>, C<taxrate>, C<taxshipping>, variable values, and the C<SalesTax> directive value. 
+Builds a tax rate from C<taxarea>, C<taxrate>, C<taxshipping>, variable values, and the C<SalesTax> directive value.
 
-[BOOKMARK]
+
 
 H2: FormAction *global*
 
@@ -1967,9 +1967,7 @@ The number of seconds after which a locked session could be considered to be los
 
 H2: Handling
 
-Calculates handling costs.
-
-E<lbracket>BOOKMARK]
+Calculates and inserts handling costs. Accepts the same noformat and convert arguments as the shipping tag.
 
 H2: HouseKeeping *global*
 
@@ -2026,7 +2024,7 @@ A script can be written which modifies an appropriate access control file, such 
 
 H2: Log
 
-[BOOKMARK]
+
 
 H2: Mall *global*
 
@@ -2158,7 +2156,7 @@ A custom wrapper can be created around it to get it to behave as desired.
 
 H2: Tag
 
-E<lbracket>BOOKMARK]
+
 
 H2: TcpHost *global*
 
@@ -2220,11 +2218,11 @@ The user's page, if it exists, will take precedence. There is also a catalog-spe
 
 H2: Time
 
-E<lbracket>BOOKMARK]
+
 
 H2: Try
 
-E<lbracket>BOOKMARK]
+
 
 H2: UserTag *global*
 
@@ -4604,3 +4602,5 @@ Expect lots of crashes if this isn't done.
 Apache with SUEXEC: VLINK/UNIX socket mode will not work well unless installed as a normal user. If supporting multiple users, the TLINK/INET mode must be used.
 
 Note[label='Windows: '] Interchange will not work properly with Windows. No strategy has been yet developed for providing reliable operation on Windows.
+
+**Akopia and Interchange are registered trademarks of Akopia, Inc. All other product names are trademarks or registered trademarks of their respective manufacturers. This version of the document supersedes any and all previous versions.

@@ -1,18 +1,18 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ictemplates.sdf,v 1.8 2000-10-19 21:14:03 zarko Exp $
+# $Id: ictemplates.sdf,v 1.9 2000-10-19 22:55:53 alison Exp $
 
 !define DOC_NAME "Interchange Templates"
 !define DOC_TYPE ""
 !define DOC_CODE "ICTEMPLATES_D2a_100800"
-!define DOC_VERSION substr('$Revision: 1.8 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.9 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
 !build_title
 
-H1: INTERCHANGE TEMPLATES
+H1: AKOPIA INTERCHANGE TM TEMPLATES
 
-Akopia Interchange is the industry's most widely distributed and implemented open source e-commerce platform. . Interchange is designed to build pages based on templates from a database. This document discusses, in detail, how to build forms and report templates with Interchange's tag language, IML (Interchange Markup Language). A number of frequently asked questions are also discussed.
+Akopia Interchange is the industry's most widely distributed and implemented open source e-commerce platform. . Interchange TM is designed to build pages based on templates from a database. This document discusses, in detail, how to build forms and report templates with Interchange's tag language, IML (Interchange Markup Language). A number of frequently asked questions are also discussed.
 
 H2: Overview
 
@@ -2413,3 +2413,5 @@ That being said, all you usually have to do to place an order link on a page is:
 !endblock
 
 Replace C</cgi-bin/construct> with the path to your Interchange link.
+
+**Akopia and Interchange are registered trademarks of Akopia, Inc. All other product names are trademarks or registered trademarks of their respective manufacturers. This version of the document supersedes any and all previous versions.

@@ -1,21 +1,21 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icbackoffice.sdf,v 1.10 2000-10-18 21:46:20 alison Exp $
+# $Id: icbackoffice.sdf,v 1.11 2000-10-19 22:55:52 alison Exp $
 
 !define DOC_NAME "Interchange Back-Office"
 !define DOC_TYPE ""
 !define DOC_CODE "ICBACKOFFICE_D2_100700"
-!define DOC_VERSION substr('$Revision: 1.10 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.11 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
 !build_title
 
-H1: INTERCHANGE BACK-OFFICE
+H1: AKOPIA INTERCHANGE TM BACK-OFFICE
 
-Akopia Interchange is the industry's most widely distributed and implemented open source e-commerce platform. This document describes how to administer a retail site with Interchange's back-office functionality, and discusses site management and security.
+Akopia Interchange is the industry's most widely distributed and implemented open source e-commerce platform. This document describes how to administer a commerce site with Interchange's back-office functionality, and discusses site management and security.
 
 
-H1: TRACKING AND BACKEND ORDER ENTRY
+H1: TRACKING AND BACK-END ORDER ENTRY
 
 Interchange allows the entry of orders into a system through one of several methods. The C<AsciiBackend> capability allows submission of parameters to an external order entry script. Support for SQL allows the entry of orders directly into an SQL database. Orders can be written to an ASCII file. They can be formatted precisely for e-mail-based systems. The orders can be placed in a DBM file. Finally, embedded Perl allows completely flexible order entry, including real-time credit card verification and settlement.
 
@@ -23,11 +23,11 @@ H2: ASCII Backup Order Tracking
 
 If C<AsciiTrack> is set to a legal file name (based in VendRoot unless it has a leading "/"). A copy of the order is saved and sent in an e-mail.
 
-If the file name string begins with a pipe "|," a program will be run and the output "piped" to that program. This allows easy backend entry of orders with an external program.
+If the file name string begins with a pipe "|," a program will be run and the output "piped" to that program. This allows easy back-end entry of orders with an external program.
 
 H2: Database Tracking
 
-Once the order report is processed, the order is complete. Therefore, it is the ideal place to put Interchange tags that make order entries in database tables.
+Once the order report is processed, the order is complete. Therefore, it is the ideal place to put Interchange TM tags that make order entries in database tables.
 
 A good model is to place a single record in a database summarizing the order and a series of lines that correspond to each line item in the order. This can be in the same database table. If the order number itself is the key for the summary, a line number can be appended to the order number to show each line of the order.
 
@@ -72,7 +72,7 @@ The above is accomplished with Interchange's C<E<lbracket>import ....]> tag usin
 
 H2: Custom Order Routing
 
-Interchange can send order emails and perform custom credit card charges and/or logging for each item. The Route directive is used to control this behavior, along with the C<mv_order_route> item attribute and C<mv_order_route> form variable.
+Akopia Interchange can send order emails and perform custom credit card charges and/or logging for each item. The Route directive is used to control this behavior, along with the C<mv_order_route> item attribute and C<mv_order_route> form variable.
 
 Routes are established with the C<Route> directive, which is similar to the C<Locale> directive. Each route is like a locale, so that key-value pairs can be set. Here is an example setting:
 
@@ -230,7 +230,7 @@ Any item labeled C<SOFT> will be passed to the order profile C<create_download_l
 
 The C<main> order routing will use CyberCash to charge the order, and will be completely encrypted for e-mailing.
 
-H1: ADMINISTERING INTERCHANGE
+H1: ADMINISTERING AKOPIA INTERCHANGE
 
 Some utilities are supplied with Interchange and are located in the VendRoot/bin directory:
 
@@ -464,7 +464,7 @@ Transfer pages, templates, and configuration files to and from the Interchange i
 
 H2: Import/Export
 
-Interchange makes it easy to import and export data to and from a commerce Web site. 
+Akopia Interchange makes it easy to import and export data to and from a commerce Web site. 
 
 Use C<Database Upload> to import a tab delimited database of all product information to Interchange to make set-up faster and easier. C<Database Download> does just the opposite, allowing data to be downloaded from Interchange. 
 
@@ -476,7 +476,7 @@ This feature will only be useful if there are multiple users in the Access Manag
 
 H2: Meta Field Information
 
-Interchange can store meta information for selected columns of tables in a site's database. This meta information is used when the user interacts with the database. For example, the meta informaton for a C<Hide Item> field might specify that a checkbox be displayed when the user edits that field, since the only reasonable values are C<on> and C<off>. Or, the meta information might specify a filter on data entered for a C<Filename> field which makes sure that the characters entered are safe for use in a filename. 
+Akopia Interchange can store meta information for selected columns of tables in a site's database. This meta information is used when the user interacts with the database. For example, the meta informaton for a C<Hide Item> field might specify that a checkbox be displayed when the user edits that field, since the only reasonable values are C<on> and C<off>. Or, the meta information might specify a filter on data entered for a C<Filename> field which makes sure that the characters entered are safe for use in a filename. 
 
 C<Widget type> specifies the C<HTML INPUT> tag type to use when displaying the field in, say, the item editor. 
 
@@ -496,7 +496,7 @@ H1: INTERCHANGE SECURITY
 
 H2: SSL Support
 
-Interchange has several features that enable secure ordering via SSL (Secure Sockets Layer). Despite their mystique, SSL servers are actually quite easy to operate. The difference between the standard HTTP server and the SSL HTTPS server, from the standpoint of the user, is only in the encryption and the specification of the URL; C<https:> is used for the URL protocol specification instead of the usual http: designation.
+Akopia Interchange has several features that enable secure ordering via SSL (Secure Sockets Layer). Despite their mystique, SSL servers are actually quite easy to operate. The difference between the standard HTTP server and the SSL HTTPS server, from the standpoint of the user, is only in the encryption and the specification of the URL; C<https:> is used for the URL protocol specification instead of the usual http: designation.
 
 Note[label='IMPORTANT NOTE: '] Interchange attempts to perform operations securely, but no guarantees or warranties of any kind are made! Since Interchange comes with Perl source, it is possible to modify the program to create security problems. One way to minimize this possibility is to record digital signatures, using MD5 or PGP, of C<interchange>, C<interchange.cfg>, and all modules included in Interchange. Check them on a regular basis to ensure they have not been changed.
 
@@ -515,7 +515,7 @@ See C<CreditCardAuto> for more information on how to set the form variables.
 
 H2: Administrative Pages
 
-With Interchange's C<GlobalSub> capability, very complex add-on schemes can be implemented with Perl subroutines. And with the new writable database, pages that modify the catalog data can be made. If a page is marked as an C<AdminPage>, only the catalog administrator may use it. See C<MasterHost>, C<RemoteUser>, and C<Password>.
+With Akopia Interchange's C<GlobalSub> capability, very complex add-on schemes can be implemented with Perl subroutines. And with the new writable database, pages that modify the catalog data can be made. If a page is marked as an C<AdminPage>, only the catalog administrator may use it. See C<MasterHost>, C<RemoteUser>, and C<Password>.
 
 In addition, any Interchange page subdirectory can be protected from access by anyone except the administrator if a file called '.access' is present and non-zero in size.
 
@@ -696,3 +696,5 @@ H2: loc
    }
    EOF
 !endblock
+
+**Akopia and Interchange are registered trademarks of Akopia, Inc. All other product names are trademarks or registered trademarks of their respective manufacturers. This version of the document supersedes any and all previous versions.

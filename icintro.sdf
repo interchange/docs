@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icintro.sdf,v 1.10 2000-10-18 21:34:24 alison Exp $
+# $Id: icintro.sdf,v 1.11 2000-10-19 22:55:53 alison Exp $
 
 !define DOC_NAME "Interchange Introduction"
 !define DOC_TYPE ""
 !define DOC_CODE "ICINTRO_D2_100700"
-!define DOC_VERSION substr('$Revision: 1.10 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.11 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
@@ -407,3 +407,5 @@ LI1: Akopia Technical Support Services
 LI1: Akopia Training Services
 
 .Akopia offers Interchange training options for technical and business professionals. We will customize a training program that is appropriate to your business needs.
+
+**Akopia and Interchange are registered trademarks of Akopia, Inc. All other product names are trademarks or registered trademarks of their respective manufacturers. This version of the document supersedes any and all previous versions.

@@ -1,18 +1,18 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icinstall.sdf,v 1.9 2000-10-18 21:38:38 alison Exp $
+# $Id: icinstall.sdf,v 1.10 2000-10-19 22:55:53 alison Exp $
 
 !define DOC_NAME "Interchange Installation"
 !define DOC_TYPE ""
 !define DOC_CODE "ICINSTALL_D2a_100800"
-!define DOC_VERSION substr('$Revision: 1.9 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.10 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
 !build_title
 
-H1: INSTALLATION OF INTERCHANGE
+H1: INSTALLATION OF AKOPIA INTERCHANGE TM
 
-Akopia Interchange is the industry's most widely distributed and implemented e-commerce platform. This document provides detailed installation instructions for Interchange and the demo store included with the program. 
+Akopia Interchange is the industry's most widely distributed and implemented open source e-commerce platform. This document provides detailed installation instructions for Interchange TM and the demonstration store included with the program. 
 
 H1: GETTING READY -- BEFORE INSTALLING INTERCHANGE
 
@@ -60,7 +60,7 @@ H1: GETTING READY -- BEFORE INSTALLING INTERCHANGE
 
 H1: INSTALLING INTERCHANGE
 
-To install Interchange, there are two required steps: downloading the program and setting up a catalog. The following sections will explain this installation process in detail.
+To install Akopia Interchange, there are two required steps: downloading the program and setting up a catalog. The following sections will explain this installation process in detail.
 
 ^Obtain, decompress, and untar the distribution on a UNIX server:
 
@@ -799,3 +799,5 @@ will become this:
 !endblock
 
 Absolute image paths are not affected. An image, such as </other/images/whatever.gif>, will not be changed.
+
+**Akopia and Interchange are registered trademarks of Akopia, Inc. All other product names are trademarks or registered trademarks of their respective manufacturers. This version of the document supersedes any and all previous versions.

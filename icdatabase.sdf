@@ -1,18 +1,18 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.10 2000-10-19 22:43:10 zarko Exp $
+# $Id: icdatabase.sdf,v 1.11 2000-10-19 22:55:53 alison Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "ICDATABASE_D2a_100800"
-!define DOC_VERSION substr('$Revision: 1.10 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.11 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
 !build_title
 
-H1: INTERCHANGE DATABASES
+H1: AKOPIA INTERCHANGE TM DATABASES
 
-Akopia Interchange is the industry's most widely distributed and implemented open source e-commerce platform. This document discusses databases, SQL support, the Interchange search engine, frequently asked questions, and usertags.
+Akopia Interchange is the industry's most widely distributed and implemented open source e-commerce platform. This document discusses databases, SQL support, the Interchange TM search engine, frequently asked questions, and usertags.
 
 H2: A Typical User Session
 
@@ -3510,3 +3510,5 @@ H2: Search_region
             params ==> arg
             search ==> arg
 !endblock
+
+**Akopia and Interchange are registered trademarks of Akopia, Inc. All other product names are trademarks or registered trademarks of their respective manufacturers. This version of the document supersedes any and all previous versions.
