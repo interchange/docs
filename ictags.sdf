@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.21 2001-04-24 19:12:26 jason Exp $
+# $Id: ictags.sdf,v 1.22 2001-05-01 16:49:54 bill Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.21 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.22 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -893,7 +893,7 @@ B<Tag expansion example:>
 
 B<ASP-like Perl call:>
 
-!block example; lang='Perl'
+!block example; lang="Perl"
     $Tag->accessories(  { code   => '[[EXAMPLE_SKU]]',
                           arg    => 'color, radio'
                           table  => 'special_products', }  );
@@ -901,13 +901,12 @@ B<ASP-like Perl call:>
 
 or similarly with positional parameters,
 
-!block example; lang='Perl'
+!block example; lang="Perl"
     $Tag->accessories($code, $arg, $attribute_hash_reference);
 !endblock
 
 H4: See Also
 
-{{CMD[jump="#Item_Attributes"]Item Attributes}} and
 {{CMD[jump="#Looping tags and Sub-tags"]Looping tags and Sub-tags}}.
 
 
@@ -1813,14 +1812,14 @@ B<Tag expansion example:>
 
 B<ASP-like Perl call:>
 
-!block example; lang='Perl'
+!block example; lang="Perl"
     $Tag->area(  { href => "dir/page",
                    arg  => "arguments", }  );
 !endblock
 
 or similarly with positional parameters,
 
-!block example; lang='Perl'
+!block example; lang="Perl"
     $Tag->area($href, $arg, $attribute_hash_reference);
 !endblock
 
@@ -1984,13 +1983,13 @@ Container tag|I<No>
 
 B<ASP-like Perl call:>
 
-!block example; lang='Perl'
+!block example; lang="Perl"
     $Tag->assign(  { shipping => 2.99, }  );
 !endblock
 
 or similarly with positional parameters,
 
-!block example; lang='Perl'
+!block example; lang="Perl"
     $Tag->assign($NP1, $NP2, $attribute_hash_reference);
 !endblock
 
@@ -5730,14 +5729,14 @@ B<Tag expansion example:>
 
 B<ASP-like Perl call:>
 
-!block example; lang='Perl'
+!block example; lang="Perl"
     $Tag->page(  { href => "dir/page",
                    arg  => "arguments", }  );
 !endblock
 
 or similarly with positional parameters,
 
-!block example; lang='Perl'
+!block example; lang="Perl"
     $Tag->page($href, $arg, $attribute_hash_reference);
 !endblock
 
@@ -5896,70 +5895,9 @@ quote the arguments:
 >                se="Something with spaces"
 >          |]
 
-The two-letter abbreviations are mapped with these letters:
-
->  DL  mv_raw_dict_look
->  MM  mv_more_matches
->  SE  mv_raw_searchspec
->  ac  mv_all_chars
->  ar  mv_arg
->  bd  mv_base_directory
->  bs  mv_begin_string
->  ck  mv_cache_key
->  co  mv_coordinate
->  cs  mv_case
->  cv  mv_verbatim_columns
->  de  mv_dict_end
->  df  mv_dict_fold
->  di  mv_dict_limit
->  dl  mv_dict_look
->  do  mv_dict_order
->  dp  mv_delay_page
->  dr  mv_record_delim
->  em  mv_exact_match
->  er  mv_spelling_errors
->  fi  mv_search_file
->  fm  mv_first_match
->  fn  mv_field_names
->  hs  mv_head_skip
->  id  mv_session_id
->  il  mv_index_delim
->  ix  mv_index_delim
->  lb  mv_search_label
->  lo  mv_list_only
->  lr  mv_line_return
->  lr  mv_search_line_return
->  ml  mv_matchlimit
->  mm  mv_max_matches
->  mp  mv_profile
->  ms  mv_min_string
->  ne  mv_negate
->  np  mv_nextpage
->  nu  mv_numeric
->  op  mv_column_op
->  os  mv_orsearch
->  pc  mv_pc
->  ra  mv_return_all
->  rd  mv_return_delim
->  rf  mv_return_fields
->  rg  mv_range_alpha
->  rl  mv_range_look
->  rm  mv_range_min
->  rn  mv_return_file_name
->  rr  mv_return_reference
->  rs  mv_return_spec
->  rx  mv_range_max
->  se  mv_searchspec
->  sf  mv_search_field
->  si  mv_search_immediate
->  sp  mv_search_page
->  sq  mv_sql_query
->  st  mv_searchtype
->  su  mv_substring_match
->  tf  mv_sort_field
->  to  mv_sort_option
->  un  mv_unique
->  va  mv_value
+See the {{CMD[jump="#Search and Form Variables"]Search and Form Variables}}
+appendix for a listing of the form variables along with two-letter
+abbreviations and descriptions.
 
 
 They can be treated just the same as form variables on the
@@ -6109,7 +6047,7 @@ B<Tag expansion example:>
 !block example
    [perl tables="products" failure="Perl code error <BR>"]
 !endblock
-!block example; lang='Perl'
+!block example; lang="Perl"
       my $result = "Looked up SKU $Values->{code}.  It is a ";
       $result .= $Tag->data('products', 'description', $Values->{code} );
       return ("$result <br>\n");
@@ -6122,14 +6060,14 @@ B<Tag expansion example:>
 
 B<ASP-like Perl call:> (e.g., to use it like a runtime eval() within your code)
 
-!block example; lang='Perl'
+!block example; lang="Perl"
     $Tag->perl(  { tables  => "products", },
                  $code  );
 !endblock
 
 or similarly with positional parameters,
 
-!block example; lang='Perl'
+!block example; lang="Perl"
     $Tag->perl( $tables, $attribute_hash_reference );
 !endblock
 
@@ -6155,7 +6093,7 @@ The tag expands to the value returned by the enclosed code
 !block example
     [perl]
 !endblock
-!block example; lang='Perl'
+!block example; lang="Perl"
         $name    = $Values->{name};
         $browser = $Session->{browser};
         return "Hi, $name! How do you like your $browser?
@@ -6169,7 +6107,7 @@ HTML example:
 !block example
     <PRE mv=perl>
 !endblock
-!block example; lang='Perl'
+!block example; lang="Perl"
         $name    = $Values->{name};
         $browser = $Session->{browser};
         return "Hi, $name! How do you like your $browser?
@@ -6217,7 +6155,7 @@ products N<table:>
 !block example;
     [perl tables=products]
 !endblock
-!block example; lang='Perl'
+!block example; lang="Perl"
         my $cost = $Tag->data('products', 'our_cost', $Values->{code});
         $min_price = $cost * ( 1 + $min_margin );
         return ($min_price > $sale_price) ? $min_price : $sale_price;
@@ -6240,6 +6178,35 @@ SQL tables.
 Interchange databases can always be accessed as long as they are
 pre-opened by using an item first. 
 
+Technical note:
+
+Safe objects (including database handles) may persist within
+a page, and the C<perl> tag does not necessarily destroy objects
+created earlier in the page.  As a result, your code may work even
+though you did not set 'C<tables>' properly, only to break later when
+you change something elsewhere on the page.
+
+For example, this will work because the first call to
+E<lbracket>{{C[jump="#accessories"]accessories}}E<nbspace>...] opens
+the (default) products table:
+
+!block example;
+  [accessories code=os28044 attribute=size]
+
+  [perl]
+    return $Tag->accessories( { attribute => 'size',
+                                code      => 'os28085' } );
+  [/perl]
+!endblock
+
+If you remove the first E<lbracket>accessories ...] tag, then the
+$Tag->accessories call will fail with a Safe error unless you also set
+'C<tables>=products' in the C<perl> tag.
+
+The moral of this story is to ensure that you pass all necessary
+tables in the C<perl> tag.
+
+
 H4: {{CMD[id="perl_failure"]failure}}
 
 If your code contains a compile or runtime error and fails to evaluate
@@ -6251,7 +6218,7 @@ For example,
 !block example;
     [perl failure="It Broke"]
 !endblock
-!block example; lang='Perl'
+!block example; lang="Perl"
         my $cost = $Tag->data('products', 'our_cost', $Values->{code});
         $min_price = $cost * ( 1 + $min_margin );
         return ($min_price > $sale_price) ? $min_price : $sale_price;
@@ -6289,7 +6256,7 @@ Here is an example:
 !block example;
     [perl tables=products no_return=1]
 !endblock
-!block example; lang='Perl'
+!block example; lang="Perl"
         my $cost = $Tag->data('products', 'our_cost', $Values->{code});
         $min_price = $cost * ( 1 + $min_margin );
         &HTML( ($min_price > $sale_price) ? $min_price : $sale_price );
@@ -6578,55 +6545,499 @@ H3: Description
 B<NO Description>
 
 
-
-
 H2: query
 
+Passes SQL statements through to SQL databases, or allows SQL queries
+via Interchange's database abstraction into non-SQL databases and text
+files. The latter use may require Jochen Wiedmann's
+{{CMD[jump="http://search.cpan.org/doc/JWIED/SQL-Statement-0.1017/lib/SQL/Statement.pm"]SQL Statement}}
+module (included with Bundle::Interchange from CPAN).
 
 H3: Summary
 
-\Parameters: B<sql>
+!block example;
+    [B<query> sql I<other_named_attributes>]
+    [B<query> sql="SQL_query_text" I<other_named_attributes>]
+!endblock
 
-Positional parameters in same order.
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#query_sql"]sql}}|<<
+The SQL statement.
+* Passed directly through to an SQL database.
+* For a non-SQL table, the tag interprets your SQL first. See Jochen Wiedmann's
+{{CMD[jump="http://search.cpan.org/doc/JWIED/SQL-Statement-0.1017/lib/SQL/Statement.pm"]SQL Statement}}
+module for limitations and detail.
+>>|I<none>
+{{CMD[jump="#query_sql"]query}}|Alias for C<sql>|I<none>
+!endblock
 
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#query_table"]table}}|products
+{{CMD[jump="#query_table"]base}} (alias for C<table>)|products
+{{CMD[jump="#query_type"]type}} (row_count, html, list, textref)|I<none: uses arrayref="" if no type>
+{{CMD[jump="#query_arrayref"]arrayref}}|I<arrayref="" if no> C<type> I<given>
+{{CMD[jump="#query_arrayref"]hashref}}|I<none>
+{{CMD[jump="#query_more"]more}} (type=list)|I<No>
+{{CMD[jump="#query_form_variables"]xx}} form var. abbrev. (type=list)|I<see form variable>
+{{CMD[jump="#query_prefix"]}} (type=list)|sql
+{{CMD[jump="#query_list_prefix"]list_prefix}} (type=list)|list
+{{CMD[jump="#query_random"]random}} (type=list)|I<No>
+{{CMD[jump="#query_safe_data"]safe_data}} (type=list)|I<No>
+{{CMD[jump="#query_label"]label}} (type=list)|current
+{{CMD[jump="#query_form"]form}} (type=list)|I<none>
+{{CMD[jump="#query_wantarray"]wantarray}}|I<No>
+{{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
+{{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
+!endblock
 
-B<The attribute hash reference is passed> after the parameters but before
-the container text argument.
-B<This may mean that there are parameters not shown here.>
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<No>
+Container tag|I<Yes>
+Has {{CMD[jump="#query_subtags"]subtags}}|I<Yes>
+Nests|I<No>
+!endblock
 
-Must pass named parameter interpolate=1 to cause interpolation.
+B<Tag usage example:>
 
-This is a container tag, i.e. [query] FOO [/query].
-\Nesting: NO
+This will list sku, description and price for ten products per page,
+followed by hyperlinks to the other pages of the list. Note that you
+may interpolate interchange tags in the usual way if you double-quote
+the SQL statement.
 
-Invalidates cache: B<no>
+!block example
+   [query sql="select sku, description, price from products where price < [value mv_arg]"
+         type=list
+         more=1
+           ml=10]
 
-Called Routine: 
+      [on_match]Matched<br>[/on_match]
+      [no_match]Not Found<br>[/no_match]
+
+      [list]
+        [sql-code] [sql-param description] [sql-price]
+      [/list]
+
+      [more_list]
+        [more]
+      [/more_list]
+   [/query]
+!endblock
+
 
 B<ASP-like Perl call:>
 
->    $Tag->query(
->        {
->         sql => VALUE,
->        },
->        BODY
->    )
->
-> OR
->
->    $Tag->query($sql, $ATTRHASH, $BODY);
+!block example; lang="Perl"
+   my $sql = "select * from products order by price";
+   my $result_array = $Tag->query( { sql => $sql,  },
+                                   $body );
+   my ($same_results, $col_name_hash, $col_name_array) =
+                      $Tag->query( { sql => $sql,  },
+                                   $body );
 
-Attribute aliases
+   my $result_hasharray = $Tag->query( { sql     => $sql,
+                                         hashref => 'my_results',  },
+                                       $body );
+!endblock
 
->            query ==> sql
+or similarly with positional parameters,
 
+!block example; lang="Perl"
+    $Tag->query( $sql, $attribute_hash_reference, $body);
+!endblock
 
- 
 
 H3: Description
 
-B<NO Description>
+The C<query> tag allows you to make SQL queries.  If you are using an
+SQL database table, the tag will pass your SQL statement directly to
+the database and return the result.
 
+If your table is not in an SQL database (for example, GDBM, text,
+LDAP, and in-memory tables), Interchange will internally convert it to
+an Interchange search specification with Jochen Wiedmann's
+{{CMD[jump="http://search.cpan.org/doc/JWIED/SQL-Statement-0.1017/lib/SQL/Statement.pm"]SQL Statement}}
+module (included with Bundle::Interchange from CPAN). This means that
+you can use simple SQL queries regardless of the underlying database
+implementation.
+
+H4: {{CMD[id="#query_subtags"]Subtags}}
+
+For list queries ({{C[jump="#query_type"]type}}=list), the following
+subtags are available:
+
+!block table; colvaligns="TT"
+Subtag|Usage
+on_match|<<
+E: E<lbracket>on_match]
+E:   I<do this if something matched>
+E: E<lbracket>/on_match]
+>>
+no_match|<<
+E: E<lbracket>no_match]
+E:   I<do this if nothing matched>
+E: E<lbracket>/no_match]
+>>
+list|<<
+E: E<lbracket>{{I[jump="#query_list_prefix"]list_prefix}}]
+E:   I<do this for each matched item>
+E: E<lbracket>/I<list_prefix>]
+
+The 'C<list>' subtag defines a region where you can use any of the
+looping subtags that work in array-list context (see
+{{CMD[jump="#Looping tags and Sub-tags"]Looping tags and Sub-tags}}).
+
+The default looping tag prefix will be 'sql'.  Note however that you
+can override this by setting the {{C[jump="#query_prefix"]prefix}}
+attribute in the enclosing C<query> tag.
+
+Similarly, the C<list_prefix> attribute renames the E<lbracket>list]
+subtag itself to the value you set (see
+{{C[jump="#query_list_prefix"]list_prefix}} below).
+>>
+more_list|<<
+E: E<lbracket>more_list]
+E:   [more]
+E: E<lbracket>/more_list]
+
+The 'C<more_list>' and 'C<more>' subtags are used when paginating the
+query results (see '{{C[jump="#query_more"]more}}' attribute). The
+E<lbracket>C<more>] subtag will expand to a list of links to the other
+pages of the query results.
+>>
+!endblock
+
+See also the example at the end of the Summary section above.
+
+
+H4: Perl and ASP usage
+
+If you are calling $Tag->query within a C<perl> tag (or whenever the
+code is secured by the Safe.pm module), you must be sure to set the
+{{C[jump="#perl_tables"]tables}} attribute properly in the enclosing
+C<perl> tag (see the {{C[jump="#perl"]perl}} tag documentation for
+detail).
+
+The {{CMD[jump="#query_type"]types}} that return text to a page (i.e.,
+row_count, html, and textref) work as usual, returning an appropriate
+string. Note that you may also have access to the results as an array
+reference in $Vend::Interpolate::Tmp->{''} for the life of the page.
+
+If you do not set a {{CMD[jump="#query_type"]type}}, or 
+
+If you call $Tag->query in scalar context and set
+{{CMD[jump="#query_arrayref"]arrayref}} or
+{{CMD[jump="#query_arrayref"]hashref}}, it will return your results as
+a reference to an array of either arrayrefs or hashrefs,
+respectively (i.e., the same data structures you would get from Perl's
+DBI.pm module with fetchall_arrayref).
+
+In list context, the first returned element is the aforementioned
+reference to your results. The second element is a hash reference to
+your column names, and the third element is an an array reference to the
+list of column names.
+
+The following examples should be N<illustrative:>
+
+>  [perl tables=products]
+!block example; lang="Perl"
+    my $sql = "select sku, price, description from products
+               where price < 10 order by price";
+
+    my $results = $Tag->query( { sql => $sql, } );
+    my ( $same_results, $col_name_hashref, $col_name_arrayref)
+        = $Tag->query( { sql => $sql, } );
+
+    my $hash_results = $Tag->query( {     sql => $sql,
+                                      hashref => 'my_results' } );
+
+    # $Vend::Interpolate::Tmp->{my_results} == $hash_results
+    # $Vend::Interpolate::Tmp->{''} == $results == $same_results
+
+    return $Tag->uneval( $results );
+!endblock
+>  [/perl]
+
+See also '{{CMD[jump="#query_wantarray"]wantarray}}=1' if you use this
+call in a GlobalSub or global UserTag.
+
+
+H4: {{CMD[id="query_sql"]sql}}
+
+This is the text of your SQL statement. The standard Interchange
+quoting rules apply. For example, use double quotes (") if you want to
+interpolate Interchange tags within your SQL statement, backticks (`)
+to calculate a value, I<etc.>
+
+!block example
+   [query sql="select description, price from products
+               where price < [value mv_arg]" ...]
+      ...
+   [/query]
+!endblock
+
+H4: {{CMD[id="query_table"]table}}
+
+The table attribute sets the database to use for the query. The
+default will typically be the database containing the 'C<products>'
+table (unless you have changed the first entry in
+$Vend::Cfg->{ProductFiles}).
+
+
+H4: {{CMD[id="#query_type"]type}}
+
+If you are not setting the '{{C[jump="#query_arrayref"]arrayref}}' or
+'{{C[jump="#query_arrayref"]hashref}}' attributes, then the type
+attribute defines the way the query will return its results.  The
+C<type> should be one of the N<following:>
+
+!block table; colvaligns="TT"
+Type|Returns
+html|<<
+The html type returns the results in an html table. You will need to
+supply the enclosing <TABLE ...> and </TABLE> html tags. The following
+is an example of typical N<usage:>
+
+E: <TABLE>
+E:   [query sql="select * from products
+E:               where price > 12
+E:               order by price"
+E:         type=html]
+E:   [/query]
+E: </TABLE>
+>>
+list|<<
+This allows you to use subtags to control the query output and
+pagination.  See the {{CMD[jump="#query_subtags"]Subtags}} section
+above for detail.
+>>
+row_count|<<
+This causes the tag to return the number of rows in the query result.
+>>
+textref|<<
+This causes the tag to return a the query results as a serialized
+array of arrays that Perl can evaluate with its B<eval()>
+function. Here is an illustrative example:
+E:  my $rows = eval( $Tag->query( { sql  => "select * from products"
+E:                                  type => "textref" } )
+E:                 );
+E:
+E:  my $r3_c0 = $rows->[3]->[0];
+>>
+!endblock
+
+If you do not specify a type, the tag will create an arrayref as if you
+had set 'arrayref=""'.
+
+H4: {{CMD[id="#query_arrayref"]arrayref and hashref}}
+
+If you set 'C<arrayref>=I<keyname>' or 'C<hashref>=I<keyname>', the
+query will not ruturn results to the page. Instead, it will place the
+results of your query in the $Vend::Interpolate::Tmp hash. Using
+'C<arrayref>=my_query' sets $Vend::Interpolate::Tmp->{my_query} to
+refer to an array of array references, while 'C<hashref>=my_query'
+creates an array of hash references.
+
+Note that this is useful only if you intend to access the results
+within Perl code (for example, within a
+E<lbracket>{{C[jump="#perl"]perl}}] tag), since there is no direct
+output to the returned page.
+
+The $Vend::Interpolate::Tmp hash persists only for the life of the
+template page being processed. If you need the query results array
+reference to outlive the page, you will have to save the reference
+somewhere more persistent such as the $Session N<hash:>
+
+E:   $Session->{my_query} = $Vend::Interpolate::Tmp->{my_query};
+
+Beware the impact on perfomance if you do this with large result
+sets.
+
+Technical noteE<nbspace>E<emdash> the string returned by the 'C<textref>'
+{{C[jump="#query_type"]type}} will B<eval>() to the 'C<arrayref>' data
+structure.
+
+H4: {{CMD[id="#query_more"]more}}
+
+Requires '{{C[jump="#query_type"]type}}=list'.
+
+You must set C<more>=1 to properly paginate your results from C<list>
+queries (see '{{C[jump="#query_type"]type}}=list' above. If you do not
+set C<more>=1, then the links to later pages will merely redisplay
+the first page of your results.
+
+H4: {{I[jump="#query_form_variables"]form variable abbreviations}}
+
+Requires '{{C[jump="#query_type"]type}}=list'.
+
+See the {{CMD[jump="#Search and Form Variables"]Search and Form Variables}}
+appendix for a list of form variables. Note that you must use the
+two-letter abbreviation rather than the full form variable name.
+
+A few deserve special N<mention:>
+
+!block table; colvaligns="TTT"
+Abbr|Name|Description
+ml|mv_matchlimit|<<
+Sets number of rows to return. If paginating
+({{C[jump="#query_more"]more}}=1), sets rows returned per page.
+>>
+fm|mv_first_match|Start displaying search at specified match
+sp|mv_search_page|Sets the page for search display
+st|mv_searchtype|<<
+Forces a specific search type (text, glimpse, db or sql), overriding
+the default determined from your database implementation.
+>>
+!endblock
+
+H4: {{CMD[id="#query_prefix"]}}
+
+Requires '{{C[jump="#query_type"]type}}=list'.
+
+Setting 'C<prefix>=foo' overrides the default prefix of 'sql' for loop
+subtags within a list region (see
+{{CMD[jump="#Looping tags and Sub-tags"]Looping tags and Sub-tags}}). 
+
+See the {{CMD[jump="#query_list_prefix"]list_prefix}} attribute below
+for an illustrative example.
+
+H4: {{CMD[id="#query_list_prefix"]list_prefix}}
+
+Requires '{{C[jump="#query_type"]type}}=list'.
+
+Setting 'C<list_prefix>=bar' overrides the default region tagname of
+'list'.  The best way to show this is by example. Compare the
+following two examples of list queries, the first using the defaults
+and the second with explicitly set C<prefix> and C<list_prefix>.
+
+!block example
+   [query sql="select sku, description, price from products
+               where price < 20"
+         type=list
+         more=1
+           ml=10]
+
+      [on_match]Matched<br>[/on_match]
+      [no_match]Not Found<br>[/no_match]
+
+      [list]
+        [sql-code] [sql-param description] [sql-price]
+      [/list]
+
+      [more_list]
+        [more]
+      [/more_list]
+   [/query]
+
+------------------------------------------------------------
+
+   [query  sql="select sku, description, price from products
+                where price < 20"
+          type=list
+        B<prefix=foo>
+   B<list_prefix=bar>
+          more=1
+            ml=10]
+
+      [on_match]Matched<br>[/on_match]
+      [no_match]Not Found<br>[/no_match]
+
+      [bar]
+        [foo-code] [foo-param description] [foo-price]
+      [/bar]
+
+      [more_list]
+        [more]
+      [/more_list]
+   [/query]
+!endblock
+
+
+H4: {{CMD[id="#query_random"]random}}
+
+Requires '{{C[jump="#query_type"]type}}=list'.
+
+You can use the 'C<random>' attribute to randomly select a set of rows
+from the whole result set of your query. In other words, setting
+'C<random>=I<n>', where I<n> > 0, causes the E<lbracket>C<list>]
+region to loop over I<n> randomly chosen rows rather than the full
+query result set.
+
+The example below would display three randomly chosen products
+priced under 20.
+
+!block example
+   [query sql="select * from products
+               where price < 20"
+         type=list
+       random=3]
+
+      [list]
+        [sql-code] [sql-param description] [sql-price]
+      [/list]
+
+   [/query]
+!endblock
+
+
+H4: {{CMD[id="#query_safe_data"]safe_data}}
+
+Requires '{{C[jump="#query_type"]type}}=list'.
+
+NoteE<nbspace>E<emdash> you should not set this unless you need it and
+know what you are doing.
+
+Setting 'C<safe_data>=1' allows the E<lbracket>sql-data] tag to return
+values containing the '[' character. See also
+{{CMD[jump="#Looping tags and Sub-tags"]Looping tags and Sub-tags}}.
+
+Beware of reparsing issues.
+
+H4: {{CMD[id="#query_label"]label}}
+
+Requires '{{C[jump="#query_type"]type}}=list'.
+
+If you are setting up multiple simultaneously active search objects
+within a page, this allows you to distinguish them. The default label
+is 'current'.  Most people will not need this.
+
+
+H4: {{CMD[id="#query_form"]form}}
+
+Requires '{{C[jump="#query_type"]type}}=list'.
+
+You can use this to pass one CGI form variable in the pagination links
+of a E<lbracket>more-list].  For example, 'C<form>="foo=bar"' to
+include '&foo=bar' in the URL of each of the pagination links.
+
+Note that the variable will not be available in the initial result set
+since the query returns the first page directly (i.e., you did not
+follow a pagination link).
+
+
+H4: {{CMD[id="#query_wantarray"]wantarray}}
+
+This is relevant only when calling $Tag->query( ... ) within global
+Perl code such as a globalsub or global usertag where $MVSAFE::Safe is
+not defined.  In these cases, setting 'C<wantarray>=1' allows the call
+to
+
+E:  $Tag->query( { wantarray => 1, ... }, ... ); 
+
+to return references as it would if called within an ordinary
+E<lbracket>{{C[jump="#perl"]perl}}] tag. Note that it does not force
+list context if you call $Tag->query in scalar context.
+
+Technical noteE<nbspace>E<emdash> the ordinary E<lbracket>C<query>
+...] ... E<lbracket>C</query>] usage forces scalar context on the
+query call and suppresses the return value for those
+{{C[jump="#query_type"]types}} that would return references if
+$Tag->query were called within a E<lbracket>{{C[jump="#perl"]perl}}]
+tag. The wantarray option is needed because global subs and usertags
+are also affected by this unless you set wantarray.
 
 
 H2: read_cookie
@@ -6679,7 +7090,7 @@ B<ASP-like Perl call:>
 
 or similarly with positional parameters,
 
-!block example; lang='Perl'
+!block example; lang="Perl"
     $Tag->read_cookie( $name );
 !endblock
  
@@ -7274,7 +7685,7 @@ B<ASP-like Perl call:>
 
 or similarly with positional parameters,
 
-!block example; lang='Perl'
+!block example; lang="Perl"
     $Tag->set_cookie( $name, $value, $expire, $domain, $path );
 !endblock
  
@@ -7567,53 +7978,6 @@ B<ASP-like Perl call:>
 H3: Description
 
 B<NO Description>
-
-
-
-
-H2: sql
-
-
-H3: Summary
-
-\Parameters: B<type query>
-
-Positional parameters in same order.
-
-
-B<The attribute hash reference is passed> after the parameters but before
-the container text argument.
-B<This may mean that there are parameters not shown here.>
-
-Must pass named parameter interpolate=1 to cause interpolation.
-
-This is a container tag, i.e. [sql] FOO [/sql].
-\Nesting: NO
-
-Invalidates cache: B<YES>
-
-Called Routine: 
-
-B<ASP-like Perl call:>
-
->    $Tag->sql(
->        {
->         type => VALUE,
->         query => VALUE,
->        },
->        BODY
->    )
->
-> OR
->
->    $Tag->sql($type, $query, $ATTRHASH, $BODY);
-
- 
-
-H3: Description
-
-B<NO Description>
-
 
 
 
@@ -9344,14 +9708,14 @@ the actual tag syntax or expansion.
 
 ASP-like Perl call
 
-!block example; lang='Perl'
+!block example; lang="Perl"
     $Tag->area(  { href => URI_base,
                    arg  => CGI_GET_arguments, }  );
 !endblock
 
 or similarly,
 
-!block example; lang='Perl'
+!block example; lang="Perl"
     $Tag->area($href, $arg, $attribute_hash_reference);
 !endblock
 
@@ -9562,5 +9926,169 @@ In hash-list context, subtags are processed in the following N<order:>
 + I<prefix>-next  processed
 + User's previous HTML widget SELECTED settings restored
 + Reparse standard tags in output of above (if reparse enabled for the containing tag)
+
+
+A1: Search and Form Variables
+
+A2: Variable Names
+
+!block table; colvaligns="TTTT"
+Name|scan|Type|Description
+mv_all_chars|ac|S|Turns on punctuation matching
+mv_arg[0-9]+||A|Parameters for mv_subroutine (mv_arg0,mv_arg1,...)
+mv_base_directory|bd|S|Sets base directory for search file names
+mv_begin_string|bs|S|Pattern must match beginning of field
+mv_case|cs|S|Turns on case sensitivity
+mv_cartname||O|Sets the shopping cart name
+mv_cache_params||S|Determines caching of searches
+mv_change_frame||A|Any form, changes frame target of form output
+mv_check||A|Any form, sets multiple user variables after update
+mv_checkout||O|Sets the checkout page
+mv_click||A|Any form, sets multiple form variables before update
+mv_click||XA|Default mv_click routine, click is mv_click_arg
+mv_click I<name>||XA|Routine for a click I<name>, sends click as arg
+mv_click_arg||XA|Argument name in scratch space
+mv_coordinate|co|S|Enables field/spec matching coordination
+mv_column_op|op|S|Operation for coordinated search
+mv_credit_card*||O|Discussed in order security (some are read-only)
+mv_delay_page|dp|S|Delay search until after inital page display
+mv_dict_end|de|S|Upper bound for binary search
+mv_dict_fold|df|S|Non-case sensitive binary search
+mv_dict_limit|di|S|Sets upper bound based on character position
+mv_dict_look|dl|S|Search specification for binary search
+mv_dict_order|do|S|Sets dictionary order mode
+mv_doit||A|Sets default action
+mv_email||O|Reply-to address for orders
+mv_exact_match|em|S|Sets word-matching mode
+mv_failpage|fp|O,S|Sets page to display on failed order check/search
+mv_field_file|ff|S|Sets file to find field names for Glimpse
+mv_field_names|fn|S|Sets field names for search, starting at 1
+mv_first_match|fm|S|Start displaying search at specified match
+mv_head_skip|hs|S|Sets skipping of header line(s) in index
+mv_index_delim|id|S|Delimiter for search fields (TAB default)
+mv_matchlimit|ml|S|Sets match page size
+mv_max_matches|mm|S|Sets maximum match return (only for Glimpse)
+mv_min_string|ms|S|Sets minimum search spec size
+mv_negate|ne|S|Records NOT matching will be found
+mv_nextpage|np|A|Sets next page user will go to
+mv_numeric|nu|S|Comparison numeric in coordinated search
+mv_order_group||O|Allows grouping of master item/sub item
+mv_order_item||O|Causes the order of an item
+mv_order_number||O|Order number of the last order (read-only)
+mv_order_quantity||O|Sets the quantity of an ordered item
+mv_order_profile||O|Selects the order check profile
+mv_order_receipt||O|Sets the receipt displayed
+mv_order_report||O|Sets the order report sent
+mv_order_subject||O|Sets the subject line of order email
+mv_orsearch|os|S|Selects AND/OR of search words
+mv_profile|mp|S|Selects search profile
+mv_range_alpha|rg|S|Sets alphanumeric range searching
+mv_range_look|rl|S|Sets the field to do a range check on
+mv_range_max|rx|S|Upper bound of range check
+mv_range_min|rm|S|Lower bound of range check
+mv_record_delim|dr|S|Search index record delimiter
+mv_return_all|ra|S|Return all lines found (subject to range search)
+mv_return_delim|rd|S|Return record delimiter
+mv_return_fields|rf|S|Fields to return on a search
+mv_return_file_name|rn|S|Set return of file name for searches
+mv_return_spec|rs|S|Return the search string as the only result
+mv_save_session||C|Set to non-zero to prevent expiration of user session
+mv_search_field|sf|S|Sets the fields to be searched
+mv_search_file|fi|S|Sets the file(s) to be searched
+mv_search_line_return|lr|S|Each line is a return code (loop search)
+mv_search_match_count||S|Returns the number of matches found (read-only)
+mv_search_page|sp|S|Sets the page for search display
+mv_searchspec|se|S|Search specification
+mv_searchtype|st|S|Sets search type (text, glimpse, db or sql)
+mv_separate_items||O|Sets separate order lines (one per item ordered)
+mv_session_id|id|A|Suggests user session id (overridden by cookie)
+mv_shipmode||O|Sets shipping mode for custom shipping
+mv_sort_field|tf|S|Field(s) to sort on
+mv_sort_option|to|S|Options for sort
+mv_spelling_errors|er|S|Number of spelling errors for Glimpse
+mv_substring_match|su|S|Turns off word-matching mode
+mv_successpage||O|Page to display on successful order check
+mv_todo||A|Common to all forms, sets form action
+mv_todo.map||A|Contains form imagemap
+mv_todo.checkout.x||O|Causes checkout action on click of image
+mv_todo.return.x||O|Causes return action on click of image
+mv_todo.submit.x||O|Causes submit action on click of image
+mv_todo.x||A|Set by form imagemap
+mv_todo.y||A|Set by form imagemap
+mv_unique|un|S|Return unique search results only
+mv_value|va|S|Sets value on one-click search (va=var=value)
+!endblock
+
+
+A2: Abbreviations
+
+The two-letter abbreviations are mapped with these letters:
+
+!block table; colvaligns="TT"
+Abbr|Long name
+DL|mv_raw_dict_look
+MM|mv_more_matches
+SE|mv_raw_searchspec
+ac|mv_all_chars
+ar|mv_arg
+bd|mv_base_directory
+bs|mv_begin_string
+ck|mv_cache_key
+co|mv_coordinate
+cs|mv_case
+cv|mv_verbatim_columns
+de|mv_dict_end
+df|mv_dict_fold
+di|mv_dict_limit
+dl|mv_dict_look
+do|mv_dict_order
+dp|mv_delay_page
+dr|mv_record_delim
+em|mv_exact_match
+er|mv_spelling_errors
+fi|mv_search_file
+fm|mv_first_match
+fn|mv_field_names
+hs|mv_head_skip
+id|mv_session_id
+il|mv_index_delim
+ix|mv_index_delim
+lb|mv_search_label
+lo|mv_list_only
+lr|mv_line_return
+lr|mv_search_line_return
+ml|mv_matchlimit
+mm|mv_max_matches
+mp|mv_profile
+ms|mv_min_string
+ne|mv_negate
+np|mv_nextpage
+nu|mv_numeric
+op|mv_column_op
+os|mv_orsearch
+pc|mv_pc
+ra|mv_return_all
+rd|mv_return_delim
+rf|mv_return_fields
+rg|mv_range_alpha
+rl|mv_range_look
+rm|mv_range_min
+rn|mv_return_file_name
+rr|mv_return_reference
+rs|mv_return_spec
+rx|mv_range_max
+se|mv_searchspec
+sf|mv_search_field
+si|mv_search_immediate
+sp|mv_search_page
+sq|mv_sql_query
+st|mv_searchtype
+su|mv_substring_match
+tf|mv_sort_field
+to|mv_sort_option
+un|mv_unique
+va|mv_value
+!endblock
+
 
 
