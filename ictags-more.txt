@@ -1,0 +1,480 @@
+To include in ictags:
+
+------------------------------------------------------------------------------
+
+A2: How can I tell when I need to quote a tag inside a tag?
+
+In general, you don't need to quote the following tags which are interpreted first within a list:
+
+!block example
+   [item-code] [item-data ...] [item-field ...] etc.
+   [loop-code] [loop-data ...] [loop-field ...] etc.
+   [foo-code]  [foo-data ...]   [foo-field ...] etc.
+!endblock
+
+This is because they are interpreted as a part of the surrounding C<[loop]>, C<[item-list]>, C<[search-list]>, C<[sql list]>, or C<[tag each table]> constructs.
+
+So this will work:
+
+!block example
+   [item-list]
+   [page [item-field url]]detailed info[/page] on [item-description]
+   [/item-list]
+!endblock
+
+This will I<not> work:
+
+!block example
+   [page [value mypage]]
+!endblock
+
+The [value ...] tag is not interpolated before page, and the parser will not know to do so. It needs to be instead:
+
+!block example
+   [page href="[value mypage]"]
+!endblock
+
+You might wonder why unquoted tags are even allowed. The answer is performance. If you have large lists of tags you can achieve significant speedups by using positional parameters. It requires CPU power to parse and disassemble the named parameters.
+
+------------------------------------------------------------------------------
+
+H2: Basic Interchange Tags
+
+Note: In the descriptions that follow, parameters marked with an asterisk (*) are optional. When a tag is separated by an underscore, as in C<item_list>, a dash is just as appropriate (i.e., C<item-list>). They are interchangeable, except that the ending tag and beginning tag should match (don't use C<[item-list] list [/item_list]>). B<*> I<indicates an optional argument>
+
+H2: Inserting Hyperlinks
+
+.Named parameters: [area href="dir/page" secure=1* arg="argument"* form="form string"*]
+
+.Positional parameters: [area pg arg*]
+
+.Produces the URL to call an Interchange page, without the surrounding C<A HREF> notation. This can be used to get control of HREF items, perhaps to place an ALT string or a JavaScript construct. It was originally named C<area> because it also can be used in a client-side image map.
+
+!block example; listitem=2
+       <A HREF="[area catalog]" ALT="Main catalog page">
+!endblock
+
+.The optional arg is used just as in the page tag.
+
+.The optional C<form> argument is used to encode a form in the link.
+
+!block example; listitem=2
+       <A HREF="[area form="
+               mv_order_item=99-102
+               mv_order_size=L
+               mv_order_quantity=1
+               mv_separate_items=1
+               mv_todo=refresh"
+       ]"> Order t-shirt in Large size </A>
+!endblock
+
+.See above for more information.
+
+LI1: [page ...]
+
+.Named parameters: {{EX:[page href="dir/page" arg="argument" secure=1* form="form string"]}}
+
+.Positional parameters: {{EX:[page dir/page arg*] (only two positional parameters)}}
+
+.Insert a hyperlink to the specified catalog page pg. For example, [page shirts] will expand into <a href="http://machine.company.com/cgi-bin/vlink/shirts?id=WehUkATn&pc=33">. The catalog page displayed will come from "shirts.html" in the pages directory.
+
+.If the user has sent a cookie to Interchange (meaning the second page they access), and the scratch value C<mv_no_session_id> is set in their session, the session ID will not be appended to the URL. If the scratch value C<mv_no_count> is set, then the page count will not be appended. This is not dependent on cookies. So, if placed in the initial page:
+
+!block example; listitem=2
+    [set mv_no_session_id]1[/set]
+    [set mv_no_count]1[/set]
+    [set mv_add_dot_html]1[/set]
+!endblock
+
+.or put in C<catalog.cfg>:
+
+!block example; listitem=2
+    ScratchDefault  mv_no_session_id  1
+    ScratchDefault  mv_no_count       1
+    ScratchDefault  mv_add_dot_html   1
+!endblock
+
+.No session ID or count will be shown. That makes the URL shown above to be http://machine.company.com/cgi-bin/vlink/shirts.html. Once again, this is on the second page the user accesses, if they are taking and sending cookies. If the user has a pre-existing C<MV_SESSION_ID> or C<MV_USERNAME> cookie from a prior session, the effect will be immediate.
+
+.The C<argument> will be passed to Interchange and placed in the C<mv_arg> session parameter. This allows programming of a conditional page display based on where the link came from. The argument is then available with the tag [data session arg], or the embedded Perl session variable $Session->{arg}. Spaces and some other characters will be escaped with the %NN URL-style notation and unescaped when the argument is read back into the session.
+
+.A bit of magic occurs if Interchange has built a static plain HTML page for the target page. Instead of generating a normal Interchange-parsed page reference, a static page reference will be inserted if the user has accepted and sent back a cookie with the session ID.
+
+.The optional C<form> argument allows for encoding a form in the link.
+
+!block example; listitem=2
+        [page form="
+                mv_order_item=99-102
+                mv_order_size=L
+                mv_order_quantity=1
+                mv_separate_items=1
+                mv_todo=refresh"] Order t-shirt in Large size </A>
+!endblock
+
+.The two form values C<mv_session_id> and C<mv_arg> are automatically added
+when appropriate. (mv_arg is the C<arg> parameter for the tag.)
+
+.If the parameter C<href> is not supplied, process is used, causing normal Interchange form processing. If the C<href> points to an http://link no Interchange URL processing will be done, but the C<mv_session_id>. This would generate a form that ordered item number 99-102 on a separate line (C<mv_separate_items> being set), with size C<L>, in quantity 2. Since the page is not set, the user will go to the default shopping cart page.
+
+.At the same time, C<mv_orderpage=yourpage> could be set to go to C<yourpage>.  Theoretically, any form can be submitted with this, though none of the included values can have newlines or trailing whitespace. To do so requires the writing of a UserTag. Foreign forms can also be submitted, but they will not touch the href if it begins with http:, ftp:, or the like.
+
+LI1: [/page], [/order]
+
+.Expands into </a>. Used with the page element, such as:
+
+!block example; listitem=2
+  [page shirts]Our shirt collection[/page].
+!endblock
+
+.\TIP: A small efficiency boost is to just use the </A> tag.
+
+H2: How to Order an Item
+
+Interchange can either use a form-based order or a link-based order to place an item in the shopping cart. The link-based order uses the special C<[order item-code]> tag:
+
+LI1: [order code]
+.Named parameters:
+
+!block example; listitem=2
+        C<[order code="sku" href="page" cart="cartname"* base="table"]>
+!endblock
+
+.Expands into a hypertext link which will include the specified code in the list of products to order and display the order page. C<Code> should be a product SKU listed in one of the "products" tables. The optional argument C<cart/page> selects the shopping cart where the item will be placed (begin with / to use the default cart C<main>) and the order page that will display the order. The optional argument base constrains the order to a particular products file. If not specified, all tables defined as products files will be searched in sequence for the item.
+
+.Example:
+
+!block example; listitem=2
+Order a [order TK112]Toaster[/order] today.
+!endblock
+
+.Note that this is the same as:
+
+!block example; listitem=2
+Order a [page order TK112]Toaster</A> today.
+!endblock
+
+.You can change frames for the order with:
+
+!block example; listitem=2
+Order a <A HREF="[area order TK112]" TARGET=newframe>Toaster</A> today.
+!endblock
+
+LI1: [/order]
+
+.Expands into </a>. Used with the order element, such as: Buy a C<[order TK112]>ToasterC<[/order]> today.
+
+To order with a form, you set the form variable C<mv_order_item> to the item-code/SKU and use the C<refresh> action:
+
+!block example; listitem=2
+<FORM ACTION="[process-target]" METHOD=POST>
+<INPUT TYPE=hidden  NAME="mv_todo"        VALUE="refresh">
+<INPUT TYPE=hidden  NAME="mv_order_item"  VALUE="TK112">
+
+Order <INPUT NAME="mv_order_quantity" SIZE=3 VALUE=1> toaster
+
+<INPUT TYPE=submit VALUE="Order!">
+</FORM>
+!endblock
+
+Groups of items may be batched:
+
+!block example; listitem=2
+<FORM ACTION="[process-target]" METHOD=POST>
+<INPUT TYPE=hidden  NAME="mv_todo"        VALUE="refresh">
+
+<INPUT TYPE=hidden  NAME="mv_order_item"  VALUE="TK112">
+<INPUT NAME="mv_order_quantity" SIZE=3> Standard Toaster
+
+<INPUT TYPE=hidden  NAME="mv_order_item"  VALUE="TK200">
+<INPUT NAME="mv_order_quantity" SIZE=3> Super Toaster
+
+<INPUT TYPE=submit VALUE="Order!">
+</FORM>
+!endblock
+
+Items that have a quantity of zero (or blank) will be skipped. Only items with a positive quantity will be placed in the basket.
+
+Attributes like size or color may be specified at time of order. Order the T-shirt from the more details page of the C<simple> demo to see how it is done.
+
+H2: Accessing Form Values
+
+When a form is sent to Interchange, the program reads the values and places them in the user session. The following form:
+
+!block example; listitem=2
+<FORM ACTION="[area index]" METHOD=POST>
+<INPUT TYPE=hidden NAME=mv_action VALUE=return>
+<INPUT TYPE=hidden NAME=foo VALUE=bar>
+<INPUT TYPE=submit NAME="Make foo=bar">
+</FORM>
+!endblock
+
+will make the C<[value foo]> tag equal to C<bar> on the next page, then, send you to the page C<index>(.html). Same for this link:
+
+!block example; listitem=2
+<A HREF="[area  href=index
+                    form='
+                      foo=bar
+                      mv_action=return
+                    ']">Make foo=bar</A>
+!endblock
+
+LI1: [value name=field set="new value" filter="filter" hide=1]
+
+.\Positional:  C<[value varname]>
+
+.The C<[value ...]> ITL tag expands into the current value of the customer/form input field named by field. If the C<set> value is present, the form variable value will be set to it and the new value returned. Use this to "uncheck" a checkbox or set other form variable values to defaults. If C<HIDE> is set, the value will be set but not returned to the page.
+
+.The C<filter="filter1 filter1"> parameter applies any of the standard Interchange filter types to the value. See C<Filters>. When the value is returned, any Interchange tags present in the value will be escaped. This prevents users from entering Interchange tags in form values, which could be a serious security risk.
+
+------------------------------------------------------------------------------
+
+Date: Wed, 11 Oct 2000 08:10:02 -0400
+From: Mike Heins <mikeh@minivend.com>
+Reply-To: mike@minivend.com
+To: alison@akopia.com, tech@akopia.com
+Subject: Re: Tag reference issues...
+
+Quoting Jeff Barr Akopia" (barr@akopia.com):
+> Hi Alison,
+> 
+> I did a bunch of reviewing of the tag lists found 
+> in various places. Here is some info. Let's get
+> what we can in for 4.6 and the rest we can get
+> the next time. I've written these myself. Mike,
+> can you verify for me?
+> 
+> 1. Try and Catch Tags
+>    [try] ... [/try]
+>    [catch] ... [/catch]
+>    These four tags are used together. The tags within
+>    the [try] block are executed. If all of the code
+>    within the block executes without error then the
+>    output produced by the tags is passed through to
+>    the output. Otherwise, this output is discarded
+>    and the output produced by the tags within the
+>    [catch] block is inserted into the output. If
+>    the code within the [try] block has side effects
+>    then these effects must be explicitly reversed 
+>    by the catch block if the operation fails.
+> 
+
+This looks good. Another key thing is that this will avoid any 500 server
+error if code does a die().
+
+> 2. "-" / "_" in tag names. Let's standardize on
+>    "-" and note that "_" is a worthy alternative.
+>    (Fixing this everywhere is too big of a job
+>    for this release).
+
+Also, note that when using tags in embedded Perl the underscore is
+required, i.e. $Tag->total-cost could not work. Any real Perl programmer
+would know that, but some of our users may not.
+
+> 
+> 3. Discount-subtotal Tag
+>   [discount-subtotal]
+> 
+>   Expands into the discounted subtotal cost, exclusive of sales tax,
+>   of all the items ordered so far.
+
+This is the subtotal for the current line of the shopping cart, not
+the order as a whole. The [subtotal] tag always reflects discounts.
+
+Actually, this is probably an inconsistency that could be corrected
+some time. IT really should be PREFIX-discount-subtotal. We would have
+to deprecate, though, as there are plenty of implementations which
+use this. 4.7 stuff.
+
+>  
+> 4. Some deprecated tags (we may want to have a list of these in one
+>    place):
+> 
+>   - [region] is deprecated; [search-region] is preferred.
+
+Yes. No mention need be made of it in the docs.
+
+>   - [on_match] is deprecated.
+
+No. This should really be made PREFIX-on-match or on-PREFIX-match,
+as above, but it is not deprecated.
+
+
+>   - [search] is deprecated.
+
+Search is not deprecated, but is completely removed.
+
+>   - [sql] is deprecated.
+
+Yes. No mention need be made of it in the docs.
+
+> 
+> 5. Expected documentation - According to Mike you should have info on
+>    the following tags:
+> 
+>    [scratchd]
+>    [seti]
+>    [tmp]
+
+Should have come in the redline comments.
+
+> 
+> 6. [tag time] should be changed to [time].
+
+Yes, but we need to document the options.
+
+> 
+> 7. Fly_tax Tag
+> 
+>    [fly_tax]
+> 
+>    (Mike -- need some help here. What does this tag do. The code
+>     is impenetrable.)
+
+It builds a tax rate from TAXAREA, TAXRATE, TAXSHIPPING, variable values and
+the SalesTax directive value. I didn't document it because I was hoping to get
+rid of it before MV4.0 release. Obviously that didn't happen. There is action
+at a distance as well -- the tag is really called in salestax.asc. It is kind
+of a mess, and I would hope that we fix this for 4.7.
+
+> 
+> 8. Log Tag
+> 
+>    This tag is documented as [tag log]; it should be changed to [log].
+
+Yes. The options should be the same, but it needs to be checked.
+
+> 
+> 9. Filter Tag
+> 
+>    Longer-term, we need to have a complete document which describes
+>    the [filter] model. Can you put this on your list of things to do.
+> 
+> 10. Handling Tag
+> 
+>    [handling]
+> 
+>    Calculates handling costs.
+
+Yes, those shipmodes defined in mv_handling.
+
+> 
+> 11. Counter and FCounter
+> 
+>    [counter file=FILE start=START value=VALUE decrement*]
+> 
+>    Inserts the value of a persistent counter. The counter value is
+>    stored in the given file, which is created if necessary. If the
+>    file name begins with a "/" then it is an absolute path, otherwise
+>    it is relative to VendRoot. If the tag causes the counter file to
+>    be created then the value is initialized to start. If value is
+>    given then the counter's value is set to the given value. If value
+>    is not supplied then the counter is incremented and its value
+>    returned, unless decrement is supplied, in which case the counter
+>    is decremented and its value is returned. The counter is
+>    implemented using Perl's File::Counter module which protects the
+>    file against simultaneous access by multiple processes.
+> 
+>    [fcounter file=FILE start=START]
+> 
+>    Fcounter is a simpler version of [counter], implemented as a
+>    UserTag on top of Perl's File::Counter module.
+> 
+
+Yes. We don't need to document fcounter, it is no longer in any of the
+demos.
+
+> 12. The export tag.
+> 
+>    This tag is documented as [tag export]; it should be changed to
+>    [export].
+> 
+
+Yes. Options are the same.
+
+-- 
+Akopia, Inc., 131 Willow Lane, Floor 2, Oxford, OH  45056
+phone +1.513.523.7621 fax 7501 <heins@akopia.com>
+
+Research is what I'm doing when I don't know what I'm doing.
+-- Wernher Von Braun
+
+
+
+Date: Mon, 9 Oct 2000 19:02:52 -0700
+From: "Jeff Barr (Akopia)" <barr@akopia.com>
+To: tech@akopia.com
+Subject: Bringing Order to the Tag List
+
+I've tried to rationalize the various sources of information about
+tags. My three sources are:
+
+1. The code, 4.5.7, as taken from CVS on the morning of October 9th. 
+   Specifically the Interpolate.pm and Parse.pm files.
+
+2. The tag list from Alison. There is a section titled "INTERCHANGE
+   TAGS"; this was part of a document that Mike reviewed last
+   week. This list is identical to that found in mvdocs.pod and
+   may have originated there.
+
+3. The Tag Reference on developer.akopia.com.
+
+The goal is to end up with a consistent list of tags in all three
+places. (Ultimately of course it would be good to drive all of
+the lists from one place).
+
+Here is what I found:
+
+1. [try] and [catch] are in the tag reference but not the other
+   places. 
+
+2. Note that the "_" and "-" characters are interchangeable in a tag
+   name as long as the same delimiter is used within a matching pair
+   of tags. Nevertheless, the tag reference should consistently use
+   one and note that the other is available. (This is a note that I
+   will pass on to Alison for her information). 
+
+3. [discount_subtotal] is not documented.
+
+4. [PREFIX-calc] is not documented. 
+
+5. [region] is now [search-region] ; [region] is still accepted. 
+
+6. [on_match] is not documented.
+
+7. [search] in on the Tag Reference but nowhere else.
+
+8. [scratch] and [scratchd] are not documented.
+
+9. [tmp] is not documented.
+
+10. [seti] is not documented. It appears to be a synonym for [set].
+
+11. [time] is in the Tag Reference but nowhere else.
+
+12. [fly_tax] is on the Tag Reference but nowhere else.
+
+13. [harness] is in the Tag Reference. It is apparently part of the test
+    harness. Perhaps this should not be enabled in shipped code.
+
+14. [log] is on the Tag Reference but nowhere else.
+
+15. Mike scratched [onfly] out of the latest tag reference but it is
+    still in the code. Is it deprecated?
+
+16. [filter] is on the Tag Reference but nowhere else.
+
+17. [handling] is on the Tag Reference but nowhere else.
+
+18. [sql] is on the Tag Reference but nowhere else.
+
+19. [counter] and [fcounter] are not documented.
+
+20. [export] is on the Tag Reference but nowhere else.
+
+Anything that anyone can add/subtract/clarify within here will
+be greatly appreciated!
+
+Thanks,
+
+Jeff;
+
