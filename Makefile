@@ -1,5 +1,5 @@
 VERSION=4.7.6
-TARGETS=icadvanced iccattut icconfig icfoundation ictemplates icdatabase ictags icupgrade
+TARGETS=icadvanced iccattut icconfig icfoundation ictemplates icdatabase ictags icupgrade ic_howto_cvs
 SUFFIXES=txt mif html pdf pod 8
 SDFBIN=sdf/bin/sdf
 FRAMESDIR=frames

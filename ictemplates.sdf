@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ictemplates.sdf,v 1.22 2001-07-18 16:24:22 heins Exp $
+# $Id: ictemplates.sdf,v 1.23 2001-07-20 13:46:01 heins Exp $
 
 !define DOC_NAME "Template Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "ictemplates"
-!define DOC_VERSION substr('$Revision: 1.22 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.23 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Red Hat Interchange 4.8"
 !define DOC_URL "http://help.akopia.com/interchange/doc/ictemplates.html"
@@ -1005,11 +1005,11 @@ LI1: $Config
 .A reference to the $Vend::Cfg array. This is normally used with a large amount of the Interchange source code, but for simple things use something like:
 
 !block example; listitem=2
-    # Turn off CyberCash for this user
-    $Config->{CyberCash} = 0;
+    # Allow searching the User database this page only
+    $Config->{NoSearch} =~ s/\buserdb\b//;
 !endblock
 
-.Changes are not persistent except when running in the foreground (Debug mode).
+.Changes are not persistent -- they are reset upon the next page access.
 
 LI1: %Db
 

@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.44 2001-07-18 16:24:22 heins Exp $
+# $Id: icconfig.sdf,v 1.45 2001-07-20 13:46:01 heins Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.44 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.45 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange 4.8"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icconfig.html"
@@ -1221,22 +1221,12 @@ PGP is recommended as the encryption program, though remember that U.S. commerci
    CreditCardAuto     Yes
 !endblock
 
-This should be turned off if using C<CyberCash>.
-
 H2: CustomShipping
 
 If not blank, causes an error log entry if the shipping file entry is not found. Not otherwise used for shipping. See C<SHIPPING> for how to go about doing that.
 
 !block example
    CustomShipping      Yes
-!endblock
-
-H2: CyberCash
-
-A Yes/No directive, default is No. Enables CyberCash payment protocols. See Using CyberCash.
-
-!block example
-   CyberCash           Yes
 !endblock
 
 H2: Database
@@ -2344,5 +2334,5 @@ Specifies the base URL that will run vlink as a cgi-bin program.
 
 H2: WideOpen
 
-Disables IP qualification of user sessions. {{B:This degrades catalog security.}} Do not use unless using PGP/CreditCardAuto or CyberCash.
+Disables IP qualification of user sessions. {{B:This degrades catalog security.}} Do not use unless using encryption or a real-time payment gateway.
 
