@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.25 2001-05-02 07:33:00 bill Exp $
+# $Id: ictags.sdf,v 1.26 2001-05-02 08:28:22 bill Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.25 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.26 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -3954,17 +3954,61 @@ C<[value name=foo filter="lookup.products.price.extra"]> will send
 
 H2: flag
 
+Controls interchange flags. For example, flags affect database access
+and transactions for those databases able to support these
+features. See also the E<lbracket>{{C[jump="#tag"]tag}}] tag.
 
 H3: Summary
 
 \Parameters: B<type>
 
-Positional parameters in same order.
+C<type> may be one of the following
+
+* read
+** Flags the table read-only
+
+* write
+** Flags the table writeable by default (or read-only if you also set
+the C<value>=0 attribute)
+
+* transactions
+** Reopens the database in transactions mode if Safe.pm is not active
+(e.g., in a global subroutine, usertag or
+E<lbracket>{{C[jump="#perl_global"]perl}}E<nbspace>global=1]
+tag). The limitation exists because it is not possible to reopen a
+database within Safe.pm.
+
+* commit
+** Attempts to commit transactions
+
+* rollback
+** Attempts to rollback transactions
+
+* build
+** Forces build of static Interchange page specified by the C<name> attribute
+
+* checkhtml
 
 
-B<The attribute hash reference is passed> to the subroutine after
-the parameters as the last argument.
-B<This may mean that there are parameters not shown here.>
+H3: Attributes
+
+* 'C<flag>' and 'C<name>'
+** Aliases for 'C<type>' (except for 'C<type>=build')
+
+* tables
+** The name of the table to flag
+** 'C<table>' is an alias
+
+* value
+** The boolean value of the flag
+
+* name
+** Name of page to build or alias for 'C<type>'
+
+* show
+** Normally, the E<lbracket>C<flag>] tag returns nothing to the
+page. Setting 'C<show>=1' causes the tag to return status, if any.
+
 
 Must pass named parameter interpolate=1 to cause interpolation.
 
@@ -3988,15 +4032,31 @@ Attribute aliases
 
 >            flag ==> type
 >            name ==> type
-
+>           table ==> tables
 
  
 
 H3: Description
 
-B<NO Description>
+The C<flag> tag controls database access and transactions.
 
+If a DBM-based database is to be modified, it must be
+flagged writable on the page calling the write tag.
 
+For example, you can call
+
+!block example
+  [flag type=write value=1 table=products]
+!endblock
+
+to mark the C<products> DBM database writable. B<This must be done
+before ANY access to that table.> 
+
+Note that SQL databases are always writable if allowed by the SQL
+database itself, and in-memory databases will never be written.
+
+Using E<lbracket>C<flag> build] forces static build of a page, even if
+it contains dynamic elements.
 
 
 H2: fly_list
@@ -9272,10 +9332,12 @@ Invalidates cache|I<Yes>
 
 B<Tag expansion example:>
 
+Assuming form variable 'foo' = 'bar',
+
 !block example
-   [value N_PARAM]
+   [value foo]
 ---
-   TAGRESULT
+   bar
 !endblock
 
 B<ASP-like Perl call:>
