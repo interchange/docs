@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.29 2001-05-04 21:16:20 bill Exp $
+# $Id: ictags.sdf,v 1.30 2001-05-08 20:17:28 jon Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.29 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.30 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -576,7 +576,7 @@ H3: E<lbracket>{{CMD[id="sub_PREFIX-calc"]PREFIX-calc}}] 2 + [item-field price] 
 Calls perl via the equivalent of the [calc] [/calc] tag pair. Much
 faster to execute.
 
-H3: E<lbracket>{{CMD[id="sub_PREFIX-change"]PREFIX-change}}][conditoon] ... [/condition] TEXT [/PREFIX-change]
+H3: E<lbracket>{{CMD[id="sub_PREFIX-change"]PREFIX-change}}][condition] ... [/condition] TEXT [/PREFIX-change]
 
 Sets up a breaking sequence that occurs when the contents of 
 \[condition] [/condition] change. The most common one is a category
@@ -1079,7 +1079,7 @@ reference within a {{C[jump="#perl"]perl}} tag like this:
 
 !block example; lang="Perl"
    $Tag->accessories( $code,
-                      undef,                      # 'arg' parameter value
+                      undef,              # 'arg' parameter value
                       $named_attribute_hashref,
                       $item_hashref );
 !endblock
@@ -9932,7 +9932,7 @@ every time, you can just put:
 >    UserTag include Implicit file file=/long/path/to/file
 
 and E<lbracket>{{C[jump="#include"]include}} file] will be the equivalent. You can still specify
-another value with C[include file="/another/path/to/file"]
+another value with E<lbracket>{{C[jump="#include"]include}} file="/another/path/to/file"].
 
 H2: InsertHTML
 
@@ -10193,6 +10193,7 @@ A3: Summary
 !endblock
 
 !block note; label="Positional parameters"
+
 The first line shows the usage with positional parameters (given in
 order). The second line shows usage with named parameters.
 !endblock
@@ -10485,7 +10486,7 @@ A1: Search and Form Variables
 
 A2: Variable Names
 
-!block table; colvaligns="TTTT"
+!block table; colvaligns="TTTT"; format="3115"
 Name|scan|Type|Description
 mv_all_chars|ac|S|Turns on punctuation matching
 mv_arg[0-9]+||A|Parameters for mv_subroutine (mv_arg0,mv_arg1,...)
