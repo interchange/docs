@@ -5,21 +5,23 @@ Beginner's guide (conceptual stuff, maybe should be covered by Alison?)
 Community-contributed usertags (was usertag.pod before 4.7.0; too messy)
 
 On developer site, also distributed with IC:
-icbackoffice.sdf (SDF -> dev_html, PDF, POD)
+icadvanced.sdf
 iccattut.sdf (SDF -> dev_html, PDF, POD)
 icconfig.sdf (SDF -> dev_html, PDF, POD)
 icdatabase.sdf (includes mv_metadata.pod; SDF -> dev_html, PDF, POD)
+icfoundation.sdf
 icinstall.sdf (from QuickStart and new stuff; SDF -> dev_html, PDF, POD)
 icintro.sdf (SDF -> dev_html, PDF, POD)
 ictags.sdf (new, from Tagref.pm/mvtags.pod)
 ictemplates.sdf (SDF -> dev_html, PDF, POD)
 icupgrade.sdf (new, from UPGRADE_FROM_MV3, compat/, deprecated.sdf, and various notes)
+icfull.sdf (all docs in one)
 
 On developer site, in docs repository as POD:
-mvfaq.pod
+icfaq.sdf / mvfaq.pod
 
 Only in docs repository:
-mvdocs.pod -- needs to be checked to make sure everything made it into ic*.sdf
+retired/mvdocs.pod -- needs to be checked to make sure everything made it into ic*.sdf
 
 Only in Interchange distribution:
 README (brief intro, abbreviated file list, install, BSD etc. problem warnings)
@@ -35,10 +37,6 @@ icstart - Getting Started Guide
 -----------------------------------------------------------------------------
 
 Further technical doc ideas:
-
-* Single unified file with all references docs for easy searching.
-
-* Documentation explaining what every Foundation Store table and column is for, its spec, and the format of the data there (in icdatabase.sdf; started by Jason Kohles)
 
 * FAQ for each demo catalog (foundation, construct, barry, artstore)
 
@@ -77,8 +75,6 @@ Docs irregularities
 Has the default search page changed? now pages/results.html, was special_pages/search.html.
 
 [no-match] missing doesn't seem to go to special_pages/nomatch.html anymore.
-
-[on-match] doesn't seem to be documented at all.
 
 
 Could be fixed in Interchange
