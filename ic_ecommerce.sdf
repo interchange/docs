@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ic_ecommerce.sdf,v 1.14 2002-06-23 01:04:09 jon Exp $
+# $Id: ic_ecommerce.sdf,v 1.15 2002-06-25 03:25:30 mheins Exp $
 
 !define DOC_NAME "Interchange Ecommerce Functions"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_ecommerce"
-!define DOC_VERSION substr('$Revision: 1.14 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.15 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ic_ecommerce.html"
@@ -1327,6 +1327,15 @@ the error page.
 =item C<&>final
 
 Set to '&final=yes' if a successful check should cause the order to be placed.
+
+=item C<&>update
+
+Set to '&update=yes' if a successful check should cause the variable to be copied from the CGI space to the Values space. This is like [update values] except only
+for that variable.
+
+This is typically used when using a C<mv_form_profile> check so that
+a failing check will not cause all values to be reset to their former
+state upon returning to the form.
 
 =item C<&>return
 
