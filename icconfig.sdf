@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.72 2002-09-09 18:49:26 mheins Exp $
+# $Id: icconfig.sdf,v 1.73 2002-09-13 15:17:33 jon Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.72 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.73 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icconfig.html"
@@ -1709,7 +1709,7 @@ Set to the name(s) of variables that should not be carried in the user session v
 
 H2: FractionalItems
 
-Whether items in the shopping cart should be allowed to be fractional, i.e., 2.5 or 1.25. Default is No.
+Whether the quantity field for items in the shopping cart should be allowed to be fractional, i.e., 2.5 or 1.25. Default is No.
 
 !block example
    FractionalItems     Yes
