@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icfoundation.sdf,v 1.8 2001-05-11 22:16:56 bill Exp $
+# $Id: icfoundation.sdf,v 1.9 2001-05-11 22:24:36 larry Exp $
 
 !define DOC_NAME "Foundation Store"
 !define DOC_TYPE ""
 !define DOC_CODE "icfoundation"
-!define DOC_VERSION substr('$Revision: 1.8 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.9 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/doc/icfoundation.html"
@@ -334,7 +334,7 @@ The file CATROOT/templates/foundation/theme.cfg serves three
 N<purposes:>
 
 ^ It defines the THEME and THEME_IMG_DIR variables,
-+ It defines a cascading stylesheet for the theme, and
++ It defines a cascading style sheet for the theme, and
 + It defines the location of region templates according to the traffic
 settings for the Interchange daemon.
 
@@ -345,7 +345,7 @@ the path of an image. The THEME_IMG_DIR variable is used to set image
 paths in the template region files and the template component files.
 
 The look and feel of the Foundation theme are defined primarily in the
-cascading style sheet specified in the theme.cfg file.
+cascading style sheet specified in the theme.cfg file. This 
 
 The Interchange TRAFFIC setting, defined system-wide in
 interchange.cfg, is described in the ??document??. The settings in
@@ -733,7 +733,7 @@ H2: Region Templates
 
 Interchange region templates ("regions") are portions of HTML and ITL
 that are included in pages within a catalog. Using regions, along with
-the cascading stylesheet defined in theme.cfg (described above),
+the cascading style sheet defined in theme.cfg (described above),
 allows you to control the look and feel of specific parts of each
 catalog page.
 
@@ -2203,6 +2203,42 @@ Example Data
 
 See {{CMD[jump="ictemplates.html#Banner/Ad rotation"]Banner/Ad rotation}}.
 
+<<<<<<< icfoundation.sdf
+
+H2: cat.txt
+
+Categories.
+
+!block example
+    code
+    sel
+    name
+    which_page
+    sort
+    display_type
+            name = Name
+            url = URL only
+            icon = Icon and name
+            image = Image
+    image
+    image_prop
+    banner_image
+    banner_text
+    link_type
+        Type of link:
+            none = No link
+            external = External link (http://...)
+            internal = Interchange page
+            simple = Simple search
+            complex = Complex search
+    url
+    tab
+    page
+    search
+    selector
+    link_template
+!endblock
+=======
 
 H2: cat
 
