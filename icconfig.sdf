@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.63 2002-06-06 02:01:51 jon Exp $
+# $Id: icconfig.sdf,v 1.64 2002-07-01 14:15:19 jon Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.63 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.64 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icconfig.html"
@@ -1083,34 +1083,41 @@ A file name to log formatted orders in. Unless preceded by a leading '/', will b
 
 If a C<Route> is set up to C<supplant>, this is ignored.
 
-H2: Autoend
+H2: AutoEnd
 
-Sets an action that is automatically performed at the end every access. It is performed after any page parsing occurs, just before the transaction ends. See C<Autoload>.
+Sets an action that is automatically performed at the end of every
+access. It is performed after any page parsing occurs, just before
+the transaction ends. It takes the same kinds of parameters as
+C<Autoload>.
+
 
 H2: Autoload
 
 Sets an action that is automatically performed for every access. It is
 performed before any page parsing occurs, and before the action or page
-is even determined. Can contain ITL tags or a global subroutine name. If
-the return value is true, a normal display of $CGI->{mv_nextpage} will
-occur -- if it returns a false (zero, undef, or blank) value, no page will
-be processed.
+is even determined. It can be set to a string containing ITL tags or to
+the name of a catalog (Sub) or global subroutine. The return value from
+the code run is discarded.
 
-As an example, to remap any C<mv_nextpage> accesses to the C<private>
-subdirectory of pages, set:
+For example, to automatically run the Sub or GlobalSub named 'testsub':
+
+E:   Autoload testsub
+
+To remap any C<mv_nextpage> accesses to the C<private> subdirectory of
+pages, set:
 
 !block example
    Autoload   [perl] $CGI->{mv_nextpage} =~ s:^private/:public/:; [/perl]
 !endblock
 
 You can temporarily change any of the catalog configuration settings,
-for example use a different flypage.
+for example, to use a different flypage depending on the user's browser type:
 
 !block example
    Autoload       <<EOA
    [perl] 
    if ($Session->{browser} =~ /msie/i) {
-      $Config->{Special}->{flypage}='ms_flypage'};
+      $Config->{Special}->{flypage} = 'ie_flypage';
    }
    [/perl]
    EOA
@@ -1120,6 +1127,7 @@ Please note that C<SpecialPage> is the corresponding directive in
 the catalog configuration, not C<Special>. This is an exceptional case.
 Usually the hash key has the same name as the catalog configuration
 directive.
+
 
 H2: AutoModifier
 
