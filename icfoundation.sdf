@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icfoundation.sdf,v 1.13 2001-05-15 12:02:51 bill Exp $
+# $Id: icfoundation.sdf,v 1.14 2001-05-15 14:17:02 larry Exp $
 
 !define DOC_NAME "Foundation Store"
 !define DOC_TYPE ""
 !define DOC_CODE "icfoundation"
-!define DOC_VERSION substr('$Revision: 1.13 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.14 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/doc/icfoundation.html"
@@ -1238,26 +1238,26 @@ remaining code in results.html (the file that calls the cart_display
 component).
 
 !block example
-    10	<center>
-    11	  <table width="95%" border="0" cellspacing="0" cellpadding="0">
-    12			<TR class="contentbar2" VALIGN=TOP>
-    13	                        <td align=center class="contentbar2">Action</td>
-    14	                        <td class="contentbar2"> 
-    15	                          SKU
-    16	                        </td>
-    17	                        <td class="contentbar2"> 
-    18	                          Description
-    19	                        </td>
-    20	                        <td class="contentbar2"> 
-    21	                          Quantity
-    22	                        </td>
-    23	                        <td class="contentbar2"> 
-    24	                          Price
-    25	                        </td>
-    26	                        <td class="contentbar2"> 
-    27	                          Extension
-    28	                        </td>
-    29			</TR>
+    10  <center>
+    11    <table width="95%" border="0" cellspacing="0" cellpadding="0">
+    12      <TR class="contentbar2" VALIGN=TOP>
+    13        <td align=center class="contentbar2">Action</td>
+    14        <td class="contentbar2"> 
+    15          SKU
+    16        </td>
+    17        <td class="contentbar2"> 
+    18          Description
+    19        </td>
+    20        <td class="contentbar2"> 
+    21          Quantity
+    22        </td>
+    23        <td class="contentbar2"> 
+    24          Price
+    25        </td>
+    26        <td class="contentbar2"> 
+    27          Extension
+    28        </td>
+    29      </TR>
 !endblock
 
 Line 10 centers the table started in line 11. Lines 12-29 create a
@@ -1265,7 +1265,7 @@ header row in the shopping cart consisting of the header titles
 Action, SKU, Description, Quantity, Price, and Extension.
 
 !block example
-    30		<TBODY>
+    30	    <TBODY>
     31	[item-list]
     32
 !endblock
@@ -1275,14 +1275,16 @@ E<lbracket>item-list] tag on line 31 tells Interchange to execute the code up to
 the closing tag (E<lbracket>/item-list] on line 59) for each item the customer
 has ordered so far.
 
-    33	<tr class="[item-alternate 2]maincontent[else]contentbar1[/else][/item-alternate]">
-    34		<td align=center valign=top>
-    35		  [page ord/basket]edit</A>
-    36		</TD>
-    37		<td valign=top>[item-code]</TD>
-    38		<td valign=top>[page [item-code]][item-description]</A>
-    39	</TD>
+!block example
+    33	    <tr class="[item-alternate 2]maincontent[else]contentbar1[/else][/item-alternate]">
+    34        <td align=center valign=top>
+    35          [page ord/basket]edit</A>
+    36        </TD>
+    37        <td valign=top>[item-code]</TD>
+    38        <td valign=top>[page [item-code]][item-description]</A>
+    39        </TD>
     40
+!endblock
 
 Line 33 begins the next row in the table. The E<lbracket>item-alternate] tag
 provided as the value of the class attribute tells Interchange to
@@ -1300,22 +1302,22 @@ page.
 
 !block example	
     41	[if-item-modifier gift_cert]
-    42		<TD ALIGN=CENTER><small>Amount of gift:</small></TD>
-    43		<TD ALIGN=CENTER>[item-quantity]</TD>
-    44		<TD ALIGN=right>
-    45				[item-subtotal]
-    46		</TD>
-    47	[else]
-    48		<TD ALIGN=CENTER>[item-quantity]</TD>
-    49		<TD ALIGN=right>
-    50				[item-price]
-    51		</TD>
-    52		<TD ALIGN=right>
-    53				[item-subtotal]
-    54		</TD>
-    55	[/else]
-    56	[/if-item-modifier]
-    57	</TR>
+    42	      <TD ALIGN=CENTER><small>Amount of gift:</small></TD>
+    43        <TD ALIGN=CENTER>[item-quantity]</TD>
+    44        <TD ALIGN=right>
+    45          [item-subtotal]
+    46        </TD>
+    47  [else]
+    48        <TD ALIGN=CENTER>[item-quantity]</TD>
+    49        <TD ALIGN=right>
+    50          [item-price]
+    51        </TD>
+    52        <TD ALIGN=right>
+    53          [item-subtotal]
+    54        </TD>
+    55  [/else]
+    56  [/if-item-modifier]
+    57      </TR>
     58
 !endblock
 
@@ -1329,14 +1331,14 @@ whether the item is a gift certificate) display the item subtotal
 "Extension".
 
 !block example
-    59	[/item-list]
-    60	</TBODY>
-    61	</table>
-    62	</FORM>
-    63	</center>
-    64	[/if]
+    59  [/item-list]
+    60  </TBODY>
+    61  </table>
+    62  </FORM>
+    63  </center>
+    64  [/if]
     65
-    66	<!-- END COMPONENT [control component cart_display] -->
+    66  <!-- END COMPONENT [control component cart_display] -->
 !endblock
 
 Lines 59 through 64 close out the tags for the component, and line 66
