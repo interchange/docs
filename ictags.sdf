@@ -1,25 +1,40 @@
-!init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ictags.sdf,v 1.3 2001-03-16 05:53:26 jon Exp $
- 
+!init OPT_LOOK="akopia"; OPT_STYLE="manual" 
+# $Id: ictags.sdf,v 1.4 2001-03-20 18:40:05 bill Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.3 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.4 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
 !define DOC_OWNER "1996-2001 Red Hat, Inc. {{EMAIL:info@akopia.com}}"
+!define SHOW_COMMENTS 0
+!define EXAMPLE_SESSION "6CZ2whqo"
+!define EXAMPLE_DOMAIN "www.here.com"
+!define EXAMPLE_CATALOG "mycatalog"
+!define EXAMPLE_VLINK "mycatalog"
+!define EXAMPLE_SECURE_DOMAIN "secure.here.com"
+!define EXAMPLE_SKU "os28044"
+!define EXAMPLE_SIZE "15oz"
+!define EXAMPLE_PRODUCT "Framing Hammer"
 !build_title
 
 H1:Interchange Tags Reference
 
-ITL stands for Interchange Tag Language. ITL is a superset of MML, or Minivend Markup Language. Minivend was the predecessor to Interchange.
+ITL stands for Interchange Tag Language. ITL is a superset of MML, or
+Minivend Markup Language. Minivend was the predecessor to
+Interchange.
 
-There are dozens of ITL pre-defined tag functions. If you don't see just what you need, you can create user-defined tags to just as powerful as the pre-defined ones.
+There are dozens of ITL pre-defined tag functions. If you don't see
+just what you need, you can create user-defined tags to just as
+powerful as the pre-defined ones.
 
-There are two styles of supplying parameters to a tag -- named and positional. In addition, you can usually embed Interchange tags within HTML tags.
+There are two styles of supplying parameters to a tagE<nbspace>E<emdash> named and
+positional. In addition, you can usually embed Interchange tags within
+HTML tags.
 
-In the named style you supply a parameter/value pair just as most HTML tags use:
+In the named style you supply a parameter/value pair just as most HTML
+tags use:
 
 >    [value name="foo"]
 
@@ -97,7 +112,7 @@ order profile, search profile, or I<mv_click> operation. If you wish
 to perform the evaluation at the time a variable is set, you would use
 \[set name=variable interpolate=1] TAGS [/set].
 
-=head2 Looping tags and Sub-tags
+H2: Looping tags and Sub-tags
 
 Certain tags are not standalone; these are the
 ones that are interpreted as part of a surrounding looping tag
@@ -447,20 +462,22 @@ etc. C<[modifier-name quantity]> would be the same as C<[quantity-name]>.
 
 =back
 
-=head1 Tags
+H1: Tags
 
 Each ITL tag is show below. Calling information is defined for the main tag,
 sub-tags are described in C<Sub-tags>.
 
 
 
-=head2 accessories
+H2: accessories
 
 =over 4
 
-=item CALL INFORMATION
+Short Description here
 
-\Parameters: B<code arg>
+H3: CALL INFORMATION
+
+N: Parameters: B<code arg>
 
 Positional parameters in same order.
 
@@ -501,7 +518,7 @@ Attribute aliases
 
  
 
-=item DESCRIPTION
+H3: DESCRIPTION
 
 
 The C<[accessories ...]> tag allows you to access Interchange's option
@@ -528,7 +545,7 @@ B<IMPORTANT NOTE:> You may not use the following names for attributes:
 >    item  group  quantity  code  mv_ib  mv_mi  mv_si
 
 You can also set it in scratch with the mv_UseModifier
-scratch variable -- C<[set mv_UseModifier]size color[/set]> has the
+scratch variableE<nbspace>E<emdash> C<[set mv_UseModifier]size color[/set]> has the
 same effect as above. This allows multiple options to be set for
 products. Whichever one is in effect at order time will be used.
 Be careful, you cannot set it more than once on the same page.
@@ -562,24 +579,25 @@ tags are called. They have the syntax:
 >                outboard=key
 >                passed="value=label, value2, value3=label 3" ]
 
-=over 4
+#=over 4
 
-=item code
+H4: code
 
 Not needed for item-accessories, this is the product code of the item to
 reference.
  
-=item attribute
+H4: attribute
 
 The item attribute as specified in the UseModifier configuration
 directive. Typical are C<size> or C<color>.
 
-=item type
+H4: type
 
 The action to be taken. One of:
 
 >  select          Builds a dropdown <SELECT> menu for the attribute.
->                  NOTE: This is the default.
+>                  NOTE: This is the . {{}}
+default.
 >
 >  multiple        Builds a multiple dropdown <SELECT> menu for the
 >                  attribute.  The size is equal to the number of
@@ -632,7 +650,7 @@ The action to be taken. One of:
 >
 >  reverse_combo   Special type, used with last_non_null filter,
 >                  for selecting from a list or inputting a
->                  new value -- differs from combo in order of
+>                  new valueE<nbspace>E<emdash> differs from combo in order of
 >                  presentation
 >
 >  move_combo      Special type, used with null_to_space or
@@ -651,31 +669,31 @@ multiple-selection drop down list, 'show', which shows the list of
 possible attributes, and 'display', which shows the label text for the
 selected option only.
 
-=item column
+H4: column
 
 The database column name to be used to build the entry (usually a field
 in the products database).  Defaults to a field named the same as the
 attribute.
 
-=item table
+H4: table
 
 The database table to find B<column> in, defaults to the first products file
 where the item code is found.
 
-=item name
+H4: name
 
 Name of the form variable to use if a form is being built. Defaults to
-mv_order_B<attribute> -- i.e.  if the attribute is B<size>, the form
+mv_order_B<attribute>E<nbspace>E<emdash> i.e.  if the attribute is B<size>, the form
 variable will be named B<mv_order_size>. If the variable is set in the
 user session, the widget will "remember" its previous setting.
 
-=item outboard
+H4: outboard
 
 If calling the item-accessories tag, and you wish to select from an
 outboard database table with a different key from the item code, you
 can pass the key to use to find the accessory data.
 
-=item passed
+H4: passed
 
 Options for the widget if set explicitly, i.e. overrides a databae
 fetch of the attribute input string.
@@ -698,12 +716,12 @@ This will generate:
 >        <OPTION VALUE="green">Sea Green
 >        </SELECT>
 
-=item href
+H4: href
 
 Base HREF for the link in a C<links> type. Default is the current
 page.
 
-=item form
+H4: form
 
 Base value for the form in a C<links> type. Default is C<mv_action=return>,
 which will simply set the variable value in the link.
@@ -729,14 +747,14 @@ This will generate:
 If you want the empty "--select--" option to show up, pass an
 empty=1 parameter.
 
-=back
+#=back
 
 When called with an attribute, the database is consulted and looks for
 a comma-separated list of attribute options. They take the form:
 
 >    name=Label Text, name=Label Text*
 
-The label text is optional -- if none is given, the B<name> will
+The label text is optionalE<nbspace>E<emdash> if none is given, the B<name> will
 be used.
 
 If an asterisk is the last character of the label text, the item is
@@ -772,7 +790,7 @@ a comma-separated list of attribute options. They take the form:
 
 >    name=Label Text, name=Label Text*
 
-The label text is optional -- if none is given, the B<name> will
+The label text is optionalE<nbspace>E<emdash> if none is given, the B<name> will
 be used.
 
 If an asterisk is the last character of the label text, the item is
@@ -795,9 +813,9 @@ a select box like this will be built:
 In combination with the I<mv_order_item> and I<mv_order_quantity> variables
 this can be used to allow entry of an attribute at time of order.
 
-=over 4
+#=over 4
 
-=item EMULATING WITH LOOP
+H4: Emulating with a loop
 
 Below is a fragment from a shopping basket display form which 
 shows a selectable size with "sticky" setting and a price that
@@ -815,14 +833,14 @@ The above is essentially the same as would be output with the
 \[item-accessories size] tag if the product database field C<size>
 contained the value C<S, M, L, XL>, but contains the adjusted price.
 
-=back
+#=back
 
 
 =back
 
 
 
-=head2 and
+H2: and
 
 =over 4
 
@@ -886,115 +904,162 @@ See C<[if ...]>.
 =back
 
 
+H2: area
 
-=head2 area
+N:Alias:  B<href>
+
+Expands to the URL for an Interchange page or action,
+including the Interchange session ID and supplied arguments.  This is
+very similar to the {{CMD[jump="#page"]page}} tagE<nbspace>E<emdash> these are
+equivalent:
+>    [page href=dir/page arg=mv_arg]TargetName[/page]
+>    <A HREF="[area href=dir/page arg=mv_arg]">TargetName</A>
 
 =over 4
 
-=item CALL INFORMATION
+=item SUMMARY
 
-Aliases for tag
-
-href
-
-\Parameters: B<href arg>
-
-Positional parameters in same order.
+!block example;
+    [B<area> href arg I<other named attributes>]
+    [B<area> href=dir/page arg=page_arguments I<other named attributes>]
+!endblock
 
 
-B<The attribute hash reference is passed> to the subroutine after
-the parameters as the last argument.
-B<This may mean that there are parameters not shown here.>
+!block table; style="plain"; colvaligns="TTT"
+Parameters|Description|Default
+href|<<
+Path to Interchange page or action
+. I<Special arguments>
+** 'scan' links to search (using search arguments in B<arg>)
+** 'http://...' external link (requires B<form> attribute)
+>>|process
+arg|Interchange arguments to page or action|I<none>
+!endblock
 
-Must pass named parameter interpolate=1 to cause interpolation.
+!block table; style="plain"; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#area_form"]form}}|I<none>
+{{CMD[jump="#area_alias"]alias}}|I<none> (requires B<form>)
+{{CMD[jump="#area_once"]once}}|I<none> (requires B<form> and B<alias>)
+{{CMD[jump="#area_search"]search}}|I<No>
+{{CMD[jump="#area_secure"]secure}}|I<No>
+{{CMD[jump="#interpolate_attr"]interpolate (reparse)}}|I<No>
+{{CMD[jump="#send_attr"]send}}|I<No>
+!endblock
 
-Invalidates cache: B<no>
+!block table; style="plain"; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<No>
+Macro|I<No>
+Has end tag|I<No>
+!endblock
 
-Called Routine: 
+Tag expansion example:
 
-ASP/perl tag calls:
+!block example
+   [area href=dir/page.html arg="arg1=AA/arg2=BB"]
 
->    $Tag->area(
->        {
->         href => VALUE,
->         arg => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->area($href, $arg, $ATTRHASH);
+   http://mycat.com/cgi-bin/page.html?mv_session_id=[[EXAMPLE_SESSION]]&\
+   mv_pc=1&mv_arg=arg1%3dAA/arg2%3dBB
+!endblock
 
- 
+ASP-like Perl call:
+
+!block example; lang='Perl'
+    $Tag->area(  { href => "dir/page",
+                   arg  => "arguments", }  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang='Perl'
+    $Tag->area($href, $arg, $attribute_hash_reference);
+!endblock
+
+=item SEE ALSO
+
+{{CMD[jump="#page"]page}}
+
 
 =item DESCRIPTION
 
 
-Named call example:
-
->    <A HREF="[area href=scan arg="
->                                     se=Impressionists
->                                     sf=category
->                                "
->                            ]">Impressionists</A>
-
-Positional call example:
-
->    <A HREF="[area ord/basket]">Check basket</A>
-
-HTML example:
-
->    <A MV="area dir/page" HREF="dir/page.html">
-
-Produces the URL to call a Interchange page, without the surrounding
-A HREF notation. This can be used to get control of your HREF items,
-perhaps to place an ALT string or a Javascript construct.
+The C<area> tag is very similar to the {{CMD[jump="#page"]page}}
+tag.  It produces the URL to call an Interchange page, but it differs
+from C<page> in that it does not supply the surrounding
+E<lt>AE<nbspace>HREFE<nbspace>...E<gt> notation. This can be used to
+get control of your HREF items, perhaps to place an ALT string or a
+Javascript construct.
 
 It was originally named C<area> because it also can be used in a
-client-side image map, and has an alias of C<href>. The two links below
+client-side image map.
+
+The C<area> tag has an alias of C<href>. The two links below
 are identical in operation:
 
 >   <A HREF="[area href=catalog]" ALT="Main catalog page">Catalog Home</A>
 >   <A HREF="[href href=catalog]" ALT="Main catalog page">Catalog Home</A>
 
-The optional I<arg> is used just as in the I<page> tag.
+The optional I<arg> is used just as in the {{CMD[jump="#page"]page}} tag.
 
-The optional C<form> argument allows you to encode a form in the link.
+. {{}}
+. {{B[id="area_form"]form}}
+. The optional C<form> argument allows you to encode a form in the link.
 
->        <A HREF="[area form="
->                mv_order_item=99-102
->                mv_order_size=L
->                mv_order_quantity=1
->                mv_separate_items=1
->                mv_todo=refresh"
->        ]"> Order t-shirt in Large size </A>
+!block example
+   <A HREF="[area form="mv_order_item=[[EXAMPLE_SKU]]
+                        mv_order_size=[[EXAMPLE_SIZE]]
+                        mv_order_quantity=1
+                        mv_separate_items=1
+                        mv_todo=refresh"]"> Order [[EXAMPLE_SIZE]] [[EXAMPLE_PRODUCT]]</A>
+!endblock
 
-The two form values I<mv_session_id> and I<mv_arg> are automatically added
-when appropriate. (I<mv_arg> is the C<arg> parameter for the tag.)
+See the description of the {{CMD[jump="#page_form"]page}} tag for more
+detail.
 
-If the parameter C<href> is not supplied, I<process> is used, causing
-normal Interchange form processing.
+. {{}}
+. {{B[id="area_alias"]alias}}
+. See the description of the {{CMD[jump="#page_alias"]page}} tag
 
-This would generate a form that ordered item number 99-102 on
-a separate line (C<mv_separate_items> being set), with size C<L>,
-in quantity 2. Since the page is not set, you will go to the default
-shopping cart page -- equally you could set C<mv_orderpage=yourpage>
-to go to C<yourpage>.
+. {{}}
+. {{B[id="area_once"]once}}
+. See the description of the {{CMD[jump="#page_once"]page}} tag
 
-All normal Interchange form caveats apply -- you must have an action,
-you must supply a page if you don't want to go to the default,
-etc.
+. {{}}
+. {{B[id="area_search"]search}}
+. Interchange allows you to pass a search in a URL. Just specify the
+search with the special page reference C<scan>. Here is an
+example:
 
-You can theoretically submit any form with this, though none of the
-included values can have newlines or trailing whitespace. If you want
-to do something like that you will have to write a UserTag.
+!block example
+   <A HREF="[area scan
+            se=Impressionists
+            sf=category]">Impressionist Paintings</A>
+!endblock
 
+
+Named call examples:
+
+!block example
+   <A HREF="[area scan
+            se=Impressionists
+            sf=category]">Impressionist Paintings</A>
+!endblock
+
+Positional call example:
+
+>    <A HREF="[area ord/basket]">Check basket</A>
+
+HTML example (requires catalog directive
+'{{CMD[jump="icconfig.html#Pragma"]Pragma}}  no_html_parse  0'):
+
+>    <A MV="area dir/page" HREF="dir/page.html">
 
 =back
 
 
-
-=head2 attr_list
+H2: attr_list
 
 =over 4
 
@@ -1090,7 +1155,7 @@ otherwise.
 
 
 
-=head2 banner
+H2: banner
 
 =over 4
 
@@ -1136,7 +1201,7 @@ section I<Banner/Ad rotation>.
 
 
 
-=head2 bounce
+H2: bounce
 
 =over 4
 
@@ -1211,7 +1276,7 @@ do:
 
 
 
-=head2 calc
+H2: calc
 
 =over 4
 
@@ -1272,7 +1337,7 @@ ASP NOTE: There is never a reason to use this tag in a [perl] or ASP section.
 
 
 
-=head2 cart
+H2: cart
 
 =over 4
 
@@ -1316,7 +1381,7 @@ total, subtotal, shipping, and nitems tags.
 
 
 
-=head2 catch
+H2: catch
 
 =over 4
 
@@ -1363,7 +1428,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 cgi
+H2: cgi
 
 =over 4
 
@@ -1415,7 +1480,7 @@ This is the same as $CGI->{foo} in embedded Perl.
 
 
 
-=head2 checked
+H2: checked
 
 =over 4
 
@@ -1475,7 +1540,7 @@ so the box will not be reset. You must do something like:
 >            VALUE=1 [checked name=foo value=1 default=1]>
 >    [value name=foo set=""]
 
-By default, the Values space (i.e. [value foo]) is checked -- if you
+By default, the Values space (i.e. [value foo]) is checkedE<nbspace>E<emdash> if you
 want to use the volatile CGI space (i.e. [cgi foo]) use the option
 C<cgi=1>.
 
@@ -1484,7 +1549,7 @@ C<cgi=1>.
 
 
 
-=head2 control
+H2: control
 
 =over 4
 
@@ -1528,7 +1593,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 control_set
+H2: control_set
 
 =over 4
 
@@ -1575,7 +1640,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 counter
+H2: counter
 
 =over 4
 
@@ -1638,7 +1703,7 @@ Shows the value of the counter without incrementing or decrementing it.
 
 
 
-=head2 currency
+H2: currency
 
 =over 4
 
@@ -1703,7 +1768,7 @@ will cause the number 8.982,04 to be displayed.
 
 
 
-=head2 data
+H2: data
 
 =over 4
 
@@ -1810,7 +1875,7 @@ would be better not to use that name at all.
 
 
 
-=head2 default
+H2: default
 
 =over 4
 
@@ -1858,7 +1923,7 @@ default supplied. Got that? This tag is DEPRECATED anyway.
 
 
 
-=head2 description
+H2: description
 
 =over 4
 
@@ -1910,7 +1975,7 @@ for example C<desc_en> for English, C<desc_fr> for French, etc.
 
 
 
-=head2 discount
+H2: discount
 
 =over 4
 
@@ -2030,7 +2095,7 @@ either
 %%
 The C<[either]this[or]that[/either]> implements a check for the first
 non-zero, non-blank value. It splits on [or], and then parses each
-piece in turn. If a value returns true (in the Perl sense -- non-zero, non-blank)
+piece in turn. If a value returns true (in the Perl senseE<nbspace>E<emdash> non-zero, non-blank)
 then subsequent pieces will be discarded without interpolation.
 
 \Example:
@@ -2043,7 +2108,7 @@ Always strips leading and trailing whitespace.
 =back
 
 
-=head2 discount_subtotal
+H2: discount_subtotal
 
 =over 4
 
@@ -2054,7 +2119,7 @@ Inserts the discounted subtotal of the ordered items.
 =back
 
 
-=head2 dump
+H2: dump
 
 =over 4
 
@@ -2091,7 +2156,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 ecml
+H2: ecml
 
 =over 4
 
@@ -2135,7 +2200,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 either
+H2: either
 
 =over 4
 
@@ -2176,7 +2241,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 error
+H2: error
 
 =over 4
 
@@ -2309,7 +2374,7 @@ you have {REQUIRED: HTML}, but only when the field is required.
 
 
 
-=head2 export
+H2: export
 
 =over 4
 
@@ -2358,7 +2423,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 field
+H2: field
 
 =over 4
 
@@ -2420,7 +2485,7 @@ C<[field column key]> is the same as C<[data products column key]>.
 
 
 
-=head2 file
+H2: file
 
 =over 4
 
@@ -2458,7 +2523,7 @@ ASP/perl tag calls:
 
 
 Inserts the contents of the named file. The file should normally
-be relative to the catalog directory -- file names beginning with
+be relative to the catalog directoryE<nbspace>E<emdash> file names beginning with
 / or .. are not allowed if the Interchange server administrator
 has set I<NoAbsolute> to C<Yes>.
 
@@ -2470,7 +2535,7 @@ on the file before it is sent.
 
 
 
-=head2 filter
+H2: filter
 
 =over 4
 
@@ -2775,7 +2840,7 @@ C<[value name=foo filter="lookup.products.price.extra"]> will send
 
 
 
-=head2 flag
+H2: flag
 
 =over 4
 
@@ -2824,7 +2889,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 fly_list
+H2: fly_list
 
 =over 4
 
@@ -2894,7 +2959,7 @@ be [fly-code]; C<prefix=foo> would cause C<[foo-code]>, etc.
 
 
 
-=head2 fly_tax
+H2: fly_tax
 
 =over 4
 
@@ -2935,7 +3000,7 @@ Builds a tax rate from C<taxarea>, C<taxrate>, C<taxshipping>, variable values, 
 
 
 
-=head2 goto
+H2: goto
 
 =over 4
 
@@ -2977,7 +3042,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 handling
+H2: handling
 
 =over 4
 
@@ -3028,7 +3093,7 @@ Calculates and inserts handling costs. Accepts the same noformat and convert arg
 
 
 
-=head2 harness
+H2: harness
 
 =over 4
 
@@ -3070,8 +3135,12 @@ B<NO DESCRIPTION>
 =back
 
 
+H2: href
 
-=head2 html_table
+Alias for [{{CMD[jump="#area"]area}}] tag.
+
+
+H2: html_table
 
 =over 4
 
@@ -3114,7 +3183,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 if
+H2: if
 
 =over 4
 
@@ -3481,7 +3550,7 @@ those will be passed as arguments are in the I<[perl]> construct.
 
 
 
-=head2 import
+H2: import
 
 =over 4
 
@@ -3574,7 +3643,7 @@ a form-feed character (^L).
 
 
 
-=head2 include
+H2: include
 
 =over 4
 
@@ -3619,7 +3688,7 @@ and variables. Does NOT do locale translations.
 
 
 
-=head2 index
+H2: index
 
 =over 4
 
@@ -3668,7 +3737,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 input_filter
+H2: input_filter
 
 =over 4
 
@@ -3722,7 +3791,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 item_list
+H2: item_list
 
 =over 4
 
@@ -3937,7 +4006,7 @@ customer can enter the quantity to order.
 
 
 
-=head2 label
+H2: label
 
 =over 4
 
@@ -3978,7 +4047,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 log
+H2: log
 
 =over 4
 
@@ -4030,7 +4099,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 loop
+H2: loop
 
 =over 4
 
@@ -4085,7 +4154,7 @@ HTML example:
 Returns a string consisting of the LIST, repeated for every item in a
 comma-separated or space-separated list. Operates in the same fashion
 as the [item-list] tag, except for order-item-specific values. Intended
-to pull multiple attributes from an item modifier -- but can be useful
+to pull multiple attributes from an item modifierE<nbspace>E<emdash> but can be useful
 for other things, like building a pre-ordained product list on a page.
 
 Loop lists can be nested reliably in Interchange by using the
@@ -4242,7 +4311,7 @@ is set, then currency formatting will not be applied.
 
 
 
-=head2 mail
+H2: mail
 
 =over 4
 
@@ -4289,7 +4358,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 mvasp
+H2: mvasp
 
 =over 4
 
@@ -4341,7 +4410,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 nitems
+H2: nitems
 
 =over 4
 
@@ -4387,7 +4456,7 @@ optional cart name as a parameter.
 
 
 
-=head2 onfly
+H2: onfly
 
 =over 4
 
@@ -4431,7 +4500,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 options
+H2: options
 
 =over 4
 
@@ -4474,7 +4543,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 or
+H2: or
 
 =over 4
 
@@ -4528,7 +4597,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 order
+H2: order
 
 =over 4
 
@@ -4571,7 +4640,7 @@ should be a product code listed in one of the "products" databases. The
 optional argument B<cart/page> selects the shopping cart the item will be
 placed in (begin with / to use the default cart C<main>) and the order page
 that will display the order. The optional argument B<database> constrains
-the order to a particular products file -- if not specified, all databases
+the order to a particular products fileE<nbspace>E<emdash> if not specified, all databases
 defined as products files will be searched in sequence for the item.
 
 \Example: 
@@ -4585,55 +4654,98 @@ defined as products files will be searched in sequence for the item.
 
 
 
-=head2 page
+H2: page
+
+Expands to a hyperlink to an Interchange page or action, including
+surrounding E<lt>AE<nbspace>HREFE<nbspace>...E<gt>. The URL within the
+link includes the Interchange session ID and supplied arguments. The
+optional [/page] is simply a macro for E<lt>/AE<gt>.
+
+If you do not want the E<lt>AE<nbspace>HREFE<nbspace>...E<gt>, use the
+{{CMD[jump="#area"]area}} tag insteadE<nbspace>E<emdash> these are
+equivalent:
+>    [page href=dir/page arg=mv_arg]TargetName[/page]
+>    <A HREF="[area href=dir/page arg=mv_arg]">TargetName</A>
 
 =over 4
 
-=item CALL INFORMATION
+=item SUMMARY
 
-\Parameters: B<href arg>
-
-Positional parameters in same order.
-
-
-B<The attribute hash reference is passed> to the subroutine after
-the parameters as the last argument.
-B<This may mean that there are parameters not shown here.>
-
-Must pass named parameter interpolate=1 to cause interpolation.
-
-Invalidates cache: B<no>
-
-Called Routine: 
-
-ASP/perl tag calls:
-
->    $Tag->page(
->        {
->         href => VALUE,
->         arg => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->page($href, $arg, $ATTRHASH);
-
-Attribute aliases
-
->            base ==> arg
+!block example;
+    [B<page> href arg I<other named attributes>]
+    [B<page> href=dir/page arg=page_arguments I<other named attributes>]
+!endblock
 
 
+!block table; style="plain"; colvaligns="TTT"
+Parameters|Description|Default
+href|<<
+Path to Interchange page or action
+. I<Special arguments>
+** 'scan' treats B<arg> as a search argument
+** 'http://...' external link (requires B<form> attribute)
+>>|process
+arg|Interchange arguments to page or action|I<none>
+I<base>|alias for B<arg>|I<none>
+!endblock
+
+!block table; style="plain"; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#page_extra"]extra}}|I<none>
+{{CMD[jump="#page_form"]form}}|I<none>
+{{CMD[jump="#page_alias"]alias}}|I<none> (requires B<form>)
+{{CMD[jump="#page_once"]once}}|I<none> (requires B<form> and B<alias>)
+{{CMD[jump="#page_search"]search}}|I<No>
+{{CMD[jump="#page_secure"]secure}}|I<No>
+{{CMD[jump="#interpolate_attr"]interpolate (reparse)}}|I<No>
+{{CMD[jump="#send_attr"]send}}|I<No>
+!endblock
+
+!block table; style="plain";headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<No>
+Macro|I<No>
+Has end tag|I<No> (C<[/page]> is a macro for C<E<lt>/AE<gt>>)
+!endblock
+
+Tag expansion example:
+
+!block example
+   [page href=dir/page.html arg="arg1=AA/arg2=BB"]
+
+   <a href="http://mycat.com/cgi-bin/page.html?mv_session_id=[[EXAMPLE_SESSION]]&\
+   mv_pc=1&mv_arg=arg1%3dAA/arg2%3dBB">
+!endblock
+
+ASP-like Perl call:
+
+!block example; lang='Perl'
+    $Tag->page(  { href => "dir/page",
+                   arg  => "arguments", }  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang='Perl'
+    $Tag->page($href, $arg, $attribute_hash_reference);
+!endblock
+
+=item SEE ALSO
+
+{{CMD[jump="#area"]area}}
  
 
 =item DESCRIPTION
 
 
-Insert a hyperlink to the specified catalog page pg. For
-example, [page shirts] will expand into <
-a href="http://machine.company.com/cgi-bin/vlink/shirts?WehUkATn;;1">. The
-catalog page displayed will come from "shirts.html" in the
-pages directory.
+The C<page> tag inserts a hyperlink to the specified Interchange page
+or action. For example, [C<page> shirts] will expand into
+!block example
+   <aE<nbspace>href="http://[[EXAMPLE_DOMAIN]]/cgi-bin/[[EXAMPLE_CATALOG]]/shirts?mv_session_id=[[EXAMPLE_SESSION]]&mv_pc=1">
+!endblock
+The catalog page displayed will come from "shirts.html" in the pages
+directory.
 
 The additional argument will be passed to Interchange and placed in the
 {arg} session parameter. This allows programming of a conditional page
@@ -4643,34 +4755,38 @@ $Session->{arg}. Spaces and some other characters
 will be escaped with the %NN HTTP-style notation and unescaped when the
 argument is read back into the session.
 
-A bit of magic occurs if Interchange has built a static plain HTML page
-for the target page. Instead of generating a normal Interchange-parsed
-page reference, a static page reference will be inserted if the user
-has accepted and sent back a cookie with the session ID.
+For better performance, Interchange can prebuild and cache pages that
+would otherwise be generated dynamically. If Interchange has built
+such a static page for the target, the C<page> tag produces a link to
+the cached page whenever the user has accepted and sent back a cookie
+with the session ID.  If the user did not accept the cookie,
+Interchange cannot use the cache, since the link must then include the
+I<mv_session_id> argument in order to preserve session.
 
-The optional C<form> argument allows you to encode a form in the link.
+. {{}}
+. {{B[id="page_form"]form}}
+. The optional C<form> argument allows you to encode a form in the link.
 
->        [page form="
->                mv_order_item=99-102
->                mv_order_size=L
->                mv_order_quantity=1
->                mv_separate_items=1
->                mv_todo=refresh"] Order t-shirt in Large size </A>
+!block example
+        [page form="mv_order_item=[[EXAMPLE_SKU]]
+                    mv_order_size=[[EXAMPLE_SIZE]]
+                    mv_order_quantity=1
+                    mv_separate_items=1
+                    mv_todo=refresh"] Order [[EXAMPLE_SIZE]] [[EXAMPLE_PRODUCT]]</A>
+!endblock
 
-The two form values I<mv_session_id> and I<mv_arg> are automatically added
-when appropriate. (I<mv_arg> is the C<arg> parameter for the tag.)
+The two form values I<mv_session_id> and I<mv_arg> are automatically
+added when appropriate.  The form value I<mv_arg> receives the value
+of the tag's C<arg> parameter.
 
-If the parameter C<href> is not supplied, I<process> is used, causing
-normal Interchange form processing. If the C<href> points to an http://
-link no Interchange URL processing will be done, but the mv_session_id
+This would generate a form that ordered quantity one of item number
+C<[[EXAMPLE_SKU]]> with size C<[[EXAMPLE_SIZE]]>.  The item would
+appear on a separate line in the shopping cart, since
+C<mv_separate_items> is set. Since the C<href> is not set, you will go
+to the default shopping cart pageE<nbspace>E<emdash> alternatively,
+you could have set C<mv_orderpage=yourpage> to go to C<yourpage>.
 
-This would generate a form that ordered item number 99-102 on
-a separate line (C<mv_separate_items> being set), with size C<L>,
-in quantity 2. Since the page is not set, you will go to the default
-shopping cart page -- equally you could set C<mv_orderpage=yourpage>
-to go to C<yourpage>.
-
-All normal Interchange form caveats apply -- you must have an action,
+All normal Interchange form caveats applyE<nbspace>E<emdash> you must have an action,
 you must supply a page if you don't want to go to the default,
 etc.
 
@@ -4678,22 +4794,64 @@ You can theoretically submit any form with this, though none of the
 included values can have newlines or trailing whitespace. If you want
 to do something like that you will have to write a UserTag.
 
-Interchange allows you to pass a search in a URL. Just specify the
+If the parameter C<href> is not supplied, I<process> is used, causing
+normal Interchange form processing.
+
+If the C<href> points to an http:// link, then no Interchange URL
+processing will be done, but the URL will include mv_session_id,
+mv_pc, and any arguments supplied with the C<arg> attribute:
+
+!block example
+       [page  href="http://www.elsewhere.net/cgi/script"
+              form="cgi_1=ONE
+                    cgi_2=TWO"
+               arg="interchange argument"]External link</A>
+!endblock
+expands to
+!block example
+       <A HREF="http://www.elsewhere.net/cgi/script?\
+        mv_session_id=[[EXAMPLE_SESSION]]&mv_pc=1&mv_arg=interchange%20argument&\
+        cgi_1=ONE&cgi_2=TWO">External link</A>
+!endblock
+
+
+. {{}}
+. {{B[id="page_alias"]alias}}
+. Usage: [page ... form="..." alias="[[EXAMPLE_SECURE_DOMAIN]]/[[EXAMPLE_CATALOG]]"]
+. You may also use the C<alias> attribute specify a URL alias for the
+form. This allows the calling path to be different while still calling
+the same catalog. This useful when calling an SSL server or a
+members-only executable that requires a username/password via HTTP
+Basic authorization.
+
+. {{}}
+. {{B[id="page_once"]once}}
+. Usage: [page ... form="..." alias="..." once=1]
+. Branched links will normally be called using the aliased URL.  If
+you set C<once>, branched links will refer back to the original URL.
+
+. {{}}
+. {{B[id="page_search"]search}}
+. Interchange allows you to pass a search in a URL. Just specify the
 search with the special page reference C<scan>. Here is an
 example:
 
->     [page scan
->            se=Impressionists
->            sf=category]
->        Impressionist Paintings
->     [/page]
+!block example
+     [page scan
+            se=Impressionists
+            sf=category]
+        Impressionist Paintings
+     [/page]
+!endblock
 
 Here is the same thing from a home page (assuming /cgi-bin/vlink is
 the CGI path for Interchange's vlink):
 
->     <A HREF="/cgi-bin/vlink/scan/se=Impressionists/sf=category">
->        Impressionist Paintings
->     </A>
+!block example
+     <A HREF="/cgi-bin/vlink/scan/se=Impressionists/sf=category">
+        Impressionist Paintings
+     </A>
+!endblock
 
 Sometimes, you will find that you need to pass characters that
 will not be interpreted positionally. In that case, you should
@@ -4839,7 +4997,8 @@ The optional I<arg> is used just as in the I<page> tag.
 
 =item [/page]
 
-Expands into </a>. Used with the page element, such as:
+This is not an actual end tag, but simply a macro that expands to
+</A>. Use it with the page element as follows:
 
 >  [page shirts]Our shirt collection[/page]. 
 
@@ -4851,7 +5010,7 @@ tag.
 
 
 
-=head2 perl
+H2: perl
 
 =over 4
 
@@ -4957,7 +5116,7 @@ error.
 
 
 
-=head2 price
+H2: price
 
 =over 4
 
@@ -5016,7 +5175,7 @@ from the quantity price list. To receive a raw number, with no currency
 formatting, use the option C<noformat=1>.
 
 Interchange maintains a price in its database for every product. The price
-field is the one required field in the product database -- it is necessary
+field is the one required field in the product databaseE<nbspace>E<emdash> it is necessary
 to build the price routines.
 
 For speed, Interchange builds the code that is used to determine a product's
@@ -5081,7 +5240,7 @@ of commas to separate, and a dollar sign ($) as the currency formatting.
 
 Product discounts for specific products, all products, or the entire
 order can be configured with the [discount ...] tag. Discounts are applied
-on a per-user basis -- you can gate the discount based on membership in a
+on a per-user basisE<nbspace>E<emdash> you can gate the discount based on membership in a
 club or other arbitrary means.
 
 Adding [discount 99-102] $s * .9[/discount] deducts 10% from the
@@ -5098,7 +5257,7 @@ See I<Product Discounts>.
 
 
 
-=head2 process
+H2: process
 
 =over 4
 
@@ -5146,7 +5305,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 profile
+H2: profile
 
 =over 4
 
@@ -5189,7 +5348,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 query
+H2: query
 
 =over 4
 
@@ -5241,7 +5400,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 read_cookie
+H2: read_cookie
 
 =over 4
 
@@ -5282,7 +5441,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 record
+H2: record
 
 =over 4
 
@@ -5328,7 +5487,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 region
+H2: region
 
 =over 4
 
@@ -5378,7 +5537,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 row
+H2: row
 
 =over 4
 
@@ -5462,7 +5621,7 @@ Terminates the column field.
 
 
 
-=head2 salestax
+H2: salestax
 
 =over 4
 
@@ -5515,7 +5674,7 @@ currency formatting will be given.
 
 
 
-=head2 scratch
+H2: scratch
 
 =over 4
 
@@ -5559,7 +5718,7 @@ variable is set with a [set] value [/set] container pair.)
 
 
 
-=head2 scratchd
+H2: scratchd
 
 =over 4
 
@@ -5600,7 +5759,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 search_region
+H2: search_region
 
 =over 4
 
@@ -5654,7 +5813,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 selected
+H2: selected
 
 =over 4
 
@@ -5719,7 +5878,7 @@ selection
 >    <OPTION [selected [modifier-name color] red]> Red
 >    </SELECT>
 
-By default, the Values space (i.e. [value foo]) is checked -- if you
+By default, the Values space (i.e. [value foo]) is checkedE<nbspace>E<emdash> if you
 want to use the volatile CGI space (i.e. [cgi foo]) use the option
 C<cgi=1>.
 
@@ -5728,7 +5887,7 @@ C<cgi=1>.
 
 
 
-=head2 set
+H2: set
 
 =over 4
 
@@ -5771,7 +5930,7 @@ ASP/perl tag calls:
 Sets a scratch variable to I<value>.
 
 Most of the mv_* variables that are used for search and order conditionals are
-in another namespace -- they can be set by means of hidden fields in a
+in another namespaceE<nbspace>E<emdash> they can be set by means of hidden fields in a
 form.
 
 You can set an order profile with:
@@ -5798,7 +5957,7 @@ as well.
 
 
 
-=head2 set_cookie
+H2: set_cookie
 
 =over 4
 
@@ -5841,7 +6000,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 seti
+H2: seti
 
 =over 4
 
@@ -5886,7 +6045,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 setlocale
+H2: setlocale
 
 =over 4
 
@@ -5930,7 +6089,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 shipping
+H2: shipping
 
 =over 4
 
@@ -5985,7 +6144,7 @@ variable. See I<SHIPPING>.
 
 
 
-=head2 shipping_desc
+H2: shipping_desc
 
 =over 4
 
@@ -6030,7 +6189,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 soap
+H2: soap
 
 =over 4
 
@@ -6075,7 +6234,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 sql
+H2: sql
 
 =over 4
 
@@ -6123,7 +6282,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 strip
+H2: strip
 
 =over 4
 
@@ -6164,7 +6323,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 subtotal
+H2: subtotal
 
 =over 4
 
@@ -6222,7 +6381,7 @@ will be given.
 
 
 
-=head2 tag
+H2: tag
 
 =over 4
 
@@ -6306,7 +6465,7 @@ held in Interchange internal DBM format:
 
 >    [tag flag write]products sizes[/tag]
 
-SQL databases are always writable if allowed by the SQL database itself --
+SQL databases are always writable if allowed by the SQL database itselfE<nbspace>E<emdash>
 in-memory databases will never be written.
 
 The [tag flag build][/tag] combination forces static build of a page, even
@@ -6343,7 +6502,7 @@ will return
 >  Your message here.
 
 When used in concert with [tag mime boundary], [tag mime header], and
-\[tag mime id], allows MIME attachments to be included -- typically with
+\[tag mime id], allows MIME attachments to be includedE<nbspace>E<emdash> typically with
 PGP-encrypted credit card numbers. See the demo page ord/report.html
 for an example.
 
@@ -6392,7 +6551,7 @@ on the page.
 
 
 
-=head2 time
+H2: time
 
 =over 4
 
@@ -6459,7 +6618,7 @@ Will display:
 > Mon 01 Jan 2001 11:29:03 AM EST
 > Mon 01 Jan 2001 08:29:03 AM EST
 
-Note that the time zone does not change -- you should either pick a format
+Note that the time zone does not changeE<nbspace>E<emdash> you should either pick a format
 which doesn't display zone, use the C<tz> parameter, or manage it yourself.
 
 \NOTE: You can adjust time globally for an Interchange installation by
@@ -6532,7 +6691,7 @@ time. NOTE: This may not work on all operating systems.
 
 
 
-=head2 timed_build
+H2: timed_build
 
 =over 4
 
@@ -6648,7 +6807,7 @@ next time a link is made for that page the static version will be presented.
 
 
 
-=head2 tmp
+H2: tmp
 
 =over 4
 
@@ -6703,7 +6862,7 @@ a profile stored via the catalog.cfg directive C<OrderProfile>.
 
 
 
-=head2 total_cost
+H2: total_cost
 
 =over 4
 
@@ -6753,7 +6912,7 @@ including sales tax (if any).
 
 
 
-=head2 tree
+H2: tree
 
 =over 4
 
@@ -6940,7 +7099,7 @@ the branch to be followed.
 
 =item sort
 
-The column which should be used for ordering the items -- determines the
+The column which should be used for ordering the itemsE<nbspace>E<emdash> determines the
 order in which they will be displayed under the current parent.
 
 =item outline
@@ -7028,7 +7187,7 @@ with C<option=1>, set the tag prefix with C<prefix>, etc.
 
 
 
-=head2 try
+H2: try
 
 =over 4
 
@@ -7075,7 +7234,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 update
+H2: update
 
 =over 4
 
@@ -7118,7 +7277,7 @@ B<NO DESCRIPTION>
 
 
 
-=head2 userdb
+H2: userdb
 
 =over 4
 
@@ -7225,7 +7384,7 @@ call to C<userdb>. The global parameters (default in parens):
 
 
 
-=head2 value
+H2: value
 
 =over 4
 
@@ -7286,7 +7445,7 @@ available in new-style tags, for safety reasons.
 
 
 
-=head2 value_extended
+H2: value_extended
 
 =over 4
 
@@ -7365,7 +7524,7 @@ accept string literals such as "\n" or "\r".
 
 =item test
 
-Three tests -- C<isfile> returns true if the variable is a file upload.
+Three testsE<nbspace>E<emdash> C<isfile> returns true if the variable is a file upload.
 C<length> returns the length. C<defined> returns whether the value
 has ever been set at all on a form.
 
@@ -7412,11 +7571,11 @@ fails. Defaults to the empty string.
 =back
 
 
-=head1 User-defined Tags
+H1: User-defined Tags
 
 To define a tag that is catalog-specific, place I<UserTag> directives in
 your catalog.cfg file. For server-wide tags, define them in interchange.cfg.
-Catalog-specific tags take precedence if both are defined -- in fact,
+Catalog-specific tags take precedence if both are definedE<nbspace>E<emdash> in fact,
 you can override the base Interchange tag set with them. The directive
 takes the form:
 
@@ -7530,7 +7689,7 @@ lib/Vend/Interpolate.pm for an example of a nesting tag.
 
 =item HasEndTag
 
-Defines an ending [/tag] to encapsulate your text -- the text in
+Defines an ending [/tag] to encapsulate your textE<nbspace>E<emdash> the text in
 between the beginning C<[tagname]> and ending C<[/tagname]> will
 be the last argument sent to the defined subroutine.
 
@@ -7598,7 +7757,7 @@ to expand to this:
 >   </SELECT>
 
 Without the InsideHTML setting, the [loop ...] would have been B<outside>
-of the select -- not what you want.  If you want to turn off this
+of the selectE<nbspace>E<emdash> not what you want.  If you want to turn off this
 behavior on a per-tag basis, add the attribute mv.noinside=1 to the tag
 on your page.
 
@@ -7606,7 +7765,7 @@ on your page.
 
 The behavior for this attribute depends on whether the tag is a container
 (i.e. C<HasEndTag> is defined). If it is not a container, the C<Interpolate>
-attribute causes the B<the resulting HTML> from the C<UserTag> will be
+attribute causes the B<the resulting HTML> from the C<UserTag> to be
 re-parsed for more Interchange tags.  If it is a container, C<Interpolate>
 causes the contents of the tag to be parsed B<before> the tag routine
 is run.
@@ -7634,7 +7793,7 @@ it will be the last argument.
 
 =item PosRoutine
 
-Identical to the Routine argument -- a subroutine that will be called when
+Identical to the Routine argumentE<nbspace>E<emdash> a subroutine that will be called when
 the new syntax is not used for the call, i.e. C<[usertag argument]> instead
 of C<[usertag ARG=argument]>. If not defined, I<Routine> is used, and Interchange
 will usually do the right thing.
@@ -7708,5 +7867,125 @@ first, followed by any encapsulated text (I<HasEndTag> is set).
 
 Note that the UserTag facility, combined with AllowGlobal, allows the
 user to define tags just as powerful as the standard Interchange tags.
-This is not recommended for the novice, though -- keep it simple. 8-)
+This is not recommended for the novice, thoughE<nbspace>E<emdash> keep it simple. 8-)
 
+
+H1: Tag Attributes
+
+
+
+=over 4
+
+=item UNIVERSAL ATTRIBUTES
+
+Universal attributes apply to all tags, though each tag specifies
+whether the attribute is active by default.
+
+The following are universal attributes:
+
+!block table; style="plain"; colvaligns="TT"; colaligns="LL"
+Attribute|Description
+{{B[id="interpolate_attr"]interpolate}}|<<
+This attribute behaves differently depending on whether the tag has an
+end tag.  (Note: The mixing of 'interpolate' and 'reparse' logic occurred
+because 'interpolate' already worked this way when 'reparse' was added
+to interchange.  This may be fixed in a later release...)
+. I<For tags with an end tag enclosing body text>
+. If true ("interpolate=1"), the interchange server will first process
+any tags within the body text before passing it to the enclosing tag.
+. If false ("interpolate=0"), the enclosing tag will receive the raw
+body text.
+. {{}}
+. I<For tags with no end tag (reparse)>
+. If true, the server will process the I<output> of the tag.  This is
+identical to the behavior of the B<reparse> attribute (see below for
+explanation and examples).
+>>
+{{B[id="reparse_attr"]reparse}}|<<
+. If true ("reparse=1"), the server will process any tags in the text
+output by the reparsed tag.
+>>
+{{B[id="send_attr"]send}}|<<
+. If true, the server will immediately send the browser the contents of the
+buffer, including the tag's output.  
+>>
+{{B[id="truefalse_attr"]truefalse}}|<<
+Path to Interchange page or action
+. I<Special arguments>
+.. 'scan' treats B<arg> as a search argument
+>>
+{{B[id="undef_attr"]undef}}|<<
+Path to Interchange page or action
+. I<Special arguments>
+.. 'scan' treats B<arg> as a search argument
+>>
+!endblock
+
+
+=item TAG-SPECIFIC ATTRIBUTES
+
+
+=back
+
+A1: Tag Entry Format
+
+H2[notoc] dummy_area
+
+N:Alias:  B<area>, B<href>
+N:     [B<dummy_area> ...] and [B<area> ...] are equivalent tags
+
+Expands to the URL for the specified catalog page or action,
+including the Interchange session ID and supplied arguments.
+
+=over 4
+
+=item SUMMARY
+
+!block example;
+    [B<href> href arg named_tag_attributes]
+    [B<area> href=dir/page arg=page_arguments named_tag_attributes]
+!endblock
+
+
+!include "area.args.tbl"; table; style="plain"
+
+!include "area.attr.tbl"; table; style="plain"
+
+!include "area.other.tbl"; table; style="plain";headings=1
+
+
+Tag expansion example:
+
+>   <A HREF="[area href=page.html arg="arg1=1 arg2="]" >Target Name</A>
+>
+>   <A HREF=http://mycat.com/cgi-bin/page.html?\
+E:  id=I<CurrentSessionID>&mv_arg=arg1%3dARG1%20arg2%3dARG2 >\
+>   Target Name</A>
+
+
+!block note
+When a line from an example is broken because it is too wide for the
+page, a trailing backslash indicates the continuation.
+Such a trailing backslash is *not* part of the tag syntax or
+expansion.
+!endblock
+
+Call within {{CMD[jump="#perl"]perl}} tag
+
+!block example; lang='Perl'
+    $Tag->area(  { href => URI_base,
+                   arg  => CGI_GET_arguments, }  );
+!endblock
+
+or similarly,
+
+!block example; lang='Perl'
+    $Tag->area($href, $arg, $attribute_hash_reference);
+!endblock
+
+
+=item DESCRIPTION
+
+More detailed tag description
+
+=back
