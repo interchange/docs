@@ -1,4 +1,4 @@
-# $Id: html.sdn,v 1.1 2001-03-29 20:32:06 jon Exp $
+# $Id: html.sdn,v 1.2 2001-04-09 15:46:35 heins Exp $
 #
 # >>Title::     HTML Tuning
 #
@@ -164,7 +164,7 @@ sub ::_HtmlFinalise {
         sql=|
                 SELECT * FROM annotation
                 WHERE document = '[scratch document]'
-                AND section = '[scratch page_title]'
+                AND section = '[filter op=sql interpolate=1][scratch page_title][/filter]'
         |][sql-change 1][condition]1[/condition]
 <TR>
         <TD BGCOLOR="__BARBG__" COLSPAN=2 ALIGN=center>
