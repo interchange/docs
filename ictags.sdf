@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.23 2001-05-02 02:01:41 bill Exp $
+# $Id: ictags.sdf,v 1.24 2001-05-02 05:20:04 bill Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.23 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.24 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -431,6 +431,7 @@ E<lbracket>{{C[jump="#region"]region}}].
 . E<lbracket>{{C[jump="#sub_PREFIX-data"]PREFIX-data}}]
 . E<lbracket>{{C[jump="#sub_PREFIX-description"]PREFIX-description}}] (Note safe-data and ed( ) escape)
 . E<lbracket>{{C[jump="#sub_PREFIX-discount"]PREFIX-discount}}]
+. E<lbracket>{{C[jump="#sub_PREFIX-discount_subtotal"]PREFIX-discount_subtotal}}]
 . E<lbracket>{{C[jump="#sub_PREFIX-exec"]PREFIX-exec}}] 
 . E<lbracket>{{C[jump="#sub_PREFIX-field"]PREFIX-field}}] (Optimization note-- one query per field if you use this; we optimize around this if only one products table) 
 . E<lbracket>{{C[jump="#sub_PREFIX-filter"]PREFIX-filter}}] (like filter tag but doesn't interpolate)
@@ -662,6 +663,12 @@ that price and the list price (quantity one) price is output. This may have
 different behavior than you expect if you set the [discount] [/discount]
 tag along with quantity pricing.
 
+
+H3: E<lbracket>{{CMD[id="sub_PREFIX-discount_subtotal"]PREFIX-discount_subtotal}}]
+
+Inserts the discounted subtotal of the ordered items.
+
+
 H3: E<lbracket>{{CMD[id="sub_PREFIX-field"]PREFIX-field}}]
 
 Looks up a field value for the current item in one of several places,
@@ -688,6 +695,7 @@ Unless C<foo> is in C<ProductFiles> and the code is not present in a previous
 product file, you will get a blank or some value you don't want. What
 you really want is C<[loop-data foo foo_field]>, which specifically 
 addresses the table C<foo>.
+
 
 H3: E<lbracket>{{CMD[id="sub_PREFIX-increment"]PREFIX-increment}}]
 
@@ -1987,12 +1995,6 @@ B<ASP-like Perl call:>
     $Tag->assign(  { shipping => 2.99, }  );
 !endblock
 
-or similarly with positional parameters,
-
-!block example; lang="Perl"
-    $Tag->assign($NP1, $NP2, $attribute_hash_reference);
-!endblock
-
 H4: See Also
 
 E<lbracket>{{C[jump="#handling"]handling}}],
@@ -2185,49 +2187,183 @@ Displays C<false text> if the value of {key} is blank or zero, and nothing
 otherwise.
 
 
-
-
 H2: banner
+
+Implements random or rotating banner ads.  See also
+{{CMD[jump="ictemplates.html#Banner/Ad rotation"]Banner/Ad rotation}}.
 
 
 H3: Summary
 
-\Parameters: B<category>
+!block example;
+    [B<banner> category I<other_named_attributes>]
+    [B<banner> category=my_category I<other_named_attributes>]
+!endblock
 
-Positional parameters in same order.
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#banner_category"]category}}|<<
+>>|default
+!endblock
 
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#banner_table"]table}}|banner
+{{CMD[jump="#banner_r_field"]r_field}} (unweighted)|rotate
+{{CMD[jump="#banner_b_field"]b_field}}|banner
+{{CMD[jump="#banner_separator"]separator}} (unweighted)|':'
+{{CMD[jump="#banner_delimiter"]delimiter}} (unweighted)|'{or}'
+{{CMD[jump="#banner_weighted"]weighted}}|I<No>
+{{CMD[jump="#banner_once"]once}} (weighted)|I<No>
+{{CMD[jump="#banner_c_field"]c_field}} (weighted)|category
+{{CMD[jump="#banner_w_field"]w_field}} (weighted)|weight
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
 
-B<The attribute hash reference is passed> to the subroutine after
-the parameters as the last argument.
-B<This may mean that there are parameters not shown here.>
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<No>
+Container tag|I<No>
+!endblock
 
-Must pass named parameter interpolate=1 to cause interpolation.
+B<Tag expansion example:>
 
-Invalidates cache: B<no>
-
-Called Routine: 
+!block example
+   [banner category=]
+!endblock
 
 B<ASP-like Perl call:>
 
->    $Tag->banner(
->        {
->         category => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->banner($category, $ATTRHASH);
+!block example; lang="Perl"
+    $Tag->banner(  { category => $key, } );
+!endblock
 
- 
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->banner($category, $attribute_hash_reference);
+!endblock
+
+H4: See Also
+
+{{CMD[jump="ictemplates.html#Banner/Ad rotation"]Banner/Ad rotation}}
 
 H3: Description
 
-The [banner ...] tag is designed to implement random or rotating
-banner displays in your Interchange pages. See the main Interchange documentation,
-section I<Banner/Ad rotation>.
+
+Implements random or rotating banner ads.  See
+{{CMD[jump="ictemplates.html#Banner/Ad rotation"]Banner/Ad rotation}}
+in the Interchange Template documentation.
+
+You will need a banner ad table (typically called 'banner') which
+contains banner data. The following is an N<example:>
+
+!block table; colvaligns="TTTTT"
+code|category|weight|rotate|banner
+m_3|cat1|7|0|my banner 3
+m_1|cat1|1|0|my banner 1
+default|||1|Default 1{or}Default 2{or}Default 3
+m_2|cat1|2|0|my banner 2
+t_1|cat2|4|0|their banner 1
+t_2|cat2|1|0|their banner 2
+!endblock
 
 
+H4: {{CMD[id="banner_category"]category}}
+
+N<Default:> category="default"
+
+This specifies the category for weighted ad, or the table row (i.e.,
+code value) for an unweighted ad.
+
+H4: {{CMD[id="banner_table"]table}}
+
+N<Default:> table="banner"
+
+Setting 'C<table>="my_banner_table"' forces the tag to refer to
+'my_banner_table' rather than the default 'banner' table for banner ad
+information.
+
+
+H4: {{CMD[id="banner_r_field"]r_field}}
+
+N<Default:> r_field="rotate"
+
+Unweighted ads only.
+
+A table row may include multiple banners in the 'banner' column. The
+column specified by r_field contains a boolean that determines whether
+to rotate banners. In the above
+table example, 'DefaultE<nbspace>1', 'DefaultE<nbspace>2' and
+'DefaultE<nbspace>3' would rotate.
+
+
+H4: {{CMD[id="banner_b_field"]b_field}}
+
+N<Default:> b_field="banner"
+
+This specifies the column containing the banner descriptor(s). The
+default is 'banner'.  Note that an entry might be a delimited list of
+banner descriptors to rotate (see
+{{CMD[jump="#banner_delimiter"]delimiter}} below).
+
+H4: {{CMD[id="banner_separator"]separator}}
+
+N<Default:> separator=":"
+
+Unweighted ads only.
+
+This sets the separator within the table key (i.e., code) for
+multi-level categorized ads.  See
+{{CMD[jump="ictemplates.html#Banner/Ad rotation"]Banner/Ad rotation}}.
+
+
+H4: {{CMD[id="banner_delimiter"]delimiter}}
+
+N<Default:> delimiter="{or}"
+
+Unweighted ads only.
+
+This specifies the delimiter between rotating banner descriptors in
+the 'banner' column.
+
+
+H4: {{CMD[id="banner_weighted"]weighted}}
+
+The C<banner> tag will not apply weighting from the table unless you set
+C<weighted>=1.  Note that the tag will behave as if you gave it a
+standard unweighted entryE<nbspace>E<emdash> it will look for a
+matching row rather than a matching category.
+
+H4: {{CMD[id="banner_once"]once}}
+
+Weighted ads only.
+
+If the option once is passed (i.e., [banner once=1 weighted=1], then
+the banners will not be rebuilt until the total_weight file is
+removed.  See {{CMD[jump="ictemplates.html#Banner/Ad rotation"]Banner/Ad rotation}}.
+
+
+H4: {{CMD[id="banner_c_field"]c_field}}
+
+N<Default:> c_field="category"
+
+Weighted ads only.
+
+This specifies the column containing the banner category for weighted
+ads.  The C<banner> tag will display ads from rows in the table whose
+category matches the category given in the tag, with frequency
+corresponding to the weights in the table.
+
+
+H4: {{CMD[id="banner_w_field"]w_field}}
+
+N<Default:> w_field="weight"
+
+Weighted ads only.
+
+This specifies the column containing the banner weight.
 
 
 
@@ -3104,16 +3240,6 @@ Always strips leading and trailing whitespace.
 
 
 
-
-H2: discount_subtotal
-
-
-H3: Description
-
-Inserts the discounted subtotal of the ordered items.
-
-
-
 H2: dump
 
 
@@ -3587,7 +3713,7 @@ Another way to do this would be:
 Filters available include:
 
 
-H4: cgi
+H4: {{CMD[id="filter_op_cgi"]cgi}}
 
 Returns the value of the CGI variable. Useful for starting a filter
 sequence with a seed value.
@@ -3596,7 +3722,7 @@ sequence with a seed value.
 >                    return $CGI::values(shift);
 >                },
 
-H4: digits
+H4: {{CMD[id="filter_op_digits"]digits}}
 
 Returns only digits.
 
@@ -3606,7 +3732,7 @@ Returns only digits.
 >                    return $val;
 >                },
 
-H4: digits_dot
+H4: {{CMD[id="filter_op_digits_dot"]digits_dot}}
 
 Returns only digits and periods, i.e. [.0-9]. Useful for decommifying
 numbers.
@@ -3617,7 +3743,7 @@ numbers.
 >                    return $val;
 >                },
 
-H4: dos
+H4: {{CMD[id="filter_op_dos"]dos}}
 
 Turns linefeeds into carriage-return / linefeed pairs.
 
@@ -3627,7 +3753,7 @@ Turns linefeeds into carriage-return / linefeed pairs.
 >                    return $val;
 >                },
 
-H4: entities
+H4: {{CMD[id="filter_op_entities"]entities}}
 
 Changes C<<> to C<&lt;>, C<"> to C<&quot;>, etc.
 
@@ -3637,7 +3763,7 @@ Changes C<<> to C<&lt;>, C<"> to C<&quot;>, etc.
 
 
 
-H4: gate
+H4: {{CMD[id="filter_op_gate"]gate}}
 
 Performs a security screening by testing to make sure a corresponding
 scratch variable has been set.
@@ -3648,7 +3774,7 @@ scratch variable has been set.
 >                    return $val;
 >                },
 
-H4: lc
+H4: {{CMD[id="filter_op_lc"]lc}}
 
 Lowercases the text.
 
@@ -3656,7 +3782,7 @@ Lowercases the text.
 >                    return lc(shift);
 >                },
 
-H4: lookup
+H4: {{CMD[id="filter_op_lookup"]lookup}}
 
 Looks up an item in a database based on the passed table and
 column. Call would be:
@@ -3670,7 +3796,7 @@ This would be the equivalent of [data table=country column=name key=US].
 >                        return tag_data($table, $column, $val) || $val;
 >                },
 
-H4: mac
+H4: {{CMD[id="filter_op_mac"]mac}}
 
 Changes newlines to carriage returns.
 
@@ -3680,7 +3806,7 @@ Changes newlines to carriage returns.
 >                    return $val;
 >                },
 
-H4: name
+H4: {{CMD[id="filter_op_name"]name}}
 
 Transposes a LAST, First name pair.
 
@@ -3691,7 +3817,7 @@ Transposes a LAST, First name pair.
 >                    return "$first $last";
 >                },
 
-H4: namecase
+H4: {{CMD[id="filter_op_namecase"]namecase}}
 
 Namecases the text. Only works on values that are uppercase in the first
 letter, i.e. [filter op=namecase]LEONARDO da Vinci[/filter] will return
@@ -3703,7 +3829,7 @@ letter, i.e. [filter op=namecase]LEONARDO da Vinci[/filter] will return
 >                    return $val;
 >                },
 
-H4: no_white
+H4: {{CMD[id="filter_op_no_white"]no_white}}
 
 Strips all whitespace.
 
@@ -3713,7 +3839,7 @@ Strips all whitespace.
 >                    return $val;
 >                },
 
-H4: pagefile
+H4: {{CMD[id="filter_op_pagefile"]pagefile}}
 
 Strips leading slashes and dots.
 
@@ -3722,7 +3848,7 @@ Strips leading slashes and dots.
 >                    return $_[0];
 >                },
 
-H4: sql
+H4: {{CMD[id="filter_op_sql"]sql}}
 
 Change single-quote characters into doubled versions, i.e. ' becomes ''.
 
@@ -3732,7 +3858,7 @@ Change single-quote characters into doubled versions, i.e. ' becomes ''.
 >                    return $val;
 >                },
 
-H4: strip
+H4: {{CMD[id="filter_op_strip"]strip}}
 
 Strips leading and trailing whitespace.
 
@@ -3743,7 +3869,7 @@ Strips leading and trailing whitespace.
 >                    return $val;
 >                },
 
-H4: text2html
+H4: {{CMD[id="filter_op_text2html"]text2html}}
 
 Rudimentary HTMLizing of text.
 
@@ -3755,7 +3881,7 @@ Rudimentary HTMLizing of text.
 >                },
 
 
-H4: uc
+H4: {{CMD[id="filter_op_uc"]uc}}
 
 Uppercases the text.
 
@@ -3763,7 +3889,7 @@ Uppercases the text.
 >                    return uc(shift);
 >                },
 
-H4: unix
+H4: {{CMD[id="filter_op_unix"]unix}}
 
 Removes those crufty carriage returns.
 
@@ -3773,7 +3899,7 @@ Removes those crufty carriage returns.
 >                    return $val;
 >                },
 
-H4: urlencode
+H4: {{CMD[id="filter_op_urlencode"]urlencode}}
 
 Changes non-word characters (except colon) to %3c notation.
 
@@ -3783,7 +3909,7 @@ Changes non-word characters (except colon) to %3c notation.
 >                    return $val;
 >                },
 
-H4: value
+H4: {{CMD[id="filter_op_value"]value}}
 
 Returns the value of the user session variable. Useful for starting a filter
 sequence with a seed value.
@@ -3792,7 +3918,7 @@ sequence with a seed value.
 >                    return $::Values->(shift);
 >                },
 
-H4: word
+H4: {{CMD[id="filter_op_word"]word}}
 
 Only returns word characters. Locale does apply if collation is properly set.
 
@@ -4150,8 +4276,6 @@ B<ASP-like Perl call:>
 H3: Description
 
 B<NO Description>
-
-
 
 
 H2: if
@@ -10145,6 +10269,3 @@ to|mv_sort_option
 un|mv_unique
 va|mv_value
 !endblock
-
-
-
