@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.93 2002-07-26 23:23:03 kwalsh Exp $
+# $Id: ictags.sdf,v 1.94 2002-07-27 00:48:10 kwalsh Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.93 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.94 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -771,8 +771,8 @@ the search result, but by setting those parameters you can return
 whichever columns you wish.
 
 E<lbracket>PREFIX-pos N] outputs the data from the I<N>th column as returned
-(starting with 0).
-E<lbracket>{{C[jump="#PREFIX-param"]prefix-param}}] lets you access the data
+(starting with zero).
+E<lbracket>{{C[jump="#PREFIX-param"]PREFIX-param}}] lets you access the data
 by column name instead of by number.
 
 In a E<lbracket>query ...] ITL tag you can select multiple return fields with
@@ -785,8 +785,18 @@ something like:
 In this case, E<lbracket>{{C[jump="#PREFIX-code"]prefix-code}}]
 and E<lbracket>{{C[jump="#PREFIX-param"]prefix-param}} foo] are synonyms,
 as C<foo> is the first returned parameter and becomes the code for this row.
-Another synonym is [prefix-pos 0]; and [prefix-pos 1] is the same as
-E<lbracket>{{C[jump="#PREFIX-param"]prefix-param}} bar].
+Another synonym is [prefix-pos 0].  [prefix-pos 1] is the same as
+E<lbracket>{{C[jump="#PREFIX-param"]prefix-param}} bar].  The following code
+will produce exactly the same output as the above:
+
+>    [query prefix=prefix sql="select foo, bar from baz where foo='buz'"]
+>        [prefix-pos 0]  [prefix-pos 0]  [prefix-pos 1]
+>    [/query]
+
+Note that if you use the [PREFIX-pos] tag, you may have to review your column
+numbers whenever you modify the columns you select.  For this reason, queries
+that make use of the E<lbracket>{{C[jump="#PREFIX-param"]PREFIX-param}}] tag
+may be easier to maintain and will be less prone to future surprises.
 
 H2: PREFIX-price
 
