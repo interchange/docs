@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.18 2001-04-02 05:50:07 bill Exp $
+# $Id: ictags.sdf,v 1.19 2001-04-11 10:41:53 bill Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.18 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.19 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -413,7 +413,6 @@ Similarly to use a hash reference for the 'entry' attribute:
 !endblock
 
 
-
 H2: Looping tags and Sub-tags
 
 {{CMD[id="subtags"]}}
@@ -424,29 +423,36 @@ E<lbracket>{{C[jump="#item_list"]item-list}}],
 E<lbracket>{{C[jump="#query"]query}}], or
 E<lbracket>{{C[jump="#region"]region}}].
 
-. E<lbracket>{{C[jump="#sub_PREFIX-accessories"]PREFIX-accessories}}E<rbracket>
-. E<lbracket>{{C[jump="#sub_PREFIX-alternate"]PREFIX-alternate}}E<rbracket>
-. E<lbracket>{{C[jump="#sub_PREFIX-calc"]PREFIX-calc}}E<rbracket>
-. E<lbracket>{{C[jump="#sub_PREFIX-change"]PREFIX-change}}E<rbracket>
-. E<lbracket>{{C[jump="#sub_PREFIX-change"]PREFIX-change}}E<rbracket>
-. E<lbracket>{{C[jump="#sub_PREFIX-code"]PREFIX-code}}E<rbracket>
-. E<lbracket>{{C[jump="#sub_PREFIX-data"]PREFIX-data}}E<rbracket>
-. E<lbracket>{{C[jump="#sub_PREFIX-description"]PREFIX-description}}E<rbracket>
-. E<lbracket>{{C[jump="#sub_PREFIX-discount"]PREFIX-discount}}E<rbracket>
-. E<lbracket>{{C[jump="#sub_PREFIX-field"]PREFIX-field}}E<rbracket>
-. E<lbracket>{{C[jump="#sub_PREFIX-increment"]PREFIX-increment}}E<rbracket>
-. E<lbracket>{{C[jump="#sub_PREFIX-last"]PREFIX-last}}E<rbracket>
-. E<lbracket>{{C[jump="#sub_PREFIX-match"]PREFIX-match}}E<rbracket>
-. E<lbracket>{{C[jump="#sub_PREFIX-modifier"]PREFIX-modifier}}E<rbracket>
-. E<lbracket>{{C[jump="#sub_PREFIX-next"]PREFIX-next}}E<rbracket>
-. E<lbracket>{{C[jump="#sub_PREFIX-param"]PREFIX-param}}E<rbracket>
-. E<lbracket>{{C[jump="#sub_PREFIX-price"]PREFIX-price}}E<rbracket>
-. E<lbracket>{{C[jump="#sub_PREFIX-quantity"]PREFIX-quantity}}E<rbracket>
-. E<lbracket>{{C[jump="#sub_PREFIX-subtotal"]PREFIX-subtotal}}E<rbracket>
-. E<lbracket>{{C[jump="#sub_if-PREFIX-data"]if-PREFIX-data}}E<rbracket>
-. E<lbracket>{{C[jump="#sub_if-PREFIX-field"]if-PREFIX-field}}E<rbracket>
-. E<lbracket>{{C[jump="#sub_modifier-name"]modifier-name}}E<rbracket>
-. E<lbracket>{{C[jump="#sub_quantity-name"]quantity-name}}E<rbracket>
+. E<lbracket>{{C[jump="#sub_PREFIX-accessories"]PREFIX-accessories}}]
+. E<lbracket>{{C[jump="#sub_PREFIX-alternate"]PREFIX-alternate}}]
+. E<lbracket>{{C[jump="#sub_PREFIX-calc"]PREFIX-calc}}]
+. E<lbracket>{{C[jump="#sub_PREFIX-change"]PREFIX-change}}]
+. E<lbracket>{{C[jump="#sub_PREFIX-code"]PREFIX-code}}]
+. E<lbracket>{{C[jump="#sub_PREFIX-data"]PREFIX-data}}]
+. E<lbracket>{{C[jump="#sub_PREFIX-description"]PREFIX-description}}] (Note safe-data and ed( ) escape)
+. E<lbracket>{{C[jump="#sub_PREFIX-discount"]PREFIX-discount}}]
+. E<lbracket>{{C[jump="#sub_PREFIX-exec"]PREFIX-exec}}] 
+. E<lbracket>{{C[jump="#sub_PREFIX-field"]PREFIX-field}}] (Optimization note-- one query per field if you use this; we optimize around this if only one products table) 
+. E<lbracket>{{C[jump="#sub_PREFIX-filter"]PREFIX-filter}}] (like filter tag but doesn't interpolate)
+. E<lbracket>{{C[jump="#sub_PREFIX-increment"]PREFIX-increment}}]
+. E<lbracket>{{C[jump="#sub_PREFIX-last"]PREFIX-last}}]
+. E<lbracket>{{C[jump="#sub_PREFIX-line"]PREFIX-line}}] (tab-delimited list of parameters returned, can do tail-slice)
+. E<lbracket>{{C[jump="#sub_PREFIX-match"]PREFIX-match}}]
+. E<lbracket>{{C[jump="#sub_PREFIX-modifier"]PREFIX-modifier}}]
+. E<lbracket>{{C[jump="#sub_PREFIX-next"]PREFIX-next}}]
+. E<lbracket>{{C[jump="#sub_PREFIX-param"]PREFIX-param}}]
+. E<lbracket>{{C[jump="#sub_PREFIX-options"]PREFIX-options}}]
+. E<lbracket>{{C[jump="#sub_PREFIX-price"]PREFIX-price}}]
+. E<lbracket>{{C[jump="#sub_PREFIX-quantity"]PREFIX-quantity}}]
+. E<lbracket>{{C[jump="#sub_PREFIX-sub"]PREFIX-sub}}]
+. E<lbracket>{{C[jump="#sub_PREFIX-subtotal"]PREFIX-subtotal}}]
+. E<lbracket>{{C[jump="#sub_if-PREFIX-data"]if-PREFIX-data}}]
+. E<lbracket>{{C[jump="#sub_if-PREFIX-field"]if-PREFIX-field}}]
+. E<lbracket>{{C[jump="#sub_if-PREFIX-param"]if-PREFIX-param}}]
+. E<lbracket>{{C[jump="#sub_if-PREFIX-modifier"]if-PREFIX-modifier}}] (hash list only)
+. E<lbracket>{{C[jump="#sub_if-PREFIX-pos"]if-PREFIX-pos}}]
+. E<lbracket>{{C[jump="#sub_modifier-name"]modifier-name}}]
+. E<lbracket>{{C[jump="#sub_quantity-name"]quantity-name}}]
 
 PREFIX represents the prefix that is used in that looping tag.
 They are only interpreted within their container and only accept
@@ -464,7 +470,7 @@ Sub-tag behavior is consistent among the looping tags.
 
 There are two types of looping lists; ARRAY and HASH.
 
-An array list is the normal output of a E<lbracket>{{C[jump="#query"]query}}E<rbracket>, a search, or a E<lbracket>{{C[jump="#loop"]loop}}E<rbracket>
+An array list is the normal output of a E<lbracket>{{C[jump="#query"]query}}], a search, or a E<lbracket>{{C[jump="#loop"]loop}}]
 tag. It returns from 1 to N C<return fields>, defined in the C<mv_return_fields>
 or C<rf> variable or implicitly by means of a SQL field list. The two 
 queries below are essentially identical:
@@ -524,12 +530,33 @@ Now the data structure will look like:
 >        { foo => 'fooN', bar => 'barN' },
 >    ]
 
+H3: Parse Order
+
+Subtags are parsed during evaluation of the enclosing loop, I<before>
+any regular tags within the loop 
+
+
+
 
 H3: E<lbracket>{{CMD[id="sub_PREFIX-accessories"]PREFIX-accessories}} arglist]
 
-The same as the [accessories ...] tag except always supplied the current item
-code. If the list is a hash list, i.e. an [item-list], then the value of
+Except for the usual differences that apply to all subtags (such as
+parsing order), these are more or less equivalent for an array-type
+N<list:>
+
+!block example
+   [accessories code=I<current_item_code> arg=I<arglist>]
+   [item-accessories I<arglist>]
+!endblock
+
+See the {{C[jump="#accessories"]accessories}} tag for more
+detail. Note that you must use the comma-delimited list to set
+attributesE<nbspace>E<emdash> you cannot set named attributes with the
+usual 'attribute=value' syntax.
+
+If the list is a hash list, i.e. an [item-list], then the value of
 the current item hash is passed so that a value default can be established.
+
 
 H3: E<lbracket>{{CMD[id="sub_PREFIX-alternate"]PREFIX-alternate}} N] DIVISIBLE [else] NOT DIVISIBLE [/else][/PREFIX-alternate]
 
@@ -665,7 +692,7 @@ addresses the table C<foo>.
 H3: E<lbracket>{{CMD[id="sub_PREFIX-increment"]PREFIX-increment}}]
 
 The current count on the list, starting from either 1 in a zero-anchored
-list like E<lbracket>{{C[jump="#loop"]loop}}E<rbracket> or E<lbracket>{{C[jump="#item_list"]item-list}}E<rbracket>, or from the match count in a
+list like E<lbracket>{{C[jump="#loop"]loop}}] or E<lbracket>{{C[jump="#item_list"]item-list}}], or from the match count in a
 search list.
 
 If you skip items with [PREFIX-last] or [PREFIX-next], the count is NOT
@@ -688,7 +715,7 @@ zero) then this item is skipped.
 
 H3: E<lbracket>{{CMD[id="sub_PREFIX-param"]PREFIX-param}} name]
 
-H3: E<lbracket>{{CMD[id="sub_PREFIX-param"]PREFIX-param}} N]
+H3: E<lbracket>{{CMD[id="sub_PREFIX-param"]PREFIX-pos}} N]
 
 Returns the array parameter associated with the looping tag row. Each
 looping list returns an array of C<return fields>, set in searches with
@@ -775,21 +802,21 @@ sub-tags are described in C<Sub-tags>.
 
 H2: accessories
 
-Allows access to Interchange's product option attributes (e.g., to
-choose or access product options such as a shirt's size or color).
+A swiss-army-knife widget builder, this provides access to
+Interchange's product option attributes (e.g., to choose or access
+product options such as a shirt's size or color).
 
-Can build selection objects (radio, check, select boxes, etc) or
-forms, or can simply return a value.
+Can build selection objects (radio, check, select boxes, etc), forms
+or hyperlinks, or can simply return a value.
 
-Or moreE<nbspace>E<emdash> see also {{CMD[jump="#Item_Attributes"]Item_Attributes}} and
-{{CMD[jump="#subtags"]Looping tags and Sub-tags}}.
+Or moreE<nbspace>E<emdash> see also {{CMD[jump="#Looping tags and Sub-tags"]Looping tags and Sub-tags}}.
 
 
 H3: Summary
 
 !block example;
     [B<accessories> code arg I<other_named_attributes>]
-    [B<accessories> code=[[EXAMPLE_SKU]] arg="size, radio, ... " I<other_named_attributes>]
+    [B<accessories> code=[[EXAMPLE_SKU]] arg="size, radio, ... " I<other_named_attributes>] I<depreciated>
     [B<accessories> code=[[EXAMPLE_SKU]] attribute=size type=radio ... I<other_named_attributes>]
 !endblock
 
@@ -802,48 +829,49 @@ Value of the master key in the product (or specified other) table
 Positionally interpreted comma-delimited list of values for the
 following N<attributes:>
 . "attribute, type, column, table, name, outboard, passed"
-. {{}}
-* These may also be set individually as separate named attributes
-* See {{CMD[jump="#Item_Attributes"]Item Attributes}} for detail
 >>|I<none>
 !endblock
 
 !block table; colvaligns="TT"
 Attributes|Default
 {{CMD[jump="#accessories_attribute"]attribute}}|I<none>
-{{CMD[jump="#accessories_type"]type}}|select
-{{CMD[jump="#accessories_column"]column}}|I<none>
+<<
+{{CMD[jump="#accessories_type"]type}}
+. One of select, value, text, textarea, hidden, password, combo,
+move_combo, reverse_combo, show, options, labels, checkbox, radio, links
+>>|select
+{{CMD[jump="#accessories_column"]column}}|I<attribute>
 {{CMD[jump="#accessories_table"]table}}|products
-{{CMD[jump="#accessories_name"]name}}|I<none>
+{{CMD[jump="#accessories_name"]name}}|mv_order_I<attribute>
 {{CMD[jump="#accessories_outboard"]outboard}}|I<none>
 {{CMD[jump="#accessories_passed"]passed}}|I<none>
-key (alias for C<code>)|I<see code parameter above>
-row (alias for C<code>)|I<see code parameter above>
-{{CMD[jump="#accessories_table"]base}} (alias for C<table>)|I<see table>
-{{CMD[jump="#accessories_table"]database}} (alias for C<table>)|I<see table>
-{{CMD[jump="#accessories_table"]db}} (alias for C<table>)|I<see table>
-{{CMD[jump="#accessories_column"]col (alias for C<column>}}|I<see column>
-{{CMD[jump="#accessories_column"]field}} (alias for C<column>}}|I<see column>
+{{CMD[jump="#accessories_code"]key}} (alias for code)|I<none>
+{{CMD[jump="#accessories_code"]row}} (alias for code)|I<none>
+{{CMD[jump="#accessories_table"]base}} (alias for C<table>)|products
+{{CMD[jump="#accessories_table"]database}} (alias for C<table>)|products
+{{CMD[jump="#accessories_table"]db}} (alias for C<table>)|products
+{{CMD[jump="#accessories_column"]col (alias for C<column>}}|I<attribute>
+{{CMD[jump="#accessories_column"]field}} (alias for C<column>}}|I<attribute>
+{{CMD[jump="#accessories_delimiter"]delimiter}}|comma (',')
 {{CMD[jump="#accessories_prepend"]prepend}}|I<none>
 {{CMD[jump="#accessories_append"]append}}|I<none>
-{{CMD[jump="#accessories_delimiter"]delimiter}}|I<none>
-{{CMD[jump="#accessories_item"]item}}|I<none>
 {{CMD[jump="#accessories_extra"]extra}}|I<none>
 {{CMD[jump="#accessories_js"]js}}|I<none>
-{{CMD[jump="#accessories_rows"]rows}}|I<none>
-{{CMD[jump="#accessories_cols"]cols}}|I<none>
+{{CMD[jump="#accessories_rows"]rows}}|I<varies with >C<type>I<; often> 4
+{{CMD[jump="#accessories_cols"]cols}}|I<varies with >C<type>I<; often> 40
 {{CMD[jump="#accessories_width"]width}}|I<none>
 {{CMD[jump="#accessories_default"]default}}|I<none>
 {{CMD[jump="#accessories_price"]price}}|I<none>
-{{CMD[jump="#accessories_contains"]contains}} (C<type> = radio or checkbox)|I<none>
-{{CMD[jump="#accessories_joiner"]joiner}} (C<type> = hyperlink)|I<none>
-{{CMD[jump="#accessories_href"]href}} (C<type> = hyperlink)|I<none>
-{{CMD[jump="#accessories_template"]template}} (C<type> = hyperlink)|I<none>
-{{CMD[jump="#accessories_selected_begin"]selected_begin}} (C<type> = hyperlink)|I<none>
-{{CMD[jump="#accessories_form"]form}} (C<type> = hyperlink)|I<none>
-{{CMD[jump="#accessories_empty"]empty}} (C<type> = hyperlink)|I<none>
-{{CMD[jump="#accessories_secure"]secure}} (C<type> = hyperlink)|I<none>
-{{CMD[jump="#accessories_new"]new}} (C<type> = combo or reverse_combo)|I<none>
+{{CMD[jump="#accessories_price"]price_data}}|I<none>
+{{CMD[jump="#accessories_contains"]contains}} (C<type>=radio or check)|I<none>
+{{CMD[jump="#accessories_joiner"]joiner}} (C<type>=links)|I<none>
+{{CMD[jump="#accessories_href"]href}} (C<type>=links)|I<none>
+{{CMD[jump="#accessories_template"]template}} (C<type>=links)|I<none>
+{{CMD[jump="#accessories_selected_begin"]selected_begin}} (C<type>=links)|I<none>
+{{CMD[jump="#accessories_form"]form}} (C<type>=links)|C<mv_action=return>
+{{CMD[jump="#accessories_empty"]empty}} (C<type>=links)|I<none>
+{{CMD[jump="#accessories_secure"]secure}} (C<type>=links)|I<none>
+{{CMD[jump="#accessories_new"]new}}|I<none>
 {{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
 !endblock
 
@@ -851,38 +879,24 @@ row (alias for C<code>)|I<see code parameter above>
 A|B
 Other_Charactreristics|
 Invalidates cache|I<No>
-Has Subtags|I<No>
 Container tag|I<No>
+Has Subtags|I<No>
 !endblock
 
 B<Tag expansion example:>
 
 !block example
     E<lbracket>accessories os28044 size]
-
+---------------------------------------------------------------
     <SELECT NAME="mv_order_size"><OPTION VALUE="10oz">10oz\
     <OPTION VALUE="15oz">15oz<OPTION VALUE="20oz">20oz</SELECT>
 !endblock
-
-The following will search the product database for a field named "color". If
-an entry "beige=Almond, gold=Harvest Gold, White*, green=Avocado" is found,
-a select box like this will be built:
-
-!block example
-    <SELECT NAME="mv_order_color">
-    <OPTION VALUE="beige">Almond
-    <OPTION VALUE="gold">Harvest Gold
-    <OPTION SELECTED>White
-    <OPTION VALUE="green">Avocado
-    </SELECT>
-!endblock
-
 
 B<ASP-like Perl call:>
 
 !block example; lang='Perl'
     $Tag->accessories(  { code   => '[[EXAMPLE_SKU]]',
-                          arg    => 'color, radio,'
+                          arg    => 'color, radio'
                           table  => 'special_products', }  );
 !endblock
 
@@ -895,299 +909,357 @@ or similarly with positional parameters,
 H4: See Also
 
 {{CMD[jump="#Item_Attributes"]Item Attributes}} and
-{{CMD[jump="#subtags"]Looping tags and Sub-tags}}.
+{{CMD[jump="#Looping tags and Sub-tags"]Looping tags and Sub-tags}}.
 
 
 H3: Description
 
+This is the swiss-army-knife widget builder for providing access to
+Interchange's product option attributes (e.g., to choose or access
+product options such as a shirt's size or color).
 
-Allows access to Interchange's product option attributes (e.g., to
-choose or access product options such as a shirt's size or color).
+Interchange allows you to choose item attribute values for each ordered
+itemE<nbspace>E<emdash> you can attach a size, color, or other
+modifier to a line item in the shopping cart. You can also resubmit
+previous attribute values via hidden fields on a form.
 
-If passed any of the optional arguments, initiates special processing
-of item attributes based on entries in the product database.
-
-Interchange allows item attributes to be set for each ordered item. This
-allows a size, color, or other modifier to be attached to a line
-item in the shopping cart. Previous attribute values can be resubmitted
-by means of a hidden field on a form.
-
-The C<catalog.cfg> file directive I<UseModifier> is used to set
+The C<catalog.cfg> file directive {{I[jump="icconfig.html#UseModifier"]UseModifier}} is used to set
 the name of the modifier or modifiers. For example
 
->    UseModifier        size color
+E:    {{C[jump="icconfig.html#UseModifier"]UseModifier}}        size color
 
 will attach both a size and color attribute to each item code that
 is ordered.
 
-B<IMPORTANT NOTE:> You may not use the following names for attributes:
+!block note; label="Important Note -- "
+You may not use the following names for attributes:
 
->    item  group  quantity  code  mv_ib  mv_mi  mv_si
+    item  group  quantity  code  mv_ib  mv_mi  mv_si
+!endblock
 
-You can also set it in scratch with the mv_UseModifier
-scratch variableE<nbspace>E<emdash> C<[set mv_UseModifier]size color[/set]> has the
-same effect as above. This allows multiple options to be set for
-products. Whichever one is in effect at order time will be used.
-Be careful, you cannot set it more than once on the same page.
-Setting the C<mv_separate_items> or global directive I<SeparateItems>
-places each ordered item on a separate line, simplifying attribute
-handling. The scratch setting for C<mv_separate_items> has the same
-effect.
+You can also set modifier names with the mv_UseModifier
+scratch variableE<nbspace>E<emdash> E<lbracket>{{C[jump="#set"]set}}
+mv_UseModifier]size colorE<lbracket>/set] has the same effect as
+above. This allows multiple options to be set for products. Whichever
+one is in effect at order time will be used. Be careful; you cannot
+set it more than once on the same page. Setting the
+C<mv_separate_items> or global directive I<SeparateItems> places each
+ordered item on a separate line, simplifying attribute handling. The
+scratch setting for C<mv_separate_items> has the same effect.
 
-The modifier value is accessed in the E<lbracket>{{C[jump="#item_list"]item-list}}E<rbracket> loop with the
+The modifier value is accessed in the E<lbracket>{{C[jump="#item_list"]item-list}}] loop with the
 C<[item-param attribute]> tag, and form input fields are placed with the
 C<[modifier-name attribute]> tag. This is similar to the way that quantity
 is handled.
 
-\NOTE: You must be sure that no fields in your forms have digits appended to
+!block note; label="Note: "
+You must be sure that no fields in your forms have digits appended to
 their names if the variable is the same name as the attribute name you
 select, as the C<[modifier-name size]> variables will be placed in the
 user session as the form variables size0, size1, size2, etc.
+!endblock
 
-Interchange will automatically generate the select boxes
-when the C<[accessories <code> size]> or C<[item-accessories size]>
-tags are called. They have the syntax:
+Interchange will automatically generate the select boxes when the
+E<lbracket>C<accessories>E<nbspace>code=[[EXAMPLE_SKU]]E<nbspace>attribute=size]
+or C<[item-accessories size]> tags are called. They have the syntax:
 
->   [item_accessories attribute, type*, column*, table*, name*, outboard*]
->
->   [accessories code=sku
->                attribute=modifier
->                type="select|radio|display|show|checkbox|text|textarea"*
->                column=column_name*
->                table=db_table*
->                name=varname
->                outboard=key
->                passed="value=label, value2, value3=label 3" ]
+!block example
+   [item-accessories attribute, type, column, table, name, outboard, passed]
 
->   [accessories js=| onChange="set_description(simple_options, variant)"; |
->                type=select
->                name="[item-param o_group]"
->                passed="=--choose--,[item-param o_value]"
->   ]
+   [accessories code=sku
+                attribute=modifier
+                type=select
+                column=db_table_column_name
+                table=db_table
+                name=varname
+                outboard=key
+                passed="value=label, value2*, value3=label 3" ]
 
+   [accessories js=| onChange="set_description(simple_options, variant)"; |
+                type=select
+                name="[item-param o_group]"
+                passed="=--choose--,[item-param o_value]" ]
+!endblock
+
+!block note; label="Notes: "
+
+^ The '{{C[jump="#accessories_attribute"]attribute}}' attribute is required.
++ See the {{C[jump="#accessories_type"]type}} attribute for a list of types.
++ The trailing '*' in value2 will mark it as the default ('SELECTED')
+value in the select widget (see below).
+!endblock
+
+When called with an attribute, the database is consulted and looks for
+a comma-separated list of item attribute options. They take the form:
+
+E:   name_a=Label Text1, default_name=Default Label Text*, name_b, I<etc.>
+
+The label text is optionalE<nbspace>E<emdash> if none is given, the B<name> will
+be used (as in 'name_b' above).
+
+If an asterisk is the last character of the label text, the item is
+the default selection. If no default is specified, the first will be
+the default. An example:
+
+E:    [item-accessories color]
+
+This will search the product database for a field named "color". If
+an entry "beige=Almond, gold=Harvest Gold, White*, green=Avocado" is found,
+a select box like this will be built:
+
+!block example
+    <SELECT NAME="mv_order_color">
+    <OPTION VALUE="beige">Almond
+    <OPTION VALUE="gold">Harvest Gold
+    <OPTION SELECTED>White
+    <OPTION VALUE="green">Avocado
+    </SELECT>
+!endblock
+
+In combination with the C<mv_order_item> and C<mv_order_quantity>
+session variables, you can use this to allow a customer to enter an
+item attribute during an order.
+
+If used in an item list, and the user has changed the value, the generated
+select box will automatically retain the current value the user has selected.
+
+The value can then be displayed with E<lbracket>{{C[jump="#item_modifier"]item-modifier}} color] on the
+order report, order receipt, or any other page containing an
+E<lbracket>{{C[jump="#item_list"]item-list}}]. 
+
+H4: Emulating with a loop
+
+You can also build widgets directly, without using the C<accessories>
+tag. You may have to do so if you need more control of the content
+than the tag offers. Below is a fragment from a shopping basket
+display form which shows a selectable size with "sticky" setting and a
+price that changes based upon the modifier setting. (Note that this
+example would normally be contained within the
+E<lbracket>{{C[jump="#item_list"]item_list}}]C<[/item-list]> pair.)
+
+!block example
+    <SELECT NAME="[modifier-name size]">
+    [loop option="[modifier-name size]" list="S, M, L, XL"]
+    <OPTION> [loop-code] -- [price code="[item-code]" size="[loop-code]"]
+    [/loop]
+    </SELECT>
+!endblock
+
+The output of the above would be similar to the output of
+E<lbracket>item-accessories size, select] if the product database
+field C<size> contained the value C<S, M, L, XL>.  The difference is
+that the options in the loop emulation show the adjusted price in
+addition to the size within each option value.
+
+H4: {{CMD[id="accessories_hash_lists"]Hash Lists}} E<emdash> Technical Note
+
+As a technical note, some of the features of this tag work differently
+depending on whether it was called with an '$item' hash reference, for
+example, as E<lbracket>C<item-accessories>] within an
+E<lbracket>{{C[jump="#item_list"]item-list}}].
+
+In this context, the tag will have access to ancillary data from the
+item (including, perhaps, a user's chosen item attribute value).  For
+example, if building a TEXTAREA widget within an
+E<lbracket>{{C[jump="#item_list"]item-list}}], the widget will show
+the chosen item attribute value.  On the other hand, within an array
+list such as a E<lbracket>{{C[jump="#search_list"]search-list}}] in a
+E<lbracket>{{C[jump="#search_region"]search-region}}], the widget
+would be empty.
+
+If you really know what you're doing, you can pass it the item hash
+reference within a {{C[jump="#perl"]perl}} tag like this:
+
+!block example; lang="Perl"
+   $Tag->accessories( $code,
+                      undef,                      # 'arg' parameter value
+                      $named_attribute_hashref,
+                      $item_hashref );
+!endblock
+
+See also {{C[jump="#Looping tags and Sub-tags"]LoopingE<nbspace>tagsE<nbspace>andE<nbspace>Sub-tags}} for
+information about hash- and array-context in looping tags.
 
 
 H4: {{CMD[id="accessories_code"]code}}
 
-This is the master key (usually SKU) of the specified table, or the
-products table by default. The C<code> argument is implicit if looping
-on E<lbracket>item_accessories]. 
+This is the master key of the specified table (commonly sku in a
+product table). If no table is specified, the tag uses the products
+table by default.
+
+You should not specify a C<code> when looping on
+E<lbracket>item_accessories] because it internally sets 'C<code>' to
+the key for the current item in the loop.
 
 
 H4:  {{CMD[id="accessories_arg"]arg}}
 
-The optional C<arg> argument
+B<Depreciated after Interchange 4.6>
+
+This allows you to pass values for some of the more commonly used
+attributes in the manner of the E<lbracket>C<PREFIX-accessories>] tag,
+as a comma-delimited positional N<list:>
+
+E:  B<arg>="attribute, type, column, table, name, outboard, passed"
+
+Whitespace within the list is optional.
+
+If you leave out one or more of the above attributes, be sure to keep
+the comma(s) if you are setting anything after it in the N<list:>
+
+E:  B<arg>="attribute, type, , table"
+
+The above examples show the attribute names for clarity; you would
+actually use the values.  Hence, the previous example might actually
+be something like the N<following:>
+
+E:  B<arg>="color, radio, , products"
+
+Although you must use such a comma-delimited list to pass attributes
+to the E<lbracket>C<PREFIX-accessories>] tag, please use named
+attributes instead for the E<lbracket>C<accessories>] tag. The
+'C<arg>' attribute is depreciated.
+
+For detail about a specific attribute, please see its subheading below.
 
 
 H4: {{CMD[id="accessories_attribute"]attribute}}
 
+Despite the name, this has nothing to do with tag attributes.  You can
+set attributes for I<items> in a database table (typically the products
+table) with the {{C[jump="icconfig.html#UseModifier"]UseModifier}}
+configuration directive. Typical are C<size> or C<color>.
 
+This selects the item attribute the tag will work with.
 
 H4: {{CMD[id="accessories_type"]type}}
 
-
-
-H4: {{CMD[id="accessories_column"]column}}
-
-
-
-H4: {{CMD[id="accessories_table"]table}}
-
-
-
-H4: {{CMD[id="accessories_name"]name}}
-
-
-
-H4: {{CMD[id="accessories_outboard"]outboard}}
-
-
-
-H4: {{CMD[id="accessories_passed"]passed}}
-
-
-
-H4: {{CMD[id="accessories_prepend"]prepend}}
-
-
-
-H4: {{CMD[id="accessories_append"]append}}
-
-
-
-H4: {{CMD[id="accessories_delimiter"]delimiter}}
-
-
-
-H4: {{CMD[id="accessories_item"]item}}
-
-
-
-H4: {{CMD[id="accessories_extra"]extra}}
-
-
-
-H4: {{CMD[id="accessories_js"]js}}
-
-
-
-H4: {{CMD[id="accessories_rows"]rows}}
-
-
-
-H4: {{CMD[id="accessories_cols"]cols}}
-
-
-
-H4: {{CMD[id="accessories_width"]width}}
-
-
-
-H4: {{CMD[id="accessories_default"]default}}
-
-
-
-H4: {{CMD[id="accessories_price"]price}}
-
-
-
-H4: {{CMD[id="accessories_contains"]contains}} (C<type> = radio or checkbox)
-
-
-
-H4: {{CMD[id="accessories_joiner"]joiner}} (C<type> = hyperlink)
-
-
-
-H4: {{CMD[id="accessories_href"]href}} (C<type> = hyperlink)
-
-
-
-H4: {{CMD[id="accessories_template"]template}} (C<type> = hyperlink)
-
-
-
-H4: {{CMD[id="accessories_selected_begin"]selected_begin}} (C<type> = hyperlink)
-
-
-
-H4: {{CMD[id="accessories_form"]form}} (C<type> = hyperlink)
-
-
-
-H4: {{CMD[id="accessories_empty"]empty}} (C<type> = hyperlink)
-
-
-
-H4: {{CMD[id="accessories_secure"]secure}} (C<type> = hyperlink)
-
-
-
-H4: {{CMD[id="accessories_new"]new}} (C<type> = combo or reverse_combo)
-
-
-H4: Examples
-
-B<Tag expansion example:>
-
-!block example
-   [accessories code="os28044"
-                type=radio
-           attribute=size
-               table=products]
----
-   <INPUT TYPE="radio" NAME="mv_order_size" VALUE="10oz" >&nbsp;10oz
-   <INPUT TYPE="radio" NAME="mv_order_size" VALUE="15oz" >&nbsp;15oz
-   <INPUT TYPE="radio" NAME="mv_order_size" VALUE="20oz" >&nbsp;20oz
-!endblock
-
-Positional call example:
-
->    [accessories code arg]
-
-Named call example:
-
->    [accessories code=[[EXAMPLE_SKU]] arg=color]
-
-
-
-
-H4: code
-
-Not needed for item-accessories, this is the product code of the item to
-reference.
- 
-H4: attribute
-
-The item attribute as specified in the UseModifier configuration
-directive. Typical are C<size> or C<color>.
-
-H4: type
-
-The action to be taken. One of:
+This determines the action to be taken. One of:
 
 !block table; colvaligns="TT"
 Action|Description
 select|<<
-Builds a dropdown <SELECT> menu for the attribute. N<Note:> This is
-the default.
->>
-multiple|<<
-Builds a multiple dropdown <SELECT> menu for the
-attribute.  The size is equal to the number of
-option choices.
+Builds a dropdown <SELECT> menu for the item attribute, with the
+default item attribute value SELECTED. The C<accessories> tag builds a
+select widget by default if C<type> is not set.
 >>
 display|<<
-Shows the label text for *only the selected option*.
+Shows the label text for *only the selected option* if called in
+{{C[jump="#accessories_hash_lists"]Hash List}} context (e.g., within an
+E<lbracket>{{C[jump="#item_list"]item-list}}]). Ignored otherwise
+(i.e., the tag will build the default <SELECT> menu).
 >>
 show|<<
-Shows the option choices (no labels) for the option.
+Returns the list of possible attributes for the item (without labels
+or any HTML widget). For example, if sku os28044 is available in
+several N<sizes:>
+. E<lbracket>accessories os28044 size,show]
+. -----------------------------------------
+. Sm=10oz, Med=15oz*, Lg=20oz
+>>
+options|<<
+This shows the attribute options as a newline delimimited list:
+. E<lbracket>accessories os28044 size,options]
+. -----------------------------------------
+. Sm
+. Med
+. Lg
+>>
+labels|<<
+This shows the attribute option N<labels:>
+. E<lbracket>accessories os28044 size,options]
+. -----------------------------------------
+. 10oz
+. 15oz*
+. 20oz
 >>
 radio|<<
-Builds a radio box group for the item, with spaces
-separating the elements.
+Builds a radio box group for the item, with spaces separating the
+elements.
 >>
 radio nbsp|<<
 Builds a radio box group for the item, with &nbsp;
 separating the elements.
+>>
+radio break|<<
+Builds a radio box group for the item, with '<br>'
+separating the radio button/label pairs from one another.
 >>
 radio left n|<<
 Builds a radio box group for the item, inside a
 table, with the checkbox on the left side. If "n"
 is present and is a digit from 2 to 9, it will align
 the options in that many columns.
+
+You can also set FONT SIZE like N<this:>
+E:  type="radio left I<n> fontsizeI<m>"
+
+where -9 <= I<m> <= 9
 >>
 radio right n|<<
 Builds a radio box group for the item, inside a
 table, with the checkbox on the right side. If "n"
 is present and is a digit from 2 to 9, it will align
 the options in that many columns.
+
+You can also set FONT SIZE like N<this:>
+E:  type="radio right I<n> fontsizeI<m>"
+
+where -9 <= I<m> <= 9
 >>
 check|<<
 Builds a checkbox group for the item, with spaces
 separating the elements.
 >>
 check nbsp|<<
-Builds a checkbox group for the item, with &nbsp;
-separating the elements.
+Builds a checkbox group for the item, with '&nbsp;'
+separating the checkbox/label pairs from one another.
 >>
-check left n|<<
+check break|<<
+Builds a checkbox group for the item, with '<br>'
+separating the checkbox/label pairs from one another.
+>>
+check left I<n>|<<
 Builds a checkbox group for the item, inside a
 table, with the checkbox on the left side. If "n"
 is present and is a digit from 2 to 9, it will align
 the options in that many columns.
+
+You can also set FONT SIZE like N<this:>
+E:  type="check left I<n> fontsizeI<m>"
+
+where -9 <= I<m> <= 9
 >>
 check right n|<<
 Builds a checkbox group for the item, inside a
 table, with the checkbox on the right side. If "n"
 is present and is a digit from 2 to 9, it will align
 the options in that many columns.
+
+You can also set FONT SIZE like N<this:>
+E:  type="check right I<n> fontsizeI<m>"
+
+where -9 <= I<m> <= 9
 >>
 textarea_XX_YY|<<
-A textarea with XX columns and YY rows
+A textarea with XX columns and YY rows. The textarea will contain the
+selected item attribute value if used in
+{{C[jump="#accessories_hash_lists"]Hash List}} context (e.g., within an
+E<lbracket>{{C[jump="#item_list"]item-list}}]).
+
+If you simply use 'C<type>=textarea', the size will default to 4 rows
+by 40 columns, unless you have set the
+{{C[jump="#accessories_rows"]rows}} or
+{{C[jump="#accessories_cols"]cols}} tag attributes.
 >>
-text_XX|<<
-A text box with XX size in characters
+text_YY|<<
+A text box with YY width in characters. The HTML tag's VALUE will be
+set to the selected item attribute value if used in
+{{C[jump="#accessories_hash_lists"]Hash List}} context (e.g., within an
+E<lbracket>{{C[jump="#item_list"]item-list}}]).
+
+If you simply use 'C<type>=text', the width will default to 60, unless
+you have set the {{C[jump="#accessories_cols"]cols}} tag attribute.
 >>
 combo|<<
 Special type, used with nullselect filter,
@@ -1212,179 +1284,415 @@ form parameter, just like in an E<lbracket>area ...] or
 E<lbracket>page ...] tag, and the value is named with
 the passed NAME attribute.
 >>
+value|<<
+Returns the selected value if called in
+{{C[jump="#accessories_hash_lists"]Hash List}} context (e.g., within an
+E<lbracket>{{C[jump="#item_list"]item-list}}]), or nothing otherwise.
+>>
+hidden|<<
+Creates a hidden form field. The hidden field's VALUE will be set to
+the selected item attribute value if used in
+{{C[jump="#accessories_hash_lists"]Hash List}} context (e.g., within an
+E<lbracket>{{C[jump="#item_list"]item-list}}]).
+>>
+password_YY|<<
+A password box with YY width in characters. The HTML tag's VALUE will be
+set to the selected item attribute value if used in
+{{C[jump="#accessories_hash_lists"]Hash List}} context (e.g., within an
+E<lbracket>{{C[jump="#item_list"]item-list}}]).
+
+If you simply use 'C<type>=password', the width will default to 12,
+unless you have set the {{C[jump="#accessories_cols"]cols}} tag
+attribute.
+>>
 !endblock
 
 The default is 'select', which builds an HTML select form entry for
-the attribute.  Also recognized is 'multiple', which generates a
-multiple-selection drop down list, 'show', which shows the list of
-possible attributes, and 'display', which shows the label text for the
-selected option only.
+the attribute.
 
-H4: column
+Some types build widgets that use the ROWS=I<m>, COLS=I<n>, or certain
+other HTML attributes. For these, you can define widget rows and
+columns within the string that sets the type; for example,
+C<type>="textarea_6_33_wrap=virtual" specifies a TEXTAREA widget with
+ROWS=6, COLS=33, and WRAP=virtual. You should resort to this only when
+you cannot use the named parameters, for example within an
+E<lbracket>C<item-accessories>] tag. Otherwise, use the
+{{C[jump="#accessories_rows"]rows}}=I<m> and
+{{C[jump="#accessories_cols"]cols}}=I<n> tag attributes instead.
 
-The database column name to be used to build the entry (usually a field
-in the products database).  Defaults to a field named the same as the
+The result of setting conflicting values in the
+{{C[jump="#accessories_type"]type}} string and the C<rows> or C<cols>
+attributes is undefined.
+
+The following list shows syntax for type strings, where I<rows> is the
+number of rows and I<cols> is the number of columns.
+
+* B<text>
+** textarea   I<(default is 4 rows, 40 columns, like 'textarea_4_40')>
+** textarea_I<rows>_I<cols>
+** text_I<cols>
+** textarea rows=I<rows> cols=I<cols> wrap=I<WRAP value>
+* B<password>
+** password   I<(default is 12 columns, like 'password_12')>
+** password_I<cols>
+* B<combo> (similarly for B<reverse_combo> and B<move_combo>)
+** combo   I<(default is 1 row, 16 columns, like 'combo_1_16')>
+
+
+H4: {{CMD[id="accessories_column"]column}}
+
+
+The column of the table corresponding to the attribute will
+traditionally have the same name as the attribute, though it need
+not.
+
+This specifies the table column that contains an item's attribute
+values. The tag will find item attribute names and values in a
+comma-delimited list of name=value pairs stored in this field of an
+item's table entry. If unspecified, the column name will default to
+the name given for the '{{C[jump="#accessories_attribute"]attribute}}'
 attribute.
 
-H4: table
+For example, if an item in the products table has a 'C<size>' attribute,
+and each item's comma-delimited list of available sizes is stored in
+the 'C<how_big>' column, then you would need to specify
+"C<column=how_big>" because the tag's default column choice (C<size>)
+would be missing or used for some other purpose.
 
-The database table to find B<column> in, defaults to the first products file
-where the item code is found.
 
-H4: name
+H4: {{CMD[id="accessories_table"]table}}
 
-Name of the form variable to use if a form is being built. Defaults to
-mv_order_B<attribute>E<nbspace>E<emdash> i.e.  if the attribute is B<size>, the form
-variable will be named B<mv_order_size>. If the variable is set in the
-user session, the widget will "remember" its previous setting.
+This is the database table containing the item's attribute values. It
+defaults to the first products file where the item code is found.
 
-H4: outboard
+If you have configured your database so that the attributes are kept
+in a different table from other item data,
+'{{C[jump="#accessories_code"]code}}' should be set to the master key
+in this table.  See '{{C[jump="#accessories_outboard"]outboard}}') if
+you are using E<lbracket>item-accessoriesE<nbspace>...] and cannot
+specify C<code>=key.
+
+
+H4: {{CMD[id="accessories_name"]name}}
+
+This sets the name of the form variable to use if appropriate for the
+widget being built. Defaults to
+'mv_order_B<attribute>'E<nbspace>E<emdash> i.e. if the attribute is
+B<size>, the form variable will be named B<mv_order_size>.
+
+If the variable is set in the user session, the widget will "remember"
+its previous setting. In other words,
+E<lbracket>{{C[jump="#value"]value}} I<name>] will contain the
+previous setting, which the widget will use as its default
+setting. See also the {{C[jump="#default"]default}} attribute.
+
+
+H4: {{CMD[id="accessories_outboard"]outboard}}
 
 If calling the item-accessories tag, and you wish to select from an
-outboard database table with a different key from the item code, you
-can pass the key to use to find the accessory data.
+outboard database table whose master key is different from the item
+{{C[jump="#accessories_code"]code}}, you can pass the key the tag
+should use to find the accessory data.
 
-H4: passed
 
-Options for the widget if set explicitly, i.e. overrides a databae
-fetch of the attribute input string.
+H4: {{CMD[id="accessories_passed"]passed}}
+
+You can use this to pass your own values to the widget the tag will
+build. If you have set C<passed> to a list of widget options, then the
+tag will simply build a widget of the specified
+{{CMD[jump="#accessories_type"]type}} with your values instead of
+fetching an attribute value list from the database.
 
 For example, to generate a select box with a blank option (perhaps
 forcing a select), the value of C<blue> with a label of B<Blue>, and the
 value of C<green> with a label of B<Sea Green>, do:
 
->        [accessories
->            type=select
->                name=color
->                passed="=--select--, blue=Blue, green=Sea Green"
->        ]
+!block example
+    [accessories type=select
+                 name=color
+               passed="=--select--*, blue=Blue, green=Sea Green" ]
+!endblock
 
 This will generate:
 
->        <SELECT NAME="color">
->        <OPTION VALUE="">--select--
->        <OPTION VALUE="blue">Blue
->        <OPTION VALUE="green">Sea Green
->        </SELECT>
+!block example
+    <SELECT NAME="color"><OPTION VALUE="" SELECTED>--select--\
+    <OPTION VALUE="blue">Blue\
+    <OPTION VALUE="green">Sea Green</SELECT>
+!endblock
 
-H4: href
+\Note: trailing backslashes ('\') in the above example indicate line
+continuation and are not part of the tag output.
 
-Base HREF for the link in a C<links> type. Default is the current
+
+H4: {{CMD[id="accessories_delimiter"]delimiter}}
+
+The list of attribute values will be a delimited string.  This allows
+you to specify an alternative delimiter if the list is not
+comma-delimited (the default).
+
+
+H4: {{CMD[id="accessories_prepend"]prepend}}
+
+You can set a string to prepend to the returned output of the tag.
+Note that this is I<not> a list to prepend to the fetched
+{{C[jump="#accessories_attribute"]attribute}} value list, which is
+treated within the tag.
+
+For example,
+!block example
+   [accessories code=os28044
+                type=select
+           attribute=size
+              append="Append Me<br>"
+             prepend="Prepend Me"]
+------------------------------------------------------
+   Prepend Me<SELECT NAME="mv_order_size">\
+   <OPTION VALUE="10oz">10oz\
+   <OPTION VALUE="15oz">15oz\
+   <OPTION VALUE="20oz">20oz</SELECT>B<Append Me><br>
+!endblock
+
+H4: {{CMD[id="accessories_append"]append}}
+
+You can set a string to append to the returned output of the tag.
+Note that this is I<not> a list to append to the fetched
+{{C[jump="#accessories_attribute"]attribute}} value list, which is
+treated within the tag.
+
+H4: {{CMD[id="accessories_extra"]extra}}
+
+Setting the 'C<extra>' attribute appends its value as the last
+attribute of the HTML output tag.  The following example illustrates
+the C<append>, C<extra> and C<js> N<options:>
+
+!block example
+   [accessories code=os28044
+                type=select
+           attribute=size
+              append="Append Me<br>"
+               extra="Last=Extra"
+                  js="javascript_here"]
+------------------------------------------------------
+   <SELECT NAME="mv_order_size" javascript_here Last=Extra>\
+   <OPTION VALUE="10oz">10oz\
+   <OPTION VALUE="15oz">15oz\
+   <OPTION VALUE="20oz">20oz</SELECT>Append Me<br>
+!endblock
+
+H4: {{CMD[id="accessories_js"]js}}
+
+This allows you to place javascript within the start tag of the HTML
+output. See the example given above for C<extra>.
+
+C<js> has no default, except when
+'{{C[jump="#accessories_type"]type}}=move_combo', where the default
+N<is:>
+
+E:  onChange="addItem(this.form.XI<name>,this.form.I<name>)"
+
+
+H4: {{CMD[id="accessories_rows"]rows}}
+
+The tag will pass the number you choose through to the HTML 'ROWS=I<n>'
+attribute in HTML widgets that accept it.
+
+For some types, you can also define widget rows and columns within the
+string that sets the {{C[jump="#accessories_type"]type}}; for example,
+{{C[jump="#accessories_type"]type}}="textarea_6_33_wrap=virtual" specifies a
+TEXTAREA widget with ROWS=6, COLS=33, and WRAP=virtual. You should resort to this
+only when you cannot use the named parameters, for example within an
+E<lbracket>C<item-accessories>] tag.
+
+The result of setting conflicting values in the
+{{C[jump="#accessories_type"]type}} string and the C<rows>=I<n>
+attribute is undefined.
+
+H4: {{CMD[id="accessories_cols"]cols}}
+
+The tag will pass the number you choose through to the HTML 'COLS=I<n>'
+attribute in HTML widgets that accept it.
+
+See also '{{C[jump="#accessories_rows"]rows}}' above.
+
+H4: {{CMD[id="accessories_width"]width}}
+
+This is a quasi-alias for '{{C[jump="#accessories_cols"]cols}}' that
+only works with the 'C<text>' and '<password>' types.  Use
+'{{C[jump="#accessories_cols"]cols}}' instead.
+
+H4: {{CMD[id="accessories_default"]default}}
+
+Sets the default attribute option in the widget returned by the
+tag. This will override a default indicated with a trailing '*' in the
+database or '{{C[jump="#accessories_passed"]passed}}' string. This
+will also override the default of a user's previous selection when the tag
+would otherwise have preserved it.
+
+For example the following selects blue by default rather than green as
+it would otherwise have done,
+
+!block example
+  [accessories type=select
+               name=color
+             passed="blue=blue, green=Sea Green*"
+            default="blue"]
+------------------------
+  <SELECT NAME="color"><OPTION VALUE="blue" SELECTED>blue\
+  <OPTION VALUE="green">Sea Green</SELECT>
+------------------------
+!endblock
+
+Obscure technical note: the tag ignores the 'C<default>' attribute if
+it has an item hash referenceE<nbspace>E<emdash> see
+{{C[jump="#accessories_hash_lists"]Hash Lists}} above.
+
+H4: {{CMD[id="accessories_price"]price}}
+
+When combined with the C<price_data> tag attribute, this allows you to
+force prices for item attributes.  You probably do not want to use
+this; just let the tag pick pu prices from your database table(s) when
+appropriate.
+
+If you are passing attribute values, you can use this to control
+the displayed price in the widget.
+
+!block example
+  [accessories type=check
+               name=color
+              price=1
+         price_data="blue=20, green=50"
+             passed="blue=Blue, green=Sea Green*" ]
+---------------------------------------------------
+  <INPUT TYPE="checkbox" NAME="color" VALUE="blue" >&nbsp;Blue&nbsp;($20.00)
+  <INPUT TYPE="checkbox" NAME="color" VALUE="green" CHECKED>&nbsp;Sea Green&nbsp;($50.00)
+!endblock
+
+
+H4: {{CMD[id="accessories_contains"]contains}}
+
+Requires '{{C[jump="#accessories_type"]type}}=radio' or 'C<type>=check'.
+
+Used to determine whether a substring match of the value will cause
+a radio box or check box to be selected. If true, the match will
+happen whether the value is on a word boundary or not -- if false,
+the value must be on a word boundary. (When we speak of a word boundary,
+it is in the Perl sense -- a word character [A-Za-z0-9_] followed or 
+preceded by a non-word character, or beginning or end of the string.)
+
+
+H4: {{CMD[id="accessories_joiner"]joiner}}
+
+Requires '{{CMD[jump="#accessories_type"]type}}=links'.
+
+With C<type=links>, the accessories tag returns a link for each
+option.  This allows you to override the default string ('<BR>') that joins
+these links.  You can use Perl's metacharacter escapes, such as '\n'
+for newline or '\t' for tab.
+
+
+H4: {{CMD[id="accessories_href"]href}}
+
+Requires '{{CMD[jump="#accessories_type"]type}}=links'.
+
+
+This sets the base HREF for the link in a C<links> type. Default is the current
 page.
 
-H4: form
 
-Base value for the form in a C<links> type. Default is C<mv_action=return>,
-which will simply set the variable value in the link.
+H4: {{CMD[id="accessories_template"]template}}
 
-For example, to generate a series of links that set the variable "color"
-to the same as the options described in the C<passed> attribute (blank, blue, or green),
-do
+Requires '{{CMD[jump="#accessories_type"]type}}=links'.
 
->        [accessories
->            type=links
->                name=color
->                passed="=--select--, blue=Blue, green=Sea Green"
->        ]
+Allows you to override the standard Interchange template for a
+hyperlink.  You probably don't need to use thisE<nbspace>E<emdash>
+grep the code to grok it if you do (see 'sub build_accessory_links').
 
-This will generate:
+H4: {{CMD[id="accessories_selected_begin"]selected_begin}}
 
->    <A HREF="VENDURL/MV_PAGE?mv_action=return&color=blue">Blue</A><BR>
->    <A HREF="VENDURL/MV_PAGE?mv_action=return&color=green">Sea Green</A>
->
->    where VENDURL is your Interchange URL for the catalog
->          MV_PAGE is the current page
+Requires '{{CMD[jump="#accessories_type"]type}}=links'.
+
+
+H4: {{CMD[id="accessories_form"]form}}
+
+Requires '{{CMD[jump="#accessories_type"]type}}=links'.
+
+This sets the base value for the form in a C<links> type. Default is
+C<mv_action=return>, which will simply set the variable value in the
+link.
+
+For example, to generate a series of linksE<nbspace>E<emdash> one
+per item attribute value passedE<nbspace>E<emdash> that set the
+variable "color" to the corresponding {{C[jump="#passed"]passed}}
+value (blank, blue, or green), do N<this:>
+
+!block example
+   [accessories type=links
+                name=color
+              passed="=--select--, blue=Blue, green=Sea Green"]
+!endblock
+
+This will generate something like the following:
+
+!block example
+    <A HREF="VENDURL/MV_PAGE?B<mv_action=return>&color=blue">Blue</A><BR>
+    <A HREF="VENDURL/MV_PAGE?B<mv_action=return>&color=green">Sea Green</A>
+!endblock
+
+where VENDURL is your Interchange URL for the catalog MV_PAGE is the
+current page.
 
 If you want the empty "--select--" option to show up, pass an
 empty=1 parameter.
 
 
-When called with an attribute, the database is consulted and looks for
-a comma-separated list of attribute options. They take the form:
+H4: {{CMD[id="accessories_empty"]empty}}
 
->    name=Label Text, name=Label Text*
+Requires '{{CMD[jump="#accessories_type"]type}}=links'.
 
-The label text is optionalE<nbspace>E<emdash> if none is given, the B<name> will
-be used.
-
-If an asterisk is the last character of the label text, the item is
-the default selection. If no default is specified, the first will be
-the default. An example:
-
->    [item_accessories color]
-
-This will search the product database for a field named "color". If
-an entry "beige=Almond, gold=Harvest Gold, White*, green=Avocado" is found,
-a select box like this will be built:
-
->    <SELECT NAME="mv_order_color">
->    <OPTION VALUE="beige">Almond
->    <OPTION VALUE="gold">Harvest Gold
->    <OPTION SELECTED>White
->    <OPTION VALUE="green">Avocado
->    </SELECT>
-
-In combination with the C<mv_order_item> and C<mv_order_quantity> variables
-this can be used to allow entry of an attribute at time of order.
-
-If used in an item list, and the user has changed the value, the generated
-select box will automatically retain the current value the user has selected.
-
-The value can then be displayed with C<[item-modifier size]> on the
-order report, order receipt, or any other page containing an
-E<lbracket>{{C[jump="#item_list"]item-list}}E<rbracket>. 
+Setting 'C<empty=1>' includes a hyperlink for the empty "--select--"
+option. See the example in C<form> above. 
 
 
-When called with an attribute, the database is consulted and looks for
-a comma-separated list of attribute options. They take the form:
+H4: {{CMD[id="accessories_secure"]secure}}
 
->    name=Label Text, name=Label Text*
+Requires '{{CMD[jump="#accessories_type"]type}}=links'.
 
-The label text is optionalE<nbspace>E<emdash> if none is given, the B<name> will
-be used.
+Setting C<secure>=1 causes the generated link(s) to point to your
+secure Interchange URL.
 
-If an asterisk is the last character of the label text, the item is
-the default selection. If no default is specified, the first will be
-the default. An example:
+H4: {{CMD[id="accessories_new"]new}}
 
->    [accessories TK112 color]
+Requires '{{CMD[jump="#accessories_type"]type}}=combo' or 'reverse_combo'.
 
-This will search the product database for a field named "color". If
-an entry "beige=Almond, gold=Harvest Gold, White*, green=Avocado" is found,
-a select box like this will be built:
+You can use this to set a value in place of the 'New' or 'Current'
+option in a combo box.  For example, if item 'os28044' has size
+attribute values of "Sm=10oz,E<nbspace>Med=15oz,E<nbspace>Lg=20oz"N<:>
 
->    <SELECT NAME="mv_order_color">
->    <OPTION VALUE="beige">Almond
->    <OPTION VALUE="gold">Harvest Gold
->    <OPTION SELECTED>White
->    <OPTION VALUE="green">Avocado
->    </SELECT>
+!block example
+  [accessories code=os28044 attribute=size type=combo new="my_new_value"]
+------------------------------------------------------
+  <INPUT TYPE=text NAME="mv_order_size" SIZE=16 VALUE="">
+  <SELECT NAME="mv_order_size" SIZE="1">
+  <OPTION VALUE="my_new_value">my_new_value
+  <OPTION VALUE="Sm">10oz
+  <OPTION VALUE="Med">15oz
+  <OPTION VALUE="Lg">20oz</SELECT>
 
-In combination with the I<mv_order_item> and I<mv_order_quantity> variables
-this can be used to allow entry of an attribute at time of order.
+======================================================
 
+  [accessories code=os28044 attribute=size type=combo]
+------------------------------------------------------
+  <INPUT TYPE=text NAME="mv_order_size" SIZE=16 VALUE="">
+  <SELECT NAME="mv_order_size" SIZE="1">
+  <OPTION VALUE="">&lt;-- New
+  <OPTION VALUE="Sm">10oz
+  <OPTION VALUE="Med">15oz
+  <OPTION VALUE="Lg">20oz</SELECT>
+!endblock
 
-H4: Emulating with a loop
-
-Below is a fragment from a shopping basket display form which 
-shows a selectable size with "sticky" setting and a price that
-changes based upon the modifier setting. Note that this
-would normally be contained within the E<lbracket>{{C[jump="#item_list"]item_list}}E<rbracket> C<[/item-list]>
-pair.
-
->    <SELECT NAME="[modifier-name size]">
->    [loop option="[modifier-name size]" list="S, M, L, XL"]
->    <OPTION> [loop-code] -- [price code="[item-code]" size="[loop-code]"]
->    [/loop]
->    </SELECT>
-
-The above is essentially the same as would be output with the
-\[item-accessories size] tag if the product database field C<size>
-contained the value C<S, M, L, XL>, but contains the adjusted price.
-
-
-
-
+Default is no VALUE with option text set to '&lt;-- New' for a combo
+box or 'Current --&gt;' for a reverse_combo box.
 
 
 H2: and
@@ -1444,7 +1752,7 @@ The [and ...] tag is only used in conjunction with [if ...]. Example:
 >        [/else]
 >        [/if]
 
-See C<[if ...]>.
+See E<lbracket>{{C[jump="#if"]if}} ...].
 
 
 
@@ -1720,8 +2028,6 @@ otherwise.
 
 
 
-
-
 H2: banner
 
 
@@ -1815,7 +2121,7 @@ Example of bouncing to an Interchange parsed page:
 >        [bounce href="[area violation]"]
 >        [/if]
 
-Note the URL is produced by the C<[area ...]> ITL tag.
+Note the URL is produced by the E<lbracket>{{C[jump="#area"]area}} ...] ITL tag.
 
 Since the HTTP says the URL needs to be absolute, this one might
 cause a browser warning:
@@ -2017,7 +2323,7 @@ B<ASP-like Perl call:>
 H3: Description
 
 Displays the value of a CGI variable B<submitted to the current page>. This
-is similar to C<[value ...]>, except it displays the transitory values that
+is similar to E<lbracket>{{C[jump="#value"]value}} ...], except it displays the transitory values that
 are submitted with every request.
 
 For instance, if you access the following URL:
@@ -2626,7 +2932,7 @@ it displays.
 %%
 either
 %%
-The E<lbracket>{{C[jump="#either"]either}}]this[{{C[jump="#or"]or}}]that[/eitherE<rbracket> implements a check for the first
+The E<lbracket>{{C[jump="#either"]either}}]this[{{C[jump="#or"]or}}]that[/either] implements a check for the first
 non-zero, non-blank value. It splits on [or], and then parses each
 piece in turn. If a value returns true (in the Perl senseE<nbspace>E<emdash> non-zero, non-blank)
 then subsequent pieces will be discarded without interpolation.
@@ -3005,7 +3311,7 @@ the products database. If you want to constrain it to a particular
 database, use the [data base name code] tag.
 
 Note that if you only have one ProductFile C<products>, which is the default,
-C<[field column key]> is the same as C<[data products column key]>.
+C<[field column key]> is the same as E<lbracket>{{C[jump="#data"]data}} products column key].
 
 
 
@@ -3769,7 +4075,7 @@ session and database values. The general form is:
 >    [/else]
 >    [/if]
 
-The E<lbracket>{{C[jump="#if"]if}}E<rbracket> tag can also have some variants:
+The E<lbracket>{{C[jump="#if"]if}}] tag can also have some variants:
 
 >    [if type=explicit compare=`$perl_code`]
 >        Displayed if valid Perl CODE returns a true value.
@@ -3790,7 +4096,7 @@ You can do some Perl-style regular expressions:
 >    [/else]
 >    [/if]
 
-While named parameter tag syntax works for C<[if ...]>, it is more convenient
+While named parameter tag syntax works for E<lbracket>{{C[jump="#if"]if}} ...], it is more convenient
 to use positional calls in most cases.
 The only exception is if you are planning on doing a test on the 
 results of another tag sequence:
@@ -3827,7 +4133,7 @@ capability:
 >    [/if]
 
 If you wish to do very complex AND and OR operations, you will have to use 
-C<[if explicit]> or better yet embedded Perl/ASP. This allows complex
+E<lbracket>{{C[jump="#if"]if}} explicit] or better yet embedded Perl/ASP. This allows complex
 testing and parsing of values.
 
 There are many test targets available:
@@ -4017,7 +4323,7 @@ as in Perl:
 >    ne  string equivalence
 
 Any simple perl test can be used, including some limited regex matching.
-More complex tests are best done with C<[if explicit]>.
+More complex tests are best done with E<lbracket>{{C[jump="#if"]if}} explicit].
 
 
 H4: [then] text [/then]
@@ -4031,7 +4337,7 @@ H4: [elsif type field op* compare*]
 
 named attributes: [elsif type="type" term="field" op="op" compare="compare"]
 
-Additional conditions for test, applied if the initial C<[if ..]> test
+Additional conditions for test, applied if the initial E<lbracket>{{C[jump="#if"]if}} ..] test
 fails.
 
 H4: [else] text [/else]
@@ -4043,7 +4349,7 @@ H4: [condition] text [/condition]
 Only used with the [if explicit] tag. Allows an arbitrary expression
 B<in Perl> to be placed inside, with its return value interpreted as
 the result of the test. If arguments are added to [if explicit args],
-those will be passed as arguments are in the I<[perl]> construct.
+those will be passed as arguments are in the E<lbracket>{{I[jump="#per"]per}}l] construct.
 
 
 
@@ -4177,7 +4483,7 @@ B<ASP-like Perl call:>
 H3: Description
 
 
-Same as C<[file name]> except interpolates for all Interchange tags
+Same as E<lbracket>{{C[jump="#file"]file}} name] except interpolates for all Interchange tags
 and variables. Does NOT do locale translations.
 
 
@@ -4428,14 +4734,14 @@ last on the list.
 >        [/calc][/item-last]
 
 If this is contained in your
-E<lbracket>{{C[jump="#item_list"]item-list}}E<rbracket> (or
-E<lbracket>{{C[jump="#search_list"]search-list}}E<rbracket> or
+E<lbracket>{{C[jump="#item_list"]item-list}}] (or
+E<lbracket>{{C[jump="#search_list"]search-list}}] or
 flypage) and the weight field is empty, then a numerical C<-1> will be
 output from the [calc][/calc] tags; the list will end and the item
 will B<not> be shown. If the product's weight field is less than 1, a
 numerical 1 is output.  The item will be shown, but will be the last
 item shown. (If it is an
-E<lbracket>{{C[jump="#item_list"]item-list}}E<rbracket>, any price for
+E<lbracket>{{C[jump="#item_list"]item-list}}], any price for
 the item will still be added to the subtotal.) NOTE: no HTML style.
 
 H4: E<lbracket>item-modifier attribute]
@@ -4450,10 +4756,10 @@ the item will be skipped with no output. Example:
 
 >      [item-next][calc][item-field weight] < 1[/calc][/item-next]
 
-If this is contained in your E<lbracket>{{C[jump="#item_list"]item-list}}E<rbracket> (or E<lbracket>{{C[jump="#search_list"]search-list}}E<rbracket> or flypage)
+If this is contained in your E<lbracket>{{C[jump="#item_list"]item-list}}] (or E<lbracket>{{C[jump="#search_list"]search-list}}] or flypage)
 and the product's weight field is less than 1, then a numerical C<1> will
 be output from the [calc][/calc] operation. The item will not be shown. (If
-it is an E<lbracket>{{C[jump="#item_list"]item-list}}E<rbracket>, any price for the item will still be added to the
+it is an E<lbracket>{{C[jump="#item_list"]item-list}}], any price for the item will still be added to the
 subtotal.)
 
 H4: E<lbracket>item-price n* noformat*]
@@ -4892,7 +5198,7 @@ B<Tag expansion example:>
          $Document->write( "$result <br>\n" ); %>
       <P>Still more HTMLE<lt>/p>
    [/mvasp]
----
+------------------------------------------------------
       <P>This is HTMLE<lt>/p>
       
       <P>More HTMLE<lt>/p>
@@ -5650,7 +5956,7 @@ B<Tag expansion example:>
 !endblock
 !block example
    [/perl]
----
+------------------------------------------------------
    Looked up SKU [[EXAMPLE_SKU]].  It is a [[EXAMPLE_DESCRIPTION]] <br>
 !endblock
 
@@ -6163,44 +6469,84 @@ B<NO Description>
 
 
 
-
 H2: read_cookie
+
+Returns the value of the named cookie.  Returns nothing if the cookie
+does not exist.
 
 
 H3: Summary
 
-\Parameters: B<name>
+!block example;
+    [B<read_cookie> name]
+    [B<read_cookie> name=mycookie]
+!endblock
 
-ONLY THE B<> PARAMETERS ARE POSITIONAL.
+!block table; colvaligns="TTT"; format="262"
+Attributes|Description|Default
+{{CMD[jump="#read_cookie_name"]name}}|<<
+The name of the cookie whose value you want
+>>|I<none>
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<Yes>
+Container tag|I<No>
+!endblock
+
+B<Usage example:>
+
+!block example
+   [read-cookie name=MV_SESSION_ID]
+------------------------------------------------------
+   [[EXAMPLE_SESSION]]
+!endblock
 
 
-Pass attribute hash as last to subroutine: B<no>
-
-Must pass named parameter interpolate=1 to cause interpolation.
-
-Invalidates cache: B<YES>
-
-Called Routine: 
 
 B<ASP-like Perl call:>
 
->    $Tag->read_cookie(
->        {
->         name => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->read_cookie($name);
+!block example; lang="Perl"
+    $Tag->read_cookie(  { name => $name, }  );
+!endblock
 
+or similarly with positional parameters,
+
+!block example; lang='Perl'
+    $Tag->read_cookie( $name );
+!endblock
  
 
 H3: Description
 
-B<NO Description>
+This tag expands to the value of the named cookie (or nothing if the
+cookie does not exist).
 
+See the Netscape specification at
+{{CMD[jump="http://www.netscape.com/newsref/std/cookie_spec.html"]http://www.netscape.com/newsref/std/cookie_spec.html}}
+if you need more cookie-specific detail.
 
+H4:  {{CMD[id="read_cookie_name"]name}}
+
+This is the name of the cookie whose value you want to retrieve.
+
+H4:  {{CMD[id="read_cookie_HTTP_COOKIE"]Parsing an HTTP_COOKIE string}}
+
+If you pass this tag a second parameter within a Perl call, it will
+use your value as the HTTP_COOKIE string (ignoring the real one). This
+only applies if you pass the values positionally within a perl call
+since there is no name for the HTTP_COOKIE string N<input:>
+
+!block example; lang="Perl"
+  $Tag->read_cookie('MV_SESSION_ID', "MV_SESSION_ID=UnHyaDQj:127.0.0.1; ...");
+!endblock
 
 
 H2: record
@@ -6511,7 +6857,7 @@ H2: search_list
 
 Formats results returned by a search.  Must be enclosed within a
 {{C[jump="#search_region"]search_region}}.  Has sub-tags (see
-{{C[jump="#subtags"]LoopingE<nbspace>tagsE<nbspace>andE<nbspace>Sub-tags}}). 
+{{C[jump="#Looping tags and Sub-tags"]LoopingE<nbspace>tagsE<nbspace>andE<nbspace>Sub-tags}}). 
 
 H2: search_region
 
@@ -6708,7 +7054,7 @@ H2: set_cookie
 Sets browser cookie(s) with the specified attributes.
 
 H3: Summary
-name value expire domain path
+
 !block example;
     [B<set_cookie> I<named_attributes>]
 !endblock
@@ -6750,7 +7096,7 @@ B<Usage example:>
    [set-cookie name=mycookie
               value="the value"
              expire="Tue, 03-Apr-2001 17:00:00 GMT" ]
----
+------------------------------------------------------
    I<This tag returns no value in the page>
 !endblock
 
@@ -6776,7 +7122,14 @@ or similarly with positional parameters,
 H3: Description
 
 This tag sets one or more browser cookies with your specified name,
-value, and expiration.
+value, and expiration. (Interchange will set more than one cookie if
+needed to ensure that the cookie is visible from all 
+{{C[jump="icconfig.html#Catalog *global*"]Catalog}} URL path
+aliases and {{C[jump="icconfig.html#CookieDomain"]CookieDomains}}.)
+
+See the Netscape specification at
+{{CMD[jump="http://www.netscape.com/newsref/std/cookie_spec.html"]http://www.netscape.com/newsref/std/cookie_spec.html}}
+for more cookie-specific detail.
 
 If you need access to the cookie from outside of your Interchange
 catalog, you can also set the domain and URL paths for which the
@@ -6815,7 +7168,7 @@ outside the Interchange catalog, but it is usually better to set the
 {{C[jump="icconfig.html#CookieDomain"]CookieDomain}} directive in your
 catalog.
 
-The default is to use your catalog's domain and all
+The default is to use your catalog's domain or all
 {{C[jump="icconfig.html#CookieDomain"]CookieDomain}} values.
 
 H4:  {{CMD[id="set_cookie_path"]path}}
@@ -7538,7 +7891,7 @@ H3: Description
 
 Allows you to build CPU-intensive regions of ITL tags on a timed basis.
 
-In the simplest case, surround a region of ITL with E<lbracket>{{C[jump="#timed_build"]timed-build}}E<rbracket>
+In the simplest case, surround a region of ITL with E<lbracket>{{C[jump="#timed_build"]timed-build}}]
 and C<[/timed-build]>:
 
 >        [timed-build]
@@ -7759,7 +8112,7 @@ Attribute aliases
 H3: Description
 
 Provides iterative list capability for binary trees.  It produces
-hash-based rows use the same tags as E<lbracket>{{C[jump="#item_list"]item-list}}E<rbracket>; sets some additional
+hash-based rows use the same tags as E<lbracket>{{C[jump="#item_list"]item-list}}]; sets some additional
 hash key entries to describe the tree and provide display control.
 
 Works on a data set with the structure:
@@ -8429,7 +8782,7 @@ Called with:
 
 As is the case with E<lbracket>{{C[jump="#perl"]perl}}] tag, user tags
 run under the Perl Safe.pm module with warnings disabled. Unlike
-C<[perl]> tags, however, user tags use Perl's 'C<strict>' pragma.
+E<lbracket>{{C[jump="#per"]per}}l] tags, however, user tags use Perl's 'C<strict>' pragma.
 
 
 The properties for UserTag are:
@@ -8454,13 +8807,13 @@ form:
 >    UserTag tagname attrAlias   alias attr
 
 As an example, the standard Interchange C<value> tag takes a named
-attribute of C<name> for the variable name, meaning that C<[value name=var]>
+attribute of C<name> for the variable name, meaning that E<lbracket>{{C[jump="#value"]value}} name=var]
 will display the value of form field C<var>. If you put this line
 in catalog.cfg:
 
 >    UserTag value attrAlias   identifier name
 
-then C<[value identifier=var]> will be an equivalent tag.
+then E<lbracket>{{C[jump="#value"]value}} identifier=var] will be an equivalent tag.
 
 H2: CanNest
 
@@ -8490,12 +8843,12 @@ in the tag definition, or there will be big problems. Use this with caution!
 >    UserTag tagname Implicit attribute value
 
 If you want to set a standard include file to a fixed value by default,
-but don't want to have to specify C<[include file="/long/path/to/file"]>
+but don't want to have to specify E<lbracket>{{C[jump="#include"]include}} file="/long/path/to/file"]
 every time, you can just put:
 
 >    UserTag include Implicit file file=/long/path/to/file
 
-and C<[include file]> will be the equivalent. You can still specify
+and E<lbracket>{{C[jump="#include"]include}} file] will be the equivalent. You can still specify
 another value with C[include file="/another/path/to/file"]
 
 H2: InsertHTML
@@ -8592,7 +8945,7 @@ will be replaced in the insertion operation..
 >  UserTag tagname ReplaceAttr  htmltag attr
 
 An example is the standard HTML <A HREF=...> tag. If you want to use the
-Interchange tag C<[area pagename]> inside of it, then you would normally
+Interchange tag E<lbracket>{{C[jump="#area"]area}} pagename] inside of it, then you would normally
 want to replace the HREF attribute. So the equivalent to the following
 is defined within Interchange:
 
@@ -8807,8 +9160,8 @@ B<Tag expansion example:>
 !block example
    [dummy first=pig_latin second="Capitalize"]\
    Body text acted on by the tag goes here.[/dummy]
----
-   OdyBay ExtTaY acted on YBay EThay AgTay OesGay \
+------------------------------------------------------
+   OdyBay ExtTaY ActedAy OnAy YBay EThay AgTay OesGay \
    EreHay.
 !endblock
 
@@ -8868,4 +9221,180 @@ A4: {{CMD[id="dummy_other"]other}}
 
 A1: Template Parsing Order
 
-!include "icparseorder.inc"
+
+A2: Standard Parsing
+
+Under normal circumstances, the template page containing tags and HTML
+is parsed in the following order:
+
+^ Any content in MV_AUTOLOAD is prepended to the template page.
+
+..{{}}
+
+.{{}}
+
++ Any E<lbracket>{{C[jump="ictags.html#pragma"]pragma}}] tags anywhere
+in the text are processed, and the specified pragmas are set.
+
+**Since E<lbracket>{{C[jump="ictags.html#pragma"]pragma}}] tags are
+preprocessed before any other content,
+{{C[jump="ictags.html#attr_reparse"]reparse}} will not catch them, nor
+will they work if included in variables. Also, the specified pragma
+will apply to the entire template (not just the section after the tag).
+
+**If you want to apply a pragma with a variable or only to part of a
+document, you must use E<lbracket>{{C[jump="ictags.html#tag"]tag}}E<nbspace>pragma="..."]
+instead.
+
+.{{}}
+
++ Variables (macros) are processed in the following order:
+++ @@VARNAME@@ global variables
+++ @_VARNAME_@ local or global variables
+++ __VARNAME__ local variables
+
+.{{}}
+
++ Interchange comments are stripped.
+
+..{{}}
+
+.{{}}
+
++ False-endtag macros are expanded (e.g.,
+E<lbracket>{{C[jump="ictags.html#page"]/page}}] and
+E<lbracket>{{C[jump="ictags.html#order"]/order}}]).
+
+..{{}}
+
+.{{}}
+
++ '<!--[tagname]-->' escapes are converted to E<lbracket>tagname]
+
+** This can be a convenience for your HTML editor if it has trouble
+with tags using the standard E<lbracket>tagname] syntax.
+
+** However, if you want to HTML-comment out an interchange tag in content
+that will be fed raw to a browser, you must include whitespace, like
+this, '<!-- E<lbracket>tagname] -->'.
+
+.{{}}
+
++ The main tag parser is called.
+
+** Some tags parse recursively (depending on
+{{C[jump="ictags.html#attr_reparse"]reparse}} and
+{{C[jump="ictags.html#attr_interpolate"]interpolate}} settings, of course).
+
+** Some tags (e.g., E<lbracket>{{C[jump="ictags.html#loop"]loop}}])
+process prefix-tags in their contained body text.  The prefix-tags are
+not handled recursively.
+
+.{{}}
+
++ Image paths substitution on the HTML output occurs.
+
+..{{}}
+
+.{{}}
+
+
+A2: Nonstandard parsing of Subtags
+
+Subtags are parsed within the containing array-list or hash-list
+context created by the containing tag (see
+{{CMD[jump="#Looping tags and Sub-tags"]Looping tags and Sub-tags}}).
+
+* All subtags at an earlier precedence level are treated before any in
+the next level.
+* Within the same level, tags are proccessed in the order the appear on
+the page.
+* Any standard tags are processed during 'interpolate' or 'reparse'
+phases of processing the containing tag.
+
+!block note; label="Technical note"
+
+Processing within a hash- or array-list is actually done as a series
+of global regular expression substitutions on the page. Each
+substitution replaces one tag with the output of the subroutine(s)
+associated with it.
+!endblock
+
+In array-list context, subtags are processed in the following N<order:>
+
+^ Check for PREFIX_line and prepare for it if present (does not
+process PREFIX-line at this time)
++ PREFIX-sub definitions processed
++ if-PREFIX-I<etc.> nesting resolved
++ PREFIX-alternate processed
++ if-PREFIX-param  processed
++ if-PREFIX-pos  processed
++ PREFIX-pos  processed
++ if-PREFIX-field  processed
++ PREFIX-line  processed
++ PREFIX-increment  processed
++ PREFIX-accessories  processed
++ PREFIX-options  processed
++ PREFIX-code  processed
++ PREFIX-description  processed
++ PREFIX-field  processed
++ PREFIX-price  processed
++ PREFIX-change  processed
++ PREFIX-calc  processed
++ PREFIX-exec  processed
++ PREFIX-filter  processed
++ PREFIX-last  processed
++ PREFIX-next  processed
++ User's previous HTML widget SELECTED settings restored
++ Reparse standard tags in output of above (if reparse enabled for the containing tag)
+
+
+In hash-list context, subtags are processed in the following N<order:>
+
+^ PREFIX-sub definitions processed
++ if-PREFIX-I<etc.> nesting resolved
++ PREFIX-alternate processed
++ PREFIX-line  processed
++ if-PREFIX-param  processed
++ if-PREFIX-field  processed
++ if-PREFIX-modifier  processed (if-PREFIX-param and if-PREFIX-modifier are functionally identical except for parse order)
++ PREFIX-increment  processed
++ PREFIX-accessories  processed
++ PREFIX-options  processed
++ PREFIX-sku  processed
++ PREFIX-code  processed
++ PREFIX-quantity  processed
++ PREFIX-modifier  processed
++ PREFIX-param  processed
++ PREFIX-quantity-name  processed
++ PREFIX-modifier-name  processed
++ PREFIX-subtotal  processed
++ PREFIX-discount-subtotal  processed
++ PREFIX-code  processed again differently (operating on new instances of PREFIX-code in output of above?)
++ PREFIX-field  processed
++ PREFIX-description  processed
++ PREFIX-price  processed
++ PREFIX-discount-price  processed
++ PREFIX-difference  processed
++ PREFIX-discount  processed
++ PREFIX-change  processed
++ PREFIX-tag  processed (*** CHECK THIS TAGNAME ***)
++ PREFIX-calc  processed
++ PREFIX-exec  processed
++ PREFIX-filter  processed
++ PREFIX-last  processed
++ PREFIX-next  processed
++ User's previous HTML widget SELECTED settings restored
++ Reparse standard tags in output of above (if reparse enabled for the containing tag)
+
+
+A2: Nonstandard parsing within the admin interface
+
+Parsing of content via the specialized
+{{C[jump="ictags.html#UI_ut_regenerate"]regenerate}} usertag included
+with the administrative interface does not obey the above order.  The
+MV_AUTOLOAD and '<!--[tagname]-->' escapes are skipped.  There are
+some other more subtle differences as well; in the very unlikely event
+that you need to check this in the source code, compare the
+'interpolate_html' and 'cache_html' routines in Interpolate.pm.
+
