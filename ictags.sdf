@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.26 2001-05-02 08:28:22 bill Exp $
+# $Id: ictags.sdf,v 1.27 2001-05-03 18:40:57 bill Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.26 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.27 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -2540,10 +2540,17 @@ total, subtotal, shipping, and nitems tags.
 
 H2: catch
 
+See also E<lbracket>{{C[jump="#try"]try}}.
+
+Process body text if the  E<lbracket>{{C[jump="#try"]try}} block generates an error.
 
 H3: Summary
 
 \Parameters: B<label>
+
+* label
+** The label specifying the corresponding E<lbracket>{{C[jump="#try"]try}} block.  Defaults to 'default'.
+
 
 ONLY THE B<> PARAMETERS ARE POSITIONAL.
 
@@ -2578,9 +2585,10 @@ B<ASP-like Perl call:>
 
 H3: Description
 
-B<NO Description>
 
+Process body text if the  E<lbracket>{{C[jump="#try"]try}} block generates an error.
 
+See also E<lbracket>{{C[jump="#try"]try}}.
 
 
 H2: cgi
@@ -2702,12 +2710,26 @@ C<cgi=1>.
 
 H2: control
 
+Returns named scratchpad field or copies named scratch variable to scratchpad. Returns value specified by 'default' attribute if scratchpad variable is undefined or empty. Calling without a name moves to next scratchpad. Calling without a name and 'reset=1' returns to first scratchpad page.
+
 
 H3: Summary
 
 \Parameters: B<name default>
 
-Positional parameters in same order.
+* name
+** Name of scratchpad variable to set or return
+
+* default
+** Value to return if scratchpad variable missing or empty
+
+Attributes
+* reset (must not specify name; may specify default)
+** Resets scratchpad (i.e. $::Control array) by setting special scratch variable 'control_index' to 0.  Control_index is an index into the $::Control == $Vend::Session->{control} array of hashrefs.
+
+* set
+** Copies named scratch variable (i.e., from $::Scratch) to scratchpad with current control index.
+
 
 
 B<The attribute hash reference is passed> to the subroutine after
@@ -2737,15 +2759,24 @@ B<ASP-like Perl call:>
 
 H3: Description
 
-B<NO Description>
-
-
+Returns named scratchpad field or copies named scratch variable to scratchpad. Returns value specified by 'default' attribute if scratchpad variable is undefined or empty. Calling without a name moves to next scratchpad. Calling without a name and 'reset=1' returns to first scratchpad page.
 
 
 H2: control_set
 
+Bulk-sets scratchpad variables on the scratchpad page specified by 'index'. Note that, unlike [control], this does not copy values from scratch.
 
 H3: Summary
+
+This example sets var_one, var_two and var_three in the scratchpad on page 5 (index begins with 0).
+
+!block example
+  [control_set index=4]
+    [var_one]I<var_one_value>[/var_one]
+    [var_two]I<var_two_value>[/var_two]
+    [var_three]I<var_three_value>[/var_three]
+  [/control_set]
+!endblock
 
 \Parameters: B<index>
 
@@ -2782,9 +2813,7 @@ B<ASP-like Perl call:>
 
 H3: Description
 
-B<NO Description>
-
-
+Bulk-sets scratchpad variables on the scratchpad page specified by 'index'. Note that, unlike [control], this does not copy values from scratch.
 
 
 H2: counter
@@ -3240,6 +3269,7 @@ Always strips leading and trailing whitespace.
 
 H2: dump
 
+Dumps client connection information, cart contents, query value, contents of environment, session, and CGI with Data::Dumper to the page.  This is useful for debugging.
 
 H3: Summary
 
@@ -3268,17 +3298,39 @@ B<ASP-like Perl call:>
 
 H3: Description
 
-B<NO Description>
+
+Dumps client connection information, cart contents, query value, contents of environment, session, and CGI with Data::Dumper to the page.  This is useful for debugging.
 
 
 
 
 H2: ecml
 
+Uses ECML (Electronic Commerce Markup Language) module to map Interchange forms/userdb to ECML checkout
 
 H3: Summary
 
 \Parameters: B<name function>
+
+* function (default = 'widget')
+
+!block example
+Place form boxes on page:
+
+	 [ecml name]
+	 [ecml address]
+
+Magic database entry from country database:
+
+	[ecml country]
+
+Map values back to Interchange variables for saving in UserDB:
+
+	<INPUT TYPE=hidden NAME=mv_click CHECKED VALUE="ECML_map">
+	[set ECML_map]
+	[ecml function=mapback]
+	[/set]
+!endblock
 
 Positional parameters in same order.
 
@@ -3310,15 +3362,92 @@ B<ASP-like Perl call:>
 
 H3: Description
 
-B<NO Description>
 
+This package implements the ECML standard for the Interchange demo.
+ECML stands for "Electronic Commerce Modeling Language", but at this 
+writing it is a simple standard for naming variables so that "electronic
+wallets" can pre-fill-in your checkout form based on users past purchase
+from other companies.
 
+It translates into ECML from the following Interchange variables:
+
+  Ecom_BillTo_Online_Email            b_email
+  Ecom_BillTo_Postal_City             b_city
+  Ecom_BillTo_Postal_CountryCode      b_country
+  Ecom_BillTo_Postal_Name_First       b_fname
+  Ecom_BillTo_Postal_Name_Last        b_lname
+  Ecom_BillTo_Postal_Name_Middle      b_mname
+  Ecom_BillTo_Postal_Name_Prefix      b_title
+  Ecom_BillTo_Postal_Name_Suffix      b_name_suffix
+  Ecom_BillTo_Postal_PostalCode       b_zip
+  Ecom_BillTo_Postal_StateProv        b_state
+  Ecom_BillTo_Postal_Street_Line1     b_address1
+  Ecom_BillTo_Postal_Street_Line2     b_address2
+  Ecom_BillTo_Postal_Street_Line3     b_address3
+  Ecom_BillTo_Telecom_Phone_Number    b_phone_day
+  Ecom_ConsumerOrderID                mv_order_number
+  Ecom_Payment_Card_ExpDate_Day       mv_credit_card_exp_day
+  Ecom_Payment_Card_ExpDate_Month     mv_credit_card_exp_month
+  Ecom_Payment_Card_ExpDate_Year      mv_credit_card_exp_year
+  Ecom_Payment_Card_Name              c_name
+  Ecom_Payment_Card_Number            mv_credit_card_number
+  Ecom_Payment_Card_Protocol          payment_protocols_available
+  Ecom_Payment_Card_Type              mv_credit_card_type
+  Ecom_Payment_Card_Verification      mv_credit_card_verify
+  Ecom_ReceiptTo_Online_Email         r_email
+  Ecom_ReceiptTo_Postal_City          r_city
+  Ecom_ReceiptTo_Postal_CountryCode   r_country
+  Ecom_ReceiptTo_Postal_Name_First    r_fname
+  Ecom_ReceiptTo_Postal_Name_Last     r_lname
+  Ecom_ReceiptTo_Postal_Name_Middle   r_mname
+  Ecom_ReceiptTo_Postal_Name_Prefix   r_title
+  Ecom_ReceiptTo_Postal_Name_Suffix   r_name_suffix
+  Ecom_ReceiptTo_Postal_PostalCode    r_zip
+  Ecom_ReceiptTo_Postal_StateProv     r_state
+  Ecom_ReceiptTo_Postal_Street_Line1  r_address1
+  Ecom_ReceiptTo_Postal_Street_Line2  r_address2
+  Ecom_ReceiptTo_Postal_Street_Line3  r_address3
+  Ecom_ReceiptTo_Telecom_Phone_Number r_phone
+  Ecom_SchemaVersion                  ecml_version
+  Ecom_ShipTo_Online_Email            email
+  Ecom_ShipTo_Postal_City             city
+  Ecom_ShipTo_Postal_CountryCode      country
+  Ecom_ShipTo_Postal_Name_Combined    name
+  Ecom_ShipTo_Postal_Name_First       fname
+  Ecom_ShipTo_Postal_Name_Last        lname
+  Ecom_ShipTo_Postal_Name_Middle      mname
+  Ecom_ShipTo_Postal_Name_Prefix      title
+  Ecom_ShipTo_Postal_Name_Suffix      name_suffix
+  Ecom_ShipTo_Postal_PostalCode       zip
+  Ecom_ShipTo_Postal_StateProv        state
+  Ecom_ShipTo_Postal_Street_Line1     address1
+  Ecom_ShipTo_Postal_Street_Line2     address2
+  Ecom_ShipTo_Postal_Street_Line3     address3
+  Ecom_ShipTo_Telecom_Phone_Number    phone
+  Ecom_TransactionComplete            end_transaction_flag
+
+Once the form variables are input and sent to Interchange, the [ecml function=mapback]
+tag will cause the input results to be mapped back from the ECML names to the
+Interchange names.
+
+If you only have a C<name> variable in your UserDB, the module will attempt to
+split it into first name and last name for ECML purposes and map the results
+back. If you have C<fname> and C<lname>, then it will not.
 
 
 H2: either
 
 
 H3: Summary
+
+!block example
+  [either]
+    This
+  [or]
+    That
+  [or]
+    The other
+  [/either]
 
 No parameters.
 
@@ -3505,6 +3634,50 @@ H3: Summary
 
 Positional parameters in same order.
 
+* table
+** The table to export
+
+* file
+* Filename to export to.  Note that the NoAbsolute directive and other conditions may affect actual location of the output file.
+
+* type
+** Specifies the [line, record] delimiter types.  Either NOTES or one of the following:
+
+!block example; lang="Perl"
+  my %Delimiter = (
+	2 => ["\n", "\n\n"],
+	3 => ["\n%%\n", "\n%%%\n"],
+	4 => ["CSV","\n"],
+	5 => ['|', "\n"],
+	6 => ["\t", "\n"],
+	7 => ["\t", "\n"],
+	8 => ["\t", "\n"],
+	LINE => ["\n", "\n\n"],
+	'%%%' => ["\n%%\n", "\n%%%\n"],
+	'%%' => ["\n%%\n", "\n%%%\n"],
+	CSV => ["CSV","\n"],
+	PIPE => ['|', "\n"],
+	TAB => ["\t", "\n"],
+	);
+!endblock
+
+** If using NOTES
+*** notes_separator (defaults to "\f")
+*** notes_field (defaults to "notes_field")
+
+* field
+** The column to add (or delete if delete and verify are true)
+
+* delete
+** If 'verify' attribute also set, deletes column specified by 'field' attribute rather than adding a column.
+
+* verify
+** must be true when deleting a column
+
+* sort
+** Output sorted rows (N<usage:> sort="I<sort_field>:I<sort_option>") (see search/form variable 'mv_sort_option' for sort options)
+
+
 
 B<The attribute hash reference is passed> to the subroutine after
 the parameters as the last argument.
@@ -3538,9 +3711,7 @@ Attribute aliases
 
 H3: Description
 
-B<NO Description>
-
-
+Exports 'table' to a delimited text file.  See also {{C[jump="#import"]import}} tag which imports files into databases.
 
 
 H2: field
@@ -4168,6 +4339,7 @@ Builds a tax rate from C<taxarea>, C<taxrate>, C<taxshipping>, variable values, 
 
 H2: goto
 
+(I think this is deprecated, but I'm not sure)
 
 H3: Summary
 
@@ -4257,10 +4429,27 @@ Calculates and inserts handling costs. Accepts the same noformat and convert arg
 
 H2: harness
 
+Test harness block.  Similar to try/catch.  Interprets the body text and checks the return value against expected and explicitly bad cases.
+
+Returns DIED, OK, or NOT OK message along with your result if not the expected value.
 
 H3: Summary
 
+!block example
+  [harness expected="good" name=my_test_number_1]
+    [good]The Expected Return Value[/good]
+    [not]Some Specifically Bad Return Value[/not]
+    I<Tags and code to test here>
+  [/harness]
+!endblock
+
 No parameters.
+
+* expected (default "OK")
+** Tagname for delimiting your expected return value
+
+* name (default "testI<nnn>")
+** This will appear in your output message (useful for distinguishing harness tags from one another)
 
 B<The attribute hash reference is passed> after the parameters but before
 the container text argument.
@@ -4291,8 +4480,10 @@ B<ASP-like Perl call:>
 
 H3: Description
 
-B<NO Description>
 
+Test harness block.  Similar to try/catch.  Interprets the body text and checks the return value against expected and explicitly bad cases.
+
+Returns DIED, OK, or NOT OK message along with the harness name and your result if not the expected value.
 
 
 H2: href
@@ -4302,10 +4493,34 @@ Alias for [{{CMD[jump="#area"]area}}] tag.
 
 H2: html_table
 
+Builds an HTML table
 
 H3: Summary
 
-No parameters.
+* columns
+** Whitespace-delimited list of columns
+
+* delimiter (default "\t")
+** Line delimiter to use if tag body is delimited text rather than an array reference
+
+* record_delim (default "\n")
+** Record delimiter to use if tag body is delimited text rather than an array reference
+
+* tr
+** HTML attributes for <TR>
+
+* td
+** HTML attributes for <TD>
+
+* th
+** HTML attributes for <TH>
+
+* fc
+** HTML attributes for <TD> in the first cell
+
+* fr
+** HTML attributes for <TR> in the first row
+
 
 B<The attribute hash reference is passed> after the parameters but before
 the container text argument.
@@ -4336,7 +4551,9 @@ B<ASP-like Perl call:>
 
 H3: Description
 
-B<NO Description>
+
+Builds an HTML table
+
 
 
 H2: if
@@ -4836,12 +5053,31 @@ and variables. Does NOT do locale translations.
 
 H2: index
 
+Creates an index for the specified table.
 
 H3: Summary
 
 \Parameters: B<table>
 
 Positional parameters in same order.
+
+* extension (default "idx")
+** Index file extension
+
+* basefile
+** Database filename.  Exports the table to this filename if old or missing before indexing.  See also the {{C[jump="#export"]export}} tag for additional relevent attributes such as delimiter type, etc.
+
+* export_only
+** Just do the export if necessary (not the index).
+
+* spec
+** The index specification
+
+* fn or fields or col or columns
+** field(s) to index
+
+* show_status
+** Return '1' to the page if successful
 
 
 B<The attribute hash reference is passed> to the subroutine after
@@ -4876,9 +5112,7 @@ Attribute aliases
 
 H3: Description
 
-B<NO Description>
-
-
+Creates an index for the specified table.
 
 
 H2: input_filter
@@ -5150,6 +5384,7 @@ customer can enter the quantity to order.
 
 H2: label
 
+The page label for goto.  I believe this is deprecated.
 
 H3: Summary
 
@@ -5182,19 +5417,38 @@ B<ASP-like Perl call:>
 
 H3: Description
 
-B<NO Description>
-
-
+The page label for goto.  I believe this is deprecated.
 
 
 H2: log
 
+Log contained text to specified file.
 
 H3: Summary
 
 \Parameters: B<file>
 
-Positional parameters in same order.
+* file
+** name of file to log to.  'file="E<gt>I<filename>"' also sets 'create' attribute.
+
+* create 
+** Set create=1 to create the file if not present
+
+* process
+** Processing (if any) to apply to the content while logging
+*** nostrip (don't strip leading/trailing whitespace and convert "\r\n" to "\n"
+
+* delim and record_delim
+** Line and record delimiters, respectively
+
+* type
+** Log type
+*** text (ordinary text file)
+*** quot (delimited entries)
+*** error (add interchange error formatting and time/location stamps)
+
+* hide
+** Suppress status otherwise returned by tag to the page.
 
 
 B<The attribute hash reference is passed> after the parameters but before
@@ -5232,9 +5486,7 @@ Attribute aliases
 
 H3: Description
 
-B<NO Description>
-
-
+Log contained text to specified file.
 
 
 H2: loop
@@ -5444,12 +5696,28 @@ is set, then currency formatting will not be applied.
 
 H2: mail
 
+Mail contained text to recipient specified by 'to' using the program specified with the SendMailProgram catalog directive.
 
 H3: Summary
 
 \Parameters: B<to>
 
 Positional parameters in same order.
+
+* raw
+** Send it raw without creating headers and checking content, recipient, subject, etc.
+
+* extra
+** Additional headers (these will also be added to 'raw' messages)
+
+* success
+** Tag return value if successful (default is 1).
+
+* hide
+** Suppress tag return value.  This would otherwise be the 'success' attribute setting.
+
+* show
+** The tag will return the final message with headers in the page
 
 
 B<The attribute hash reference is passed> after the parameters but before
@@ -5482,7 +5750,8 @@ B<ASP-like Perl call:>
 
 H3: Description
 
-B<NO Description>
+
+Mail contained text to recipient specified by 'to' using the program specified with the SendMailProgram catalog directive.
 
 
 H2: mvasp
@@ -5668,6 +5937,16 @@ H3: Summary
 \Parameters: B<code quantity>
 
 Positional parameters in same order.
+
+* code
+** Unique key (typically sku) if not already set
+
+* quantity
+** How many (if not already set)
+
+* text
+** Delimited list of additional item fields and values to set. Default delimiter is the pipe ('|') character.
+*** text="field1=val1|field2=val2|field3=val3"
 
 
 B<The attribute hash reference is passed> to the subroutine after
@@ -9104,6 +9383,7 @@ with C<option=1>, set the tag prefix with C<prefix>, etc.
 
 H2: try
 
+See {{C[jump="#catch"]catch}} for description.
 
 H3: Summary
 
