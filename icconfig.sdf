@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.55 2002-01-09 16:57:08 racke Exp $
+# $Id: icconfig.sdf,v 1.56 2002-01-23 18:40:02 mheins Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.55 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.56 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
@@ -299,6 +299,18 @@ the output of C<logDebug> statements, and warnings if warnings are enabled.
 !block example
 	DebugFile  /tmp/icdebug
 !endblock
+
+H2: DeleteDirective *global*
+
+Deletes a configuration directive from the list is parsed for every
+C<catalog.cfg> file. Can save memory for installations with large numbers
+of catalogs.
+
+!block example
+   DeleteDirective  DescriptionField OfflineDir
+!endblock
+
+The directive is not case-sensitive. Has no effect on global directives.
 
 H2: DisplayErrors *global*
 
@@ -734,8 +746,8 @@ and cause system log entries something like:
 This would work in conjunction with a UNIX syslogd.conf entry of:
 
 !block example
-	# Log local3 stuff to Interchange log
-	local3.*		/var/log/interchange.log
+        # Log local3 stuff to Interchange log
+        local3.*                /var/log/interchange.log
 !endblock
 
 A custom wrapper can be created around it to get it to behave as desired. For instance, if you didn't want to use syslog but instead wanted to log to a database (via DBI), you could create a Perl script named "logdatabase" to log things:
@@ -748,16 +760,16 @@ A custom wrapper can be created around it to get it to behave as desired. For in
     use Getopt::Std;
      
     getopts('d:p:T:k:')
-    	or die "$script_name options: $@\n";
+        or die "$script_name options: $@\n";
      
     use vars qw/$opt_d $opt_p $opt_T $opt_k/;
      
     my $dsn   = $opt_d || $ENV{DBI_DSN};
     my $template = $opt_T
-    	|| "insert into log values ('~~KEY~~', '~~LEVEL~~', '~~MSG~~')";
+        || "insert into log values ('~~KEY~~', '~~LEVEL~~', '~~MSG~~')";
      
     my $dbh = DBI->connect($dsn)
-    	or die "$script_name cannot connect to DBI: $DBI::errstr\n";
+        or die "$script_name cannot connect to DBI: $DBI::errstr\n";
      
     my %data;
      
@@ -771,10 +783,10 @@ A custom wrapper can be created around it to get it to behave as desired. For in
     $template =~ s/\~\~(\w+)\~\~/$dbh->quote($data{$1})/;
      
     my $sth = $dbh->prepare($template)
-    	or die "$script_name error executing query: $template\n";
+        or die "$script_name error executing query: $template\n";
      
     $sth->execute()
-    	or die "$script_name error executing query: $template\n";
+        or die "$script_name error executing query: $template\n";
      
     exit;
 !endblock
@@ -1095,7 +1107,7 @@ You can temporarily change any of the catalog configuration settings,
 for example use a different flypage.
 
 !block example
-   Autoload	  <<EOA
+   Autoload       <<EOA
    [perl] 
    if ($Session->{browser} =~ /msie/i) {
       $Config->{Special}->{flypage}='ms_flypage'};
@@ -1286,16 +1298,16 @@ Defines default parameters for a database. This can be used to set a default
 WRITE_CONTROL setting, set a default USER or PASSWORD, etc. It accepts any
 scalar setting, which means all B<except>:
 
-	ALTERNATE_*
-	BINARY
-	COLUMN_DEF
-	DEFAULT
-	FIELD_ALIAS
-	FILTER_*
-	NAME
-	NUMERIC
-	POSTCREATE
-	WRITE_CATALOG
+        ALTERNATE_*
+        BINARY
+        COLUMN_DEF
+        DEFAULT
+        FIELD_ALIAS
+        FILTER_*
+        NAME
+        NUMERIC
+        POSTCREATE
+        WRITE_CATALOG
 
 This default setting is made when the table is initially defined, i.e. explicit
 settings for the database itself override the defaults set.
@@ -1343,7 +1355,7 @@ H2: DirConfig
 
 C<DirConfig> allows you to batch-set a bunch of variables from files. The syntax:
 
-		DirConfig  directive-name directory-glob
+                DirConfig  directive-name directory-glob
 
 C<directive-name> is usually C<Variable>, but could be any hash-based
 directive. (No other standard directives currently make sense to set this
@@ -1372,7 +1384,7 @@ first to see if the source file is defined. If there is a key
 present, even if its contents are blank, it is returned. Example: in
 the case of this catalog.cfg entry:
 
-	DirConfig   Variable   templates/foundation/regions
+        DirConfig   Variable   templates/foundation/regions
 
 If the file NOLEFT_TOP is present at catalog config time, __NOLEFT_TOP__ will
 equal C<[include templates/foundation/regions/NOLEFT_TOP]>.
@@ -2124,9 +2136,9 @@ The default is file-based sessions, which provides the best performance and reli
 
 If you are planning on running Interchange servers with an NFS-mounted filesystem as the session target, you must set SessionType to "NFS". The other requisites are usually:
 
-	1. fcntl() supported in Perl
-	2. lock daemon running on NFS server system
-	3. lock daemon running on Interchange server
+        1. fcntl() supported in Perl
+        2. lock daemon running on NFS server system
+        3. lock daemon running on Interchange server
 
 See also the global directive LockType.
 
