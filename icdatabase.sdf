@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.64 2004-04-11 18:53:13 mheins Exp $
+# $Id: icdatabase.sdf,v 1.65 2004-04-11 18:57:18 mheins Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.64 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.65 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/icdatabase.html"
@@ -542,9 +542,7 @@ table by adding to the definition files:
 
 H2: SQL/DBI parameters
 
-=over 4
-
-=item AUTO_SEQUENCE
+H3: AUTO_SEQUENCE
 
 Tells Interchange to use a SQL sequence to number new database items
 inserted into the database. 
@@ -558,25 +556,25 @@ Then on MySQL, Pg, or Oracle, Interchange will create an integer
 key type and a sequence (or AUTO_INCREMENT in MySQL) to maintain
 the count.
 
-=item AUTO_SEQUENCE_MAXVAL
+H3: AUTO_SEQUENCE_MAXVAL
 
 Sets the MAXVAL to have in an AUTO_SEQUENCE counter:
 
 >  Database foo AUTO_SEQUENCE_MAXVAL  1000000
 
-=item AUTO_SEQUENCE_MINVAL
+H3: AUTO_SEQUENCE_MINVAL
 
 Sets the MINVAL to have in an AUTO_SEQUENCE counter:
 
 >  Database foo AUTO_SEQUENCE_MINVAL  10
 
-=item AUTO_SEQUENCE_START
+H3: AUTO_SEQUENCE_START
 
 Sets the starting value for an AUTO_SEQUENCE counter:
 
 >  Database foo AUTO_SEQUENCE_START  1000
 
-=item COMPOSITE_KEY
+H3: COMPOSITE_KEY
 
 If you are using a DBI table with composite keys, where two or more
 fields combine to make the unique identifier for a record, you must
@@ -593,7 +591,7 @@ don't specify a POSTCREATE or INDEX parameter for the table, Interchange
 will create a unique index with all composite key elements at table
 creation time.
 
-=item DSN
+H3: DSN
 
 The data source name (DSN) for the database. It is beyond the
 scope of this document to describe this in detail.
@@ -614,19 +612,19 @@ Some other examples of DSN specs:
 > Database  foo  DSN  dbi:Pg:dbname=foobase
 > Database  foo  DSN  dbi:Oracle:host=myhost.com;sid=ORCL
 	
-=item HAS_TRANSACTIONS
+H3: HAS_TRANSACTIONS
 
 Informs Interchange that the SQL database in use has commit() and
 rollback() for transactions. For PostgreSQL and Oracle this should be
 set properly to 1 -- for MySQL and other databases you have to set it.
 
-=item HAS_LIMIT
+H3: HAS_LIMIT
 
 Informs Interchange that the SQL database in use has as the LIMIT
 extension to SQL to limit return from queries. Should be set properly
 by default for MySQL, PostgreSQL, and Oracle.
 
-=item POSTCREATE
+H3: POSTCREATE
 
 One or more SQL statements that should be performed after
 Interchange creates a table.
@@ -634,7 +632,7 @@ Interchange creates a table.
 > Database foo POSTCREATE "create unique index foo_idx on foo(key1,key2)"
 > Database foo POSTCREATE "create index mulkey_idx on foo(mulkey)"
 
-=item PRECREATE
+H3: PRECREATE
 
 One or more SQL statements that should be performed before
 Interchange creates a table.
@@ -642,7 +640,7 @@ Interchange creates a table.
 > Database foo POSTCREATE "drop table foobackup"
 > Database foo POSTCREATE "alter table foo rename to foobackup"
 
-=item REAL_NAME
+H3: REAL_NAME
 
 Sometimes it may be convenient to have a table named a consistent
 value in Interchange despite its name in the underlying database.
@@ -656,8 +654,6 @@ table for SQL statements:
 Of course if you have SQL queries that are passed verbatim to 
 Interchange (i.e. the [query ...] tag) you must use the REAL_NAME
 in those.
-
-=back
 
 H2: Importing in a Page
 
