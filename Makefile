@@ -1,4 +1,4 @@
-VERSION=4.7.2
+VERSION=4.7.6
 TARGETS=icadvanced iccattut icconfig icfoundation ictemplates icdatabase ictags icupgrade
 SUFFIXES=txt mif html pdf pod 8
 SDFBIN=sdf/bin/sdf

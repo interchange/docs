@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.43 2001-07-18 15:41:43 heins Exp $
+# $Id: icconfig.sdf,v 1.44 2001-07-18 16:24:22 heins Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.43 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.44 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange 4.8"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icconfig.html"
@@ -923,7 +923,7 @@ Additional configuration techniques are available in the C<catalog.cfg> file. Fi
 
 LI1: Define subroutine watches
 
-.Almost any configuration variable can be set up to be tied to a subroutine if the Tie::Watch module is installed. It uses a notation like the <<HERE document, but <&HERE is the notation. See C<Interchange Programming> for details.
+.Almost any configuration variable can be set up to be tied to a subroutine if the Tie::Watch module is installed. It uses a notation like the <<HERE document, but <&HERE is the notation. See {{CMD[jump="icconfig.html#Programming"]Interchange Programming}} for details.
 
 H2: Programming Watch Points in catalog.cfg
 

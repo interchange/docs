@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ictemplates.sdf,v 1.21 2001-06-08 18:23:41 alison Exp $
+# $Id: ictemplates.sdf,v 1.22 2001-07-18 16:24:22 heins Exp $
 
 !define DOC_NAME "Template Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "ictemplates"
-!define DOC_VERSION substr('$Revision: 1.21 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.22 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Red Hat Interchange 4.8"
 !define DOC_URL "http://help.akopia.com/interchange/doc/ictemplates.html"
@@ -412,7 +412,7 @@ LI1: [loop-exec routine]argument[/loop-exec]
 
 LI1: [loop-sub routine]PERL[/loop-sub]
 
-.Defines a subroutine that is available to the current (and subsequent) [loop-...] tags within the same page. See Interchange Programming.
+.Defines a subroutine that is available to the current (and subsequent) [loop-...] tags within the same page. See {{CMD[jump="icconfig.html#Programming"]Interchange Programming}}.
 
 H2: if
 

@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.54 2001-06-30 21:06:07 heins Exp $
+# $Id: ictags.sdf,v 1.55 2001-07-18 16:24:22 heins Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.54 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.55 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -5929,7 +5929,7 @@ B<Tag expansion example:>
 
 H4: See Also
 
-{{CMD[jump="#perl"]perl}}, {{CMD[jump="icconfig.html#Programming"]Interchange Programming}}
+{{CMD[jump="#perl"]perl}}, {{CMD[jump="ictemplates.html#Programming"]Interchange Programming}}
 
 
 H3: Description
@@ -5987,7 +5987,7 @@ the perl code before C<eval>'ing it. See {{C[jump="#perl_file"]perl}} tag.
 H4: Examples
 
 See the {{CMD[jump="icconfig.html#ASP-Like Perl"]ASP-Like Perl}}
-section of {{CMD[jump="icconfig.html#Programming"]Interchange Programming}}.
+section of {{CMD[jump="ictemplates.html#Programming"]Interchange Programming}}.
 
 
 H2: nitems
@@ -6670,7 +6670,7 @@ the restrictions of Perl's
 module by default. The tag expands to the value returned by the enclosed code
 (i.e., printing to STDOUT or STDERR is useless).
 
-See also {{CMD[jump="icconfig.html#Programming"]Interchange Programming}}.
+See also {{CMD[jump="ictemplates.html#Programming"]Interchange Programming}}.
 
 H3: Summary
 
@@ -6743,7 +6743,7 @@ or similarly with positional parameters,
 
 H4: See Also
 
-See also {{CMD[jump="icconfig.html#Programming"]Interchange Programming}},
+See also {{CMD[jump="ictemplates.html#Programming"]Interchange Programming}},
 E<lbracket>{{C[jump="#calc"]calc}}], and E<lbracket>{{C[jump="#mvasp"]mvasp}}].
 
 H3: Description
