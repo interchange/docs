@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.45 2002-06-23 15:07:01 mheins Exp $
+# $Id: icdatabase.sdf,v 1.46 2002-06-25 20:15:00 mheins Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.45 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.46 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icdatabase.html"
@@ -1873,20 +1873,29 @@ LI1: [more-list next_img* prev_img* page_img* border* border_current*]
      Next       <IMG SRC="next.gif" Border=0>
 !endblock
 
-.To set custom text for the "Previous" and "Next" usually used, define the C<next_img>, C<prev_img>, and C<page_img> with C<[next-anchor][/next-anchor]>, C<[prev-anchor][/prev-anchor]> and C<[page-anchor][/page-anchor]>. The string $PAGE$ will be replaced with the page number in the latter. The same example:
+.To set custom text for the "Previous" and "Next" usually used, define
+the C<next_img>, C<prev_img>, and C<page_img> with
+C<[next-anchor][/next-anchor]>, C<[prev-anchor][/prev-anchor]> and
+C<[page-anchor][/page-anchor]>. The string $PAGE$ will be replaced with
+the page number in the latter. The same example:
 
 !block example; listitem=2
-    [more-list 0 0 0]
-    [next-anchor] Forward [/next-anchor]
+    [more-list]
+    [next-anchor] Forward | [/next-anchor]
     [prev-anchor] Back [/prev-anchor]
-    [page-anchor] Page $PAGE$ [/page-anchor]
+    [page-anchor] Page $PAGE$ (matches $MINPAGE$-$MAXPAGE$) | [/page-anchor]
     [more]
     [/more-list]
 !endblock
 
-.will display C<Forward Page 1 Page 2 Back> for 2 pages.
+.will display C<Forward | Page 1 (matches 1-50) | Page 2 (matches 51-77) | Back> for 2 pages. Note that the following anchors are replaced with the page number, the
+minimum match on the page, and the maximum match on the page:
 
-.As shown, pass a 0 for the arguments of each to tell Interchange to look for the assignments.
+!block example; listitem=2
+    $PAGE$       Page number
+    $MINPAGE$    Minimum match on page
+    $MAXPAGE$    Maximum match on page
+!endblock
 
 .If have many pages of matches and don't wish to have all displayed at once, set C<[decade-next][/decade-next]> and C<[decade-prev][/decade-prev]>. If set them empty, a search with 31 pages will display pages 21-30 like:
 
