@@ -1,0 +1,881 @@
+!init OPT_LOOK="akopia"; OPT_STYLE="manual"
+# $Id: icfoundation.sdf,v 1.1 2001-04-10 21:07:22 jon Exp $
+
+!define DOC_NAME "Foundation Store"
+!define DOC_TYPE ""
+!define DOC_CODE "icfoundation"
+!define DOC_VERSION substr('$Revision: 1.1 $', 11, -2)
+!define DOC_STATUS "Draft"
+!define DOC_PROJECT "Interchange"
+!define DOC_URL "http://developer.akopia.com/doc/icfoundation.html"
+!build_title
+
+H1: The Foundation Store
+
+The Foundation store demo is designed to be relatively easy to start with, yet it is still a full-featured demonstration of a number of Interchange capabilities. This means it will take some work to understand it.
+
+The following is a list of some popular features:
+
+LI1: Category Searches
+
+.If a catalog contains a small number of products, hard coded pages are sufficient, though they can be more difficult to maintain compared to database definitions. Regardless of the number of products in a catalog, consider categorizing them so they can easily be found. Pick a field in the database, perhaps named C<category>, and classify the products for search using Interchange.
+
+LI1: Images
+
+.Place a thumbnail image (perhaps with a link to a blowup) for the items that have images. To do this, add an image field in the database. (See the 'image' field of the products database.)
+
+LI1: Related Items
+
+.On a product's individual display page, embed searches of similar products with the C<[query ...]> or C<[loop ...]> tags. Or, if customer data is developed, search a past order database and display products that would be of interest to that customer.
+
+LI1: Reviews/Testimonials
+
+.Key the placement on the existence of a file in a certain directory. This is reasonable to do when a user is viewing a single product.
+
+H1: Tree design
+
+Determine how users will enter and exit the catalog. Complex and intelligent conditional schemes are possible, especially if the Cookies capability is used. However, it is recommended that simplicity be used. Consumers will not buy if they can't navigate their way around the catalog.
+
+It is important to remember that users will lose their session (and items in their shopping cart) if their browser does not accept cookies and they leave the site. Interchange addresses this problem by using of the C<area> and C<page> tags. If using frames, source all frame panes containing Interchange links from an initial page served by Interchange. If not, the user may have multiple session IDs depending on which frame generated the link.
+
+Note that Interchange does work properly even if the browser doesn't store cookies. In this situation Interchange inserts a session ID into each URL; if the ID is preserved as the user navigates from page to page then the session will remain intact.
+
+
+H1: The Catalog Directory
+
+Interchange pages are NOT in normal HTML space. They are contained in the catalog directory. Each individual catalog must have its own base directory. The catalog directory has the following structure by default:
+
+LI1: catalog.cfg
+
+.File containing configuration directives for this catalog. (Subcatalogs have differing information in a file named for the subcatalog.)
+
+What's in Foundation's catalog.cfg specifically that's of interest?
+
+LI1: config
+
+.Directory that will be read when directives are set with the C<filename> notation. For example, the file C<config/static.pages> will be read when the following directive is encountered in the C<catalog.cfg> file.
+
+!block example; listitem=2
+  StaticPage  <static.pages
+!endblock
+
+.This directory also contains template information used with the C<makecat> program.
+
+LI1: error.log
+
+.File which contains catalog-specific errors. It is also where any syntax errors in embedded Perl code will be shown.
+
+LI1: etc
+
+.Directory normally used for tracking files, order profiles, and other configuration and log information.
+
+LI1: pages
+
+.Directory that contains the pages of the catalog. This can be considered to be the "document root" of the catalog. Pages contained therein are called with the path information after the script name. For example:
+
+!block example; listitem=2
+C</cgi-bin/simple/products/gold> will call the page in the file
+C<pages/products/gold.html>.
+!endblock
+
+LI1: products
+
+.Directory containing database source files, including the special Interchange databases shipping.asc, pricing.asc (and other shipping database files).
+
+LI1: session
+
+.Directory which contains session files.
+
+LI1: tmp
+
+.The temporary or scratch directory for various uses like retired ID numbers, search paging files, sort tests, import temporary files, etc. This is the default set by ScratchDir. It can be redefined to be located on another partition.
+
+
+H1: Page Templates
+
+The Simple Demo uses the C<Variable> feature extensively to simplify hand page editing. Basically speaking, a C<Variable> is a define that permits the substitution of text for a simple C<__VARIABLE__> string in a page.
+
+For example, in the simple demo, this is a complete page with the standard layout:
+
+!block example
+   __LOGOBAR__
+   __MENUBAR__
+   __LEFTSIDE__
+
+       This is unique content.
+
+   __RIGHTSIDE__
+   __MENUBOTTOM__
+   __COPYRIGHT__
+!endblock
+
+The following illustration shows how this looks on the page.
+
+!block example
+   +--------------------------------------------------------+
+   |   __LOGOBAR__                                          |
+   |--------------------------------------------------------+
+   |   __MENUBAR__                                          |
+   |--------------+-------------------------+---------------+
+   |              |                         |               |
+   | __LEFTSIDE__ |   This is your content  | __RIGHTSIDE__ |
+   |              |                         |               |
+   |              |                         |               |
+   +--------------+-------------------------+---------------+
+   |   __MENUBOTTOM__                                       |
+   |--------------------------------------------------------+
+   |   __COPYRIGHT__                                        |
+   +--------------------------------------------------------+
+!endblock
+
+In HTML, the C<__RIGHTSIDE__> is simply defined to be empty, closing the table row in most cases. The following illustration is actually how the page looks.
+
+!block example
+   +--------------------------------------------------------+
+   |   __LOGOBAR__                                          |
+   |--------------------------------------------------------+
+   |   __MENUBAR__                                          |
+   |--------------+-----------------------------------------+
+   |              |                                         |
+   | __LEFTSIDE__ |   This is your content                  |
+   |              |                                         |
+   |              |                                         |
+   +--------------+-----------------------------------------+
+   |   __MENUBOTTOM__                                       |
+   |--------------------------------------------------------+
+   |   __COPYRIGHT__                                        |
+   +--------------------------------------------------------+
+!endblock
+
+The variables are defined in C<catalog.cfg>, and come from files in the config directory. There are conditional templates with different color schemes.
+
+Once familiar with this method, it can be quite convenient. But other methods may be chosen, such as using an HTML editor. Interchange can coexist with editors that use the <NOTOUCH> </NOTOUCH> or <NOEDIT> </NOEDIT> pairs to delimit information that should not be altered or interpreted by the editor. Bear in mind that this templating method and the database layout of the simple catalog is only a suggestion on how a catalog might be organized. Many users decide to create their own database structure for product display.
+
+Yet, most users stick with the userdb and checkout strategies employed in this catalog. This is because these strategies have been developed and proven successful over a period of years. Still, they can be customized to operate like Amazon.com or another site.
+
+H1:The Database Tables
+
+Interchange catalogs are all about the database. You can alter any of the standard databases to suit your needs, add new databases, or remove unneeded ones. But the following dictionary lists each table used in the Foundation demo and each of its fields, and explains its purpose.
+
+Explain:
+* Implied sub-databases
+* Relational DB map
+* Data assumptions
+* Default medium (DBM vs. files vs. SQL) for each table in demo
+
+
+H2:2ndDayAir.csv
+
+Shipping table
+
+
+H2:450.csv
+
+Shipping table
+
+
+H2:Ground.csv
+
+Shipping table
+
+
+H2:NextDayAir.csv
+
+Shipping table
+
+
+H2:access.asc
+
+Admin access table
+
+!block example
+    username
+    password
+    name
+    last_login
+    super
+    yes_tables
+    no_tables
+    upload
+    acl
+    export
+    edit
+    pages
+    files
+    config
+    reconfig
+    groups
+    meta
+
+    no_functions
+        Used From: none
+
+    yes_functions
+        Used From: dist/lib/UI/pages/admin/access_permissions.html
+
+    table_control
+        Used From: dist/lib/UI/Primitive.pm
+                   dist/lib/UI/pages/admin/special/key_violation.html
+                   dist/lib/UI/usertag/if_mm
+
+    personal_css
+        Used From: dist/lib/UI/pages/admin/preferences.html
+        Used in the admin screens to make personal changes to the admin
+        presentation, by creating your own personal CSS, appears to be used
+        currently only in the preferences screen.
+!endblock
+
+
+H2:affiliate.txt
+
+!block example
+    affiliate
+    name
+        Affiliate Name
+    campaigns
+    coupon_amount
+    join_date
+        Join date
+    url
+        URL (Default URL to redirect to)
+    timeout
+        Timeout delay (in seconds, 0 to disable)
+    active
+    password
+    image
+!endblock
+
+
+H2:area.txt
+
+A table designed to implement a dynamic navigation bar. 
+
+!block example
+    code
+    sel
+    name
+		A display label to replace C<code> or C<selector>.
+    which_page
+    sort
+		The sort order if an alphanumeric sort on C<name> is not desired.
+    display_type
+    image
+    image_prop
+    banner_image
+    banner_text
+		Text to display in a banner or heading.
+    link_type
+		none = No link
+		external = External link (http://...)
+		internal = Interchange page
+		simple = Simple search
+		complex = Complex search
+    url
+		A URL to link to instead of the default search in the products database.
+    tab
+    page
+    search
+    selector
+		The selector that is used to scan the C<products> table for products in the category.
+    link_template
+!endblock
+
+
+H2:cat.txt
+
+Categories.
+
+!block example
+    code
+    sel
+    name
+    which_page
+    sort
+    display_type
+            name = Name
+            url = URL only
+            icon = Icon and name
+            image = Image
+    image
+    image_prop
+    banner_image
+    banner_text
+    link_type
+        Type of link:
+            none = No link
+            external = External link (http://...)
+            internal = Interchange page
+            simple = Simple search
+            complex = Complex search
+    url
+    tab
+    page
+    search
+    selector
+    link_template
+!endblock
+
+H2:component.txt
+
+!block example
+    code
+    group
+    name
+    width
+    height
+    pieces
+    label
+    banner
+    help
+    help_url
+    filter
+    controls
+    Variable
+!endblock
+
+
+H2: country
+
+.A list of countries used to build select boxes and select shipping modes based on countries.
+
+!block example
+    code
+    sorder
+    region
+    selector
+    shipmodes
+    name
+!endblock
+
+
+H2:downloadable.txt
+
+!block example
+    sku
+    dl_location
+    dl_type
+!endblock
+
+
+H2:files.txt
+
+A database where files (pages, etc.) can be kept instead of in the Unix filesystem.
+
+
+H2:gift_certs.txt
+
+!block example
+    code
+    username
+    order_date
+    original_amount
+    redeemed_amount
+    available_amount
+    passcode
+    active
+    redeemed
+    update_date
+!endblock
+
+
+H2:inventory.txt
+
+!block example
+    sku
+        Quantity info
+    quantity
+		Gets decremented after each sale.
+    stock_message
+		The usual shipping time of the product.
+        Out of stock message:
+            In stock
+            Ships in 3-5 days
+            Ships in 4-6 weeks
+            Special order
+    account
+        Accounting info
+        Sales account
+    cogs_account
+!endblock
+
+
+H2:locale.txt
+
+!block example
+    code
+    en_US
+    de_DE
+    fr_FR
+!endblock
+
+
+H2:merchandising.txt
+
+!block example
+    sku
+    featured
+    banner_text
+    banner_image
+    blurb_begin
+    blurb_end
+        Closer (end text for feature display)
+    timed_promotion
+    start_date
+        Start date
+    finish_date
+    upsell_to
+        Cross-sell SKUs
+    cross_sell
+    cross_category
+    others_bought
+    times_ordered
+!endblock
+
+
+H2:options.txt
+
+!block example
+    code
+    o_master
+        Master item (Always included when the base SKU is equal to this.)
+    sku
+        Unique SKU (Associated item)
+    o_group
+        Option Group (scanned to see if it applies (or doesn't apply) to this
+        product)
+    o_sort
+    phantom
+        Phantom? (Whether a phantom for structuring)
+    o_enable
+        Follow? (Enable for next level) Sub-items
+    o_matrix
+        Matrix options (Matrix options allow you to maintain multiple option
+        sets with inventory on each combination)
+    o_modular
+        Modular Options (Modular options allow you to attach multiple SKUs to
+        the same item, possibly with attached options of their own.  Very
+        complex but you can do most anything.
+    o_default
+        Default? (Yes if the default selection for the group)
+    o_label
+        Short name for option display
+    o_value
+        Possible Values (In Interchange option format: VALUE1=Label 1,
+        VALUE2=Label 2 *=default selection)
+    o_widget
+    o_footer
+    o_header
+    o_height
+        Height of widget (if applicable)
+    o_width
+        Width of widget
+    description
+        Option/Variant description (for description in display)
+    price
+        Price (Price of this option/variant)
+    wholesale
+        Dealer price
+    differential
+    weight
+    volume
+        Volume (if different, mostly for matrix/modular)
+    mv_shipmode
+    o_exclude
+        Exclude (Only for modular options. Lists the option groups to exclude
+        once the include has been done.  Takes the form of a number of wildcard
+        atoms.
+    o_include
+        Include (Only for modular options. Lists the option groups to include
+        with your item. Takes the form of a number of wildcard atoms.)
+!endblock
+
+
+H2:order_returns.txt
+
+!block example
+    code
+    order_number
+    session
+    username
+    rma_number
+    nitems
+    total
+    return_date
+    update_date
+!endblock
+
+
+H2:orderline.txt
+
+Every line item that is actually ordered is detailed in this table. The order as a whole is one record in the transactions table.
+
+See the page C<query/check_orders.html> for how it might be used. See C<etc/report> for how to add to it.
+
+!block example
+    code
+    store_id
+    order_number
+    session
+    username
+    shipmode
+    sku
+    quantity
+    price
+    subtotal
+    shipping
+    taxable
+    mv_mi
+    mv_si
+    size
+    color
+    options
+    order_date
+    update_date
+    status
+            pending = Pending
+            shipped = Shipped
+            backorder = Back ordered
+            credit = Waiting for credit check
+            canceled = Cancelled
+    parent
+    affiliate
+    campaign
+    description
+    mv_mp
+!endblock
+
+
+H2:pricing.txt
+
+A database that works in conjunction with the C<CommonAdjust> directive to allow quantity pricing, either for one product or for a group of products (sometimes known as mix-and-match). The fields C<q2, q5, q10, etc.> are for the quantity levels; the C<price_group> field selects the mix-and-match category for the product.
+
+!block example
+    sku
+    price_group
+    q2
+    q5
+    q10
+    q25
+    q100
+!endblock
+
+
+H2:products.txt
+
+The main product table. This is where product information is stored. Add new fields or ignore existing ones as needed. Field by field:
+
+!block example
+    sku
+		The unique identifier for the product. Though theoretically it can contain most any character, use only characters of the class C<A-Z a-z 0-9 _ -> in order to be compatible with SQL databases, file systems, and URL encoding. Other characters can cause problems. A slash (C</>) can interfere with URLs and filenames. A colon (C<:>) can interfere with database representations (or file names on some operating systems). There are other possible compatibility situations with other characters.
+    description
+		A short description for the product that is used for displaying in the shopping cart, receipt, and order report. Keep it short.
+    title
+		This is usually catalog-specific since it applies to art. However, it would also apply to books, CDs, or other items.
+    template_page
+    comment
+		A long description of the product. If using the Interchange internal database, the field size is unlimited; if using another type of database, the length will be dependent on the field type selected.
+    thumb
+        Thumb
+    image
+		The image filename for the product. Many users add a C<thumb> field to contain the name of a small image for search list display. Another popular technique is to store images in files that are named for the product code (SKU), instead of using this field. You can then check if an image exists for a given SKU with this construct:
+			[if type=file compare="[item-code]".jpg"]<img src="[item-code].jpg">[/if]
+    price
+		The quantity-one price of the product.
+    wholesale
+        Dealer Price
+    prod_group
+    category
+		The category used for selection in lists. It is possible to place a product in more than one category, although this will require decisions about display and banner headings. Embedded Perl or other methods can be used.
+    nontaxable
+		If set to C<1>, the product is not taxable and its price will not be used in a sales tax calculation.
+    weight
+		A numeric value of the weight used for determining shipping costs (with UPS, for example). Normally in pounds, it can be anything the shipping routines will handle.
+    size
+		A comma-separated list of options as used in C<Accessories>. See the C<flypage.html> and C<ord/basket.html> pages for examples of how it is used. An example:
+			Small, Medium, Large, XL
+		Other attribute information may be defined in a separate field.
+    color
+		A comma-separated list of options as used in C<Accessories>. See the C<flypage.html> and C<ord/basket.html> pages for examples of how it is used.
+    gift_cert
+        Gift certificate handling? (Yes if price should appear to be quantity)
+    related
+		Used for displaying "upsells," opportunities to purchase an additional item when this one is purchased. Contains a comma-separated list of SKUs to be offered.
+    featured
+		As used in the demo, the only meaningful value is C<front>. If this is contained in the field, this product may be featured on the front page via random selection. See the C<index.html> page for how it integrates with C<[loop search=something random=3]>.
+    download
+    dl_type
+    dl_location
+    inactive
+    url
+!endblock
+
+
+H2:route.txt
+
+!block example
+    code
+    attach
+    continue
+    commit
+    commit_tables
+    counter
+    credit_card
+    cyber_mode
+    email
+    empty
+    encrypt
+    encrypt_program
+    errors_to
+    increment
+    inline_profile
+    individual_track
+    individual_track_ext
+    partial
+    pgp_cc_key
+    pgp_key
+    profile
+    receipt
+    reply
+    report
+    rollback
+    rollback_tables
+    supplant
+    track
+!endblock
+
+
+H2:salestax.asc
+
+
+H2:shipping.asc
+
+Shipping methods table
+
+
+H2:state.txt
+
+State/territory/county information
+
+!block example
+    code
+    sorder
+    country
+    state
+    name
+    tax
+    postcode
+    shipmodes
+    tax_name
+!endblock
+
+
+H2:transactions.txt
+
+Each individual customer order has an entry in this table. Each line item is entered not here, but in the orderline table.
+
+See the page C<query/check_orders.html> for how it might be used. See C<etc/report> for how to add to it.
+
+!block example
+    code
+    store_id
+    order_number
+    session
+    username
+    shipmode
+    nitems
+    subtotal
+    shipping
+    handling
+    salestax
+    total_cost
+    fname
+    lname
+        Last Name
+    company
+    address1
+    address2
+        Address line 2
+    city
+    state
+    zip
+    country
+    phone_day
+        Daytime Phone
+    phone_night
+        Home Phone
+    fax
+    email
+    b_fname
+    b_lname
+        Billing Last Name
+    b_company
+    b_address1
+    b_address2
+        Billing Address Line 2
+    b_city
+    b_state
+        Billing State
+    b_zip
+        Billing Postcode
+    b_country
+        Billing Country
+    b_phone
+    order_date
+    order_ymd
+    order_wday
+    payment_method
+    po_number
+    avs
+    order_id
+    update_date
+    status
+    affiliate
+    campaign
+    parent
+    archived
+    deleted
+    complete
+    comments
+!endblock
+
+
+H2:userdb.txt
+
+The user database used for maintaining customer address information, account information, preferences, and more. See icdatabase for more information.
+
+!block example
+    username
+    password
+    acl
+    mod_time
+    s_nickname
+    company
+    fname
+    lname
+    address1
+    address2
+    address3
+    city
+    state
+    zip
+        Postcode
+    country
+        Country
+    phone_day
+    mv_shipmode
+    b_nickname
+    b_fname
+    b_lname
+    b_address1
+    b_address2
+    b_address3
+    b_city
+    b_state
+    b_zip
+    b_country
+    b_phone
+        Billing Phone
+    mv_credit_card_type
+    mv_credit_card_exp_month
+    mv_credit_card_exp_year
+    p_nickname
+    email
+    fax
+    phone_night
+    fax_order
+        Payment method:
+            (none) = Credit Card
+            1 = Fax or Mail
+            2 = Purchase order
+            3 = COD
+    address_book
+    accounts
+    preferences
+    carts
+    owner
+    file_acl
+    db_acl
+    order_numbers
+    email_copy
+    mail_list
+        Mailing lists the customer has joined:
+            offer = Special offers
+            newsletter = Newsletter
+            alert = Alerts and Recalls
+            upgrade = Upgrades
+    project_id
+    account_id
+    order_dest
+    credit_limit
+    inactive
+    dealer
+        Dealer:
+            (none) = No
+            1 = Yes
+    b_company
+    feedback 
+        ???
+!endblock
+
+
+H2:variable.txt
+
+Configuration database
+
+!block example
+    code
+        Variable name
+    Variable
+    pref_group
+        Preferences area
+!endblock
+
+
+H1: HTML Hypertext links
+
+Normally, regular hypertext links are not used in Interchange pages. These kinds of links will not include the session ID. If the customer follows an external link back to the catalog, the list of products ordered so far will have been lost. The C<area> tag is used to generate a hypertext link which includes a session ID.
+
+Instead of:
+
+!block example
+   <A HREF="/cgi-bin/mv/shirts">Shirts</A>
+!endblock
+
+\Use:
+
+!block example
+   <A HREF="[area shirts]">Shirts</A>
+!endblock
+
+
+H1: Images
+
+Inline images are placed in Interchange pages in the normal fashion with <IMG SRC="URL">. But since Interchange pages are served by a CGI program, do not use relative links. The Foundation store defines an image directory with the C<ImageDir> and C<ImageDirSecure> directives WHERE HOW WHAT that automatically adjusts the image path to a set base directory.
+
+
+H1: Browser Cookies
+
+The Foundation store enables the C<Cookies> directive so that users with cookie-capable browsers will retain session context. Then, standard HREF and Interchange page links can be intermixed without fear of losing the shopping basket. Cookie capability is also required to use search caching, page caching, and statically generated pages. If the user's browser does not support cookies, the cache will be ignored.
+
+If planning to use more than one host name within the same domain for naming purposes (perhaps a secure server and non-secure server), set the domain with the C<CookieDomain> directive. This must contain at least two periods (.) as per the cookie specification, and must be located in the same server as the domain.
+
+
+H1: Standard Variables
+
+mv_this
+mv_that
+
+
+H1: Default order routes
+
+Emailed orders.
+Using PGP/GnuPG.
+Any default integration with payment processors?
+
+
+H1: Dissect the flypage ?
+
+
+H1: Dependencies in admin
+
+In general, it's a good idea to leave fields empty if you don't want to use them, instead of removing them from the database altogether. That way nothing in admin or demo will break.
