@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.79 2003-07-07 00:30:44 mheins Exp $
+# $Id: icconfig.sdf,v 1.80 2003-07-08 19:12:58 mheins Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.79 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.80 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/icconfig.html"
@@ -1715,7 +1715,7 @@ Of course you could just as easily use the
 E<lbracket>{{CMD[jump="ictags.html#filter"]filter}}]
 tag on the page if the filter is only going to be used in a few places.
 See the E<lbracket>{{CMD[jump="ictags.html#filter"]filter}}]
-tag documentation for more information and a list of filters.
+tag documentation (wiki FilterTag) for more information and a list of filters.
 
 H2: FormAction
 
@@ -2797,7 +2797,7 @@ These are set in a C<catalog.cfg> file with something like:
 where C<default> or C<admin> is the name of the profile to set. These can
 be overriden if passed in the tag:
 
-	[userdb userminlen=6 new-account=1]
+>   [userdb userminlen=6 new-account=1]
 
 H2: UserTag
 

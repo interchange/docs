@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: icfaq.sdf,v 1.20 2002-10-30 17:24:00 mheins Exp $
+# $Id: icfaq.sdf,v 1.21 2003-07-08 19:12:59 mheins Exp $
 
 !define DOC_NAME "Frequently Asked Questions"
 !define DOC_TYPE ""
 !define DOC_CODE "icfaq"
-!define DOC_VERSION substr('$Revision: 1.20 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.21 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/icfaq.html"
@@ -884,6 +884,13 @@ H2: The demo doesn't do ... (pick one)
 That is because it is a demo. It is not intended to be a finished catalog, just
 a starting point.
 
+That being said, you should think long and hard before abandoning the
+checkout schema. Years of experience have led to the production of the
+userdb, transactions, and orderline tables, and the structure of the
+checkout page. Any changes to the data structure should be thoroughly
+tested before deployment, as obscure errors can cause major problems in
+order logging.
+
 H2: How can I trace the source of a purchase and run a partners program?
 
 Interchange has a facility that adds a parameter called I<source> to the session database for that user. You should give your partners a source code, which must contain at least one letter character (A-Za-z only). It is placed in the sourcing URL as a query string of:
@@ -949,39 +956,39 @@ N: Here are three examples of ways to empty/drop/clear the shopping cart content
 H3: Empty shopping cart
 !block example
 [calc]
-	@{$Carts->{$CGI->{mv_cartname} || 'main'}} = ();
+        @{$Carts->{$CGI->{mv_cartname} || 'main'}} = ();
 [/calc]
 !endblock
 
 H3: Empty shopping cart
 !block example
 [set clear_basket]
-	[calc]
-		@{$Carts->{$CGI->{mv_cartname} || 'main'}} = ();
-	[/calc]
+        [calc]
+                @{$Carts->{$CGI->{mv_cartname} || 'main'}} = ();
+        [/calc]
 [/set]
 
 [button
-	text="Clear Basket"
-	src="clear_basket.gif"
-	hidetext=1
-	form=basket
-	]
-		mv_todo=refresh
-		mv_click=clear_basket
+        text="Clear Basket"
+        src="clear_basket.gif"
+        hidetext=1
+        form=basket
+        ]
+                mv_todo=refresh
+                mv_click=clear_basket
 [/button]
 !endblock
 
 H3: Erase the user session (includes shopping cart)
 !block example
 [button
-	text="Clear Basket"
-	src="clear_basket.gif"
-	hidetext=1
-	form=basket
-	]
-		mv_todo=cancel
-		mv_nextpage=index
+        text="Clear Basket"
+        src="clear_basket.gif"
+        hidetext=1
+        form=basket
+        ]
+                mv_todo=cancel
+                mv_nextpage=index
 [/button]
 !endblock
 
@@ -998,17 +1005,17 @@ H2:How do I setup multiple shipping addresses?
 Interchange has the facility to handle multiple addresses.
 See the {{C[jump="icdatabase.html#User Database Functions"]User Database Functions}}
 section of the Interchange Database manual.
-	
+        
 H2:How do I change the order number from TEST0001, TEST0002 to something else?
 
 (Answered by Aaron Hazelton & Paul Jordan)
 
-	* Go to the IC admin and click on "Administration"
-	then click on the 'last order' which will be something
-	like "TEST00001".  It will bring up a page which will allow
-	you to change it to whatever you want.
-	
-	* Or, modify the CATROOT/etc/order.number
+        * Go to the IC admin and click on "Administration"
+        then click on the 'last order' which will be something
+        like "TEST00001".  It will bring up a page which will allow
+        you to change it to whatever you want.
+        
+        * Or, modify the CATROOT/etc/order.number
 
 H2: How do I move a catalog from a test server to a production server?
 
@@ -1172,29 +1179,29 @@ This creates two buttons that set save_cart to either 'cart' or 'recurring', the
 
 !block example
  [if value save_cart eq 'recurring']
-    	    <FORM ACTION="[process-target]" METHOD=POST>
-    	    To save this recurring order, give it a nickname, then press 'Save Cart'.<br>
-    	    Nickname:
-    	    <INPUT TYPE=TEXT NAME="c_nickname" SIZE=11 VALUE="[scratch just_nickname]">
-    	    <input type=hidden name=mv_session_id value="[data session id]">
-			<INPUT TYPE=HIDDEN NAME="c_recurring" VALUE="1">
-    	    <INPUT TYPE=HIDDEN NAME="save_cart" VALUE="recurring">
-    	    <INPUT TYPE=HIDDEN NAME="mv_todo" VALUE="return">
-    	    <INPUT TYPE=HIDDEN NAME="mv_check" VALUE="Save Cart">
-    	    <INPUT TYPE=SUBMIT VALUE="Save Cart">
-    	    </FORM>
+            <FORM ACTION="[process-target]" METHOD=POST>
+            To save this recurring order, give it a nickname, then press 'Save Cart'.<br>
+            Nickname:
+            <INPUT TYPE=TEXT NAME="c_nickname" SIZE=11 VALUE="[scratch just_nickname]">
+            <input type=hidden name=mv_session_id value="[data session id]">
+                        <INPUT TYPE=HIDDEN NAME="c_recurring" VALUE="1">
+            <INPUT TYPE=HIDDEN NAME="save_cart" VALUE="recurring">
+            <INPUT TYPE=HIDDEN NAME="mv_todo" VALUE="return">
+            <INPUT TYPE=HIDDEN NAME="mv_check" VALUE="Save Cart">
+            <INPUT TYPE=SUBMIT VALUE="Save Cart">
+            </FORM>
   [elsif value save_cart eq 'cart']
-    	    <FORM ACTION="[process-target]" METHOD=POST>
-    	    To save this cart, give it a nickname, then press 'Save Cart'.<br>
-    	    Nickname:
-    	    <INPUT TYPE=TEXT NAME="c_nickname" SIZE=11 VALUE="[scratch just_nickname]">
-    	    <INPUT TYPE=HIDDEN NAME="c_recurring" VALUE="0">
-    	    <INPUT TYPE=HIDDEN NAME="save_cart" VALUE="cart">
-    	    <INPUT TYPE=HIDDEN NAME="mv_todo" VALUE="return">
-    	    <INPUT TYPE=HIDDEN NAME="mv_check" VALUE="Save Cart">
-			<input type=hidden name=mv_session_id vlaue="[data session id]">
-    	    <INPUT TYPE=SUBMIT VALUE="Save Cart">
-	    </FORM>
+            <FORM ACTION="[process-target]" METHOD=POST>
+            To save this cart, give it a nickname, then press 'Save Cart'.<br>
+            Nickname:
+            <INPUT TYPE=TEXT NAME="c_nickname" SIZE=11 VALUE="[scratch just_nickname]">
+            <INPUT TYPE=HIDDEN NAME="c_recurring" VALUE="0">
+            <INPUT TYPE=HIDDEN NAME="save_cart" VALUE="cart">
+            <INPUT TYPE=HIDDEN NAME="mv_todo" VALUE="return">
+            <INPUT TYPE=HIDDEN NAME="mv_check" VALUE="Save Cart">
+                        <input type=hidden name=mv_session_id vlaue="[data session id]">
+            <INPUT TYPE=SUBMIT VALUE="Save Cart">
+            </FORM>
   [/elsif]
 !endblock  
 
@@ -1299,7 +1306,7 @@ key fields? The reason Interchange doesn't do it for you is that every
 SQL database seems to do that a bit differently. Even then, you can try
 Interchange's COLUMN_DEF parameter:
 
-	Database  products  COLUMN_DEF  code=char(16) PRIMARY KEY
+        Database  products  COLUMN_DEF  code=char(16) PRIMARY KEY
 
 This will at least index the C<code> field for MySQL. Other databases differ.
 
@@ -1554,13 +1561,13 @@ EOR
 Then at the beginning of the code to check, call
 
 !block example
-	[benchmark start=1]
+        [benchmark start=1]
 !endblock
 
 to start the measurement. At the end
 
 !block example
-	[benchmark]
+        [benchmark]
 !endblock
 
 will display the time used. Bear in mind that it is not precise, and
@@ -1570,7 +1577,7 @@ the times and the bigger the list, the better the comparison.
 To see the system/user breakdown, do:
 
 !block example
-	[benchmark verbose=1]
+        [benchmark verbose=1]
 !endblock
 
 In general, "user" time measures Interchange processing time and and
@@ -1582,17 +1589,17 @@ H3: Optimizations
 * [PREFIX-tag] is faster than [parsed-tag]
 
 !block example
-		[loop prefix=foo search="ra=yes"]
+                [loop prefix=foo search="ra=yes"]
 
-			[foo-data products image]
-				is slightly faster than
-			[foo-field image]
-				which is MUCH faster than
-			[data products image [foo-code]]
-				which is faster than
-			[data table=products column=image key="[foo-code]"]
+                        [foo-data products image]
+                                is slightly faster than
+                        [foo-field image]
+                                which is MUCH faster than
+                        [data products image [foo-code]]
+                                which is faster than
+                        [data table=products column=image key="[foo-code]"]
 
-		[/loop]
+                [/loop]
 !endblock
 
 The loop tags are interpreted by means of fast regular expression
@@ -1615,15 +1622,15 @@ list of fields.
 The following are equivalent:
 
 !block example
-	Benchmark loop-field list: [benchmark start=1]
-	<!-- [loop search="ra=yes/st=db"]
-		[loop-code] price: [loop-field price] [/loop] -->
-	TIME: [benchmark]
+        Benchmark loop-field list: [benchmark start=1]
+        <!-- [loop search="ra=yes/st=db"]
+                [loop-code] price: [loop-field price] [/loop] -->
+        TIME: [benchmark]
 
-	Benchmark loop-param list: [benchmark start=1]
-	<!-- [loop search="ra=yes/st=db/rf=sku,price"]
-		[loop-code] price: [loop-param price] [/loop] -->
-	TIME: [benchmark]
+        Benchmark loop-param list: [benchmark start=1]
+        <!-- [loop search="ra=yes/st=db/rf=sku,price"]
+                [loop-code] price: [loop-param price] [/loop] -->
+        TIME: [benchmark]
 !endblock
 
 but the second is much, much faster.
@@ -1634,42 +1641,42 @@ A common need when building tables is to conditionally close the table
 row or data containers. I see a lot of:
 
 !block example
-	[loop search="ra=yes"]
-	[calc] return '<TR>' if [loop-increment] == 1; return[/calc]
-	[calc] return '' if [loop-increment] % 3; return '</TR>' [/calc]
-	[/loop]
+        [loop search="ra=yes"]
+        [calc] return '<TR>' if [loop-increment] == 1; return[/calc]
+        [calc] return '' if [loop-increment] % 3; return '</TR>' [/calc]
+        [/loop]
 !endblock
 
 Much faster, by a few orders of magnitude, is:
 
 !block example
-	[loop search="ra=yes"]
-	[loop-change 1][condition]1[/condition]<TR>[/loop-change 1]
-	[loop-alternate 3]</TR>[/loop-alternate]
-	[/loop]
+        [loop search="ra=yes"]
+        [loop-change 1][condition]1[/condition]<TR>[/loop-change 1]
+        [loop-alternate 3]</TR>[/loop-alternate]
+        [/loop]
 
-	If you think you need to close the final row by checking the
-	final count, look at this:
+        If you think you need to close the final row by checking the
+        final count, look at this:
 
-	[loop search="ra=yes"]
-	[on-match]
-		<TABLE>
-		<TR>
-	[/on-match]
+        [loop search="ra=yes"]
+        [on-match]
+                <TABLE>
+                <TR>
+        [/on-match]
 
-	[list]
-			<TD>[loop-code]</TD>
-		[loop-alternate 3]</TR><TR>[/loop-alternate]
-	[/list]
+        [list]
+                        <TD>[loop-code]</TD>
+                [loop-alternate 3]</TR><TR>[/loop-alternate]
+        [/list]
 
-	[on-match]
-		</TR>
-		</TABLE>
-	[/on-match]
+        [on-match]
+                </TR>
+                </TABLE>
+        [/on-match]
 
-	[no-match]
-		No match, sorry.
-	[/no-match]
+        [no-match]
+                No match, sorry.
+        [/no-match]
 
 [/loop]
 !endblock
@@ -1682,13 +1689,13 @@ multiple [calc] tags.
 Consider these two snippets:
 
 !block example
-	[if scratch|value|cgi key] THEN [/if]
+        [if scratch|value|cgi key] THEN [/if]
 !endblock
 
 and:
 
 !block example
-	[if scratch|value|cgi key == '1'] THEN [/if]
+        [if scratch|value|cgi key == '1'] THEN [/if]
 !endblock
 
 The first one doesn't require Perl evaluation. It simply checks to see
@@ -1699,49 +1706,49 @@ of "No" or " " or somesuch, but it is anywhere from 20-35% faster.
 Try it on the foundation demo:
 
 !block example
-	---- begin test ---
+        ---- begin test ---
 
-	Overhead: 
-	[benchmark start=1]
-		<!-- [loop search="ra=yes"][set cert][loop-field gift_cert][/set][/loop] -->
-	[benchmark]
-	<P>
+        Overhead: 
+        [benchmark start=1]
+                <!-- [loop search="ra=yes"][set cert][loop-field gift_cert][/set][/loop] -->
+        [benchmark]
+        <P>
 
 
-	if scratch compare: 
-	[benchmark start=1]
-		<!--
-		[loop search="ra=yes"]
-		[set cert][loop-field gift_cert][/set]
-		[loop-code] [if scratch cert] YES [else] NO [/else][/if]
-		[loop-code] [if scratch cert] YES [else] NO [/else][/if]
-		[loop-code] [if scratch cert] YES [else] NO [/else][/if]
-		[loop-code] [if scratch cert] YES [else] NO [/else][/if]
-		[loop-code] [if scratch cert] YES [else] NO [/else][/if]
-		[/loop]
-		-->
+        if scratch compare: 
+        [benchmark start=1]
+                <!--
+                [loop search="ra=yes"]
+                [set cert][loop-field gift_cert][/set]
+                [loop-code] [if scratch cert] YES [else] NO [/else][/if]
+                [loop-code] [if scratch cert] YES [else] NO [/else][/if]
+                [loop-code] [if scratch cert] YES [else] NO [/else][/if]
+                [loop-code] [if scratch cert] YES [else] NO [/else][/if]
+                [loop-code] [if scratch cert] YES [else] NO [/else][/if]
+                [/loop]
+                -->
 
-	[benchmark]
-	<P>
+        [benchmark]
+        <P>
 
-	if scratch compare eq 1: 
-	[benchmark start=1]
-		<!--
-		[loop search="ra=yes"]
-		[set cert][loop-field gift_cert][/set]
-		[loop-code] [if scratch cert == 1] YES [else] NO [/else][/if]
-		[loop-code] [if scratch cert == 1] YES [else] NO [/else][/if]
-		[loop-code] [if scratch cert == 1] YES [else] NO [/else][/if]
-		[loop-code] [if scratch cert == 1] YES [else] NO [/else][/if]
-		[loop-code] [if scratch cert == 1] YES [else] NO [/else][/if]
-		[/loop]
-		-->
-	[benchmark]
-	<P>
+        if scratch compare eq 1: 
+        [benchmark start=1]
+                <!--
+                [loop search="ra=yes"]
+                [set cert][loop-field gift_cert][/set]
+                [loop-code] [if scratch cert == 1] YES [else] NO [/else][/if]
+                [loop-code] [if scratch cert == 1] YES [else] NO [/else][/if]
+                [loop-code] [if scratch cert == 1] YES [else] NO [/else][/if]
+                [loop-code] [if scratch cert == 1] YES [else] NO [/else][/if]
+                [loop-code] [if scratch cert == 1] YES [else] NO [/else][/if]
+                [/loop]
+                -->
+        [benchmark]
+        <P>
 
-	[page @@MV_PAGE@@]Again</a>
+        [page @@MV_PAGE@@]Again</a>
 
-	---- end test ---
+        ---- end test ---
 !endblock
 
 * Use [PREFIX-calc] instead of [calc] or [perl]
@@ -1758,7 +1765,7 @@ you want to make a data table (i.e. "products" or "pricing")
 available for access inside of it, just do:
 
 !block example
-	[perl tables="products pricing"] [/perl]
+        [perl tables="products pricing"] [/perl]
 !endblock
 
 prior to list start. Now you can do something like:
@@ -1792,34 +1799,34 @@ faster than separate [PREFIX-calc] calls.
 .Example:
 
 !block example
-	[benchmark start=1]
-	loop-calc:
-	  <!--
-	  	[loop search="st=db/fi=country/ra=yes/ml=1000"]
-		[loop-calc]
-			my $code = q{[loop-code]};
-			return "code '$code' reversed is " . reverse($code);
-		[/loop-calc]
-		[/loop]
-	  -->
-			
-	[benchmark]
+        [benchmark start=1]
+        loop-calc:
+          <!--
+                [loop search="st=db/fi=country/ra=yes/ml=1000"]
+                [loop-calc]
+                        my $code = q{[loop-code]};
+                        return "code '$code' reversed is " . reverse($code);
+                [/loop-calc]
+                [/loop]
+          -->
+                        
+        [benchmark]
 
-	<P>
+        <P>
 
-	[benchmark start=1]
-	loop-sub and loop-exec:
-	  <!--
-	  	[loop search="st=db/fi=country/ra=yes/ml=1000"]
-		[loop-sub country_compare]
-			my $code = shift;
-			return "code '$code' reversed is " . reverse($code);
-		[/loop-sub]
-		[loop-exec country_compare][loop-code][/loop-exec]
-		[/loop]
-	  -->
-			
-	[benchmark]
+        [benchmark start=1]
+        loop-sub and loop-exec:
+          <!--
+                [loop search="st=db/fi=country/ra=yes/ml=1000"]
+                [loop-sub country_compare]
+                        my $code = shift;
+                        return "code '$code' reversed is " . reverse($code);
+                [/loop-sub]
+                [loop-exec country_compare][loop-code][/loop-exec]
+                [/loop]
+          -->
+                        
+        [benchmark]
 !endblock
 
 * ADVANCED: Execute and save with [query ...], then use an embedded Perl
@@ -1835,42 +1842,42 @@ This is the fastest possible method to display a list.
 .Observe:
 
 !block example
-	--- begin test code ---
-	[set waiting_for]os28004[/set]
+        --- begin test code ---
+        [set waiting_for]os28004[/set]
 
-	[benchmark start=1] Embedded Perl
-	<!--
-	[query arrayref=myref sql="select sku, price, description from products"]
-		<!-- make query, this container text is not used. -->
-	[/query]
+        [benchmark start=1] Embedded Perl
+        <!--
+        [query arrayref=myref sql="select sku, price, description from products"]
+                <!-- make query, this container text is not used. -->
+        [/query]
 
-	[perl]
-		# Get the query results, has multiple fields
-		my $ary = $Tmp->{myref};
-		my $out = '';
-		foreach $line (@$ary) {
-			my ($sku, $price, $desc) = @$line;
-			if($sku eq $Scratch->{waiting_for}) {
-				$out .= "We were waiting for this one!!!!\n";
-			}
-			$out .= "sku: $sku price: $price description: $desc\n";
-		}
-		return $out;
-	[/perl]
-	-->
-	TIME: [benchmark]
+        [perl]
+                # Get the query results, has multiple fields
+                my $ary = $Tmp->{myref};
+                my $out = '';
+                foreach $line (@$ary) {
+                        my ($sku, $price, $desc) = @$line;
+                        if($sku eq $Scratch->{waiting_for}) {
+                                $out .= "We were waiting for this one!!!!\n";
+                        }
+                        $out .= "sku: $sku price: $price description: $desc\n";
+                }
+                return $out;
+        [/perl]
+        -->
+        TIME: [benchmark]
 
-	[benchmark start=1] All loop
-	<!--
-	[query list=1 sql="select sku, price, description from products"]
-		[if scratch waiting_for eq '[sql-code]']We were waiting for this one!!!!
-		[/if] sku: [sql-code]price: [sql-param price] desc: [sql-param description]  
-	[/query]
-	-->
+        [benchmark start=1] All loop
+        <!--
+        [query list=1 sql="select sku, price, description from products"]
+                [if scratch waiting_for eq '[sql-code]']We were waiting for this one!!!!
+                [/if] sku: [sql-code]price: [sql-param price] desc: [sql-param description]  
+        [/query]
+        -->
 
-	TIME: [benchmark]
+        TIME: [benchmark]
 
-	--- end test code ---
+        --- end test code ---
 !endblock
 
 * Other things that help:
@@ -2099,11 +2106,11 @@ H2: What PGP / GPG encryption software is available for Windows?
 =over 4
 
 =item * PGP for various platforms:
-	
+        
 {{URL:http://www.pgpi.org/products/pgp/versions/freeware/}}  
-	
+        
 =item * WinPT (Windows Privacy Tray)
-	
+        
 {{URL:http://www.winpt.org}}
 
 A universal encrypt/decrypt program that operates 
@@ -2111,11 +2118,11 @@ generally via the clipboard so would be compatable with most programs, but
 there is also an Outlook Express plugin.  It comes with GPG (below).
 
 =item * GPG Windows version
-	
-{{URL:http://www.gnupg.org/download.html}}	
+        
+{{URL:http://www.gnupg.org/download.html}}      
 
 =item * MIT distribution of PGP 
-	
+        
 {{URL:http://web.mit.edu/network/pgp.html}}
 
 Only for US and Canada for non-commercial use. There may also 
@@ -2129,7 +2136,7 @@ H2:When are the results_big.html or results_either.html files called/used?
 
 They are just there as examples and are not used in the demo. If you
 don't use them, you can delete them.
-	
+        
 Line:
 
 N:Copyright 2001-2002 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.

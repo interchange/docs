@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.110 2003-07-07 17:40:15 mheins Exp $
+# $Id: ictags.sdf,v 1.111 2003-07-08 19:12:59 mheins Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.110 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.111 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ictags.html"
@@ -762,6 +762,19 @@ In this case, E<lbracket>{{C[jump="#PREFIX-code"]prefix-code}}]
 and [prefix-param foo] are synonyms, as C<foo> is the first returned
 parameter and becomes the code for this row.
 Another synonym is E<lbracket>{{C[jump="#PREFIX-pos"]prefix-pos}} 0].
+
+Mixed case field names in your SQL tables will be forced to lower case in the E<lbracket>prefix-param name] tag if the underlying Database does that (as with most
+SQL types).  For example if your query is
+
+>    [query prefix=prefix sql="select Foo, Bar from baz where Foo='buz'"]
+
+then you must use:
+
+>    [prefix-param foo] and [prefix-param bar] 
+
+to display your results, rather than:
+
+>    [prefix-param Foo] and [prefix-param Bar] 
 
 Note that the following code is invalid:
 
@@ -5586,7 +5599,7 @@ Pass attribute hash as last to subroutine: B<no>
 
 Must pass named parameter interpolate=1 to cause interpolation.
 
-This is a container tag, i.e. [filter] FOO [/filter].
+This is a container tag, i.e. E<lbracket>filter] FOO E<lbracket>/filter].
 \Nesting: NO
 
 Invalidates cache: B<no>
@@ -5638,9 +5651,12 @@ Nests|I<No>
 B<Tag expansion example:>
 
 !block example
-    [filter op]
----
-    TODO: (tag result)
+    [filter lc]UPPER CASE YOU WANT TO SEE AS LOWER CASE[/filter]
+
+    Produces:
+
+		upper case you want to see as lower case
+
 !endblock
 
 
@@ -5784,7 +5800,7 @@ H4: {{CMD[id="filter_op_lookup"]lookup}}
 Looks up an item in a database based on the passed table and
 column. Call would be:
 
->    [filter op="uc lookup.country.name"]us[/filter]
+>    [filter op="uc lookup.country.name"]US[/filter]
 
 This would be the equivalent of [data table=country column=name key=US].
 
@@ -8581,15 +8597,6 @@ Nests|I<No>
 !endblock
 
 
-B<Tag expansion example:>
-
-!block example
-    [mail to]
----
-    TODO: (tag result)
-!endblock
-
-
 B<ASP-like Perl call:>
 
 !block example; lang="Perl"
@@ -10413,6 +10420,7 @@ the SQL statement.
       [/list]
 
       [more_list]
+        Matches [matches] of [match-count] shown.<BR>
         [more]
       [/more_list]
     [/query]
@@ -10548,7 +10556,17 @@ The following examples should be N<illustrative:>
     # $Vend::Interpolate::Tmp->{my_results} == $hash_results
     # $Vend::Interpolate::Tmp->{''} == $results == $same_results
 
-    return $Tag->uneval( $results );
+    my $out = "The returned structure is\n";
+	$out .= $Tag->uneval( $results );
+    
+    #loop through each row & display the fields
+    foreach my $row (@$hash_results) {
+       $out .= '<p>sku: ' . $row->{sku}
+	   $out .= '<br>price: ' . $row->{price};
+	   $out .= '<br>description: ' . $row->{description};
+    }
+    return $out;
+
 !endblock
 >  [/perl]
 
@@ -10820,6 +10838,35 @@ to return references as it would if called within an ordinary
 E<lbracket>{{C[jump="#perl"]perl}}] tag. Note that it does not force
 list context if you call $Tag->query in scalar context.
 
+Here is another example of the use of the array references, from a UserTag:
+
+!block example
+    my $sku = 'os28044';
+    my $sql = qq{select description, price from products where sku = '$sku'};
+    my $table = 'products';
+
+    my ($results, $col_name_hashref, $col_name_arrayref) = $Tag->query({
+            wantarray => 1,
+            sql => "$sql",
+            table => "$table"});
+
+    my $out;
+
+    # this will get the first field (description)..
+    $out = 'description: ' . $results->[0]->[0];
+
+    # and this the second field (price)..
+    $out .= '<br>price: ' . $results->[0]->[1];
+
+    # this will tell us the position in the $results array of the price field..
+    $out .= '<br>position of price field: ' . $col_name_hashref->{price};
+    return $out;
+!endblock
+
+If the [query] returns more than one row, the second row's description field would be:
+
+>    $results->[1]->[0]
+
 Technical noteE<nbspace>E<emdash> the ordinary
 E<lbracket>C<query>E<nbspace>...]E<nbspace>...E<nbspace>E<lbracket>C</query>]
 usage forces scalar context on the
@@ -10829,6 +10876,64 @@ $Tag->query were called within a E<lbracket>{{C[jump="#perl"]perl}}]
 tag. The wantarray option is needed because global subs and usertags
 are also affected by this unless you set wantarray.
 
+Example of a nested query:
+
+!block example
+    [query
+        ml=99
+        type=list
+        sp="@@MV_PAGE@@"
+        sql=|
+            SELECT  foo1, foo2, foo3
+            FROM    bar
+            WHERE   someothercol = 'bang'
+        |]
+        [list]
+
+            Here is [sql-param foo1] from outer <br>
+
+
+           [query
+               prefix=usr
+               list_prefix=detail
+               ml=1
+               type=list
+               sp="@@MV_PAGE@@"
+               sql=|
+                SELECT  flip
+                FROM    flap
+                WHERE   flog = 'flan'
+              |]
+
+             [usr-on-match]
+                something was found in the inner!
+             [/usr-on-match]
+
+             [detail]
+
+                Here is [usr-param flip] from inner <br>
+
+                Here is [sql-param foo2] from outer!! <br>
+
+             [/detail]
+           [/query]
+
+            Here is [sql-param foo3] from outer!!! <br>
+
+        [/list]
+        [on-match]
+            Something was found in the outer query<br>
+        [/on-match]
+        [no-match]
+            Nothing was found in the outer query<br>
+        [/no-match]
+        [more-list]
+		<br>[matches] in the outer query<br>
+        [/more-list]
+    [/query]
+!endblock
+
+Notice the use of 'prefix' and 'list_prefix' on subsequent inner queries.
 
 H2: read-cookie
 
@@ -11900,13 +12005,26 @@ This is the value to store in the cookie.
 H4:  {{CMD[id="set_cookie_expire"]expire}}
 
 Persistent cookies (that outlive a browser session) require an
-expiration date. The date must be a string of the N<form:>
+expiration date. There are two ways to set it -- relative times
+and absolute times.
+
+LI2: absolute
+
+The date must be a string of the N<form:>
 
 . "Wdy,E<nbspace>DD-Mon-YYYYE<nbspace>HH:MM:SSE<nbspace>GMT"
 
 and the timezone must be GMT.
 
-If you do not supply a date, the cookie will disappear when the user
+LI2: relative
+
+Supply a period in the form C<NN> C<sec|min|hours|days|weeks>.
+
+\Example:
+
+> [set-cookie name=THE_COOKIE value=foo expire="7 days"]
+
+If you do not supply a date (either absolute or relative), the cookie will disappear when the user
 closes the browser.
 
 H4:  {{CMD[id="set_cookie_domain"]domain}}
@@ -11929,6 +12047,21 @@ the {{C[jump="icconfig.html#Catalog *global*"]Catalog}} directive).
 This ensures that the cookie will be visible regardless of how the end
 user returns to your catalog. 
 
+H3: Tips
+
+You can use the time tag in conjunction with the set-cookie tag to set
+the expiration date to an absolute date.
+
+>   [set-cookie
+>     name=mycookie
+>     value="the value"
+>     expire="[time gmt=1 adjust='+2190']%a, %m-%b-%Y %H:%M:%S GMT[/time]"
+>   ]
+
+In the example above, the adjustment of +2190 will set a cookie
+expiration of 2190 hours forward from the current date.
+
+You can use the 
 
 H2: seti
 
@@ -15053,28 +15186,28 @@ To build a simple '3-button' menu bar one could put the following on
 each of the pages. The results of this code for page2 are shown below.
 
 !block example
-	<table><tr>
-	[bar-button page=page1]
-	<TD><A HREF="[area page1]">PAGE-1</A></TD>
-	[selected]
-	<TD bgcolor="red"><A HREF="[area page1]"><B>PAGE-1-selected</B></A></TD>
-	[/selected]
-	[/bar-button]
-	[bar-button page=page2]
-	<TD><A HREF="[area page2]">PAGE-2</A></TD>
-	[selected]
-	<TD bgcolor="red"><A HREF="[area page2]"><B>PAGE-2-selected</B></A></TD>
-	[/selected]
-	[/bar-button]
-	[bar-button page=page3]
-	<TD><A HREF="[area page3]">PAGE-3</A></TD>
-	[selected]
-	<TD bgcolor="red"><A HREF="[area page3]"><B>PAGE-3-selected</B></A></TD>
-	[/selected]
-	[/bar-button]
-	</tr></table>
+        <table><tr>
+        [bar-button page=page1]
+        <TD><A HREF="[area page1]">PAGE-1</A></TD>
+        [selected]
+        <TD bgcolor="red"><A HREF="[area page1]"><B>PAGE-1-selected</B></A></TD>
+        [/selected]
+        [/bar-button]
+        [bar-button page=page2]
+        <TD><A HREF="[area page2]">PAGE-2</A></TD>
+        [selected]
+        <TD bgcolor="red"><A HREF="[area page2]"><B>PAGE-2-selected</B></A></TD>
+        [/selected]
+        [/bar-button]
+        [bar-button page=page3]
+        <TD><A HREF="[area page3]">PAGE-3</A></TD>
+        [selected]
+        <TD bgcolor="red"><A HREF="[area page3]"><B>PAGE-3-selected</B></A></TD>
+        [/selected]
+        [/bar-button]
+        </tr></table>
 ---
-	PAGE-1    PAGE-2-selected    PAGE-3
+        PAGE-1    PAGE-2-selected    PAGE-3
 !endblock
 
 
@@ -15188,7 +15321,7 @@ B<ASP-like Perl call:>
 
 !block example; lang="Perl"
     $Tag->convert_date( { days => 1 } );
-					   
+                                           
     $Tag->convert_date( { body => "2001-05-19 15:35",
                        format => "%d-%m-%Y %H:%M", } );
 !endblock
@@ -15556,10 +15689,9 @@ order). The second line shows usage with named parameters.
 !block table; colvaligns="TTT"; format="262"
 Parameters|Description|Default
 {{CMD[jump="#get_url_url"]url}}|<<
-Must be a valid URL. Meaning, you have to supply the protocol. 
-. Example 
-** http://demo.akopia.com/
-** ftp://ftp.akopia.com/
+Must be a valid URL. Meaning, you have to supply the protocol.  Example 
+** http://demo.icdevgroup.org/
+** ftp://ftp.icdevgroup.org/
 >>|I<none>
 !endblock
 
@@ -15579,23 +15711,23 @@ Has end tag|I<No>
 B<Tag expansion example:>
 
 !block example
-    [get-url http://demo.akopia.com/]
-    [get-url url="http://demo.akopia.com/" strip=1]
+    [get-url http://demo.icdevgroup.org/]
+    [get-url url="http://demo.icdevgroup.org/" strip=1]
 !endblock
 
 B<ASP-like Perl call:>
 
 !block example; lang="Perl"
-    $Tag->get_url( { url => "http://demo.akopia.com/", } );
-					   
-    $Tag->get_url( { url => "http://demo.akopia.com/",
+    $Tag->get_url( { url => "http://demo.icdevgroup.org/", } );
+                                           
+    $Tag->get_url( { url => "http://demo.icdevgroup.org/",
                    strip => 1, } );
 !endblock
 
 or similarly with positional parameters,
 
 !block example; lang="Perl"
-    $Tag->get_url( "http://demo.akopia.com/" );
+    $Tag->get_url( "http://demo.icdevgroup.org/" );
 !endblock
 
 H3: Description
@@ -15832,7 +15964,7 @@ B<ASP-like Perl call:>
 !block example; lang="Perl"
     $Tag->summary( { amount => 10.5,
                        hide => 1, } );
-					   
+                                           
     $Tag->summary( { amount => 25,
                        name => mytotal,
                    currency => 1, } );
@@ -15901,12 +16033,12 @@ H3: Summary
 
 !block example;
     [B<table-organize> cols* I<other_named_attributes>]
-	     [loop ....] <td> [loop-tags] </td> [/loop]
-	[/table-organize]
-	
+             [loop ....] <td> [loop-tags] </td> [/loop]
+        [/table-organize]
+        
     [B<table-organize> cols=n* I<other_named_attributes>]
-	     [loop ....] <td> [loop-tags] </td> [/loop]
-	[/table-organize]
+             [loop ....] <td> [loop-tags] </td> [/loop]
+        [/table-organize]
 !endblock
 
 !block note; label="Positional parameters: "
@@ -16162,7 +16294,7 @@ B<ASP-like Perl call:>
 
 !block example; lang="Perl"
     $Tag->title_bar( { body => "My Title", } );
-					   
+                                           
     $Tag->title_bar( { width => 400,
                        color => "#0000ff",
                         body => "My title", } );
@@ -16263,8 +16395,8 @@ B<Tag expansion example:>
              attributes="date" 
                    date="[tag time]%d-%b-%Y[/tag]"
            toplevel_tag=products
-    ]code	description	price
-        [query list=1 sql="select sku, description, price from products" prefix=xml][xml-code]	[xml-param description]	[xml-param price]
+    ]code       description     price
+        [query list=1 sql="select sku, description, price from products" prefix=xml][xml-code]  [xml-param description] [xml-param price]
         [/query]
     [/xml-generator]
 ---
@@ -16287,8 +16419,8 @@ B<ASP-like Perl call:>
 
 !block example; lang="Perl"
     $Tag->xml_generator( {type => delimited,
-	              toplevel_tag => apex,  }, $BODY );
-					   
+                      toplevel_tag => apex,  }, $BODY );
+                                           
 !endblock
 
 or similarly with positional parameters,
@@ -16417,19 +16549,19 @@ Output format:
             <record_tag key="value of first field-1">
                 <field_tag name="fieldname1">fieldvalue1</field_tag>
                 <field_tag name="fieldname2">fieldvalue2</field_tag>
-			</record_tag>
+                        </record_tag>
             <record_tag key="value of first field-2">
                 <field_tag name="fieldname1">fieldvalue1</field_tag>
                 <field_tag name="fieldname2">fieldvalue2</field_tag>
-			</record_tag>
-		</toplevel_tag>
+                        </record_tag>
+                </toplevel_tag>
         <toplevel_tag name="tablename2">
             <record_tag key="value of first field-1">
                 <field_tag name="fieldname1">fieldvalue1</field_tag>
                 <field_tag name="fieldname2">fieldvalue2</field_tag>
-			</record_tag>
-		</toplevel_tag>
-	</database>
+                        </record_tag>
+                </toplevel_tag>
+        </database>
 !endblock
 
 B<Important note:> All tables are read into memory. So be warned, this
@@ -16456,10 +16588,10 @@ list provided (between the tags).
 Another way of providing the field names would be:
 
 !block example
-    [xml-generator .....]fieldname-1	fieldname-2	fieldname-3
-	[field value list 
-	 delimited by option delimiter and 
-	 separated by option separator][/xml-generator]
+    [xml-generator .....]fieldname-1    fieldname-2     fieldname-3
+        [field value list 
+         delimited by option delimiter and 
+         separated by option separator][/xml-generator]
 !endblock
 
 Note: Field name list B<must> be tab delimited. 

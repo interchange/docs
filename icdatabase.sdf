@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.55 2003-07-07 17:40:15 mheins Exp $
+# $Id: icdatabase.sdf,v 1.56 2003-07-08 19:12:59 mheins Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.55 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.56 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/icdatabase.html"
@@ -500,7 +500,7 @@ MEMORY is that the database remains open at all times and does not need
 to be reinitialized at every connect. Use it for smaller tables that
 will be frequently accessed.
 
-The MEMORY modifier forces IMPORT_ONCE.
+Memory tables are read only -- the MEMORY modifier forces IMPORT_ONCE.
 
 H2:  IMPORT_ONCE
 
@@ -524,6 +524,15 @@ the table will never be imported.
 
 IMPORT_ONCE is always in effect for MEMORY databases. A catalog
 reconfiguration is required to force a change.
+
+H2: MIRROR
+
+Additionally, you can have two tables, the regular table and the memory
+table by adding to the definition files:
+
+>	Database country_memory country_memory.txt TAB
+>	Database country_memory MIRROR          country
+>	Database country_memory MEMORY          1
 
 H2: Importing in a Page
 
@@ -750,6 +759,39 @@ H2: SQL Access Methods
 
 An Interchange SQL database can be accessed with the same tags as any of
 the other databases can. Arbitrary SQL queries can be passed with the C<[query sql="SQL STATEMENT"]> ITL tag.
+
+!block example
+    [query
+        ml=10
+        more=1
+        type=list
+        sp="@@MV_PAGE@@"
+        sql=|
+            SELECT  sku, description
+            FROM    products
+            WHERE   somecol
+                                        BETWEEN '[filter sql][cgi from][/filter]'
+                                        AND '[filter sql][cgi to][/filter]'
+            AND     someothercol = '[filter sql][cgi whatever][/filter]'
+            ORDER BY sku
+        |]
+        [list]
+            sku=[sql-code] - desc=[sql-param description]<br>
+        [/list]
+        [on-match]
+            Something was found<br>
+        [/on-match]
+        [no-match]
+            Nothing was found<br>
+        [/no-match]
+        [more-list]
+                <br>[matches]<br>
+        [/more-list]
+    [/query]
+!endblock
+
+Not the filter for E<lbracket>cgi foo] values, which prevent single
+quotes (C<'>) from destroying the query.
 
 H2: Importing from an ASCII File
 
@@ -1166,12 +1208,12 @@ In C<interchange.cfg>, or in the C<code> directory tree, you can put:
 > CodeDef find_mirrored SearchOp
 > CodeDef find_mirrored Routine <<EOR
 > sub {
-> 	my ($self, $i, $pat) = @_;
-> 	$pat = reverse $pat;
-> 	return sub {
-> 		my $string = shift;
-> 		$string =~ /$pat/io;
-> 	};
+>       my ($self, $i, $pat) = @_;
+>       $pat = reverse $pat;
+>       return sub {
+>               my $string = shift;
+>               $string =~ /$pat/io;
+>       };
 > }
 > EOR
 
@@ -2067,16 +2109,14 @@ LI1: [more-list next_img* prev_img* page_img* border* border_current*]
      Next       <IMG SRC="next.gif" Border=0>
 !endblock
 
-.To set custom text for the "Previous" and "Next" usually used, define
-the C<next_img>, C<prev_img>, and C<page_img> with
-C<[next-anchor][/next-anchor]>, C<[prev-anchor][/prev-anchor]> and
-C<[page-anchor][/page-anchor]>. The string $PAGE$ will be replaced with
-the page number in the latter. The same example:
+.To set custom text for the "Previous" and "Next" usually used, define the C<next_img>, C<prev_img>, and C<page_img> with C<[next-anchor][/next-anchor]>, C<[prev-anchor][/prev-anchor]>, C<[first-anchor][/first-anchor]>, C<[last-anchor][/last-anchor]> and C<[page-anchor][/page-anchor]>. The string $PAGE$ will be replaced with the page number in the latter. The same example:
 
 !block example; listitem=2
     [more-list]
+    [first-anchor] First [/first-anchor]
     [next-anchor] Forward | [/next-anchor]
     [prev-anchor] Back [/prev-anchor]
+    [last-anchor] Last [/last-anchor]
     [page-anchor] Page $PAGE$ (matches $MINPAGE$-$MAXPAGE$) | [/page-anchor]
     [more]
     [/more-list]
@@ -2603,7 +2643,12 @@ LI1: upsg
     Database  Ground  Ground.csv  CSV
 !endblock
 
-.A simple shipping cost qualification can be appended to a UPS lookup. If any additional parameters are present after the five usual ones used for UPS lookup, they will be interpreted as a Perl subroutine call. The syntax is the same as if it was encased in the tag C<[perl sub] [/perl]>, but the following substitutions are made prior to the call:
+A simple shipping cost qualification can be appended to a UPS lookup.
+If any additional parameters are present after the five usual ones
+used for UPS lookup, they will be interpreted as a Perl subroutine
+call. The syntax is the same as if it was encased in the
+tag E<lbracket>perl] E<lbracket>/perl], but the following substitutions
+are made prior to the call:
 
 !block example; listitem=2
     @@COST@@  is replaced with whatever the UPS lookup returned
@@ -2613,13 +2658,22 @@ LI1: upsg
     @@TOTAL@@ is replaced with the total weight
 !endblock
 
-.The example above also illustrates geographic qualification. If the value of the form variable state on the checkout form is AK or HI, the U.S. states Alaska and Hawaii, a $10.00 additional charge (over and above the normal $2.00 handling charge) is made.  This can also be used to select on country, product type, or any other qualification that can be encoded in the file.
+.The example above also illustrates geographic qualification. If the
+value of the form variable state on the checkout form is AK or HI, the
+U.S. states Alaska and Hawaii, a $10.00 additional charge (over and
+above the normal $2.00 handling charge) is made. This can also be used
+to select on country, product type, or any other qualification that can
+be encoded in the file.
 
 LI1: upsca
 
 .The next entry is just like the UPS definition except it defines a different lookup zone file (C<products/can.csv>) and uses a different database, C<upsca>. It also disables the global PriceDivide option for itself only, not allowing currency conversion. Otherwise, the process is the same.
 
-.Up to 27 different lookup zones can be defined in the same fashion. If one of the cost lines (the last field) in the C<shipping.asc> file begins with a C<c>, it configures another lookup zone which must be lettered from C<A to Z>.  It takes the format:
+Up to 27 different lookup zones can be defined in the same fashion,
+allowing for multiple zone files. If one of the cost lines (the last
+field) in the C<shipping.asc> file begins with a C<c>, it configures
+another lookup zone which must be lettered from C<A to Z>. It takes
+the format:
 
 !block example; listitem=2
     c X name file* length* multiplier*
@@ -2653,11 +2707,11 @@ The C<low> entry is the low bound of the geographic location; C<high> is the hig
 
 The first operative row of the zone file (one without leading quotes) is used to determine the zone column name. In the US, it looks something like:
 
-Dest. ZIP,Ground,3 Day Select,2nd Day Air,2nd Day Air A.M.,Next Day Air Saver,Next Day Air
+> Dest. ZIP,Ground,3 Day Select,2nd Day Air,2nd Day Air A.M.,Next Day Air Saver,Next Day Air
 
 Interchange strips all non-alpha characters and comes up with:
 
-DestZIP,Ground,3DaySelect,2ndDayAir,2ndDayAirAM,NextDayAirSaver,NextDayAir
+> DestZIP,Ground,3DaySelect,2ndDayAir,2ndDayAirAM,NextDayAirSaver,NextDayAir
 
 Therefore, the zone column (shipping type) that would be used for UPS ground would be "Ground," and that is what the database should be named. To support the above, use a C<shipping.asc> line that reads:
 
@@ -3605,9 +3659,10 @@ report e-mail. This is useful if certain items must be printed separately from
 others, perhaps for FAX to a fulfillment house.
 
 L1: cascade
-.A list of routes which should be pushed on the stack of routes to
-run, I<after all currently scheduled routes are done>. NOTE: cascades
-can cause endless loops, so only one setting is recommended, that being the
+
+A list of routes which should be pushed on the stack of routes to
+run, I<after all currently scheduled routes are done>. NOTE: cascades can
+cause endless loops, so only one setting is recommended, that being the
 main route.
 
 LI1: commit
@@ -3636,6 +3691,10 @@ catalog.cfg, and C<dynamic_routes> must be active for it to be seen.
 LI1: email
 .The email address(es) where the order should be sent. Set just like the
 C<MailOrderTo> directive, which is also the default.
+
+LI1: empty
+
+This should be set if neither attach or email is set.
 
 LI1: encrypt
 .Whether the entire order should be encrypted with the B<encrypt_program>.

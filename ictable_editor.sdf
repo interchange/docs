@@ -1,9 +1,9 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: ictable_editor.sdf,v 1.4 2002-09-28 15:23:48 mheins Exp $
+# $Id: ictable_editor.sdf,v 1.5 2003-07-08 19:12:59 mheins Exp $
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.4 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.5 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ictable_editor.html"
@@ -965,6 +965,9 @@ LI1: mv_blob_only
 LI1: mv_blob_pointer
 LI1: mv_blob_title
 LI1: mv_cancelpage
+
+Specifies the destination page if you hit the cancel-button.
+
 LI1: mv_data_auto_number
 LI1: mv_data_fields
 LI1: mv_data_function
@@ -973,6 +976,13 @@ LI1: mv_failpage
 LI1: mv_nextpage
 LI1: mv_prevpage
 LI1: next_text
+
+You can customze an alternative text for the OK/Next button.
+
+Note! If your alternative text is long, and you get the text chopped, be
+sure to specify a wider button with the ok_button_style setting (eg.
+ok_button_style=|font-weight: bold; width: 80px; text-align: center|)
+
 LI1: no_bottom
 LI1: no_meta
 LI1: no_table_meta
@@ -1029,6 +1039,11 @@ LI1: ui_data_fields_all
 LI1: ui_data_key_name
 LI1: ui_display_only
 LI1: ui_hide_key
+
+Hides the key-field in the form. Remember that if you use the B<fields>
+option, then you have to include the key-column in that
+list. Otherwise the form will fail to update the record.
+
 LI1: ui_meta_specific
 LI1: ui_meta_view
 LI1: ui_new_item

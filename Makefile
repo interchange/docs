@@ -1,4 +1,4 @@
-VERSION=4.8.6
+VERSION=4.9.3
 TARGETS=ic_ecommerce ic_howto_cvs ic_howto_forum ic_howto_qb icadvanced iccattut icconfig iccontent icdatabase icfaq icfoundation ic_i18n icprogrammer ictable_editor ictags ictemplates icupgrade
 SUFFIXES=txt html pdf pod 8
 MAXSUFFIXES=mif
@@ -9,7 +9,7 @@ DEVDIR=dev
 DOCDBNAME=documentation.txt
 PKGNAME=interchange-doc-$(VERSION)
 INSTALLDIR=/var/www/html/doc
-IMAGES=bullet.gif pdf.gif pod.gif rh-ic-logo.gif text.gif
+IMAGES=bullet.gif pdf.gif pod.gif iclogo.gif text.gif
 
 .SUFFIXES: .sdf .frames $(addprefix .,$(SUFFIXES))
 

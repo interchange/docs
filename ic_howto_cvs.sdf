@@ -1,24 +1,24 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: ic_howto_cvs.sdf,v 1.13 2003-06-04 08:54:44 danb Exp $
+# $Id: ic_howto_cvs.sdf,v 1.14 2003-07-08 19:12:58 mheins Exp $
 
 !define DOC_NAME "Interchange + CVS HOWTO"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_howto_cvs"
-!define DOC_VERSION substr('$Revision: 1.13 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.14 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ic_howto_cvs.html"
 !define DOC_OWNER "2001 Dan Browning E<lt>{{EMAIL:dan.browning@kavod.com}}E<gt>"
 !build_title
 
-H1:Introduction
+H1: Introduction
 
-H2:Preamble
+H2: Preamble
 
 N:Copyright 2001-2003 Dan Browning <dan.browning@kavod.com>.  This document is
 freely redistributable under terms of the GNU General Public License. 
 
-H2:Purpose
+H2: Purpose
 
 N:The purpose of this document is to help others take advantage of CVS and
 Interchange together to increase the quality of their programming, whether they
@@ -27,7 +27,7 @@ and HTML design gurus.  Portions of it apply to general CVS setup and use, but
 it is geared toward the average developer using Interchange to implement an
 e-commerce website.     
 
-H2:Audience
+H2: Audience
 
 N:I intend for this document to be useful to those who are not yet familiar
 with CVS as well as those who are.  If you already know how to setup a pserver
@@ -39,7 +39,7 @@ the interchange-users mailing list.  It is assumed that the reader can and
 already has setup Interchange and the template catalog (e.g. Foundation) is
 working correctly.    
 
-H2:Contact the author
+H2: Contact the author
 
 N:If you find any spelling errors, technical slip-ups, mistakes, subliminal 
 messages, or if you wish to send feedback, critique, remarks, comments, or if
@@ -52,7 +52,7 @@ to:
 
 N:Dan Browning {{EMAIL:dan.browning@kavod.com}}
 
-H2:The advantages of using CVS
+H2: The advantages of using CVS
 
 N:CVS is a very useful tool and can help you in your development, no matter if
 you are an independant developer or are part of a team of developers.  
@@ -89,7 +89,7 @@ different developers.
 release managers repackage CVS commit logs into WHATSNEW, HISTORY, and/or NEWS
 files).  
 
-H2:How to use this document
+H2: How to use this document
 
 N:There are many potential uses of CVS as it applies to Interchange.  In fact,
 there are as many unique ways to use CVS as there are unique developers.  This
@@ -119,9 +119,9 @@ N:This document attempts to cover the simple well, explain many aspects of the
 medium, and hopefully give you the background you need if you decide to setup
 your own complex development environment.  
 
-H1:Setup CVS
+H1: Setup CVS
 
-H2:Assumptions
+H2: Assumptions
 
 N:Here are some of the assumptions that I make that apply to various parts of
 the rest of this document: 
@@ -141,7 +141,7 @@ statements will reflect Red Hat Linux 7.x. Additionally, Red Hat Linux 6.x is
 for the most part the same as 7.x, except for the difference of using inetd
 instead of xinetd to setup pserver.
 
-H2:Install CVS
+H2: Install CVS
 
 N:This is the easy part.  For Red Hat Linux systems, download the CVS rpms and 
 install them.  You can search for rpms for your system using 
@@ -157,7 +157,7 @@ to its group or vice-versa.  The integration of Interchange and CVS in the
 latter portion of this document will require that the CVS user can write to the
 catalog directory.       
 
-H2:Create the CVS repository directory
+H2: Create the CVS repository directory
 
 N:You will need to create a repository directory such as 
 {{F:/home/interch/rep}}, which is used here and in the rest of the 
@@ -168,7 +168,7 @@ user.
 	mkdir /home/interch/rep
 !endblock
 
-H2:Setup environment variables & .cvsrc
+H2: Setup environment variables
 
 N:The CVSROOT environment variable can be setup for your user (in {{F:~/.bashrc}} or {{F:~/.profile}}, or for all users in {{F:/etc/profile}}.
 
@@ -199,7 +199,7 @@ directories during your checkouts.
 
 Note:You will need to logout/login for the profile changes to take effect. 
 
-H2:Initialize the repository
+H2: Initialize the repository
 
 N:Initialize the repository as the CVS user, which is {{EX:interch}} for this
 document. 
@@ -208,7 +208,7 @@ document.
 	cvs -d /home/interch/rep init
 !endblock
 
-H2:CVS Authentication
+H2: CVS Authentication
 
 H3:Background
 
@@ -240,7 +240,7 @@ N:After installing, create a password file
 ({{touch $CVSROOT/CVSROOT/passwd, touch $CVSROOT/CVSROOT/users}}), 
 and execute {{EX:cvsadmin add <usernames>}}.
 
-H2:Setup CVS modules
+H2: Setup CVS modules
 
 Note:From this point on, assume that all commands are executed as the CVS user 
 (e.g. interch), unless otherwise specified.
@@ -271,7 +271,14 @@ will create later under /rep.  We'll want a module for the template catalog
 
 E:foundation	foundation
 
-H2:Setup binary file types
+H3:Create the module directory
+
+N: This is the directory that is referred to in the {{F:CVSROOT/modules}} file
+we just modified. 
+
+E:mkdir /rep/foundation
+
+H2: Setup binary file types
 
 N:This isn't necessary if you aren't going to manage any binary files (e.g. if
 you plan on excluding your images/ directory).  But I recommend including it.

@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: icadvanced.sdf,v 1.13 2003-01-15 04:05:18 kwalsh Exp $
+# $Id: icadvanced.sdf,v 1.14 2003-07-08 19:12:58 mheins Exp $
 
 !define DOC_NAME "Advanced Interchange Topics"
 !define DOC_TYPE ""
 !define DOC_CODE "icadvanced"
-!define DOC_VERSION substr('$Revision: 1.13 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.14 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/icadvanced.html"
@@ -467,8 +467,8 @@ In the simplest use, the formatting information for a table form field is called
 
 The mv_metadata table is scanned for the following keys:
 
-.products::category::os28007
-.products::category
+> products::category::os28007
+> products::category
 
 If a row is found with one of those keys, then the information in the row is used to set the display widget. If no row is found, an INPUT TYPE=TEXT widget is displayed. If the data is all digits, a size of 8 is used, otherwise the size is 60.
 
@@ -541,38 +541,6 @@ Admin Tool-specific usertags.
 
 
 H1: Admin Tool Database Tables
-
-
-H2:icmenu.txt
-
-Used for back-office administration UI menus and wizards.
-
-!block example
-    code
-		Arbitrary primary key
-    mgroup
-		Menu group (for grouping searches)
-    msort
-		Sort order within the group
-    next_line
-		Set to 1 if submenu
-    indicator
-    exclude_on
-    depends_on
-    page
-    form
-    name
-    super
-    inactive
-    special
-    help_name
-	img_dn
-	img_up
-	img_sel
-	img_icon
-	url
-!endblock
-
 
 H2:mv_metadata.asc
 

@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: iccattut.sdf,v 1.20 2003-06-30 22:42:01 mheins Exp $
+# $Id: iccattut.sdf,v 1.21 2003-07-08 19:12:58 mheins Exp $
 
 !define DOC_NAME "Catalog-Building Tutorial"
 !define DOC_TYPE ""
 !define DOC_CODE "iccattut"
-!define DOC_VERSION substr('$Revision: 1.20 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.21 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/iccattut.html"
@@ -13,7 +13,7 @@
 
 H1:Purpose
 
-N:The purpose of this document is to guide you through constructing a simple Interchange catalog from scratch. The demo catalog that ships with Interchange is quite complex since it highlights some of the many capabilities that Interchange offers. As a template for your own catalog, the demo can either be an intimidating place to start.
+N:The purpose of this document is to guide you through constructing a simple Interchange catalog from scratch. The demo catalog that ships with Interchange is quite complex since it highlights some of the many capabilities that Interchange offers. As a template for your own catalog, the demo can be an intimidating place to start if your purpose is to learn.
 
 The simple catalog you create using this tutorial should give you a feel for the basic Interchange system. It should also be considered a stepping stone to a more complete and functional e-commerce system built with Interchange. The tutorial relies as much as possible on default settings to accentuate how Interchange works. It will use as few of Interchange's capabilities as possible, while still building a usable store. The resulting site will be simple but usable. The value of this tutorial is in the instruction that occurs along the way.
 
@@ -664,6 +664,10 @@ N:In order to activate your order profile, add the following {{2:OrderProfile}} 
   OrderProfile etc/profiles.order
 !endblock
 
+Watch for white space in front of the __NAME__ pragma, it can cause your
+profile to be ignored. Rember to restart Interchange for any changes to
+take effect.
+
 H2:special_pages/needfield.html
 
 N:If the submitted form lacks a required field, Interchange will display an error page. The default location is {{FILE:special_pages/needfield.html}}. To create this page, type the following text and save it as {{FILE:special_pages/needfield.html}}.
@@ -867,18 +871,18 @@ N:Make the following change to your {{FILE:pages/checkout.html}} page. The secti
 +    lr=1
 +    option=mv_credit_card_exp_month
 +    list="
-+ 1	01 - January
-+ 2	02 - February
-+ 3	03 - March
-+ 4	04 - April
-+ 5	05 - May
-+ 6	06 - June
-+ 7	07 - July
-+ 8	08 - August
-+ 9	09 - September
-+ 10	10 - October
-+ 11	11 - November
-+ 12	12 - December"]
++ 1     01 - January
++ 2     02 - February
++ 3     03 - March
++ 4     04 - April
++ 5     05 - May
++ 6     06 - June
++ 7     07 - July
++ 8     08 - August
++ 9     09 - September
++ 10    10 - October
++ 11    11 - November
++ 12    12 - December"]
 + <option value="[loop-code]">[loop-pos 1]
 + [/loop]
 + </select>

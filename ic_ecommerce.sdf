@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: ic_ecommerce.sdf,v 1.22 2003-01-15 13:49:31 jon Exp $
+# $Id: ic_ecommerce.sdf,v 1.23 2003-07-08 19:12:58 mheins Exp $
 
 !define DOC_NAME "Interchange Ecommerce Functions"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_ecommerce"
-!define DOC_VERSION substr('$Revision: 1.22 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.23 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ic_ecommerce.html"
@@ -12,7 +12,7 @@
 
 
 
-=head1 THE ORDER PROCESS
+H1: THE ORDER PROCESS
 
 Interchange has a completely flexible order basket and checkout
 scheme. The C<foundation> demo presents a common use of this process,
@@ -41,7 +41,7 @@ set in some place on that form. Any valid Interchange tags may be
 used on the page, and you may use multiple item lists if necessary.
 
 
-=head2 How to order an item
+H2: How to order an item
 
 Interchange can either use a form-based order or a link-based order to
 place an item in the shopping cart. The link-based order uses the
@@ -121,7 +121,7 @@ You may also specify attributes like size or color at time of order (see
 I<How to set up an order button>).
 
 
-=head2 How to set up an order link
+H2: How to set up an order link
 
 On a product display page, use:
 
@@ -135,7 +135,7 @@ C<[item-code]> thusly:
 Bear in mind that if you have not reached the page via a search or
 on-the-fly operation, C<[item-code]> means nothing and will cause an error.
 
-=head2 How to set up an order button
+H2: How to set up an order button
 
 Interchange can order via form submission as well. This allows you
 to order a product (or group of products) via a form button. In its
@@ -171,7 +171,7 @@ results page, you can get a canned select box from the
 C<[item-accessories size]> or C<[item-accessories size]> tag. See
 I<Item Attributes>.
 
-=head2 How to set up an on-the-fly item
+H2: How to set up an on-the-fly item
 
 If you enable the catalog directive I<OnFly>, setting it to the
 name of a subroutine (or possibly a UserTag) that can handle its calls, then
@@ -274,7 +274,7 @@ with the slight refinement of adding a quantity:
 >        <INPUT TYPE=submit VALUE="Order two different with a button">
 >    </FORM>
 
-=head2 Order Groups
+H2: Order Groups
 
 Interchange allows you to group items together, making a master item
 and sub-items. This can be used to delete accessories or options when
@@ -326,7 +326,7 @@ meaningless yet unique integer. All items in a group will have the same
 value of C<mv_mi>. The attribute C<mv_si> is set to 0 if the item is
 a master item, and 1 if it is a sub-item.
 
-=head2 Basket display
+H2: Basket display
 
 The basket page(s) are where the items are tracked and adjusted by the
 customer. It is possible to have an unlimited number of basket pages.
@@ -379,7 +379,7 @@ Order profile to be used if the form action is F<submit>
 
 =back
 
-=head2 Multiple Shopping Carts
+H2: Multiple Shopping Carts
 
 Interchange allows you to define and maintain multiple shopping carts.
 One shopping cart -- main, by name -- is defined when the user session
@@ -449,7 +449,7 @@ If you need to utilize an alternative item price in conjunction with
 the use of a custom cart, see the section on I<PRODUCT PRICING> for 
 pricing methods and strategies.
 
-=head1 PRODUCT PRICING
+H1: PRODUCT PRICING
 
 Interchange maintains a price in its database for every product. The price
 field is the one required field in the product database -- it is necessary
@@ -459,7 +459,7 @@ For speed, Interchange builds the code that is used to determine a product's
 price at catalog configuration time. If you choose to change a directive
 that affects product pricing you must reconfigure the catalog.
 
-=head2 Simple pricing
+H2: Simple pricing
 
 The simplest method is flat pricing based on a fixed value in
 the C<products> database. If you put that price in a field named
@@ -637,7 +637,7 @@ lookup, as above.
 
 =back
 
-=head2 CommonAdjust Examples
+H2: CommonAdjust Examples
 
 Most examples below use an outboard database table named B<pricing>, but
 any valid table including the B<products> table can be used. We will refer
@@ -693,7 +693,7 @@ instead of the fixed 10.00 value. The above value might be a nice one
 to use as the default for a typical retail catalog that has items with
 colors and sizes.
 
-=head2 PriceBreaks, discounts, and PriceAdjustment
+H2: PriceBreaks, discounts, and PriceAdjustment
 
 There are several ways that Interchange can modify the price of a product during 
 normal catalog operation. Several of them require that the I<pricing.asc>
@@ -780,7 +780,7 @@ and C<$Vend::Session->>C<{item_quantity}>.
 The pricing information must always come from a database because
 of security.
 
-=head2 Item Attributes
+H2: Item Attributes
 
 Interchange allows item attributes to be set for each ordered item. This
 allows a size, color, or other modifier to be attached to a common
@@ -979,7 +979,7 @@ The value can then be displayed with C<[item-modifier size]> on the
 order report, order receipt, or any other page containing an
 C<[item-list]>. 
 
-=head2 Product Discounts
+H2: Product Discounts
 
 Product discounts can be set upon display of any page. The discounts
 apply only to the customer receiving them, and are of one of three types:
@@ -1286,9 +1286,9 @@ Will yield tax for one each of os28003 and os28004 of:
     US/AZ   $0.00
 !endblock
 
-=head1 THE CHECKOUT PROCESS
+H1: THE CHECKOUT PROCESS
 
-=head2 Advanced Multi-level Order Pages
+H2: Advanced Multi-level Order Pages
 
 An unlimited number of order checking profiles can be defined with the
 I<OrderProfile> directive, or by defining order profiles in scratch
@@ -1581,7 +1581,7 @@ The latter two elements are used by the C<[error]> tag for on-screen
 display of form errors. The checkout page of the Foundation demo includes
 examples of this. 
 
-=head2 Simple Order Report File
+H2: Simple Order Report File
 
 The simple order report file, "report", defines the layout of the order
 report which gets mailed on the completion of the order. For example,
@@ -1601,7 +1601,7 @@ sign notation.
 Interchange defines some values for use in the search form -- they begin
 with C<mv_> and are automatically ignored.
 
-=head2 Fully-configurable Order Reports
+H2: Fully-configurable Order Reports
 
 You can specify a fully-configurable order report by setting the hidden
 field "mv_order_report" to a legal Interchange page. This page will be
@@ -1613,7 +1613,7 @@ You could if you wish include HTML in the file, which will be interpreted
 by many mailers, but you can choose to use standard ASCII format.
 An example report is provided in the demo file <pages/ord/report.html>.
 
-=head2 Order Receipts
+H2: Order Receipts
 
 The file can of course be configured with all Interchange tags, and
 will be interpolated for the ordered items before they are deleted from
@@ -1621,7 +1621,7 @@ the user session. You can set the default receipt with the C<receipt>
 key in SpecialPage. If using order I<Route>s, as in the C<foundation> demo,
 you set it with the C<receipt> key to C<Route>.
 
-=head2 The Order Counter
+H2: The Order Counter
 
 An order counter can be enabled if the I<OrderCounter> directive
 is set to a file name. An incrementing count of all orders will be
@@ -1633,7 +1633,7 @@ This capability is made possible by the File::CounterFile module,
 available (as a part of the fine libwww modules) at the same place you
 got Interchange. It is included with the distribution.
 
-=head2 Customer Input Fields
+H2: Customer Input Fields
 
 On the order (or shopping basket) page, by default order.html, you will
 have a number of input fields allowing the customer to enter information
@@ -1672,4 +1672,5 @@ you should set it large enough to be comfortable for the customer.
 Line:
 
 N:Copyright 2001-2002 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.
+
 N:Copyright 2002 ICDEVGROUP. Freely redistributable under terms of the GNU General Public License.
