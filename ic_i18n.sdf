@@ -1,0 +1,379 @@
+!init OPT_LOOK="akopia"; OPT_STYLE="manual"
+# $Id: ic_i18n.sdf,v 1.1 2002-09-18 16:11:31 racke Exp $
+
+!define DOC_NAME "Interchange I18N Features"
+!define DOC_TYPE ""
+!define DOC_CODE "ic_i18n"
+!define DOC_VERSION substr('$Revision: 1.1 $',11, -2)
+!define DOC_STATUS "Draft"
+!define DOC_PROJECT "Interchange"
+!define DOC_URL "http://interchange.redhat.com/doc/ictemplates.html"
+!build_title
+
+
+H1: Internationalization
+
+Interchange has a rich set of internationalization (I18N) features that allow conditional message display, differing price formats, different currency definitions, price factoring, sorting, and other settings. The definitions are maintained in the catalog.cfg file through the use of built-in POSIX support and Interchange's C<Locale> directive. All settings are independent for each catalog and each user visiting that catalog, since customers can access the same catalog in an unlimited number of languages and currencies.
+
+H2: Configuring the Locale
+
+It is recommended to use the C<ScratchDefault> directive for setting the
+catalog's default locale:
+
+!block example
+   ScratchDefault mv_locale de_DE
+!endblock
+
+H2: Setting the Locale
+
+The locale could be set to C<fr_FR> (French for France) in one of two ways:
+
+LI1: [setlocale locale=locale* currency=locale* persist=1*]
+
+.Immediately sets the locale to C<locale>, and will cause it to persist in future user pages if the C<persist> is set to a non-zero, non-blank value. If the C<currency> attribute is set, the pricing and currency-specific locale keys and Interchange configuration directives are modified to that locale. If there are no arguments, it sets it back to the user's default locale as defined in the scratch variables C<mv_locale> and C<mv_currency>.
+
+.This allows:
+
+!block example; listitem=2
+    Dollar Pricing:
+
+    [setlocale en_US]
+    [item-list]
+    [item-code]: [item-price]<BR>
+    [/item-list]
+
+    Franc Pricing:
+
+    [setlocale fr_FR]
+    [item-list]
+    [item-code]: [item-price]<BR>
+    [/item-list]
+
+    [comment] Return to the user's default locale [/comment]
+    [setlocale]
+!endblock
+
+LI1: [page process/locale/fr_FR/page/catalog]
+
+.This is the same as C<[page catalog]>, except when the link is followed it will set the locale to C<fr_FR> before displaying the page. This is persistent.
+
+LI1: [page process/locale/fr_FR/currency/en_US/page/catalog]
+
+.This is the same as C<[page catalog]>, except when the link is followed it will set the locale to C<fr_FR> and the pricing/number display to the locale C<en_US> before displaying the page. This is persistent.
+
+Once the locale is persistently set for a user, it is in effect for the duration of their session.
+
+H2: Interchange Locale Settings
+
+The C<Locale> directive has many possible settings that allow complete internationalization of page sets and currencies. The C<Locale> directive is defined in a series of key/value pairs with a key that contains word characters only being followed by a value. The value must be enclosed in double quotes if it contains whitespace. In this example, the key is C<Value setting>.
+
+!block example
+   Locale fr_FR "Value setting" "Configuration de valeur"
+   Locale de_DE "Value setting" Werteinstellung
+!endblock
+
+When accessed using the special tag C<[L]Value setting[/L]>, the value C<Configuration de valeur> will be displayed B<only> if the locale is set to C<fr_FR>. If the locale is set to C<de_DE>, the string C<Werteinstellung> will be displayed. If it is neither, the default value of C<Value setting> will be displayed.
+
+The C<[L]> and C<[/L]> must be capitalized. This is done for speed of processing as well as easy differentiation in text.
+
+Another, way to do this is right in the page. The
+C<[LC]> ... C<[/LC]> pragma pair permits specification of locale-dependent text.
+
+!block example
+ [LC]
+           This is the default text.
+   [fr_FR] Text for the fr_FR locale. [/fr_FR]
+   [de_DE] Text for the de_DE locale. [/de_DE]
+ [/LC]
+!endblock
+
+You can also place an entirely new page in place of the default one if the locale key is defined. When a locale is in force, and a key named C<HTMLsuffix> is set to that locale, Interchange first looks for a page with a suffix corresponding to the locale. For example:
+
+<A HREF="[area index]">Catalog home page</A>
+
+If a page index.html exists, it will be the default. If the current locale is C<fr_FR>, a page "index.fr_FR" exists, and C<Locale> looks like this:
+
+!block example
+   Locale fr_FR HTMLsuffix  .fr_FR
+!endblock
+
+Then, the C<.fr_FR> page will be used instead of the C<.html> page. For a longer series of strings, the configuration file recognizes:
+
+!block example
+   Locale fr_FR <<EOF
+   {
+       "Value setting",
+       "Configuration de valeur",
+
+       "Search",
+       "Recherche"
+   }
+   EOF
+!endblock
+
+This example sets two string substitutions. As long as this is a valid Perl syntax describing a series of settings, the text will be matched. It can contain any arbitrary set of characters that don't contain C<[L]> and C<[/L]>.
+If using double quotes, string literals like \n and \t are recognized.
+
+A database can also be used to set locale information. Locale information can be added to any database in the C<catalog.cfg> file, and the values in it will overwrite previous settings. For more information, see LocaleDatabase. The C<[L]default text[/L]> is set before any other page processing takes place. It is equivalent to the characters "default text" or the appropriate C<Locale> translation for all intents and purposes. Interchange tags and Variable values can be embedded.
+
+Because the C<[L] message [/L]> substitution is done before any tag processing,
+the command C<[L][item-data table field][/L]> will fail. There is an additional C<[loc] message [/loc]> I<UserTag> supplied with the distribution. It does the same thing as C<[L] [/L]> except it is programmed after all tag substitution is done. See the interchange.cfg.dist file for the definition.
+
+Note:Be careful when editing pages containing localization information. Even changing one character of the message can  change the key value and invalidate the message for other languages. To prevent this, use:
+
+!block example
+   [L key]The default.[/L]
+!endblock
+
+The key C<msg_key> will then be used to index the message. This may be preferable for many applications.
+
+A C<localize> script is included with Interchange. It will parse files included on the command line and produce output that can be easily edited to produce localized information. Given an existing file, it will merge new information where appropriate.
+
+H2: Special Locale Keys for Price Representation
+
+Interchange honors the standard POSIX keys:
+
+!block example
+   mon_decimal_point	or 	decimal_point
+   mon_thousands_sep	or 	thousands_sep
+   currency_symbol	or	int_currency_symbol
+   frac_digits	or	p_cs_precedes
+!endblock
+
+See the POSIX setlocale(3) man page for more information. These keys will be used for formatting prices and approximates the number format used in most countries. To set a custom price format, use these special keys:
+
+LI1: price_picture
+
+.Interchange will format a currency number based on a "picture" given to it. The basic form is:
+
+!block example; listitem=2
+    Locale en_US price_picture "$ ###,###,###.##"
+!endblock
+
+.The C<en_US> locale, for the United States, would display C<4452.3> as C<$ 4,452.30>. The same display can be achieved with:
+
+!block example; listitem=2
+     Locale en_US mon_thousands_sep ,
+     Locale en_US mon_decimal_point .
+     Locale en_US p_cs_precedes     1
+     Locale en_US currency_symbol   $
+!endblock
+
+.A common price_picture for European countries would be C<###.###.###,##>, which would display that same number as C<4.452,30>. To add a franc notation at the end for the locale C<fr_FR>, use the setting:
+
+!block example; listitem=2
+    Locale fr_FR price_picture "##.###,## fr"
+!endblock
+
+Note[label='IMPORTANT NOTE: '] The decimal point in use, set by C<mon_decimal_point>, and the thousands separator, set by C<mon_thousands_sep> must match the settings in the price_picture. The C<frac_digits> setting is not used in this case. It is derived from the location of the decimal (if any).
+
+.The same setting for C<fr_FR> above can be achieved with:
+
+!block example; listitem=2
+     Locale fr_FR mon_thousands_sep .
+     Locale fr_FR mon_decimal_point ,
+     Locale fr_FR p_cs_precedes     0
+     Locale fr_FR currency_symbol   fr
+!endblock
+
+.If the number of digits is greater than the # locations in the price_picture, the digits will be changed to asterisks. An overflow number above would show as C<**.***,** fr>.
+
+LI1: picture
+
+.Same as C<price_picture>, but sets the value returned if the C<[currency]> tag is not used. If the number of digits is greater than the # locations in the picture, the digits will be changed to asterisks, displaying something like C<**,***.**>.
+
+H2: Dynamic Locale Directive Changes
+
+If a Locale key is set to correspond to an Interchange C<catalog.cfg> directive, that value will be set when the locale is set.
+
+LI1: PageDir
+
+.To use a different page directory for different locales, set the C<PageDir> key. For example, to have two separate language page sets, French and English, set:
+
+!block example; listitem=2
+    # Establish the default at startup
+    PageDir   english
+    Locale fr_FR  PageDir  francais
+    Locale en_US  PageDir  english
+!endblock
+
+LI1: ImageDir
+
+.To use a different image directory for different locales, set the C<ImageDir> key. To have two separate language button sets, French and English, set:
+
+!block example; listitem=2
+    # Establish the default at startup
+    ImageDir   /images/english/
+    Locale fr_FR  ImageDir   /images/francais/
+    Locale en_US  ImageDir   /images/english/
+!endblock
+
+LI1: ImageDirSecure
+
+.See ImageDir.
+
+LI1: PriceField
+
+.To use a different field in the products database for pricing based on locale, set the C<PriceField> locale setting. For example:
+
+!block example; listitem=2
+    # Establish the default at startup
+    PriceField    price
+    Locale fr_FR  PriceField  prix
+!endblock
+
+.The default will always be C<price>, but if the locale C<fr_FR> is set, the C<PriceField> directive will change to C<prix> to give prices in francs instead of dollars.
+
+.If C<PriceBreaks> is enabled, the C<prix> field from the C<pricing> database will be used to develop the quantity pricing. 
+
+Note: If no C<Locale> settings are present, the display will always be C<price>, regardless of what was set in C<PriceField>. Otherwise, it will match C<PriceField>.
+
+LI1: PriceDivide
+
+.Normally used to enable penny pricing with a setting of 100, C<PriceField> can be used to do an automatic conversion calculation factor based on locale.
+
+!block example; listitem=2
+    # Default at startup is 1 if not set
+    # Franc is strong these days!
+    Locale fr_FR  PriceDivide  .20
+!endblock
+
+.The price will now be divided by C<.20>, making the franc price five times higher than the dollar.
+
+LI1: PriceCommas
+
+.This controls whether the C<mon_thousands_sep> will be used for standard currency formatting. This setting will be ignored if you are using C<price_picture>. Set the value to 1 or 0, to enable or disable it. Do not use yes or no.
+
+!block example; listitem=2
+    # Default at startup is Yes if not set
+    PriceCommas  Yes
+    Locale fr_FR  PriceCommas  0
+    Locale en_US  PriceCommas  1
+!endblock
+
+LI1: UseModifier
+
+.Changes the fields from the set shopping cart options.
+
+!block example; listitem=2
+    # Default at startup is 1 if not set
+    # Franc is strong these days!
+    UseModifier format
+    Locale fr_FR  UseModifier formats
+!endblock
+
+.If a previous setting was made for an item based on another locale, it will be maintained.
+
+LI1: PriceAdjustment
+
+.Changes the fields set by C<UseModifier> that will be used to adjust pricing for an automatic conversion factor based on locale. For example:
+
+!block example; listitem=2
+    # Default at startup
+    PriceAdjustment  format
+    Locale fr_FR  PriceAdjustment  formats
+!endblock
+
+LI1: TaxShipping,SalesTax
+
+.Same as the standard directives.
+
+LI1: DescriptionField
+
+.This changes the field accessed by default with the C<[item-description]> and C<[description code]> tags. For example
+
+!block example; listitem=2
+    # Establish the default at startup
+    DescriptionField    description
+    Locale fr_FR  DescriptionField desc_fr
+!endblock
+
+LI1: The [locale] tag
+
+.Standard error messages can be set based on Locale settings. Make sure not to use any of the predefined keys. It is safest to begin a key with msg_ . The default message is set between the C<[locale key]> and C<[/locale]> tags. See the example above.
+
+H2: Sorting Based on Locale
+
+The Interchange C<[sort database:field]> keys will use the LC_COLLATE setting for a locale provided that:
+
+*The operating system and C compiler support locales for POSIX, and have the locale definitions set.
+
+*The locale setting matches any configured locales.
+
+If this arbitrary database named C<letters>:
+
+!block example
+   code        letter
+   00-0011     f
+   99-102      é
+   19-202      a
+!endblock
+
+and this loop:
+
+!block example
+   [loop 19-202 00-0011 99-102]
+   [sort letters:letter]
+   [loop-data letters letter]   [loop-code]
+   [/loop]
+!endblock
+
+used the default C setting for LC_COLLATE, the following would be displayed:
+
+!block example
+   a  19-202
+   f  00-0011
+   é  99-102
+!endblock
+
+If the proper LC_COLLATE settings for locale C<fr_FR> were in effect,
+then the above would become:
+
+!block example
+   a  19-202
+   é  99-102
+   f  00-0011
+!endblock
+
+H2: Placing Locale Information in a Database
+
+Interchange has the capability to read its locale information from a database, named with the C<LocaleDatabase> directive. The database can be of any valid Interchange type. The locales are in columns, and the keys are in rows. For example, to set up price information:
+
+!block example
+   key                 en_US   fr_FR   de_DE
+   PriceDivide         1       .1590   .58
+   mon_decimal_point   .       ,       ,
+   mon_thousands_sep   ,       .
+   currency_symbol     $        frs    DM
+   ps_cs_precedes      1       0       0
+!endblock
+
+This would translate to the following:
+
+!block example
+   Locale en_US PriceDivide         1
+   Locale en_US mon_decimal_point   .
+   Locale en_US mon_thousands_sep   ,
+   Locale en_US currency_symbol     $
+   Locale en_US ps_cs_precedes      1
+
+   Locale fr_FR PriceDivide         .1590
+   Locale fr_FR mon_decimal_point   ,
+   Locale fr_FR mon_thousands_sep   .
+   Locale fr_FR currency_symbol     " frs"
+   Locale fr_FR ps_cs_precedes      0
+
+   Locale de_DE PriceDivide         .58
+   Locale de_DE mon_decimal_point   ,
+   Locale de_DE mon_thousands_sep   " "
+   Locale de_DE currency_symbol     "DM "
+   Locale de_DE ps_cs_precedes      1
+!endblock
+
+These settings append and overwrite any that are set in the catalog configuration files, including any include files. 
+
+Important note: This information is only read during catalog configuration. It is not reasonable to access a database for translation or currency conversion in the normal course of events.
+
+Line:
+
+N:Copyright 2001-2002 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.
