@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.91 2002-07-12 17:17:15 kwalsh Exp $
+# $Id: ictags.sdf,v 1.92 2002-07-15 13:52:15 mheins Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.91 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.92 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -16688,10 +16688,6 @@ Name|scan|Type|Description
 {{CMD[id="mv_order_subject"]mv_order_subject}}||O|Sets the subject line of order email
 {{CMD[id="mv_orsearch"]mv_orsearch}}|os|S|Selects AND/OR of search words
 {{CMD[id="mv_profile"]mv_profile}}|mp|S|Selects search profile
-{{CMD[id="mv_range_alpha"]mv_range_alpha}}|rg|S|Sets alphanumeric range searching
-{{CMD[id="mv_range_look"]mv_range_look}}|rl|S|Sets the field to do a range check on
-{{CMD[id="mv_range_max"]mv_range_max}}|rx|S|Upper bound of range check
-{{CMD[id="mv_range_min"]mv_range_min}}|rm|S|Lower bound of range check
 {{CMD[id="mv_record_delim"]mv_record_delim}}|dr|S|Search index record delimiter
 {{CMD[id="mv_return_all"]mv_return_all}}|ra|S|Return all lines found (subject to range search)
 {{CMD[id="mv_return_delim"]mv_return_delim}}|rd|S|Return record delimiter
@@ -16773,13 +16769,9 @@ pc|{{CMD[jump="#mv_pc"]mv_pc}}
 ra|{{CMD[jump="#mv_return_all"]mv_return_all}}
 rd|{{CMD[jump="#mv_return_delim"]mv_return_delim}}
 rf|{{CMD[jump="#mv_return_fields"]mv_return_fields}}
-rg|{{CMD[jump="#mv_range_alpha"]mv_range_alpha}}
-rl|{{CMD[jump="#mv_range_look"]mv_range_look}}
-rm|{{CMD[jump="#mv_range_min"]mv_range_min}}
 rn|{{CMD[jump="#mv_return_file_name"]mv_return_file_name}}
 rr|{{CMD[jump="#mv_return_reference"]mv_return_reference}}
 rs|{{CMD[jump="#mv_return_spec"]mv_return_spec}}
-rx|{{CMD[jump="#mv_range_max"]mv_range_max}}
 se|{{CMD[jump="#mv_searchspec"]mv_searchspec}}
 sf|{{CMD[jump="#mv_search_field"]mv_search_field}}
 si|{{CMD[jump="#mv_search_immediate"]mv_search_immediate}}

@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.46 2002-06-25 20:15:00 mheins Exp $
+# $Id: icdatabase.sdf,v 1.47 2002-07-15 13:52:15 mheins Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.46 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.47 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icdatabase.html"
@@ -1076,37 +1076,6 @@ Once again, this does not conduct a search on an SQL database, but formats a cor
    </a>
 !endblock
 
-H2: Range Searching
-
-Range searching allows qualification of search returns with a field that must be within a certain numeric or alphanumeric range. To use it, set the C<mv_range_look> variable to the products database field, or a column/field number for another file. Then, set the corresponding C<mv_range_min> and C<mv_range_max> variables with a selectable field.
-
-!block example
-   <INPUT TYPE="hidden" NAME="mv_range_look" VALUE="price">
-       Search on Price
-   Min <SELECT NAME="mv_range_min">
-            <OPTION value=0 SELECTED> Free
-            <OPTION value=1000000> $1,000,000
-            <OPTION value=10000000> $10,000,000
-            <OPTION value=20000000> $20,000,000
-            <OPTION value=40000000> $40,000,000
-       </SELECT><BR>
-   Max <SELECT NAME="mv_range_max">
-           <OPTION value=0 SELECTED> no object
-           <OPTION value=1000000> $1,000,000
-           <OPTION value=10000000> $10,000,000
-           <OPTION value=20000000> $20,000,000
-           <OPTION value=40000000> $40,000,000
-       </SELECT>
-!endblock
-
-The value of 0 for C<mv_range_max> is equivalent to infinity if doing a numeric search. This makes it impossible to search for a ceiling of 0 with a negative C<mv_range_min>.
-
-The fields are stackable, so more than one range to check can be set. The order is significant, in the sense that the array of field names and minimum/maximum values must be kept in order to achieve correspondence.
-
-The optional C<mv_range_alpha> specification allows alphanumeric range matching for the corresponding field. If it is set, and the fields are stacked, they must all be set. The C<mv_case> field does apply if it is set. Otherwise, the comparison is without regard to case.
-
-If ONLY a range search is required, all lines with C<mv_return_all>=yes must be selected in order to make the search operate. Range-only searches will be quite slow for large databases since every line must be scanned. It should be quite usable for catalogs of less than 10,000 items in size on a fast machine. Using it in combination with another search technique (in the same query) will yield faster search returns.
-
 H2: One-Click Searches
 
 Interchange allows a search to be passed in a URL, as shown above. Just specify the search with the special page parameter search or special page C<scan>. Here is an example:
@@ -1184,13 +1153,9 @@ The two-letter abbreviations are mapped with these letters:
  ra  mv_return_all
  rd  mv_return_delim
  rf  mv_return_fields
- rg  mv_range_alpha
- rl  mv_range_look
- rm  mv_range_min
  rn  mv_return_file_name
  rr  mv_return_reference
  rs  mv_return_spec
- rx  mv_range_max
  se  mv_searchspec
  sf  mv_search_field
  sg  mv_search_group
@@ -1380,9 +1345,6 @@ The special variable C<mv_last> stops interpretation of search variables. The fo
 !block example
    mv_dict_look
    mv_searchspec
-   mv_range_look
-   mv_range_min
-   mv_range_max
 !endblock
 
 Other than that, if C<mv_last> is set in a search profile, and there are other variables on the search form, they will not be interpreted.
@@ -1565,22 +1527,6 @@ LI1: mv_orsearch
 LI1: mv_profile
 
 .Selects one of the pre-defined search specifications set by the C<SearchProfile> directive. If the special variable within that file, C<mv_last>, is defined, it will prevent the scanning of the form input for further search modifications. The values of C<mv_searchspec> and C<mv_dict_look> are always scanned, so specify this to do the equivalent of setting multiple checkboxes or radioboxes with one click, while still reading the search input text.
-
-LI1: mv_range_alpha
-
-.Sets the type of match, numeric or alphanumeric, for the range search in its corresponding range field. The search will return true, assuming it is greater than the C<mv_range_min> specification, if the field searched is less than or equal to C<mv_range_max>, in an alphanumeric sense.
-
-LI1: mv_range_look
-
-.This sets a field to scan for a range of numbers. It must be accompanied with corresponding C<mv_range_min> and C<mv_range_max> variables. It can be specified with either a field name or a column number.
-
-LI1: mv_range_max
-
-.Sets the high bound for the range search in its corresponding range field. The search will return true, assuming it is greater than the C<mv_range_min> specification, if the field searched is less than or equal to C<mv_range_max>. To set the bound at infinity, or whatever your integer limit is, set C<mv_range_min> to 0.
-
-LI1: mv_range_min
-
-.Sets the low bound for the range search in its corresponding range field. The search will return true, assuming it is less than the C<mv_range_max> specification, if the field searched is less than or equal to C<mv_range_min>.
 
 LI1: mv_record_delim
 

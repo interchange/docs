@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ictemplates.sdf,v 1.39 2002-06-22 15:19:02 edl Exp $
+# $Id: ictemplates.sdf,v 1.40 2002-07-15 13:52:16 mheins Exp $
 
 !define DOC_NAME "Template Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "ictemplates"
-!define DOC_VERSION substr('$Revision: 1.39 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.40 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictemplates.html"
@@ -2352,10 +2352,6 @@ mv_order_report          O   Sets the order report sent
 mv_order_subject         O   Sets the subject line of order email
 mv_orsearch          os  S   Selects AND/OR of search words
 mv_profile           mp  S   Selects search profile
-mv_range_alpha       rg  S   Sets alphanumeric range searching
-mv_range_look        rl  S   Sets the field to do a range check on
-mv_range_max         rx  S   Upper bound of range check
-mv_range_min         rm  S   Lower bound of range check
 mv_record_delim      dr  S   Search index record delimiter
 mv_return_all        ra  S   Return all lines found (subject to range search)
 mv_return_delim      rd  S   Return record delimiter
