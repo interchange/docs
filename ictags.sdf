@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.20 2001-04-11 22:40:03 bill Exp $
+# $Id: ictags.sdf,v 1.21 2001-04-24 19:12:26 jason Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.20 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.21 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -337,7 +337,7 @@ expands to
 
 H4: {{CMD[id="attr_send"]send}}
 
-Depreciated
+Deprecated
 
 
 H3: Tag-specific Attributes
@@ -816,7 +816,7 @@ H3: Summary
 
 !block example;
     [B<accessories> code arg I<other_named_attributes>]
-    [B<accessories> code=[[EXAMPLE_SKU]] arg="size, radio, ... " I<other_named_attributes>] I<depreciated>
+    [B<accessories> code=[[EXAMPLE_SKU]] arg="size, radio, ... " I<other_named_attributes>] I<deprecated>
     [B<accessories> code=[[EXAMPLE_SKU]] attribute=size type=radio ... I<other_named_attributes>]
 !endblock
 
@@ -1093,7 +1093,7 @@ the key for the current item in the loop.
 
 H4:  {{CMD[id="accessories_arg"]arg}}
 
-B<Depreciated after Interchange 4.6>
+B<Deprecated after Interchange 4.6>
 
 This allows you to pass values for some of the more commonly used
 attributes in the manner of the E<lbracket>C<PREFIX-accessories>] tag,
@@ -1117,7 +1117,7 @@ E:  B<arg>="color, radio, , products"
 Although you must use such a comma-delimited list to pass attributes
 to the E<lbracket>C<PREFIX-accessories>] tag, please use named
 attributes instead for the E<lbracket>C<accessories>] tag. The
-'C<arg>' attribute is depreciated.
+'C<arg>' attribute is deprecated.
 
 For detail about a specific attribute, please see its subheading below.
 
