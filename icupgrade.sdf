@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icupgrade.sdf,v 1.9 2001-03-16 05:53:26 jon Exp $
+# $Id: icupgrade.sdf,v 1.10 2001-03-27 19:27:58 jon Exp $
 
 !define DOC_NAME "Interchange Upgrade Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "icupgrade"
-!define DOC_VERSION substr('$Revision: 1.9 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.10 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/icupgrade.html"
@@ -792,6 +792,7 @@ sub parse_random {
     my $c = [];
     $var = lc $var;
 	my @files = grep /\S/, split /\s+/, $value;
+	local ($Vend::Cfg) = $C;
 	for (@files) { push @$c, Vend::Util::readin($_) }
 	return $c;
 }
