@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: ic_ecommerce.sdf,v 1.21 2002-12-14 18:01:47 jon Exp $
+# $Id: ic_ecommerce.sdf,v 1.22 2003-01-15 13:49:31 jon Exp $
 
 !define DOC_NAME "Interchange Ecommerce Functions"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_ecommerce"
-!define DOC_VERSION substr('$Revision: 1.21 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.22 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ic_ecommerce.html"
@@ -504,8 +504,6 @@ LI1: 5
 If another CommonAdjust string is found as the result of an operation,
 it will be re-parsed and the result applied. Chaining is retained; a
 fallback may be passed and will take effect.
-
-=back
 
 Prices may be adjusted in several ways, and the individual actions
 are referred to below as I<atoms>. Price atoms may be I<final>,
