@@ -1,5 +1,5 @@
-# $Id: topod.pl,v 1.1 2001-03-29 20:31:47 jon Exp $
-$VERSION{''.__FILE__} = '$Revision: 1.1 $';
+# $Id: topod.pl,v 1.2 2001-05-09 04:14:18 jon Exp $
+$VERSION{''.__FILE__} = '$Revision: 1.2 $';
 #
 # >>Title::     POD Format Driver
 #
@@ -309,9 +309,10 @@ sub _PodParaText {
       &SdfNextSection(*para_text, *state)) {
 
         # Build the paragraph:
-        # * if we're inside a table or example, just use the text
-        # * otherwise, build things "normally"
+        # if we're inside a table or example, just use the text
+        # and any E<...> escapes
         if (@_pod_tbl_state || $_pod_in_example) {
+            $text = $_POD_CHAR{$text} if defined $_POD_CHAR{$text};
             $para .= $text;
         }
 
@@ -376,6 +377,23 @@ sub _PodFinalise {
     local(*body, *contents) = @_;
 #   local(@result);
 
+	# Remove C< > markers entirely. perldoc puts quotes around the contents,
+	# which is not the 'fixed-width' it should be, and is actually inaccurate
+	# in many of the contexts we're using.
+
+	# This regex works perfectly, but requires Perl 5.6 because it's recursive:
+	#my $re; $re = qr/(<(?:(?>[^<>]+)|(??{$re}))*>)/; s/$re/$1/g for @body;
+
+	# This one doesn't do any nested < > tags at all:
+	#s/C<([^<>]+)>/$1/g for @body;
+
+	# This one uses more standard regex syntax, but will go "only" 10
+	# nested levels of < > tags deep:
+	s/C<((?:[^<>]|<(?:[^<>]|<(?:[^<>]|<(?:[^<>]|<(?:[^<>]|<(?:[^<>]|<(?:[^<>]|<(?:[^<>]|<(?:[^<>]|<(?:[^<>]|<[^<>]*>)*>)*>)*>)*>)*>)*>)*>)*>)*>)*)>/$1/g for @body;
+
+	# Escape lines like ====== from POD by starting line with a null entity.
+	s/^(==+.*)$/Z<>$1/gm for @body;
+
     # Return result
     return @body;
 }
@@ -435,7 +453,7 @@ sub _PodElement {
     $over = 4 * $attr{'in'};
     if ($tag =~ /^item/) {
         if ($text ne '') {
-            $text = &MiscTextWrap($text, 70, '', '', 1);
+            $text = &MiscTextWrap($text, $_pod_margin, '', '', 1);
             return "=over $over\n\n=$tag\n\n$text\n\n=back\n";
         }
         else {
@@ -454,7 +472,7 @@ sub _PodElement {
     }
 
     # Otherwise, format as a plain paragraph
-    return &MiscTextWrap($text, 70, '', '', 1) . "\n";
+    return &MiscTextWrap($text, $_pod_margin, '', '', 1) . "\n";
 }
 
 #
