@@ -1,0 +1,35 @@
+# $Id: ru_ru.sdl,v 1.1 2001-03-29 20:31:58 jon Exp $
+#
+# >>Title::     Russian (Russia) Locale
+#
+# >>History::
+# -----------------------------------------------------------------------
+# Date      Who     Change
+# 18-Nov-98 alp     сreated from scratch (CP-866)
+# -----------------------------------------------------------------------
+#
+
+# Generated list titles
+!define DOC_TOC_TITLE           "Оглавление"	
+!define DOC_LOF_TITLE           "Перечень Иллюстраций"
+!define DOC_LOT_TITLE           "Перечень Таблиц"
+
+# Navigation strings
+!define HTML_TEXT_CONTENTS      "Оглавление"
+!define HTML_TEXT_PARENT        "Начало Раздела"
+!define HTML_TEXT_PREVIOUS      "Предыдущая Глава"
+!define HTML_TEXT_NEXT          "Следующая Глава"
+!define HTML_TEXT_HOME          "Начало"
+!define HTML_TEXT_CATALOG       "Каталог"
+!define HTML_TEXT_SEARCH        "Поиск"
+
+# Date string values
+!block datestrings
+Symbol   Values
+month    "Январь Февраль Март Апрель Май Июнь Июль Август Сентябрь Октябрь Ноябрь Декабрь"
+smonth   "Янв    Фев     Мар  Апр    Май Июн  Июл  Авг    Сен      Окт     Ноя    Дек"
+weekday  "Понедельник Вторник Среда Четверг Пятница Суббота Воскресенье"
+sweekday "Пн          Вт      Ср    Чт      Пт      Суб     Вск "
+ampm     "am pm"
+AMPM     "AM PM"
+!endblock

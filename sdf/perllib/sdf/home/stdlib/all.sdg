@@ -1,0 +1,32 @@
+# $Id: all.sdg,v 1.1 2001-03-29 20:32:40 jon Exp $
+#
+# >>Title::     All Documentation SDG Report
+#
+# >>Copyright::
+# Copyright (c) 1992-1999, Ian Clatworthy (ianc@mincom.com).
+# You may distribute under the terms specified in the LICENSE file.
+#
+# >>History::
+# -----------------------------------------------------------------------
+# Date      Who     Change
+# 13-May-99 ianc    Initial creation
+# -----------------------------------------------------------------------
+#
+# >>Purpose::
+# This report is used to extract and format all sections
+# of SDF-style embedded documentation.
+#
+# >>Description::
+# 
+# >>Limitations::
+#
+Key             Format
+-               "!use 'sdgmacs'\n!SDG_BEGIN\n"
+Title           "H1[id=\"$short\"] $short - $data\n\n"
+Purpose         "H2: $key\n\n$data\n\n"
+Interface       "H2: $key\n\n$data\n\n"
+-               "!SDG_DESCRIPTION_PRE\n"
+Description     "H2: $key\n\n$data\n\n"
+-               "!SDG_DESCRIPTION_POST\n"
+*               "H2: $key\n\n$data\n\n"
+-               "!SDG_END\n"

@@ -1,0 +1,24 @@
+# $Id: rtf.sdn,v 1.1 2001-03-29 20:32:40 jon Exp $
+#
+# >>Title::     RTF Tuning
+#
+# >>Copyright::
+# Copyright (c) 1992-1997, Ian Clatworthy (ianc@mincom.com).
+# You may distribute under the terms specified in the LICENSE file.
+#
+# >>History::
+# -----------------------------------------------------------------------
+# Date      Who     Change
+# 21-Feb-97 ianc    SDF 2.000
+# -----------------------------------------------------------------------
+#
+# >>Purpose::
+# The {{stdlib/rtf.sdn}} module defines [[SDF]] configuration details for
+# generating RTF files.
+#
+# >>Description::
+#
+# >>Limitations::
+#
+
+# Empty for now

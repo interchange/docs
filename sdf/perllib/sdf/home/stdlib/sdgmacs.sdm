@@ -1,0 +1,110 @@
+# $Id: sdgmacs.sdm,v 1.1 2001-03-29 20:32:40 jon Exp $
+#
+# >>Title::     Macros for sdfget
+#
+# >>Copyright::
+# Copyright (c) 1992-1999, Ian Clatworthy (ianc@mincom.com).
+# You may distribute under the terms specified in the LICENSE file.
+#
+# >>History::
+# -----------------------------------------------------------------------
+# Date      Who     Change
+# 13-May-99 ianc    Initial creation
+# -----------------------------------------------------------------------
+#
+# >>Purpose::
+# {{MOD:sdgmacs}} provides macros used by the predefined {{FMT:SDG}} reports.
+#
+# >>Description::
+#
+# >>Limitations::
+#
+######## OPTION MACROS #########
+
+#
+# >>Description::
+# The SDF_OPT_HELP macro provides text explaining the -h option.
+#
+!macro SDF_OPT_HELP
+The -h option provides help. If it is specified without a parameter,
+a brief description of each option is displayed. To display
+the attributes for an option, specify the option letter as a parameter.
+!endmacro
+
+#
+# >>Description::
+# The SDF_OPT_STD macro provides text explaining the standard options.
+#
+!macro SDF_OPT_STD
+!SDF_OPT_HELP
+
+By default, generated output goes to standard output. To direct
+output to a file per input file, use the -o option to specify
+an extension for output files. If the -o option is specified
+without a parameter, an extension of {{out}} is assumed.
+
+Likewise, error messages go to standard error by default. Use
+the -l option to create a log file per input file. If the -l
+option is specified without a parameter, an extension of {{log}}
+is assumed.
+
+By default, generated output and log files are created in the
+current directory. Use the -O option to specify an explicit
+output directory. If the -O option is specified without a
+parameter, the input file's directory is used.
+!endmacro
+
+######## SDG MACROS #########
+
+#
+# >>Description::
+# The SDG_DESCRIPTION_PRE macro is used in SDG reports to automatically
+# create an Interface, Data or Usage section just before the Description.
+#
+!macro SDG_DESCRIPTION_PRE
+!if $var{'FILE_EXT'} eq 'pl'
+	H2: Interface
+	!perlapi FILE_SHORT; example
+	!on phrase 'Y'; _symbols; \
+          $attr{'id'} = &TextToId("$var{'FILE_BASE'}_$text"); \
+          $attr{'id'} =~ s/[\$\@\%]//g
+!elsif $var{'FILE_EXT'} eq 'idl'
+	H2: Interface
+	!getcode FILE_SHORT; idl
+!elsif $var{'FILE_EXT'} eq 'sdg'
+	H2: Data
+	!getcode FILE_SHORT; table
+!elsif $var{'FILE_EXT'} eq '' || $var{'FILE_EXT'} =~ /^(bat|cmd|sh)$/
+	H2: Usage
+	!getusage FILE_BASE
+        !script %found = ()
+	!on paragraph ''; _options; if ($text =~ / \-(\w)/) {$tmpid = "$var{'FILE_BASE'}_$1";unless ($found{$tmpid}++) {$attr{'id'} = $tmpid}}
+!endif
+!endmacro
+
+#
+# >>Description::
+# The SDG_DESCRIPTION_POST macro is used in SDG reports to switch
+# off event processing enabled by SDG_DESCRIPTION-POST.
+#
+!macro SDG_DESCRIPTION_POST
+!if $var{'FILE_EXT'} eq 'pl'
+	!off phrase _symbols
+!elsif $var{'FILE_EXT'} eq '' || $var{'FILE_EXT'} =~ /^(bat|cmd|sh)$/
+	!off paragraph _options
+!endif
+!endmacro
+
+#
+# >>Description::
+# The SDG_BEGIN macro is a hook for text at the beginning of an SDG report.
+#
+!macro SDG_BEGIN
+!endmacro
+
+#
+# >>Description::
+# The SDG_END macro is a hook for text at the end of an SDG report.
+#
+!macro SDG_END
+!endmacro

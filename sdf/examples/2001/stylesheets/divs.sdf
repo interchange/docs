@@ -1,0 +1,83 @@
+!include "divs.css"; stylesheet
+
+!define DOC_NAME "My Document"
+!define DOC_CODE "code"
+!define DOC_VERSION "version"
+!define DOC_STATUS "Draft"
+!define DOC_AUTHOR "Ian C"
+!define DOC_TOC 2
+!build_title
+
+# trigger header & footer generation
+!define HTML_URL_HOME "home.html"
+
+H1: Stylesheet testing
+
+H2: Division testing
+
+SDF documents are now "stylesheet-friendly" in that DIVs are
+placed around interesting parts of the document as follows:
+
+!block table
+Document_part           DIV_name
+title section           title
+table of contents       contents
+main body               main
+header section          header
+footer section          footer
+navigate section        navigate
+!endblock
+
+The navigate DIV is nested within header and footer.
+(This makes it easy to format the navigation section regardless
+of its location.)
+
+H2: Alignment testing
+
+Normal paragraph.
+In principle, scripts using this library have a consistent
+user interface and internal structure, making them easier to
+use and maintain.
+
+
+[align] Aligned paragraph.
+In principle, scripts using this library have a consistent
+user interface and internal structure, making them easier to
+use and maintain.
+
+[align=Left] Left alignment.
+In principle, scripts using this library have a consistent
+user interface and internal structure, making them easier to
+use and maintain.
+
+[align=Right] Right alignment.
+In principle, scripts using this library have a consistent
+user interface and internal structure, making them easier to
+use and maintain.
+
+[align=Center] Center alignment.
+In principle, scripts using this library have a consistent
+user interface and internal structure, making them easier to
+use and maintain.
+
+[align=Full] Full alignment.
+In principle, scripts using this library have a consistent
+user interface and internal structure, making them easier to
+use and maintain.
+
+H2: Indent testing
+
+[first=20] First=20 paragraph.
+In principle, scripts using this library have a consistent
+user interface and internal structure, making them easier to
+use and maintain.
+
+[left=20] Left=20 paragraph.
+In principle, scripts using this library have a consistent
+user interface and internal structure, making them easier to
+use and maintain.
+
+[right=20] Right=20 paragraph.
+In principle, scripts using this library have a consistent
+user interface and internal structure, making them easier to
+use and maintain.

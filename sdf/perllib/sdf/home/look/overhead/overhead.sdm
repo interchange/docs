@@ -1,0 +1,23 @@
+# $Id: overhead.sdm,v 1.1 2001-03-29 20:32:21 jon Exp $
+#
+# >>Title::	Overhead Look
+#
+# >>Copyright::
+# Copyright (c) 1992-1996, Ian Clatworthy (ianc@mincom.com).
+# You may distribute under the terms specified in the LICENSE file.
+#
+# >>History::
+# -----------------------------------------------------------------------
+# Date      Who     Change
+# 09-Oct-96 ianc    SDF 2.000
+# -----------------------------------------------------------------------
+#
+# >>Purpose::
+# {{overhead}} is an [[SDF]] look for user documentation.
+#
+# >>Description::
+#
+# >>Limitations::
+#
+
+# Do nothing for now

@@ -1,0 +1,21 @@
+/* Header and footer formatting */
+DIV.header {background-color: yellow}
+DIV.footer {background-color: olive}
+
+/* Title section formatting */
+DIV.title {color: olive}
+DIV.title .doc-title {color: teal; font-size: 50pt}
+DIV.title .doc-status {color: red}
+
+/* Table of contents formatting */
+DIV.contents {color: green}
+
+/* Main body formatting */
+DIV.main {color: blue}
+
+/* Table formatting.
+   Note: Table cells don't seem to inherit things from the main DIV? */
+TABLE.columns {background-color: yellow}
+TABLE.columns TR.heading {background-color: aqua}
+TABLE.columns STRONG {font-size: 20pt}
+TABLE.columns TD {color: purple}

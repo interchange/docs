@@ -1,0 +1,146 @@
+<!doctype html public "-//W30//DTD W3 HTML 2.0//EN">
+
+<HTML>
+
+<!-- This file was generated using SDF 2.001 by
+     Ian Clatworthy (ianc@mincom.com). SDF is freely
+     available from http://www.mincom.com/mtr/sdf. -->
+
+<HEAD>
+<TITLE>My Document</TITLE>
+<STYLE TYPE="text/css">
+<!--
+/* Header and footer formatting */
+DIV.header {background-color: yellow}
+DIV.footer {background-color: olive}
+
+/* Title section formatting */
+DIV.title {color: olive}
+DIV.title .doc-title {color: teal; font-size: 50pt}
+DIV.title .doc-status {color: red}
+
+/* Table of contents formatting */
+DIV.contents {color: green}
+
+/* Main body formatting */
+DIV.main {color: blue}
+
+/* Table formatting.
+   Note: Table cells don't seem to inherit things from the main DIV? */
+TABLE.columns {background-color: yellow}
+TABLE.columns TR.heading {background-color: aqua}
+TABLE.columns STRONG {font-size: 20pt}
+TABLE.columns TD {color: purple}
+-->
+</STYLE>
+</HEAD>
+<BODY>
+
+<DIV CLASS="header">
+<DIV CLASS="navigate">
+<P ALIGN="Center"><A HREF="home.html">Home</A></P>
+</DIV>
+</DIV>
+<DIV CLASS="title">
+<H1 CLASS="doc-title">My Document</H1>
+<ADDRESS><SPAN CLASS="doc-id">code.version</SPAN> <SPAN CLASS="doc-status">(Draft)</SPAN></ADDRESS>
+<ADDRESS CLASS="doc-author">Ian C</ADDRESS>
+<ADDRESS CLASS="doc-modified">24 May 1999</ADDRESS>
+<BR CLEAR="All">
+</DIV>
+<DIV CLASS="contents">
+<HR>
+<H2>Table of Contents</H2>
+<UL>
+<A HREF="#Stylesheet testing">1. Stylesheet testing</A><UL>
+<A HREF="#Division testing">1.1. Division testing</A>
+<BR>
+<A HREF="#Alignment testing">1.2. Alignment testing</A>
+<BR>
+<A HREF="#Indent testing">1.3. Indent testing</A></UL></UL>
+</DIV>
+<DIV CLASS="main">
+<HR>
+<H1><A NAME="Stylesheet testing">1. Stylesheet testing</A></H1>
+<H2><A NAME="Division testing">1.1. Division testing</A></H2>
+<P>SDF documents are now &quot;stylesheet-friendly&quot; in that DIVs are placed around interesting parts of the document as follows:</P>
+<TABLE CLASS="columns" BORDER>
+<TR CLASS="heading">
+<TD>
+<STRONG>Document part</STRONG>
+</TD>
+<TD>
+<STRONG>DIV name</STRONG>
+</TD>
+</TR>
+<TR>
+<TD>
+title section
+</TD>
+<TD>
+title
+</TD>
+</TR>
+<TR>
+<TD>
+table of contents
+</TD>
+<TD>
+contents
+</TD>
+</TR>
+<TR>
+<TD>
+main body
+</TD>
+<TD>
+main
+</TD>
+</TR>
+<TR>
+<TD>
+header section
+</TD>
+<TD>
+header
+</TD>
+</TR>
+<TR>
+<TD>
+footer section
+</TD>
+<TD>
+footer
+</TD>
+</TR>
+<TR>
+<TD>
+navigate section
+</TD>
+<TD>
+navigate
+</TD>
+</TR>
+</TABLE>
+
+<P>The navigate DIV is nested within header and footer. (This makes it easy to format the navigation section regardless of its location.)</P>
+<H2><A NAME="Alignment testing">1.2. Alignment testing</A></H2>
+<P>Normal paragraph. In principle, scripts using this library have a consistent user interface and internal structure, making them easier to use and maintain.</P>
+<P ALIGN="Justify">Aligned paragraph. In principle, scripts using this library have a consistent user interface and internal structure, making them easier to use and maintain.</P>
+<P ALIGN="Left">Left alignment. In principle, scripts using this library have a consistent user interface and internal structure, making them easier to use and maintain.</P>
+<P ALIGN="Right">Right alignment. In principle, scripts using this library have a consistent user interface and internal structure, making them easier to use and maintain.</P>
+<P ALIGN="Center">Center alignment. In principle, scripts using this library have a consistent user interface and internal structure, making them easier to use and maintain.</P>
+<P ALIGN="Justify">Full alignment. In principle, scripts using this library have a consistent user interface and internal structure, making them easier to use and maintain.</P>
+<H2><A NAME="Indent testing">1.3. Indent testing</A></H2>
+<P STYLE="text-indent: 20">First=20 paragraph. In principle, scripts using this library have a consistent user interface and internal structure, making them easier to use and maintain.</P>
+<P STYLE="margin-left: 20">Left=20 paragraph. In principle, scripts using this library have a consistent user interface and internal structure, making them easier to use and maintain.</P>
+<P STYLE="margin-right: 20">Right=20 paragraph. In principle, scripts using this library have a consistent user interface and internal structure, making them easier to use and maintain.</P>
+</DIV>
+<DIV CLASS="footer">
+<DIV CLASS="navigate">
+<P ALIGN="Center"><A HREF="home.html">Home</A></P>
+</DIV>
+</DIV>
+
+</BODY>
+</HTML>

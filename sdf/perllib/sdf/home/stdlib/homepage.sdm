@@ -1,0 +1,31 @@
+# This module provides some useful things for building home pages
+
+# The homepage_table filter formats the main body of the page
+!on filter 'homepage_table';; $name='table'; \
+       $params='noheadings; style="plain"; cellpadding=0; cellspacing=0;' . \
+       'colaligns="RLL"; coltags="B"; colvaligns="Top"' . \
+       $params
+
+# The homepage_title macro builds a nice looking title
+!block script
+@_homepage_title_MacroArgs = (
+    'Name       Type        Default     Rule',
+    'title      string      _NULL_',
+);
+sub homepage_title_Macro {
+    local(%arg) = @_;
+    local(@text);
+
+    # Get the title
+    my $title = $arg{'title'} || $var{'HTML_TITLE'};
+
+    # Generate the text and return it
+    @text = ("{{INLINE:<B>\n");
+    for $word (split(/\s+/, $title)) {
+        $word =~ s/(.)/$1 /g;
+        push(@text, "<TT><FONT SIZE=+2>$word</FONT></TT><BR>\n");
+    }
+    push(@text, '</B>}}');
+    return @text;
+}
+!endblock

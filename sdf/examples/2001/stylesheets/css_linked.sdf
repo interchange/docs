@@ -1,0 +1,27 @@
+# Link to a stylesheet
+!block links
+Jump
+test.css
+!endblock
+
+# Now test it works ...
+
+[style='background-color: blue;; color: red']
+A styled paragraph.
+
+A {{[style='background-color: blue;; color: red']styled phrase}}
+within a paragraph.
+
+A {{B:Non-Abc}} {{I:paragraph}}.
+
+[class=Abc] A {{B:Abc}} {{I:paragraph}}.
+
+An {{B[class=Xyz] Xyz phrase}}.
+
+[color=Green; size=24; style='text-decoration: line-through';
+family='sans-serif'; bold; italics; underline; bgcolor=Purple]
+Some big Green text.
+
+[changed] A changed paragraph.
+
+A {{A[changed] changed phrase}} in a paragraph.

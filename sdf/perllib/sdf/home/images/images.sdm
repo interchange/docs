@@ -1,0 +1,22 @@
+# $Id: images.sdm,v 1.1 2001-03-29 20:31:55 jon Exp $
+#
+# >>Title::     Images Module
+#
+# >>Copyright::
+# Copyright (c) 1992-1996, Ian Clatworthy (ianc@mincom.com).
+# You may distribute under the terms specified in the LICENSE file.
+#
+# >>History::
+# -----------------------------------------------------------------------
+# Date      Who     Change
+# 29-Feb-96 ianc    SDF 2.000
+# -----------------------------------------------------------------------
+#
+# >>Purpose::
+# {{MOD:images}} provides images commonly referenced in [[SDF]]
+# documents.
+#
+# >>Description::
+#
+# >>Limitations::
+#

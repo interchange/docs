@@ -1,0 +1,84 @@
+# $Id: latex.sdn,v 1.1 2001-03-29 20:32:40 jon Exp $
+#
+# >>Title::     LaTeX Tuning
+#
+# >>Copyright::
+# Copyright (c) 1992-1997, Ian Clatworthy (ianc@mincom.com).
+# You may distribute under the terms specified in the LICENSE file.
+#
+# >>History::
+# -----------------------------------------------------------------------
+# Date      Who     Change
+# 14-Aug-97 ianc    SDF 2.000
+# 30-Oct-98 Valerio Added LaTeX support
+# -----------------------------------------------------------------------
+#
+# >>Purpose::
+# The {{stdlib/latex.sdn}} module defines [[SDF]] configuration details for
+# generating {{LaTeX}} files.
+#
+# >>Description::
+#
+# >>Limitations::
+#
+
+# Make LATEX a restricted variable family
+!restrict 'LATEX'
+
+# Declare document variables
+!block variables; family="LATEX"; export
+Name                        Type            Rule
+!endblock
+
+# Define paragraph styles
+!block parastyles
+Name        To                      Attributes
+H1          \chapter
+H2          \section
+H3          \subsection
+H4          \subsubsection
+H5          \paragraph
+H6          \subparagraph
+P1          \chapter*
+P2          \section*
+P3          \subsection*
+P4          \subsubsection*
+P5          \paragraph*
+P6          \subparagraph*
+A1          \chapter
+A2          \section
+A3          \subsection
+A4          \subsubsection
+A5          \paragraph
+A6          \subparagraph
+
+
+
+!endblock
+
+# Define phrase styles
+# Note: some of these are less than optimal :-)
+!block phrasestyles
+Name    To
+A       SDF_ASIS
+B       {\textbf{
+C       {\textbf{
+F       SDF_VERBATIM 
+I       {\textit{
+L       =F
+N       {\normalfont{
+S       =S
+U       =B
+1       =I
+2       =B
+3       =U
+ST      =B
+EX      =C
+FILE    =F
+JUMP    =F
+EMAIL	=I
+!endblock
+
+# Default build_title output
+!macro build_latex_cover
+!endmacro

@@ -1,0 +1,330 @@
+H1: 2.001
+
+!subsections "Enhancements,Fixes,Incompatibilities"
+
+H2: Enhancements
+
+The enhancements are:
+
+!block sections
+. Level 0 headings
+. New command line options
+. Table enhancements
+. HTMLDOC support
+. Improved LaTeX support
+. HTML formatting enhancements
+. HTML meta information and stylesheet support
+. Stylesheet-friendly HTML generation
+. Embedded documentation enhancements
+. Miscellaneous stuff
+!endblock
+
+H3: Level 0 headings
+
+H0, A0 and P0 are now supported as paragraph styles. Level 0 headings
+are implicitly converted to:
+
+> !define DOC_NAME "text of heading"
+> !build_title
+
+This feature makes it easier to structure large documents as topics
+each of which begins with H1. To format a particular topic as a
+document, {{CMD:sdf}}'s -H option can be used to set the initial
+heading level to zero like this:
+
+>       sdf -2html -H0 mytopic.sdf
+
+H3: New command line options
+
+The {{CMD:sdf}} program has some new command line options: -O, -g and -K.
+
+The -O option specifies an explicit output directory.
+If the -O option is specified without a parameter, the input file's
+directory is used. For example, to convert F<mydir1/mydir2/myfile> to
+HTML and put the output in the same directory as the original file,
+the command is:
+
+>       sdf -2html -O mydir1/mydir2/myfile
+
+Note: The -O option doesn't always work.
+In particular, HTML topics generation doesn't support it yet.
+
+The -g option prefilters the input files by executing {{CMD:sdfget}}
+using the default report (default.sdg). To change the report used,
+specify the report name as the parameter.
+If the report name doesn't include an extension, sdg is assumed.
+
+The -K option sets the look of headings.
+Sensible parameter values are H, A and P.
+For example, to get the embedded documentation out of a script, make the
+headings plain, generate a document (rather than a topic) and convert it
+to HTML, the command line is:
+
+>       sdf -g -KP -H0 -2html myscript
+
+H3: Table enhancements
+
+The predefined table style names (columns, rows, grid, plain and shade)
+now have edit-case aliases (i.e. Columns, Rows, Grid, Plain and Shade).
+If the edit-case versions are used, quotes are not needed, e.g.
+
+>  !block table; style=Plain
+>  !endblock
+
+The {{keepindents}} parameter has been introduced for the {{FILT:table}}
+filter. If set, leading whitespace in cells is kept, e.g.
+
+!block verbatim
+!block table; keepindents
+Directory     Description
+sdf           top level directory
+   bin        scripts
+      bat     batch file wrappers around scripts
+   perllib
+      sdf     sdf libraries
+      Pod     pod libraries
+!endblock
+!endblock
+
+The output is:
+
+!block table; keepindents
+Directory     Description
+sdf           top level directory
+   bin        scripts
+      bat     batch file wrappers around scripts
+   perllib
+      sdf     sdf libraries
+      Pod     pod libraries
+!endblock
+
+H3: HTMLDOC support
+
+To convert a document to HTML ready for Michael Sweet's {{PRD:HTMLDOC}} program,
+the command is:
+
+>       sdf -2html -DHTMLDOC ...
+
+Alternatively, {{CMD:sdf}} can call HTMLDOC itself in order to
+generate PostScript or PDF. The commands to do this are:
+
+>       sdf -2ps_html ...
+>       sdf -2pdf_html ...
+
+!block note
+To maintain backwards compatibility, FrameMaker is still the default
+back-end for generating PostScript and PDF. If you wish to make HTMLDOC the
+default back-end, edit the {{FormatMappings}} sections of the F<sdf.ini>
+file and change {{ps}} to mean {{ps_html}} and {{pdf}} to mean {{pdf_html}}.
+Once this is done, the following commands will use HTMLDOC rather
+than FrameMaker:
+
+>       sdf -2ps ...
+>       sdf -2pdf ...
+!endblock
+
+When {{CMD:sdf}} invokes HTMLDOC, it sets the appropriate HTMLDOC options
+by using the following SDF variables: DOC_TITLE (build from DOC_NAME and
+DOC_TYPE), DOC_TOC, DOC_TWO_SIDES, OPT_PAGE_SIZE, OPT_MARGIN_INNER,
+OPT_MARGIN_OUTER, OPT_MARGIN_TOP and OPT_MARGIN_BOTTOM. In addition,
+a new variable called HTMLDOC_OPTS can be used to pass additional
+options through to the HTMLDOC command line, e.g.
+
+>       sdf -2pdf_html "-DHTMLDOC_OPTS:--gray --jpeg" ...
+
+To do: add support for AUTHOR, COPYRIGHT and DOCNUMBER.
+
+At the moment, SDF headers and footers are not converted to their HTMLDOC
+equivalents. To access HTMLDOC's header/footer support, it's currently
+necessary to use the HTMLDOC_OPTS variable.
+
+H3: Improved LaTeX support
+
+Valerio Aimale's ({{EMAIL: mailto:valerio@publinet.it}}) LaTeX driver is
+now part of the standard distribution. Refer to the file
+F<doc/notes/latex.notes> for usage details.
+
+H3: HTML formatting enhancements
+
+The following phrase attributes are now supported when generating HTML:
+color, family, size, bold, italic, underline, bgcolor and changed.
+A changed phrase or paragraph is shown with the background color given
+by the HTML_CHANGED_COLOR variable. The default value is {{teal}}.
+
+The following paragraph attributes are now supported when generating HTML:
+align, first, left, right.
+
+See the SDF files within the F<examples/2001/stylesheets> directory for
+examples of using these attributes.
+
+H3: HTML meta information and stylesheet support
+
+The {{meta}} filter can now be used to add META tags to the HEAD of
+a HTML document. This filter expects a table with columns called Name
+and Content, e.g.
+
+!block verbatim
+!block meta
+Name|Content
+description|Tools for building Java systems
+keywords|Java,development tools
+!endblock
+!endblock
+
+Stylesheets can be linked or embedded using the {{links}} and
+{{stylesheet}} filters respectively. Here's a linked stylesheet:
+
+>       !block links
+>       Jump
+>       test.css
+>       !endblock
+
+Here's how to embed the same stylesheet:
+
+>       !include "test.css"; stylesheet
+
+Phrases and paragraphs now support the following attributes:
+
+* {{class}} - give this phrase or paragraph the nominated HTML CLASS attribute
+* {{style}} - format this phrase or paragraph using the nominated style
+  information.
+
+Here's an example of applying a custom style:
+
+>  [style='background-color: blue;; color: red']
+>  A styled paragraph.
+
+Note: SDF uses a single semi-colon to separate attributes, so attributes
+values with embedded semi-colons need to use ';;' to mean ';'. (The
+general rule is to use N+1 consecutive semi-colons to get N semi-colons).
+
+H3: Stylesheet-friendly HTML generation
+
+Generated HTML documents are now "stylesheet-friendly" in that:
+
+* DIVs are placed around interesting parts of the document
+* parts of the title are implicitly given classes
+* tables are implicitly given classes.
+
+Here are the document sections placed in DIVs:
+
+!block table
+Document_part           DIV_name
+title section           title
+table of contents       contents
+main body               main
+header section          header
+footer section          footer
+navigate section        navigate
+!endblock
+
+The navigate DIV is nested within header and footer.
+(This makes it easy to format the navigation section regardless
+of its location.)
+
+Here's the list of classes placed on parts of the title:
+
+!block table
+Class           Comments
+doc-title       title of document
+doc-id          id of document
+doc-author      author list
+doc-status      document status
+doc-modified    modification date
+!endblock
+
+Tables are implicitly given a class named after the SDF table style.
+Heading and footing rows within tables are given classes of {{heading}}
+and {{footing}} respectively.
+Here's a set of Cascading Style Sheet (CSS) rules for a colorful
+table:
+
+>  TABLE.columns {background-color: yellow}
+>  TABLE.columns TR.heading {background-color: aqua}
+>  TABLE.columns STRONG {font-size: 20pt}
+>  TABLE.columns TD {color: purple}
+
+See the SDF files within the F<examples/2001/stylesheets> directory for
+more examples of using these features.
+
+H3: Embedded documentation enhancements
+
+A new filter called {{FILT:get}} has been added.
+
+Support for embedded documentation in IDL has been improved (the IDL now
+gets pretty-printed in the "Interface" section).
+
+The {{MAC:getdoc}} and {{MAC:getcode}} macros now guess the get-rule
+using the formatting extension.
+
+The {{CMD:sdfget}} program has been enhanced in several ways:
+
+* if specified without a parameter, the get-rule is now guessed from
+  the file extension (see the {{CMD:sdfget}} documentation for details
+  on how this is done)
+* the new -v option enables verbose mode (which shows the get-rule guessed)
+* a new option (-f) can be used to specify the
+  the filename to use for formatting (which is useful when the text
+  is coming from standard input)
+* a new get-rule called {{bat}} is supported for DOS batch files
+* if a report filename doesn't have an extension, sdg is assumed.
+
+The {{default.sdg}} report has been enhanced to support new sections
+called {{Notes}}, {{See_also}} and {{Authors}}.
+
+A new SDG report called {{all.sdg}} has been added. This report
+formats all embedded documentation sections (unlike {{default.sdg}}
+which only extracts selected sections).
+
+The {{default.sdg}} and {{all.sdg}} reports have been enhanced to
+support the SDG_BEGIN and SDG_END macros. These macros are empty
+by default so authors can override these to customise the
+display of extracted documentation.
+
+H3: Miscellaneous stuff
+
+A new module called {{homepage}} has been added to make it easier to
+build SDF-like home pages. For an example of usage, see the source for
+SDF's home page (F<doc/home.sdf>).
+
+A Russian locale (ru_ru) has been added thanks to
+Alexey L. Popov ({{EMAIL:alpopov@elkamail.ru}}).
+
+New macros called {{div}} and {{enddiv}} can be used to put divisions
+in documents.
+
+If {{CMD:sdf}}'s -p option is specified without a parameter, {{FILT:table}}
+prefiltering is assumed.
+
+H2: Fixes
+
+Indented tables now work as expected, i.e. leading whitespace at the
+beginning of the heading row is now accepted and remaining rows have
+that amount of whitespace trimmed.
+
+When generating txt output, leading cell whitespace now works as expected.
+Previously, multiple spaces were converted to a single space.
+
+Attribute values containing ;; no longer have the whitespace around
+the character sequence trimmed.
+
+Internally, unhandled internal directives no longer produce a warning.
+(As a result, it's now easier to extend things without "breaking"
+existing drivers.)
+
+When generating HTML, the HTML_PRE_SECTION is no longer prepended unless
+a table of contents is generated.
+
+
+H2: Incompatibilities
+
+When HTML is generated, the default footer no longer contains a line.
+To get the old behaviour, set the HTML_OLD_FOOTERS variable, e.g.
+
+>       sdf -2html -DHTML_OLD_FOOTERS ...
+
+The HTML driver no longer uses special embedded comments to work out
+where to put the table of contents.
+
+The {{MAC:getcli}} macro no longer searches the include path: it just
+executes the command.

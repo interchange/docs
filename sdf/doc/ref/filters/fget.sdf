@@ -1,0 +1,26 @@
+# $Id: fget.sdf,v 1.1 2001-03-29 20:31:17 jon Exp $
+#
+# >>Copyright::
+# Copyright (c) 1992-1999, Ian Clatworthy (ianc@mincom.com).
+# You may distribute under the terms specified in the LICENSE file.
+#
+# >>History::
+# -----------------------------------------------------------------------
+# Date      Who     Change
+# 24-May-99 ianc    SDF 2.001
+# -----------------------------------------------------------------------
+#
+
+H1: get Filter
+
+H2: Interface
+
+!filter_interface "get"
+
+H2: Description
+
+The {{get}} filter is used to extract embedded documentation.
+The parameters map to the options for {{CMD:sdfget}}.
+
+#H2: Examples
+#H2: Limitations & Future Directions

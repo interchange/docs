@@ -1,0 +1,140 @@
+
+From valerio@publinet.it Mon May 17 12:02:27 1999
+Date: Fri, 30 Oct 1998 16:43:22 +0100 (MET)
+From: Valerio Aimale <valerio@publinet.it>
+To: sdf-users@mincom.com
+Subject: Latex driver for SDF 2.0
+
+
+Hi, everyone!
+
+In the past months I have developed a LaTeX  output driver for SDF
+2.0; it isn't yet finished, but I would greatly appreciate if some of
+you would take the time to beta-test it.
+
+The general idea is to add another level of "metaness" to the SDF
+system: ie the LaTeX driver does not output a LaTeX document, but actually a 
+family of documents.
+
+The driver,in fact, outputs only the body of a document, leaving 
+to the user the chance to decide the "look and feel" of the final
+typeset 
+
+The file
+
+--------------------------------
+!define DOC_NAME           "GalaxyBuilder"
+!define DOC_TYPE           "Discussion Paper"
+!define DOC_AUTHOR         "Joe Bloggs"
+!build_title
+ 
+H1: Introduction
+
+After extensive market research, I believe there is
+an excellent opportunity for us to develop software
+for the I<galaxy construction industry>. Potential
+customers include:
+
+* NASA
+* European Community
+* China
+* Japan.
+--------------------------
+
+get translated to:
+
+--------------------------
+\author{Joe Bloggs}
+\title{GalaxyBuilder}
+
+
+\begin{document}
+
+\maketitle
+
+\chapter{Introduction}
+
+
+After extensive market research, I believe there is an excellent
+opportunity for us to develop software for the {\textit{galaxy
+construction industry}}. Potential customers include:
+
+\begin{itemize} % Level 1
+\item NASA
+
+\item European Community
+
+\item China
+
+\item Japan.
+
+
+\end{itemize}
+
+
+\end{document}
+--------------------------
+
+As you can see, the file actually cannot be used with LaTeX, you have
+to add the preamble. Now if you want that ugly looking default article 
+style, you should prepare a wrapper file like this (assuming that the
+original file was called test.sdf, and test.tex the LaTeX driver
+translated file):
+
+-----------
+\documentclass{article}
+
+\input test.tex
+-----------
+
+and typeset it with LaTeX 2e (sorry no support for LaTeX 2.09).
+
+Should you prefer a more interesting look, you could prepare a wrapper 
+like this:
+
+-----------
+\documentclass[a4paper,12pt]{article}
+\usepackage{times,geometry,titlesec}
+\geometry{headheight=1.5in, bottom=.5in, footskip=0in}
+\usepackage[american]{babel}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\rhead{\textit{Page: \thepage}}
+\lhead{A much beautiful document}
+\cfoot{}
+\newcommand{\secformat}[1]{#1\titleline{\hrulefill}}
+\titleformat{\section}[block]{\normalfont\sffamily\slshape\large}{\thesection.}
+{0in}{\secformat}
+\input test.tex
+----------
+
+The output will be dramatically different........
+
+BTW, I think that in the future the SDF language should care only about
+markup, leaving to the drivers the management of page layout: but it's only 
+my $0.02
+
+The LaTeX driver handles Tables (Column dimension decided by the
+driver itself, no way to have a fixed width column}; it cannot
+currently handle figures.
+
+It is probably full of bugs, use it at your own risk!
+
+It's available in my home page http://svpop.com.dist.unige.it/~valerio/
+
+The drivers consists of the files that you have to copy over the
+original one: latex.sdn, sdf.ini  and tolatex.pl
+
+When the driver will be enough stable, will become part of the
+official SDF distribution.
+
+I would ask anyone who use this driver, to send me bug reports, in
+order to speed up its evolution and insertion in the official
+distribution.
+
+Bye,
+
+Valreio
+
+
+

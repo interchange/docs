@@ -1,0 +1,252 @@
+# $Id: html.sdn,v 1.1 2001-03-29 20:32:06 jon Exp $
+#
+# >>Title::     HTML Tuning
+#
+# >>Copyright::
+# Copyright (c) 2000, Akopia, Inc.
+# You may distribute under the terms specified in the LICENSE file.
+#
+# >>History::
+# -----------------------------------------------------------------------
+# Date        Who      Change
+# 2000-10-02  zarko    Akopia 1.0
+# 2000-11-30  jon      Replace [ with &#91; to prevent Interchange parsing
+# -----------------------------------------------------------------------
+#
+# >>Purpose::
+# The {{look/developer_site/html.sdn}} module defines [[SDF]] configuration
+# details for generating [[HTML]] files with the Akopia Developer Site look.
+#
+# >>Description::
+#
+# >>Limitations::
+#
+
+#!message "Using Akopia developer site look & feel"
+
+# Inherit the standard configuration
+!use 'stdlib/html.sdn'
+
+# Subroutine to build the main document navigation line
+!block script
+$::_HTML_CHAR{'lbracket'} = '&#91;';
+$::_ITL_ESCAPE = 1;
+sub ::_HtmlFinalise {
+    local(*body, *contents) = @_;
+    local($title, @sdf_title, @title);
+    local($document, $version, @head);
+
+    # Convert the title, if any, to HTML
+    $title = $var{'HTML_TITLE'};
+    $title = $var{'DOC_TITLE'} if !defined($title);
+    if ($title) {
+        @sdf_title = ("TITLE:$title");
+        @title = &::_HtmlFormatSection(*sdf_title, *dummy);
+    }
+    else {
+        @title = ();
+    }
+
+    # Build the HEAD element (and append BODY opening)
+    $document = $var{'HTML_TOPIC'};
+    $version = $var{'SDF_VERSION'};
+    @head = (
+        '[comment]',
+        "ui_template_description: Standard page with top and left areas. Menu bar and copyright at bottom. This file was generated using SDF $version by Ian Clatworthy (ianc\@mincom.com). SDF is freely available from http://www.mincom.com/mtr/sdf.",
+        'ui_template_layout: LOGOBAR, MENUBAR, UI_CONTENT, RIGHTSIDE, MENUBOTTOM, COPYRIGHT',
+        'ui_control_description: members_only : Members only',
+        'ui_control_description: page_title : Page title',
+        'ui_control_description: document : Document name',
+        'ui_control_element: members_only : 0=No,1=Yes',
+        'ui_control_element: page_title :',
+        'ui_control_element: document :',
+        'ui_template: Yes',
+        'ui_template_name: templates/standard',
+        '[/comment]',
+        '',
+        '[set members_only][/set]',
+        '[set page_title]'.$title.'[/set]',
+        '[set document]'.$document.'[/set]',
+        '[set version]'.$var{'DOC_VERSION'}.'[/set]',
+        '__LOGOBAR__',
+        '__MENUBAR__',
+        '__LEFTSIDE__',
+        '',
+        '<!-- BEGIN CONTENT -->',
+    );
+
+	# Escape body left brackets so Interchange doesn't interpret them.
+	# Do it before processing, lest the ITL header & footer get escaped too.
+	s/\[/&#91;/g for @body;
+
+    # Build the body contents, unless we're generating an input file for
+    # the HTMLDOC package
+    unless ($var{'HTMLDOC'}) {
+        &::_HtmlFinaliseBodyContents(*body, *contents);
+    }
+
+    # Return result
+    push(@body,
+        '',
+        '<!-- END CONTENT -->',
+        '',
+        '__RIGHTSIDE__',
+        '__MENUBOTTOM__',
+        '__COPYRIGHT__',
+    );
+
+    return (@head, @body);
+}
+!endblock
+
+!macro build_html_cover
+!if $var{'OPT_DRIVER'} eq 'html'
+    !div title
+    !default DOC_TOC 2
+    P1[notoc; class='doc-title'] [[DOC_TITLE]]
+    !clear
+    !enddiv
+
+    # Setup the HTML title
+    !HTML_BUILD_TITLE
+!else
+    # This is used for HTML documents generated via Frame
+	dName: [[DOC_TITLE]]
+	dStat: [[DOC_ID]] ([[DOC_STATUS]])
+	dAuth: [[join(", ", grep(/\w/, @variable{'DOC_AUTHOR', 'DOC_AUTHOR2', 'DOC_AUTHOR3'}))]]
+!endif
+!endmacro
+
+# Macro for building the title of the document and/or topic
+!macro HTML_BUILD_TITLE
+    !define HTML_TITLE DOC_TITLE
+!endmacro
+
+!macro HTML_HEADER
+    {{INLINE:<BR CLEAR=LEFT>}}
+!endmacro
+
+!macro HTML_FOOTER
+    !HTML_PRE_SECTION
+    !if $var{'OPT_STYLE'} eq 'paper'
+        #Sign: [[DOC_STATUS]]
+    !elsif DOC_STATUS
+        Sign: {{A[class='doc-id'][[DOC_ID]]}} {{A[class='doc-status']([[DOC_STATUS]])}}
+    !elsif DOC_ID
+        Sign: {{A[class='doc-id'][[DOC_ID]]}}
+    !endif
+    Sign[class='doc-modified'] [[DATE:DOC_MODIFIED]]
+    Sign[class='copyright'] [['Copyright E<c> ' . &Var('DOC_OWNER')]]
+!endmacro
+
+!macro HTML_TOPIC_HEADER
+    !HTML_TOPIC_NAVIGATE
+    !block inline
+<table cellpadding=0 cellspacing=0 border=0>
+<TR><td colspan=2>
+<BR CLEAR=LEFT>
+    !endblock
+!endmacro
+
+!macro HTML_TOPIC_FOOTER
+    !block inline
+
+</td>
+</tr>
+[calc]
+        $Scratch->{doc_code} = $Scratch->{document};
+        $Scratch->{document} =~ s/_\d+$//;
+        return;
+[/calc]
+[query
+        base=annotation
+        list=1
+        sql=|
+                SELECT * FROM annotation
+                WHERE document = '[scratch document]'
+                AND section = '[scratch page_title]'
+        |][sql-change 1][condition]1[/condition]
+<TR>
+        <TD BGCOLOR="__BARBG__" COLSPAN=2 ALIGN=center>
+                <B><FONT COLOR="__BARTEXT__">Notes from Users</B>
+        </td>
+</tr>
+
+[/sql-change 1]
+<TR>
+        <TD __HEADERBG__ WIDTH="60%" VALIGN=top>
+                <B><FONT COLOR="__HEADERTEXT__">[sql-param subject]</B>
+        </td>
+        <TD __HEADERBG__ VALIGN=top>
+                <A HREF="mailto:[sql-param email]"><FONT COLOR="__HEADERTEXT__">[if-sql-param name][sql-param name][else][sql-param email][/else][/if-sql-param]</A><br><i>[convert-date][sql-param mod_date][/convert-date]</i>
+        </td>
+</tr>
+<td colspan=2 __TABLEFG__>
+<blockquote>
+[sql-param comments]
+</blockquote>
+</td>
+</tr>
+<TR><td colspan=2 BGCOLOR=__BARBG__><IMG SRC="clear.gif"></td></tr>
+[/query]
+<tr>
+<td colspan=2 valign=center><br>
+<A HREF="[area
+                        href=add_annotation
+                        form="
+                              document=[scratch document]
+                              code=[scratch doc_code]
+                              section=[scratch page_title]
+                              version=[scratch version]
+                        "
+]"><IMG SRC="admin/icon_pages.gif" border=0 align=textmiddle> Add note</A>
+</td>
+</tr>
+</table>
+
+    !endblock
+    !HTML_TOPIC_NAVIGATE
+!endmacro
+
+!macro HTML_TOPIC_NAVIGATE
+!div navigate
+    !block script
+    if ($var{'HTML_TOPICS_MODE'}) {
+        $_next = $topics[0] . ".html";
+        $_prev = $topics[$#topics] . ".html";
+    }
+    else {
+        $_base = $var{'HTML_TOPIC'};
+        $_next = $topic_next{$_base} ? $topic_next{$_base} . ".html" : '';
+        $_prev = $topic_prev{$_base} ? $topic_prev{$_base} . ".html" : '';
+        $_up   = $topic_up{$_base} ? $topic_up{$_base} . ".html" : '';
+    }
+
+    $_contents = $var{'HTML_URL_CONTENTS'};
+    undef($_next) if($_next eq $_contents);
+    undef($_prev) if($_prev eq $_contents);
+    undef($_up) if($_up eq $_contents);
+
+    my(@_nav);
+    push(@_nav, "{{A[jump='$_contents'] $var{'HTML_TEXT_CONTENTS'}}}");
+    push(@_nav, "{{A[jump='$_up'] $var{'HTML_TEXT_PARENT'}}}") if($_up);
+    push(@_nav, "{{A[jump='$_prev'] $var{'HTML_TEXT_PREVIOUS'}}}") if($_prev);
+    push(@_nav, "{{A[jump='$_next'] $var{'HTML_TEXT_NEXT'}}}") if($_next);
+
+    $_nav1 = join(' | ', @_nav);
+
+    # Build the second navigation line, if any
+    $_nav2 = &_html_mdnav;
+    if ($_nav2) {
+        $_nav2 = "{{CHAR:nl}}" . $_nav2;
+    }
+    !endblock
+
+    [align='Center']
+    [[$_nav1]]
+    [[$_nav2]]
+!enddiv
+!endmacro
+
+!default DOC_OWNER "1996-2001 Red Hat, Inc. E<lt>{{EMAIL:info@akopia.com}}E<gt>"
+!default DOC_ID_SEP "-"
