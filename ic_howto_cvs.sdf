@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ic_howto_cvs.sdf,v 1.5 2001-08-29 01:50:03 danb Exp $
+# $Id: ic_howto_cvs.sdf,v 1.6 2001-08-29 17:58:14 danb Exp $
 
 !define DOC_NAME "Interchange + CVS HOWTO"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_howto_cvs"
-!define DOC_VERSION substr('$Revision: 1.5 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.6 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ic_howto_cvs.html"
@@ -152,7 +152,7 @@ H3:CVS administration tools
 *{{URL:http://freshmeat.net/projects/cvsadmin/}}
 *{{URL:http://freshmeat.net/projects/cvspadm/}}
 
-N:I recommend cvsadmin, but there is also a manual method that can be used in the absence of such tools, which involves copying the system shadow file and modifying it for use by CVS.  For more information on the manual method, see the RedHat CVS pserver setup guide by Michael Amorose ({{URL:http://www.michael-amorose.com/cvs/}}).
+N:I recommend cvsadmin, but there are also a variety of manual methods that can be used in the absence of such tools, one of which involves copying the system shadow file and modifying it for use by CVS.  For more information on this manual method, see the RedHat CVS pserver setup guide by Michael Amorose ({{URL:http://www.michael-amorose.com/cvs/}}).
 
 H3:Setup authentication using the cvsadmin tool
 
@@ -160,7 +160,7 @@ N:You can find a tarball to install on your system using the above address, but 
 
 *{{URL:ftp://speakeasy.rpmfind.net/linux/Mandrake-devel/contrib/RPMS/cvsadmin-1.0.1-1mdk.i586.rpm}}
 
-N:After installing, create a password file ({{touch $CVSROOT/CVSROOT/passwd}}), and execute {{EX:cvsadmin add <usernames>}} for each of your usernames.
+N:After installing, create a password file ({{touch $CVSROOT/CVSROOT/passwd}}), and execute {{EX:cvsadmin add <usernames>}}.
 
 H2:Setup CVS modules
 
@@ -168,7 +168,7 @@ Note:From this point on, assume that all commands are executed as the CVS user (
 
 N:A module is CVS is like the concept of a "project", where each module has its own branches, trees,  and other features.
 
-H3:Add your project to {{F:modules}}
+H3:Add your project to the {{F:modules}} configuration file
 
 N:The format of the modules file is explained in detail in the cvs documentation, here is the simplest way to use it:
 
@@ -313,7 +313,7 @@ E:/usr/local/interchange/bin/interchange --stop
 
 H2:Remove old CVS folders
 
-N:If, for any reason, you already have CVS files (all the {{EX:CVS/}} directories)in your catalog, they must be removed because they might interfere with the new CVS setup.  For example, maybe you moved servers and you are setting up CVS again.  You might use the following {{EX:find}} command, which will find any folders named {{EX:CVS}} in the current directory and remove them.  There is probably a better way to deal with old {{EX:CVS/}} folders, but the following works for me (again, suggestions welcome).
+N:If, for any reason, you already have {{EX:CVS/}} directories in your catalog, they must be removed because they might interfere with the new CVS setup.  For example, maybe you moved servers and you are setting up CVS again.  You might use the following {{EX:find}} command, which will find any folders named {{EX:CVS}} in the current directory and remove them.  There is probably a better way to deal with old {{EX:CVS/}} folders, but the following works for me (again, suggestions welcome).
 
 Note:You should make a backup of the catalog directory before you do this.
 
@@ -323,7 +323,7 @@ Note:You should make a backup of the catalog directory before you do this.
 su - interch
 
 #backup catalog folder first
-tar czf ~/foundation_backup.tgz /var/.../foundation
+tar czf ~/foundation_backup.tgz /var/lib/interchange/foundation
 
 #get rid of any old CVS folders -- (BE CAREFULL!)
 cd /var/lib/interchange/foundation
@@ -335,7 +335,7 @@ H2:Create a working copy of your catalog
 N:A working copy of your catalog is necessary to get it into shape for use with CVS.  The following command creates a copy in the {{EX:/tmp}} directory.
 
 !block example;
-cp -a /var/lib/interchange/catalogs/foundation /tmp/import_foundation
+cp -a /var/lib/interchange/foundation /tmp/import_foundation
 cd /tmp/import_foundation
 !endblock 
 
@@ -343,7 +343,7 @@ H2:Streamline your catalog for CVS
 
 H3:Considerations about what to import into CVS
 
-N:From your working directory ({{EX:/tmp/import_foundation}}), decide what pages will be in the CVS repository, and which will not.  While it is entirely possible to import the entire catalog into the repository unchanged, I usually prefer to doctor my directories up before letting them into my repository for several reasons:
+N:From your working directory ({{EX:/tmp/import_foundation}}), decide which files will be in the CVS repository, and which will not.  While it is entirely possible to import the entire catalog into the repository unchanged, I usually prefer to doctor my directories up before letting them into my repository because of several reasons:
 
 *Will the file be modified by another source?
 
@@ -359,7 +359,9 @@ N:Managing less files in the repository takes away from the amount of time requi
 
 *Ease of use.
 
-N:One reason {{B:NOT}} to remove anything from your catalog before importing is it creates the ability to have a completely working catalog from just one checkout (much like the CVS tree at interchange.redhat.com).  Whereas if you leave out other directories like etc/ session/ orders/, etc., then you must first combine your checkout with the other working parts of a catalog before the catalog is viable.  But this is slower and will bring up lots of harmless notification and warning messages (about changed local versions) if you run interchange on your local source copy (because interchange will touch etc/ session/ orders/, etc. directly, and then warn that your local copy has changed from the CVS copy).  You may be able to manage some of these notifications and warnings with {{F:CVSROOT/cvsignore}} or {{EX:$CVSIGNORE}}, see the {{SECT:Resources}} appendix for more details.
+N:Ease of use is one reason not to remove anything from your catalog before importing it, because it creates the ability to have a completely working catalog from just one checkout (much like the CVS tree at interchange.redhat.com).  Whereas if you leave out other directories like etc/ session/ orders/, etc., then you must first combine your checkout with the other working parts of a catalog before the catalog is viable.  But this is slower and will bring up lots of harmless notification and warning messages (about changed local versions) if you run interchange on your local source copy (because interchange will touch etc/ session/ orders/, etc. directly, and then warn that your local copy has changed from the CVS copy).  You may be able to manage some of these notifications and warnings with {{F:CVSROOT/cvsignore}} or {{EX:$CVSIGNORE}}, see the {{SECT:Resources}} appendix for more details.
+
+#TODO:CVSIGNORE
 		
 H3:Remove files that aren't needed in CVS
 
@@ -396,7 +398,7 @@ cvs import foundation foundation start
 
 H2:Testing the new CVS module
 
-N:Now you should be able to do another test checkout or update using any CVS client, which should now download all the files that you have just imported into CVS.  Additionally, you might test making a change to one of your checked-out source files, saving it, then committing it.
+N:Now you should be able to do another test checkout or update using any CVS client, which should now download all the files that you have just imported into CVS.  Additionally, you might test your newly imported code by making a change to one of your checked-out source files, saving it, then committing it.
 !block example;
 {{B:index.html:}}
 <!--this is a test comment at the top of index.html-->
@@ -433,7 +435,9 @@ N:This should create the {{F:foundation_CVS/}} directory for you, so that it won
 
 H3:Add any needed files to checked-out catalog
 
-N:If you removed any directories during the streamlining step, we must first add those back so that the catalog is usable to Interchange.  In this document, we only removed files within the directories that weren't needed.
+#TODO: Empty directories are pruned, so they will need something in them for them to show up with a -P checkout
+
+N:If you removed any directories during the streamlining step, we must first add those back so that the catalog is usable to Interchange.  In this document, we only removed unneeded files and left empty directories.
 
 N:This can also be the time to copy any "data" files such as orders/ logs/, etc. that might be needed if it is a live catalog.
 
@@ -509,6 +513,8 @@ N:The {{EX:?}} lines in the above example mean that the CVS server has never hea
 
 N:The {{EX:M}} means that sthe file has been modified on your local copy, and is out of sync with the remote CVS version (e.g. when Interchange runs it updates {{F:etc/status.foundation}}).  Normally this is corrected by uploading your "modified" version to the server, but in this case, the modification was done by Interchange instead of the programmer, and wasn't meant to be committed back to the CVS repository.  These types of messages can be handled with {{EX:$CVSIGNORE}} and {{EX:$CVSROOT/CVSROOT/cvsignore}}.
 
+#TODO: CVSIGNORE
+
 N:Now, check to make sure that your change has taken effect by refreshing the homepage on the site.  To see the comment, use {{EX:View->Page Source}} or whatever the relevant command for your browser is.
 
 N:At this point, its obvious that it would be time consuming to manually run 'cvs up' every time you make a change to the source code, so the next step is to setup CVS to automatically update the catalog whenever you commit something to CVS.
@@ -521,7 +527,7 @@ N:Start by modifying $CVSROOT/CVSROOT/loginfo
 ^foundation	(date; cat; (sleep 1; cd /var/lib/interchange/foundation; cvs -q update -d) &) >> $CVSROOT/CVSROOT/updatelog 2>&1
 !endblock
 
-N:The first line tells cvs that for every commit on modules that start with "foundation" (notice the regular expression {{EX:"^foundation"}}), it will run {{EX:cvs update}} on the given catalog directory in the background.  It is important that it is executed in a forked shell (notice the {{EX:"&"}}) after {{EX:sleep}}'ing for 1 second, because otherwise you may run into contention issues that can cause file locking problems.  The 1 second timing used above works fine for me, but a longer pause may be necessary for slower computers (you'll know if you get errors about "such-and-such locked by user so-and-so").  See the CVS documentation in the {{SECT:Resources}} Appendix for more details.
+N:The first line tells cvs that for every commit on modules that start with "foundation" (notice the regular expression {{EX:"^foundation"}}), it will run {{EX:cvs update}} on the given catalog directory in the background.  It is important that it is executed in a forked shell (notice the {{EX:"&"}}) after {{EX:sleep}}'ing for 1 second, because otherwise you may run into contention issues that can cause file locking problems.  The 1 second timing used above works fine for me, but a longer pause may be necessary for slower computers (you'll know if you get errors about "file locked by user").  See the CVS documentation in the {{SECT:Resources}} Appendix for more details.
 
 H2:Automatic e-mail on commit
 
