@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.5 2001-03-21 18:17:53 jon Exp $
+# $Id: ictags.sdf,v 1.6 2001-03-22 16:55:26 jon Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.5 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.6 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -2343,6 +2343,8 @@ show_label=1 causes the field label set by a previous [error] tag's std_label at
 E:First Name: blank
 
 If no std_label was set, the variable name will be used instead. This can also be used in combination with show_var to show both the label and the variable name.
+
+show_label was added in 4.7.0.
 
 =item show_var=1
 
