@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ic_ecommerce.sdf,v 1.7 2001-11-02 19:27:23 edl Exp $
+# $Id: ic_ecommerce.sdf,v 1.8 2001-11-08 16:51:47 mheins Exp $
 
 !define DOC_NAME "Interchange Ecommerce Functions"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_ecommerce"
-!define DOC_VERSION substr('$Revision: 1.7 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.8 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ic_ecommerce.html"
@@ -1222,6 +1222,47 @@ Field begins with B<n>, B<0>, or B<f> (No, 0, or False) - not case sensitive
 
 Rudimentary email address check, must have an '@' sign,
 a name, and a minimal domain
+
+=item regex
+
+A regular expression to check against. To check that all submissions of the "foo" variable have
+"bar" at the beginning, do:
+
+>	foo=regex ^bar
+
+You can add an error message by putting it in quotes at the end:
+
+>   foo=regex ^bar "You must have bar at the beginning of this"
+
+If you want to use a backslash to introduce a Perl literal like C<\w>, you must double
+the backslash, i.e. 
+
+>	foo=regex ^bar\\w+$ "You must have 'bar' followed by only word characters"
+
+=item length
+
+A range of lengths you want the input to be:
+
+>   foo=length 4-10
+
+That will require C<foo> be from 4 to 10 characters long.
+
+=item unique
+
+Tests to see that the value would be a unique key in a table:
+
+>   foo=unique userdb Sorry, that username is already taken
+
+=item filter
+
+Runs the value through an Interchange filter and checks that the returned value is equal
+to the original value.
+
+>   foo=filter entities Sorry, no HTML allowed
+
+To check for all lower-case characters:
+
+>	foo=filter lower Sorry, no uppercase characters
 
 =back
 
