@@ -11,26 +11,26 @@
 
 H1: CONFIGURATION OF INTERCHANGE
 
-Akopia Interchange is the industry's most widely distributed and implemented open source e-commerce platform.. This document provides detailed configuration instructions for Interchange and the foundation store demo included with the program, and answers a variety of frequently asked questions. This discussion assumes that Interchange has been successfully installed.
+Akopia Interchange is the industry's most widely distributed and implemented open source e-commerce platform. This document provides detailed configuration instructions for Interchange and the foundation store demo included with the program, and answers a variety of frequently asked questions. The Interchange program must be installed before continuing. For more information on the Installation process, see the Installation (ICINSTALL.SDF) manual.
 
 
 H1: CREATING A CATALOG
 
-Interchange uses its own tags to implement catalog functions. They are similar to normal HTML, but are in C<[square brackets]>. They will be referred to as either tags or elements in this document.
+Interchange uses unique tags to implement catalog functions. The tags are similar to HTML, but the code is in C<[square brackets]>. The Interchange tags will be referred to as either tags or elements in this document.
 
-There are a number of steps required to set up a custom catalog. Refer to ICTAGS.POD for detailed information about Interchange tags and directives while setting up a catalog for the first time. The foundation demo catalogs are a good starting point, but are not a finished product.
+There are multiple steps required to set up a custom Interchange catalog. Refer to the Reference Tags (ICTAGS.SDF) manual for more information about Interchange tags and how they are used during initial set up a catalog. The foundation demo catalogs provide examples of these tags and how they are used.
 
-H2:  Start with a database
+H2:  Create a database
 
-The first step is to develop a product database. This might contain all of the information used to display product pages, or just the product code (SKU), short description, and price. At the minimum, those three fields are required.
+The first step is to develop a product database. This can contain all of the information used to display product pages, or simply the product code (SKU), a short description, and the price. At the minimum, those the product code, description, and price fields are required.
 
-Other elements that may be included:
+The following is a list of other elements that can be included:
 
 B<Image>
-.A database field listing the name of an image file that displays the product. You can specify a name here, or you can omit this field from your database and simply store images in files that are named for the product code. The images will be displayed if they exist by using the C<[if file file.gif] TAG [/if]> construct).
+.A database field listing the name of an image file that displays the product. Specify a name here, or omit this field from the database and store images in files that are named for the product code. If using images, they will be displayed by using the C<[if file file.gif] TAG [/if]> construct).
 
 B<Nontaxable>
-.If the catalog contains any items that are non-taxable, then this field should be present to flag items that do not need to have sales tax calculated.
+.If the catalog contains any items that are non-taxable, use this field to flag items that do not need to have sales tax calculated.
 
 B<Size>
 .A comma-separated string containing product size information, for example:
@@ -42,45 +42,45 @@ Small, Medium, Large, XL
 .Other attribute information may be defined in a database field.
 
 B<Weight>
-.The shipping weight of an item is useful for UPS lookup or other weight-based shipping calculations.
+.Used to enter the weight of products being shipped. This is useful for UPS lookup or other weight-based shipping calculations.
 
 B<Category>
-.Use this field to select one-click category searches to build product directories.
+.Used to select one-click category searches to build product directories.
 
 B<Related>
-.Items related to the item in the record. Using Interchange's C<[loop item]> tag, product subclasses and accessory sets can be built.
+.Elements related to the item in the record. Using the Interchange C<[loop item]> tag, product subclasses and accessory sets can be built.
 
-.By default, all database source files are located in the in the C<products> subdirectory of the catalog directory. The main products database discussed above is in the file C<products/products.txt> in the supplied demo catalogs. 
+.By default all database source files are located in the C<products> subdirectory of the catalog directory. The main products database is in the file C<products/products.txt> in the supplied demo catalogs. 
 
-.If using one of the internal database methods, any changes that are made to the ASCII source file will be reflected in the database on the next access by a user. If the product database contains less than a thousand records, updates will be almost instantaneous. If the product database is substantially larger, updates can take some time. See NoImport to stop auto updating.
+.If using one of the internal database methods, any changes made to the ASCII source file will be reflected in the database in the next user session. If the product database contains less than a thousand records, updates will be instantaneous. If the product database is substantially larger, updates will take longer. Use the NoImport reference tag to stop auto updating.
 
 H2:  Features to Use
 
-Interchange's demo catalog shows many of Interchange's features: list and category building via controlled search or query, random selection of feature items, and templating with active elements. But each feature has its cost in complexity and performance. Expect reduced performance if the computer has to do more for every page it displays. 
+The Interchange demo catalog shows many features of Interchange, such as list and category building, controlled search or query, random selection of feature items, and templating with active elements. However, each feature has its cost in complexity and performance. Expect reduced performance if the computer has to do more for every page it displays. 
 
-Some popular features are:
+The following is a list of some popular features:
 
 B<Category Searches>
-.If a catalog contains a small number of products, hard coded pages are fine, though they can be a maintenance headache compared to database definitions. Regardless of the number of products in a catalog, consider categorizing them so that customers can easily find them. Pick a field in the database, perhaps named C<category>, and classify the products for search by Interchange.
+.If a catalog contains a small number of products, hard coded pages are sufficient, though they can be more difficult to maintain compared to database definitions. Regardless of the number of products in a catalog, consider categorizing them so they can easily be found. Pick a field in the database, perhaps named C<category>, and classify the products for search using Interchange.
 
 B<Images>
-.Place a thumbnail image (perhaps with a link to a blowup) only for those items that have images. The best way to do this is with an image field in the database. Requiring file tests for every image in a large list can degrade system performance.
+.Place a thumbnail image (perhaps with a link to a blowup) for the items that have images. To do this, add an image field in the database. Requiring file tests for every image in a large list can degrade system performance.
 
 B<Related Items>
-.On a product's individual display page, embed searches of similar products with the C<[query ...]> or C<[loop ...]> tags. If customer data is developed, search a past order database and present products that previous buyers of that product have selected. 
+.On a product's individual display page, embed searches of similar products with the C<[query ...]> or C<[loop ...]> tags. Or, if customer data is developed, search a past order database and display products that would be of interest to that customer. 
 
 B<Reviews/Testimonials>
 .Key the placement on the existence of a file in a certain directory. This is reasonable to do when a user is viewing a single product.
 
 H2: Use the Demo Catalogs
 
-The demo catalogs supplied with Interchange are a starting point for the creation of a custom catalog. They can be modified and renamed. New icons can be added. Individual pages and the catalog.cfg file can be modified. Each demo catalog is independent, so any modifications to a particular catalog will not harm the others.
+The demo catalogs supplied with Interchange are a starting point for the creation of a custom catalog. They can be modified are-named, and new icons can be added. Also, individual pages and the catalog.cfg file can be modified. Each demo catalog is independent, so modifications made to one catalog will not effect others.
 
 H2: Tree design
 
-Determine how users will enter and exit the catalog. Complex and intelligent conditional schemes are possible, especially if the Cookies capability is used. However, simplicity should be the aim. No one can buy if they cannot navigate their way around the catalog.
+Determine how users will enter and exit the catalog. Complex and intelligent conditional schemes are possible, especially if the Cookies capability is used. However, it is recommended that simplicity be used. Consumers will not buy if they can't navigate their way around the catalog.
 
-The most important thing to remember is that users will lose their session (and items in their shopping cart) if their browser does not accept cookies. Interchange addresses this situation by the use of the C<area> and C<page> tags. If using frames, be careful to source all frame panes containing Interchange links from an initial page served by Interchange. If not, the user may have multiple session IDs depending on which frame generated the link. Note that Interchange can work properly with browsers that do not support cookies. In this situation Interchange inserts a session ID into each URL; if the ID is preserved as the user navigates from page to page then the session will remain intact.
+It is important to remember is that users will lose their session (and items in their shopping cart) if their browser does not accept cookies. Interchange addresses this problem by using of the C<area> and C<page> tags. If using frames, source all frame panes containing Interchange links from an initial page served by Interchange. If not, the user may have multiple session IDs depending on which frame generated the link. Note that Interchange can work properly with browsers that do not support cookies. In this situation Interchange inserts a session ID into each URL; if the ID is preserved as the user navigates from page to page then the session will remain intact.
 
 H2: The Essentials
 
