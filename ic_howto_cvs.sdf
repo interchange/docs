@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ic_howto_cvs.sdf,v 1.6 2001-08-29 17:58:14 danb Exp $
+# $Id: ic_howto_cvs.sdf,v 1.7 2001-10-17 06:26:15 danb Exp $
 
 !define DOC_NAME "Interchange + CVS HOWTO"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_howto_cvs"
-!define DOC_VERSION substr('$Revision: 1.6 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.7 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ic_howto_cvs.html"
@@ -551,7 +551,7 @@ This tells CVS to pipe the commit output to a shell script, which in turn update
  cat) | tee $1 | /usr/bin/Mail -s "[foundation-cvs] $3" foundation-cvs@example.com 
 !endblock
 
-N:Your commit logs will now be archived in the CVSROOT/commitlog file, and e-mailed to the  foundation-cvs@example.com address (of course, you would need to install a mailing list first).  Here is what a sample e-mail looks like:
+N:Your commit logs will now be archived in the CVSROOT/commitlog file and e-mailed to the  foundation-cvs@example.com address (which is especially useful when you have a {{SECT:Mailserver for CVS updates}}).  Here is what a sample e-mail looks like:
 
 !block example;
 Subject: [foundation-cvs] 'directory/subdirectory filename.c,1.7,1.8'
@@ -573,7 +573,7 @@ H1:The two track model: development and live catalogs
 
 N:It is often very valuable to have a two-track development model that separates the classes of work into separate timing and decision categories.  Some use "staging" and "production" terminology, others prefer "unstable" and "stable", "beta" and "release", or "development" and "live".  
 
-N:The easiest starting point for two-track development is to just use two completely separate CVS modules and catalogs.  This can make a lot of sense for many situations, for example when the next revision of the site will be so different that it is almost starting from ground zero.
+N:The easiest starting point for two-track development is to just use two completely separate CVS modules and catalogs.  This can make a lot of sense for many situations, for example when the next revision of the site will be so different that it is for all practical purposes starting from ground zero.
 
 N:A slightly more complicated solution is to use the CVS branches feature.  It is more difficult to set up, but can be rewarding when used correctly.
 
@@ -583,13 +583,11 @@ N:The first decision is when to branch the source code.  For websites, this can 
 
 H2:Which way to branch
 
-N:There are many different ways to branch source code.  What seems to be the most common method is to use the HEAD (which is the default CVS mode of "no tag") as the development version, and then make a branch when a stable release is to be made.  
+N:There are many different ways to branch source code.  What seems to be the most common method is to use the "trunk", which is the HEAD tag to CVS as the development version, and then make a branch when a stable release is to be made.  
 
-N:That model doesn't fit my development style at the current time, so I use the HEAD default branch as my stable live version, and use other tags (like DEV1 and DEV_REALLY_UNSTABLE) for my development.  You will probably find a method that fits your particular style as you learn more about CVS.
+N:That model doesn't fit my development style at the current time, so I use the HEAD default branch as my stable live version, and use other tags (like DEV1 and DEV_REALLY_UNSTABLE) for my development branch.
 
-N:You will probably find that you are merging (or "folding") most or all of your development branch back into your stable branch frequently.  This is because unlike traditional programming where products are launched every two or three years with new features, web sites often have little fixes and new features added every day or every few weeks, with new "releases" happening constantly (though not all web sites follow that trend).  The flexibility is there to branch the source for quite some time to work on a very complex feature or complete redesign before bringing it to the live site.  
-
-N:Additionally, I prefer to not create a new branch every time I merge, though some do not mind the overhead.
+N:You may find that you are merging (or "folding") most or all of your development branch back into your stable branch frequently.  This is because unlike traditional programming where products are launched every two or three years with new features, web sites often have little fixes and new features added every day or every few weeks, with new "releases" happening more often than traditional software development (though not all web sites follow that trend).  The flexibility is there to branch the source for quite some time to work on a very complex feature or complete redesign before bringing it to the live site, as well as the flexibility for day-to-day updates.
 
 H2:Performing the branch
 
@@ -664,7 +662,7 @@ cp -a foundation foundation_dev
 
 H3:Configure the Interchange daemon
 
-N:Many development catalogs will branch at the same time that they upgrade to a new Interchange daemon version.  But for whatever interchange daemon version you use, perform the necessary modifications to {{F:interchange.cfg}}.  For example:
+N:Perform the necessary modifications to {{F:interchange.cfg}}.  For example:
 
 !block example;
 {{B:/usr/local/interchange/interchange.cfg:}}
@@ -688,11 +686,11 @@ N:Now you can restart interchange to make your changes take effect.
 
 H2:Splitting updates on commit by tag
 
-N:Setup CVS so that when you commit to the DEV1 branch, only the development ({{EX:foundation_dev}}) catalog will be updated.  And when you commit with no tags (HEAD branch), the live ({{EX:foundation}}) catalog will be updated.  Here is an example {{F:loginfo}}.  Note the {{EX:-r DEV1}} used in the cvs update command on the development catalog.  This isn't strictly necessary, but it ensures that the right branch is used every time. 
+N:Setup CVS so that when you commit to the DEV1 branch, only the development ({{EX:foundation_dev}}) catalog will be updated.  And when you commit with no tags (HEAD branch), the live ({{EX:foundation}}) catalog will be updated.  Here is an example {{F:loginfo}}.  The {{EX:-r <tag>}} may be used just in case your environment is such that the tags may be changed by other sources.
 
 !block example;
 {{B:$CVSROOT/CVSROOT/loginfo:}}
-^foundation      (date; cat; (sleep 1; cd /var/lib/interchange/foundation_dev; cvs -q up -d -r DEV1; cd /var/lib/interchange/foundation; cvs -q up -d) &) >> $CVSROOT/CVSROOT/updatelog 2>&1
+^foundation      (date; cat; (sleep 1; cd /var/lib/interchange/foundation_dev; cvs -q up -d; cd /var/lib/interchange/foundation; cvs -q up -d) &) >> $CVSROOT/CVSROOT/updatelog 2>&1
 ALL     /usr/bin/cvs-log     $CVSROOT/CVSROOT/commitlog $USER "%{sVv}"
 !endblock
 
@@ -727,7 +725,7 @@ N:This is the productivity tips section, which will hopefully help you to be abl
 
 H2:Workstation interchange installation
 
-N:Not all developers work on Linux workstations, many use Apples (graphics designers / html gurus tend too, I've found), and many use Windows.  This means that many developers have the extra step of uploading their changes to an FTP server or CVS server every time they make a change.  
+N:Not all developers work on Linux workstations, many use Apples (graphics designers and html gurus tend to, I've found), and many use Windows.  This means that many developers have the extra step of uploading their changes to a Unix server where Interchange is running in order to see their changes.
 
 N:The remedy to that is to setup an interchange server on your workstation, or any location that has direct access to the CVS source files.  I'll explain:
 
@@ -735,7 +733,7 @@ N:The interchange server that runs where the CVS server is (that we setup earlie
 
 N:For example, Bob could setup another interchange catalog on the same server as the CVS, (e.g. foundation-bob).  To get direct access to those files (rather than FTP), Bob could use NFS mounts (if Bob's workstation is Linux) or SMB mounts using Samba if his workstation is a Windows variant.  Any way that Bob can get direct access to the files will save him some time (by cutting out the "upload" from the "edit->upload->test" development cycle).  One could even use Vmware to run a Linux server on your Windows workstation.  
 
-Note: You can now use the cygwin compatibility confirmed in later Interchange versions to run Interchange right on your Windows workstation.
+Note: You can now use the cygwin compatibility confirmed in Interchange versions 4.7.6 and above to run Interchange right on your Windows workstation.
 
 N:The result will be that you can modify the files with your favorite text editor and see the results immediately through your local catalog.  Setting up the catalog initially is quite easy.  Just follow the same steps used to setup the CVS catalog.  Which is: 
 
@@ -754,6 +752,8 @@ N:The result will be that you can modify the files with your favorite text edito
 N:One aspect of this local configuration is managing the differences between the main interchange daemon which runs on the CVS server and the local interchange daemon.  The differences are probably hostname, database information, etc.  That will all need to be managed (usually through catalog.cfg entries) and database exports & imports (i.e. the postgres pg_dump command).
 
 N:Another thing that you might have noticed at this point is all the files that are modified locally by the interchange daemon will report ? or M when you run an update.  This can be handled with {{F:CVSROOT/cvsignore}} and {{EX:$CVSIGNORE}}, which are beyond the scope of this document.
+
+#CVSIGNORE update
 
 H2:Mailserver for CVS updates
 
