@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.113 2003-11-26 04:56:52 mheins Exp $
+# $Id: ictags.sdf,v 1.114 2003-12-06 04:46:41 mheins Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.113 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.114 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ictags.html"
@@ -12446,6 +12446,7 @@ H3: Description
 
 This tag calculates the shipping cost for items in the current cart via the specified shipping mode (usually set in the mv_shipmode variable).  See the {{CMD[jump="icdatabase.html#Shipping"]Shipping}} section of the Database documentation for detail.
 
+It also has options to build a selection widget (usually SELECT or RADIO types) with embedded cost data.
 
 H4: Rounding
 
@@ -12529,6 +12530,32 @@ H4: {{CMD[id="shipping_noformat"]noformat}}
 Returns result as a number rather than a string formatted for the current locale's currency.
 * N<Default:> True
 
+H4: {{CMD[id="shipping_no_state"]no_state}}
+
+Bypasses the state lookup for [shipping widget=TYPE] and [shipping possible=1].
+
+H4: {{CMD[id="shipping_possible"]possible}}
+
+Returns all possible modes for the selected country and state, based on
+the C<country> and C<state> tables.
+
+Does a query to find the C<shipmodes> column of the state based on the
+user value C<state>, and/or the C<shipmodes> column of the country based
+on the value C<country>
+
+NOTE: You can set the following, though most will use the Interchange
+defaults:
+
+!block example
+ state_table         state table for lookup (default "state")
+ country_table       country table for lookup (default "country")
+ state_modes_field   shipmodes field in state table (default "shipmodes")
+ country_modes_field shipmodes field in country table (default "shipmodes")
+ country_table       country table for lookup (default "country")
+ state_var           state variable in user session (default "state")
+ country_var         country variable in user session (default "country")
+ shipmode_var        shipmode variable in user session (default "mv_shipmode")
+!endblock
 
 H4: {{CMD[id="shipping_reset_message"]reset_message}}
 
@@ -12541,12 +12568,35 @@ Clears list of modes in $Vend::Cfg->{Shipping_line}
 * N<Default:> False
 
 
+H4: {{CMD[id="shipping_resolve"]resolve}}
+
+Returns the one shipping mode to set as a default, based on the best
+information available. Usually selects the first in the list based
+on country or state.
+
 H4: {{CMD[id="shipping_table"]table}}
 
 * N<Alias:> B<tables>
 Whitespace-delimited list of tables containing shipping data required for perl or query calculations (I<e.g.>, in the 'PERL' field of your shipping databaseE<nbspace>E<emdash> see {{CMD[jump="icdatabase.html#Shipping"]Shipping}}). You must specify the tables to get past the Perl '{{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe.pm}}' protection. For example, you will get '{{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}}' errors if you refer to an SQL table without specifying it here.
 * N<Default:> None
 
+H4: {{CMD[id="shipping_widget"]widget}}
+
+Returns a pre-configured widget for shipping mode selection. Will select
+the modes from [shipping possible=1], but will also do shipping calculations
+to see if they are valid.
+
+If there is no weight, zip, country, or other needed information, it will return
+"not enough information".
+
+In other words, [shipping widget=select] might return to the page:
+
+!block example;
+ <select name="mv_shipmode">
+ 	<option value="upsg" SELECTED>UPS Ground (&#36;4.20)
+	<option value="upsb">UPS 2nd Day Air (&#36;8.76)
+ </select>
+!endblock
 
 # END +++++++++++++ shipping Subsections ++++++++++++
 

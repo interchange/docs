@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.59 2003-11-26 04:56:52 mheins Exp $
+# $Id: icdatabase.sdf,v 1.60 2003-12-06 04:46:41 mheins Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.59 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.60 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/icdatabase.html"
@@ -2368,7 +2368,7 @@ Interchange has a powerful custom shipping facility that performs UPS and other 
 
 H2: Shipping Cost Database
 
-The shipping cost database (located in ProductDir/shipping.asc) is a tab-separated ASCII file with six fields: code, text description, criteria (quantity or weight, for example), minimum number, maximum number, and cost. None of the fields are case-sensitive.
+The shipping cost database (located in ProductDir/shipping.asc) is a tab-separated ASCII file with eight fields: code, text description, criteria (quantity or weight, for example), minimum number, maximum number, and cost, query, and options. None of the fields are case-sensitive.
 
 To define the shipping database in a catalog configuration file, set the Variable C<MV_SHIPPING> to what would be its contents.
 
