@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.88 2002-06-22 15:19:02 edl Exp $
+# $Id: ictags.sdf,v 1.89 2002-07-03 18:59:57 mheins Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.88 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.89 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -3653,7 +3653,13 @@ The counter value is stored in the specified file. If the file name begins with 
 
 The counter is implemented using Perl's C<File::Counter> module, which protects the file against simultaneous access by multiple processes.
 
-\WARNING: This tag will not work under {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}}, i.e. in embedded Perl.
+If the optional C<sql> attribute is used, a SQL sequence will be used. Currently
+MySQL and Postgres are supported. The sequence must already exist. If no C<bypass>
+parameter is sent, the table in the sequence callout (explained below) will be used
+and must be an Interchange table (i.e. set up with Database setting). If C<bypass>
+is set, then the DSN for the sequence will be passed in the C<dsn> parameter.
+
+\WARNING: This tag may not work under {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}}, i.e. in embedded Perl.
 
 Additional parameters:
 
@@ -3664,20 +3670,80 @@ Causes the counter to count down instead of up.
 
 H4: {{CMD[id="counter_start"]start=50}}
 
-Causes a new counter to be created and to start from 50 (for example) if it did not exist before.
+Causes a new counter to be created and to start from 50 (for example) if
+it did not exist before. This option is not applicable to SQL counters.
 
 H4: {{CMD[id="counter_value"]value=1}}
 
 Shows the value of the counter without incrementing or decrementing it.
+This option is not applicable to SQL counters.
 
+H4: {{CMD[id="counter_sql"]sql="table:sequence"}}
 
+The table and sequence name of the SQL counter.
 
+If the type of database is Postgres, the C<table> is used to derive the
+database and the sequence will be a named sequence independent of the
+table; the sequence is incremented and accessed by "SELECT
+nextval('sequence_name')".
 
+If the type of database is MySQL, an AUTO_INCREMENT key column is
+assumed and an insert of C<0> followed by "select last_insert_id()" will
+increment then access the counter.
 
 # BEGIN ########### counter Subsections ##############
 H4: {{CMD[id="counter_file"]file}}
 
+H3: SQL Counter Examples
 
+To set up a Postgres counter, simply create a named sequence in the
+database:
+
+!block example
+  CREATE SEQUENCE "foo" start 1 increment 1 maxvalue 2147483647 minvalue 1 cache 1 
+!endblock
+
+You will want to make sure you have an Interchange table that uses
+that database ("sometable" in the below example).
+
+Then access it with:
+
+!block example
+  [counter sql="sometable:foo"]
+!endblock
+
+You can create as many sequences as you like.
+
+To set up a MySQL counter, add a table to your MySQL database in catalog.cfg
+or other place like C<dbconf/mysql>:
+
+!block example
+  Database sequence_name sequence_name.txt dbi:mysql:test_foundation
+  Database sequence_name COLUMN_DEF "id=int NOT NULL AUTO_INCREMENT PRIMARY KEY"
+!endblock
+
+Make sure you set up the sequence.txt file if you want Interchange to create
+the table for you.
+
+Then access it with:
+
+!block example
+  [counter sql="sequence_name:sequence_name"]
+!endblock
+
+Alternatively, you can create the table without Interchange definition
+as long as it is in the same database as an Interchange table:
+
+!block example
+  mysql> create table sequence_name(id int NOT NULL AUTO_INCREMENT PRIMARY KEY);
+!endblock
+
+Then access it by calling the Interchange-defined table name followed
+by the table that has the AUTO_INCREMENT key:
+
+!block example
+  [counter sql="products:sequence_name"]
+!endblock
 
 # END ++++++++++++ counter Subsections +++++++++++++
 
