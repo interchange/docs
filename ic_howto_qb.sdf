@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: ic_howto_qb.sdf,v 1.4 2003-06-04 09:24:52 danb Exp $
+# $Id: ic_howto_qb.sdf,v 1.5 2003-07-03 02:56:35 danb Exp $
 
 !define DOC_NAME "Interchange + QuickBooks HOWTO"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_howto_qb"
-!define DOC_VERSION substr('$Revision: 1.4 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.5 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ic_howto_qb.html"
@@ -145,6 +145,10 @@ This script will install the necessary files for you, provided that you modify
 the variables to your environment.  Alternately, you can follow the more
 detailed installation instructions that follow it.
 
+Note that if you are not using a 4.9.8+ version of Interchange, you will need 
+to manually install the qb_safe.filter by copying it from the 4.9.8 
+code/Filter/qb_safe.filter into your Interchange version.
+
 !block example
 
 # Modify these three variables to match your environment.
@@ -159,6 +163,14 @@ cp -r $QB/pages/admin/quickbooks \
       $CATROOT/pages/admin
 cp -i $QB/usertag/* \
       $VENDROOT/code/UI_Tag
+
+# Alternate usertag installation style:
+#
+#mkdir -p $CATROOT/usertags/global
+#cp -i $QB/usertag/* \
+#      $CATROOT/usertags/global
+#
+# Then include the global/*.tag in your interchange.cfg
 
 # Variables that optionally modify the export process, along with 
 # their help entries.	  
@@ -352,6 +364,41 @@ You should find a file in the C<orders> directory with the name C<qbYYYYMMDD.iif
 run File/Import and select that file as the source. This should import the customer
 and order into the system. If it doesn't work, it may be due to lack of sales tax
 or shipping definitions, discussed below.
+
+=head1 Usage
+
+=head2 Accessing Admin UI Features
+
+A typical installation will cause the Administrative User Interface Features to 
+become available via the top level menu:
+
+ * Login to the Admin UI
+
+ * Administration
+
+ * Quickbooks
+
+You should then be presented with a menu of the Admin UI features. 
+
+=head2 Generating IIF Files
+
+To generate the IIF files, access the corresponding page from the Admin UI
+Quickbooks Menu (Administration -> Quickbooks -> Generate IIF Files).
+
+You will be presented with a query tool.  Select the query options that you
+would like and submit your query.  Among the query options, you have the option 
+to input a QB transaction number.  This will be the first number that is used 
+when generating the IIF files, and it will be incremented for each sequential
+order in the query.
+
+You will be notified of its success or failure.  The resulting page will:
+
+ * Inform you of the success or failure of the query.
+ * Provide a link to the "results" IIF file (which includes all of the orders
+   found by the query).  Note that this "results" IIf file is overwritten every
+   time a query is run.
+ * Provide a link for each IIF file (one per order).  This can be used as a
+   backup, or for importing one-by-one instead of all at once. 
 
 =head1 Discussion
 
