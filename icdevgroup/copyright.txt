@@ -11,7 +11,7 @@ sold ownership to Red Hat in 2001. Development continued primarily by
 Red Hat until 2002, and ownership of code written until that time remains
 with Red Hat.
 
-Thus, all older could should retain this notice:
+Thus, all older code should retain this notice:
 
 Copyright (C) 1996-2002 Red Hat, Inc.
 
