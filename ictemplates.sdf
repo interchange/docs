@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: ictemplates.sdf,v 1.49 2003-03-26 16:01:32 mheins Exp $
+# $Id: ictemplates.sdf,v 1.50 2003-03-30 16:27:39 racke Exp $
 
 !define DOC_NAME "Template Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "ictemplates"
-!define DOC_VERSION substr('$Revision: 1.49 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.50 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ictemplates.html"
@@ -2885,7 +2885,9 @@ line containing the check:
 This sets the value of the error associated with name, and can be displayed
 with the C<error> tag:
 
+!block example
 	[error name=city show_error=1]
+!endblock
 
 H2: Profile examples
 
