@@ -1,5 +1,5 @@
-# $Id: table.pl,v 1.1 2001-03-29 20:31:46 jon Exp $
-$VERSION{''.__FILE__} = '$Revision: 1.1 $';
+# $Id: table.pl,v 1.2 2003-12-19 05:44:08 kwalsh Exp $
+$VERSION{''.__FILE__} = '$Revision: 1.2 $';
 #
 # >>Title::     Table Processing Library
 #
@@ -915,7 +915,7 @@ sub _TablePackStr {
     local($packfmt);
 
     $packfmt = '';
-    while ($format =~ s/\w+\s+//e) {
+    while ($format =~ s/\w+\s+//) {
         $packfmt .= 'A' . length($&);
     }
     $packfmt .= 'A*';
