@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.34 2001-05-12 21:31:46 jon Exp $
+# $Id: ictags.sdf,v 1.35 2001-05-17 21:05:27 bill Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.34 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.35 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -9187,8 +9187,8 @@ from the tag call:
 
 >        <table>
 >    [tree   start=99
->            parent=parent_fld
->            child=child_fld
+>            master=parent_fld
+>            subordinate=child_fld
 >            autodetect=1
 >                        spacing=4
 >            full=1]
@@ -9218,7 +9218,7 @@ H4: {{CMD[id="tree_table"]table}}
 Database table which contains the tree. Must be a valid Interchange
 table identifier.
 
-H4: {{CMD[id="tree_parent"]parent}}
+H4: {{CMD[id="tree_master"]master}}
 
 The column which is used to determine the parent of the item.
 
@@ -9226,11 +9226,11 @@ H4: {{CMD[id="tree_subordinate"]subordinate}}
 
 The child column, which determines which items are sub-items of
 the current one. Used to re-query for items with its value in
-C<parent>.
+C<master>.
 
 H4: {{CMD[id="tree_start_item"]start_item}}
 
-The first item to be followed, i.e. the C<parent> value of all the top-level
+The first item to be followed, i.e. the C<master> value of all the top-level
 items.
 
 H4: {{CMD[id="tree_autodetect"]autodetect}}
@@ -10189,7 +10189,7 @@ H2[notoc] dummy
 
 N:Alias: B<pedagogy>, B<dummy_alias>
 !block note;
-E<lbracket>B<dummy>E<nbspace>...], [B<pedagogy>E<nbspace>...] and [B<dummy-alias>E<nbspace>...] are equivalent.
+E<lbracket>B<dummy>E<nbspace>...], [B<pedagogy>E<nbspace>...] and [B<dummy-alias>E<nbspace>...] are equivalent. If the tag has an endtag, you must not mix aliases between the tag and its endtag (i.e., E<lbracket>dummy] ... E<lbracket>/pedagogy] would not work).
 !endblock
 
 A short description of the tag goes here. This example (B<dummy>) is
