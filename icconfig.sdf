@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.74 2002-10-14 13:16:45 racke Exp $
+# $Id: icconfig.sdf,v 1.75 2002-10-29 07:15:24 kwalsh Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.74 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.75 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icconfig.html"
@@ -1138,7 +1138,8 @@ Additional configuration techniques are available in the C<catalog.cfg> file. Fi
 
 LI1: Define subroutine watches
 
-.Almost any configuration variable can be set up to be tied to a subroutine if the Tie::Watch module is installed. It uses a notation like the <<HERE document, but <&HERE is the notation. See {{CMD[jump="icconfig.html#Programming"]Interchange Programming}} for details.
+.Almost any configuration variable can be set up to be tied to a subroutine if the Tie::Watch module is installed. It uses a notation like the <<HERE document, but <&HERE is the notation.
+See {{CMD[jump="ictemplates.html#Programming"]Interchange Programming}} for details.
 
 H2: Programming Watch Points in catalog.cfg
 
@@ -1675,15 +1676,17 @@ H2: Filter
 
 Assigns one or more filters (comma separated) to be automatically applied to a variable.
 
-As an example, multiple form variable submissions on the same page come back null-separated, like 'value1\0value2\0value3'. To automatically change those nulls to spaces, you could use this directive:
+As an example, multiple form variable submissions on the same page come back null-separated, like 'C<value1\0value2\0value3>'. To automatically change those nulls to spaces, you could use this directive:
 
 !block example
 Filter  mail_list  null_to_space
 !endblock
 
-Of course you could just as easily use the regular [filter] tag on the page if the filter is only going to be used in a few places.
-
-See the ictags document for more information, including a complete list of filters.
+Of course you could just as easily use the
+E<lbracket>{{CMD[jump="ictags.html#filter"]filter}}]
+tag on the page if the filter is only going to be used in a few places.
+See the E<lbracket>{{CMD[jump="ictags.html#filter"]filter}}]
+tag documentation for more information and a list of filters.
 
 H2: FormAction
 
@@ -1881,7 +1884,11 @@ Enables on-the-fly item additions to the shopping cart. If set to the name of a 
                                );
 !endblock
 
-$fly[$j] is the value of C<mv_order_fly> for that item. An C<onfly> tag is provided by Interchange. See <On-the-fly> ordering.
+C<$fly[$j]> is the value of C<mv_order_fly> for that item.
+A default C<onfly> tag is provided by Interchange.
+For more information,
+see the section that describes
+{{CMD[jump="ic_ecommerce.html#How to set up an on-the-fly item"]how to set up an on-the-fly item}}.
 
 H2: OrderCounter
 
