@@ -81,14 +81,14 @@ dev_html:
 	@mv dev_index.html $(DEVDIR)/index.html
 
 %_toc.html: %.sdf
-	@echo Making $@
+	@echo Making $(FRAMESDIR)/$@
 	@mkdir -p $(FRAMESDIR)
 	@( cd $(FRAMESDIR) ; ln -sf ../bullet.gif )
 	@$(SDFBIN) -2html_topics -n2 -DFULL_TARGETS="$(TARGETS)" -DHTML_FRAMES=1 -DFRAMES_DIR=$(FRAMESDIR)/ -DSDF_ROOT=$(FRAMESPARENT)/ -O$(FRAMESDIR) $<
 	@( cd $(FRAMESDIR) ; mv $(basename $<).html $@ )
 
 %_frames.html: %.sdf
-	@echo Making $@
+	@echo Making $(FRAMESDIR)/$@
 	@mkdir -p $(FRAMESDIR)
 	@echo '\
 <html><head>\
