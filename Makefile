@@ -4,6 +4,7 @@ SUFFIXES=txt mif html pdf pod 8
 TARNAME=icdocs.tar.gz
 FULLSUFFIXES=txt html
 FULLDOCNAME=icfull
+DOCDBNAME=documentation.txt
 
 .SUFFIXES: .sdf $(addprefix .,$(SUFFIXES))
 
@@ -34,7 +35,7 @@ all :: $(SUFFIXES)
 docdb :: pod
 	perl scripts/makedocdb.pl
 
-tardist :: all dev_html
+tardist :: all dev_html docdb
 	@rm -f $(TARNAME)
 	@echo packing files into $(TARNAME)
 	@( for i in $(TARGETS) ; do \
@@ -42,7 +43,7 @@ tardist :: all dev_html
 			echo $$i.$$j ; \
 		done ; \
 	done ; \
-	echo index.html dev ) | \
+	echo index.html dev $(DOCDBNAME) ) | \
 	xargs tar czf $(TARNAME)
 
 dev_html:
@@ -117,8 +118,9 @@ clean:
 		rm -f $${i}_*.html ; \
 	done
 	@rm -f index.html
-	@rm -f documentation.txt
+	@rm -f $(DOCDBNAME)
 	@rm -rf icdocdb
+	@rm -f *~
 	@for i in $(FULLSUFFIXES) ; do \
 		rm -f $(FULLDOCNAME).$$i ; \
 	done
