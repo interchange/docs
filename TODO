@@ -53,6 +53,17 @@ http://developer.akopia.com/cgi-bin/ic/examples/icintro_5a.html )
 
 -----------------------------------------------------------------------------
 
+$Session->{source} bzw. [data session source] comes from:
+
+http://host/cgi-bin/cat?;;thesource      (old MV 3 way, still works)
+http://host/cgi-bin/cat?mv_pc=thesource  (current way)
+http://host/cgi-bin/cat?mv_pc=RESET      (clears it, for debugging)
+
+Otherwise mv_pc does double duty as a cache foiler, and is a meaningless,
+incrementing integer.
+
+-----------------------------------------------------------------------------
+
 iccattut:
 
 Switch to new payment settings instead of mv_cyber_mode etc.
