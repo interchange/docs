@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ictemplates.sdf,v 1.16 2001-04-13 17:20:31 alison Exp $
+# $Id: ictemplates.sdf,v 1.17 2001-04-13 19:12:00 alison Exp $
 
 !define DOC_NAME "Template Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "ictemplates"
-!define DOC_VERSION substr('$Revision: 1.16 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.17 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Red Hat Interchange 4.8"
 !define DOC_URL "http://help.akopia.com/interchange/doc/ictemplates.html"
@@ -903,20 +903,20 @@ H1: Interchange Perl Objects
 
 You can access all objects associated with the catalog and the user settings with opcode restrictions based on the standard Perl module {{C[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe.pm}}. There are some unique things to know about programming with Interchange.
 
-Under C<Safe>, certain things cannot be used. For instance, this is not legal when running Safe:
+Under C<Safe>, certain things cannot be used. For instance, the following can not be used when running Safe:
 
 !block example
    $variable = `cat file/contents`;
 !endblock
 
-The backtick operator violates a number of the default Safe opcode restrictions. Direct file opens are not allowed, either:
+The backtick operator violates a number of the default Safe opcode restrictions. Also, direct file opens can not be used. For example:
 
 !block example
    open(SOMETHING, "something.txt")
        or die;
 !endblock
 
-This will also cause a trap, and the code will fail to compile. However, Interchange equivalent routines can be used:
+This will also cause a trap, and the code will fail to compile. However, equivalent Interchange routines can be used:
 
 !block example
    # This will work if your administrator doesn't have NoAbsolute set
@@ -926,7 +926,7 @@ This will also cause a trap, and the code will fail to compile. However, Interch
    $users = $Tag->file('userlist');
 !endblock
 
-The standard objects are:
+The following is a list of Interchange Perl standard objects are:
 
 LI1: $CGI
 
@@ -963,7 +963,7 @@ LI1: $CGI_array
 
 LI1: $Carts
 
-.A reference to the shopping cart hash $Vend::Session->{carts}. The normal default cart is "main". An alias is $Items in the normal course of events.
+.A reference to the shopping cart hash $Vend::Session->{carts}. The normal default cart is "main". A typical alias is $Items.
 
 .Shopping carts are an array of hash references. Here is an example of a session cart array containing a C<main> and a C<layaway> cart.
 
@@ -997,11 +997,11 @@ LI1: $Carts
     }
 !endblock
 
-.In this cart array, $Carts->{main}[1]{code} is equal to C<99-102>. In the normal course of events, it would be equivalent to $Items->[1]{code}.
+.In this cart array, $Carts->{main}[1]{code} is equal to C<99-102>. Normally, it would be equivalent to $Items->[1]{code}.
 
 LI1: $Config
 
-.A reference to the $Vend::Cfg array. Normally use this with a liberal dose of the Interchange source code, but for simple things use something like:
+.A reference to the $Vend::Cfg array. This is normally used with a large amount of the Interchange source code, but for simple things use something like:
 
 !block example; listitem=2
     # Turn off CyberCash for this user
@@ -1012,7 +1012,7 @@ LI1: $Config
 
 LI1: %Db
 
-.A hash of databases shared with the C<[mvasp tables="foo"]> parameter to the tag call. Once the database is shared, it is opened and can be accessed by any of its methods. Again, this will not work with SQL unless AllowGlobal is set for the catalog.
+.A hash of databases shared with the C<[mvasp tables="foo"]> parameter to the tag call. Once the database is shared, it is open and can be accessed by any of its methods. This will not work with SQL unless AllowGlobal is set for the catalog.
 
 .To get a reference to a particular table, specify its hash element:
 
@@ -1020,7 +1020,7 @@ LI1: %Db
     $ref = $Db{products};
 !endblock
 
-.The methods available:
+.The available methods are:
 
 !block example; listitem=2
     # access an element of the table
@@ -1082,7 +1082,7 @@ LI1: %Db
 
 LI1: %Sql
 
-.A hash of SQL databases that you shared with the C<[mvasp tables="foo"]> parameter to the tag call. It returns the DBI database handle, so things like the following can be done:
+.A hash of SQL databases that you shared with the C<[mvasp tables="foo"]> parameter to the tag call. It returns the DBI database handle, so operations like the following can be performed:
 
 !block example; listitem=2
   <%
@@ -1104,11 +1104,11 @@ LI1: %Sql
   %>
 !endblock
 
-.Again, this will not work with unless AllowGlobal is set for your catalog.
+.This will not work with unless AllowGlobal is set for your catalog.
 
 LI1: $DbSearch
 
-.A search object which will search a database without using the text file. It is the same as Interchange's C<db> searchtype. Options are specified in a hash and passed to the object. All multiple-field options should be passed as array references. Before using the $DbSearch object, it must be told which table to search. For example, to use the table C<foo>, it must have been shared with C<[mvasp foo]>.
+.A search object that will search a database without using the text file. It is the same as Interchange's C<db> searchtype. Options are specified in a hash and passed to the object. All multiple-field options should be passed as array references. Before using the $DbSearch object, it must be told which table to search. For example, to use the table C<foo>, it must have been shared with C<[mvasp foo]>.
 
 .There are three search methods: C<array>, C<hash>, and C<list>.
 
@@ -1166,7 +1166,7 @@ LI1: $Document->write($foo)
 
 LI1: $Document->insert($foo)
 
-.Insert $foo to the page buffer.
+.Insert $foo to the page buffer. The following example will output "123"
 
 !block example; listitem=2
     $Document->write("23");
@@ -1174,7 +1174,7 @@ LI1: $Document->insert($foo)
     $Document->send();
 !endblock
 
-.will output "123", while
+.while this example will output "231"
 
 !block example; listitem=2
     $Document->write("23");
@@ -1186,13 +1186,13 @@ LI1: $Document->insert($foo)
 
 LI1: $Document->header($foo, $opt)
 
-.Add the header line $foo to the HTTP header. Use this to change the page content type, cache options, or other attributes. The code below changes the content type (MIME type) to text/plain:
+.Add the header line $foo to the HTTP header. This is used to change the page content type, cache options, or other attributes. The code below changes the content type (MIME type) to text/plain:
 
 !block example; listitem=2
     $Document->header("Content-type: text/plain");
 !endblock
 
-.There is an optional hash that can be sent, with the only valid value being "replace." The below code scrubs all previous header lines:
+.There is an optional hash that can be sent with the only valid value being "replace." The code below scrubs all previous header lines:
 
 !block example; listitem=2
     $Document->header("Content-type: text/plain", { replace => 1 } );
@@ -1339,7 +1339,7 @@ Note[label='IMPORTANT NOTE: '] If the tag will access a database that has not be
     $Tag->shipping_desc('upsg');
 !endblock
 
-.There are two ways of specifying parameters. Either use the positional parameters as documented (for an authoritative look at the parameters, inspect the %Routine value in Vend::Parse), or specify it all with an option hash parameter names as in any named parameters as specified in an Interchange tag. The calls
+.There are two ways of specifying parameters. Either use the positional parameters as documented (for an authoritative look at the parameters, see the %Routine value in Vend::Parse), or specify it all with an option hash parameter names as in any named parameters as specified in an Interchange tag. The calls
 
 !block example; listitem=2
     $Tag->data('products', 'title', '00-0011');
@@ -2902,7 +2902,7 @@ Replace C</cgi-bin/construct> with the path to your Interchange link.
 
 H1: Internationalization
 
-Interchange has a rich set of internationalization (I18N) features to allow conditional message display, differing price formats, different currency definitions, price factoring, sorting, and other settings. The definitions are maintained in the catalog.cfg file through the use of built-in POSIX support and Interchange's C<Locale> directive. All settings are independent for each catalog and each user of that catalog. Customers can access the same catalog in an unlimited number of languages and currencies.
+Interchange has a rich set of internationalization (I18N) features that allow conditional message display, differing price formats, different currency definitions, price factoring, sorting, and other settings. The definitions are maintained in the catalog.cfg file through the use of built-in POSIX support and Interchange's C<Locale> directive. All settings are independent for each catalog and each user visiting that catalog, since customers can access the same catalog in an unlimited number of languages and currencies.
 
 H2: Setting the Locale
 
@@ -2947,18 +2947,18 @@ Once the locale is persistently set for a user, it is in effect for the duration
 
 H2: Interchange Locale Settings
 
-The C<Locale> directive has many possible settings allowing complete internationalization of page sets and currencies. The C<Locale> directive is defined in a series of key/value pairs with a key (which contains word characters only) followed by a value. The value should be surrounded by double quotes if it contains whitespace. In this example, the key is C<Value setting>.
+The C<Locale> directive has many possible settings that allow complete internationalization of page sets and currencies. The C<Locale> directive is defined in a series of key/value pairs with a key that contains word characters only being followed by a value. The value must be enclosed in double quotes if it contains whitespace. In this example, the key is C<Value setting>.
 
 !block example
    Locale fr_FR "Value setting" "Configuration de valeur"
    Locale de_DE "Value setting" Werteinstellung
 !endblock
 
-When accessed via the special tag C<[L]Value setting[/L]>, the value C<Configuration de valeur> will be displayed B<only> if the locale is set to C<fr_FR>. If the locale is set to C<de_DE>, the string C<Werteinstellung> will be displayed. If it is neither, the default value of C<Value setting> will be displayed.
+When accessed using the special tag C<[L]Value setting[/L]>, the value C<Configuration de valeur> will be displayed B<only> if the locale is set to C<fr_FR>. If the locale is set to C<de_DE>, the string C<Werteinstellung> will be displayed. If it is neither, the default value of C<Value setting> will be displayed.
 
 The C<[L]> and C<[/L]> must be capitalized. This is done for speed of processing as well as easy differentiation in text.
 
-Another, perhaps better, way to do this is right in the page. The
+Another, way to do this is right in the page. The
 C<[LC]> ... C<[/LC]> pragma pair permits specification of locale-dependent text.
 
 !block example
@@ -2969,7 +2969,7 @@ C<[LC]> ... C<[/LC]> pragma pair permits specification of locale-dependent text.
  [/LC]
 !endblock
 
-Or place an entire new page in place of the default one if the locale key is defined. When locale is in force, and a key named C<HTMLsuffix> is set to the locale, Interchange first looks for a page with a suffix corresponding to the locale. For example:
+You can also place an entirely new page in place of the default one if the locale key is defined. When a locale is in force, and a key named C<HTMLsuffix> is set to that locale, Interchange first looks for a page with a suffix corresponding to the locale. For example:
 
 <A HREF="[area index]">Catalog home page</A>
 
@@ -2979,7 +2979,7 @@ If a page index.html exists, it will be the default. If the current locale is C<
    Locale fr_FR HTMLsuffix  fr_FR
 !endblock
 
-Then, the C<.fr_FR> page will be used instead of the C<.html> page. For longer series of strings, the configuration file recognizes:
+Then, the C<.fr_FR> page will be used instead of the C<.html> page. For a longer series of strings, the configuration file recognizes:
 
 !block example
    Locale fr_FR <<EOF
@@ -2993,15 +2993,15 @@ Then, the C<.fr_FR> page will be used instead of the C<.html> page. For longer s
    EOF
 !endblock
 
-The above sets two string substitutions. As long as this is valid Perl syntax describing a series of settings, the text will be matched. It can contain any arbitrary set of characters that don't contain C<[L]> and C<[/L]>.
+This example sets two string substitutions. As long as this is a valid Perl syntax describing a series of settings, the text will be matched. It can contain any arbitrary set of characters that don't contain C<[L]> and C<[/L]>.
 If using double quotes, string literals like \n and \t are recognized.
 
-A database can also be used to set locale information. It can be added to any database in the C<catalog.cfg> file, and values in it will overwrite previous settings. See I<LocaleDatabase>. The C<[L]default text[/L]> is set before any other page processing. It is equivalent to the characters "default text" or the appropriate C<Locale> translation for all intents and purposes. Interchange tags and Variable values can be embedded.
+A database can also be used to set locale information. Locale information can be added to any database in the C<catalog.cfg> file, and the values in it will overwrite previous settings. For more information, see LocaleDatabase. The C<[L]default text[/L]> is set before any other page processing takes place. It is equivalent to the characters "default text" or the appropriate C<Locale> translation for all intents and purposes. Interchange tags and Variable values can be embedded.
 
-Since the C<[L] message [/L]> substitution is done before any tag processing,
-the command C<[L][item-data table field][/L]> will fail. There is an add-on C<[loc] message [/loc]> I<UserTag> supplied with the distribution beginning at V3.09. It does the same thing as C<[L] [/L]> except after all tag substitution is done. See <interchange.cfg.dist> for the definition.
+Because the C<[L] message [/L]> substitution is done before any tag processing,
+the command C<[L][item-data table field][/L]> will fail. There is an additional C<[loc] message [/loc]> I<UserTag> supplied with the distribution. It does the same thing as C<[L] [/L]> except it is programmed after all tag substitution is done. See the interchange.cfg.dist file for the definition.
 
-Care is required when editing pages with localization information. Changing even one character of the message will change the key value and invalidate the message for other languages. To prevent this, use:
+Note:Be careful when editing pages containing localization information. Even changing one character of the message can  change the key value and invalidate the message for other languages. To prevent this, use:
 
 !block example
    [L key]The default.[/L]
@@ -3016,13 +3016,13 @@ H2: Special Locale Keys for Price Representation
 Interchange honors the standard POSIX keys:
 
 !block example
-   mon_decimal_point decimal_point
-   mon_thousands_sep thousands_sep
-   currency_symbol   int_currency_symbol
-   frac_digits       p_cs_precedes
+   mon_decimal_point	or 	decimal_point
+   mon_thousands_sep	or 	thousands_sep
+   currency_symbol	or	int_currency_symbol
+   frac_digits	or	p_cs_precedes
 !endblock
 
-See the POSIX setlocale(3) man page for more information. These will be used for formatting prices and will approximate the number format used in most countries. To set the price format to a custom format, use these special keys:
+See the POSIX setlocale(3) man page for more information. These keys will be used for formatting prices and approximates the number format used in most countries. To set a custom price format, use these special keys:
 
 LI1: price_picture
 
@@ -3032,7 +3032,7 @@ LI1: price_picture
     Locale en_US price_picture "$ ###,###,###.##"
 !endblock
 
-.This is locale C<en_US>, the United States, and it would display C<4452.3> as C<$ 4,452.30>. The same display can be achieved with:
+.The C<en_US> locale, for the United States, would display C<4452.3> as C<$ 4,452.30>. The same display can be achieved with:
 
 !block example; listitem=2
      Locale en_US mon_thousands_sep ,
@@ -3041,13 +3041,13 @@ LI1: price_picture
      Locale en_US currency_symbol   $
 !endblock
 
-.A common price_picture for European countries would be C<###.###.###,##>, which would display the same number as C<4.452,30>. To add a franc notation at the end for the locale C<fr_FR>, use the setting:
+.A common price_picture for European countries would be C<###.###.###,##>, which would display that same number as C<4.452,30>. To add a franc notation at the end for the locale C<fr_FR>, use the setting:
 
 !block example; listitem=2
     Locale fr_FR price_picture "##.###,## fr"
 !endblock
 
-Note[label='IMPORTANT NOTE: '] The decimal point in use, set by C<mon_decimal_point>, and the thousands separator, set by C<mon_thousands_sep> must match the settings in the picture. The C<frac_digits> setting is not used in this case. It is derived from the location of the decimal (if any).
+Note[label='IMPORTANT NOTE: '] The decimal point in use, set by C<mon_decimal_point>, and the thousands separator, set by C<mon_thousands_sep> must match the settings in the price_picture. The C<frac_digits> setting is not used in this case. It is derived from the location of the decimal (if any).
 
 .The same setting for C<fr_FR> above can be achieved with:
 
@@ -3058,7 +3058,7 @@ Note[label='IMPORTANT NOTE: '] The decimal point in use, set by C<mon_decimal_po
      Locale fr_FR currency_symbol   fr
 !endblock
 
-.If the number of digits is greater than the # locations in the picture, the digits will be changed to asterisks. An overflow number above would show as C<**.***,** fr>.
+.If the number of digits is greater than the # locations in the price_picture, the digits will be changed to asterisks. An overflow number above would show as C<**.***,** fr>.
 
 LI1: picture
 
@@ -3066,11 +3066,11 @@ LI1: picture
 
 H2: Dynamic Locale Directive Changes
 
-If Locale keys are set to correspond to some Interchange C<catalog.cfg> directives, those values will be set when setting the locale.
+If a Locale key is set to correspond to an Interchange C<catalog.cfg> directive, that value will be set when the locale is set.
 
 LI1: PageDir
 
-.To use a different page directory for different locales, set the C<PageDir> key. To have two separate language page sets, French and English, set:
+.To use a different page directory for different locales, set the C<PageDir> key. For example, to have two separate language page sets, French and English, set:
 
 !block example; listitem=2
     # Establish the default at startup
@@ -3092,11 +3092,11 @@ LI1: ImageDir
 
 LI1: ImageDirSecure
 
-.Same as ImageDir.
+.See ImageDir.
 
 LI1: PriceField
 
-.To use a different field in the products database for pricing based on locale, set the C<PriceField> locale setting.
+.To use a different field in the products database for pricing based on locale, set the C<PriceField> locale setting. For example:
 
 !block example; listitem=2
     # Establish the default at startup
@@ -3106,11 +3106,13 @@ LI1: PriceField
 
 .The default will always be C<price>, but if the locale C<fr_FR> is set, the C<PriceField> directive will change to C<prix> to give prices in francs instead of dollars.
 
-.If C<PriceBreaks> is enabled, the field C<prix> from the C<pricing> database will be used to develop the quantity pricing. NOTE: If no C<Locale> settings are present, it will always be C<price>, regardless of the C<PriceField> setting. Otherwise, it will always match C<PriceField>.
+.If C<PriceBreaks> is enabled, the C<prix> field from the C<pricing> database will be used to develop the quantity pricing. 
+
+Note: If no C<Locale> settings are present, the display will always be C<price>, regardless of what was set in C<PriceField>. Otherwise, it will match C<PriceField>.
 
 LI1: PriceDivide
 
-.Normally used to enable penny pricing with a setting of 100, this can be used to do an automatic conversion factor based on locale.
+.Normally used to enable penny pricing with a setting of 100, C<PriceField> can be used to do an automatic conversion calculation factor based on locale.
 
 !block example; listitem=2
     # Default at startup is 1 if not set
@@ -3118,11 +3120,11 @@ LI1: PriceDivide
     Locale fr_FR  PriceDivide  .20
 !endblock
 
-.The price will now be divided by C<.20>, yielding franc prices five times that of the dollar.
+.The price will now be divided by C<.20>, making the franc price five times higher than the dollar.
 
 LI1: PriceCommas
 
-.This controls whether the C<mon_thousands_sep> will be used for standard currency formatting. Ignored if using C<price_picture>. Set to 1 or 0, to enable and disable respectively. DO NOT USE Yes and No.
+.This controls whether the C<mon_thousands_sep> will be used for standard currency formatting. This setting will be ignored if you are using C<price_picture>. Set the value to 1 or 0, to enable or disable it. Do not use yes or no.
 
 !block example; listitem=2
     # Default at startup is Yes if not set
@@ -3146,7 +3148,7 @@ LI1: UseModifier
 
 LI1: PriceAdjustment
 
-.Changes the fields from C<UseModifier> that will be used to adjust pricing to an automatic conversion factor based on locale.
+.Changes the fields set by C<UseModifier> that will be used to adjust pricing for an automatic conversion factor based on locale. For example:
 
 !block example; listitem=2
     # Default at startup
@@ -3160,7 +3162,7 @@ LI1: TaxShipping,SalesTax
 
 LI1: DescriptionField
 
-.This changes the field accessed by default with the C<[item-description]> and C<[description code]> tags.
+.This changes the field accessed by default with the C<[item-description]> and C<[description code]> tags. For example
 
 !block example; listitem=2
     # Establish the default at startup
@@ -3170,7 +3172,7 @@ LI1: DescriptionField
 
 LI1: The [locale] tag
 
-.Standard error messages can be set based on Locale settings. Make sure not to use any of the predefined keys. It is safer to begin a key with msg_ or such. The default message is set between the C<[locale key]> and C<[/locale]> tags. See the example above.
+.Standard error messages can be set based on Locale settings. Make sure not to use any of the predefined keys. It is safest to begin a key with msg_ . The default message is set between the C<[locale key]> and C<[/locale]> tags. See the example above.
 
 H2: Sorting Based on Locale
 
@@ -3179,8 +3181,6 @@ The Interchange C<[sort database:field]> keys will use the LC_COLLATE setting fo
 *The operating system and C compiler support locales for POSIX, and have the locale definitions set.
 
 *The locale setting matches any configured locales.
-
-It is beyond the scope of this document to discuss these issues. Contact your system administrator or local wizard for help setting up locales on your system.
 
 If this arbitrary database named C<letters>:
 
@@ -3200,7 +3200,7 @@ and this loop:
    [/loop]
 !endblock
 
-used the default C setting for LC_COLLATE, it would display:
+used the default C setting for LC_COLLATE, the following would be displayed:
 
 !block example
    a  19-202
@@ -3209,7 +3209,7 @@ used the default C setting for LC_COLLATE, it would display:
 !endblock
 
 If the proper LC_COLLATE settings for locale C<fr_FR> were in effect,
-then it would become:
+then the above would become:
 
 !block example
    a  19-202
@@ -3230,7 +3230,7 @@ Interchange has the capability to read its locale information from a database, n
    ps_cs_precedes      1       0       0
 !endblock
 
-This would translate I<exactly> into:
+This would translate to the following:
 
 !block example
    Locale en_US PriceDivide         1
@@ -3252,5 +3252,7 @@ This would translate I<exactly> into:
    Locale de_DE ps_cs_precedes      1
 !endblock
 
-These settings append and overwrite any that are set in the catalog configuration files, including any include files. Important note: This information is only read during catalog configuration. It is not reasonable to access a database for translation or currency conversion in the normal course of events.
+These settings append and overwrite any that are set in the catalog configuration files, including any include files. 
+
+Important note: This information is only read during catalog configuration. It is not reasonable to access a database for translation or currency conversion in the normal course of events.
 
