@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icfoundation.sdf,v 1.11 2001-05-14 21:13:09 larry Exp $
+# $Id: icfoundation.sdf,v 1.12 2001-05-15 11:59:44 bill Exp $
 
 !define DOC_NAME "Foundation Store"
 !define DOC_TYPE ""
 !define DOC_CODE "icfoundation"
-!define DOC_VERSION substr('$Revision: 1.11 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.12 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/doc/icfoundation.html"
@@ -380,7 +380,7 @@ CATROOT/templates/leftonly and the 'Edit Page' page within the Content
 Editor of Interchange's admin interface.
 
 Looking at the example template definition file, all lines located
-between the [comment] and [/comment] tags (lines 1 and 53) control what is
+between the E<lbracket>comment] and E<lbracket>/comment] tags (lines 1 and 53) control what is
 available in the Edit Page screen of the admin interface.
 
 B<Lines 2-5:> Template specification
@@ -637,7 +637,7 @@ B<Lines 40-45:> Before/After Banner
 
 Allows a title for the horizontal components to be defined to be
 displayed in a header above the component's items. It is called with
-the [scratch hbanner] tag and used in the Foundation demo in the
+the E<lbracket>scratch hbanner] tag and used in the Foundation demo in the
 random_horizontal component.
 
 B<Lines 47-51:> Special Tag
@@ -1110,7 +1110,7 @@ N</home/ic/catalogs/ft/special_pages/:>
 H2: Components
 
 
-* Added new [control] and [control-set] tags to set series of Scratch-
+* Added new E<lbracket>control] and E<lbracket>control-set] tags to set series of Scratch-
   like option areas. Used for components in UI content editing.
 
 
@@ -1232,7 +1232,7 @@ Interchange when you view the source of a page loaded in the browser.)
 !endblock
 
 Line 9 checks to see whether there are items in the shopping
-basket. If there are, the remaining code up to the closing [/if] tag
+basket. If there are, the remaining code up to the closing E<lbracket>/if] tag
 on line 64 is executed. If not, Interchanges continues executing the
 remaining code in results.html (the file that calls the cart_display
 component).
@@ -1271,8 +1271,8 @@ Action, SKU, Description, Quantity, Price, and Extension.
 !endblock
 
 Line 30 defines the remainder of the table as a section, while the
-[item-list] tag on line 31 tells Interchange to execute the code up to
-the closing tag ([/item-list] on line 59) for each item the customer
+E<lbracket>item-list] tag on line 31 tells Interchange to execute the code up to
+the closing tag (E<lbracket>/item-list] on line 59) for each item the customer
 has ordered so far.
 
     33	<tr class="[item-alternate 2]maincontent[else]contentbar1[/else][/item-alternate]">
@@ -1284,7 +1284,7 @@ has ordered so far.
     39	</TD>
     40
 
-Line 33 begins the next row in the table. The [item-alternate] tag
+Line 33 begins the next row in the table. The E<lbracket>item-alternate] tag
 provided as the value of the class attribute tells Interchange to
 alternate between displaying the rows according to the "maincontent"
 and "contentbar1" styles (gray and white, respectively).
@@ -1294,7 +1294,7 @@ customer can remove or change the quantity of the item ordered.
 
 Line 37 displays the SKU of the item, while lines 38 and 39 provide a
 link to the product display page (flypage.html) for the item. The
-[item-description] tag providing the content of the [page] tag enables
+E<lbracket>item-description] tag providing the content of the E<lbracket>page] tag enables
 the item's name to be displayed as the link to the product display
 page.
 
@@ -1320,7 +1320,7 @@ page.
 !endblock
 
 Line 41 checks whether the item is a gift certificate and, if it is,
-displays "Amount of gift:" and displays the [item-quantity] (amount of
+displays "Amount of gift:" and displays the E<lbracket>item-quantity] (amount of
 the gift certificate, in this case) under the headings "Quantity" and
 "Price", respectively. Otherwise, lines 48 through 50 display the
 quantity and price of the item ordered. Lines 45 or 53 (depending on
@@ -1735,36 +1735,90 @@ The upsell_vertical component is used in the following N<templates:>
 
 H1:The Database Tables
 
-Interchange catalogs are all about the database. You can alter any of the standard databases to suit your needs, add new databases, or remove unneeded ones. But the following dictionary lists each table used in the Foundation demo and each of its fields, and explains its purpose.
+Interchange catalogs are all about the database. You can alter any of the standard databases to suit your needs, add new databases, or remove unneeded ones. 
 
-N:Explain:
-* Implied sub-databases
-* Relational DB map
-* Data assumptions
-* Default medium (DBM vs. files vs. SQL) for each table in demo
+The foundation catalog includes the following tables, organized here by content:
+
+* Your site content data
+.. area.txt
+.. cat.txt
+.. downloadable.txt
+.. merchandising.txt
+.. options.txt
+.. pricing.txt
+.. products.txt
+.. products.txt.category
+
+. {{}}
+
+* Customer data
+.. access.asc
+.. gift_certs.txt
+.. userdb.txt
+
+. {{}}
+
+* Transaction-related data
+.. inventory.txt
+.. orderline.txt
+.. order_returns.txt
+.. transactions.txt
+
+. {{}}
+
+* Third-party relationship data
+.. affiliate.txt
+.. banner.txt
+
+. {{}}
+
+* Site administrative data
+.. component.txt
+.. files.txt
+.. ichelp.txt
+.. icmenu.txt
+.. locale.txt
+.. mv_metadata
+.. route.txt
+.. shipping.asc
+.. variable.txt
+
+. {{}}
+
+* Ancillary data
+.. 2ndDayAir.csv
+.. 450.csv
+.. country.txt
+.. Ground.csv
+.. NextDayAir.csv
+.. salestax.asc
+.. state.txt
 
 
-H2:2ndDayAir.csv
-
-Shipping table
+The following dictionary lists each table used in the Foundation demo and each of its fields, and explains its purpose.
 
 
-H2:450.csv
+H2: 2ndDayAir.csv
 
-Shipping table
-
-
-H2:Ground.csv
-
-Shipping table
+Shipping table from UPS (http://www.ups.com/using/services/rave/rate/).
 
 
-H2:NextDayAir.csv
+H2: 450.csv
 
-Shipping table
+Shipping table from UPS for 450xx Zip Code origin.  You will probably need to get your own from the UPS site (http://www.ups.com/using/services/rave/rate/) and clip the headers.
 
 
-H2:access.asc
+H2: Ground.csv
+
+Shipping table from UPS (http://www.ups.com/using/services/rave/rate/).
+
+
+H2: NextDayAir.csv
+
+Shipping table from UPS (http://www.ups.com/using/services/rave/rate/).
+
+
+H2: access.asc
 
 
 Administrative access table.  This table is used by the administrative interface.
@@ -1989,6 +2043,8 @@ No Description
 
 
 H3: {{CMD[id="access_no_functions"]no_functions}}
+
+Example Data
 
 !block example
    orderstats trafficstats
@@ -2826,7 +2882,7 @@ Overrides the usual HTML link template for navbar entries.  See the B<bar_link> 
 
 H2: country
 
-.A list of countries used to build select boxes and select shipping modes based on countries.
+A list of countries used to build select boxes and select shipping modes based on countries.
 
 !block example
     code
@@ -2838,13 +2894,80 @@ H2: country
 !endblock
 
 
-H2:downloadable.txt
+H2: downloadable
+
+This table controls downloadable products. The 'reports' data set for the foundation catalog demonstrates downloadable products.  List a product's B<sku> in this table if you want to deliver it via download. A customer can then download the file specified in the B<dl_location> field after checkout.
+
+See also the implementation in the following files:
+
+* catalog_root/pages/deliver.html
+* catalog_root/etc/receipt.html
+* catalog_root/pages/query/order_detail.html
+
+
+B<Fields>
+
+!block table; colvaligns="TT"
+Field|Description
+{{CMD[jump="#downloadable_sku"]sku}}|<<
+Unique key, matches B<product.sku>
+>>
+{{CMD[jump="#downloadable_dl_location"]dl_location}}|<<
+Location of downloadable file
+>>
+{{CMD[jump="#downloadable_dl_type"]dl_type}}|<<
+MIME type of downloadable file
+>>
+!endblock
+
+H3: {{CMD[id="downloadable_sku"]sku}}
+
+Example Data
+
+Example Data from 'reports' catalog
 
 !block example
-    sku
-    dl_location
-    dl_type
+   00352as
+   22083da
+   49503cg
+   59330rt
+   59402fw
+   73358ee
+   83491vp
+   90773sh
 !endblock
+
+This is the unique key for this table which is also the common key into the products table.
+
+
+H3: {{CMD[id="downloadable_dl_location"]dl_location}}
+
+
+Example Data from 'reports' catalog
+
+!block example
+   download/00352as.pdf
+   download/22083da.pdf
+   download/49503cg.pdf
+   download/59330rt.pdf
+   download/59402fw.pdf
+   download/73358ee.pdf
+   download/83491vp.pdf
+   download/90773sh.pdf
+!endblock
+
+File location of downloadable product.
+
+
+H3: {{CMD[id="downloadable_dl_type"]dl_type}}
+
+Example Data from 'reports' catalog
+
+!block example
+   application/pdf
+!endblock
+
+MIME type of downloadable content.
 
 
 H2:files.txt
@@ -2921,63 +3044,408 @@ H2:merchandising.txt
     times_ordered
 !endblock
 
+H2: mv_metadata
 
-H2:options.txt
+See the following sections in the icadvanced catalog for more N<information:>
+
+* {{CMD[jump="icadvanced.html#display tag and mv_metadata"]display tag and mv_metadata}}
+* {{CMD[jump="icadvanced.html#mv_metadata.asc"]mv_metadata.asc}}
+
+
+H2: options
+
+This table contains data for implementing simple, matrix and modular options.
+
+Simple options are those a customer may combine arbitrarily, such as size, color and iron-on decal for a T-shirt where the customer may choose any size in any color with any decal. The selected options may affect price.  See the {{C[jump="ictags.html#accessories"]accessories}} tag for more detail on option values for simple options.
+
+Matrix options are preconfigured combinations of options. For example, if you sell titanium and carbon-fiber bike frames, but offer only certain combinations of frame material and color, your checkout page might include a select box with only the following N<entries:>
+
+* Silver Titanium: $1672
+* Black Titanium: $1672
+* Red Titanium: $1674
+* Black Carbon Fiber: $1290
+* Yellow Flame Carbon Fiber: $1300
+
+Note that there is no Yellow Flame Titanium offering, for example.
+
+Modular options are like a structured bill of materials, where one product is a master item and other products are subitems for that master item. The subitems can also be master items to subitems at a lower level. In addition, subitems may be designated as 'phantom', which means that they are placeholders in the hierarchy of the structured bill of materials with their own subitems, but are not actual items themselves.
+
+The foundation catalog with the computer data set uses modular options.
+
+See also the following pages and components in the foundation catalog N<itself:>
+* cat_root/pages/flypage.html
+* cat_root/templates/components/modular_buy
+* cat_root/templates/components/modular_update
+
+Note: Subsequent foundation catalog releases may treat simple, matrix, and modular option types in separate tables.
+
+B<Fields>
+
+!block table; colvaligns="TT"
+Field|Description
+{{CMD[jump="#options_code"]code}}|<<
+Unique ID for the product option
+>>
+{{CMD[jump="#options_o_master"]o_master}}|<<
+SKU of master for the option
+>>
+{{CMD[jump="#options_sku"]sku}}|<<
+SKU for the option (foreign key into products table)
+>>
+{{CMD[jump="#options_o_group"]o_group}}|<<
+Product grouping code
+>>
+{{CMD[jump="#options_o_sort"]o_sort}}|<<
+Sorting prefix for list display
+>>
+{{CMD[jump="#options_phantom"]phantom}}|<<
+BooleanE<nbspace>E<emdash> Item is a phantom placeholder (as in structured bill of materials) with suboptions.
+>>
+{{CMD[jump="#options_o_enable"]o_enable}}|<<
+BooleanE<nbspace>E<emdash> enables suboptions for the option
+>>
+{{CMD[jump="#options_o_matrix"]o_matrix}}|<<
+Matrix-type option (preconfigured combinations of attributes)
+>>
+{{CMD[jump="#options_o_modular"]o_modular}}|<<
+Modular-type option (master/subitem relationship like modular bill of materials)
+>>
+{{CMD[jump="#options_o_default"]o_default}}|<<
+Default selection for the option group
+>>
+{{CMD[jump="#options_o_label"]o_label}}|<<
+Short name for option display
+>>
+{{CMD[jump="#options_o_value"]o_value}}|<<
+Simple option values (in Interchange option format)
+>>
+{{CMD[jump="#options_o_widget"]o_widget}}|<<
+The HTML widget to use for displaying the option group
+>>
+{{CMD[jump="#options_o_footer"]o_footer}}|<<
+Not used in foundation catalog
+>>
+{{CMD[jump="#options_o_header"]o_header}}|<<
+Not used in foundation catalog
+>>
+{{CMD[jump="#options_o_height"]o_height}}|<<
+Height of widget (if applicable)
+>>
+{{CMD[jump="#options_o_width"]o_width}}|<<
+Width of widget
+>>
+{{CMD[jump="#options_description"]description}}|<<
+Option/Variant description (for description in display)
+>>
+{{CMD[jump="#options_price"]price}}|<<
+Price of this option/variant
+>>
+{{CMD[jump="#options_wholesale"]wholesale}}|<<
+Dealer price of this option/variant
+>>
+{{CMD[jump="#options_differential"]differential}}|<<
+
+>>
+{{CMD[jump="#options_weight"]weight}}|<<
+Weight difference with this option/variant (for shipping)
+>>
+{{CMD[jump="#options_volume"]volume}}|<<
+Volume difference with this option/variant
+>>
+{{CMD[jump="#options_mv_shipmode"]mv_shipmode}}|<<
+No Description
+>>
+{{CMD[jump="#options_o_exclude"]o_exclude}}|<<
+Option groups to exclude (trumped by B<o_include>). Modular only.
+>>
+{{CMD[jump="#options_o_include"]o_include}}|<<
+Option groups to include (trumps B<o_exclude>). Modular only.
+>>
+!endblock
+
+H3: {{CMD[id="options_code"]code}}
+
+Example Data
 
 !block example
-    code
-    o_master
-        Master item (Always included when the base SKU is equal to this.)
-    sku
-        Unique SKU (Associated item)
-    o_group
-        Option Group (scanned to see if it applies (or doesn't apply) to this
-        product)
-    o_sort
-    phantom
-        Phantom? (Whether a phantom for structuring)
-    o_enable
-        Follow? (Enable for next level) Sub-items
-    o_matrix
-        Matrix options (Matrix options allow you to maintain multiple option
-        sets with inventory on each combination)
-    o_modular
-        Modular Options (Modular options allow you to attach multiple SKUs to
-        the same item, possibly with attached options of their own.  Very
-        complex but you can do most anything.
-    o_default
-        Default? (Yes if the default selection for the group)
-    o_label
-        Short name for option display
-    o_value
-        Possible Values (In Interchange option format: VALUE1=Label 1,
-        VALUE2=Label 2 *=default selection)
-    o_widget
-    o_footer
-    o_header
-    o_height
-        Height of widget (if applicable)
-    o_width
-        Width of widget
-    description
-        Option/Variant description (for description in display)
-    price
-        Price (Price of this option/variant)
-    wholesale
-        Dealer price
-    differential
-    weight
-    volume
-        Volume (if different, mostly for matrix/modular)
-    mv_shipmode
-    o_exclude
-        Exclude (Only for modular options. Lists the option groups to exclude
-        once the include has been done.  Takes the form of a number of wildcard
-        atoms.
-    o_include
-        Include (Only for modular options. Lists the option groups to include
-        with your item. Takes the form of a number of wildcard atoms.)
+   1002
+   1003
+   1004
+   1005
 !endblock
+
+Unique ID for the option.
+
+
+H3: {{CMD[id="options_o_master"]o_master}}
+
+Example Data
+
+!block example
+   00010
+   999000
+   999001
+   999002
+!endblock
+
+SKU of the master item for the option. The master item is one level up in the modular hierarchy, and must be one of the N<following:>
+
+* An item in the products table (matching B<products.sku>)
+* Another option in the options table (matching B<options.sku>)
+* A {{CMD[jump="#options_phantom"]phantom}} item in the B<options> table.
+
+If an option has a master item, then a customer cannot choose the option without having previously selected the master item.
+
+The price for a master item is the sum of the item's price and the price for each of its subitems. Since the subitems are recursively defined, the top-level item reflects the aggregate price of the top-level price and all selected options.
+
+
+H3: {{CMD[id="options_sku"]sku}}
+
+Example Data
+
+!block example
+   00010
+   999000
+   7000015
+   7000030
+!endblock
+
+The sku for the item or option. Note that this may not be unique for matrix options or if an option that belongs to multiple B<o_master>s is listed for each master.
+
+H3: {{CMD[id="options_o_group"]o_group}}
+
+Example Data
+
+!block example
+   A
+   B
+   C
+   I
+!endblock
+
+Product group (scanned to see whether it applies or not to this product)
+
+H3: {{CMD[id="options_o_sort"]o_sort}}
+
+Example Data
+
+!block example
+   01
+   02
+   03
+   04
+   47
+   48
+   49
+   50
+!endblock
+
+Sorting prefix for listing order of options.
+
+
+H3: {{CMD[id="options_phantom"]phantom}}
+
+Modular options only.
+
+BooleanE<nbspace>E<emdash> if true (1), then this is a phantom item acting as a placeholder for other items rather than an actual product. Note that the item's B<sku> will not match an entry in the products table, though the B<o_master> will match either the B<sku> of another phantom item in the B<options> table or the B<sku> of an item in the B<products> table.
+
+H3: {{CMD[id="options_o_enable"]o_enable}}
+
+BooleanE<nbspace>E<emdash> Enables subitems for this item or option. Note that an option with B<o_enable> false may itself still be a subitem for an option or item above it.
+
+
+H3: {{CMD[id="options_o_matrix"]o_matrix}}
+
+Boolean. Set true (1) for matrix-type options.  See the options table in the tools data set for examples of matrix options. Matrix options that are part of a set have the same value for B<options.sku>.
+
+
+H3: {{CMD[id="options_o_modular"]o_modular}}
+
+Specifies a modular option.  See main heading for description of modular options.
+
+
+H3: {{CMD[id="options_o_default"]o_default}}
+
+Example Data
+
+!block example
+   1
+   11002
+   7000062
+   7000087
+!endblock
+
+Selects the default option for a group.  
+
+
+H3: {{CMD[id="options_o_label"]o_label}}
+
+Example Data
+
+!block example
+   Add a second hard drive
+   Case Color
+   Case color
+   Case style
+   Include tapes
+   Red
+!endblock
+
+This is the short name for option display.
+
+
+H3: {{CMD[id="options_o_value"]o_value}}
+
+Example Data
+
+!block example
+   1=One 8GB tape,2=Two 8GB tapes,=None*
+   a=One 8GB tape,b=Two 8GB tapes,=None*
+   baby=Baby Tower,mid=Mid-tower,full=Full Tower
+   baby=Baby tower,mid=Mid-tower,full=Full tower
+   red=Passion Red,blue=Electric Blue,green=Sea Green,grey=S...
+   red=Passion Red,yellow=Lemon Yellow,blue=Electric Blue,gr...
+   red=Rage Red,yellow=Honey Yellow
+!endblock
+
+This is an Interchange value set for a simple option. It is typically a comma-delimited list of labels and values with '*' indicating the default value.  See the {{C[jump="ictags.html#accessories"]accessories}} tag for more detail.
+
+
+H3: {{CMD[id="options_o_widget"]o_widget}}
+
+Example Data
+
+!block example
+   select
+!endblock
+
+This determines the HTML Widget type (for example, a select box).
+
+
+H3: {{CMD[id="options_o_footer"]o_footer}}
+
+Example Data
+
+!block example
+!endblock
+
+Allowed Values
+
+###o_footer.options.DESC###
+
+
+H3: {{CMD[id="options_o_header"]o_header}}
+
+Example Data
+
+!block example
+!endblock
+
+Allowed Values
+
+###o_header.options.DESC###
+
+
+H3: {{CMD[id="options_o_height"]o_height}}
+
+This allows you to set the height of the HTML widget, if appropriate.
+
+
+H3: {{CMD[id="options_o_width"]o_width}}
+
+This allows you to set the width of the HTML widget if you wish.
+
+
+H3: {{CMD[id="options_description"]description}}
+
+Example Data
+
+!block example
+   ATX Mid Tower-Grey (3)5.25 (2)3.5 & (1)3.5 Hidden
+   Enlight ATX Desktop Case (2)5.25 & (2)3.5
+   Enlight ATX Tower Case (4) 5.25 & (2)3.5
+   Micro ATX Tower - Honey Yellow
+   Micro ATX Tower - Moody Blue
+   Micro ATX Tower - Rage Red
+   Micro ATX Tower - Smoky Grey
+   Super Tower Case (6)5.25 & (3)3.5
+!endblock
+
+Longer description to show when displaying the options.
+
+
+H3: {{CMD[id="options_price"]price}}
+
+Example Data
+
+!block example
+   0.00
+   10
+   20
+   29
+   75
+!endblock
+
+This sets the retail price of the option.
+
+
+H3: {{CMD[id="options_wholesale"]wholesale}}
+
+Example Data
+
+!block example
+   13
+   40.00
+!endblock
+
+This sets the dealer price of the option.
+
+
+H3: {{CMD[id="options_differential"]differential}}
+
+Example Data
+
+!block example
+   -209
+   -40
+   -79
+!endblock
+
+
+
+H3: {{CMD[id="options_weight"]weight}}
+
+Example Data
+
+!block example
+   5
+!endblock
+
+Shipping weight of the option. Interchange uses this to calculate shipping cost.
+
+H3: {{CMD[id="options_volume"]volume}}
+
+Volume added by the option.
+
+
+H3: {{CMD[id="options_mv_shipmode"]mv_shipmode}}
+
+No Description
+
+
+H3: {{CMD[id="options_o_exclude"]o_exclude}}
+
+Modular options only.
+
+Lists the option groups to exclude once the include has been done.  Takes the form of a number of wildcard atoms.
+
+
+H3: {{CMD[id="options_o_include"]o_include}}
+
+Modular options only.
+
+Lists the option groups to include with your item. Takes the form of a number of wildcard atoms.
+
 
 
 H2:order_returns.txt
@@ -3035,70 +3503,434 @@ See the page C<query/check_orders.html> for how it might be used. See C<etc/repo
 !endblock
 
 
-H2:pricing.txt
+H2: pricing
 
-A database that works in conjunction with the C<CommonAdjust> directive to allow quantity pricing, either for one product or for a group of products (sometimes known as mix-and-match). The fields C<q2, q5, q10, etc.> are for the quantity levels; the C<price_group> field selects the mix-and-match category for the product.
+This database works in conjunction with the C<CommonAdjust> directive to allow quantity pricing, either for one product or for a group of products (sometimes known as mix-and-match). The fields C<q2, q5, q10, etc.> are for the quantity levels; the C<price_group> field selects the mix-and-match category for the product.
 
-!block example
-    sku
-    price_group
-    q2
-    q5
-    q10
-    q25
-    q100
+B<Fields>
+
+!block table; colvaligns="TT"
+Field|Description
+{{CMD[jump="#pricing_sku"]sku}}|<<
+Unique key, shared with products table
+>>
+{{CMD[jump="#pricing_price_group"]price_group}}|<<
+Mix-and-match category
+>>
+{{CMD[jump="#pricing_q2"]q2}}|<<
+Retail, 2 or more
+>>
+{{CMD[jump="#pricing_q5"]q5}}|<<
+Retail, 5 or more
+>>
+{{CMD[jump="#pricing_q10"]q10}}|<<
+Retail, 10 or more
+>>
+{{CMD[jump="#pricing_q25"]q25}}|<<
+Retail, 25 or more
+>>
+{{CMD[jump="#pricing_q100"]q100}}|<<
+Retail, 100 or more
+>>
+{{CMD[jump="#pricing_w2"]w2}}|<<
+Wholesale, 2 or more
+>>
+{{CMD[jump="#pricing_w5"]w5}}|<<
+Wholesale, 5 or more
+>>
+{{CMD[jump="#pricing_w10"]w10}}|<<
+Wholesale, 10 or more
+>>
+{{CMD[jump="#pricing_w25"]w25}}|<<
+Wholesale, 25 or more
+>>
+{{CMD[jump="#pricing_w100"]w100}}|<<
+Wholesale, 100 or more
+>>
 !endblock
 
+H3: {{CMD[id="pricing_sku"]sku}}
 
-H2:products.txt
-
-The main product table. This is where product information is stored. Add new fields or ignore existing ones as needed. Field by field:
+Example Data
 
 !block example
-    sku
-		The unique identifier for the product. Though theoretically it can contain most any character, use only characters of the class C<A-Z a-z 0-9 _ -> in order to be compatible with SQL databases, file systems, and URL encoding. Other characters can cause problems. A slash (C</>) can interfere with URLs and filenames. A colon (C<:>) can interfere with database representations (or file names on some operating systems). There are other possible compatibility situations with other characters.
-    description
-		A short description for the product that is used for displaying in the shopping cart, receipt, and order report. Keep it short.
-    title
-		This is usually catalog-specific since it applies to art. However, it would also apply to books, CDs, or other items.
-    template_page
-    comment
-		A long description of the product. If using the Interchange internal database, the field size is unlimited; if using another type of database, the length will be dependent on the field type selected.
-    thumb
-        Thumb
-    image
-		The image filename for the product. Many users add a C<thumb> field to contain the name of a small image for search list display. Another popular technique is to store images in files that are named for the product code (SKU), instead of using this field. You can then check if an image exists for a given SKU with this construct:
-			[if type=file compare="[item-code]".jpg"]<img src="[item-code].jpg">[/if]
-    price
-		The quantity-one price of the product.
-    wholesale
-        Dealer Price
-    prod_group
-    category
-		The category used for selection in lists. It is possible to place a product in more than one category, although this will require decisions about display and banner headings. Embedded Perl or other methods can be used.
-    nontaxable
-		If set to C<1>, the product is not taxable and its price will not be used in a sales tax calculation.
-    weight
-		A numeric value of the weight used for determining shipping costs (with UPS, for example). Normally in pounds, it can be anything the shipping routines will handle.
-    size
-		A comma-separated list of options as used in C<Accessories>. See the C<flypage.html> and C<ord/basket.html> pages for examples of how it is used. An example:
-			Small, Medium, Large, XL
-		Other attribute information may be defined in a separate field.
-    color
-		A comma-separated list of options as used in C<Accessories>. See the C<flypage.html> and C<ord/basket.html> pages for examples of how it is used.
-    gift_cert
-        Gift certificate handling? (Yes if price should appear to be quantity)
-    related
-		Used for displaying "upsells," opportunities to purchase an additional item when this one is purchased. Contains a comma-separated list of SKUs to be offered.
-    featured
-		As used in the demo, the only meaningful value is C<front>. If this is contained in the field, this product may be featured on the front page via random selection. See the C<index.html> page for how it integrates with C<[loop search=something random=3]>.
-    download
-    dl_type
-    dl_location
-    inactive
-    url
+   os28004
+   os28006
+   os28057c
+   os28069
 !endblock
 
+Unique key, matching the B<sku> for an entry in products table.
+
+
+H3: {{CMD[id="pricing_price_group"]price_group}}
+
+Example Data
+
+!block example
+   general
+!endblock
+
+This field determines mix-and-match categories if you want to allow mix-and-match quantity pricing (i.e., where 5 of I<these> plus 5 of I<those> afford the B<q10> price for both I<these> and I<those>).
+
+H3: {{CMD[id="pricing_q2"]q2}}
+
+If set, this will be the price per item when the order quantity is 2 or greater and less than the next price break quantity with a value set.
+
+H3: {{CMD[id="pricing_q5"]q5}}
+
+If set, this will be the price per item when the order quantity is 5 or greater and less than the next price break quantity with a value set.
+
+
+H3: {{CMD[id="pricing_q10"]q10}}
+
+If set, this will be the price per item when the order quantity is 10 or greater and less than the next price break quantity with a value set.
+
+
+H3: {{CMD[id="pricing_q25"]q25}}
+
+If set, this will be the price per item when the order quantity is 25 or greater and less than the next price break quantity with a value set.
+
+
+H3: {{CMD[id="pricing_q100"]q100}}
+
+If set, this will be the price per item when the order quantity is 100 or greater and less than the next price break quantity with a value set.
+
+
+H3: {{CMD[id="pricing_w2"]w2}}
+
+If set, this will be the dealer price per item when the order quantity is 2 or greater and less than the next price break quantity with a value set.
+
+
+H3: {{CMD[id="pricing_w5"]w5}}
+
+If set, this will be the dealer price per item when the order quantity is 5 or greater and less than the next price break quantity with a value set.
+
+
+H3: {{CMD[id="pricing_w10"]w10}}
+
+If set, this will be the dealer price per item when the order quantity is 10 or greater and less than the next price break quantity with a value set.
+
+
+H3: {{CMD[id="pricing_w25"]w25}}
+
+If set, this will be the dealer price per item when the order quantity is 25 or greater and less than the next price break quantity with a value set.
+
+
+H3: {{CMD[id="pricing_w100"]w100}}
+
+If set, this will be the dealer price per item when the order quantity is 100 or greater and less than the next price break quantity with a value set.
+
+
+H2: products
+
+This is the main table for product data. See also '{{CMD[jump="icdatabase.html#The Product Database"]The Product Database}}' section in the database documentation.
+
+Note that the B<sku> is also the master key in many of the related tables.
+
+
+B<Fields>
+
+!block table; colvaligns="TT"
+Field|Description
+{{CMD[jump="#products_sku"]sku}}|<<
+Unique product ID
+>>
+{{CMD[jump="#products_description"]description}}|<<
+Short description for list display
+>>
+{{CMD[jump="#products_title"]title}}|<<
+Deprecated
+>>
+{{CMD[jump="#products_template_page"]template_page}}|<<
+Not used in foundation catalog. No description.
+>>
+{{CMD[jump="#products_comment"]comment}}|<<
+Longer description for item display (e.g., flypage.html)
+>>
+{{CMD[jump="#products_thumb"]thumb}}|<<
+Thumbnail image
+>>
+{{CMD[jump="#products_image"]image}}|<<
+Regular-sized image
+>>
+{{CMD[jump="#products_price"]price}}|<<
+Retail quantity one price
+>>
+{{CMD[jump="#products_wholesale"]wholesale}}|<<
+Dealer minimum quantity price
+>>
+{{CMD[jump="#products_prod_group"]prod_group}}|<<
+Product supercategory
+>>
+{{CMD[jump="#products_category"]category}}|<<
+Product category
+>>
+{{CMD[jump="#products_nontaxable"]nontaxable}}|<<
+Boolean. Set true (1) if nontaxable
+>>
+{{CMD[jump="#products_weight"]weight}}|<<
+Weight in your units. Should match shipping table.
+>>
+{{CMD[jump="#products_size"]size}}|<<
+Deprecated list of options used with {{CMD[jump="ictags.html#accessories"]accessories}} tag.
+>>
+{{CMD[jump="#products_color"]color}}|<<
+Deprecated list of options used with {{CMD[jump="ictags.html#accessories"]accessories}} tag.
+>>
+{{CMD[jump="#products_gift_cert"]gift_cert}}|<<
+Boolean. Set true (1) if this is a gift certificate.
+>>
+{{CMD[jump="#products_related"]related}}|<<
+Deprecated in favor of {{B[jump="merchandising_upsell_to"]merchandising.upsell_to}}
+>>
+{{CMD[jump="#products_featured"]featured}}|<<
+Deprecated. Use {{B[jump="merchandising"]merchandising}} table.
+>>
+{{CMD[jump="#products_inactive"]inactive}}|<<
+Boolean. Set true (1) to inactivate a product
+>>
+{{CMD[jump="#products_url"]url}}|<<
+Not Documented
+>>
+!endblock
+
+H3: {{CMD[id="products_sku"]sku}}
+
+Example Data
+
+!block example
+   gift_cert
+   os28004
+   os28006
+   os28057c
+!endblock
+
+Unique identifier for the product.  You should use only characters of the class C<A-Z a-z 0-9 _ -> (i.e., matching the regular expression, 'E<lbracket>-A-Za-z0-9_]+').  Although Interchange itself does not impose this restriction, you may have problems with SQL databases, file systems, and URL encoding if you use other characters. For example, a slash (C</>) can interfere with URLs and filenames, a colon (C<:>) can interfere with database representations (or file names on some operating systems), i<etc.>
+
+
+H3: {{CMD[id="products_description"]description}}
+
+Example Data
+
+!block example
+   Brush Set
+   Disposable Brush Set
+   Ergo Roller
+   Gift Certificate
+   Painters Brush Set
+   Painters Ladder
+   Spackling Knife
+   Trim Brush
+!endblock
+
+A short description for the product that is used for displaying in the shopping cart, receipt, and order report. Keep it short.
+
+
+H3: {{CMD[id="products_title"]title}}
+
+Example Data
+
+!block example
+   Brush Set
+   Disposable Brush Set
+   Ergo Roller
+   Gift Certificate
+   Painters Brush Set
+   Painters Ladder
+   Spackling Knife
+   Trim Brush
+!endblock
+
+Despite the redundant duplication of the description field's data, this column is not used in the foundation catalog. Previously used in the Art store (simple) demo for a painting title. You probably want to use B<description> instead. You probably do not need this column in the table at all.
+
+
+H3: {{CMD[id="products_template_page"]template_page}}
+
+Not used in foundation catalog.
+
+No Description.
+
+
+H3: {{CMD[id="products_comment"]comment}}
+
+Example Data
+
+!block example
+   A must have for all painters!  This spackling knife is ergon...
+   Enjoy the perfect feel and swing of our line of hammers. Thi...
+   This set includes 2" and 3" trim brushes and our ergonomical...
+   This set of disposable foam brushes is ideal for any stainin...
+!endblock
+
+This is the field for a long description of the product. If you are using an Interchange text/gdbm database, the field size is unlimited; if using another type of database, the length will be dependent on the field type selected.  If you are using a SQL database, see the appropriate cat_root/dbconf subdirectory for a place to set COLUMN_DEF values.  See also the database documentation, '{{CMD[jump="icdatabase.html#Importing from an ASCII File"]Importing from an ASCII File}}', for details about defaults for columns you do not define.
+
+
+H3: {{CMD[id="products_thumb"]thumb}}
+
+Example Data
+
+!block example
+   gift_certificate.gif
+   os28004_b.gif
+   os28005_b.gif
+   os28006_b.gif
+!endblock
+
+This is the filename for a small (thumbnail) image of the product.
+
+
+H3: {{CMD[id="products_image"]image}}
+
+Example Data
+
+!block example
+   gift_certificate_large.gif
+   os28004.gif
+   os28005.gif
+   os28006.gif
+!endblock
+
+This is the filename for a regular-sized image of the product, as you would like it to appear in an HTML <img src="B<image>"> tag. Note that you do not need to specify the path if the image files are in the usual Interchange image directory.
+
+
+H3: {{CMD[id="products_price"]price}}
+
+Example Data
+
+!block example
+   1.00
+   12.99
+   14.99
+   9.99
+!endblock
+
+The quantity-one price of the product.  See the B<wholesale> field and the {{CMD[jump="#price"]price}} table for dealer and quantity pricing.
+
+
+H3: {{CMD[id="products_wholesale"]wholesale}}
+
+Example Data
+
+!block example
+   1
+   10
+   11
+   12
+!endblock
+
+This is the minimum dealer price for the item.  For quantity pricing, see the {{CMD[jump="#price"]price}} table.
+
+
+H3: {{CMD[id="products_prod_group"]prod_group}}
+
+Example Data
+
+!block example
+   Hand Tools
+   Hardware
+   Ladders
+   Measuring Tools
+   Miscellaneous
+   Painting Supplies
+   Safety Equipment
+   Tool Storage
+!endblock
+
+Product group (supercategory).  This indicates the grouping of product categories, for example in the navigation bars created from the B<area> table (note the match with the B<name> data in the area table).
+
+
+H3: {{CMD[id="products_category"]category}}
+
+Example Data
+
+!block example
+   Brushes
+   Gift Certificate
+   Hammers
+   Ladders
+   Nails
+   Paintbrushes
+   Putty Knives
+   Rollers
+!endblock
+
+This is the category the product should appear in when you select a list. You can put a product in more than one category, but you may need to accommodate this in display and banner headings.  Embedded perl is helpful for this.
+
+
+H3: {{CMD[id="products_nontaxable"]nontaxable}}
+
+Boolean value.  If true (1), the sales tax calculation for an order will not include the cost of the product.  See also the {{C[jump="ictags.html#salestax"]salestax}} tag.
+
+
+H3: {{CMD[id="products_weight"]weight}}
+
+Example Data
+
+!block example
+   1
+   2
+   3
+!endblock
+
+This is a numeric value of the weight used for determining shipping costs (with UPS, for example).  In the US, this is typically the weight in pounds in order to match the UPS, Fed Ex and other standard shipping tables.
+
+
+H3: {{CMD[id="products_size"]size}}
+
+Example Data
+
+!block example
+   1", 2", 3"
+   1', 1.5'
+   1/4", 1/2", 3/4", 1", 2", 3"
+   10oz, 15oz, 20 oz
+   2"
+   6'
+   set
+   standard, metric
+!endblock
+
+The foundation catalog now uses the B<options> table to handle product options (also sometimes called product attributes).
+
+The {{C[jump="ictags.html#accessories"]accessories}} tag can build HTML widgets from the comma-delimited list of product options.  You can use a delimiter other than comma (if compatible with the table) as long as you also set the {{C[jump="ictags.html#accessories_delimiter"]delimiter}} in the {{C[jump="ictags.html#accessories"]accessories}} tag.
+
+
+H3: {{CMD[id="products_color"]color}}
+
+Another product option column. No longer used in the foundation catalog. See B<size> above for description.
+
+
+H3: {{CMD[id="products_gift_cert"]gift_cert}}
+
+Boolean value.  If true (1), specifies that this product is a gift certificate. See also the {{B[jump="gift_certs"]gift_certs}} table.
+
+
+H3: {{CMD[id="products_related"]related}}
+
+Used for displaying "upsells," opportunities to purchase an additional item when this one is purchased. Contains a comma-separated list of SKUs to be offered.
+
+The foundation catalog now instead uses the {{B[jump="merchandising_upsell_to"]upsell_to}} field of the {{B[jump="merchandising"]merchandising}} table for upselling.
+
+
+H3: {{CMD[id="products_featured"]featured}}
+
+Deprecated in favor of the  {{B[jump="merchandising"]merchandising}} table.
+
+
+H3: {{CMD[id="products_inactive"]inactive}}
+
+If true (1), renders the product inactive (i.e., it will not appear in the catalog).
+
+
+H3: {{CMD[id="products_url"]url}}
+
+Not Documented
+
+
+H2: products.category.txt
+
+The products.txt.category table (actually a link to products.txt.10) is simply an automatically generated index into the products table to speed category searches.  See {{CMD[jump="icdatabase.html#Dictionary Indexing With INDEX"]Dictionary Indexing With INDEX}} in the database documentation for details about auto-indexing of text databases.
 
 H2:route.txt
 
