@@ -1,0 +1,4 @@
+Tips on using Interchange with PostgreSQL
+
+Make sure you have DBD::Pg installed and tested.
+Make sure POSTGRES_INCLUDE and POSTGRES_LIB environment variables are set.

@@ -1,0 +1,57 @@
+Tips on using Interchange with Apache
+
+
+Date: Thu, 7 Sep 2000 12:08:37 -0700
+From: Bill Randle <billr@exgate.tek.com>
+Reply-To: minivend-users@minivend.com
+To: minivend-users@minivend.com
+Subject: Re: [mv] no /cgi-bin/storename/
+ 
+******    message to minivend-users from "Bill Randle" <billr@exgate.tek.com>     ******
+ 
+On Sep 6,  5:13am, Victor Nolton wrote:
+} Subject: [mv] no /cgi-bin/storename/
+} ******    message to minivend-users from Victor Nolton <ven@pragakhan.com>
+  ******
+}
+} I've noticed some of the catalogs I've done are not indexed well with
+} the search engine, though most pages have meta tags, there is a
+} robot.txt file and so on and so forth.I assume it's due to the
+} cgi-bin in the url (not sure).
+}
+} I'd like to start having stores be like
+}
+} http://www.yourdomain.com/index.html
+} http://www.yourdomain.com/ord/basket.html
+} instead of
+} http://www.yourdomain.com/cgi-bin/yourstore/index.html
+} http://www.yourdomain.com/cgi-bin/yourstore/ord/basket.html
+}
+} how do you accomplish this? I assume it can be done somehow.
+ 
+In addition to using mod_minivend, previosuly suggested, you can do this
+with Apache rewrite rules in the VirtualHost directive for yourdomain.com:
+ 
+<VirtualHost a.b.c.d>
+    ServerAdmin support@mainhost.com
+    DocumentRoot /home/httpd/html/yourstore
+    ServerName www.yourdomain.com
+    ErrorLog logs/yourdomain-error_log
+    CustomLog logs/yourdomain-access_log common
+    ScriptAlias /cgi-bin/ "/home/httpd/cgi-bin/"
+    RewriteEngine On
+    RewriteRule    ^$      /cgi-bin/yourstore/index.html    [PT,L]
+    RewriteRule    ^/$     /cgi-bin/yourstore/index.html    [PT,L]
+    RewriteRule    ^/index\.html$  /cgi-bin/yourstore/index.html    [PT,L]
+    RewriteRule    ^/cgi-bin/yourstore/.*   -           [PT,L]
+    RewriteRule    ^/(.*)      /cgi-bin/yourstore/$1        [PT,L]
+</VirtualHost>
+ 
+I just did this for a client and it works quite well (as long as you're
+using a fairly recent version of Apache as your webserver).
+ 
+        -Bill
+-
+To unsubscribe from the list, DO NOT REPLY to this message.  Instead, send
+email with 'UNSUBSCRIBE minivend-users' in the body to Majordomo@minivend.com.
+Archive of past messages: http://www.minivend.com/minivend/minivend-list
