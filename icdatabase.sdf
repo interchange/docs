@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.50 2002-07-31 19:55:52 kwalsh Exp $
+# $Id: icdatabase.sdf,v 1.51 2002-10-30 01:21:37 jon Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.50 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.51 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icdatabase.html"
@@ -2420,8 +2420,6 @@ H2: How Shipping is Calculated
 ^The base code is selected by reading the value of C<mv_shipmode> in the user session. If it has not been explicitly set, either by means of the DefaultShipping directive or by setting the variable on a form (or in an order profile), it will be C<default>.
 
 .The mv_shipmode must be in the character class [A-Za-z0-9_]. If there are spaces, commas, or nulls in the value, they will be read as multiple shipping modes.
-
-+The modes are selected from the d
 
 .*The criterion field is found. If it is quantity, it is the total quantity of items on the order form. If it is any other name, the criterion is calculated by multiplying the return value from the product database field for each item in the shopping cart, multiplied by its quantity. If the lookup fails due to the column or row not existing, a zero cost will be returned and an error is sent to the catalog error log. If a number is returned from an Interchange tag, that number is used directly.
 
