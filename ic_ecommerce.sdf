@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ic_ecommerce.sdf,v 1.4 2001-11-01 18:56:49 edl Exp $
+# $Id: ic_ecommerce.sdf,v 1.5 2001-11-01 19:43:19 edl Exp $
 
 !define DOC_NAME "Interchange Ecommerce Functions"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_ecommerce"
-!define DOC_VERSION substr('$Revision: 1.4 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.5 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ic_ecommerce.html"
@@ -174,40 +174,43 @@ I<Item Attributes>.
 =head2 How to set up an on-the-fly item
 
 If you enable the catalog directive I<OnFly>, setting it to the
-name of a tag (possibly a UserTag) that can handle its calls, then
+name of a subroutine (or possibly a UserTag) that can handle its calls, then
 Interchange will add items to the basket that are not in the product
-database.
+database. Interchange supplies an internal C<onfly> subroutine, which 
+will work according to the examples given below. 
 
-The C<OnFly> directive accepts a tag name:
+In I<catalog.cfg>:
 
 >    OnFly  onfly
 
-Interchange supplies the C<onfly> tag which will work with the descriptions
-below. If your item code is not to be named C<mv_order_item> then you
+If your item code is not to be named C<mv_order_item> then you
 must perform a rename in the C<Autoload> routine.
 
 A basic link can be generated like:
 
->    [area form="
+>    <a href="[area form="
 >            mv_todo=refresh
 >            mv_order_item=000101
 >            mv_order_fly=description=An on-the-fly item|price=100.01
->    "]
+>    "]">Order item 000101</a>
 
 The form parameter value C<mv_order_fly> can contain any number of fields
 which will set corresponding parameters in the item attributes. The fields
 are separated by the pipe (C<|>) character and contain value-parmeter
-pairs separated by an = sign. (These are URL-encoded by the [area ...] tag,
-of course.) You can set a size, color, or any other parameter. If you want
-to see what the actual URL will look like, put the above example in a
-page and study it.
+pairs separated by an = sign. (These are URL-encoded by the C<[area ...]> or
+C<[page ...]> tag, of course.) You can set a size, color, or any other parameter.
 
 The special attribute C<mv_price> can be used in conjunction with the
 C<CommonAdjust> atom C<$> to set the price for checkout and display.
 
 The C<[item-list]> sub-tag C<[item-description]>, when used with an
 item-list, will use the item attribute C<description> to display in the 
-basket.
+basket. Note that C<[item-field description]> or C<[item-data products description]>
+will NOT work, as both of these tags reference an actual field value for 
+a record in the products table - not applicable for on-the-fly items.
+Similarly, an attempt to generate a flypage for an on-the-fly item 
+(<[page 000101]>, for example>) will fail, resulting in the display of
+the SpecialPage B<missing>.
 
 If you wish to set up a UserTag to process on-the-fly items, it should
 accept a call of
