@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ic_howto_cvs.sdf,v 1.4 2001-08-06 23:23:04 jon Exp $
+# $Id: ic_howto_cvs.sdf,v 1.5 2001-08-29 01:50:03 danb Exp $
 
 !define DOC_NAME "Interchange + CVS HOWTO"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_howto_cvs"
-!define DOC_VERSION substr('$Revision: 1.4 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.5 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ic_howto_cvs.html"
@@ -23,21 +23,21 @@ N:The purpose of this document is to help others take advantage of CVS and Inter
 
 H2:Audience
 
-N:I intend for this document to be useful to those who are not yet familiar with CVS as well as those who are.  If you already know how to setup a pserver then you might just skim chapter 2 ("Setup CVS"), or just skip it all together.
+N:I intend for this document to be useful to those who are not yet familiar with CVS as well as those who are.  If you already know how to setup a pserver then you might just skim chapter 2 ("Setup CVS"), or skip it all together.
 
-N:In addition, I have tried to write at a technical level that would be on par with what I percieve to be the average Interchange user that participates in the interchange-users mailing list.  It is assumed that the reader can and has setup Interchange and the foundation (or construct) template catalog is working correctly.
+N:In addition, I have tried to write at a technical level that would be on par with what I percieve to be the average Interchange user that participates on the interchange-users mailing list.  It is assumed that the reader can and already has setup Interchange and the template catalog (such as foundation or construct) is working correctly.
 
 H2:Contact the author
 
 N:If you find any spelling errors, technical slipups, mistakes, subliminal messages, or if you wish to send feedback, critique, remarks, comments, or if you wish to contribute examples, instructions for alternative platforms, chapters, or other material, please do so.  
 
-N:The preferred method of submitting these changes is in the form of a context diff against the SDF source file (ic_cvs.sdf).  Please address your correspondence to:
+N:The preferred method of submitting changes is in the form of a context diff against the SDF source file (ic_cvs.sdf).  Please address your correspondence to:
 
 N:Dan Browning {{EMAIL:danpb@mail.com}}
 
 H2:The advantages of using CVS
 
-N:CVS is a very useful tool and can help you in your development, no matter if you are one developer or are coordinating a team of developers.  
+N:CVS is a very useful tool and can help you in your development, no matter if you are one developer or are part of a team of developers.  
 
 *What is CVS all about?
 
@@ -61,7 +61,7 @@ N:The official CVS website ({{URL:http://www.cvshome.org/new_users.html}}) has m
 
 H2:How to use this document
 
-N:There are many potential uses of CVS as it applies to Interchange.  In fact, there are as many unique ways to use CVS as there are unique developers.  This document can only cover some of the ways, including basic and useful techniques to get started using CVS.  For the intents of the average web developer using IC for a B2C e-commerce site, I've identified a few of the possible uses:
+N:There are many potential uses of CVS as it applies to Interchange.  In fact, there are as many unique ways to use CVS as there are unique developers.  This document only covers some of the ways, including basic and useful techniques to get started using CVS.  For the intents of the average web developer using IC for a B2C e-commerce site, I've identified a few of the possible uses:
 
 N:Simple
 	*One server
@@ -70,7 +70,7 @@ N:Simple
 	*One branch
 N:Medium 
 	*One server
-	*Two catalogs (one is live, one is development)
+	*Two catalogs (e.g., one is live, one is development)
 	*One cvs modules
 	*Seperate development and live branches
 N:Complex/Custom
@@ -80,7 +80,7 @@ N:Complex/Custom
 	*Multiple branches
 	*Custom setup
 
-N:This document attempts to cover the Simple well, explain many aspects of the Medium, which will hopefully give you the background you need if you decide to setup your own complex development environment.
+N:This document attempts to cover the simple well, and explain many aspects of the medium.  Which will hopefully give you the background you need if you decide to setup your own complex development environment.
 
 H1:Setup CVS
 
@@ -88,17 +88,17 @@ H2:Assumptions
 
 N:Here are some of the assumptions that I make that apply to various parts of the rest of this document:
 *Red Hat 7.x
-*Interchange installed (RPM, tarball, or CVS)
-*Default interchange tarball directory paths (adjust for your environment)
-*foundation catalog setup and working
+*Interchange installed (RPM or tarball)
+*Default interchange tarball installation directory paths (adjust for your environment)
+*Template catalog setup and working
 
 Note:I will assume "foundation" for the catalog name and directory paths, but it should be just as easy to use this document with the construct catalog or your own catalog by mentally transposing the names and paths.
 
-N:There shouldn't be any reason why you could not do everything I mention here on other Linux distributions, unicies or cygwin.  However, my statements will reflect Red Hat 7.x.  Additionally, Red Hat 6.x is for the most part the same as 7.x, except for the difference of using inetd instead of xinetd to setup pserver.
+N:There shouldn't be any reason why you could not do everything I mention here on other Linux distributions, unicies or Windows (using cygwin).  However, my statements will reflect Red Hat 7.x.  Additionally, Red Hat 6.x is for the most part the same as 7.x, except for the difference of using inetd instead of xinetd to setup pserver.
 
-H2:Installing CVS
+H2:Install CVS
 
-N:This is the easy part.  For Red Hat systems, download the cvs rpm's and install them.  The following RPM command will download and install the Red Hat 7.1 version of cvs from rpmfind.net. 
+N:This is the easy part.  For Red Hat systems, download the cvs rpms and install them.  The following RPM command will download and install the Red Hat 7.1 version of cvs from rpmfind.net. 
 
 Note:You need to be root to complete the following tasks
 
@@ -107,7 +107,7 @@ su - root
 rpm -Uvh ftp://speakeasy.rpmfind.net/linux/redhat/7.1/en/os/i386/RedHat/RPMS/cvs-1.11-3.i386.rpm
 !endblock
 
-N:Create the user and group that will administrate the interchange repository.  For this document, it will be the interch user, (which has already been created by the RPM installation, if you use that).  But if you understand the mechanics of Unix users/groups, then you can use whatever username and group scheme you prefer.  For example, some create a cvs user and cvs group, then add the interchange user and catalog owner to it's group and/or vise-versa.  The integration of interchange and CVS in the latter portion of this document will require that the CVS user has some write capability to the catalog directory.
+N:Create the user and group that will administrate the interchange repository.  For this document, it will be the interch user, (which was setup during the installation of Interchange).  But if you understand the mechanics of Unix users/groups, then you can use whatever username and group scheme you prefer.  For example, some create a cvs user and cvs group, then add the interchange user and catalog owner to it's group and/or vise-versa.  The integration of interchange and CVS in the latter portion of this document will require that the CVS user has some write capability to the catalog directory.
 
 H2:Create the CVS repository directory
 
