@@ -1,6 +1,6 @@
 Summary: Interchange documentation
 Name: interchange-doc
-Version: 4.7.7
+Version: 4.8.0
 Release: 1
 Vendor: Red Hat, Inc.
 Copyright: GPL
@@ -13,13 +13,13 @@ Obsoletes: %name
 BuildArch: noarch
 BuildRoot: %{_tmppath}/%{name}-%version
 
+%define ic_doc_dir %{_docdir}/interchange-%version
+
+
 %description
 Interchange is the most powerful free ecommerce system available today.
 This package contains complete Interchange documentation in several common
 document formats.
-
-
-%define ic_doc_dir %{_docdir}/%{name}-%version
 
 
 %prep
@@ -43,7 +43,7 @@ rm -f *.8
 rm -f %{name}.spec
 
 # copy remaining files into build root
-DOCDIR=$RPM_BUILD_ROOT%{_docdir}/%{name}-%version
+DOCDIR=$RPM_BUILD_ROOT%ic_doc_dir
 mkdir -p $DOCDIR
 tar cf - . | tar xf - -C $DOCDIR
 
@@ -69,11 +69,14 @@ tar cf - . | tar xf - -C $DOCDIR
 
 %clean
 
-rm -f %filelist_main
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+
+* Fri Jul 27 2001 Jon Jensen <jon@redhat.com>
+- Install into /usr{/share}/doc/interchange-x.x.x instead of interchange-doc.
+  No reason to have separate directories for the same kind of content.
 
 * Thu Jul 26 2001 Jon Jensen <jon@redhat.com>
 - Initial interchange-doc package.
