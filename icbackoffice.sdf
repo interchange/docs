@@ -1,0 +1,1019 @@
+!init OPT_LOOK="akopia"; OPT_STYLE="manual"
+
+!define DOC_NAME "Interchange Back-Office"
+!define DOC_TYPE ""
+!define DOC_CODE "ICBACKOFFICE_D2_100700"
+!define DOC_VERSION "0.0.2"
+!define DOC_STATUS "Draft"
+!define DOC_PROJECT "Interchange"
+!define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
+!build_title
+
+H1: INTERCHANGE BACK-OFFICE
+
+Akopia Interchange is the industry's most widely distributed and implemented  open source e-commerce  platform. This document describes how to administer a retail site with Interchange's back-office functionality, and discusses site management and security.
+
+
+H1: SITE MANAGEMENT
+
+H2:  Introduction 
+
+This section describes how to manage a site using one of the default templates, called a, b, or c, that are distributed with Interchange. These templates implement only three of many possible site management schemes possible with Interchange. Some of the ideas discussed will be specific; others will be of more general interest.
+
+H2:  Overview of Interchange Site Management
+
+Interchange provides a very powerful set of tools for creating the components which make up an online store. Interchange recognizes three fundamental kinds of things: Items, Pages and Groups. These can be organized using the Layout Manager to conveniently represent a site and control the way in which the Web pages making up the store are generated. Templates determine how the layout is interpreted and generate the actual .html files. 
+
+Template and site designers may also define arbitrary types of items, pages, and groups. For instance, a site designer may decide to create "Balls", "Books," and "Cars/Trucks" item types. All three might have a field named "Manufacturer." "Balls" might have a "Diameter" field, and "Cars/Trucks" might have a "Number of Wheels" field. Then, it is up to the template designer to decide how these fields will be represented in the pages of the store. 
+
+Since certain terms have meanings specific to Interchange, some definitions are in order: 
+
+*{{N[bold]Thing}}
+.Shorthand for talking about something which might be an item, page or group. Example: "The layout manager organizes the things in your store." 
+
+*{{N[bold]Kind}}
+.Talks about whether a thing is an item, page or group. Example: "What kind of thing is the 'Competition Basketball'? It's an item." 
+
+*{{N[bold]Type}}
+.Talks about a specific type of item, page or group. Example: "What item type is the 'Competition Basketball'? It's a ball." 
+
+*{{N[bold]Thingtype}}
+.Talks about a type when you don't care about its kind. Example: "Make sure you spell all the field names correctly when you create a thingtype. Otherwise you'll confuse the templates." 
+
+*{{N[bold]Fields}}
+.The components used to build thingtypes. Example: "The 'Balls' item type has 'Diameter', 'Color' and 'Sport' fields." 
+
+*{{N[bold]Snippet}}
+.Another name for "field", used in the Interchange libraries. "snippet" technically refers to a field of a specific thing, while "sniptype" refers to that field for the entire type, though in practice "snippet" is often used for both. Example: "Instead of changing the 'Diameter' snippets for each and every ball, why not just delete the 'Diameter' sniptype from "Balls" and start over?" 
+
+As it turns out, there are very few differences between items, pages, and groups. Items have special attributes relative to inventory management, matrices, and so forth that is documented elsewhere. These attributes include "Price," "SKU," and "Reserve Quantity." Items are the only things which can be ordered by customers. 
+
+Pages and groups are absolutely identical in all but name. They are used primarily to separate things which will end up represented as .html pages from things which won't. Quicklinks, for instance, are rendered as pieces of HTML which are then inserted into pages, so it wouldn't make sense to call them "pages" themselves, even though the libraries don't care. So, they're set up as groups to make them easier to organize. 
+
+Once a site has been designed, administrators will rarely have to worry about the above terminology. They will simply create, delete, and modify "Balls," "Books," and "Cars/Trucks" items, and put them on "Products" or "Content" pages. 
+
+H2:  The a/b/c Style Layout System
+
+The a/b/c style layout system is distributed with Interchange as the default set of templates and types. It provides a basic, yet extremely flexible, framework within which many different types of stores and sites may be built. Its most unusual feature comes from three interchangeable sets of templates which generate pages with different look-and-feel from the same data. 
+
+H2:  Standard Templates
+
+Several things are important to know about the layout system in general. The templates are designed to interpret available field and layout data in the most flexible and most intuitive way possible. Each template has its own defaults that are used when information from fields and other entries are unavailable. In general, these defaults can be overridden at both the site-wide level and on a per-thing basis, which allows site designers as much or as little control over the pages as they like. 
+
+H2: Site-Wide Attributes
+
+To set an attribute at a site-wide level, use the Knar editor. The Knar editor can be found by selecting "Configure... Advanced Tools..." in the back office. For example, to set the "Page Width" attribute in the Knar editor: 
+
+^Select "Configure" from the tool bar in the Back Office. 
++Select "Advanced Tools." 
++Select "Knar editor." 
++Select "Create new entry." 
++Enter "Page Width" as the key. 
++Enter "700" as the value. 
++Select "Ok". Now all pages will be generated as 700 pixels across. 
+
+H2: Individual Attributes
+
+To make the "Page Width" definable on a per-page basis, add the field to the appropriate page types: 
+
+^Select "Configure" from the title bar in the Back Office. 
++Select "Advanced Tools." 
++Select "Type editor." 
++Select "Page types." 
++Select "Content Pages", then click "Edit fields." 
++Select "Add a New Field." 
++Enter "Page Width" as the name. 
++Set the default value to "700." 
++Select "Add this field." 
++Select "Back." 
+.To make this an option for "Product pages" as well, select it and then click "Edit fields." 
++Select "Page Width" from the box next to the "Add an existing field," then click "Add an existing field." 
+
+Now, when editing a page, a "Page Width" field will be displayed. Fill it in to set the width for that page, or make it blank to use the site or template default.
+
+H2:  Other Attributes
+
+Most templates understand the "Debug Templates" attribute. If it has a true value (e.g., "1"), most templates will do things to help template designers see what's going on. Most of the standard templates will put "border=1" in each of the HTML tables it creates, helping designers tweak placement and spacing on the pages. 
+
+One simple trick to see most of the attributes used by a particular template involves looking at the template source code (stored as a .epl file in the Interchange/stores/yourstoreid/templates/ directory). Near the beginning of the code may be something like this: 
+
+\REGEN::attrib( 
+\[$page_width, 'Page Width', '650'], 
+\[$text_color, 'Text Color', 'green'],
+\... 
+); 
+
+This indicates that the template looks for attributes named "Page Width" and "Text Color." The third column sets the template default for "Page Width" to 650, and the default "Text Color" to green. 
+
+Other attributes may also be used later in the template. Check the documentation for the template or learn to read Embedded Perl to discover them. 
+
+H2: Changing the Site Style
+
+The default layout system is called "a/b/c/" because of the three sets of page templates which are stored in the templates/a/, templates/b/ and templates/c/ directories. The simple "page.epl" template decides which set to use based on the value of the "Site Style" entry in the Knar editor. The look and feel of the site will vary with each style. If designing a site's graphics, you can make the pages look good in several of the styles, and amaze your friends by changing the "Site Style" entry, selecting "Regenerate" from the tool bar, and watching your entire site change from one style to another.
+
+H2:  Standard Group Layout
+
+The predefined groups are used in the Layout Manager to structure things so that the templates can correctly generate the pages in the site. They are the special cases, and the most confusing elements of site layout. 
+
+H2: Regen Groups
+
+The "Regen Groups" group type's purpose is to give structure to a site's representation in the Layout Manager. When "Regenerate" is selected from the toolbar, notice that regeneration generally follows the layout seen in the Layout Manager. "Quicklinks" are generated first, followed by "Pages," and then "Items." This shows exactly the behavior of Regen Groups; each child of a Regen Group is generated using its template, in the order they appear in the Layout Manager. 
+
+New Regen Groups can be created (or use existing groups in multiple places in the Layout Manager) and use them to group Quicklinks, Pages, and Items beyond (or instead of) the default layout of "Quicklinks/Pages/Items" in the Layout Manager. This only effects what is seen in the Layout Manager, and will not effect the .html produced for the site. 
+
+Create the group:
+
+^Select "Configure" from the toolbar. 
++Select "Group Manager." 
++Select "Regen Group" from the box next to "Create new group," then click "Create new group." 
++Give the group a name. 
++Set the "Template" field to "regen.epl." 
++Select "Ok." 
+
+Add to the layout manager: 
+
+^Select "Configure" from the toolbar. 
++Select "Layout manager." 
++Add the new Regen Group as a child of "Quicklinks," "Pages," or "Items." 
+
+Things can then be placed as children of the new group, and will be generated at that point in the Regen process. Note that Regen Groups are the only things that behave this way. Children of content pages, for example, are placed as links on that page. Children of Quicklinks Groups are listed as links for the group. But, children of Regen Groups are themselves generated. 
+
+Also note that the children of a Regen Group will only be generated if the Regen Group itself is being generated (i.e., is itself a first-level heading in the Layout Manager or a child of a Regen Group). Placing a Regen Group as a child of a page, item, or Quicklinks Group makes no sense, since each of those are concerned with creating links to their children, and Regen Groups themselves have no HTML code or .html pages. 
+
+If this is confusing, don't worry about it. The default Regen Groups can be used. Only create new ones if there is a need to further divide the Quicklinks, pages, and items in the Layout Manager. 
+
+H2:  Grouping Groups
+
+Three Grouping Groups are created by default, and there should be no need to create any more for the standard set of templates. Called "Sidebar," "Top Bar," and "Bottom Bar," they have only one field, which is their name. Their sole purpose is to indicate to the page templates that their children should go in the sidebar, top bar, and bottom bars of that page, respectively. The page templates look at these groups' children; by themselves, the groups can do nothing. 
+
+H2:  Quicklinks Groups
+
+These groups are handy for placing sets of links in various places on a page. See the description of page layout for information on how to determine where they are placed on a page. They can display the links in various ways; the "Style" field determines how this is accomplished. If the "Filename" field is filled in, a page will also be generated with links to the same things. 
+
+Use the Layout Manager to determine what things will be linked via the Quicklinks. Example: 
+
+Quicklinks 
+Site Navigation Quicklinks 
+Home Page 
+About Us 
+Policies 
+\... 
+
+Pages 
+Home Page 
+About Us 
+Sidebar 
+Site navigation Quicklinks 
+Policies 
+\... 
+
+In this example, the "Site Navigation Quicklinks" would have links to the "Home Page," "About Us" page, and "Policies" pages. It would also appear in the sidebar of the "About Us" page. (See "Standard Page Layout" for more information on placing things in the sidebar). 
+
+H2:  Text Links
+
+This style is represented differently depending on the Site Style. Style A sites display them as simple text, with one link per line. Style B sites display them as "Column" links, and Style C links display them as "Panel" links. For Style A, the following attributes are used (none have defaults): 
+
+\Name: "Title" 
+\Description: Listed as a heading for the links. 
+
+\Name: "Foreground" 
+\Name: "Typeface" 
+\Name: "Bold" 
+\Name: "Italic" 
+\Description: Determines the typeface, foreground color, etc., for a tag around the links. 
+
+H2:  Single Line Links
+
+This style lists links to its children like this: 
+
+"Link / Link / Link " 
+
+It has the same attributes as the Text Links, except that it ignores the "Title" field, and uses this additional field: 
+
+\Name: "Separator" Default: " / " 
+\Description: The separator between links. 
+
+H2: Dropdown Links
+
+This style lists its children as items in a dropdown box, with JavaScript code to automatically take the browser to the page selected. A "Go!" button is also provided for browsers without JavaScript support. It uses the "Title" attribute, and looks for this in the KNAR table: 
+
+\Name: "Template Image URL" 
+\Default: None 
+\Description: The URL for the directory containing the images distributed with the templates. 
+
+H2: Panel Links
+
+These links are like text links, but have special formatting to match Style C pages. They also need the "Template Image URL" KNAR entry, use all the attributes used by text links, and use these two additional attributes: 
+
+\Name: "Border" 
+\Default: "0" 
+\Description: Determines whether a border is displayed around the links 
+
+\Name: "Background" 
+\Default: None 
+\Description: Background color for the panel 
+
+H2: Column Links
+
+These are like text links, but format their links in multiple columns. They use this additional attribute: 
+
+\Name: "Columns" 
+\Default: 2 
+\Description: Number of columns in which to display links 
+
+H2: Custom HTML
+
+This group has just one field: "HTML", and is used for inserting custom HTML code into a Top Bar, Sidebar, or Bottom Bar. 
+
+H2: Standard Page Layout
+
+Pages come in three flavors: "Content," "Product," and "Individual Product." Content pages are for things like a home page, listing site policies, and other pages where some specific content is the main attraction. Product pages are primarily for product listings, although they don't have to list just products. Individual product pages are almost identical to product pages, but are generated for a single item. They are created for any items with a valid "Filename" field. 
+
+The Layout Manager is used to determine what links are placed on each page and where they go. Pages generally have four areas in which links may be placed: the top bar, side bar, bottom bar, and in the main part of the page. The top and bottom bars are mainly useful for links to other pages, and single line and dropdown Quicklinks. The sidebar is a good place for links to other pages, Quicklinks of all varieties, and featured products. The main part of the page is a good place to put featured products. Placing things in the top, side, and bottom bars of a page is accomplished by placing the "Sidebar," "Top Bar," and "Bottom Bar" Grouping Groups as children of the page, and, then, placing the things as children of them. To place a thing in the main part of the page, place it as a child of the page directly (i.e., at the same level as the "Sidebar" groups). 
+
+All pages (items, in the case of individual product pages) may have the following attributes: 
+
+\Name: "Filename" 
+\Default: None 
+\Description: Where the resulting HTML is stored. If blank, no page is created. 
+
+\Name: "Directory" 
+\Default: None 
+\Description: This is inserted between the value of the REGEN_OUTPUT_DIR (and REGEN_OUTPUT_URL) knar entries and the value of the "Filename" field to build the full pathname of the file. 
+
+\Name: "Title" 
+\Default: "Untitled" 
+\Description: Placed between the tags. 
+
+\Name: "Background Image" 
+\Default: None 
+
+\Name: "Background Color" 
+\Default: "#ffffff" 
+
+\Name: "Foreground Color" 
+\Default: "#000000" 
+
+\Name: "Link Color" 
+\Default: "#000099" 
+
+\Name: "Visited Link Color" 
+\Default: "#990000" 
+\Description: Placed in the <BODY> tag. 
+
+\Name: "Title Image" 
+\Default: None 
+
+\Name: "Subtitle Image" 
+\Default: None 
+\Description: Placed at the top of the page. "Subtitle Image" is unused in style B templates (purely for aesthetics). 
+
+\Name: "Page Width" 
+\Default: 650 
+\Description: Width of the tables which make up the page. Can be specified in pixels (e.g., "700") or as a percentage of the browser window width (e.g., "100%"). 
+
+H2: Content Pages
+
+Content pages also honor the following attributes: 
+
+\Name: "Main Image" 
+\Default: None 
+\Description: Placed near the center of the page, above the content. 
+
+\Name: "Content" 
+\Default: None 
+\Description: The main content of the page. 
+
+\Name: "Columns" 
+\Default: 3 
+\Description: How many columns to create when placing things in the main area (i.e., not in the Sidebar, Top Bar, or Bottom Bar) of a page. 
+
+\Name: "Link Image Width" 
+\Default: None 
+
+\Name: "Link Image Height" 
+\Default: None 
+\Description: When placing links to other things, these fields place "WIDTH=" and "HEIGHT=" fields in the <IMG> tags for the link. 
+
+When generating links to other pages and items, content pages look for the following fields in the children: 
+
+\Name: "HTML" 
+\Default: None 
+\Description: If this field exists, insert its contents (ignoring the rest of the fields listed here). This is how Quicklinks are inserted into pages. 
+
+\Name: "Filename" 
+\Default: None 
+\Description: Filename of the .html file to link to (required). 
+
+\Name: "Image Directory" 
+\Default: None 
+\Description: Used after the "Directory" entry mentioned above when referencing images associated with the thing. 
+
+\Name: "Link Image" 
+\Default: None 
+\Description: Filename of the image to display along with the link. 
+
+\Name: "Link Text" 
+\Default: None 
+\Description: Displayed instead of the name of the thing as the text of the link. 
+
+H2: Product Pages
+
+Product pages are primarily for listing products, although they will also list and groups and pages which are listed as children and have the appropriate attributes. Product pages honor the following attributes in addition to those listed above: 
+
+\Name: "Image Cell Width" 
+\Default: 250 
+\Description: How wide the table cell should be which holds the price and image for an item. 
+
+\Name: "Price Color" 
+\Default: "#ff0000" 
+
+\Name: "Price Typeface" 
+\Default: None ("Helvetica, Arial" for style B) 
+
+\Name: "Price Text Size" 
+\Default: -1 
+\Description: Attributes for the text displaying an item's price (no price field is displayed for pages and groups). 
+
+\Name: "Max Description Length" 
+\Default: 1000 
+\Description: Any child being displayed which has a "More Info" page and description longer than specified here will be displayed with truncated description. 
+
+Product pages look for the following attributes of their children when displaying them: 
+
+\Name: "Image Directory" 
+\Default: None 
+\Description: Used after the "Directory" entry mentioned above when referencing images associated with the thing. 
+
+\Name: "Image" 
+\Default: None 
+\Description: Filename placed in the <IMG> tag to the left of the thing's description. 
+
+\Name: "Link Image" 
+\Default: None 
+\Description: Used instead of "Image" if "Image" isn't found. 
+
+\Name: "Filename" 
+\Default: None 
+\Description: If this field is valid, a "more info" link will be generated along with the product description. 
+
+\Name: "Description" 
+\Default: None 
+\Description: Displayed to the right of the image, possibly truncated according to the "Max Description Length." 
+
+H2: Individual Product Pages
+
+Like product pages, but instead of looking for the listed attributes of its children, looks for those attributes in itself. 
+
+H2: Statistics: View
+
+Statistics can be viewed in several levels of detail, showing overall totals and breakdowns by various criteria. 
+
+H2: Type Editor
+
+The Type Manager is an administrator tool used to specify types of objects in a site. Interchange comes pre-configured with the types that will be used most commonly in a simple Web store. Use the Type Manager only if the default settings are not useful.
+
+*{{N[bold]Item Types}}
+.The default item type is for a standard product. When a new item type is created, first give it a name. What makes one item type different from another is the fields in each type. For example, if creating an item type for books, it will have fields for publisher, author, number of pages, etc. Music would have artist, label, and length. Fields can be of any type: text areas, checkboxes, radio buttons, pull downs, etc. For example, a music type could have a pull-down menu for CD, Tape, or both CD and Tape available. 
+
+Once a certain field has been created, for example, size, use that field for another item type without re-entering all the information. Simply use the "add existing field" option and select the existing field to re-use. Several of the default fields will already contain entries. 
+
+*{{N[bold]Page Types}}
+.A page type is very similar in concept to an item type. Interchange-generated pages divide content on the page into editable fields, like page title, main page text, and background color. In order to create a new field for a page type, edit the page template. Unfortunately, this feature is not quite as accessible as the item editor. While a Product Manager would usually use the item type manager in the course of day-to-day operations, the page type manager would only be used by a designer who is working on new templates. Each page type has a particular template assigned to it. 
+
+*{{N[bold] Group Types}}
+
+H2: Traffic Statistics
+
+The Traffic Statistics feature displays information about the visitors to a site. The interface is similar to that of the order statistics.
+
+H2: Generate Static
+
+After changes have been made to an Interchange site's data, the regenerate function must be used to create (or re-create) a site's pages based on the new data. Until regenerated, a web site will not be editing while working with Interchange. 
+
+H1: TRACKING AND BACKEND ORDER ENTRY
+
+Interchange allows the entry of orders into a system via one of several methods. The AsciiBackend capability allows submittal of parameters to an external order entry script. Support for SQL allows entry of orders directly into an SQL database. Orders can be written to an ASCII file. They can be formatted precisely for email-based systems. The orders can be placed in a DBM file. Finally, embedded Perl allows completely flexible order entry, including real-time credit-card verification and settlement.
+
+H2: ASCII Backup Order Tracking
+
+If AsciiTrack is set to a legal file name (based in VendRoot unless it has a leading "/"), a copy of the order will be saved there as well as being emailed.
+
+If the file name string begins with a pipe "|," a program will be run and the output "piped" to that program. This allows easy backend entry of orders with an external program.
+
+H2: Database Tracking
+
+Once the order report is processed, the order is complete. Therefore, it is the perfect place to put Interchange tags that make order entries in database tables.
+
+A good model is to place a single record in a database summarizing the order, and a series of lines that correspond to each line item in the order. This can be in the same database table; if the order number itself is the key for the summary, a line number can be appended to the order number to show each line of the order.
+
+The following would summarize a sample order number S00001 for part number 00-0011 and 99-102:
+
+>    code     order_number part_number  quantity   price    shipping  tax
+>    S00001   S00001                    3          2010     12.72     100.50
+>    S00001-1 S00001       00-0011      2          1000     UPS       yes
+>    S00001-2 S00001       99-102       1          10       UPS       yes
+
+Fields can be added as appropriate, perhaps with order status, shipping tracking number, address, customer number, or other information.
+
+The above can be easily done with Interchange's C<[import ....]> tag using the convenient C<NOTES> format:
+
+>    [set import_status]
+>    [import table=orders type=LINE continue=NOTES]
+>
+>    code: [value mv_order_number]
+>    order_number: [value mv_order_number]
+>    quantity: [nitems]
+>    price: [subtotal noformat=1]
+>    shipping: [shipping noformat=1]
+>    tax: [salestax noformat=1]
+>
+>    [/import]
+>
+>    [item-list]
+>    [import table=orders type=LINE continue=NOTES]
+>
+>    code: [value mv_order_number]-[item-increment]
+>    order_number: [value mv_order_number]
+>    quantity: [item-quantity]
+>    price: [item-price noformat=1]
+>    shipping: [shipping-description]
+>    tax: [if-item-field nontaxable]No[else]Yes[/else][/if]
+>
+>    [/import][/item-list]
+
+H2: Custom Order Routing
+
+Interchange can send order emails and perform custom credit card charges and/or logging for each individual item. The Route directive is used to control this behavior, along with the C<mv_order_route> item attribute and C<mv_order_route> form variable.
+
+Routes are established with the Route directive, which is similar to the Locale directive. Each route is like a locale, so that key-value pairs can be set. Here is an example setting:
+
+>    Route  VEN  pgp_key         0x67798115
+>    Route  VEN  email           orders@minivend.com
+>    Route  VEN  reply           service@minivend.com
+>    Route  VEN  encrypt         1
+>    Route  VEN  encrypt_program "/usr/bin/pgpe -fat -q -r %s"
+>    Route  VEN  report          etc/report_mail
+
+This route would be used whenever the value C<VEN> was contained in the form variable C<mv_order_route>.
+
+The last route that is defined provides the defaults for all other routes. For example, if C<encrypt_program> is set there, then the same value will be the default for all routes.
+
+The attributes that can be set are:
+
+*{{N[bold]attach}}
+.Determines whether the order report should be attached to the main order report email. This is useful if certain items must be printed separately from others, perhaps for FAX to a fulfillment house.
+
+*{{N[bold]counter}}
+.The location of a counter file which should be used instead of C<OrderCounter> for this route. It will generate a different value for C<mv_order_number> for the route.
+
+*{{N[bold]credit_card}}
+.Determines whether credit card encryption should be done for this order. Either this or C<encrypt> should always be set.
+
+*{{N[bold]cybermode}}
+.If this is set, enables I<CyberCash> for the route. Variables can also be set for CYBER_CONFIGFILE, CYBER_SECRET, and all other normal CYBERCASH variables. For example:
+
+>    Route VEN cybermode         mauthonly
+>    Route VEN CYBER_CONFIGFILE  config/vendor1_cfg
+>    Route VEN CYBER_VERSION     3.2
+
+*{{N[bold]email}}
+.The email address(es) where the order should be sent. Set just like the I<MailOrderTo> directive, which is also the default.
+
+*{{N[bold]encrypt}}
+.Whether the B<entire order> should be encrypted with the B<encrypt_program>.
+If C<credit_card> is set, then the credit card will first be encrypted, then the entire order encrypted.
+
+*{{N[bold]encrypt_program}}
+.The encryption program incantaton which should be used. Set identically to the I<EncryptProgram> directive, except that %s will be replaced with the C<pgp_key>. Default is C<pgpe -fat -r %s>.
+
+*{{N[bold]errors_to}}
+.Sets the C<Errors-To:> email header so that bounced orders will go to the proper address. Default is the same as I<MailOrderTo>.
+
+*{{N[bold]increment}}
+.Whether the order number should be incremented as a result of this result. Default is not to increment, as the order number should usually be the same for different routes within the same customer order.
+
+*{{N[bold]individual_track}}
+.A directory where individual order tracking files will be placed. The file name will correspond to the value of C<mv_order_number>. This can be useful for batching orders via download.
+
+*{{N[bold]individual_track_ext}}
+.The extension that will be added to the file name for C<individual_track>.
+Must contain a period (C<.>) if that is desired.
+
+>    individual_track_ext     .pgp
+
+*{{N[bold]pgp_cc_key}}
+.The PGP key selector that is used to determine which public key is used for encryption of credit cards only. With PGP 5 and 6, see appropriate values by using the command C<pgpk -l>.
+
+*{{N[bold]pgp_key}}
+.The PGP key selector that is used to determine which public key is used for encryption. If C<pgp_cc_key> is set, that key will be used for credit card encryption instead of C<pgp_key>. With PGP 5 and 6, see appropriate values by using the command C<pgpk -l>.
+
+*{{N[bold]profile}}
+.The custom order profile which should be performed to check the order. If it fails, then the route will not be performed. See OrderProfile and mv_order_profile.
+
+*{{N[bold]receipt}}
+.The receipt page that should be used for this routing. This only makes sense if supplant is set for the route.
+
+*{{N[bold]report}}
+.The report page that should be used for this routing. If C<attach> is defined, then the contents of the report will be placed in a MIME attachment in the main order report.
+
+*{{N[bold]reply}}
+.The C<Reply-To> header that should be set. Default is the same as C<email>.
+.If there are only word characters (A-Za-z0-9 and underscore), then it describes an Interchange variable name where the address can be found.
+
+*{{N[bold]supplant}}
+.Whether this route should supplant the main order report. If set, the AsciiTrack operation will use this route and the normal Interchange order email sequence will not be performed.
+
+*{{N[bold]track}}
+.The name of a file which should be used for tracking. If the C<supplant> attribute is set, then the normal order tracking will be used as well.
+
+*{{N[bold]track}}
+.A number representing the mode to change either C<track> or C<individual_track> files.
+
+An individual item routing causes all items labeled with that route to be placed in a special sub-cart which will be used for the order report. This means that the C<[item-list] LIST [/item-list]> will only contain those items, allowing operations to be performed on subsets of the complete order.
+
+Here is an example of an order routing:
+
+>    Route  HARD  pgp_key          0x67798115
+>    Route  HARD  email            hardgoods@minivend.com
+>    Route  HARD  reply            service@minivend.com
+>    Route  HARD  encrypt          1
+>    Route  HARD  encrypt_program  "/usr/bin/pgpe -fat -q -r %s"
+>    Route  HARD  report           etc/report_mail
+>
+>    Route  SOFT  email            ""
+>    Route  SOFT  profile          create_download_link
+>    Route  SOFT  empty            1
+>
+>    Route  main  cybermode        mauthonly
+>    Route  main  CYBER_VERSION    3.2
+>    Route  main  CYBER_CONFIGFILE etc/cybercash.cfg
+>    Route  main  pgp_key          0x67798115
+>    Route  main  email            orders@minivend.com
+>    Route  main  reply            service@minivend.com
+>    Route  main  encrypt          1
+>    Route  main  encrypt_program  "/usr/bin/pgpe -fat -q -r %s"
+>    Route  main  report           etc/report_all
+ 
+To tell Interchange that order routing is in effect, the variable
+mv_order_route is set on the final order submission form:
+
+>    <INPUT TYPE="hidden" NAME="mv_order_route" VALUE="main">
+
+To set the order routing for individual items, some method of determining their status must be made and the C<mv_order_route> attribute must be set. This could be set at the time of the item being placed in the basket, or have a database field called C<goods_type> set to the appropriate value. The following example uses a Perl routine on the final order form:
+
+> [perl arg=carts interpolate=1]
+>    my $string = <<'EOF';
+> [item-list][item-code]  [item-field goods_type]
+> [/item-list]
+> EOF
+>    my @items;
+>    my %route;
+>    @items = grep /\S/, split /\n+/, $string;
+>    for(@items) {
+>        my ($code, $keycode) = split /\t/, $_;
+>       $route{$code} = $keycode;
+>    }
+>    my $cart = $Carts->{'main'};
+>    my $item;
+>    foreach $item ( @{ $Carts->{'main'} } ) {
+>        $item->{mv_order_route} = $route{$item->{'code'}} || undef;
+>    }
+>    return '';
+> [/perl]
+
+Now the individual items are labeled with a C<mv_order_route> value which will cause their inclusion in the appropriate order routing.
+
+Upon submission of the order form, any item labeled C<HARD> will be accumulated and sent to the email address C<hardgoods@minivend.com>, where presumably the item will be pulled from inventory and shipped.
+
+Any item labeled C<SOFT> will be passed to the order profile C<create_download_link>, which will place it in a staging area for customer download. (This would be supported by a link on the receipt, perhaps by reading a value set in the profile).
+
+The C<main> order routing will use CyberCash to charge the order, and will be completely encrypted for emailing.
+
+H1: ADMINISTERING INTERCHANGE
+
+Some utilities are supplied with Interchange and are located in the VendRoot/bin directory:
+
+>  compile_link Compiles an Interchange vlink or tlink CGI link
+>  dump         Dumps the session file for a particular catalog
+>  expire       Expires sessions for a particular catalog
+>  expireall    Expires all catalogs
+>  offline      Does offline build of the database(s)
+>  update       Does in-place update of the database(s)
+>  makecat      Make catalog
+
+Some example scripts for other functions are in the C<eg/> directory of the software distribution; see the readme file there.
+
+Some thought should be given to where the databases, error logs, and session files should be located, especially on an ISP that might have multiple users sharing an Interchange server. In particular, it is recommended that all of the session files and logs be put in a directory that is not writable by the user. The risk is that if the directory or file is corrupted, the catalog may go down.
+
+To test the format of user catalog configuration files before restarting the server, perform the following test (from VendRoot):
+
+>    bin/minivend -test
+
+This will check all configuration files for syntax errors, which might otherwise prevent a catalog from coming up. Once a catalog configures properly, user reconfiguration will not crash it; just cause an error. But it must come up when the server is started.
+
+H2: Starting, Stopping, and Re-starting the Servers
+
+The following commands need to have VENDROOT changed to the main directory where Interchange is installed. If /home/minivend/mvend is the site's Interchange base directory, the start command would be:
+
+C</home/minivend/mvend/bin/minivend>.
+
+Do a C<perldoc VENDROOT/bin/minivend> for full documentation.
+
+To start the server with default settings:
+
+>    VENDROOT/bin/minivend
+
+It is usually best to issue a restart, otherwise the server will not run anew if a server is already running.
+
+>    VENDROOT/bin/minivend -restart
+
+Assuming the server starts correctly, the names of catalogs as they are configured will be displayed, along with a message stating the process ID it is running under.
+
+To re-start the server:
+
+>    VENDROOT/bin/minivend -restart
+
+C<-r> is the same as C<-restart>.
+
+This is typically done to force Interchange to re-read its configuration. A message will be displayed stating that a TERM signal has been sent to the process ID the servers are running under. This information is also sent to /home/minivend/error.log. Check the error.log file for confirmation that the server has restarted properly. 
+
+To stop the server:
+
+>    VENDROOT/bin/minivend -stop
+
+A message will be displayed stating that a TERM signal has been sent to the process ID the server is running under. This information is also sent to /home/minivend/error.log.
+
+Because processes waiting for selection on some operating systems block signals, they may have to wait for HouseKeeping seconds to stop. The default is 60.
+
+To terminate the Interchange server with prejudice, in case it will not stop:
+
+>    VENDROOT/bin/minivend -kill
+
+H2: UNIX and INET modes
+
+Both UNIX-domain and INET-domain sockets can be used for communication. INET
+domain sockets are useful when more than one server, connected via a local-area network (LAN), is used for accessing an Interchange server.
+
+IMPORTANT NOTE: When sending sensitive information like credit card numbers over a network, always ensure that the data is secured by a firewall, or that the Interchange server runs on the same machine as any SSL-based server used for encryption.
+
+If only running a site with one method of communication, use the C<->i and C<->u flags.
+
+>    # Start only in UNIX mode
+>    VENDROOT/bin/minivend -r -u
+>
+>    # Start only in INET mode
+>    VENDROOT/bin/minivend -r -i
+
+H2: User Reconfiguration
+
+The individual catalogs can be reconfigured by the user by running the [reconfig] support tag. This should be protected by one of the several forms of Interchange authentication, preferably by HTTP basic authorization. See I<RemoteUser>.
+
+Use reconfigure from the command line (as the Interchange user) with:
+
+>    VENDROOT/bin/minivend -reconfig <catalog>
+
+It is easy to manually reconfigure a catalog as an administrator. Interchange simply looks for a file C<etc/reconfig> (based in the Interchange software directory) at HouseKeeping time. If it finds a script name that matches one of the catalogs, it will reconfigure that catalog.
+
+H2: Making the Product Database
+
+The DBM product databases can be built off-line with the C<offline> command. The directory to be used for output is specified either on the command line with the C<-d> option, or is taken from the C<catalog.cfg> directive OfflineDir -- C<offline> in the catalog directory by default. The directory must exist. The source ASCII files should be present in that directory, and the DBM files are created there. Existing files will be overwritten.
+
+>    offline -c catalog [-d offline_dir]
+
+Do a C<perldoc VENDROOT/bin/offline> for full documentation.
+
+H2: Updating Individual Records
+
+If a site has a very large DBM database that takes a long time to build, consider using the C<bin/update> script to change just one field in a record, or to add from a corrections list.
+
+The following updates the products database C<price> field for item 19-202 with the new value 25.00
+
+>    update -c catalog -f price 25.00
+
+More than one field can be updated on a single command line.
+
+>    update -c catalog -f price -f comment 25.00 "That pitchfork couple"
+
+The following takes input from C<file>, which must be B<formatted exactly like the original database> and adds/corrects any records contained therein.
+
+>    update -c catalog -i file
+
+Invoke the command without any arguments for a usage message describing the options.
+
+H2: Expiring Sessions
+
+If a site has DBM capability and Interchange is using it to store the sessions, periodically expire old sessions to keep the session database file from growing too large.
+
+>    expire -c catalog
+
+There is also an C<expireall> script which reads all catalog entries in C<minivend.cfg> and runs C<expire> on them.
+
+The C<expire> script accepts a C<-r> option which tells it to recover lost disk space.
+
+On a UNIX server, add a crontab entry such as the following:
+
+>    # once a day at 4:40 am
+>    40 4 * * *    perl /home/minivend/bin/expireall -r
+
+Interchange will wait until the current transaction is finished before expiring, so that this can be done at any time without disabling web access. Any search paging files for the affected session (kept in ScratchDir) will be removed as well.
+
+With Windows or other operating systems which don't fork(), the server must be stopped before running C<expire>. This will prevent corruption of the database.
+
+If not running DBM sessions, a Perl script can be used to delete all files not modified in the last one or two days. The following will work if given an argument of the session directory or session files:
+
+>    #!perl
+>    # expire_sessions.pl -- delete files 2 days old or older
+>
+>    my @files;
+>    my $dir;
+>    foreach $dir (@ARGV) {
+>        # just push files on the list
+>        if (-f $dir) { push @files, $_; next; }
+>
+>        next unless -d $dir;
+>
+>        # get all the file names in the directory
+>        opendir DIR, $dir or die "opendir $dir: $!\n";
+>        push @files, ( map { "$dir/$_" } grep(! /^\.\.?$/, readdir DIR) ) ;
+>    }
+>
+>    for (@files) {
+>        unless (-f $_) {
+>            warn "skipping $_, not a file.\n";
+>            next;
+>        }
+>        next unless -M $_ >= 2;
+>        unlink $_ or die "unlink $_: $!\n";
+>    }
+
+It would be run with a command invocation like:
+
+>    perl expire_sessions.pl /home/you/catalogs/simple/session
+
+Give it multiple directory names, if there are more than one catalog.
+
+This script can be adjusted or refined as needed. Refinements might include reading the file to "eval" the session reference and expire only customers who are not members.
+
+H2: Administrator Permissions
+
+Select which operations each administrator can perform in the back office. Each section of the back office can be restricted with fine-grained control. An administrator can be given access to view the list of all orders, for instance, but not allowed to view details. Access to the rows of Interchange's internal tables can also be restricted on a per-table basis for each administrator. 
+
+H2: Administrators
+
+The Access Manager allows an administrator to create user accounts or groups of users and restrict the use of certain features. This feature is especially useful if a company has employees that need the ability to check orders, but not change web content. Note that, by default, users in the back office are stored and managed separately from customer login accounts. Users can have permissions granted on an individual basis, or by group. If a user is a "Super-user," all other permissions settings will be ignored and the user will be allowed to do anything. 
+
+H2: Administrators: Edit Affiliates
+
+Affiliates have the following attributes: 
+
+"Affiliate ID" is displayed in the order and traffic statistics along with the orders and traffic they produce. 
+
+"Affiliate Name" is the name of the affiliate. 
+
+"Campaigns" can be used to track traffic from advertising campaigns. 
+
+"Join_date" can be used to keep track of when the affiliate signed up. 
+
+"URL" is used, if present, to redirect visitors coming from this affiliate to a special home page just for visitors from that affiliate's site. This should not be the URL of the Affiliate's home site. 
+
+"Timeout delay" can be used to specify that orders attributed to this affiliate must happen within a certain amount of time from the time they were referred to the site by the affiliate. Measured in seconds. 
+
+H2: Direct Table Edit
+
+Edit any of Interchange's internal tables. Select a table to edit, or search a table for selected rows to edit. 
+
+H2: Direct Table Edit:Select for Table Edit
+
+Having selected a table to edit, a new row can be added, an existing row edited, all rows edited spreadsheet-style, or a row deleted. 
+
+H2: File Transfer
+
+Transfer pages, templates, and configuration files to and from the Interchange installation. Select "Pages" to transfer files that will be visible to site visitors. Select "catalog.cfg" to edit the configuration file for your store.  Upload (send a file to the server), download (send a file from the server to a computer), view, or edit available files. 
+
+H2: Import/Export
+
+Interchange makes it easy to import and export data to and from a commerce web site. 
+
+Use Database Upload to import a tab delimited database of all product information to Interchange to make set-up faster and easier. Database Download does just the opposite, allowing data to be downloaded from Interchange. 
+
+Use Layout Upload to upload a site's layout information. Use Layout Download to download a site's layout information. 
+
+H2: Logout
+
+This feature will only be useful if there are multiple users in the Access Manager. When "logout" is clicked, a user will be asked to login again. If "logout" is pressed in error, the user must login again. 
+
+H2: Meta Field Information
+
+Interchange can store meta information for selected columns of tables in a site's database. This meta information is used when the user interacts with the database. For example, the meta informaton for a "Hide Item" field might specify that a checkbox be displayed when the user edits that field, since the only reasonable values are "on" and "off". Or, the meta information might specify a filter on data entered for a "Filename" field which makes sure that the characters entered are safe for use in a filename. 
+
+"Widget type" specifies the HTML INPUT tag type to use when displaying the field in, say, the item editor. 
+
+"Width" and "Height" only apply to some of the "Widget type" options, for instance the "Textarea" widget. 
+
+"Label" is displayed instead of the internal column name. For example, the "category" column of the "products" table might have a label of "Product Category". 
+
+"Help" is displayed below the column label, and helps describe the purpose of the field to the user. 
+
+"Help url" can be used to link to a page giving more information on the field. 
+
+"Lookup" can be used when a field is acting like a foreign key into another table. In that case, use some sort of select box as the widget type, and if referencing multiple rows in the destination table, use a multi select box, with "colons_to_null" as the pre_filter, and "::" as the lookup_exclude. 
+
+"Filter" and "pre_filter" can be used to filter data destined for that field or data read from that field, respectively. 
+
+H1: INTERCHANGE SECURITY
+
+H2: SSL support
+
+Interchange has several features that enable secure ordering via SSL (Secure Sockets Layer). Despite their mystique, SSL servers are actually quite easy to operate. The difference between the standard HTTP server and the SSL HTTPS server, from the standpoint of the user, is only in the encryption and the specification of the URL; "https:" is used for the URL protocol specification instead of the usual http: designation.
+
+IMPORTANT NOTE: Interchange attempts to perform operations securely, but no guarantees or warranties of any kind are made! Since Interchange comes with Perl source, it is possible to modify the program to create bad security problems. One way to minimize this possibility is to record digital signatures, using MD5 or PGP, of C<minivend>, C<minivend.cfg>, and all modules included in MiniVend. Check them on a regular basis to ensure they have not been changed.
+
+Interchange uses the SecureURL directive to set the base URL for secure
+transactions, and the VendURL directive for normal non-secure transactions.
+Secure URLs can be enabled for forms through a form action of 
+C<[process-target secure=1]>. An individual page can be displayed via SSL with C<[page href=mvstyle_pagename secure=1]>. A certain page can be set to be always secure with the C<AlwaysSecure> catalog.cfg directive.
+
+Interchange incorporates additional security for credit card numbers. The
+field mv_credit_card_number will not ever be written to disk.
+
+To enable automated encryption of the credit card information, the directive CreditCardAuto needs to be defined as yes. EncryptProgram also needs to be defined with some value, one which will, hopefully, encrypt the number. PGP is now recommended above all other encryption program. The entries should look something like:
+
+>  CreditCardAuto   Yes
+>  EncryptProgram   /usr/bin/pgpe -fat -r sales@company.com
+
+See CreditCardAuto for more information on how to set the form variables.
+
+H2: Administrative Pages
+
+With Interchange's GlobalSub capability, very complex add-on schemes can be implemented with Perl subroutines. And with the new writable database, pages that modify the catalog data can be made. If a page is marked as an AdminPage, only the catalog administrator may use it. See MasterHost, RemoteUser, and Password.
+
+In addition, a file in any Interchange page subdirectory can be created and called .access. If that file is present and non-zero in size, any pages in that directory are only available to the catalog administrator.
+
+H2: Controlling Access to Certain Pages
+
+If the directory containing the page has a file C<.access> and that file is zero bytes long, access can be gated in one of several ways.
+
+^If the file C<.access_gate> is present, it will be read and scanned for page-based access. The file has the form:
+
+>   page: condition
+>   *: condition
+
+.The C<page> is the file name of the file to be controlled (the .html 
+extension is optional); the C<condition> is either a literal C<Yes/No> or Interchange tags which would produce a C<Yes> or C<No> (1/0 work just fine, as do true/false).
+
+.The entry for C<*> sets the default action if the page name is not found. If pages will be allowed by default, set it to C<1> or C<Yes>. If pages are to be denied by default in this directory, leave blank or set to C<No>. Here is an example, for the directory C<controlled>, having the following files:
+
+>  -rw-rw-r--   1 mike     mike            0 Jan  8 14:19 .access
+>  -rw-rw-r--   1 mike     mike          185 Jan  8 16:00 .access_gate
+>  -rw-rw-r--   1 mike     mike          121 Jan  8 14:59 any.html
+>  -rw-rw-r--   1 mike     mike          104 Jan  8 14:19 bar.html
+>  -rw-rw-r--   1 mike     mike          104 Jan  8 14:19 baz.html
+>  -rw-rw-r--   1 mike     mike          104 Jan  8 14:19 foo.html
+
+.The contents of C<.access_gate>:
+
+>    foo.html: [if session username eq 'flycat']
+>                Yes
+>              [/if]
+>    bar:      [if session username eq 'flycat']
+>              [or scratch allow_bar]
+>                Yes
+>              [/if]
+>    baz:      yes
+>    *:        [data session logged_in]
+
+.The page C<controlled/foo> is only allowed for the logged-in user B<flycat>.
+
+.The page C<controlled/bar> is allowed for the logged-in user B<flycat>, or if the scratch variable C<allow_bar> is set to a non-blank, non-zero value.
+
+.The page C<controlled/baz> is always allowed for display.
+
+.The page C<controlled/any> (or any other page in the directory not named in C<.access_gate>) will be allowed for any user logged in via I<UserDB>. NOTE: The C<.access_gate> scheme is available for database access checking if the database is defined as an I<AdminDatabase>. The C<.access_gate> file is located in I<ProductDir>.
+
++If the Variable C<MV_USERDB_REMOTE_USER> is set (non-zero and non-blank) then any user logged in via the UserDB feature will receive access to all pages in the directory. NOTE: If there is a C<.access_gate> file, it overrides this.
+
++If the variables C<MV_USERDB_ACL_TABLE> is set to a valid database identifier, the UserDB module can control access with simple ACL logic. See USER DATABASE. NOTE: If there is a C<.access_gate> file, it overrides this. Also,
+if MV_USERDB_REMOTE_USER is set, then this capability is not available.
+
+H1: USERTAG REFERENCE
+
+H2: email 
+
+>    UserTag email Order to subject reply from extra
+>    UserTag email hasEndTag
+>    UserTag email Interpolate
+>    UserTag email Routine <<EOR
+>    sub {
+>        my($to, $subject, $reply, $from, $extra, $body) = @_;
+>        my($ok);
+>
+>        $subject = '<no subject>' unless defined $subject && $subject;
+>
+>        $reply = '' unless defined $reply;
+>        $reply = "Reply-to: $reply\n" if $reply;
+>        if (! $from) {
+>                $from = $Vend::Cfg->{MailOrderTo};
+>                $from =~ s/,.*//;
+>        }
+>
+>        $extra =~ s/\s*$/\n/ if $extra;
+>        $ok = 0;
+>        SEND: {
+>            open(Vend::MAIL,"|$Vend::Cfg->{SendMailProgram} -t") or last SEND;
+>            print Vend::MAIL
+>                        "To: $to\n",
+>                        "From: $from\n",
+>                        $reply,
+>                        $extra || '',
+>                        "Subject: $subject\n\n",
+>                        $body
+>                or last SEND;
+>            close Vend::MAIL or last SEND;
+>            $ok = ($? == 0);
+>        }
+>
+>        if (!$ok) {
+>            logError("Unable to send mail using $Vend::Cfg->{'SendMailProgram'}\n" .
+>                "To '$to'\n" .
+>                "From '$from'\n" .
+>                "With extra headers '$extra'\n" .
+>                "With reply-to '$reply'\n" .
+>                "With subject '$subject'\n" .
+>                "And body:\n$body");
+>        }
+>        $ok;
+>    }
+>    EOR
+
+H2: email_raw 
+
+>    UserTag email_raw Documentation <<EOD
+>
+>    This tag takes a raw email message, *including headers*, and
+>    users the SendmailProgram with -t option. Example:
+>
+>    [email-raw]
+>    From: foo@bar.com
+>    To: bar@foo.com
+>    Subject: baz
+>
+>    The text of the message.
+>    [/email-raw]
+>
+>    The headers must be at the beginning of the line, and the header
+>    must have a valid To: or it will not be delivered.
+>
+>    EOD
+>
+>    UserTag email-raw hasEndTag
+>    UserTag email-raw Interpolate
+>    UserTag email-raw Routine <<EOR
+>    sub {
+>        my($body) = @_;
+>        my($ok);
+>        $body =~ s/^\s+//;
+>
+>        SEND: {
+>            open(Vend::MAIL,"|$Vend::Cfg->{SendMailProgram} -t") or last SEND;
+>            print Vend::MAIL $body 
+>                or last SEND;
+>            close Vend::MAIL
+>                or last SEND;
+>            $ok = ($? == 0);
+>        }
+>
+>        if (!$ok) {
+>            ::logError("Unable to send mail using $Vend::Cfg->{SendMailProgram}\n" .
+>                "Message follows:\n\n$body");
+>        }
+>        $ok;
+>    }
+>    EOR
+
+H2: loc
+
+>    # [loc locale*] message [/loc]
+>    #
+>    # This tag is the equivalent of [L] ... [/L] localization, except
+>    # it works with contained tags
+>    #
+>    UserTag loc hasEndTag   1
+>    UserTag loc Interpolate 1
+>    UserTag loc Order locale
+>    UserTag loc Routine <<EOF
+>    sub {
+>        my ($locale, $message) = @_;
+>        return $message unless $Vend::Cfg->{Locale};
+>        my $ref;
+>        if($locale) {
+>            return $message
+>                unless defined $Vend::Cfg->{Locale_repository}{$locale};
+>            $ref = $Vend::Cfg->{Locale_repository}{$locale}
+>        }
+>        else {
+>            $ref = $Vend::Cfg->{Locale};
+>        }
+>        return defined $ref->{$message} ? $ref->{$message} : $message;
+>    }
+>    EOF
