@@ -71,5 +71,6 @@ clean:
 		for j in pod txt pdf 8 html ; do \
 			rm -fv $$i.$$j ; \
 		done ; \
+		rm -fv $$i_*.html ; \
 	done
 	rm -rf dev
