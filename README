@@ -1,27 +1,28 @@
 This is the Interchange documentation repository.
 
-The official Interchange reference docs are currently maintained in
-SDF, Simple Document Format. The canonical documents are listed in the
-Makefile TARGETS= definition, roughly ic*.sdf. There may be sub-documents
-included, usually with a .inc suffix.
+The reference documents are currently maintained in SDF, Simple Document
+Format. The canonical documents are listed in the Makefile TARGETS=
+definition, roughly ic*.sdf.
 
 The other files in this repository are notes or old/unfinished docs for
 internal use.
 
-You need to install SDF to build these documents. Do this as root:
+You need our modified version of SDF to build these documents. To avoid
+the need to frequent re-installation as we hack on the SDF core, we have
+modified our SDF to run directly out of this repository. Using 'make'
+takes care of things for you:
 
-cd sdf
-./install
+make ictags.html  # make ictags in HTML format only
+make html         # make all docs in HTML format only
+make icconfig     # make icconfig in all formats
+make icfull       # make all-in-one document 'icfull' in all formats
+make              # make all docs in all formats
 
-Make sure to update your local SDF installation whenever the SDF code
-in this repository changes, as we will make changes to SDF code that
-affect the quality of conversion to other formats. (Symbolic links to
-your CVS-checkout directory will also work.)
+Target formats currently supported are:
 
-To create documents in PDF formats, you will also need HTMLDOC.
-Get it from:
+pod txt man mif html frames pdf
+
+To create documents in PDF format, you will need HTMLDOC installed on
+your system:
 
 http://www.easysw.com/htmldoc/
-
-Please do not distribute files from this repository without approval
-from Red Hat E-Business Solutions.

@@ -85,6 +85,8 @@ frames_html:: $(addsuffix _toc.html,$(TARGETS))
 
 frames_html html:: index.html
 
+frames:: frames_html
+
 html:: $(addsuffix .html,$(TARGETS))
 
 pod: $(addsuffix .pod,$(TARGETS))
