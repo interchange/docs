@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.53 2002-10-30 17:24:00 mheins Exp $
+# $Id: icdatabase.sdf,v 1.54 2003-07-07 00:30:44 mheins Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.53 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.54 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/icdatabase.html"
@@ -12,22 +12,38 @@
 
 H1: Databases and Interchange
 
-Interchange can use GDBM, DB_File, SQL, LDAP, or in-memory databases. In most cases, these different database formats should operate the same when called by Interchange's access methods.
+Interchange is database-independent, perhaps more so than almost
+any other powerful content management system.
 
-Also, Interchange does not require an external SQL database. If you have
-a small database and do not want to integrate your own tool set, you
-might want to use Interchange's internal database. However, the order
+Interchange can use GDBM, DB_File, SQL, LDAP, or in-memory databases. In
+most cases, these different database formats should operate the same
+when called by Interchange's access methods.
+
+Also, most all of Interchange's core functions do not use hard-coded
+field names; virtually every field can have a configurable name.
+
+Interchange does not require an external SQL database. If you have
+a small data set and do not want to integrate your own tool set, you
+cound use Interchange's internal database. However, the order
 management functions of Interchange will be slower and not as robust
 without an SQL database. SQL is strongly recommended for at least the
-orderline, transactions, and userdb tables.
+orderline, transactions, and userdb tables. 
 
-Keeping a database in an SQL manager makes it easier to integrate Interchange with other tools. Interchange can be used to maintain a spreadsheet containing product information through modifying the file C<products.txt> as needed. References to SQL, DBI, and DBD can be ignored.
+Keeping a database in an SQL manager makes it easier to integrate
+Interchange with other tools. Interchange can be used to maintain a
+spreadsheet containing product information through modifying the
+file C<products.txt> as needed. References to SQL, DBI, and DBD can
+be ignored.
 
 H2: Text Source Files
 
-Interchange reads delimited text files to obtain data. However, the text files are not the database. They are the source information for the database tables.
+Interchange reads delimited text files to obtain its initial data.
+However, the text files are not the database. They are the source
+information for the database tables.
 
-By default, all database source files are located in the C<products> subdirectory of the catalog directory. The main products database is in the C<products/products.txt> file in the supplied demo catalog.
+By default, all database source files are located in the C<products>
+subdirectory of the catalog directory. The main products database is in
+the C<products/products.txt> file in the supplied demo catalog.
 
 Note:If you are using one of the internal database methods, any changes made to the ASCII source file will be reflected in the database in the next user session. If the product database contains less than a thousand records, updates will be instantaneous. If the product database is larger, updates will take longer. Use the C<NoImport> reference tag to stop auto updating.
 
@@ -200,6 +216,7 @@ Interchange can manage an unlimited number of arbitrary database tables. They us
    Type 6      TAB
    Type 7      reserved
    Type 8      SQL
+   Type 9      LDAP
 !endblock
 
 The databases are specified in C<Database> directives, as:
@@ -558,7 +575,9 @@ The C<[import ....] TEXT [/import]> region may contain multiple records. If usin
 
 H2: Exporting from a Database
 
-To export an existing database to a file suitable for searching by Interchange, create a page that contains a C<[tag export ...][/tag]> element. Perhaps a better method is to define the same sort of tags in an OrderProfile, and use forms and buttons to access the profile.
+To export an existing database to a file to its text file, suitable for
+full-text search by Interchange, use Interchange's UI create a page that contains a
+C<[export table=TABLENAME]> ITL tag (ExportTag).
 
 H2: Write Control
 
@@ -1506,25 +1525,25 @@ LI1: mv_column_op
 field for a search match. These operations are supported:
 
 !block example
-	!=		Not equal to
-	!~		Not matching regular expression
-	<		Less than
-	<=		Less than or equal to
-	<>		Not equal to
-	=		Equal to
-	==		Equal to
-	=~		Matching regular expression
-	>		Greater than
-	>=		Greater than or equal to
-	em		Exact match
-	eq		Equal to
-	ge		Greater than or equal to
-	gt		Greater than
-	le		Less than or equal to
-	lt		Less than
-	ne		Not equal to
-	rm		Matching regular expression
-	rn		Not matching regular expression
+        !=              Not equal to
+        !~              Not matching regular expression
+        <               Less than
+        <=              Less than or equal to
+        <>              Not equal to
+        =               Equal to
+        ==              Equal to
+        =~              Matching regular expression
+        >               Greater than
+        >=              Greater than or equal to
+        em              Exact match
+        eq              Equal to
+        ge              Greater than or equal to
+        gt              Greater than
+        le              Less than or equal to
+        lt              Less than
+        ne              Not equal to
+        rm              Matching regular expression
+        rn              Not matching regular expression
 !endblock
 
 .If stacked to match the C<mv_search_field> and C<mv_searchspec> variables, and C<mv_coordinate> is set, it will operate only for the corresponding field.
@@ -2854,6 +2873,11 @@ If no critical information is kept and Interchange administration is not done vi
 
 Encryption can still be set on by passing C<crypt=1> with any call to a C<new_account>, C<change_pass>, or C<login> call.
 
+If you are encrypting, and you wish to use MD5 to encrypt the passwords, set
+the C<md5> parameter:
+
+	UserDB  default md5 1
+
 H2: Setting Defaults with the UserDB Directive
 
 The C<UserDB> directive provides a way to set defaults for the user database. For example, to save and recall the scratch variable C<tickets> in the user database
@@ -2917,7 +2941,7 @@ The user database features are implemented as a series of functions attached to 
 
 LI1: login
 
-.Active parameters: username, password, crypt, pass_field, ignore_case, indirect_login
+.Active parameters: username, password, crypt, md5, pass_field, ignore_case, indirect_login
 
 .Log in to Interchange. By default, the username is contained in the form
 variable C<mv_username> and the password in C<mv_password>. If the login
