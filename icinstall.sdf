@@ -3,7 +3,7 @@
 !define DOC_NAME "Interchange Installation"
 !define DOC_TYPE ""
 !define DOC_CODE "ICINSTALL_D2a_100800"
-!define DOC_VERSION "0.0.2"
+!define DOC_VERSION "0.0.3"
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
@@ -11,7 +11,7 @@
 
 H1: INSTALLATION OF INTERCHANGE
 
-Akopia Interchange is the industry's most widely distributed and implemented  e-commerce  platform. This document provides detailed installation instructions for Interchange and the foundation store demo included with the program. 
+Akopia Interchange is the industry's most widely distributed and implemented e-commerce  platform. This document provides detailed installation instructions for Interchange and the demo store included with the program. 
 
 H1: INTERCHANGE INSTALLATION WALKTHROUGH
 
@@ -23,48 +23,37 @@ H2: Installing Interchange
 
 **Write on the catalog install directory.
 **Read on the Apache configuration file (if possible).
-**Write on the CGI-bin for the web server.
+**Write on the cgi-bin directory for the web server.
+
+You must also have Perl 5.005 or higher already installed.
 
 +Obtain, decompress and untar the distribution on a UNIX server:
 
->         gzip -dc minivend-4.5.x.tar.gz | tar xvf -
->         cd interchange-4*
->         perl Makefile.PL
->         make
->         make test && make install
+>         gzip -dc interchange-4.5.x.tar.gz | tar xvf -
 
-Note: Check the site where Interchange was obtained for any patches that might have been issued since the release.
+Note: Check the Interchange developer site at C<http://developer.akopia.com/> for any patches that might have been issued since the release.
 
 +Run the configuration script:
 
->      ./configure
+>        cd interchange-4*
+>        ./configure
 
-+When prompted for a directory where to install Interchange, any directory is acceptable. The defaults are:
++You will be asked where you want to install Interchange. Any directory you have write privileges on is acceptable. The defaults are:
 
->        Installed as root: /usr/local/minivend
->        Installed as user: ~/mvend
+>        Installed as root: /usr/local/interchange
+>        Installed as user: ~/interchange
 
-Note: ~ is shorthand for the home directory. This directory is referred to later in the documentation as VendRoot or the Interchange software directory.
+Note: ~ here is shorthand for the home directory. This directory is referred to later in the documentation as VendRoot or the Interchange software directory.
 
-.On a UNIX server, the normal Perl installation method is:
-
->        perl Makefile.PL
->        make
->        make test && make install
-
-Note: Replace the C<perl> with the proper path to Perl 5.005 or higher binary.
-
-+Installing the link program requires write permission on the CGI and HTML directories. The definition of these are typically part of the HTTP server configuration. On an Apache server, the CGI directory is set by ScriptAlias; the HTML directory is set by DocumentRoot.
++Installing the link program requires write permission on the CGI and HTML directories. The definition of these are typically part of the HTTP server configuration. On an Apache server, the CGI directory is set by the Apache configuration variable ScriptAlias; the HTML directory is set by Apache configuration variable DocumentRoot.
 
 H2: Setting Up A Catalog
 
 Interchange should be installed at the completion of the above script. Installation of the demo catalogs is strongly recommended as a starting point for a custom catalog. In fact, Interchange will not be able to do anything useful until a catalog is created.
 
-Begin by separating the directories that hold the catalog pages and
-databases. The C<makecat> program supplied with Interchange will do this.
+Begin by separating the directories that hold the catalog pages and databases. The C<makecat> program supplied with Interchange will do this.
 
-Note: Any pages with Interchange elements/tags go in the directory set by the
-PageDir directive (the default is C<~/catalogs/catalog_name/pages>). For the demos supplied with Interchange, this means that only one or a few pages will be copied to the HTML directory, with the remainder of the pages staying in the directory defined as PageDir.
+Note: Any pages with Interchange elements/tags go in the directory set by the PageDir directive (the default is C<~/catalogs/catalog_name/pages>). For the demos supplied with Interchange, this means that only one or a few pages will be copied to the HTML directory, with the remainder of the pages staying in the directory defined as PageDir.
 
 If working with an ISP where all of the files are in HTML document space, disable all access to the Interchange catalog directory with the proper HTTP access restrictions. Normally that is creating a .htaccess file like this:
 
@@ -73,24 +62,21 @@ order allow,deny
 deny from all
 </Limit>
 
-If unable to do this, do not run Interchange. If file permissions can be set such that files will not be served, it may be okay. But, security will be a problem and place customers' personal information at risk.
+If unable to do this, do not run Interchange. If file permissions can be set such that files will not be served, it may be okay. But, security will be a problem and you may be placing customers' personal information at risk.
 
 
 H2: makecat - Setup A Catalog From A Template
 
-The supplied C<makecat> script, which is in the Interchange program directory
-C<bin>, is designed to set up a catalog based on the user's server configuration. It interrogates the user for parameters like the directories to use, URL to base the catalog in, HTTP server definitions, and file ownership. It is self-documenting in that it asks verbose questions and gives relevant
-examples.
+The supplied C<makecat> script, which is in the Interchange program directory C<bin>, is designed to set up a catalog based on the user's server configuration. It interrogates the user for parameters like the directories to use, URL to base the catalog in, HTTP server definitions, and file ownership. It is self-documenting in that it asks verbose questions and gives relevant examples.
 
-The C<makecat> script requires a template catalog to operate properly. The "Simple" and "Basic" demo templates are distributed with Interchange. Older demo catalogs (mostly for ideas) are available at C<ftp.minivend.com>.
+The C<makecat> script requires a template catalog to operate properly. The "construct" demo template is distributed with Interchange. Other demo catalogs are available at C<http://developer.akopia.com/>.
 
 Note: A catalog can only be created once. All further configuration is done by editing the files within the catalog directory.
 
 A catalog template contains an image of a configured catalog. The best way to see what the makecat program does is to configure the simple demo and then run a recursive C<diff> on the template and configured catalog directories:
 
-diff -r mvend/simple catalogs/simple
-
-Note: C<diff> is usually only available on UNIX.
+cd /usr/local/interchange
+diff -r construct catalogs/construct
 
 Notice that the files are mostly identical, except that certain macro strings have been replaced with the answers given to the script. For example, if C<www.mydomain.com> was answered at the prompt for server name, this difference would appear in the catalog.cfg file:
 
@@ -100,9 +86,7 @@ Notice that the files are mostly identical, except that certain macro strings ha
 >        # configured catalog
 >        Variable SERVER_NAME  www.mydomain.com
 
-The macro string &#32;_MVC_SERVERNAME__ was substituted with the answer to
-the question about server name. In the same way, other variables are
-substituted, and include (at least):
+The macro string &#32;_MVC_SERVERNAME__ was substituted with the answer to the question about server name. In the same way, other variables are substituted, and include (at least):
 
 > MVC_BASEDIR      MVC_IMAGEDIR
 > MVC_CATROOT      MVC_IMAGEURL
@@ -114,24 +98,22 @@ substituted, and include (at least):
 > MVC_DOCUMENTROOT MVC_VENDROOT
 > MVC_ENCRYPTOR
 
-Note: Not all of these variables are present in the "Simple" or sample templates, and quite a few more may be defined. In fact, any environment variable that is set and begins with MVC_ will be substituted for by the C<makecat> script. For example, to set up a configurable parameter to customize the COMPANY variable in catalog.cfg, run a pre-qualifying script that set the environment variable MVC_COMPANY and then place in the catalog.cfg file:
+Note: Not all of these variables are present in the "construct" template, and quite a few more may be defined. In fact, any environment variable that is set and begins with MVC_ will be substituted for by the C<makecat> script. For example, to set up a configurable parameter to customize the COMPANY variable in catalog.cfg, run a pre-qualifying script that set the environment variable MVC_COMPANY and then place in the catalog.cfg file:
 
 Variable   COMPANY   __MVC_COMPANY__
 
 All files within a template directory are substituted for macros, not just the catalog.cfg file. There are two special directories named C<html> and C<images>. These will be recursively copied to the directories defined as SampleHTML and ImageDir.
 
-Note: The template directory is located in the Interchange software directory, i.e., where C<minivend.cfg> resides. Avoid editing files in the template directory. To create a new template, it is recommended that it should be named something besides simple and a copy of the C<simple> demo directory be used as a starting point. Templates are normally placed in the Interchange base directory, but can be located anywhere. The script will prompt for the location if it cannot find a template.
+Note: The template directory is located in the Interchange software directory, i.e., where C<interchange.cfg> resides. Avoid editing files in the template directory. To create a new template, it is recommended that it should be named something besides 'construct' and a copy of the C<construct> demo directory be used as a starting point. Templates are normally placed in the Interchange base directory, but can be located anywhere. The script will prompt for the location if it cannot find a template.
 
-In addition to the standard parameters prompted for by Interchange, and
-the standard catalog creation procedure, four other files in the C<config> directory of the template may be defined:
+In addition to the standard parameters prompted for by Interchange, and the standard catalog creation procedure, four other files in the C<config> directory of the template may be defined:
 
 > additional_fields -- file with more parameters for macro substitution
 > additional_help   -- extended description for the additional_fields
 > precopy_commands  -- commands passed to the system prior to catalog copy
 > postcopy_commands -- commands passed to the system after catalog copy
 
-All files are paragraph-based. In other words, a blank line (with no spaces)
-terminates the individual setting. 
+All files are paragraph-based. In other words, a blank line (with no spaces) terminates the individual setting. 
 
 The additional_fields file contains:
 
@@ -187,19 +169,15 @@ simple
 
 The remaining parameters are similar to the Catalog directive.
 
-Additional minivend.cfg parameters set up administrative parameters that are catalog wide. See Server Configuration File for details on each of these.
+Additional interchange.cfg parameters set up administrative parameters that are catalog wide. See Server Configuration File for details on each of these.
 
-Each catalog can be completely independent, with different databases, or catalogs can share any or all pages, databases, and session files. This
-means that several catalogs can share the same information, allowing "virtual malls."
+Each catalog can be completely independent, with different databases, or catalogs can share any or all pages, databases, and session files. This means that several catalogs can share the same information, allowing "virtual malls."
 
 H2: Manual Installation of Catalogs
 
-An Interchange installation is complex, and requires quite a few distinct
-steps. That is why there is an interactive configuration script that is
-included with Interchange. It merely does automatically what is described
-below. It makes the process much easier, and will install the demo catalog. This configuration script has been tested on many UNIX systems.
+An Interchange installation is complex, and requires quite a few distinct steps. That is why there is an interactive configuration script that is included with Interchange. It merely does automatically what is described below. It makes the process much easier, and will install the demo catalog. This configuration script has been tested on many UNIX systems.
 
-The installation program (makecat) can be used to install a custom catalog template. See the supplied demo template C<simple> for examples.
+The installation program (makecat) can be used to install a custom catalog template. See the supplied demo template C<construct> for examples.
 
 H2: Needed Directories
 
@@ -210,8 +188,8 @@ Note[label='IMPORTANT NOTE: '] Since catalogs are all run under one server, perm
 A public WWW directory for inline image graphic files is needed. Interchange does not serve the images, only the HTML tags calling them. A useful convention is to place all buttonbars, backgrounds, and icons in the /images directory, with the catalog items located in the /images/catalog directory. Regardless of the directory structure, an I<absolute path> must be used. Relative paths are unacceptable. Interchange supports the I<ImageDir> directive, which places that as the absolute path in front of all relative IMG and INPUT SRC specifications.
 
 A cgi-bin directory in which to put the vlink or tlink program is also needed.
-Interchange is an ambitious and complex program, and is not presented as
-being easy to use, easy to install, or bug-free. The configuration scripts were done to try and make a very painful process only slightly painful. Some people install in one pass. Others never make it, especially when they are running on an ISP with a restrictive setup. Determined and thoughtful users almost always make Interchange work.
+
+Interchange is an ambitious and complex program, and may take some effort to set up. The configuration scripts were done to try and make a very painful process only slightly painful. Some people install in one pass. Others never make it, especially when they are running on an ISP with a restrictive setup. Determined and thoughtful users almost always make Interchange work.
 
 H1: FOUNDATION STORE INSTALLATION WALKTHROUGH
 
@@ -224,7 +202,7 @@ In order to begin, the following permissions on the server are needed:
 *Write on the cgi-bin directory
 *Write on the httpd document root
 
-If none of this makes any sense, stop now. Akopia can set up a server with Interchange pre-installed which eliminates the need to know anything about server permissions or root access. See the Akopia Web site (www.akopia.com) for more details.
+If none of this makes any sense, stop now. Akopia can set up a server with Interchange pre-installed which eliminates the need to know anything about server permissions or root access. See the Akopia Web site C<http://www.akopia.com/> for more details.
 
 ^Change to the directory in which Interchange is installed:
 !block example; listitem=2
@@ -686,27 +664,17 @@ At this point the Interchange server should be running and waiting for connectio
 
 H2: Installation Troubleshooting
 
-Interchange is a complex program, and needs the services of other complex
-programs, such as web servers and relational databases, to work. When there
-is a problem, it is not always Interchange. It may have to do with Perl or
-the HTTP server setup. In fact, over the past four years, many more basic installation problems have to do with those than with Interchange itself.
+Interchange is a complex program, and uses the services of other complex programs, such as web servers and relational databases, to work. When there is a problem, it is not always with Interchange. It may have to do with Perl or the HTTP server setup. In fact, over the past four years, many more basic installation problems have to do with those than with Interchange itself.
 
-If an error message is received about not being able to find libraries, or a core dump has occurred, or a segment fault message, it is always an improperly built or configured Perl and has nothing to do with Interchange. Contact the system administrator or install a new Perl .
+If an error message is received about not being able to find libraries, or a core dump has occurred, or a segment fault message, it is always an improperly built or configured Perl and has nothing to do with Interchange. Contact the system administrator or install a new Perl.
 
-The C<makecat> program is intended to be used to create the starting point for the catalog. If the demo does not work the first time, keep trying. If it still does not work, try running in INET mode. Finally, see the Interchange FAQ at: 
+The C<makecat> program is intended to be used to create the starting point for the catalog. If the demo does not work the first time, keep trying. If it still does not work, try running in INET mode.
 
->        http://www.minivend.com/minivend/faq/
+Check the two error log files: C<error.log> in the Interchange home directory (where interchange.cfg resides) and C<error.log> in the catalog directory (where catalog.cfg resides; there can be many of these). Many problems can be diagnosed quickly if these error logs are consulted.
 
-Check the two error log files: C<error.log> in the Interchange home directory (where minivend.cfg resides) and C<error.log> in the catalog directory (where catalog.cfg resides; there can be many of these). Many problems can be diagnosed quickly if these error logs are consulted.
+Check the README file, the FAQ, and mail list archive at the official Interchange web site for information:
 
-Check the README file, the FAQ, and mail list archive at the official
-Interchange web site for information:
-
->        http://www.minivend.com/minivend/
-
-Subscribe to the Interchange users mail list by sending the message text C<subscribe minivend-users> to:
-
->        majordomo@minivend.com
+>        http://developer.akopia.com/
 
 Double check the following items:
 
@@ -714,36 +682,23 @@ Double check the following items:
 
 -Check that the C<vlink> program is SUID, or the appropriate changes have been made in the SocketPerms directive. Unless the files are world-writable, the vlink program and the Interchange server must run as the same user ID! If running CGI-WRAP or SUEXEC, the C<vlink> program must not be SUID.
 
--If having trouble with the vlink program (named C<simple> in the demo configuration), try re-running C<makecat> and using INET mode instead. (Or copy the C<tlink> INET mode link program over C<vlink>). This should work
-unchanged for many systems. 
+-If having trouble with the vlink program (named C<construct> in the demo configuration), try re-running C<makecat> and using INET mode instead. (Or copy the C<tlink> INET mode link program over C<vlink>). This should work unchanged for many systems. 
 
--If on an ISP or have a non-standard network configuration, some changes to minivend.cfg are necessary. For C<tlink> to work, the proper host name(s) must be configured into the TcpHost directive in minivend.cfg. The program selects port 7786 by default (the ASCII codes for "M" and "V"). If another port is used, it must be set to the same number in both the tlink program (by running C<compile_link>) and the C<minivend.cfg> file. The C<tlink> program does B<not> need to be SUID.
+-If on an ISP or have a non-standard network configuration, some changes to interchange.cfg are necessary. For C<tlink> to work, the proper host name(s) must be configured into the TcpHost directive in interchange.cfg. The program selects port 7786 by default (the ASCII codes for "M" and "V"). If another port is used, it must be set to the same number in both the tlink program (by running C<compile_link>) and the C<minivend.cfg> file. The C<tlink> program does B<not> need to be SUID.
 
 +Proper file permissions? 
 
 -The Interchange server should not run as the user C<nobody>! The program files can be owned by anyone, but any databases, ASCII database source files, error logs, and the directory that holds them must be writable by the proper user ID, that is the one that is executing the MiniVend program. 
 
--The best way to operate in multi-user, multiple catalog setups is to create a special C<minivend> user, then put that user in the group that contains each catalog user. If a group is defined for each individual user, this provides the best security. All associated files can be in 660 or 770 mode. There should be no problems with permissions and no problems with security.
+-The best way to operate in multi-user, multiple catalog setups is to create a special C<interch> user, then put that user in the group that contains each catalog user. If a group is defined for each individual user, this provides the best security. All associated files can be in 660 or 770 mode. There should be no problems with permissions and no problems with security.
 
 +Is the C<vlink> program being executed on a machine that has the socket file C<etc/socket> on a directly attached disk? 
 
 -UNIX-domain sockets will not work on NFS-mounted file systems! This means that the server C<minivend> and the CGI program C<vlink> must be executing on the same machine.
 
--The C<tlink> program does not have this problem, but it must have the proper host name(s) and TCP ports set in the TcpHost and TcpPort directives in C<minivend.cfg>. Also, be careful of security if sensitive information, like customer credit card numbers, is being placed on a network wire.
+-The C<tlink> program does not have this problem, but it must have the proper host name(s) and TCP ports set in the TcpHost and TcpPort directives in C<interchange.cfg>. Also, be careful of security if sensitive information, like customer credit card numbers, is being placed on a network wire.
 
 H1: FREQUENTLY ASKED QUESTIONS
-
-H2: How can I unzip Interchange?
-
-Use the ZIP program to extract to a directory and run C<setup.bat>
-or C<configure.bat>. The ZIP file is identical to the tar file except for the presence of three files: C<cygwin.dll>, C<setup.pl>, and C<setup.bat>.
-
-If planning to install Interchange on a UNIX server, typically the company or an ISP server, untar it on a UNIX machine:
-
-gzip -dc minivend-X.XX.tar.gz | tar xvf -
-
-If the file has been transferred to a Wintel machine, and then transferred to the ISP, all transfers must be in BINARY mode. Problems will occur if one or
-more of the transfers was in ASCII mode.
 
 H2: Where are the pages?
 
