@@ -1,13 +1,13 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icfoundation.sdf,v 1.25 2002-04-12 22:53:18 jon Exp $
+# $Id: icfoundation.sdf,v 1.26 2002-10-30 01:45:18 jon Exp $
 
 !define DOC_NAME "Foundation Store"
 !define DOC_TYPE ""
 !define DOC_CODE "icfoundation"
-!define DOC_VERSION substr('$Revision: 1.25 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.26 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
-!define DOC_URL "http://interchange.redhat.com/doc/icfoundation.html"
+!define DOC_URL "http://www.icdevgroup.org/doc/icfoundation.html"
 !build_title
 
 H1: The Foundation Store
@@ -4184,7 +4184,7 @@ Normally, regular hypertext links are not used in Interchange pages. These kinds
 Instead of:
 
 !block example
-   <A HREF="/cgi-bin/mv/shirts">Shirts</A>
+   <A HREF="/cgi-bin/catlink/shirts">Shirts</A>
 !endblock
 
 \Use:
@@ -4211,4 +4211,4 @@ In general, it's a good idea to leave fields empty if you don't want to use them
 
 Line:
 
-N:Copyright 2001-2002 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.
+N:Copyright 2001-2002 Red Hat, Inc., and others. Freely redistributable under terms of the GNU General Public License.

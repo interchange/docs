@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ic_howto_cvs.sdf,v 1.10 2002-06-08 19:15:41 danb Exp $
+# $Id: ic_howto_cvs.sdf,v 1.11 2002-10-30 01:45:17 jon Exp $
 
 !define DOC_NAME "Interchange + CVS HOWTO"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_howto_cvs"
-!define DOC_VERSION substr('$Revision: 1.10 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.11 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc-4.8/ic_howto_cvs.html"
@@ -470,7 +470,7 @@ this amount of time is small already, but it is a consideration for some.
 N:Ease of use is one reason not to remove anything from your catalog before
 importing it, because it creates the ability to have a completely working
 catalog from just one checkout (much like the CVS tree at
-interchange.redhat.com).  Whereas if you leave out other directories like etc/
+cvs.icdevgroup.org).  Whereas if you leave out other directories like etc/
 session/ orders/, etc., then you must first combine your checkout with the
 other working parts of a catalog before the catalog is viable.  But this is
 slower and will bring up lots of harmless notification and warning messages

@@ -1,14 +1,14 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icupgrade.sdf,v 1.19 2002-10-24 23:35:14 kwalsh Exp $
+# $Id: icupgrade.sdf,v 1.20 2002-10-30 01:45:18 jon Exp $
 
 !define DOC_NAME "Interchange Upgrade Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "icupgrade"
-!define DOC_VERSION substr('$Revision: 1.19 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.20 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
-!define DOC_URL "http://interchange.redhat.com/doc/icupgrade.html"
-!define DOC_OWNER "1996-2002 Red Hat, Inc. E<lt>{{EMAIL:interchange@redhat.com}}E<gt>"
+!define DOC_URL "http://www.icdevgroup.org/doc/icupgrade.html"
+!define DOC_OWNER "1996-2002 Red Hat, Inc., and others"
 !build_title
 
 H1:Introduction
@@ -937,14 +937,16 @@ AddDirective AsciiBackend
 
 H1: History of Interchange
 
-Interchange is a descendent of Vend, an e-commerce solution originally developed by Andrew Wilcox in early 1995. Mike Heins took the first publicly-released version, Vend 0.2, and added searching and DBM catalog storage to create MiniVend. Mike released MiniVend 0.2m7 on December 28, 1995. Subsequent versions of MiniVend took parts from Vend 0.3, especially the vlink and Server.pm modules, which were adapted to run with MiniVend. In the four years that followed, Mike Heins expanded and enhanced MiniVend, creating a powerful and versatile e-commerce development platform. MiniVend grew to support thousands of businesses and their e-commerce sites.
+Interchange is a descendent of Vend, an e-commerce solution originally developed by Andrew Wilcox in early 1995. Mike Heins took the first publicly-released version, Vend 0.2, and added searching and DBM catalog storage to create MiniVend. Mike released MiniVend 0.2m7 on December 28, 1995. Subsequent versions of MiniVend took parts from Vend 0.3, especially the vlink and Server.pm modules, which were adapted to run with MiniVend. In the four years that followed, Mike Heins expanded and enhanced MiniVend, creating a powerful and versatile e-commerce development platform. MiniVend grew to support thousands of businesses and their e-commerce sites, and sites running on MiniVend versions 3 and 4 are still common today.
 
 Separately, an experienced e-commerce development team founded Akopia. Their goal was to create a sophisticated open source e-commerce platform that was both feature-rich and easy to use. Their product, Tallyman, was intuitive, and had great content-management features, but lacked many of MiniVend's capabilities.
 
-Akopia acquired MiniVend in June 2000. Mike Heins and the Tallyman developers combined MiniVend with Tallyman's features to create Interchange. Interchange replaces both MiniVend and Tallyman. In order to preserve compatibility, the name "minivend" and prefixes like "mv_" and "MVC_" will still appear in source code and configuration files.
+Akopia acquired MiniVend in June 2000. Mike Heins and the Tallyman developers combined MiniVend 4 with Tallyman's features to create Interchange. Interchange replaces both MiniVend and Tallyman. In order to preserve compatibility, the name "minivend" and prefixes like "mv_" and "MVC_" will still appear in source code and configuration files. Interchange's first stable release was version 4.6.
 
-In January 2001, Red Hat acquired Akopia and created its new E-Business Solutions Division. Interchange development is going forward and the user community continues to grow.
+In January 2001, Red Hat acquired Akopia and created its new E-Business Solutions Division. Red Hat sponsored the development of Interchange 4.8 and the Red Hat E-Commerce Suite.
+
+In mid-2002, Red Hat decided to stop supporting Interchange development, and a group of individuals formed the Interchange Developer Group to coordinate Interchange development independent of any company or person. Interchange continues to advance and the user community is growing. Interchange 5.0 is planned for release in late 2002.
 
 Line:
 
-N:Copyright 2001-2002 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.
+N:Copyright 2001-2002 Red Hat, Inc., and others Freely redistributable under terms of the GNU General Public License.

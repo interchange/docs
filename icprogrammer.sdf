@@ -1,13 +1,13 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: icprogrammer.sdf,v 1.6 2002-07-31 19:55:52 kwalsh Exp $
+# $Id: icprogrammer.sdf,v 1.7 2002-10-30 01:45:18 jon Exp $
 
 !define DOC_NAME "Interchange Programmer Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icprogrammer"
-!define DOC_VERSION substr('$Revision: 1.6 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.7 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
-!define DOC_URL "http://interchange.redhat.com/doc/icvars.html"
+!define DOC_URL "http://www.icdevgroup.org/doc/icvars.html"
 !define DOC_OWNER "2002 Interchange Developers Group. {{EMAIL:interchange-users@icdevgroup.org}}"
 
 !define SHOW_COMMENTS 0

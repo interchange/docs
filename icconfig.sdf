@@ -1,13 +1,13 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.75 2002-10-29 07:15:24 kwalsh Exp $
+# $Id: icconfig.sdf,v 1.76 2002-10-30 01:45:17 jon Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.75 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.76 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
-!define DOC_URL "http://interchange.redhat.com/doc/icconfig.html"
+!define DOC_URL "http://www.icdevgroup.org/doc/icconfig.html"
 !build_title
 
 H1: Interchange Configuration Files
@@ -2796,4 +2796,4 @@ Disables IP qualification of user sessions. {{B:This degrades catalog security.}
 
 Line:
 
-N:Copyright 2001-2002 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.
+N:Copyright 2001-2002 Red Hat, Inc., and others. Freely redistributable under terms of the GNU General Public License.

@@ -1,14 +1,14 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: iccattut.sdf,v 1.16 2002-09-30 04:29:02 kwalsh Exp $
+# $Id: iccattut.sdf,v 1.17 2002-10-30 01:45:17 jon Exp $
 
 !define DOC_NAME "Catalog-Building Tutorial"
 !define DOC_TYPE ""
 !define DOC_CODE "iccattut"
-!define DOC_VERSION substr('$Revision: 1.16 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.17 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
-!define DOC_URL "http://interchange.redhat.com/doc/iccattut.html"
-!define DOC_OWNER "2000-2002 Red Hat, Inc. E<lt>{{EMAIL:interchange@redhat.com}}E<gt>"
+!define DOC_URL "http://www.icdevgroup.org/doc/iccattut.html"
+!define DOC_OWNER "2000-2002 Red Hat, Inc., and others"
 !build_title
 
 H1:Purpose
@@ -29,7 +29,7 @@ N:The easiest way to get Interchange and the demo set up is through an {{1:RPM i
 
 You must also know what type of installation you ran so you know where to place the various files created. Before proceeding, verify that Interchange is properly installed. Also, keep in mind which type of installation you did:
 
-*RPM (Red Hat Package Manager) install
+*RPM (RPM Package Manager) install
 *Manual install as root
 *Manual install as regular user
 

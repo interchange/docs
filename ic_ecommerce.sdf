@@ -1,13 +1,13 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ic_ecommerce.sdf,v 1.18 2002-10-23 17:00:40 jon Exp $
+# $Id: ic_ecommerce.sdf,v 1.19 2002-10-30 01:45:17 jon Exp $
 
 !define DOC_NAME "Interchange Ecommerce Functions"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_ecommerce"
-!define DOC_VERSION substr('$Revision: 1.18 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.19 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
-!define DOC_URL "http://interchange.redhat.com/doc/ic_ecommerce.html"
+!define DOC_URL "http://www.icdevgroup.org/doc/ic_ecommerce.html"
 !build_title
 
 
@@ -1687,7 +1687,7 @@ you should set it large enough to be comfortable for the customer.
 
 Line:
 
-N:Copyright 2001-2002 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.
+N:Copyright 2001-2002 Red Hat, Inc., and others. Freely redistributable under terms of the GNU General Public License.
 
 
 

@@ -1,13 +1,13 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icadvanced.sdf,v 1.9 2002-10-14 13:16:45 racke Exp $
+# $Id: icadvanced.sdf,v 1.10 2002-10-30 01:45:17 jon Exp $
 
 !define DOC_NAME "Advanced Interchange Topics"
 !define DOC_TYPE ""
 !define DOC_CODE "icadvanced"
-!define DOC_VERSION substr('$Revision: 1.9 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.10 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
-!define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
+!define DOC_URL "http://www.icdevgroup.org/doc/icadvanced.html"
 !build_title
 
 H1: Advanced Interchange Topics
@@ -654,7 +654,7 @@ The supplied C<makecat> script, which is in the Interchange program directory C<
 
 Note: A catalog can only be created once. All further configuration is done by editing the files within the catalog directory.
 
-The C<makecat> script requires a catalog skeleton to work from. The Foundation demo is distributed with Interchange. See the icfoundation document for information on building the Foundation demo store. Other demo catalogs are available at C<http://interchange.redhat.com/>.
+The C<makecat> script requires a catalog skeleton to work from. The Foundation demo is distributed with Interchange. See the icfoundation document for information on building the Foundation demo store. Other demo catalogs are available at C<http://www.icdevgroup.org/>.
 
 It is not normally necessary for you to understand how to build catalog skeletons for use with makecat, but the following information will help you if you should ever need to.
 
@@ -923,7 +923,7 @@ The latest version of C<vlink.c> and C<tlink.c> have been compiled on the follow
    FreeBSD 2.x, 3.x, 4.x
    IRIX 5.3, IRIX 6.1
    OpenBSD 2.7
-   Red Hat Linux 6.2, 7.0, 7.1
+   Red Hat Linux 6.2, 7.0, 7.1, 7.2, 7.3, 8.0
    SCO OpenServer 5.x
    Solaris 2.x (Sun compiler and GCC)
    Solaris 7 (Sun compiler and GCC)
@@ -992,7 +992,7 @@ Check the two error log files: C<error.log> in the Interchange home directory (w
 Check the README file, the FAQ, and mail list archive at the official Interchange web site for information:
 
 !block example
-       http://interchange.redhat.com/
+       http://www.icdevgroup.org/
 !endblock
 
 Double check the following items:
