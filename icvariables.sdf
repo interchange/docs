@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual" 
-# $Id: icvariables.sdf,v 1.1 2004-01-07 04:48:04 pvinci Exp $
+# $Id: icvariables.sdf,v 1.2 2004-01-13 20:00:45 racke Exp $
 
 !define DOC_NAME "Interchange Programmer Variables Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icvariables"
-!define DOC_VERSION substr('$Revision: 1.1 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.2 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/icvars.html"
@@ -314,7 +314,7 @@ be displayed in ps command. This may not work on BSD based Kernels.
 LI1: MV_FILE
 
 Used in C<lib/Vend/File.pm.> This is the filename of the most recently returned 
-contents. This Variable is not set in C<interchange.cfg>, but is set by interchange
+contents. This variable is not set in C<interchange.cfg>, but is set by interchange
 while interchange is runnning.
 
 LI1: MV_GETPPID_BROKEN
@@ -389,14 +389,14 @@ H2: Standard catalog (catalog.cfg) Variable values
 LI1: ACTIVE_SESSION_MINUTES
 
 Used in C<code/UI_Tag/dump_session.coretag>, C<lib/UI/pages/admin/genconfig.html> 
-and C<lib/UI/pages/admin/show_session.html>. This Variable overrides the 
+and C<lib/UI/pages/admin/show_session.html>. This variable overrides the 
 {{CMD[jump="icconfig.html#SessionExpire"]SessionExpire}}
 directive.
 
 LI1: ADL_COMPONENT
 
-Used in C<lib/UI/ui.cfg>. This Varaible can be overriden by ADL_COMPONENT_TEMPLATE.
-Apparently not used anythere.
+Used in C<lib/UI/ui.cfg>. This variable can be overriden by ADL_COMPONENT_TEMPLATE.
+Apparently not used anywhere.
 
 The default is:
 !block example
@@ -407,8 +407,8 @@ The default is:
 !endblock
 LI1: ADL_COMPONENT_TEMPLATE  
 
-Used in C<lib/UI/ui.cfg>. This Varaible can be used to override ADL_COMPONENT.
-Apparently not used anythere.
+Used in C<lib/UI/ui.cfg>. This variable can be used to override ADL_COMPONENT.
+Apparently not used anywhere.
 
 LI1: ADL_ITEM
 
@@ -426,8 +426,8 @@ The default is:
 
 LI1: ADL_ITEM_TEMPLATE
 
-Used in C<lib/UI/ui.cfg>. This Varaible can be used to override ADL_ITEM.
-Apparently not used anythere.
+Used in C<lib/UI/ui.cfg>. This variable can be used to override ADL_ITEM.
+Apparently not used anywhere.
 
 LI1: ADL_MENU
 
@@ -448,8 +448,8 @@ The default value is:
 
 LI1: ADL_MENU_TEMPLATE
 
-Used in C<lib/UI/ui.cfg>. This Varaible can be used to override ADL_MENU.
-Apparently not used anythere.
+Used in C<lib/UI/ui.cfg>. This variable can be used to override ADL_MENU.
+Apparently not used anywhere.
 
 LI1: ADL_PAGE
 Used in the foundation templates LEFTONLY_BOTTOM,LEFTRIGHT_BOTTOM,
@@ -668,7 +668,7 @@ LI1: MV_OPTION_TABLE
 Used in C<foundation/products/variable.txt>, C<lib/UI/pages/admin/item_option_phantom.html>,
 C<lib/UI/pages/admin/item_option_old.html>, C<lib/UI/ui.cfg>, C<lib/Vend/Config.pm>, C<lib/Vend/Options.pm> 
 and C<lib/Vend/Options/Simple.pm>.
-If the Interchange Variable MV_OPTION_TABLE is not set, it defaults
+If the Interchange variable MV_OPTION_TABLE is not set, it defaults
 to "options", which combines options for Simple, Matrix, and
 Modular into that one table. This goes along with foundation and
 construct demos up until Interchange 4.9.8.
