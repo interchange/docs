@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ictemplates.sdf,v 1.35 2002-04-19 20:12:31 racke Exp $
+# $Id: ictemplates.sdf,v 1.36 2002-04-29 23:04:16 jon Exp $
 
 !define DOC_NAME "Template Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "ictemplates"
-!define DOC_VERSION substr('$Revision: 1.35 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.36 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictemplates.html"
@@ -1530,13 +1530,13 @@ H2: Import
 .The type of LINE and continue setting of NOTES is particularly useful, for it allows the naming of fields so that the order in which they appear in the database will not have to be remembered. The following two imports are identical in effect:
 
 !block example; listitem=2
-    [import table=orders]
+    [import table=orders type=LINE continue=NOTES]
     code: [value mv_order_number]
     shipping_mode: [shipping-description]
     status: pending
     [/import]
 
-    [import table=orders]
+    [import table=orders type=LINE continue=NOTES]
     shipping_mode: [shipping-description]
     status: pending
     code: [value mv_order_number]
