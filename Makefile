@@ -1,27 +1,31 @@
 VERSION=4.7.2
 TARGETS=icadvanced iccattut icconfig icfoundation ictemplates icdatabase ictags icupgrade
 SUFFIXES=txt mif html pdf pod 8
+SDFBIN=sdf/bin/sdf
+FRAMESDIR=frames
+FRAMESPARENT=../
+DEVDIR=dev
+DOCDBNAME=documentation.txt
 TARNAME=icdocs.tar.gz
 FULLSUFFIXES=txt html
 FULLDOCNAME=icfull
-DOCDBNAME=documentation.txt
 
 .SUFFIXES: .sdf $(addprefix .,$(SUFFIXES))
 
 .sdf.html:
-	sdf/bin/sdf -2html $<
+	$(SDFBIN) -2html $<
 
 .sdf.pod:
-	sdf/bin/sdf -2pod $<
+	$(SDFBIN) -2pod $<
 
 .sdf.txt:
-	sdf/bin/sdf -2txt $<
+	$(SDFBIN) -2txt $<
 
 .sdf.mif:
-	sdf/bin/sdf -2mif $<
+	$(SDFBIN) -2mif $<
 
 .sdf.pdf:
-	sdf/bin/sdf -2pdf_html $<
+	$(SDFBIN) -2pdf_html $<
 
 .pod.8:
 	pod2man --section=8 \
@@ -43,29 +47,32 @@ tardist :: all dev_html docdb
 			echo $$i.$$j ; \
 		done ; \
 	done ; \
-	echo index.html dev $(DOCDBNAME) ) | \
+	echo index.html $(DEVDIR) $(DOCDBNAME) ) | \
 	xargs tar czf $(TARNAME)
 
 dev_html:
-	@mkdir -p dev
-	@for target in ic*.sdf ; do \
+	@mkdir -p $(DEVDIR)
+	@for target in $(addsuffix .sdf,$(TARGETS)) ; do \
 		base=`basename $$target .sdf`; \
 		echo building $$base; \
-		( echo '1s/akopia/developer_site/' ; echo 'wq dev/'$$target ) | ed $$target > /dev/null 2>&1 ; \
-		( cd dev ; sdf/bin/sdf -2html_topics -DITL_ESCAPE -n2 -k=developer_site $$target); \
+		( echo '1s/akopia/developer_site/' ; echo 'wq $(DEVDIR)/'$$target ) | ed $$target > /dev/null 2>&1 ; \
+		$(SDFBIN) -2html_topics -DITL_ESCAPE -n2 -k=developer_site -O$(DEVDIR) $$target ; \
 	done
 	@echo building index
 	@( echo '1s/akopia/developer_site/' ; echo 'wq dev_index.sdf' ) | ed index.sdf > /dev/null 2>&1
 	@make dev_index.html
 	@rm dev_index.sdf
-	mv dev_index.html dev/index.html
+	@mv dev_index.html $(DEVDIR)/index.html
 
 %_toc.html: %.sdf
-	sdf/bin/sdf -2html_topics -n2 -DHTML_FRAMES=1 $<
-	mv $(basename $<).html $@
+	@echo making $@
+	@mkdir -p $(FRAMESDIR)
+	@$(SDFBIN) -2html_topics -n2 -DHTML_FRAMES=1 -DSDF_ROOT=$(FRAMESPARENT) -O$(FRAMESDIR) $<
+	@( cd $(FRAMESDIR) ; mv $(basename $<).html $@ )
 
 %_frames.html: %.sdf
 	@echo making $@
+	@mkdir -p $(FRAMESDIR)
 	@echo '\
 <html><head>\
   <title>'$$title'</title>\
@@ -73,7 +80,7 @@ dev_html:
   <frame name="nav"  src="$(basename $<)_toc.html">\
   <frame name="main" src="$(basename $<)_1.html">\
 </frameset></html>\
-' > $@
+' > $(FRAMESDIR)/$@
 
 frames_html:: $(addsuffix _frames.html,$(TARGETS))
 frames_html:: $(addsuffix _toc.html,$(TARGETS))
@@ -125,4 +132,5 @@ clean:
 		rm -f $(FULLDOCNAME).$$i ; \
 	done
 	@rm -f $(TARNAME)
-	@rm -rf dev
+	@rm -rf $(DEVDIR)
+	@rm -rf $(FRAMESDIR)
