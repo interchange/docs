@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.27 2001-05-03 18:40:57 bill Exp $
+# $Id: ictags.sdf,v 1.28 2001-05-03 18:54:50 jon Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.27 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.28 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -35,6 +35,7 @@ the user session. There nearly 100 standard predefined tags, and
 the C<UserTag> facility allows you to create tags fully as powerful
 that perform your own functions.
 
+This document covers Interchange versions 4.7-4.8.
 
 H2: Tag Syntax
 
@@ -3448,6 +3449,7 @@ H3: Summary
   [or]
     The other
   [/either]
+!endblock
 
 No parameters.
 
