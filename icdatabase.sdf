@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.22 2001-04-10 22:07:50 jon Exp $
+# $Id: icdatabase.sdf,v 1.23 2001-04-13 17:19:43 alison Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.22 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.23 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icdatabase.html"
@@ -12,59 +12,51 @@
 
 H1: Databases and Interchange
 
-As with most powerful shopping cart programs, Interchange is all about databases. Interchange can use GDBM, DB_File, SQL, LDAP, or in-memory databases. In most cases, these different database formats should operate the same when called by Interchange's access methods.
+Interchange can use GDBM, DB_File, SQL, LDAP, or in-memory databases. In most cases, these different database formats should operate the same when called by Interchange's access methods.
 
-Interchange does not require an external SQL database. If you have a small database with no particular desire to integrate your own tool set, you may be more comfortable using Interchange's internal database.
+Also, Interchange does not require an external SQL database. If you have a small database and do not want to integrate your own tool set, you might want to use Interchange's internal database. However, the order management functions of Interchange will be slower and not as robust without an SQL database. SQL is strongly recommended for at least the orderline, transactions, and userdb tables.
 
-Bear in mind that the order management functions of Interchange will be slower and not as robust without an SQL database. SQL is strongly recommended for at least these three tables:
-
-!block example
-       orderline
-       transactions
-       userdb
-!endblock
-
-Keeping a database in an SQL manager makes it easier to integrate Interchange with other tools. Interchange can be used to maintain a spreadsheet containing product information by only modifying the file C<products.txt> as needed. References to SQL, DBI, and DBD can be ignored.
+Keeping a database in an SQL manager makes it easier to integrate Interchange with other tools. Interchange can be used to maintain a spreadsheet containing product information through modifying the file C<products.txt> as needed. References to SQL, DBI, and DBD can be ignored.
 
 H2: Text Source Files
 
 Interchange reads delimited text files to obtain data. However, the text files are not the database. They are the source information for the database tables.
 
-By default all database source files are located in the C<products> subdirectory of the catalog directory. The main products database is in the file C<products/products.txt> in the supplied demo catalogs.
+By default, all database source files are located in the C<products> subdirectory of the catalog directory. The main products database is in the C<products/products.txt> file in the supplied demo catalog.
 
-If using one of the internal database methods, any changes made to the ASCII source file will be reflected in the database in the next user session. If the product database contains less than a thousand records, updates will be instantaneous. If the product database is substantially larger, updates will take longer. Use the C<NoImport> reference tag to stop auto updating.
+Note:If you are using one of the internal database methods, any changes made to the ASCII source file will be reflected in the database in the next user session. If the product database contains less than a thousand records, updates will be instantaneous. If the product database is larger, updates will take longer. Use the C<NoImport> reference tag to stop auto updating.
 
-Note the following configuration directive:
+In the following configuration directive:
 
 !block example
    Database  products  products.txt   TAB
 !endblock
 
-This says that the C<products> table will obtain its source information from the file C<products.txt>. What is done with it depends on the type of underlying database being used. The different types:
+the C<products> table will obtain its source information from the file C<products.txt>. What is done with it depends on the type of underlying database being used. The different types and their behavior are described below:
 
 LI1: GDBM
 
-.The database source file is checked to see if it is newer than the actual database file, which would be C<products.gdbm>. If it is, then the database table is re-imported from the file.
+.The database source file is checked to see if it is newer than the actual database file, C<products.gdbm>. If it is, the database table is re-imported from the file.
 
-.This behavior can be changed in a couple of ways. If files are never to be imported unless the C<.gdbm> file disappears, set the C<NoImport> directive:
+.This behavior can be changed in a few ways. If files should not be imported unless the C<.gdbm> file disappears, set the C<NoImport> directive:
 
 !block example; listitem=2
     NoImport  products
 !endblock
 
-.If the database source file is only imported at catalog start-up time, use the IMPORT_ONCE modifier:
+.If the database source file is only to be imported at catalog start-up time, use the IMPORT_ONCE modifier:
 
 !block example; listitem=2
     Database products IMPORT_ONCE 1
 !endblock
 
-.GDBM is the default type if the GDBM_File Perl module is installed (as it will be on LINUX).
+.GDBM is the default database type if the GDBM_File Perl module is installed (as it is on LINUX).
 
 LI1: DB_File
 
-.The database source file is checked to see if it is newer than the actual database file, which would be C<products.db>. If it is, then the database table is re-imported from the file. You can change this behavior in the same way as with GDBM_File (above).
+.The database source file is checked to see if it is newer than the actual database file, C<products.db>. If it is, the database table is re-imported from the file. You can change this behavior in the same way as GDBM_File, described above.
 
-.DB_File is the default type if the GDBM_File Perl module is not installed. This is typical on FreeBSD. To explicitly specify DB_File as the type, specify it with a Database directive in C<catalog.cfg>:
+.DB_File is the default database type if the GDBM_File Perl module is not installed. This is common on FreeBSD. To specify DB_File as your database type, set it in C<catalog.cfg> with a Database directive:
 
 !block example; listitem=2
    Database  products  DB_FILE   1
@@ -72,53 +64,55 @@ LI1: DB_File
 
 LI1: DBI/SQL
 
-.If a file named C<products.sql> is present in the same directory as C<products.txt>, the database table will not be imported from ASCII source. If there is no C<products.sql>, the following will occur:
-.DBI/SQL imports only happen at catalog configuration time.
+.If a file named C<products.sql> is in the same directory as C<products.txt>, the database table will not be imported from the ASCII source. If there is no C<products.sql>, the following will occur:
+.DBI/SQL imports will only happen at catalog configuration time.
 
 .^Interchange will connect to the SQL database using the specified DSN. (DBI parameter meaning "Database Source Name".)
 
-.+The table will be dropped with "DROP TABLE products;". This will occur without warning! NOTE: This can be prevented in several ways. See C<NoImport External> or the SQL documentation.
+.+The table will be dropped with "DROP TABLE products;". This will occur without warning. NOTE: This can be prevented in several ways. See C<NoImport External> or the SQL documentation for more information.
 
 .+The table will be created. If there are COLUMN_DEF specifications in C<catalog.cfg>, they will be used. Otherwise, the key (first field in the text file by default) will be created with a C<char(16)> type and all other fields will be created as C<char(128)>. The table creation statement will be written to the C<error.log> file.
 
-..The text source file will be imported into the SQL database. Interchange will place the data in the columns. Data typing must be user-configured. This means that if "none" is placed in a field, and it is defined as a numeric type, the database import will not succeed. If it does not, the catalog will not become active.
+..The text source file will be imported into the SQL database. Interchange will place the data in the columns. Data typing must be user-configured. This means that if "none" is placed in a field, and it is defined as a numeric type, the database import will not succeed. And if it does not succeed, the catalog will not become active.
 
 LI1: In-Memory
 
-.Every time the catalog is configured, the C<products.txt> file is imported into memory and forms the database. The database is not changed otherwise. In-memory is the default type if there is no GDBM_File or DB_File Perl module installed; specify it with:
+.Every time the catalog is configured, the C<products.txt> file is imported into memory and forms the database. Otherwise, the database is not changed. The in-memory database is the default database if there is no GDBM_File or DB_File Perl module installed; specify it with:
 
 !block example; listitem=2
    Database   products   MEMORY   1
 !endblock
 
-H2: Interchange Database Operation
+H2: Interchange Database Conventions
 
-Note: In the following descriptions, the following terms are used somewhat interchangeably:
+This section describes naming and file usage conventions used with Interchange.
+
+Note: Throughout the documentation, the following terms and their definitions are used interchangeably:
 
 LI1: key, code
 
-.Either one is a reference to the key for the database. In Interchange, this is often the product code or SKU, which is the part number for the product. Other key values may be used to generate relationships to other database tables.
+.A reference to the database key. In Interchange, this is usually the product code or SKU, which is the part number for the product. Other key values may be used to generate relationships to other database tables.
 
-.It is suggested that the key be the first column of the ASCII source file, since Interchange's import, export, and search facilities will work much better with that practice.
+.It is recommended that the key be the first column of the ASCII source file, since Interchange's import, export, and search facilities rely on this practice.
 
 LI1: field, column
 
-.This is a column of the database. One of the columns is always the key; Interchange prefers that the key be the first column.
+.The vertical row of a database. One of the columns is always the key and it is usually the first one.
 
 LI1: table, database
 
-.A table in the database. Because of the evolution of Interchange from a single-table database to an access method for an unlimited number of tables (and databases, for that matter), a table will sometimes be referred to as a database. The only time database refers to something different is when describing that concept as it relates to SQL, where a database contains a series of tables. Interchange cannot create SQL databases, but given the proper permissions it may drop and create tables within that database.
+.A table in the database. Because Interchange has evolved from a single-table database to an access method for an unlimited number of tables (and databases, for that matter), a table will occasionally be referred to as a database. The only time the term database refers to something different is when describing the concept as it relates to SQL, where a database contains a series of tables. While Interchange cannot create SQL databases, it can drop and create tables with that database if given the proper permissions.
 
-If necessary, Interchange reads the data to place in tables from standard
-ASCII-delimited files. All of these ASCII source files are kept in the products directory, normally products in the catalog directory (where catalog.cfg is located). The ASCII files can have ^M (carriage return) characters if desired, but must have a new line character at the end of the line to work. NOTE: Mac users uploading files must use ASCII mode, not binary mode.
+If necessary, Interchange can read the data to be placed in tables from a standard
+ASCII-delimited file. All of the ASCII source files are kept in the products directory, which is normally in the catalog directory (where catalog.cfg is located). The ASCII files can have ^M (carriage return) characters, but must have a new line character at the end of the line to work. NOTE: Mac users uploading files must use ASCII mode, not binary mode.
 
 Interchange's default ASCII delimiter is TAB.
 
-Note:The items must be separated by a single delimiter. The items are lined up for reading convenience.
+Note:The items must be separated by a single delimiter. The items in this document are lined up for reading convenience.
 
 LI1: TAB
 
-.Fields separated by C<^I> characters. No whitespace should be at the beginning of the line.
+.Fields are separated by C<^I> characters. No whitespace is allowable at the beginning of the line.
 
 !block example; listitem=2
     code    description             price   image
@@ -127,7 +121,7 @@ LI1: TAB
 
 LI1: PIPE
 
-.Fields separated by C<|> characters. No whitespace should be at the beginning of the line.
+.Fields are separated by pipe C<|> characters. No whitespace is allowable at the beginning of the line.
 
 !block example; listitem=2
     code|description|price|image
@@ -136,24 +130,24 @@ LI1: PIPE
 
 LI1: CSV
 
-.Fields enclosed in quotes, separated by commas. No whitespace should be at the beginning of the line.
+.Fields are enclosed in quotes, separated by commas. No whitespace should be at the beginning of the line.
 
 !block example; listitem=2
     "code","description","price","image"
     "SH543","Men's fine cotton shirt","14.95","shirts.jpg"
 !endblock
 
-Note: Using the default TAB delimiter is highly recommended, if searching the ASCII source file of the database is planned. PIPE works fairly well, but CSV delimiter schemes cause problems with searching.
+Note: Using the default TAB delimiter is recommended if you plan on searching the ASCII source file of the database. PIPE works fairly well, but CSV delimiter schemes might cause problems with searching.
 
-Note[label='IMPORTANT NOTE: '] Field names are usually case-sensitive. Unless there is consistency in the names, there will be problems. All lower or all upper case names are recommended.
+Note[label='IMPORTANT NOTE: '] Field names are usually case-sensitive. Use consistency when naming or you might encounter problems. All lower or all upper case names are recommended.
 
-.Interchange uses one mandatory database, which is referred to as the products database. In the supplied demo catalogs, it is called products and the ASCII source is kept in the file C<products.txt> in the products directory. This file is also the default file for searching with the THE SEARCH ENGINE.
+.Interchange uses one mandatory database, which is referred to as the products database. In the supplied demo catalog, it is called products and the ASCII source is kept in the file C<products.txt> in the products directory. This is also the default file for searching with the THE SEARCH ENGINE.
 
-.Interchange also has a two of standard, but optional, databases, which are in fixed special formats:
+.Interchange also has a two of standard, but optional, databases that are in fixed formats:
 
 LI2: shipping.asc
 
-..The database of shipping options if the C<CustomShipping> directive is in use.  This is a fixed-format database, and must be created as specified. See C<SHIPPING>.
+..The database of shipping options that is accessed if the C<CustomShipping> directive is in use.  This is a fixed-format database, and must be created as specified. For more information, see the Shipping ITL tag in the {{1:Red Hat Interchange 4.8: Tag Reference Guide}}.
 
 LI2: salestax.asc
 
