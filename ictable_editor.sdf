@@ -1,9 +1,9 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: ictable_editor.sdf,v 1.8 2004-05-05 15:22:30 jon Exp $
+# $Id: ictable_editor.sdf,v 1.9 2004-12-29 16:10:37 jon Exp $
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.8 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.9 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ictable_editor.html"
@@ -180,7 +180,7 @@ H2: Templating
 
 The [table-editor] is templated on several levels. In the most basic
 use, where you rely on it to build the table rows, there is the
-row_template option. By default, it is:
+row_template option. By default, $row_template is:
 
 !block example
    <td$opt->{label_cell_extra}> 
@@ -202,6 +202,12 @@ row_template option. By default, it is:
    </td>
 !endblock
 
+When using the row_template option, the $opt->{foo} hash references are trapped by 
+Safe. These values need to be translated into ~OPT:foo~ and are automatically converted.
+
+~FOO_EXTRA~ will be expanded into $opt->{foo_extra} if $opt->{foo_extra} is defined, 
+otherwise, it expands into $opt->{foo_cell_extra}.
+ 
 The values of $opt->{*_cell_extra} are constructed from the *_cell_class,
 *_cell_width, *_cell_valign, *_cell_align, *_cell_style, and *_cell_extra
 options. You can watch the effect by trying different settings:
@@ -1035,7 +1041,7 @@ The default is:
 
 LI1: panel_width
 
-Specifiesthe width of the data panels used in the tabbed diaplay.
+Specifies the width of the data panels used in the tabbed display.
 The default is 800.
 >    panel_width=800
 
@@ -1047,6 +1053,32 @@ LI1: reload
 LI1: reparse
 LI1: restrict_allow
 LI1: row_template
+
+Allows the use of a user-defined row_template.  
+
+The default is:
+
+!block example
+   row_template='
+   <td ~OPT:label_cell_extra~>
+     {BLABEL}{LABEL}{ELABEL}{META_STRING}
+   </td>
+   <td ~OPT:data_cell_extra~>
+     <table cellspacing=0 cellmargin=0 width="100%">
+       <tr>
+         <td ~OPT:widget_cell_extra~>
+           {WIDGET}
+         </td>
+         <td ~OPT:help_cell_extra~>
+            {TKEY}
+            {HELP?}<i>{HELP}</i>{/HELP?}
+            {HELP_URL?}<BR><A HREF="{HELP_URL}">help</A>{/HELP_URL?}
+         </td>
+       </tr>
+     </table>
+   </td>'
+!endblock
+
 LI1: save_meta
 LI1: secure
 LI1: show_reset
