@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ictemplates.sdf,v 1.17 2001-04-13 19:12:00 alison Exp $
+# $Id: ictemplates.sdf,v 1.18 2001-04-25 16:17:31 jon Exp $
 
 !define DOC_NAME "Template Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "ictemplates"
-!define DOC_VERSION substr('$Revision: 1.17 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.18 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Red Hat Interchange 4.8"
 !define DOC_URL "http://help.akopia.com/interchange/doc/ictemplates.html"
@@ -14,7 +14,9 @@ H1: Introduction
 
 Interchange is designed to build its pages based on templates from a database. This document describes how to build templates using the Interchange Tag Language (ITL) and explains the different options you can use in a template.
 
-H2: Overview MOVE THIS SECTION BELOW NEXT
+H2: Overview
+
+MOVE THIS SECTION BELOW NEXT
 
 The search builder can be used to generate very complex reports on the database, or to help in the construction of ITL templates. Select a "Base table" which will be the foundation for the report. Specify the maximum number of rows to be returned at once, and whether to show only unique entries.
 
@@ -41,6 +43,7 @@ C<@_VARIABLENAME_@> is replaced by the catalog variable VARIABLENAME if it exist
 For more information on how to use the C<Variable> configuration file directive to set global variables in C<interchange.cfg> and catalog variables in C<catalog.cfg>, see the {{1:Red Hat Interchange 4.8: Development Configuration Guide}}.
 
 H1: Using Interchange Template Tags
+
 This section describes the different template specific tags and functions that are used when building a your templates.
 
 H2: Understanding Tag Syntax
@@ -165,7 +168,7 @@ The following are equivalent for attribute names:
 
 The [field ...] tag looks in any tables defined as C<ProductFiles>, in that order, for the data and returns the first non-empty value. In most catalogs, where C<ProductFiles> is not defined, i.e., the demo, C<[field title 00-0011]> is equivalent to C<[data products title 00-0011]>. For example, [field col=foo key=bar] will not display something from the table "category" because "category" is not in the directive ProductFiles or there are multiple ProductFiles and an earlier one has an entry for that key.
 
-LI1: [data table column keyE<rbracket>
+LI1: [data table column key]
 
 .named attributes: C<[data base="database" field="field" key="key"> C<value="value" op="increment]>
 
