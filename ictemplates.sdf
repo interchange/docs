@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ictemplates.sdf,v 1.26 2001-09-25 14:53:51 jon Exp $
+# $Id: ictemplates.sdf,v 1.27 2001-11-02 17:47:33 edl Exp $
 
 !define DOC_NAME "Template Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "ictemplates"
-!define DOC_VERSION substr('$Revision: 1.26 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.27 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictemplates.html"
@@ -2321,10 +2321,7 @@ mv_base_directory    bd  S   Sets base directory for search file names
 mv_begin_string      bs  S   Pattern must match beginning of field
 mv_case              cs  S   Turns on case sensitivity
 mv_cartname              O   Sets the shopping cart name
-mv_cache_params          S   Determines caching of searches
-mv_change_frame          A   Any form, changes frame target of form output
 mv_check                 A   Any form, sets multiple user variables after update
-mv_checkout              O   Sets the checkout page
 mv_click                 A   Any form, sets multiple form variables before update
 mv_click                 XA  Default mv_click routine, click is mv_click_arg
 mv_click <name>          XA  Routine for a click <name>, sends click as arg
@@ -2332,7 +2329,6 @@ mv_click_arg             XA  Argument name in scratch space
 mv_coordinate        co  S   Enables field/spec matching coordination
 mv_column_op         op  S   Operation for coordinated search
 mv_credit_card*          O   Discussed in order security (some are read-only)
-mv_delay_page        dp  S   Delay search until after inital page display
 mv_dict_end          de  S   Upper bound for binary search
 mv_dict_fold         df  S   Non-case sensitive binary search
 mv_dict_limit        di  S   Sets upper bound based on character position

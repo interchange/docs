@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.63 2001-10-11 18:24:22 bill Exp $
+# $Id: ictags.sdf,v 1.64 2001-11-02 17:47:33 edl Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.63 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.64 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -16385,10 +16385,7 @@ Name|scan|Type|Description
 {{CMD[id="mv_begin_string"]mv_begin_string}}|bs|S|Pattern must match beginning of field
 {{CMD[id="mv_case"]mv_case}}|cs|S|Turns on case sensitivity
 {{CMD[id="mv_cartname"]mv_cartname}}||O|Sets the shopping cart name
-{{CMD[id="mv_cache_params"]mv_cache_params}}||S|Determines caching of searches
-{{CMD[id="mv_change_frame"]mv_change_frame}}||A|Any form, changes frame target of form output
 {{CMD[id="mv_check"]mv_check}}||A|Any form, sets multiple user variables after update
-{{CMD[id="mv_checkout"]mv_checkout}}||O|Sets the checkout page
 {{CMD[id="mv_click"]mv_click}}||A|Any form, sets multiple form variables before update
 {{CMD[id="mv_click"]mv_click}}||XA|Default mv_click routine, click is mv_click_arg
 {{CMD[id="mv_click_NAME"]mv_click I<name>}}||XA|Routine for a click I<name>, sends click as arg
@@ -16396,7 +16393,6 @@ Name|scan|Type|Description
 {{CMD[id="mv_coordinate"]mv_coordinate}}|co|S|Enables field/spec matching coordination
 {{CMD[id="mv_column_op"]mv_column_op}}|op|S|Operation for coordinated search
 {{CMD[id="mv_credit_card*"]mv_credit_card*}}||O|Discussed in order security (some are read-only)
-{{CMD[id="mv_delay_page"]mv_delay_page}}|dp|S|Delay search until after inital page display
 {{CMD[id="mv_dict_end"]mv_dict_end}}|de|S|Upper bound for binary search
 {{CMD[id="mv_dict_fold"]mv_dict_fold}}|df|S|Non-case sensitive binary search
 {{CMD[id="mv_dict_limit"]mv_dict_limit}}|di|S|Sets upper bound based on character position
@@ -16486,7 +16482,6 @@ df|{{CMD[jump="#mv_dict_fold"]mv_dict_fold}}
 di|{{CMD[jump="#mv_dict_limit"]mv_dict_limit}}
 dl|{{CMD[jump="#mv_dict_look"]mv_dict_look}}
 do|{{CMD[jump="#mv_dict_order"]mv_dict_order}}
-dp|{{CMD[jump="#mv_delay_page"]mv_delay_page}}
 dr|{{CMD[jump="#mv_record_delim"]mv_record_delim}}
 em|{{CMD[jump="#mv_exact_match"]mv_exact_match}}
 er|{{CMD[jump="#mv_spelling_errors"]mv_spelling_errors}}
