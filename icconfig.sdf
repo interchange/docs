@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.22 2000-12-11 00:47:31 heins Exp $
+# $Id: icconfig.sdf,v 1.23 2001-01-15 17:32:00 jon Exp $
 
 !define DOC_NAME "Interchange Configuration"
 !define DOC_TYPE ""
 !define DOC_CODE "ICCONFIG_D2_100800"
-!define DOC_VERSION substr('$Revision: 1.22 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.23 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
@@ -303,7 +303,7 @@ LI1: userdb
 
 H2: ITL - Interchange Tag Language
 
-Interchange functions are accessed via ITL, the Interchange Tag Language. The pages in the catalog are in HTML, but use ITL to provide access to Interchange's functions. ITL tags are delimited by C<[square brackets]> instead of angle brackets. They are usually called Interchange tags or just tags. They are similar to HTML in syntax in that there are both <I>standalone</I> and <I>container</I> tags. A standalone tag has no ending element. For example:
+Interchange functions are accessed via ITL, the Interchange Tag Language. The pages in the catalog are in HTML, but use ITL to provide access to Interchange's functions. ITL tags are delimited by C<[square brackets]> instead of angle brackets. They are usually called Interchange tags or just tags. They are similar to HTML in syntax in that there are both {{I:standalone}} and {{I:container}} tags. A standalone tag has no ending element. For example:
 
 !block example
    [value name]
