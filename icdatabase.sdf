@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.49 2002-07-20 03:14:37 mheins Exp $
+# $Id: icdatabase.sdf,v 1.50 2002-07-31 19:55:52 kwalsh Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.49 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.50 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icdatabase.html"
@@ -858,7 +858,7 @@ INDEX modifier:
 !endblock
 
 This will create an ASCII index on every import, and will also create an
-index on the field at SQL creation time. (See L<Dictionary Indexing with INDEX>.)
+index on the field at SQL creation time.
 
 If you wish to create SQL indices at table creation time I<without> creating
 an ASCII index, use the NO_ASCII_INDEX parameter:

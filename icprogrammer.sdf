@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: icprogrammer.sdf,v 1.5 2002-07-26 17:52:23 kwalsh Exp $
+# $Id: icprogrammer.sdf,v 1.6 2002-07-31 19:55:52 kwalsh Exp $
 
 !define DOC_NAME "Interchange Programmer Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icprogrammer"
-!define DOC_VERSION substr('$Revision: 1.5 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.6 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icvars.html"
@@ -507,7 +507,7 @@ C<something/or/another>.
 
 If the transaction action is not mapped via standard system
 actions defined in the variable %action, or in the
-{{CMD[jump="ActionMap *icconfig.html#global*"]ActionMap *global*}}
+{{CMD[jump="icconfig.html#ActionMap *global*"]ActionMap *global*}}
 or {{CMD[jump="icconfig.html#ActionMap"]ActionMap}} directives,
 then the action path component is restored to the content path,
 and that page is served (C<order/something/or/another> in the
