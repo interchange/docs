@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: iccattut.sdf,v 1.10 2001-04-13 18:53:30 jon Exp $
+# $Id: iccattut.sdf,v 1.11 2001-05-09 04:11:45 jon Exp $
 
 !define DOC_NAME "Catalog-Building Tutorial"
 !define DOC_TYPE ""
 !define DOC_CODE "iccattut"
-!define DOC_VERSION substr('$Revision: 1.10 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.11 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/iccattut.html"
@@ -113,13 +113,13 @@ N:The demo link program has the same name as your demo catalog, usually {{EX:fou
 
 N:Type this command as root while in your cgi-bin directory:
 
-E[keep_prev=1]cp -p foundation tutorial
+E[keep_prev=1]  cp -p foundation tutorial
 
 N:If everything is working correctly, typing {{EX:ls -l}} should describe your files roughly like this:
 
 !block example;
--rwsr-xr-x    1 interch  interch      7708 Dec 16 22:47 foundation
--rwsr-xr-x    1 interch  interch      7708 Dec 16 22:47 tutorial
+  -rwsr-xr-x    1 interch  interch      7708 Dec 16 22:47 foundation
+  -rwsr-xr-x    1 interch  interch      7708 Dec 16 22:47 tutorial
 !endblock
 
 H2:Create the tutorial catalog directory
@@ -127,9 +127,9 @@ H2:Create the tutorial catalog directory
 N:As root, create a subdirectory named {{FILE:tutorial}} under your catalogs directory (probably {{FILE:/var/lib/interchange/}}). This is where all of the catalog-specific files will go. It needs to be readable, writable, and executable by the Interchange user. This will be referred to as your catalog directory. Type the following while in the catalogs directory to create the tutorial subdirectory:
 
 !block example;
-mkdir tutorial
-chown interch.interch tutorial
-chmod 770 tutorial
+  mkdir tutorial
+  chown interch.interch tutorial
+  chmod 770 tutorial
 !endblock
 
 H2:Become the Interchange user
@@ -160,11 +160,11 @@ H2:interchange.cfg
 
 N:The first directive we need to use is a global directive that tells Interchange where the new catalog is, called {{1:Catalog}}. The {{2:Catalog}} directive has the following format:
 
-E:Catalog   name   catalog_base_directory   link_url_path
+E:  Catalog   name   catalog_base_directory   link_url_path
 
 N:Open {{FILE:interchange.cfg}} in the Interchange software directory. Go near the top of the file, right below the other Catalog directives, and add this line:
 
-E:Catalog  tutorial  /var/lib/interchange/tutorial  /cgi-bin/tutorial
+E:  Catalog  tutorial  /var/lib/interchange/tutorial  /cgi-bin/tutorial
 
 N:Save the file.
 
@@ -176,32 +176,32 @@ N:You need to create a {{FILE:catalog.cfg}} file for your tutorial store (in the
 
 N:The {{2:Database}} directive describes a database table to the Interchange system in this format:
 
-E:Database  name  filename  format
+E:  Database  name  filename  format
 
 N:Interchange has several database options available. We will use the simplest, which is the built-in default (specifically, some variant of DBM). The default location for {{1:filename}} is in a subdirectory called {{FILE:products}} under the catalog directory. Interchange recongnizes a number of file formats. We will use a tab-delimited text file. Enter the following into {{FILE:catalog.cfg}}:
 
-E:Database  products  products.txt  TAB
+E:  Database  products  products.txt  TAB
 
 N:This tells Interchange that you have a database table named 'products' that is described in a tab-delimited file named {{FILE:products.txt}}. You can describe an unlimited number of arbitrary database tables for the system to use this way. Interchange is an e-commerce system and it expects at least a products database table. You can specify all of the database tables that contain products by using the {{2:ProductFiles}} directive. There is no default for this, so you will have to specify your products database by adding the following line to {{FILE:catalog.cfg}}:
 
-E:ProductFiles  products
+E:  ProductFiles  products
 
 N:There are a few other directives that Interchange expects to see in order to complete the minimum configuration. They are {{2:VendURL}}, {{2:SecureURL}}, and {{2:MailOrderTo}}. They are, respectively, your catalog's base URL, its secure URL, and the e-mail address to mail order notices to. Add the following lines to {{FILE:catalog.cfg}} to establish these directives:
 
 !block example;
-VendURL  http://localhost/cgi-bin/tutorial
-SecureURL  http://localhost/cgi-bin/tutorial
-MailOrderTo  your@email.address
+  VendURL  http://localhost/cgi-bin/tutorial
+  SecureURL  http://localhost/cgi-bin/tutorial
+  MailOrderTo  your@email.address
 !endblock
 
 N:The {{FILE:catalog.cfg}} file should look like this when you save it:
 
 !block example;
-Database  products  products.txt  TAB
-ProductFiles  products
-VendURL  http://localhost/cgi-bin/tutorial
-SecureURL  http://localhost/cgi-bin/tutorial
-MailOrderTo  your@email.address
+  Database  products  products.txt  TAB
+  ProductFiles  products
+  VendURL  http://localhost/cgi-bin/tutorial
+  SecureURL  http://localhost/cgi-bin/tutorial
+  MailOrderTo  your@email.address
 !endblock
 
 H1:The products database table
@@ -217,11 +217,11 @@ N:The product database is handled as a special case since Interchange expects at
 N:The simple store that we are going to build will sell tests. You can choose another sample product line, but it is recommended that you keep it simple. Create the file {{FILE:products/products.txt}} to look like this, with a single tab separating each field:
 
 !block example;
-sku	description	price
-4595	Nice Bio Test	275.45
-2623	Stack of Econ Quizzes	1.24
-0198	Really Hard Physics Test	1589.34
-1299	Ubiquitous diff eq final	37.00
+  sku	description	price
+  4595	Nice Bio Test	275.45
+  2623	Stack of Econ Quizzes	1.24
+  0198	Really Hard Physics Test	1589.34
+  1299	Ubiquitous diff eq final	37.00
 !endblock
 
 Note:When using tab-delimited files as we are, make sure you have exactly one tab between each field. Some text editors will use spaces to simulate tabs. Interchange expects actual ASCII tab characters; no spaces or extra characters are accepted.
@@ -232,20 +232,20 @@ H1:Page templates
 
 N:Since most sites have certain aspects of the site that remain the same as the content of the pages changes, we are going to create a template that we can use for all pages. We'll divide the page into four sections:
 !block example;
- _____________________
-|                     |
-|         top         |
-|                     |
-|---------------------|
-|      |              |
-|      |              |
-| left |     main     |
-|      |              |
-|      |              |
-|---------------------|
-|                     |
-|        bottom       |
-|_____________________|
+   _____________________
+  |                     |
+  |         top         |
+  |                     |
+  |---------------------|
+  |      |              |
+  |      |              |
+  | left |     main     |
+  |      |              |
+  |      |              |
+  |---------------------|
+  |                     |
+  |        bottom       |
+  |_____________________|
 !endblock
 
 N:The "main" section holds the content that is different for each page. The "top" section is for headers, banners, menus, and so on. The "left" section can be used as a sidebar or navagation bar, and the "bottom" section can contain the copyright and contact info. The top, left, and bottom sections will remain constant throughout the site. Making a change to information in one of these sections will make that change to all pages in your site.
@@ -299,10 +299,10 @@ N:Create a directory called {{FILE:pages/}} in your tutorial catalog directory.
 N:Type the following text and save it as {{FILE:pages/index.html}}. This will create a page to test that everything works so far.
 
 !block example;
-[include top]
-[include left]
-This is where your content goes.
-[include bottom]
+  [include top]
+  [include left]
+  This is where your content goes.
+  [include bottom]
 !endblock
 
 N:Restart Interchange so your changes take effect. Go to your web browser and load the page. The URL should be similar to the following: {{EX:http://localhost/cgi-bin/tutorial/index.html}}.
@@ -332,36 +332,36 @@ H2:Listing all products
 N:Now that your store is running, you need to display your products on the welcome page. We will loop over all of the products in our database and produce an entry for each one in a table. Replace the line "This is where your content goes" in {{FILE:pages/index.html}} with the following:
 
 !block example;
-<table cellpadding=5>
-<tr>
-<th>Test #</th>
-<th>Description</th>
-<th>Price</th>
-</tr>
+  <table cellpadding=5>
+  <tr>
+  <th>Test #</th>
+  <th>Description</th>
+  <th>Price</th>
+  </tr>
 
-. . .
+  . . .
 
-</table>
+  </table>
 !endblock
 
 N:Now we will use Interchange tags to fill in the rest of the table from the products database you created. The [loop] [/loop] ITL tag pair tells Interchange to iterate over each item in the parameter list. In this case, the loop is over the result of an Interchange search. The search parameter does a database search on the provided parameters. In this case, we're doing a very simple search that returns all of the fields for all of the entries in the products database. The parameters passed to the search tell Interchange to {{1:return all}} ('ra') on the file ('fi') {{1:products}} respectively. The following should take the place of the ellipsis in the code you placed in {{FILE:index.html}}:
 
 !block example;
-[loop search="ra=yes/fi=products"]
+  [loop search="ra=yes/fi=products"]
 
-. . .
+  . . .
 
-[/loop]
+  [/loop]
 !endblock
 
 N:In the loop we just established, the individual elements of the entry using the [loop-field] tag. The following code should replace the above ellipsis in the code we placed in {{FILE:pages/index.html}}:
 
 !block example;
-<tr>
-<td>[loop-code]</td>
-<td>[loop-field description]</td>
-<td align=right>[loop-field price]</td>
-</tr>
+  <tr>
+  <td>[loop-code]</td>
+  <td>[loop-field description]</td>
+  <td align=right>[loop-field price]</td>
+  </tr>
 !endblock
 
 N:The [loop-code] tag refers to the primary key (unique identifier) for the current row of the database table in question. In this case, it will produce the same output as the [loop-field sku] tag, because the 'sku' field is the primary key for products table. In each case the tag is replaced by the appropriate element. When put together, Interchange generates a page with your products table on it. 
@@ -369,23 +369,23 @@ N:The [loop-code] tag refers to the primary key (unique identifier) for the curr
 N:Your finished page should look like this:
 
 !block example;
-[include top]
-[include left]
-<table cellpadding=5>
-<tr>
-<th>Test #</th>
-<th>Description</th>
-<th>Price</th>
-</tr>
-[loop search="ra=yes/fi=products"]
-<tr>
-<td>[loop-code]</td>
-<td>[loop-field description]</td>
-<td align=right>[loop-field price]</td>
-</tr>
-[/loop]
-</table>
-[include bottom]
+  [include top]
+  [include left]
+  <table cellpadding=5>
+  <tr>
+  <th>Test #</th>
+  <th>Description</th>
+  <th>Price</th>
+  </tr>
+  [loop search="ra=yes/fi=products"]
+  <tr>
+  <td>[loop-code]</td>
+  <td>[loop-field description]</td>
+  <td align=right>[loop-field price]</td>
+  </tr>
+  [/loop]
+  </table>
+  [include bottom]
 !endblock
 
 N:Test this page by refreshing the {{EX:index.html}} page in your browser.
@@ -397,23 +397,23 @@ N:The next step is to create an individual page for each item. To do this, you n
 N:For example, if the page {{FILE:0198.html}} was requested, Interchange first checks for a page with that name. If one is not found, it searches the products database table for a product with that ID. Interchange then creates a product page "on the fly" using {{FILE:pages/flypage.html}}. When constructing the flypage, the entire product record for the requested product is available through the [item-field] tag (similar to the [loop-field] tag). To create a fly page, type the following code and save it as {{FILE:pages/flypage.html}}.
 
 !block example;
-[include top]
-[include left]
+  [include top]
+  [include left]
 
-<h3>Test #[item-code]</h3>
-<p>[item-field description] . . . [item-field price]</p>
+  <h3>Test #[item-code]</h3>
+  <p>[item-field description] . . . [item-field price]</p>
 
-[include bottom]
+  [include bottom]
 !endblock
 
 N:Then, to provide links to the product flypages from your home page, modify {{FILE:pages/index.html}} slightly, so that:
 
 !block example;
-<td>[loop-field description]</td>
+  <td>[loop-field description]</td>
 !endblock
 N:becomes:
 !block example;
-<td><a href="[loop-code].html">[loop-field description]</a></td>
+  <td><a href="[loop-code].html">[loop-field description]</a></td>
 !endblock
 
 H2:special_pages/missing.html
@@ -423,12 +423,12 @@ N:Create the {{FILE:special_pages/}} directory in your tutorial catalog director
 N:As mentioned, it is a good idea to display an error page when Interchange is asked for an unknown page. To create a missing page for display, type the following and save it as {{FILE:special_pages/missing.html}}.
 
 !block example;
-[include top]
-[include left]
-<p>We're sorry, the page you requested has not been found.</p>
+  [include top]
+  [include left]
+  <p>We're sorry, the page you requested has not been found.</p>
 
-<p>Try finding what you need on the [page index]welcome page</a>.</p>
-[include bottom]
+  <p>Try finding what you need on the [page index]welcome page</a>.</p>
+  [include bottom]
 !endblock
 
 N:The addition of this page ensures that users see your error message instead of a mysterious server error if they mistype a URL.
@@ -460,46 +460,46 @@ N:For the [order] tag, Interchange expects a default page called {{FILE:pages/or
 N:The Foundation store has a full-featured shopping basket available for use, but this tutorial teaches you to build your own simple one. The shopping basket items can be accessed using a set of tags that have an [item] prefix. Put the following code in the new file {{FILE:pages/ord/basket.html}}. The section that follows explains the tags used.
 
 !block example;
-[include top]
-[include left]
+  [include top]
+  [include left]
 
-<h2>This is your shopping cart!</h2>
+  <h2>This is your shopping cart!</h2>
 
-<table cellpadding=5>
+  <table cellpadding=5>
 
-<tr>
-<th>Qty.</th>
-<th>Description</th>
-<th>Cost</th>
-<th>Subtotal</th>
-</tr>
+  <tr>
+  <th>Qty.</th>
+  <th>Description</th>
+  <th>Cost</th>
+  <th>Subtotal</th>
+  </tr>
 
-[item-list]
-<tr>
-<td align=right>[item-quantity]</td>
-<td>[item-field description]</td>
-<td align=right>[item-price]</td>
-<td align=right>[item-subtotal]</td>
-</tr>
-[/item-list]
+  [item-list]
+  <tr>
+  <td align=right>[item-quantity]</td>
+  <td>[item-field description]</td>
+  <td align=right>[item-price]</td>
+  <td align=right>[item-subtotal]</td>
+  </tr>
+  [/item-list]
 
-<tr><td colspan=4></td></tr>
+  <tr><td colspan=4></td></tr>
 
-<tr>
-<td colspan=3 align=right><strong>Total:</strong></td>
-<td align=right>[subtotal]</td>
-</tr>
+  <tr>
+  <td colspan=3 align=right><strong>Total:</strong></td>
+  <td align=right>[subtotal]</td>
+  </tr>
 
-</table>
+  </table>
 
-<hr>
+  <hr>
 
-<p>
-[page checkout]Purchase now</a><br>
-[page index]Return to shopping</a>
-</p>
+  <p>
+  [page checkout]Purchase now</a><br>
+  [page index]Return to shopping</a>
+  </p>
 
-[include bottom]
+  [include bottom]
 !endblock
 
 N:The basket items can be accessed one at a time by using the [item-list] tag. So we will create a table by iterating through the basket items. The text within the [item-list] [/item-list] tags is created for each item in the list.
@@ -538,91 +538,91 @@ N:First you need to create a checkout page. The checkout page consists of a form
 N:To create a checkout page, type the following code and save it as {{FILE:pages/checkout.html}}. The section that follows explains the code.
 
 !block example;
-[include top]
-[include left]
-<h1>Checkout Page</h1>
+  [include top]
+  [include left]
+  <h1>Checkout Page</h1>
 
-<form method=post action="[process]">
-<input type=hidden name=mv_todo value=submit>
-<input type=hidden name=mv_order_profile value=order_profile>
-<input type=hidden name=mv_cyber_mode value=minivend_test>
+  <form method=post action="[process]">
+  <input type=hidden name=mv_todo value=submit>
+  <input type=hidden name=mv_order_profile value=order_profile>
+  <input type=hidden name=mv_cyber_mode value=minivend_test>
 
-<table cellpadding=3>
+  <table cellpadding=3>
 
-<tr>
-<td align=right><b>First name:</b></td>
-<td><input type=text name=fname value="[value fname]"></td>
-</tr>
+  <tr>
+  <td align=right><b>First name:</b></td>
+  <td><input type=text name=fname value="[value fname]"></td>
+  </tr>
 
-<tr>
-<td align=right><b>Last name:</b></td>
-<td><input type=text name=lname value="[value lname]"></td>
-</tr>
+  <tr>
+  <td align=right><b>Last name:</b></td>
+  <td><input type=text name=lname value="[value lname]"></td>
+  </tr>
 
-<tr>
-<td align=right rowspan=2><b>Address:</b></td>
-<td><input type=text name=address1 value="[value address1]"></td>
-</tr>
+  <tr>
+  <td align=right rowspan=2><b>Address:</b></td>
+  <td><input type=text name=address1 value="[value address1]"></td>
+  </tr>
 
-<tr>
-<td><input type=text name=address2 value="[value address2]"></td>
-</tr>
+  <tr>
+  <td><input type=text name=address2 value="[value address2]"></td>
+  </tr>
 
-<tr>
-<td align=right><b>City:</b></td>
-<td><input type=text name=city value="[value city]"></td>
-</tr>
+  <tr>
+  <td align=right><b>City:</b></td>
+  <td><input type=text name=city value="[value city]"></td>
+  </tr>
 
-<tr>
-<td align=right><b>State:</b></td>
-<td><input type=text name=state value="[value state]"></td>
-</tr>
+  <tr>
+  <td align=right><b>State:</b></td>
+  <td><input type=text name=state value="[value state]"></td>
+  </tr>
 
-<tr>
-<td align=right><b>Postal code:</b></td>
-<td><input type=text name=zip value="[value zip]"></td>
-</tr>
+  <tr>
+  <td align=right><b>Postal code:</b></td>
+  <td><input type=text name=zip value="[value zip]"></td>
+  </tr>
 
-<tr>
-<td align=right><b>Country:</b></td>
-<td><input type=text name=country value="[value country]"></td>
-</tr>
+  <tr>
+  <td align=right><b>Country:</b></td>
+  <td><input type=text name=country value="[value country]"></td>
+  </tr>
 
-</table>
+  </table>
 
-<p>
-Note: We assume that your billing address is the same as your shipping address.
-</p>
+  <p>
+  Note: We assume that your billing address is the same as your shipping address.
+  </p>
 
-<table cellpadding=3>
+  <table cellpadding=3>
 
-<tr>
-<td align=right><b>Credit card number:</b></td>
-<td><input type=text name=mv_credit_card_number value="" size=20></td>
-</tr>
+  <tr>
+  <td align=right><b>Credit card number:</b></td>
+  <td><input type=text name=mv_credit_card_number value="" size=20></td>
+  </tr>
 
-<tr>
-<td align=right><b>Credit card expiration date:</b></td>
-<td>
-Month (number from 1-12):
-<input type=text name=mv_credit_card_exp_month value="" size=2 maxlength=2>
-<br>
-Year (last two digits only):
-<input type=text name=mv_credit_card_exp_year value="" size=2 maxlength=2>
-</td>
-</tr>
+  <tr>
+  <td align=right><b>Credit card expiration date:</b></td>
+  <td>
+  Month (number from 1-12):
+  <input type=text name=mv_credit_card_exp_month value="" size=2 maxlength=2>
+  <br>
+  Year (last two digits only):
+  <input type=text name=mv_credit_card_exp_year value="" size=2 maxlength=2>
+  </td>
+  </tr>
 
-</table>
+  </table>
 
-<p>
-<input type=submit name=submit value="Finalize!">
-<input type=reset name=reset value="Reset">
-</p>
+  <p>
+  <input type=submit name=submit value="Finalize!">
+  <input type=reset name=reset value="Reset">
+  </p>
 
-</form>
+  </form>
 
-<p>[page index]Return to shopping instead</a></p>
-[include bottom]
+  <p>[page index]Return to shopping instead</a></p>
+  [include bottom]
 !endblock
 
 N:The HTML form begins with a method of 'post' (which sends the form data as its own stream, as opposed to the 'get' method which encodes the data as part of the URL). The [process] tag creates a special URL for form processing. Interchange has a built-in form processor that is configured by submitting certain fields in the form. The Finalize button will invoke this form processor and link the user to the {{FILE:special_pages/receipt.html}} page, which is described later.
@@ -670,16 +670,16 @@ H2:special_pages/needfield.html
 N:If the submitted form lacks a required field, Interchange will display an error page. The default location is {{FILE:special_pages/needfield.html}}. To create this page, type the following text and save it as {{FILE:special_pages/needfield.html}}.
 
 !block example;
-[include top]
-[include left]
-<p>The following information was not given:</p>
+  [include top]
+  [include left]
+  <p>The following information was not given:</p>
 
-<p><b>[error all=1 show_var=1 show_error=1 joiner='<br>']</b></p>
+  <p><b>[error all=1 show_var=1 show_error=1 joiner='<br>']</b></p>
 
-<p>Please go back to the [page checkout]checkout page</a>
-and fill out the form properly.</p>
+  <p>Please go back to the [page checkout]checkout page</a>
+  and fill out the form properly.</p>
 
-[include bottom]
+  [include bottom]
 !endblock
 
 N:The [error] tag is the most important tag on this page. The {{2:all}} parameter tells the tag to iterate through all of the errors reported from the failed verification, and the {{2:show_var}} parameter indicates that the failed variable name should be displayed. For example, if the first name was left empty, {{1:fname}} would be shown. The {{2:show_error}} parameter displays the actual error for the variable. The {{2:joiner}} parameter inserts an HTML {{1:<br>}} tag between each error message, so each error is displayed on its own line. In more complex configurations, the [error] tag can be even more expressive.
@@ -711,21 +711,21 @@ N:When the customer's involvement in the order is complete, Interchange composes
 N:The report should include at least the customer's name, address, and the items they ordered. The following is a simple report template; save it as {{FILE:etc/report}}.
 
 !block example;
-             Name: [value fname] [value lname]
-          Address: [value address1][if value address2]
-                   [value address2][/if]
-City, State, etc.: [value city], [value state]  [value zip] [value country]
+               Name: [value fname] [value lname]
+            Address: [value address1][if value address2]
+                     [value address2][/if]
+  City, State, etc.: [value city], [value state]  [value zip] [value country]
+  
+      Credit Card #: [cgi mv_credit_card_number]
+    Expiration Date: [cgi mv_credit_card_exp_month]/[cgi mv_credit_card_exp_year]
 
-    Credit Card #: [cgi mv_credit_card_number]
-  Expiration Date: [cgi mv_credit_card_exp_month]/[cgi mv_credit_card_exp_year]
 
-
-************ ORDER ************
-[item-list]
-[item-quantity] x [item-description] ([item-code]), [item-price] ea.
-[/item-list]
-Subtotal: [subtotal]
-   Total: [total-cost]
+  ************ ORDER ************
+  [item-list]
+  [item-quantity] x [item-description] ([item-code]), [item-price] ea.
+  [/item-list]
+  Subtotal: [subtotal]
+     Total: [total-cost]
 !endblock
 
 N:This file is in plain text format where, unlike HTML, white space is relevant. It is fairly straightforward, except that the [if] tag was added to only include the optional second address line if the customer filled it in.
@@ -739,11 +739,11 @@ H2:special_pages/receipt.html
 N:Once the report has been run, Interchange will finish the order process on the customer side by displaying a success screen containing a receipt. The default location for this page is {{FILE:special_pages/receipt.html}}. To create a receipt page, type the following code and save it as {{FILE:special_pages/receipt.html}}.
 
 !block example;
-[include top]
-[include left]
-<p>Thank you for ordering stuff from us.<br>Have a nice day!</p>
-<p>[page index]Return to our welcome page</a></p>
-[include bottom]
+  [include top]
+  [include left]
+  <p>Thank you for ordering stuff from us.<br>Have a nice day!</p>
+  <p>[page index]Return to our welcome page</a></p>
+  [include bottom]
 !endblock
 
 N:Once the order is processed, the customer's shopping cart is emptied.
@@ -761,7 +761,7 @@ N:You may have noticed that the product prices aren't formatted as prices usuall
 N:There are several properties to price pictures: the currency symbol, the thousands separator, the decimal point, the number of digits to show behind the decimal, and so on. Most Unix systems have U.S. currency and the English language as the default locale, which is called {{EX:en_US}}. The only thing you need to do on such a system is specify the currency symbol, which, in this case, is the dollar sign. To do this, add the following line to your {{FILE:catalog.cfg}} file:
 
 !block example;
-Locale en_US currency_symbol $
+  Locale en_US currency_symbol $
 !endblock
 
 N:Restart Interchange and view your catalog. You will notice little has changed on the welcome page or the flypages, but in the shopping cart all your prices should be formatted as U.S. dollars ("1347.3" has become "$1,347.30"). This is because Interchange automatically formats shopping cart prices as currency. To turn off this feature, you would have to change the [item-price] tag to [item-price noformat] in {{FILE:pages/ord/basket.html}}.
@@ -785,15 +785,15 @@ N:A similar change to the {{EX:[item-field price]}} tag in the {{FILE:pages/flyp
 
 N:If your prices are not being formatted correctly, your default system locale may be set up differently or your {{EX:en_US}} locale settings may be wrong. There are a few other {{FILE:catalog.cfg}} directives you can use to correct the situation:
 
-E:Locale en_US p_cs_precedes 1
+E:  Locale en_US p_cs_precedes 1
 
 N:Makes the currency symbol precede the currency value. A '0' setting makes the symbol come after the currency value.
 
-E:Locale en_US mon_thousands_sep ,
+E:  Locale en_US mon_thousands_sep ,
 
 N:Sets your thousands separator to a comma. It can be set to any value.
 
-E:Locale en_US mon_decimal_point .
+E:  Locale en_US mon_decimal_point .
 
 N:Sets your decimal separator to a comma. Many countries use a comma instead of a period to separate the integer from the decimal part.
 
@@ -803,7 +803,7 @@ H2:Catalog variables
 
 N:Interchange provides a very useful feature that has not been discussed yet called catalog variables. It provides a way for you to set a variable to a certain value in the {{FILE:catalog.cfg}} file and use it anywhere in your catalog pages. The {{2:Variable}} directive allows an Interchange catalog variable to be created with the name coming from the first parameter and the value from the rest of the line, like this:
 
-E:Variable SOMENAME whatever value you want
+E:  Variable SOMENAME whatever value you want
 
 N:To access that variable in your pages, type the token __SOMENAME__. Notice that there are two underscore characters before the variable name and two after it, and that in place of the word SOMENAME you would put the actual name of the variable. The first thing Interchange does on a page is to replace the token with the variable's value. The value can also include Interchange tags to be parsed.
 
@@ -811,7 +811,7 @@ H2:A more interesting page footer
 
 N:You can put a contact email address at the bottom of each page in case your customers want to contact you. You could just add it to the footer, but by putting it into a variable you can use it in contact pages as well. This allows you to easily change the variable information and have that change reflected in all instances of that variable. The following is an example of how to set a catalog variable in {{FILE:catalog.cfg}}:
 
-E:Variable CONTACT_EMAIL someone@your.domain
+E:  Variable CONTACT_EMAIL someone@your.domain
 
 N:Now make the following change to your template file {{FILE:bottom}}:
 
@@ -831,7 +831,7 @@ N:Be sure to restart Interchange before reloading the page in your browser, sinc
 
 N:Let's add another variable to your catalog. This variable demonstrates how an Interchange tag can be included in the variable. This Interchange tag returns the current date in a standard format. Add the following to {{FILE:catalog.cfg}}:
 
-E:Variable DISPLAYDATE [time]%A, %B %d, %Y[/time]
+E:  Variable DISPLAYDATE [time]%A, %B %d, %Y[/time]
 
 Note:See the {{1:Interchange Tag Reference Guide}} for an explanation of the [time] tag. 
 
@@ -918,33 +918,33 @@ H2:Sorting the product list
 
 N:The products listed on your welcome page are shown in the same order that you entered them into {{FILE:products/products.txt}}. As you add more products, you will want this list to show up in a predictable order. To do this, you need to change the search parameters in {{FILE:index.html}}, which were originally:
 
-E:[loop search="ra=yes/fi=products"]
+E:  [loop search="ra=yes/fi=products"]
 
 N:You will recall that 'ra' stands for 'return all' and 'fi' stands for file. Let's add the search parameter 'tf', which specifies the sor{{B:t f}}ield. You can specify the field either by name or by number (starting with 0), with names and order as given in the first line of {{FILE:products/products.txt}}). Make the following change in {{FILE:index.html}}:
 
-E:[loop search="ra=yes/fi=products/tf=price"]
+E:  [loop search="ra=yes/fi=products/tf=price"]
 
 N:Refresh your browser. The default ordering is done on a character-by-character basis, but we were looking to do a numeric sort. For this you need to set 'to', the sor{{B:t o}}rder, to 'n', for {{1:numeric}}:
 
-E:[loop search="ra=yes/fi=products/tf=price/to=n"]
+E:  [loop search="ra=yes/fi=products/tf=price/to=n"]
 
 N:Refresh your browser. Now try reversing the sort order by adding 'r' to the 'to' setting:
 
-E:[loop search="ra=yes/fi=products/tf=2/to=nr"]
+E:  [loop search="ra=yes/fi=products/tf=2/to=nr"]
 
 N:You'll notice that it worked equally well to specify the sort field by number instead of name. You could also do a reverse alphabetical sort by description:
 
-E:[loop search="ra=yes/fi=products/tf=1/to=r"]
+E:  [loop search="ra=yes/fi=products/tf=1/to=r"]
 
 N:Now let's try narrowing the search down a bit. Instead of returning all, we'll give 'se', the {{B:se}}arch paramerter, and and use 'su', which allows {{B:su}}bstring matches. To search only for products that have the word "test" in one of their fields, and sort the results by description, type:
 
-E:[loop search="se=test/su=yes/fi=products/tf=description"]
+E:  [loop search="se=test/su=yes/fi=products/tf=description"]
 
 N:Which seems like something that would be better done in a search box for your store visitors. 
 
 N:Before moving on, change this search back to the simple list, sorted by description:
 
-E:[loop search="ra=yes/fi=products/tf=description"]
+E:  [loop search="ra=yes/fi=products/tf=description"]
 
 H2:Adding a search box
 
@@ -973,37 +973,37 @@ N:The [set testname] ... [/set] tags set an Interchange 'value' variable that, i
 N:The search box will now appear on all catalog pages, but you still need to create the search results page. To create the search results page, type the following code and save it as {{FILE:pages/results.html}}.
 
 !block example;
-[include top]
-[include left]
-<h3>Search Results</h3>
-[search-region]
-  [on-match]
-    <table cellpadding=5>
-    <tr>
-    <th>Test #</th>
-    <th>Description</th>
-    <th>Price</th>
-    </tr>
-  [/on-match]
-  [search-list]
-    <tr>
-    <td>[item-code]</td>
-    <td><a href="[item-code].html">[item-field description]</a></td>
-    <td align=right>[item-field price]</td>
-    <td>[order [item-code]]order now[/order]</td>
-    </tr>
-  [/search-list]
-  [on-match]
-    </table>
-  [/on-match]
-  [no-match]
-    <p>Sorry, no matches were found for '[cgi mv_searchspec]'.</p>
-  [/no-match]
-[/search-region]
-<hr>
-<p align=center>[page index]Return to welcome page</a></p>
-<p align=center>[page order]View shopping cart</a></p>
-[include bottom]
+  [include top]
+  [include left]
+  <h3>Search Results</h3>
+  [search-region]
+    [on-match]
+      <table cellpadding=5>
+      <tr>
+      <th>Test #</th>
+      <th>Description</th>
+      <th>Price</th>
+      </tr>
+    [/on-match]
+    [search-list]
+      <tr>
+      <td>[item-code]</td>
+      <td><a href="[item-code].html">[item-field description]</a></td>
+      <td align=right>[item-field price]</td>
+      <td>[order [item-code]]order now[/order]</td>
+      </tr>
+    [/search-list]
+    [on-match]
+      </table>
+    [/on-match]
+    [no-match]
+      <p>Sorry, no matches were found for '[cgi mv_searchspec]'.</p>
+    [/no-match]
+  [/search-region]
+  <hr>
+  <p align=center>[page index]Return to welcome page</a></p>
+  <p align=center>[page order]View shopping cart</a></p>
+  [include bottom]
 !endblock
 
 N:The search results will be contained in the [search-region] [/search-region] tags. The text in the [on-match] [/on-match] container will be displayed only if matches were found for the search. The text in the [no-match] [/no-match] container will be displayed only if no matches were found. The [search-list] [/search-list] container functions just like [loop] [/loop], iterating over its contents for each item in the search results list.
@@ -1012,15 +1012,15 @@ H2:The default catalog page
 
 N:As you know, a standard Interchange catalog page URL looks like this:
 
-E[keep_prev=1]http://localhost/cgi-bin/tutorial/index.html
+E[keep_prev=1]  http://localhost/cgi-bin/tutorial/index.html
 
 N:But what happens if you leave off the page name, as people often do when typing URLs in by hand? Type:
 
-E:http://localhost/cgi-bin/tutorial
+E:  http://localhost/cgi-bin/tutorial
 
 N:and you get a server error message. We can change this by adding the following directive to {{FILE:catalog.cfg}}:
 
-E:SpecialPage catalog index
+E:  SpecialPage catalog index
 
 N:Restart Interchange and try the above URL again.
 
@@ -1031,16 +1031,16 @@ H2:High-traffic changes
 N:Through this tutorial you have created catalog pages that use the [include] tag to include template pieces in the pages. This has worked well, but there are a few drawbacks. First, if you want to rename any of the template piece files or move them out of the main catalog directory and into their own subdirectory, you would have to update the [include] tag on every page. To avoid this, you can create catalog variables set to the [include] tags. Add these lines to your {{FILE:catalog.cfg}} file:
 
 !block example;
-Variable TOP    [include top]
-Variable LEFT   [include left]
-Variable BOTTOM [include bottom]
+  Variable TOP    [include top]
+  Variable LEFT   [include left]
+  Variable BOTTOM [include bottom]
 !endblock
 
 N:Now change every instance of [include top] to __TOP__, doing the same for each [include] tag. At this point, you might not want to do a search-and-replace on all the .html files you just created, but keep this capability in mind for the next catalog you work on.
 
 N:If you made all of the replacements and then renamed and moved your {{FILE:top}} file, you would only have to make a single change for each region in {{FILE:catalog.cfg}} to get your pages up to date:
 
-E:Variable TOP    [include templates/main-top]
+E:  Variable TOP    [include templates/main-top]
 
 N:And so on, depending on your naming scheme.
 
@@ -1051,9 +1051,9 @@ N:Every time a catalog page is viewed, each file in an [include] tag must be loa
 N:You can switch to a high-traffic mode that doesn't require each template piece to be read from disk every time the page is loaded. Instead, all of the pieces are read into variables once when Interchange is started and they remain in memory until Interchange is restarted. On very busy Interchange catalogs, this can increase your speed noticeably. The only drawback is that you need to restart the Interchange daemon when you make changes to the template pieces in order to have the changes take effect. You can set up high-traffic templates by changing the Variable directives in {{FILE:catalog.cfg}} as follows:
 
 !block example;
-Variable TOP    <top
-Variable LEFT   <left
-Variable BOTTOM <bottom
+  Variable TOP    <top
+  Variable LEFT   <left
+  Variable BOTTOM <bottom
 !endblock
 
 H1:Ideas for further enhancements
