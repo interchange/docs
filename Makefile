@@ -49,8 +49,11 @@ man: pod
 txt:
 	sdf -2txt *.sdf
 
+pdf:
+	sdf -2pdf_html *.sdf
+
 clean:
-	rm -f *.html *.pod *.txt *.8
+	rm -f *.html *.pod *.txt *.8 *.pdf
 	@for target in *.sdf ; do \
 		base=`basename $$target .sdf`; \
 		echo rm -rf $$base; \
