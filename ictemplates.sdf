@@ -1011,15 +1011,7 @@ Note that the UserTag facility, combined with AllowGlobal, allows the user to de
 H2: PRICE, DESCRIPTION, ACCESSORIES
 
 B<[price code quantity* database* noformat*]>
-
-!block example; listitem=2
-named attributes: C<[price
-        code="code"
-        quantity="N"
-        base="database"
-        noformat=1*
-        optionX="value"]>
-!endblock
+.named attributes: C<[price code="code" quantity="N" base="database" noformat=1* optionX="value"]>
 
 .Expands into the price of the product identified by code as found in the products database. If there is more than one products file defined, they will be searched in order unless constrained by the optional argument base. The optional argument quantity selects an entry from the quantity price list. To receive a raw number, with no currency formatting, use the option C<noformat=1>.
 

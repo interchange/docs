@@ -1,6 +1,6 @@
-init OPT_LOOK="akopia"; OPT_STYLE="manual"
+!init OPT_LOOK="akopia"; OPT_STYLE="manual"
 
-!define DOC_NAME "Interchange Installation"
+!define DOC_NAME "Interchange Configuration"
 !define DOC_TYPE ""
 !define DOC_CODE "ICCONFIG_D2_100800"
 !define DOC_VERSION "0.0.3"
@@ -734,7 +734,7 @@ B<price_picture>
     Locale fr_FR price_picture "##.###,## fr"
 !endblock
 
-NOTE[label='IMPORTANT NOTE: '] The decimal point in use, set by C<mon_decimal_point>, and the thousands separator, set by C<mon_thousands_sep> must match the settings in the picture. The C<frac_digits> setting is not used in this case. It is derived from the location of the decimal (if any). 
+Note[label='IMPORTANT NOTE: '] The decimal point in use, set by C<mon_decimal_point>, and the thousands separator, set by C<mon_thousands_sep> must match the settings in the picture. The C<frac_digits> setting is not used in this case. It is derived from the location of the decimal (if any). 
 
 .The same setting for fr_FR above can be achieved with:
 

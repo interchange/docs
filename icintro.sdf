@@ -1,6 +1,6 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
 
-!define DOC_NAME "Interchange Installation"
+!define DOC_NAME "Interchange Introduction"
 !define DOC_TYPE ""
 !define DOC_CODE "ICINTRO_D2_100700"
 !define DOC_VERSION "0.0.2"

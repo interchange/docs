@@ -1,6 +1,6 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
 
-!define DOC_NAME "Interchange Installation"
+!define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "ICDATABASE_D2a_100800"
 !define DOC_VERSION "0.0.3"
@@ -337,10 +337,10 @@ Note: Fields are separated by tabs, formatted for reading convenience.
 
 .Example in catalog.cfg:
 
-!endblock
+!block example; listitem=2
   Database products products.txt  LINE
   Database products CONTINUE      NOTES
-!block example; listitem=2
+!endblock
 
 .Products.asc file:
 
