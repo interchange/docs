@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.92 2002-07-15 13:52:15 mheins Exp $
+# $Id: ictags.sdf,v 1.93 2002-07-26 23:23:03 kwalsh Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.92 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.93 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -717,6 +717,50 @@ H2: PREFIX-param
 
 E:   E<lbracket>PREFIX-param name]
 
+Returns the value of the column name associated with the looping tag row.
+Each looping list returns an array of C<return fields>, set in searches with
+C<mv_return_field> or C<rf>. The default is only to return the code of
+the search result, but by setting those parameters you can return
+whichever columns you wish.
+
+In a E<lbracket>query ...] ITL tag you can select multiple return fields with
+something like:
+
+>    [query prefix=prefix sql="select foo, bar from baz where foo='buz'"]
+>        [prefix-code]  [prefix-param foo]  [prefix-param bar]
+>    [/query]
+
+In this case, E<lbracket>{{C[jump="#PREFIX-code"]prefix-code}}]
+and [prefix-param foo] are synonyms, as C<foo> is the first returned
+parameter and becomes the code for this row.
+Another synonym is E<lbracket>{{C[jump="#PREFIX-pos"]prefix-pos}} 0].
+
+Note that the following code is invalid:
+
+>    [query prefix=prefix sql=|
+>        SELECT  table1.foo,
+>                table2.bar
+>        FROM    table1, table2
+>        WHERE   table1.code = table2.code
+>        AND     table1.foo = 'buz'
+>    |]
+>        [prefix-param table1.foo] [prefix-param table2.bar]
+>    [/query]
+
+The problem with the above code is that DBI doesn't support column names
+such as C<table1.foo> in its resultsets.  The following query syntax is
+fully supported by DBI and therefore by Interchange:
+
+>    [query prefix=prefix sql=|
+>        SELECT  table1.foo AS foo,
+>                table2.bar AS bar
+>        FROM    table1, table2
+>        WHERE   table1.code = table2.code
+>        AND     table1.foo = 'buz'
+>    |]
+>        [prefix-param foo] [prefix-param bar]
+>    [/query]
+
 H2: PREFIX-pos
 
 E:   E<lbracket>PREFIX-pos N]
@@ -726,19 +770,23 @@ C<mv_return_field> or C<rf>. The default is only to return the code of
 the search result, but by setting those parameters you can return
 whichever columns you wish.
 
-E<lbracket>PREFIX-pos N] outputs the data from the I<N>th field as returned (starting with 0); E<lbracket>PREFIX-param] lets you access the data by field name instead of number.
+E<lbracket>PREFIX-pos N] outputs the data from the I<N>th column as returned
+(starting with 0).
+E<lbracket>{{C[jump="#PREFIX-param"]prefix-param}}] lets you access the data
+by column name instead of by number.
 
 In a E<lbracket>query ...] ITL tag you can select multiple return fields with
 something like:
 
->    [query prefix=prefix sql="select foo, bar from baz where foo=buz"]
+>    [query prefix=prefix sql="select foo, bar from baz where foo='buz'"]
 >        [prefix-code]  [prefix-param foo]  [prefix-param bar]
 >    [/query]
 
-In this case, [prefix-code] and [prefix-param foo] are synonyms, for
-C<foo> is the first returned parameter and becomes the code for this row.
-Another synonym is [prefix-pos 0]; and [prefix-pos 1] is the same
-as [prefix-param bar].
+In this case, E<lbracket>{{C[jump="#PREFIX-code"]prefix-code}}]
+and E<lbracket>{{C[jump="#PREFIX-param"]prefix-param}} foo] are synonyms,
+as C<foo> is the first returned parameter and becomes the code for this row.
+Another synonym is [prefix-pos 0]; and [prefix-pos 1] is the same as
+E<lbracket>{{C[jump="#PREFIX-param"]prefix-param}} bar].
 
 H2: PREFIX-price
 
