@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.86 2002-06-08 19:15:41 danb Exp $
+# $Id: ictags.sdf,v 1.87 2002-06-14 13:31:33 mheins Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.86 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.87 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -12811,8 +12811,7 @@ Accepts the following options:
 H4: {{CMD[id="time_adjust"]adjust}}
 
 If you wish to temporarily adjust the time for display purposes, you can
-pass an C<adjust> parameter with the number of hours (plus or minus) from
-the local time or from GMT:
+pass an C<adjust> parameter with the number of hours (plus or minus).
 
 >        [time]%c[/time]
 >        [time adjust="-3"]%c[/time]
@@ -12822,8 +12821,44 @@ Will display:
 > Mon 01 Jan 2001 11:29:03 AM EST
 > Mon 01 Jan 2001 08:29:03 AM EST
 
-Note that the time zone does not changeE<nbspace>E<emdash> you should either pick a format
-which doesn't display zone, use the C<tz> parameter, or manage it yourself.
+If the number ends in zero and has 3 digits or more, it is assumed that
+the number is in timezone format (i.e +500) the local time or from GMT:
+
+>        [time]%c[/time]
+>        [time adjust="-330"]%c[/time]
+>        [time adjust="-300"]%c[/time]
+
+Will display:
+
+> Mon 01 Jan 2001 11:29:03 AM EST
+> Mon 01 Jan 2001 07:59:03 AM EST
+> Mon 01 Jan 2001 08:29:03 AM EST
+
+If you want to force the number to be just a number of hours, add
+the C<hours> parameter:
+
+>        [time]%c[/time]
+>        [time adjust="100" hours=1]%c[/time]
+
+Will display:
+
+> Mon 01 Jan 2001 11:29:03 AM EST
+> Fri 05 Jan 2001 15:29:03 PM EST
+
+If C<adjust> is an Interchange time duration with a suffix of
+C<sec>, C<min>, C<hrs>, C<days>, or C<weeks>, that will be used.
+
+>        [time]%c[/time]
+>        [time adjust="2 days"]%c[/time]
+
+Will display:
+
+> Mon 01 Jan 2001 11:29:03 AM EST
+> Wed 03 Jan 2001 11:29:03 AM EST
+
+Note that the time zone does not changeE<nbspace>E<emdash> you should
+either pick a format which doesn't display zone, use the C<tz>
+parameter, or manage it yourself.
 
 \NOTE: You can adjust time globally for an Interchange installation by
 setting the $ENV{TZ} variable on many systems. Set TZ in your environment
