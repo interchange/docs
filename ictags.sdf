@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.52 2001-06-27 17:53:48 heins Exp $
+# $Id: ictags.sdf,v 1.53 2001-06-28 00:12:27 heins Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.52 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.53 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -5624,9 +5624,9 @@ for other things, like building a pre-ordained product list on a page.
 Loop lists can be nested reliably in Interchange by using the
 prefix="tag" parameter. New syntax:
 
->    [loop arg="A B C"]
->        [loop prefix=mid arg="[loop-code]1 [loop-code]2 [loop-code]3"]
->            [loop prefix=inner arg="X Y Z"]
+>    [loop list="A B C"]
+>        [loop prefix=mid list="[loop-code]1 [loop-code]2 [loop-code]3"]
+>            [loop prefix=inner list="X Y Z"]
 >                [mid-code]-[inner-code]
 >            [/loop]
 >        [/loop]
@@ -5641,6 +5641,58 @@ as in a one-click search:
 
 The above will show all items with a category containing the whole world
 "Americana", and will work the same in both old and new syntax.
+
+Ranges are accepted when you pass a C<list> if you set the C<ranges> option:
+
+>    [loop list="A..Z" ranges=1][loop-code] [/loop]
+
+The above lists all of the characters from A to Z. Any Perl incrementing
+variable list will work, but most commonly a range would be something
+like C<1..100>. You can mix regular sets -- C<1..5 10 20> would produce
+the list C<1 2 3 4 5 10 20>.
+
+If you surround the repeating text section with a C<[list] [/list]> anchor,
+the more-list, ml=N, and on-match / no-match processing is done just as
+in C<[query]> and C<[search-region]>.
+
+Using the C<acclist> option will parse Interchange option lists, as used
+in product options. The value is available with C<[loop-code]>, the label with
+C<[loop-param label]>. If the size data for SKU C<TS-007> was set to the
+string C<S=Small, M=Medium, L=Large, XL=Extra Large> then you could
+produce a select list of options this way:
+
+>    [loop list="[data products size TS-007]" acclist=1]
+>	    [on-match]<SELECT NAME=mv_order_size>[/on-match]
+>  		[list]<OPTION VALUE="[loop-code]"> [loop-param label]</OPTION>[/list]
+>    	[on-match]</SELECT>[/on-match]
+>    [/loop]
+
+Of course the above is probably more easily produced with
+C<[accessories code=TS-007 attribute=size]>, but there will be other
+uses for the capability. For instance:
+
+>	 <SELECT NAME=Season>
+>    [loop acclist=1
+>		list="
+>			Q1=Winter,
+>			Q2=Spring,
+>			Q3=Summer,
+>			Q4=Fall
+>		"]> <OPTION VALUE="[loop-code]"> [loop-param label]</OPTION>
+>    [/loop]
+
+If your parameter list needs to have spaces in the parameters, surround
+them with double or single quotes and set the quoted=1 option:
+in product options. If the size data for SKU C<TS-007> was set to the
+string C<S=Small, M=Medium, L=Large, XL=Extra Large> then you could
+produce a select list of options this way:
+
+>    [loop list="[data products size TS-007]" acclist=1]
+>	    [on-match]<SELECT NAME=mv_order_size>[/on-match]
+>  		[list]<OPTION VALUE="[loop-code]"> [loop-param label]</OPTION>[/list]
+>    	[on-match]</SELECT>[/on-match]
+>    [/loop]
+
 
 
 H4: E<lbracket>if-loop-data table column] IF [else] ELSE [/else][/if-loop-field]
