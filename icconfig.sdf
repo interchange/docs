@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.16 2000-10-19 23:07:16 zarko Exp $
+# $Id: icconfig.sdf,v 1.17 2000-10-20 07:18:55 jon Exp $
 
 !define DOC_NAME "Interchange Configuration"
 !define DOC_TYPE ""
 !define DOC_CODE "ICCONFIG_D2_100800"
-!define DOC_VERSION substr('$Revision: 1.16 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.17 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
@@ -1264,8 +1264,8 @@ LI1: $CGI_array
 .This is a hash reference to C<%CGI::values_array>, arrays containing the value or values of user variables as submitted in the current page/form. To get the value of a variable submitted as
 
 !block example; listitem=2
-    <INPUT TYPE=hidden NAME=foo VALUE=bar>
-    <INPUT TYPE=hidden NAME=foo VALUE=baz>
+    <INPUT TYPE=hidden NAME=foo VALUE='bar'>
+    <INPUT TYPE=hidden NAME=foo VALUE='baz'>
 !endblock
 
 .use 
