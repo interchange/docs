@@ -1,5 +1,5 @@
 VERSION=4.6.1
-TARGETS=icbackoffice icconfig icdatabase icinstall icintro ictemplates
+TARGETS=icbackoffice icconfig icdatabase icinstall icintro ictemplates iccattut
 
 .SUFFIXES: .html .pod .sdf .txt .pdf .8
 
