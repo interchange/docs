@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.22 2001-05-01 16:49:54 bill Exp $
+# $Id: ictags.sdf,v 1.23 2001-05-02 02:01:41 bill Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.22 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.23 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -5607,61 +5607,117 @@ H3: Description
 B<NO Description>
 
 
-
-
 H2: order
 
+Expands into a hypertext link which will include the specified item
+in the list of products to order and display the order page.
 
 H3: Summary
 
-\Parameters: B<code quantity>
+!block example;
+    [B<order> code quantity]I<Link Text>E<lbracket>/order]
+    [B<order> code=[[EXAMPLE_SKU]] quantity=2]I<Link Text>E<lt>/A>
+!endblock
 
-Positional parameters in same order.
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+code|<<
+This is the unique identifier for the item, typically the SKU in the
+products table
+>>|I<none>
+quantity|Quantity to order|1
+!endblock
 
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
 
-Pass attribute hash as last to subroutine: B<no>
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<No>
+Container tag|I<No>
+Has end tag|I<No> (C<[/order]> is a macro for C<E<lt>/AE<gt>>)
+!endblock
 
-Must pass named parameter interpolate=1 to cause interpolation.
+B<Tag expansion example:>
 
-Invalidates cache: B<no>
-
-Called Routine: 
+!block example
+   [order [[EXAMPLE_SKU]] 2]Buy [[EXAMPLE_DESCRIPTION]]E<lbracket>/order]
+---
+   <A HREF="http://localhost.localdomain/cgi-bin/tag72/ord/basket?\
+   mv_session_id=[[EXAMPLE_SESSION]]&mv_pc=1&mv_action=refresh&\
+   mv_order_item=[[EXAMPLE_SKU]]&mv_order_quantity=3">Buy [[EXAMPLE_DESCRIPTION]]</A>
+!endblock
 
 B<ASP-like Perl call:>
 
->    $Tag->order(
->        {
->         code => VALUE,
->         quantity => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->order($code, $quantity);
+!block example; lang="Perl"
+    $Tag->order($code, $quantity);
+!endblock
 
- 
 
 H3: Description
 
 
 Expands into a hypertext link which will include the specified
 code in the list of products to order and display the order page. B<code>
-should be a product code listed in one of the "products" databases. The
-optional argument B<cart/page> selects the shopping cart the item will be
-placed in (begin with / to use the default cart C<main>) and the order page
-that will display the order. The optional argument B<database> constrains
-the order to a particular products fileE<nbspace>E<emdash> if not specified, all databases
-defined as products files will be searched in sequence for the item.
-
-\Example: 
-
->  Order a [order TK112]Toaster[/order] today.
-
-\Note: [/order] simply expands to </A>.
+should be a product code listed in one of the "products" databases.
 
 
+H3: How to Order an Item
 
+Interchange can either use a form-based order or a link-based order to
+place an item in the shopping cart. The C<order> tag creates a
+link-based order.
+
+You can use the {{C[jump="#area"]area}} tag with form variables if you
+need more control, for example, to change frames for the N<order:>
+
+!block example
+   <A HREF="[area href=ord/basket
+                  form="mv_order_item=[[EXAMPLE_SKU]]
+                        mv_order_quantity=2
+                        mv_action=refresh"]"
+    TARGET=newframe> Order [[EXAMPLE_DESCRIPTION]]</A>
+!endblock
+
+To order with a form, you set the form variable C<mv_order_item> to
+the item-code/SKU and use the C<refresh> N<action:>
+
+!block example
+   <FORM ACTION="[process-target]" METHOD=POST>
+   <INPUT TYPE=hidden  NAME="mv_todo"        VALUE="refresh">
+   <INPUT TYPE=hidden  NAME="mv_order_item"  VALUE="[[EXAMPLE_SKU]]">
+
+   Order <INPUT NAME="mv_order_quantity" SIZE=3 VALUE=1> [[EXAMPLE_DESCRIPTION]]
+
+   <INPUT TYPE=submit VALUE="Order!">
+   </FORM>
+!endblock
+
+Groups of items may be batched:
+
+!block example
+   <FORM ACTION="[process-target]" METHOD=POST>
+   <INPUT TYPE=hidden  NAME="mv_todo"        VALUE="refresh">
+
+   <INPUT TYPE=hidden  NAME="mv_order_item"  VALUE="TK112">
+   <INPUT NAME="mv_order_quantity" SIZE=3> Standard Toaster
+
+   <INPUT TYPE=hidden  NAME="mv_order_item"  VALUE="TK200">
+   <INPUT NAME="mv_order_quantity" SIZE=3> Super Toaster
+
+   <INPUT TYPE=submit VALUE="Order!">
+   </FORM>
+!endblock
+
+Items that have a quantity of zero (or blank) will be skipped. Only
+items with a positive quantity will be placed in the basket.
+
+Attributes like size or color may be specified at time of order. See
+the {{C[jump="#accessories"]accessories}} tag for detail.
 
 
 H2: page
@@ -6664,7 +6720,7 @@ module (included with Bundle::Interchange from CPAN). This means that
 you can use simple SQL queries regardless of the underlying database
 implementation.
 
-H4: {{CMD[id="#query_subtags"]Subtags}}
+H4: {{CMD[id="query_subtags"]Subtags}}
 
 For list queries ({{C[jump="#query_type"]type}}=list), the following
 subtags are available:
@@ -6787,7 +6843,7 @@ table (unless you have changed the first entry in
 $Vend::Cfg->{ProductFiles}).
 
 
-H4: {{CMD[id="#query_type"]type}}
+H4: {{CMD[id="query_type"]type}}
 
 If you are not setting the '{{C[jump="#query_arrayref"]arrayref}}' or
 '{{C[jump="#query_arrayref"]hashref}}' attributes, then the type
@@ -6832,7 +6888,7 @@ E:  my $r3_c0 = $rows->[3]->[0];
 If you do not specify a type, the tag will create an arrayref as if you
 had set 'arrayref=""'.
 
-H4: {{CMD[id="#query_arrayref"]arrayref and hashref}}
+H4: {{CMD[id="query_arrayref"]arrayref and hashref}}
 
 If you set 'C<arrayref>=I<keyname>' or 'C<hashref>=I<keyname>', the
 query will not ruturn results to the page. Instead, it will place the
@@ -6860,7 +6916,7 @@ Technical noteE<nbspace>E<emdash> the string returned by the 'C<textref>'
 {{C[jump="#query_type"]type}} will B<eval>() to the 'C<arrayref>' data
 structure.
 
-H4: {{CMD[id="#query_more"]more}}
+H4: {{CMD[id="query_more"]more}}
 
 Requires '{{C[jump="#query_type"]type}}=list'.
 
@@ -6893,7 +6949,7 @@ the default determined from your database implementation.
 >>
 !endblock
 
-H4: {{CMD[id="#query_prefix"]}}
+H4: {{CMD[id="query_prefix"]}}
 
 Requires '{{C[jump="#query_type"]type}}=list'.
 
@@ -6904,7 +6960,7 @@ subtags within a list region (see
 See the {{CMD[jump="#query_list_prefix"]list_prefix}} attribute below
 for an illustrative example.
 
-H4: {{CMD[id="#query_list_prefix"]list_prefix}}
+H4: {{CMD[id="query_list_prefix"]list_prefix}}
 
 Requires '{{C[jump="#query_type"]type}}=list'.
 
@@ -6956,7 +7012,7 @@ and the second with explicitly set C<prefix> and C<list_prefix>.
 !endblock
 
 
-H4: {{CMD[id="#query_random"]random}}
+H4: {{CMD[id="query_random"]random}}
 
 Requires '{{C[jump="#query_type"]type}}=list'.
 
@@ -6983,7 +7039,7 @@ priced under 20.
 !endblock
 
 
-H4: {{CMD[id="#query_safe_data"]safe_data}}
+H4: {{CMD[id="query_safe_data"]safe_data}}
 
 Requires '{{C[jump="#query_type"]type}}=list'.
 
@@ -6996,7 +7052,7 @@ values containing the '[' character. See also
 
 Beware of reparsing issues.
 
-H4: {{CMD[id="#query_label"]label}}
+H4: {{CMD[id="query_label"]label}}
 
 Requires '{{C[jump="#query_type"]type}}=list'.
 
@@ -7005,7 +7061,7 @@ within a page, this allows you to distinguish them. The default label
 is 'current'.  Most people will not need this.
 
 
-H4: {{CMD[id="#query_form"]form}}
+H4: {{CMD[id="query_form"]form}}
 
 Requires '{{C[jump="#query_type"]type}}=list'.
 
@@ -7018,7 +7074,7 @@ since the query returns the first page directly (i.e., you did not
 follow a pagination link).
 
 
-H4: {{CMD[id="#query_wantarray"]wantarray}}
+H4: {{CMD[id="query_wantarray"]wantarray}}
 
 This is relevant only when calling $Tag->query( ... ) within global
 Perl code such as a globalsub or global usertag where $MVSAFE::Safe is
