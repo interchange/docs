@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.7 2001-03-23 00:57:29 bill Exp $
+# $Id: ictags.sdf,v 1.8 2001-03-23 17:53:48 bill Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.7 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.8 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -8143,3 +8143,6 @@ H4: {{CMD[id="dummy_other"]other}}
 
 
 #=back
+A1: Template Parsing Order
+
+!include "icparseorder.inc"

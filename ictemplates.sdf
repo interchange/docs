@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ictemplates.sdf,v 1.12 2001-03-16 09:06:37 jon Exp $
+# $Id: ictemplates.sdf,v 1.13 2001-03-23 17:53:48 bill Exp $
 
 !define DOC_NAME "Interchange Templates"
 !define DOC_TYPE ""
 !define DOC_CODE "ictemplates"
-!define DOC_VERSION substr('$Revision: 1.12 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.13 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/ictemplates.html"
@@ -2370,9 +2370,9 @@ The Interchange action set causes the update. Here are a pair of example forms. 
 
 The variables in the form do not update the user's session values, so they can correspond to database field names without fear of corrupting the user session.
 
-H1: Frequently Asked Questions
+A1: Frequently Asked Questions
 
-H2: How do you pass variables from page to page?
+A2: How do you pass variables from page to page?
 
 No effort needed. Interchange does this automatically. Every user session that is started by Interchange automatically creates a variable set for the user. As long as the user session is maintained, and does not expire, any variables you set on a form will be "remembered" in future sessions.
 
@@ -2380,7 +2380,7 @@ Don't use the prefix mv_ for your own variables. Interchange treats these specia
 
 Also, because you can set so many variables, Interchange does not unset variables it does not find on the current form. That means you can't expect a checkbox to become unchecked unless you explicitly reset it.
 
-H2: How can I tell when I need to quote a tag inside a tag?
+A2: How can I tell when I need to quote a tag inside a tag?
 
 In general, you don't need to quote the following tags which are interpreted first within a list:
 
@@ -2414,7 +2414,7 @@ The [value ...] tag is not interpolated before page, and the parser will not kno
 
 You might wonder why unquoted tags are even allowed. The answer is performance. If you have large lists of tags you can achieve significant speedups by using positional parameters. It requires CPU power to parse and disassemble the named parameters.
 
-H2: Can I use Interchange with my existing static catalog pages?
+A2: Can I use Interchange with my existing static catalog pages?
 
 Yes, but you probably won't want to in the long run. Interchange is designed to build pages based on templates from a database. If all you want is a shopping cart, you can mix standard static pages with Interchange, but it is not as convenient and doesn't take advantage of the many dynamic features Interchange offers.
 
@@ -2425,3 +2425,9 @@ That being said, all you usually have to do to place an order link on a page is:
 !endblock
 
 Replace C</cgi-bin/construct> with the path to your Interchange link.
+
+
+A1: Template Parsing Order
+
+!include "icparseorder.inc"
+ 
