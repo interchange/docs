@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.102 2002-10-29 07:15:24 kwalsh Exp $
+# $Id: ictags.sdf,v 1.103 2002-10-30 01:20:17 jon Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.102 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.103 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -14562,7 +14562,7 @@ B<ASP-like Perl call:>
 >
 >    $Tag->value_extended($name, $ATTRHASH);
 
- 
+
 
 # BEGIN ############### value-extended Summary Tables ####################
 !block example;
@@ -14603,8 +14603,7 @@ B<Tag expansion example:>
 B<ASP-like Perl call:>
 
 !block example; lang="Perl"
-   $Tag->value_extended(  { name => VALUE_name
-}, $body  );
+   $Tag->value_extended( { name => VALUE_name }, $body );
 !endblock
 
 or similarly with positional parameters,
@@ -14633,6 +14632,7 @@ Named call example:
 >            test="isfile|length|defined"*
 >            index="N|N..N|*"
 >            file_contents=1*
+>            maxsize=length*
 >            elements=1*
 >   ]
 
@@ -14644,40 +14644,47 @@ If the variable is a file variable coming from a multipart/form-data
 file upload, then the contents of that upload can be returned to the 
 page or optionally written to the C<outfile>.
 
-H4: {{CMD[id="tree_name"]name}}
+# BEGIN ########### value-extended Subsections ##############
 
-The form variable NAME. If no other parameters are present, then the 
-value of the variable will be returned. If there are multiple elements,
-then by default they will all be returned joined by a space. If C<joiner>
-is present, then they will be joined by its value.
+H4: {{CMD[id="value_extended_name"]name}}
+
+Specify which value variable to deal with. If no other parameters are
+present, then the value of the variable will be returned. If there are
+multiple elements, then by default they will all be returned joined by
+a space. If C<joiner> is present, then they will be joined by its value.
 
 In the special case of a file upload, the value returned is the name
 of the file as passed for upload.
 
-H4: {{CMD[id="tree_joiner"]joiner}}
+H4: {{CMD[id="value_extended_joiner"]joiner}}
 
 The character or string that will join the elements of the array. Will
 accept string literals such as "\n" or "\r".
 
-H4: {{CMD[id="tree_test"]test}}
+H4: {{CMD[id="value_extended_test"]test}}
 
-Three testsE<nbspace>E<emdash> C<isfile> returns true if the variable is a file upload.
+Three tests: C<isfile> returns true if the variable is a file upload.
 C<length> returns the length. C<defined> returns whether the value
 has ever been set at all on a form.
 
-H4: {{CMD[id="tree_index"]index}}
+H4: {{CMD[id="value_extended_index"]index}}
 
 The index of the element to return if not all are wanted. This is
 useful especially for pre-setting multiple search variables. If set
 to C<*>, will return all (joined by C<joiner>). If a range, such
 as C<0 .. 2>, will return multiple elements.
 
-H4: {{CMD[id="tree_file_contents"]file_contents}}
+H4: {{CMD[id="value_extended_file_contents"]file_contents}}
 
 Returns the contents of a file upload if set to a non-blank, non-zero value.
 If the variable is not a file, returns nothing.
 
-H4: {{CMD[id="tree_outfile"]outfile}}
+H4: {{CMD[id="value_extended_maxsize"]maxsize}}
+
+The maximum file size allowed, in bytes. If a file of greater size than
+maxsize is uploaded, the tag will return false and an error will be logged.
+
+H4: {{CMD[id="value_extended_outfile"]outfile}}
 
 Names a file to write the contents of a file upload to. It will not
 accept an absolute file name; the name must be relative to the catalog
@@ -14685,39 +14692,32 @@ directory. If you wish to write images or other files that would go to
 HTML space, you must use the HTTP server's C<Alias> facilities or 
 make a symbolic link.
 
-H4: {{CMD[id="tree_outfile"]umask}}
+H4: {{CMD[id="value_extended_outfile"]umask}}
 
 Permission mask (in octal) to apply to the uploaded file's permission bits.
 You may want to set this to make a file world-readable, or to keep it from
 being group-readable. See the UNIX chmod(1) manpage for details.
 
-H4: {{CMD[id="tree_ascii"]ascii}}
+H4: {{CMD[id="value_extended_ascii"]ascii}}
 
 To do an auto-ASCII translation before writing the C<outfile>, set
 the C<ascii> parameter to a non-blank, non-zero value. Default is no
 translation.
 
-H4: {{CMD[id="tree_yes"]yes}}
+H4: {{CMD[id="value_extended_yes"]yes}}
 
 The value that will be returned if a test is true or a file is
 written successfully. Defaults to C<1> for tests and the empty
 string for uploads.
 
-H4: {{CMD[id="tree_no"]no}}
+H4: {{CMD[id="value_extended_no"]no}}
 
 The value that will be returned if a test is false or a file write
 fails. Defaults to the empty string.
 
-
-
-# BEGIN ########### value-extended Subsections ##############
-H4: {{CMD[id="value_extended_umask"]umask}}
-
-H4: {{CMD[id="value_extended_name"]name}}
-
-
-
 # END ++++++++++++ value-extended Subsections +++++++++++++
+
+
 
 H1: User-defined Tags
 
