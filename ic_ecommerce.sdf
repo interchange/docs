@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ic_ecommerce.sdf,v 1.17 2002-09-01 15:13:56 mheins Exp $
+# $Id: ic_ecommerce.sdf,v 1.18 2002-10-23 17:00:40 jon Exp $
 
 !define DOC_NAME "Interchange Ecommerce Functions"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_ecommerce"
-!define DOC_VERSION substr('$Revision: 1.17 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.18 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ic_ecommerce.html"
@@ -521,7 +521,7 @@ fallback may be passed and will take effect.
 =back
 
 Prices may be adjusted in several ways, and the individual actions
-are referred to below as I<atoms>.  Price atoms they may be I<final>,
+are referred to below as I<atoms>. Price atoms may be I<final>,
 I<chained>, or I<fallback>. A final price atom is always applied if it
 does not evaluate to zero. A chained price atom is subject to further
 adjustment. A fallback price atom is skipped if a previous chained price
