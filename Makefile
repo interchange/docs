@@ -18,6 +18,7 @@ TARNAME=icdocs.tar.gz
 
 .sdf.pod:
 	$(SDFBIN) -2pod -DFULL_TARGETS="$(TARGETS)" $<
+	@perl -ni -e 'if ($$f > 2 or ! /^=head1/) { print; next; } ++$$f; unless ($$f == 2) { print; next; } print qq{=head1 DESCRIPTION\n\n$$_};' $@
 
 .sdf.txt:
 	$(SDFBIN) -2txt -DFULL_TARGETS="$(TARGETS)" $<
