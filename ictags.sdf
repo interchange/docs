@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.104 2002-10-30 01:45:18 jon Exp $
+# $Id: ictags.sdf,v 1.105 2002-10-30 09:39:55 kwalsh Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.104 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.105 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ictags.html"
@@ -14692,7 +14692,7 @@ directory. If you wish to write images or other files that would go to
 HTML space, you must use the HTTP server's C<Alias> facilities or 
 make a symbolic link.
 
-H4: {{CMD[id="value_extended_outfile"]umask}}
+H4: {{CMD[id="value_extended_umask"]umask}}
 
 Permission mask (in octal) to apply to the uploaded file's permission bits.
 You may want to set this to make a file world-readable, or to keep it from
