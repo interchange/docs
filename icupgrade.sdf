@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icupgrade.sdf,v 1.7 2001-03-16 05:29:36 jon Exp $
+# $Id: icupgrade.sdf,v 1.8 2001-03-16 05:31:09 jon Exp $
 
 !define DOC_NAME "Interchange Upgrade Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "icupgrade"
-!define DOC_VERSION substr('$ $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.8 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/icupgrade.html"
