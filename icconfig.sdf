@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.25 2001-02-07 13:01:32 heins Exp $
+# $Id: icconfig.sdf,v 1.26 2001-02-24 17:18:57 heins Exp $
 
 !define DOC_NAME "Interchange Configuration"
 !define DOC_TYPE ""
 !define DOC_CODE "ICCONFIG_D2_100800"
-!define DOC_VERSION substr('$Revision: 1.25 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.26 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
@@ -2767,6 +2767,38 @@ Definition of an arbitrary database, in the form "Database database file type," 
 
 !block example
    Database      reviews  reviews.txt  CSV
+!endblock
+
+H2: DatabaseDefault
+
+Defines default parameters for a database. This can be used to set a default
+WRITE_CONTROL setting, set a default USER or PASSWORD, etc. It accepts any
+scalar setting, which means all B<except>:
+
+	ALTERNATE_*
+	BINARY
+	COLUMN_DEF
+	DEFAULT
+	FIELD_ALIAS
+	FILTER_*
+	NAME
+	NUMERIC
+	POSTCREATE
+	WRITE_CATALOG
+
+This default setting is made when the table is initially defined, i.e. explicit
+settings for the database itself override the defaults set.
+
+!block example
+   DatabaseDefault      WRITE_CONTROL   1
+   DatabaseDefault      WRITE_TAGGED    1
+!endblock
+
+This setting must be made *before* the database is defined. To reset its
+value to empty, use the C<Replace> directive.
+
+!block example
+   Replace DatabaseDefault
 !endblock
 
 H2: DefaultShipping
