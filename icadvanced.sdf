@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: icadvanced.sdf,v 1.12 2003-01-14 21:50:52 mheins Exp $
+# $Id: icadvanced.sdf,v 1.13 2003-01-15 04:05:18 kwalsh Exp $
 
 !define DOC_NAME "Advanced Interchange Topics"
 !define DOC_TYPE ""
 !define DOC_CODE "icadvanced"
-!define DOC_VERSION substr('$Revision: 1.12 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.13 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/icadvanced.html"
@@ -663,32 +663,32 @@ H2: Catalog Skeletons
 A catalog skeleton contains an image of a configured catalog. The best way to see what the makecat program does is to configure the simple demo and then run a recursive C<diff> on the template and configured catalog directories:
 
 !block example
-	cd /usr/local/interchange
-	diff -r construct catalogs/construct
+    cd /usr/local/interchange
+    diff -r construct catalogs/construct
 !endblock
 
 The files are mostly identical, except that certain macro strings have been replaced with the answers given to the script. For example, if C<www.mydomain.com> was answered at the prompt for a server name, this difference would appear in the catalog.cfg file:
 
 !block example
-       # template
-       Variable SERVER_NAME  __MVC_SERVERNAME__
+    # template
+    Variable SERVER_NAME  __MVC_SERVERNAME__
 
-       # configured catalog
-       Variable SERVER_NAME  www.mydomain.com
+    # configured catalog
+    Variable SERVER_NAME  www.mydomain.com
 !endblock
 
 The macro string __MVC_SERVERNAME__ was substituted with the answer to the question about server name. In the same way, other variables are substituted, and include:
 
 !block example
-MVC_BASEDIR      MVC_IMAGEDIR
-MVC_CATROOT      MVC_IMAGEURL
-MVC_CATUSER      MVC_MAILORDERTO
-MVC_CGIBASE      MVC_MINIVENDGROUP
-MVC_CGIDIR       MVC_MINIVENDUSER
-MVC_CGIURL       MVC_SAMPLEHTML
-MVC_DEMOTYPE     MVC_SAMPLEURL
-MVC_DOCUMENTROOT MVC_VENDROOT
-MVC_ENCRYPTOR
+    MVC_BASEDIR      MVC_IMAGEDIR
+    MVC_CATROOT      MVC_IMAGEURL
+    MVC_CATUSER      MVC_MAILORDERTO
+    MVC_CGIBASE      MVC_MINIVENDGROUP
+    MVC_CGIDIR       MVC_MINIVENDUSER
+    MVC_CGIURL       MVC_SAMPLEHTML
+    MVC_DEMOTYPE     MVC_SAMPLEURL
+    MVC_DOCUMENTROOT MVC_VENDROOT
+    MVC_ENCRYPTOR
 !endblock
 
 Note: Not all of these variables are present in the "construct" template, and more may be defined. In fact, any environment variable that is set and begins with MVC_ will be substituted for by the C<makecat> script. For example, to set up a configurable parameter to customize the COMPANY variable in catalog.cfg, run a pre-qualifying script that set the environment variable MVC_COMPANY and then place in the catalog.cfg file:
@@ -713,10 +713,10 @@ the standard catalog creation procedure, four other files in the
 C<config> directory of the template may be defined:
 
 !block example
-additional_fields -- file with more parameters for macro substitution
-additional_help   -- extended description for the additional_fields
-precopy_commands  -- commands passed to the system prior to catalog copy
-postcopy_commands -- commands passed to the system after catalog copy
+    additional_fields -- file with more parameters for macro substitution
+    additional_help   -- extended description for the additional_fields
+    precopy_commands  -- commands passed to the system prior to catalog copy
+    postcopy_commands -- commands passed to the system after catalog copy
 !endblock
 
 All files are paragraph-based. In other words, a blank line (with no
@@ -727,15 +727,15 @@ H3: Additional fields
 The additional_fields file contains:
 
 !block example
-PARAM
-The prompt. Set PARAM to?
-The default value of PARAM^IAlternate value of PARAM
+    PARAM
+    The prompt. Set PARAM to?
+    The default value of PARAM^IAlternate value of PARAM
 !endblock
 
 This would cause a question during makecat:
 
 !block example
-The prompt. Set PARAM to?.....[The default value of PARAM]
+    The prompt. Set PARAM to?.....[The default value of PARAM]
 !endblock
 
 The default value line can contain alternate values, separated by tabs from
@@ -746,17 +746,21 @@ usually with the UP and DOWN arrow keys.
 If you wish to set the parameter to the default value in this file without a
 prompt, precede the parameter with an exclamation point, i.e.:
 
-	!PARAM
-	The prompt. Set PARAM to?
-	default value^Ialternate value
+!block example
+    !PARAM
+    The prompt.  Set PARAM to?
+    default value^Ialternate value
+!endblock
 
 If you wish only to prompt for a value if a previous parameter was set,
 put the previous parameter to set in curly brackets before the actual
 parameter:
 
+!block example
     {MYSQL}SQLDSN
-	Data source name (DSN) for MySQL?
-	dbi:mysql:test___MVC_CATALOGNAME__
+    Data source name (DSN) for MySQL?
+    dbi:mysql:test___MVC_CATALOGNAME__
+!endblock
 
 The above will be ignored if the MYSQL parameter was not previously
 set to a true value.
@@ -769,19 +773,19 @@ H3: Additional help
 If the additional_help file is present, additional instructions for PARAM may be provided.
 
 !block example
-PARAM
+    PARAM
 
-These are additional instructions for PARAM, and they
-may span multiple lines up to the first blank line.
+    These are additional instructions for PARAM, and they
+    may span multiple lines up to the first blank line.
 !endblock
 
 The prompt would now be:
 
 !block example
-These are additional instructions for PARAM, and they
-may span multiple lines up to the first blank line.
+    These are additional instructions for PARAM, and they
+    may span multiple lines up to the first blank line.
 
-The prompt. Set PARAM to?.....[The default value of PARAM]
+    The prompt. Set PARAM to?.....[The default value of PARAM]
 !endblock
 
 H3: Command files
@@ -789,18 +793,18 @@ H3: Command files
 If the file config/precopy_commands exists, it will be read as a command followed by the prompt/help value.
 
 !block example
-mysqladmin create __MVC_CATALOGNAME__
-We need to create an SQL database for your Interchange
-database tables.
+    mysqladmin create __MVC_CATALOGNAME__
+    We need to create an SQL database for your Interchange
+    database tables.
 !endblock
 
 This will cause the prompt:
 
 !block example
-We need to create an SQL database for your Interchange
-database tables.
+    We need to create an SQL database for your Interchange
+    database tables.
 
-Run command "mysqladmin create simple"?
+    Run command "mysqladmin create simple"?
 !endblock
 
 If the response is "y" or "yes," the command will be run by passing it through the Perl system() function. As with any of the additional configuration files, MVC_PARAM macro substitution is performed on the command and help. Proper permissions for the command are required.
@@ -810,7 +814,7 @@ The file config/postcopy_commands is exactly the same as <precopy_commands>, exc
 There may also be SubCatalog directives:
 
 !block example
-SubCatalog easy simple /home/catalogs/simple /cgi-bin/easy
+    SubCatalog easy simple /home/catalogs/simple /cgi-bin/easy
 !endblock
 
 easy
