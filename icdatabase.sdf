@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.54 2003-07-07 00:30:44 mheins Exp $
+# $Id: icdatabase.sdf,v 1.55 2003-07-07 17:40:15 mheins Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.54 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.55 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/icdatabase.html"
@@ -1031,7 +1031,10 @@ This search is case-sensitive. To do the same thing case-insensitively:
 
 H2: Coordinated and Joined Searching
 
-Interchange will do a complete range of tests on individual columns in the database. To use this function, set C<mv_coordinate> to Yes (co=yes in the one-click syntax). In order to use coordinated searching, the number of search fields must equal the number of search strings.
+Interchange will do a complete range of tests on individual columns in
+the database. To use this function, set C<mv_coordinate> to Yes (co=yes
+in the one-click syntax). In order to use coordinated searching, the
+number of search fields must equal the number of search strings.
 
 To make sure that is the case, use the C<mv_search_map> variable. It allows variables to be mapped to others in the search specification. For example:
 
@@ -1070,6 +1073,8 @@ Individual field operations can then be specified with the C<mv_column_op>
    regular expression     rm                       =~ , LIKE
    regular expression NOT rn                       !~
    exact match            em
+   Text::Query::Advanced  aq
+   Text::Query::Simple    tq
 !endblock
 
 An example:
@@ -1131,6 +1136,72 @@ The C<co=yes> is assumed when specifying a multiple search.
 The second search will check the stock status of the painting provided there is an C<inventory> table as in some of the Interchange demo catalogs. If the C<qty> field is greater than or equal to 1, the product will be picked. If out of stock, it will not be found.
 
 It always helps to have an C<rm> type included in the search. This is used to pre-screen records so that database accesses only need be made for already-matching entries. If accesses must be made for every record, large searches can get quite slow.
+
+The special C<aq> and C<tq> query types only operate if the C<Text::Query> CPAN
+module is installed. This allows Altavista-style searches on the field, using
+AND, OR, NOT, and NEAR with arbitrarily complex parentheses.
+
+A useful form for the C<aq> type would be:
+
+>  <form action="[area search]" method=POST>
+>  <input type=hidden name=mv_session_id value="[data session id]">
+>  <input type=hidden name=mv_column_op VALUE="aq">
+>  <input type=hidden name=mv_coordinate VALUE=1>
+>  <input type=hidden name=mv_min_string value=2>
+>  <input type=hidden name=mv_search_field VALUE=":sku:description:comment:category">
+>  <input type=hidden name=mv_searchtype VALUE=db>
+>  <input name=mv_searchspec type=text size=12>
+>  <input type=submit value="SEARCH">
+>  </form>
+
+This searches the sku, description, comment, and category fields in the 
+default products file with Text::Query syntax. Try the term "painters NEAR set"
+in the default foundation example.
+
+H2: Custom search operators
+
+You can write your own search operator with Interchange's CodeDef.
+In C<interchange.cfg>, or in the C<code> directory tree, you can put:
+
+> CodeDef find_mirrored SearchOp
+> CodeDef find_mirrored Routine <<EOR
+> sub {
+> 	my ($self, $i, $pat) = @_;
+> 	$pat = reverse $pat;
+> 	return sub {
+> 		my $string = shift;
+> 		$string =~ /$pat/io;
+> 	};
+> }
+> EOR
+
+Now you can do:
+
+>   [loop search="
+>               se=sretniap
+>               sf=description
+>               fi=products
+>               st=db
+>               co=yes
+>               rf=*
+>               op=find_mirrored
+>           "]
+>   [loop-code] [loop-param description]<br>
+>   [/loop]
+
+The passed parameters are:
+
+  - The search object ($self)
+  - The index into coordinated search array ($i)
+  - The pattern to match
+  - The name of the op (find_hammer in this case)
+
+Must return a sub which receives the data to match and returns
+1 if it matches. DOES NOT HONOR mv_negate UNLESS you tell it to.
+
+See Vend::Search::create_text_query for an example of how to
+return a proper routine and look in search object for the
+associated params.
 
 H2: Specifying a Text-Based Search with SQL Syntax
 
@@ -2876,7 +2947,7 @@ Encryption can still be set on by passing C<crypt=1> with any call to a C<new_ac
 If you are encrypting, and you wish to use MD5 to encrypt the passwords, set
 the C<md5> parameter:
 
-	UserDB  default md5 1
+        UserDB  default md5 1
 
 H2: Setting Defaults with the UserDB Directive
 

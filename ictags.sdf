@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.109 2003-04-24 17:09:10 mheins Exp $
+# $Id: ictags.sdf,v 1.110 2003-07-07 17:40:15 mheins Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.109 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.110 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ictags.html"
@@ -518,6 +518,26 @@ For example:
 
 >    [item-alternate 2]EVEN[else]ODD[/else][/item-alternate]
 >    [item-alternate 3]BY 3[else]NOT by 3[/else][/item-alternate]
+
+There are some additional primitives:
+
+!block table
+Tag|Description
+E<lbracket>item-alternate first_only]|Only true on first item
+E<lbracket>item-alternate last_only]|Only true on last item
+E<lbracket>item-alternate except_last]|True except on last item
+E<lbracket>item-alternate except_first]|True except on last item
+E<lbracket>item-alternate 0]|Same as "first_only"
+E<lbracket>item-alternate -1]|Same as "except_last"
+!endblock
+
+In the common case where you want to separate by a comma or
+other joiner:
+
+>	You have the following items:
+>	[item-list]
+>		[item-code][item-alternate except_last], [/item-alternate]
+>	[/item-list]
 
 H2: PREFIX-calc
 
