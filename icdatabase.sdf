@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.21 2001-04-10 22:06:21 jon Exp $
+# $Id: icdatabase.sdf,v 1.22 2001-04-10 22:07:50 jon Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.21 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.22 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icdatabase.html"
@@ -3360,6 +3360,26 @@ Upon submission of the order form, any item labeled C<HARD> will be accumulated 
 Any item labeled C<SOFT> will be passed to the order profile C<create_download_link>, which will place it in a staging area for customer download. (This would be supported by a link on the receipt, possibly by reading a value set in the profile).
 
 The C<main> order routing will use CyberCash to charge the order, and will be completely encrypted for e-mailing.
+
+
+H1: SSL Support
+
+Interchange has several features that enable secure ordering via SSL (Secure Sockets Layer). Despite their mystique, SSL servers are actually quite easy to operate. The difference between the standard HTTP server and the SSL HTTPS server, from the standpoint of the user, is only in the encryption and the specification of the URL; C<https:> is used for the URL protocol specification instead of the usual http: designation.
+
+Note[label='IMPORTANT NOTE: '] Interchange attempts to perform operations securely, but no guarantees or warranties of any kind are made! Since Interchange comes with Perl source, it is possible to modify the program to create security problems. One way to minimize this possibility is to record digital signatures, using MD5 or PGP, of C<interchange>, C<interchange.cfg>, and all modules included in Interchange. Check them on a regular basis to ensure they have not been changed.
+
+Interchange uses the C<SecureURL> directive to set the base URL for secure transactions, and the C<VendURL> directive for normal non-secure transactions. Secure URLs can be enabled for forms through a form action of C<[process-target secure=1]>. An individual page can be displayed via SSL with C<[page href=mvstyle_pagename secure=1]>. A certain page can be set to be always secure with the C<AlwaysSecure> catalog.cfg directive.
+
+Interchange incorporates additional security for credit card numbers. The field C<mv_credit_card_number> will not ever be written to disk.
+
+To enable automated encryption of the credit card information, the directive C<CreditCardAuto> needs to be defined as C<Yes>. C<EncryptProgram> also needs to be defined with some value, one which will, hopefully, encrypt the number. PGP is now recommended above all other encryption program. The entries should look something like:
+
+!block example
+ CreditCardAuto   Yes
+ EncryptProgram   /usr/bin/pgpe -fat -r sales@company.com
+!endblock
+
+See C<CreditCardAuto> for more information on how to set the form variables.
 
 
 H1: Frequently Asked Questions
