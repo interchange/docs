@@ -1,5 +1,5 @@
 RELEASING A NEW VERSION OF INTERCHANGE
-$Id: release-notes.txt,v 1.2 2004-05-05 15:22:03 jon Exp $
+$Id: release-notes.txt,v 1.3 2005-03-24 19:15:31 jon Exp $
 
 
 Pre-release:
@@ -20,7 +20,7 @@ Tag or re-tag CVS repository with REL_4_6_3 (or whatever)
 Run regression test catalog
 Build tarball and note MD5 sum
 Build RPMs
-Test clean install of Foundation demo, place order, use admin
+Test clean install of Standard demo, place order, use admin
 Build docs tarball & RPMs (for stable releases)
 Sign RPMs with personal GnuPG key
 Have Racke build and sign Debian packages (using same tarball so MD5 sum is identical)
