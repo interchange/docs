@@ -1,4 +1,4 @@
-# $Id: html.sdn,v 1.5 2000-10-17 18:53:54 zarko Exp $
+# $Id: html.sdn,v 1.6 2000-10-17 19:01:17 zarko Exp $
 #
 # >>Title::     HTML Tuning
 #
@@ -34,8 +34,8 @@ sub ::_HtmlFinalise {
     local($document,$version, @head);
 
     # Convert the title, if any, to HTML
-    $title = $SDF_USER'var{'HTML_TITLE'};
-    $title = $SDF_USER'var{'DOC_TITLE'} if !defined($title);
+    $title = $var{'HTML_TITLE'};
+    $title = $var{'DOC_TITLE'} if !defined($title);
     if ($title) {
         @sdf_title = ("TITLE:$title");
         @title = &::_HtmlFormatSection(*sdf_title, *dummy);
@@ -45,8 +45,8 @@ sub ::_HtmlFinalise {
     }
 
     # Build the HEAD element (and append BODY opening)
-    $document = 'foo';
-    $version = $SDF_USER'var{'SDF_VERSION'};
+    $document = $var{'FILE_BASE'};
+    $version = $var{'SDF_VERSION'};
     @head = (
         '[comment]',
         "ui_template_description: Standard page with top and left areas. Menu bar and copyright at bottom.  This file was generated using SDF $version by Ian Clatworthy (ianc\@mincom.com). SDF is freely available from http://www.mincom.com/mtr/sdf.",
@@ -73,7 +73,7 @@ sub ::_HtmlFinalise {
 
     # Build the body contents, unless we're generating an input file for
     # the HTMLDOC package
-    unless ($SDF_USER'var{'HTMLDOC'}) {
+    unless ($var{'HTMLDOC'}) {
         &::_HtmlFinaliseBodyContents(*body, *contents);
     }
 
