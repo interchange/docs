@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icfaq.sdf,v 1.12 2002-06-11 03:18:04 danb Exp $
+# $Id: icfaq.sdf,v 1.13 2002-06-30 05:43:35 danb Exp $
 
 !define DOC_NAME "Frequently Asked Questions"
 !define DOC_TYPE ""
 !define DOC_CODE "icfaq"
-!define DOC_VERSION substr('$Revision: 1.12 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.13 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icfaq.html"
@@ -935,6 +935,110 @@ H3: Erase the user session (includes shopping cart)
 [/button]
 !endblock
 
+H2: How do I e-mail credit card numbers in plain text? 
+
+(Answered by Mike Heins)
+
+The position of ICDEVGROUP is that we will not tell you what you can and
+cannot do, but that we simply will not help you send unencrypted CC
+numbers by email.
+
+H2:How do I setup multiple shipping addresses?
+
+	Interchange has the functionality of handling multiple addresses,
+	give a look in the docs "User Database Functions"
+	
+	{{URL:http://interchange.redhat.com/cgi-bin/ic/docfly.html?mv_arg=icdatabase09%2e03}}
+	
+H2:How do I change the order number from TEST0001, TEST0002 to something else?
+
+(Answered by Aaron Hazelton & Paul Jordan)
+
+	* Go to the IC admin and click on "Administration"
+	then click on the 'last order' which will be something
+	like "TEST00001".  It will bring up a page which will allow
+	you to change it to whatever you want.
+	
+	* Or, modify the CATROOT/etc/order.number
+
+H2: How do I move a catalog from a test server to a production server?
+
+(Answered by Jonathan Clark)
+
+N:
+
+1) copy the complete catalog root with all files and subfolders.
+
+2) make sure the permissions are appropriate (interchange daemon user needs rw access to all of it.
+
+3) link <catroot>/error.log to /var/logs/interchange/catalog/error.log or wherever.
+
+4) link catroot/images to images folder in your public html space.
+
+5) link the admin ui images folder 'interchange' in public html space to actual location.
+
+6) copy any global usertags which are not in your catalog structure.
+
+7) edit the variable.txt to set appropriate domain names if these have changed.
+
+8) if using MySQL/Postgres/Oracle, set up database access.
+
+9) put a link program in your cgi-bin, make sure it is chmod u+s and owned by the interchange daemon user.
+
+10) add the catalog to the interchange.cfg file.
+
+11) restart ic.
+
+12) check global error.log for any error messages.
+
+H2:How do I access the raw match count? 
+
+(Answered by Kevin Walsh)
+N:
+
+{{EX:[value mv_search_match_count]}}
+
+H2:How do I add the thumbnail to the results page?
+
+(Answered by Ed LaFrance & Dan Browning)
+
+It's as easy as <img src="thumb/[item-field thumb]">, but 
+you may want to add a check to see if the image is actually 
+there before you try to display it:
+!block example
+[if file images/thumb/[item-field thumb]]
+        <img src="thumb/[item-field thumb]">
+[/if]
+!endblock
+
+For example:
+
+!block example
+--- results.html.orig   Sat Jun 29 21:25:49 2002
++++ results.html        Sat Jun 29 21:28:57 2002
+@@ -100,6 +100,7 @@
+
+ <table width="90%" border="0" cellspacing="0" cellpadding="3">
+ <tr class="contentbar2">
++  <td>&nbsp;</td>
+   <td><b>&nbsp;Product</b></td>
+   <td align="center"><b>SKU</b></td>
+   <td align="center"><b>Stock</b></td>
+@@ -120,6 +121,11 @@
+
+ <tr valign="middle">
+       <td>
++                  [if file images/thumb/[item-field thumb]]
++                     <img src="thumb/[item-field thumb]">
++                  [/if]
++      </td>
++      <td>
+        <INPUT TYPE=hidden  NAME="mv_order_item"  VALUE="[item-code]">
+        <a href="[area [item-code]]">[item-description]</a>
+       </td>
+!endblock
+
+
 
 H1: Errors
 
@@ -1791,7 +1895,7 @@ Its purpose is to make each link unique so that users behind a proxy (e.g. AOL) 
 
 H2: Where is process.html?
 
-(Answered by Ed LaFrance)
+(Answered by Ed LaFrance & Kevin Walsh)
 
 It is in the guts of Interchange. The [process] form action tells interchange
 to process the posted form vars according to the action set with mv_todo. The
@@ -1800,9 +1904,47 @@ display when processing is complete can be specified with mv_nextpage), so
 Interchange just builds a target URL that ends in an 'imaginary' page called
 'process.html'. There are other ways to handle a form post; more info is here:
 
-{{URL:http://interchange.redhat.com/cgi-bin/ic/docfly.html?mv_arg=ictemplates10.02}} 
+{{URL:http://interchange.redhat.com/cgi-bin/ic/docfly.html?mv_arg=ictemplates10.02}}
+
+Basically, when you submit a <form> using the [process] tag, you
+get sent to the 'imaginary' process.html page.  That page is derived
+from the page specified in the form's mv_nextpage CGI submission.
+
+H2: What PGP / GPG encryption software is available for Windows?
+
+(Answered by Daryl Houston, Jonathan Clark, Aaron Hazelton, Mike Heins, & Michael Goldfarb)
+
+=item * PGP for various platforms:
+	
+	{{URL:http://www.pgpi.org/products/pgp/versions/freeware/}}  
+	
+=item * WinPT (Windows Privacy Tray)
+	
+	{{URL:http://www.winpt.org}}
+
+A universal encrypt/decrypt program that operates 
+generally via the clipboard so would be compatable with most programs, but
+there is also an Outlook Express plugin.  It comes with GPG (below).
+
+=item * GPG Windows version
+	
+	{{URL:http://www.gnupg.org/download.html}}	
+
+=item * MIT distribution of PGP 
+	
+	{{URL:http://web.mit.edu/network/pgp.html}}
+	
+	Only for US and Canada for non-commercial use. There may also 
+	be an international version without those restrictions.
 
 
+H2:When are the results_big.html or results_either.html files called/used?
+
+(Answered by Mike Heins)
+
+They are just there as examples and are not used in the demo. If you
+don't use them, you can delete them.
+	
 Line:
 
 N:Copyright 2001-2002 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.
