@@ -1,4 +1,4 @@
-# $Id: html.sdn,v 1.6 2000-10-17 19:01:17 zarko Exp $
+# $Id: html.sdn,v 1.7 2000-10-17 20:04:19 zarko Exp $
 #
 # >>Title::     HTML Tuning
 #
@@ -28,6 +28,7 @@
 
 # Subroutine to build the main document navigation line
 !block script
+$::_HTML_CHAR{'lbracket'} = '&#91;';
 sub ::_HtmlFinalise {
     local(*body, *contents) = @_;
     local($title, @sdf_title, @title);
@@ -45,7 +46,7 @@ sub ::_HtmlFinalise {
     }
 
     # Build the HEAD element (and append BODY opening)
-    $document = $var{'FILE_BASE'};
+    $document = $var{'HTML_TOPIC'};
     $version = $var{'SDF_VERSION'};
     @head = (
         '[comment]',
@@ -118,6 +119,23 @@ sub ::_HtmlFinalise {
     !endif
 !endmacro
 
+!macro HTML_HEADER
+    {{INLINE:<BR CLEAR=LEFT>}}
+!endmacro
+
+!macro HTML_FOOTER
+    !HTML_PRE_SECTION
+    !if $var{'OPT_STYLE'} eq 'paper'
+        #Sign: [[DOC_STATUS]]
+    !elsif DOC_STATUS
+        Sign: {{A[class='doc-id'][[DOC_ID]]}} {{A[class='doc-status']([[DOC_STATUS]])}}
+    !elsif DOC_ID
+        Sign: {{A[class='doc-id'][[DOC_ID]]}}
+    !endif
+    Sign[class='doc-modified'] [[DATE:DOC_MODIFIED]]
+    Sign[class='copyright'] [['Copyright E<c> ' . &Var('DOC_OWNER')]]
+!endmacro
+
 !macro HTML_TOPIC_HEADER
     !HTML_TOPIC_NAVIGATE
     !block inline
@@ -178,19 +196,6 @@ sub ::_HtmlFinalise {
     !HTML_TOPIC_NAVIGATE
 !endmacro
 
-!macro HTML_FOOTER
-    !HTML_PRE_SECTION
-    !if $var{'OPT_STYLE'} eq 'paper'
-        #Sign: [[DOC_STATUS]]
-    !elsif DOC_STATUS
-        Sign: {{A[class='doc-id'][[DOC_ID]]}} {{A[class='doc-status']([[DOC_STATUS]])}}
-    !elsif DOC_ID
-        Sign: {{A[class='doc-id'][[DOC_ID]]}}
-    !endif
-    Sign[class='doc-modified'] [[DATE:DOC_MODIFIED]]
-    Sign[class='copyright'] [['Copyright E<c> ' . &Var('DOC_OWNER')]]
-!endmacro
-
 !macro HTML_TOPIC_NAVIGATE
 !div navigate
     !block script
@@ -205,13 +210,13 @@ sub ::_HtmlFinalise {
         $_up   = $topic_up{$_base} ? $topic_up{$_base} . ".html" : '';
     }
 
-    if(defined($var{'HTML_FRAMES'})) {
-        undef($_next) if($_next eq $var{'HTML_URL_CONTENTS'});
-        undef($_prev) if($_prev eq $var{'HTML_URL_CONTENTS'});
-        undef($_up) if($_up eq $var{'HTML_URL_CONTENTS'});
-    }
+    $_contents = $var{'HTML_URL_CONTENTS'};
+    undef($_next) if($_next eq $_contents);
+    undef($_prev) if($_prev eq $_contents);
+    undef($_up) if($_up eq $_contents);
 
     my(@_nav);
+    push(@_nav, "{{A[jump='$_contents'] $var{'HTML_TEXT_CONTENTS'}}}");
     push(@_nav, "{{A[jump='$_up'] $var{'HTML_TEXT_PARENT'}}}") if($_up);
     push(@_nav, "{{A[jump='$_prev'] $var{'HTML_TEXT_PREVIOUS'}}}") if($_prev);
     push(@_nav, "{{A[jump='$_next'] $var{'HTML_TEXT_NEXT'}}}") if($_next);

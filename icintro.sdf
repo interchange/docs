@@ -43,7 +43,7 @@ B<User Form Input>
 .Interchange recalls input by a user so that it can be easily passed from form to form. The value of any form variable is "remembered" and inserted upon finding a C<[value input_field]> tag. The C<input_field> is a normal HTML form field.
 
 B<Database Contents>
-.Interchange can support an unlimited number of attached databases, either in one of its own internal formats or one of a number of popular SQL databases, and in any database with an ODBC interface. The contents of a database can be referenced with tags, i.e., C<[data table=products column=name key=334-12]> or C<[query sql="select * from products where category = 'Clothing'"]>.
+.Interchange can support an unlimited number of attached databases, either in one of its own internal formats or one of a number of popular SQL databases, and in any database with an ODBC interface. The contents of a database can be referenced with tags, i.e., C<E<lbracket>data table=products column=name key=334-12]> or C<E<lbracket>query sql="select * from products where category = 'Clothing'"]>.
 
 B<Session Parameters>
 .Session parameters, as the name suggests, include information specific to the particular user and his or her current interaction with Interchange. The parameters include the location where the user originally found the catalog C<[data session referer]>), the domain they are from (C<[data session host]>), the source of the hit in a partner program (C<[data session source]>), the time of their last access (C<[data session time]>), and so on.
