@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.78 2002-04-15 16:13:20 jon Exp $
+# $Id: ictags.sdf,v 1.79 2002-04-27 20:22:04 kwalsh Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.78 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.79 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -3035,92 +3035,77 @@ This is the label specifying the corresponding E<lbracket>{{C[jump="#try"]try}} 
 
 H2: cgi
 
+Returns the the current value of the named CGI input variable.
+HTML-escapes Interchange tags in the result for security.
+
+Can also set a new CGI value within the current page.
+
+# BEGIN ########### cgi Subsections ##############
 
 H3: Summary
 
-\Parameters: B<name>
-
-Positional parameters in same order.
-
-
-Pass attribute hash as last to subroutine: B<no>
-
-Must pass named parameter interpolate=1 to cause interpolation.
-
-Invalidates cache: B<YES>
-
-Called Routine: 
-
-B<ASP-like Perl call:>
-
->    $Tag->cgi(
->        {
->         name => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->cgi($name);
-
- 
-
-# BEGIN ############### cgi Summary Tables ####################
 !block example;
     [B<cgi> name]
+    [B<cgi> name=I<cgi_var_name> I<other_named_attributes>]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
 Parameters|Description|Default
 {{CMD[jump="#cgi_name"]name}}|<<
->>|DEFAULT_VALUE
+This is the name of the CGI variable whose value you want.
+>>|I<None>
 !endblock
 
 !block table; colvaligns="TT"
 Attributes|Default
+{{CMD[jump="#cgi_set"]set}}|I<none>
+{{CMD[jump="#cgi_hide"]hide}}|I<No>
+{{CMD[jump="#cgi_filter"]filter}}|I<none>
+{{CMD[jump="#cgi_keep"]keep}} (with filter)|I<No>
+{{CMD[jump="#cgi_enable_html"]enable_html}}|I<No>
 {{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
 !endblock
 
 !block table; headings=1; colvaligns="TT"
 A|B
 Other_Characteristics|
-Invalidates cache|I<YES>
-Container tag|I<No>
-Has Subtags|I<No>
-Nests|I<Yes>
+Invalidates cache|I<Yes>
 !endblock
-
 
 B<Tag expansion example:>
 
-!block example
-   [cgi name]
----
-   TAG RESULT
-!endblock
+Assuming CGI variable 'foo' = 'bar',
 
+!block example
+   [cgi foo]
+---
+   bar
+!endblock
 
 B<ASP-like Perl call:>
 
 !block example; lang="Perl"
-   $Tag->cgi(  { name => VALUE_name
-}, $body  );
+    $Tag->cgi( { name => var_name } );
+
+    # or if you simply want the value:
+    $CGI->{var_name};
+
+    # or:
+    $CGI::values{var_name};
 !endblock
 
 or similarly with positional parameters,
 
 !block example; lang="Perl"
-    $Tag->cgi(name, $attribute_hash_reference, $body);
+    $Tag->cgi($name, $attribute_hash_reference);
 !endblock
-
-# END +++++++++++++++ cgi End Summary Tables ++++++++++++++++++++
 
 
 H3: Description
 
-Displays the value of a CGI variable B<submitted to the current page>. This
-is similar to E<lbracket>{{C[jump="#value"]value}} ...], except it displays the transitory values that
-are submitted with every request.
+Displays the value of a CGI variable B<submitted to the current page>.
+This is similar to E<lbracket>{{C[jump="#value"]value}} ...], except it
+displays the transitory values that are submitted with every request.
 
 For instance, if you access the following URL:
 
@@ -3130,20 +3115,59 @@ C<bar> will be substituted for C<[cgi foo]>.
 
 This is the same as $CGI->{foo} in embedded Perl.
 
-
-
-
-
-
-# BEGIN ########### cgi Subsections ##############
 H4: {{CMD[id="cgi_name"]name}}
 
+This is the name of the CGI variable whose value you want.
+
+H4: {{CMD[id="cgi_set"]set}}
+
+You can change a value with 'C<set>=I<new_value>'.
+The tag will return the CGI value you set unless you also set the
+{{CMD[jump="#cgi_hide"]hide}}=1 attribute.
+
+Note that this is only available in new-style tags,
+for safety reasons.
 
 
-# END ++++++++++++ cgi Subsections +++++++++++++
+H4: {{CMD[id="cgi_hide"]hide}}
+
+Setting C<hide>=1 suppresses the tag's return value, which can be
+useful with the {{C[jump="#cgi_set"]set}} attribute.
+
+
+H4: {{CMD[id="cgi_filter"]filter}}
+
+See the {{C[jump="#filter"]filter}} tag for a list of filters.
+
+Setting 'C<filter>="I<filter>"' modifies the named CGI variable with the
+specified filter.
+
+
+H4: {{CMD[id="cgi_keep"]keep}} (with filter)
+
+Set C<keep>=1 if you want the tag to return a filtered result but do
+not want the filter to modify the CGI value itself in the $CGI::values
+hash.
+
+
+H4: {{CMD[id="cgi_default"]default}}
+
+This sets a return value in case the named CGI variable is missing or
+otherwise false. The following will expand to N<"Using default":>
+
+!block example
+   [cgi name=myname set=0 hide=1]
+   [cgi name=myname default="Using default"]
+!endblock
+
+
+H4: {{CMD[id="cgi_enable_html"]enable_html}}
+
+Any '<' characters will normally be converted into '&lt;' for safety reasons.
+This conversion can be disabled using 'C<enable_html>=1'.
+
 
 H2: checked
-
 
 H3: Summary
 
@@ -14031,6 +14055,7 @@ Attributes|Default
 {{CMD[jump="#value_keep"]keep}} (with filter)|I<No>
 {{CMD[jump="#value_scratch"]scratch}}|I<No>
 {{CMD[jump="#value_default"]default}}|I<none>
+{{CMD[jump="#value_enable_html"]enable_html}}|I<No>
 {{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
 !endblock
 
@@ -14053,22 +14078,22 @@ Assuming form variable 'foo' = 'bar',
 B<ASP-like Perl call:>
 
 !block example; lang="Perl"
-    $Tag->value(  { name => var_name, }  );
+    $Tag->value( { name => var_name } );
 
-    # or if you simply want the value,
-    $::Values->{var_name};
+    # or if you simply want the value:
+    $Values->{var_name};
 !endblock
 
 or similarly with positional parameters,
 
 !block example; lang="Perl"
-    $Tag->value($name$, $attribute_hash_reference);
+    $Tag->value($name, $attribute_hash_reference);
 !endblock
 
 
 H3: Description
 
-example:
+Usage example:
 
 >   <INPUT TYPE="text" NAME="name" VALUE="[value name]">
 >   <INPUT TYPE="text" NAME="name" VALUE="[value name=name]">
@@ -14103,7 +14128,7 @@ safety reasons.
 H4: {{CMD[id="value_hide"]hide}}
 
 Setting C<hide>=1 suppresses the tag's return value, which can be
-useful with the {{C[jump="#value_set"]set}}C<set> attribute.
+useful with the {{C[jump="#value_set"]set}} attribute.
 
 
 H4: {{CMD[id="value_filter"]filter}}
@@ -14139,9 +14164,14 @@ otherwise false. The following will expand to N<"Using default":>
 
 !block example
    [value name=myname set=0 hide=1]
-   [value myname default="Using default"]
+   [value name=myname default="Using default"]
 !endblock
 
+
+H4: {{CMD[id="value_enable_html"]enable_html}}
+
+Any '<' characters will normally be converted into '&lt;' for safety reasons.
+This conversion can be disabled using 'C<enable_html>=1'.
 
 
 H2: value_extended
