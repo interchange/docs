@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.50 2001-06-14 14:35:46 heins Exp $
+# $Id: ictags.sdf,v 1.51 2001-06-27 14:49:20 heins Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.50 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.51 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -1354,6 +1354,36 @@ number of rows and I<cols> is the number of columns.
 ** password_I<cols>
 * B<combo> (similarly for B<reverse_combo> and B<move_combo>)
 ** combo   I<(default is 1 row, 16 columns, like 'combo_1_16')>
+
+In any of the option building types, you can append the string C<numeric>
+and a special option processing will be done -- any option matching
+the pattern \d..\d (where \d is a digit) will be expanded into a comma
+separated range of integers between the bounds. The same behavior is
+accomplished by passing the accessories tag option C<numeric>. For example:
+
+!block example
+
+    [accessories name=foo type=select numeric=1 "1..5,10,20"]
+      and
+    [accessories name=foo type="select numeric" passed="1..5,10,20"]
+
+      will both output:
+
+    <select NAME="foo">
+    <option VALUE="1">1
+    <option VALUE="2">2
+    <option VALUE="3">3
+    <option VALUE="4">4
+    <option VALUE="5">5
+    <option VALUE="10">10
+    <option VALUE="15">15
+    <option VALUE="20">20
+    </select>
+!endblock
+
+The above applies to any of the option building types -- C<check>,
+C<combo>, C<combo_move>, C<labels>, C<multiple>, C<options>, C<radio>,
+C<reverse_combo>, and C<select>.
 
 
 H4: {{CMD[id="accessories_column"]column}}
@@ -4916,6 +4946,18 @@ The following items refer to a part number of 99-102.
 >    To make sure it is exactly large, you could use:
 >
 >  [if ordered 99-102 main size eq 'large'] ... [/if]
+
+H4: {{CMD[id="if_pragma"]pragma}}
+
+The Interchange Pragma settings, set with the L<catalog.cfg> directive
+C<Pragma> or with C<[pragma name]>. 
+
+>    [if pragma dynamic_variables]
+>    __THE_VARIABLE__
+>    [else]
+>    [data table=variable column=Variable key=THE_VARIABLE]
+>    [/else]
+>    [/if]
 
 H4: {{CMD[id="if_scratch"]scratch}}
 
@@ -9147,6 +9189,20 @@ then it will not be rebuilt until the output file is removed.
 
 Accepts the following parameters:
 
+
+H4: {{CMD[id="timed_build_auto"]auto}}
+
+Turns on automatic region processing. The text of the timed-build region
+is processed to determine a unique checksum or digest (using MD5), and
+that file name is checked in the directory tmp/auto-timed (assuming
+C<ScratchDir> is set to C<tmp>). If no number of minutes is supplied,
+C<60> is assumed.
+
+This is designed to automatically build regions of commonly used areas
+without having to manage the file name yourself.
+
+Implies C<login=1>, but will still abort if no session ID cookie has been
+sent. Use C<force=1> to ignore cookie status.
 
 H4: {{CMD[id="timed_build_file"]file}}
 
