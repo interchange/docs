@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.49 2001-06-06 13:02:19 jason Exp $
+# $Id: ictags.sdf,v 1.50 2001-06-14 14:35:46 heins Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.49 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.50 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -7729,6 +7729,87 @@ since there is no name for the HTTP_COOKIE string N<input:>
 !block example; lang="Perl"
   $Tag->read_cookie('MV_SESSION_ID', "MV_SESSION_ID=UnHyaDQj:127.0.0.1; ...");
 !endblock
+
+
+H2: restrict
+
+Restrict tag execution in a region. If a restricted tag
+is encountered, it is simply output.
+
+
+H3: Summary
+
+!block example;
+    [B<restrict> tag1 tag2]
+    [B<restrict> policy=deny enable="page area value"]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Attributes|Description|Default
+{{CMD[jump="#restrict_policy"]policy}}|<<
+Whether to allow or deny by default.
+>>|B<deny>
+{{CMD[jump="#restrict_enable"]enable}}|<<
+Tags to enable when default policy is deny.
+>>|I<none>
+{{CMD[jump="#restrict_disable"]disable}}|<<
+Tags to disable. Overrides enable.
+>>|I<none>
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<Yes>
+Container tag|I<No>
+!endblock
+
+B<Usage example:>
+
+!block example
+   [read-cookie name=MV_SESSION_ID]
+------------------------------------------------------
+   [[EXAMPLE_SESSION]]
+!endblock
+
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+    N/A. Cannot be called effectively.
+!endblock
+
+H3: Description
+
+Restrict tag execution in a region. If a restricted tag
+is encountered, it is simply output. It can be used to allow certain tags
+in a user-editable region, while denying dangerous tags. Or it can be used
+to restrict all tag execution in a region.
+
+H4: {{CMD[id="restrict_policy"]policy}}
+
+Default is C<deny>, which makes most sense. You then specifically enable
+certain ITL tags. If you set C<allow> by default, you must be very careful
+that you really are disabling all of what you consider to be dangerous tags.
+
+H4: {{CMD[id="restrict_enable"]enable}}
+
+A space-separated or comma-separated list of tags to disable when the
+default policy is C<deny>. Has no effect when the default policy is C<allow>,
+and any tags passed in the disable parameter override the enable.
+
+H4: {{CMD[id="restrict_disable"]disable}}
+
+A space-separated or comma-separated list of tags to disable when the
+default policy is C<allow>. If you have a list of tags that are enabled,
+perhaps stored in a scratch variable, you can disable some of those tags
+since this takes precedence over the enable.
 
 
 
