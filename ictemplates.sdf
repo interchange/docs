@@ -1,18 +1,18 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ictemplates.sdf,v 1.10 2000-11-22 21:53:07 jon Exp $
+# $Id: ictemplates.sdf,v 1.11 2001-03-16 05:53:26 jon Exp $
 
 !define DOC_NAME "Interchange Templates"
 !define DOC_TYPE ""
-!define DOC_CODE "ICTEMPLATES_D2a_100800"
-!define DOC_VERSION substr('$Revision: 1.10 $',11, -2)
+!define DOC_CODE "ictemplates"
+!define DOC_VERSION substr('$Revision: 1.11 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
-!define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
+!define DOC_URL "http://help.akopia.com/interchange/doc/ictemplates.html"
 !build_title
 
-H1: AKOPIA INTERCHANGE(TM) TEMPLATES
+H1: Interchange Templates
 
-Akopia Interchange is the industry's most widely distributed and implemented open source e-commerce platform. Interchange is designed to build pages based on templates from a database. This document discusses, in detail, how to build forms and report templates with Interchange's tag language, ITL (Interchange Tag Language). A number of frequently asked questions are also discussed.
+Interchange is the industry's most widely distributed and implemented open source e-commerce platform. Interchange is designed to build pages based on templates from a database. This document discusses, in detail, how to build forms and report templates with Interchange's tag language, ITL (Interchange Tag Language).
 
 H2: Overview
 
@@ -24,12 +24,11 @@ Finally, select any sorting options desired for displaying the results, and narr
 
 To build complex order forms and reports, Interchange has a complete tag language with over 80 different functions, dubbed ITL, for Interchange Tag Language. It allows access to and control over any of an unlimited number of database tables, multiple shopping carts, user name/address information, discount, tax, and shipping information, search of files and databases, and much more.
 
-There is some limited conditional capability with the C<[if ...]> tag, but
-when doing complex operations, use of embedded Perl/ASP should be strongly considered. Most of the tests use Perl code, but Interchange uses the Safe.pm module with its default restrictions to help ensure that improper code will not crash the server or modify the wrong data.
+There is some limited conditional capability with the C<[if ...]> tag, but when doing complex operations, use of embedded Perl/ASP should be strongly considered. Most of the tests use Perl code, but Interchange uses the Safe.pm module with its default restrictions to help ensure that improper code will not crash the server or modify the wrong data.
 
 Perl can also be embedded within the page, and if given the proper permission by the system administrator, can call upon resources from other computers and networks.
 
-H1: VARIABLE REPLACEMENT
+H1: Variable Replacement
 
 Variable substitution is a simple and oft-used feature of Interchange templates. Before anything else is done on a template, all variable tokens are replaced by variable values. There are three types of variable tokens:
 
@@ -41,7 +40,7 @@ C<@_VARIABLENAME_@> is replaced by the catalog variable VARIABLENAME if it exist
 
 See the C<icconfig> documentation for information on how to use the C<Variable> configuration file directive to set global variables in C<interchange.cfg> and catalog variables in C<catalog.cfg>.
 
-H1: INTERCHANGE TAGS
+H1: Interchange Tags
 
 !block example
 [accessories]        Access product accessory functions
@@ -331,7 +330,7 @@ LI1: [field name code]
 
 .Expands into the value of the field name for the product identified by code as found by searching the products database. It will return the first entry found in the series of Product Files in the products database. If this needs to constrained to a particular table, use a C<[data table col key]> call.
 
-H2: SET, SETI, SCRATCH and SCRATCHD
+H2: set, seti, scratch and scratchd
 
 Scratch variables are maintained in the user session separate from the form variable values set on HTML forms. Many things can be controlled with scratch variables, particularly search and order processing, the C<mv_click> multiple variable setting facility, and key Interchange conditions session URL display.
 
@@ -399,14 +398,13 @@ LI1: [if scratch name op* compare*] yes [else] no [/else] [/if]
 
 .Tests a scratch variable. See IF.
 
-H2: LOOP
+H2: loop
 
 Loop lists can be used to construct arbitrary lists based on the contents of a database field, a search, or other value (like a fixed list). Loop accepts a C<search> parameter which will do one-click searches on a database table (or file).
 
 To iterate over all keys in a table, use the idiom (C<[loop search="ra=yes/ml=9999"] [/loop]>. C<ra=yes> sets C<mv_return_all>, which means "match everything". The C<ml=9999> limits matches to that many records. Normally this many matches will not be necessary, but it is a reasonable default maximum. If the text file for searching an Interchange DBM database is not used, set C<st=db> (mv_searchtype).
 
-When using C<st=db>, returned keys may be affected by C<TableRestrict>. See
-C<CATALOG.CFG>. Both can be sorted with C<[sort table:field:mod -start +number]> modifiers. See SORTING.
+When using C<st=db>, returned keys may be affected by C<TableRestrict>. See C<catalog.cfg>. Both can be sorted with C<[sort table:field:mod -start +number]> modifiers. See C<Sorting>.
 
 LI1: [loop item item item] LIST [/loop]
 
@@ -544,7 +542,7 @@ LI1: [loop-sub routine]PERL[/loop-sub]
 
 .Defines a subroutine that is available to the current (and subsequent) [loop-...] tags within the same page. See Interchange Programming.
 
-H2: IF
+H2: if
 
 LI1: [if type field op* compare*]
 
@@ -860,9 +858,9 @@ LI1: [/if]
 
 .Terminates an if conditional.
 
-H1: PROGRAMMING
+H1: Programming
 
-Interchange has a powerful paradigm for extending and enhancing its functionality.  It uses two mechanisms, C<user-defined tags> and C<user subroutines> on two different security levels, global and catalog. In addition, C<Embedded Perl Code> may be used to build functionality into a site’s page.
+Interchange has a powerful paradigm for extending and enhancing its functionality.  It uses two mechanisms, C<user-defined tags> and C<user subroutines> on two different security levels, global and catalog. In addition, C<Embedded Perl Code> may be used to build functionality into a site's page.
 
 C<User-defined tags> are defined with the UserTag directive in either C<minivend.cfg> or C<catalog.cfg>. The ones in C<minivend.cfg> are global, i.e., they are not constrained by the C<Safe> Perl module as to which opcodes and  routines they may use. Normally, the user-defined tags in  C<catalog.cfg> are constrained by C<Safe>, but if the C<AllowGlobal> global directive is set for the particular catalog in use, its C<UserTag> and C<Sub> definitions will have global capability.
 
@@ -1081,7 +1079,7 @@ H2: Log
 
 H2: Header
 
-H2: PRICE, DESCRIPTION, ACCESSORIES
+H2: price, description, accessories
 
 LI1: [price code quantity* database* noformat*]
 
@@ -1091,7 +1089,7 @@ LI1: [price code quantity* database* noformat*]
 
 .If an named attribute corresponding to a product option is passed, and that option would cause a change in the price, the appropriate price will be displayed.
 
-.DEMO EXAMPLE: The T-Shirt (product code 99-102), with a base price of $10.00, can vary in price depending on size and color. C<S>, the small size, is 50 cents less; C<XL>, the extra large size, is $1.00 more, and the color C<RED> is 0.75 extra. There are also quantity pricing breaks (see the demo C<pricing> database. So the following will be true:
+.Demo example: The T-Shirt (product code 99-102), with a base price of $10.00, can vary in price depending on size and color. C<S>, the small size, is 50 cents less; C<XL>, the extra large size, is $1.00 more, and the color C<RED> is 0.75 extra. There are also quantity pricing breaks (see the demo C<pricing> database. So the following will be true:
 
 !block example; listitem=2
     [price  code=99-102
@@ -1342,7 +1340,7 @@ LI1: multi-level categorized
 
 .This works the same as single-level categories, except that the category tech:hw will select that banner. The category tech:sw will select its own. But, the category tech:html would just get the "tech" banner. Otherwise, it works just as in other categorized ads. Rotation will work if set non-zero/non-blank, and it will be inactive if the rotate field is blank. Each category rotates on its own.
 
-LI1: ADVANCED
+LI1: Advanced
 
 .All parameters are optional since they are marked with an asterisk C<(*)>.
 
@@ -1625,7 +1623,7 @@ LI1: [quantity-name]
 
 .Evaluates to the name to give an input box in which the customer can enter the quantity to order.
 
-H1: INTERCHANGE PAGE DISPLAY
+H1: Interchange Page Display
 
 Interchange has several methods for displaying pages:
 
@@ -1656,7 +1654,7 @@ H2: On-the-fly Catalog Pages
 
 If an item is displayed on the search list (or order list) and there is a link to a special page keyed on the item, Interchange will attempt to build the page "on the fly." It will look for the special page flypage.html, which is used as a template for building the page. If C<[item-field fieldname]>, C<[item-price]>, and similar elements are used on the page, complex and information-packed pages can be built. The C<[if-item-field fieldname]> HTML C<[/if-item-field]> pair can be used to insert HTML only if there is a non-blank value in a particular field.
 
-IMPORTANT NOTE: Because the tags are substituted globally on the page, C<[item-*]> tags cannot be used on the default on-the-fly page. To use a [search-region] or [item-list] tag, change the default with the prefix parameter. Example:
+{{B:Important note:}} Because the tags are substituted globally on the page, C<[item-*]> tags cannot be used on the default on-the-fly page. To use a [search-region] or [item-list] tag, change the default with the prefix parameter. Example:
 
 !block example
    [item-list prefix=cart]
@@ -1782,7 +1780,7 @@ Insert C<[flag type=checkhtml][/tag]> at the top or bottom of pages to check, an
 
 and place __CHECK_HTML__ in the pages.  Then set the Variable to the empty string to disable it.
 
-H1: FORMS AND INTERCHANGE
+H1: Forms and Interchange
 
 Interchange uses HTML forms for many of its functions, including ordering, searching, updating account information, and maintaining databases. Order operations possibly include ordering an item, selecting item size or other attributes, and reading user information for payment and shipment. Search operations may also be triggered by a form.
 
@@ -2371,7 +2369,7 @@ The Interchange action set causes the update. Here are a pair of example forms. 
 
 The variables in the form do not update the user's session values, so they can correspond to database field names without fear of corrupting the user session.
 
-H1: FREQUENTLY ASKED QUESTIONS
+H1: Frequently Asked Questions
 
 H2: How do you pass variables from page to page?
 
@@ -2407,8 +2405,7 @@ This will I<not> work:
    [page [value mypage]]
 !endblock
 
-The [value ...] tag is not interpolated before page, and the parser will
-not know to do so. It needs to be instead:
+The [value ...] tag is not interpolated before page, and the parser will not know to do so. It needs to be instead:
 
 !block example
    [page href="[value mypage]"]
@@ -2418,7 +2415,7 @@ You might wonder why unquoted tags are even allowed. The answer is performance. 
 
 H2: Can I use Interchange with my existing static catalog pages?
 
-Yes, but you probably won't want to in the long run. Interchange is designed to build pages based on templates from a database. If all you want is a shopping cart, you probably should use a simpler program. It is not difficult to convert existing static pages to Interchange, but maintaining them can be a nightmare.
+Yes, but you probably won't want to in the long run. Interchange is designed to build pages based on templates from a database. If all you want is a shopping cart, you can mix standard static pages with Interchange, but it is not as convenient and doesn't take advantage of the many dynamic features Interchange offers.
 
 That being said, all you usually have to do to place an order link on a page is:
 
@@ -2427,5 +2424,3 @@ That being said, all you usually have to do to place an order link on a page is:
 !endblock
 
 Replace C</cgi-bin/construct> with the path to your Interchange link.
-
-**Akopia and Interchange are registered trademarks of Akopia, Inc. All other product names are trademarks or registered trademarks of their respective manufacturers. This version of the document supersedes any and all previous versions.

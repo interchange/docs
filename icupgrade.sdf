@@ -1,15 +1,19 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icupgrade.sdf,v 1.8 2001-03-16 05:31:09 jon Exp $
+# $Id: icupgrade.sdf,v 1.9 2001-03-16 05:53:26 jon Exp $
 
 !define DOC_NAME "Interchange Upgrade Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "icupgrade"
-!define DOC_VERSION substr('$Revision: 1.8 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.9 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/icupgrade.html"
 !define DOC_OWNER "1996-2001 Red Hat, Inc. E<lt>{{EMAIL:info@akopia.com}}E<gt>"
 !build_title
+
+H1:Introduction
+
+This document contains, in rough form, notes on upgrading from MiniVend 3 to MiniVend 4, and MiniVend 4 to Interchange.
 
 H1:Interchange 4.8 Deprecated Features
 
@@ -126,7 +130,7 @@ The send_mail routine has been replaced by the Vend::Mail::send routine.
 
 
 
-H1:Upgrading from Minivend 4.0 to Interchange 4.6
+H1:Upgrading from MiniVend 4.0 to Interchange 4.6
 
 if [item-price] suddenly turns 0, check PriceField in the catalog.cfg
 
@@ -303,9 +307,9 @@ Add a new field to transaction.txt called 'archived'.
 
 
 
-H1:Upgrading from Minivend 3 to Minivend 4
+H1:Upgrading from MiniVend 3 to MiniVend 4
 
-There were big changes from Minivend 3 to Minivend 4, some of which were incompatible.
+There were big changes from MiniVend 3 to MiniVend 4, some of which were incompatible.
 
 Many things were removed as redundant, deprecated, or just plain crufty:
 
@@ -503,7 +507,7 @@ It will ensure at least that the user loads one form from you for each update. F
 
 H2:Checkout changes
 
-Minivend 4 uses in-page error-flagging on the checkout page. Simplest way to convert is probably to use the checkout.html from the simple demo as a start, and move in any customization from the existing site's catalog.html (headers, footers, logos, etc.) A line-by-line comparison of the data fields in the checkout page should be performed, adding any custom fields as needed. Custom error checking in etc/order.profiles may have to be re-worked, or can be added into checkout.html using the in-page order profile capability.
+MiniVend 4 uses in-page error-flagging on the checkout page. Simplest way to convert is probably to use the checkout.html from the simple demo as a start, and move in any customization from the existing site's catalog.html (headers, footers, logos, etc.) A line-by-line comparison of the data fields in the checkout page should be performed, adding any custom fields as needed. Custom error checking in etc/order.profiles may have to be re-worked, or can be added into checkout.html using the in-page order profile capability.
 
 Remember to update receipt.html and report/report.html with any custom fields, as well.
 
@@ -543,7 +547,7 @@ H2:Global subs
 
 Accessing globalsubs from [perl] tags is done slightly differently.
 
-Minivend 3 method:
+MiniVend 3 method:
 
 !block example
 [perl sub]
@@ -551,7 +555,7 @@ myfunsub();
 [/perl]
 !endblock
 
-Minivend 4/IC method:
+MiniVend 4/IC method:
 
 !block example
 [perl subs=1]
@@ -565,9 +569,9 @@ E:115.202.115.237 H8gbq6oK:115.202.115.237 - [28/February/2001:18:58:50 -0500] t
 
 
 
-A1:Minivend 3 compatibility usertags and globalsubs
+A1:MiniVend 3 compatibility usertags and globalsubs
 
-These files were originally distributed with Minivend 4 in the compat/ directory. They replace Minivend 3 functionality that was removed or greatly altered in Minivend 4.
+These files were originally distributed with MiniVend 4 in the compat/ directory. They replace MiniVend 3 functionality that was removed or greatly altered in MiniVend 4.
 
 
 A2:body

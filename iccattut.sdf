@@ -1,14 +1,14 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: iccattut.sdf,v 1.6 2001-03-02 17:25:41 jon Exp $
+# $Id: iccattut.sdf,v 1.7 2001-03-16 05:53:25 jon Exp $
 
 !define DOC_NAME "Catalog-Building Tutorial"
 !define DOC_TYPE ""
-!define DOC_CODE "ICCATTUT"
-!define DOC_VERSION substr('$Revision: 1.6 $', 11, -2)
+!define DOC_CODE "iccattut"
+!define DOC_VERSION substr('$Revision: 1.7 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/iccattut.html"
-!define DOC_OWNER "1996-2001 Akopia, Inc. E<lt>{{EMAIL:info@akopia.com}}E<gt>"
+!define DOC_OWNER "1996-2001 Red Hat, Inc. E<lt>{{EMAIL:info@akopia.com}}E<gt>"
 !build_title
 
 H1:Purpose
@@ -73,6 +73,8 @@ N:Finally, you need to know the URL to access your store from a web browser. Aga
 *Manual install as user: {{EX:http://localhost/~username/tutorial.cgi/pagename}}
 
 N:If you aren't running your web browser on the server itself, you'll need to substitute your server's host name (something like {{EX:machine.domain.com}}) for {{EX:localhost}} whenever we mention URLs.
+
+N:It's actually a good idea to use the real machine name in any case. The standard for cookies specifies that they can only be set when a domain name has at least two dots in it, so they can not be set for 'localhost'. Because of this, you will lose your session information if you leave your catalog, since the session ID is only passed as part of the URL.
 
 H2:Starting or restarting Interchange
 
@@ -1117,4 +1119,4 @@ N:January 2001. Proofread and clarified by Alison Smith and David Adams.
 N:12 January 2001. First public release.
 
 Line:
-N:Copyright 2001 Akopia, Inc. Freely redistributable under terms of the GNU General Public License.
+N:Copyright 2001 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.

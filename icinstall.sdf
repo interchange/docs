@@ -1,13 +1,13 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icinstall.sdf,v 1.15 2001-03-02 17:27:59 jon Exp $
+# $Id: icinstall.sdf,v 1.16 2001-03-16 05:53:26 jon Exp $
 
 !define DOC_NAME "Interchange Installation"
 !define DOC_TYPE ""
-!define DOC_CODE "ICINSTALL_D2a_100800"
-!define DOC_VERSION substr('$Revision: 1.15 $',11, -2)
+!define DOC_CODE "icinstall"
+!define DOC_VERSION substr('$Revision: 1.16 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
-!define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
+!define DOC_URL "http://help.akopia.com/interchange/doc/icinstall.html"
 !build_title
 
 H1: Installation of Interchange
@@ -841,5 +841,3 @@ will become this:
 !endblock
 
 Absolute image paths are not affected. An image, such as </other/images/whatever.gif>, will not be changed.
-
-**Interchange is a registered trademarks of Red Hat, Inc. All other product names are trademarks or registered trademarks of their respective manufacturers.

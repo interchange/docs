@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icintro.sdf,v 1.13 2001-03-02 17:27:01 jon Exp $
+# $Id: icintro.sdf,v 1.14 2001-03-16 05:53:26 jon Exp $
 
 !define DOC_NAME "Interchange Introduction"
 !define DOC_TYPE ""
-!define DOC_CODE "ICINTRO"
-!define DOC_VERSION substr('$Revision: 1.13 $',11, -2)
+!define DOC_CODE "icintro"
+!define DOC_VERSION substr('$Revision: 1.14 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/doc/icintro.html"
@@ -277,9 +277,9 @@ H2: Why is Interchange a daemon?
 
 A daemon is a program that always is running in the background on the system. Interchange runs as a daemon in the normal course of events. Some examples of programs that run as daemons (in most cases) are:
 
-^HTTP server (Apache, etc.).
-+MySQL, mSQL, Oracle, and other SQL servers.
-+Sendmail.
+^Apache and other HTTP servers
++MySQL, PostgreSQL, Oracle, and other database servers
++sendmail
 
 Interchange takes time to compile and load even on the fastest systems. It has many configuration options, and can serve hundreds of catalogs. If it were to be loaded every time a user accessed it, it would be unusable. The daemon approach allows a rich set of features to be accessed fast. The actual CGI program (VLINK or TLINK) is a small program written in C that communicates with the Interchange daemon.
 
@@ -399,7 +399,3 @@ N:We provide access to our expert consultants by both telephone and electronic s
 LI1: Red Hat Training Services
 
 We offer Interchange training options for technical and business professionals. We will customize a training program that is appropriate to your business needs.
-
-
-Line:
-N:Red Hat and Interchange are registered trademarks of Red Hat, Inc. All other product names are trademarks or registered trademarks of their respective manufacturers.

@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.16 2001-03-09 19:35:19 jon Exp $
+# $Id: icdatabase.sdf,v 1.17 2001-03-16 05:53:25 jon Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
-!define DOC_CODE "ICDATABASE_D2a_100800"
-!define DOC_VERSION substr('$Revision: 1.16 $',11, -2)
+!define DOC_CODE "icdatabase"
+!define DOC_VERSION substr('$Revision: 1.17 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icdatabase.html"
@@ -570,7 +570,7 @@ H1: SQL Support
 
 Interchange can use any of a number of SQL databases through the powerful Perl DBI/DBD access methods. This allows transparent access to any database engine that is supported by a DBD module. The current list includes mSQL, MySQL, Solid, PostgreSQL, Oracle, Sybase, Informix, Ingres, Dbase, DB2, Fulcrum, and others. Any ODBC (with appropriate driver) should also be supported.
 
-No SQL database is included with Interchange, but there are a number widely available on the Internet. Many are free for non-commercial use, such as mSQL, MySQL, Sybase, and Qbase. It is beyond the scope of this document to describe SQL or DBI/DBD. Sufficient familiarity is assumed.
+No SQL database is included with Interchange, but there are a number widely available on the Internet. Most commonly used with Interchange are PostgreSQL, MySQL, and Oracle. It is beyond the scope of this document to describe SQL or DBI/DBD. Sufficient familiarity is assumed.
 
 In most cases, Interchange cannot perform administrative functions, like creating a database or setting access permissions. This must be done with the tools provided with a SQL distribution. But, if given a blank database and the permission to read and write it, Interchange can import ASCII files and bootstrap from there.
 
