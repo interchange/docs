@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: iccattut.sdf,v 1.15 2002-06-06 02:01:51 jon Exp $
+# $Id: iccattut.sdf,v 1.16 2002-09-30 04:29:02 kwalsh Exp $
 
 !define DOC_NAME "Catalog-Building Tutorial"
 !define DOC_TYPE ""
 !define DOC_CODE "iccattut"
-!define DOC_VERSION substr('$Revision: 1.15 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.16 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/iccattut.html"
@@ -46,19 +46,19 @@ H2:Important directories
 N:In order to complete this tutorial you will need to know the location of each of the following directories and have write permissions on them:
 
 *Interchange software directory
-{{B:.RPM install:}} /usr/lib/interchange
-{{B:.Manual install as root:}} /usr/local/interchange
-{{B:.Manual install as regular user:}} /home/username/interchange
+**{{B:RPM install:}} /usr/lib/interchange
+**{{B:Manual install as root:}} /usr/local/interchange
+**{{B:Manual install as regular user:}} /home/username/interchange
 
 *Catalogs directory
-{{B:.RPM install:}} /var/lib/interchange
-{{B:.Manual install as root:}} /usr/local/interchange/catalogs
-{{B:.Manual install as regular user:}} /home/username/catalogs
+**{{B:RPM install:}} /var/lib/interchange
+**{{B:Manual install as root:}} /usr/local/interchange/catalogs
+**{{B:Manual install as regular user:}} /home/username/catalogs
 
 *cgi-bin directory
-{{B:.RPM install or source install as root:}} /var/www/cgi-bin
-{{B:.Manual install as root (locally installed web server):}} /usr/local/htdocs, /opt/www, ...
-{{B:.Manual install as regular user:}} /home/username/public_html (with .cgi extension)
+**{{B:RPM install or source install as root:}} /var/www/cgi-bin
+**{{B:Manual install as root (locally installed web server):}} /usr/local/htdocs, /opt/www, ...
+**{{B:Manual install as regular user:}} /home/username/public_html (with .cgi extension)
 
 Note:The installation of Interchange is very flexible and the file locations on your system may vary, depending on how your system was set up. It is recommended that you not proceed until you are sure you have this information and the necessary permissions to write to these directories.
 
