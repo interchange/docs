@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icfaq.sdf,v 1.16 2002-09-23 03:55:52 danb Exp $
+# $Id: icfaq.sdf,v 1.17 2002-09-23 11:15:19 racke Exp $
 
 !define DOC_NAME "Frequently Asked Questions"
 !define DOC_TYPE ""
 !define DOC_CODE "icfaq"
-!define DOC_VERSION substr('$Revision: 1.16 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.17 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icfaq.html"
@@ -1112,7 +1112,7 @@ If you are up to the task of programming a new payment processor module yourself
 
 If developing the module on your own isn't an option, you may engage a competent Interchange developer to do it for you or use one of the already-supported payment modules.
 
-H2:How do I modify orders after tehy are placed, change items, shipping, etc.?
+H2:How do I modify orders after they are placed, change items, shipping, etc.?
 
 N:Example question:  "Occasionally, I need to modify orders... Add an Item, Change shipping, etc.   What is the best way or how can it be done?"
 
