@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.17 2000-10-20 07:18:55 jon Exp $
+# $Id: icconfig.sdf,v 1.18 2000-10-25 13:58:12 alison Exp $
 
 !define DOC_NAME "Interchange Configuration"
 !define DOC_TYPE ""
 !define DOC_CODE "ICCONFIG_D2_100800"
-!define DOC_VERSION substr('$Revision: 1.17 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.18 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
@@ -3133,8 +3133,7 @@ A Perl subroutine that will return a hash reference with the sales tax settings.
 
 !block example
    SalesTaxFunction  <<EOR
-   sub {
-       my $vendor_id = $Session->{source};
+         my $vendor_id = $Session->{source};
        my $tax = $TextSearch->hash( {
                            se => $vendor_id,
                            fi => 'salestax.asc',
@@ -3144,7 +3143,6 @@ A Perl subroutine that will return a hash reference with the sales tax settings.
        $tax = {} if ! $tax;
        $tax->{DEFAULT} = 0.0;
        return $tax;
-   }
    EOR
 !endblock
 
@@ -3152,14 +3150,12 @@ or simply produce a table:
 
 !block example
    SalesTaxFunction  <<EOR
-   sub {
-       return {
-           DEFAULT => 0.0,
-           IL => 0.075,
-           OH => 0.065,
-       };
-   }
-   EOR
+    return {
+        DEFAULT => 0.0,
+        IL => 0.075,
+        OH => 0.065,
+    };
+EOR
 !endblock
 
 A C<DEFAULT> value must always be returned or the function will be ignored.
