@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.99 2002-09-01 15:13:56 mheins Exp $
+# $Id: ictags.sdf,v 1.100 2002-09-04 01:30:25 kwalsh Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.99 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.100 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -2674,17 +2674,8 @@ B<Tag expansion example:>
 
 B<ASP-like Perl call:>
 
-!block example; lang="Perl"
-   $Tag->bounce(  { href => VALUE_href
-                     if => VALUE_if
-}, $body  );
-!endblock
+None. This tag doesn't work with embedded Perl due to special processing.
 
-or similarly with positional parameters,
-
-!block example; lang="Perl"
-    $Tag->bounce(href,if, $attribute_hash_reference, $body);
-!endblock
 
 # END +++++++++++++++ bounce End Summary Tables ++++++++++++++++++++
 
