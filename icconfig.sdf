@@ -1,4 +1,14 @@
-ICCONFIG_D2_100800
+!init OPT_LOOK="akopia"; OPT_STYLE="manual"
+
+!define DOC_NAME "Interchange Installation"
+!define DOC_TYPE ""
+!define DOC_CODE "ICCONFIG_D2_100800"
+!define DOC_VERSION "0.0.3"
+!define DOC_STATUS "Draft"
+!define DOC_PROJECT "Interchange"
+!define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
+!build_title
+
 H1: CONFIGURATION OF INTERCHANGE
 
 Akopia Interchange is the industry's most widely distributed and implemented open source e-commerce platform.. This document provides detailed configuration instructions for Interchange and the foundation store demo included with the program, and answers a variety of frequently asked questions. This discussion assumes that Interchange has been successfully installed.
