@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icfaq.sdf,v 1.8 2002-04-12 22:53:18 jon Exp $
+# $Id: icfaq.sdf,v 1.9 2002-04-27 12:57:26 kwalsh Exp $
 
 !define DOC_NAME "Frequently Asked Questions"
 !define DOC_TYPE ""
 !define DOC_CODE "icfaq"
-!define DOC_VERSION substr('$Revision: 1.8 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.9 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icfaq.html"
@@ -1628,6 +1628,9 @@ Permissions. test_ databases usually special.
 
 H1: Using Interchange with Apache
 
+Slightly modified article posted to the old minivend-users mail list.
+Minivend-users is now interchange-users.
+
 !block example
 Date: Thu, 7 Sep 2000 12:08:37 -0700
 From: Bill Randle <billr@exgate.tek.com>
@@ -1664,11 +1667,12 @@ with Apache rewrite rules in the VirtualHost directive for yourdomain.com:
     CustomLog logs/yourdomain-access_log common
     ScriptAlias /cgi-bin/ "/home/httpd/cgi-bin/"
     RewriteEngine On
-    RewriteRule    ^$      /cgi-bin/yourstore/index.html    [PT,L]
-    RewriteRule    ^/$     /cgi-bin/yourstore/index.html    [PT,L]
-    RewriteRule    ^/index\.html$  /cgi-bin/yourstore/index.html    [PT,L]
-    RewriteRule    ^/cgi-bin/yourstore/.*   -           [PT,L]
-    RewriteRule    ^/(.*)      /cgi-bin/yourstore/$1        [PT,L]
+    RewriteRule ^$  /cgi-bin/yourstore/index.html            [PT,L]
+    RewriteRule ^/$ /cgi-bin/yourstore/index.html            [PT,L]
+    RewriteRule ^/index\.html$ /cgi-bin/yourstore/index.html [PT,L]
+    RewriteRule ^/cgi-bin/yourstore/.* -                     [PT,L]
+    RewriteRule ^/.*images/.* -                              [PT,L]
+    RewriteRule ^/(.*) /cgi-bin/yourstore/$1                 [PT,L]
 </VirtualHost>
  
 I just did this for a client and it works quite well (as long as you're
