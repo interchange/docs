@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.60 2002-04-12 22:53:18 jon Exp $
+# $Id: icconfig.sdf,v 1.61 2002-05-10 20:26:56 racke Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.60 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.61 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
@@ -522,7 +522,7 @@ A script can be written which modifies an appropriate access control file, such 
 
 H2: LockType *global*
 
-Allows selection of file locking method used throughout Interchange. Options are 'flock', 'fcntl', and 'none'. Added in 4.7.0.
+Allows selection of file locking method used throughout Interchange. Options are 'flock', 'fcntl', and 'none'. Added in 4.7.0. Please note that due to a bug this directive only works in Interchange 4.8.6 and above.
 
 Default is flock. See the flock(2) manpage for details.
 
