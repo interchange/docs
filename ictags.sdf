@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.15 2001-03-29 22:37:54 bill Exp $
+# $Id: ictags.sdf,v 1.16 2001-03-31 04:16:23 bill Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.15 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.16 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -15,10 +15,11 @@
 !define EXAMPLE_VLINK "mycatalog"
 !define EXAMPLE_SECURE_DOMAIN "secure.here.com"
 !define EXAMPLE_SKU "os28044"
+!define EXAMPLE_PRICE 19.99
 !define EXAMPLE_SIZE "15oz"
 !define EXAMPLE_SIZE1 "10oz"
 !define EXAMPLE_SIZE2 "20oz"
-!define EXAMPLE_PRODUCT "Framing Hammer"
+!define EXAMPLE_DESCRIPTION "Framing Hammer"
 !build_title
 
 H1:Interchange Tag Reference
@@ -958,12 +959,11 @@ tags are called. They have the syntax:
 >                outboard=key
 >                passed="value=label, value2, value3=label 3" ]
 
->	[accessories
->				js=| onChange="set_description(simple_options, variant)"; |
->				type=select
->				name="[item-param o_group]"
->				passed="=--choose--,[item-param o_value]"
->	]
+>   [accessories js=| onChange="set_description(simple_options, variant)"; |
+>                type=select
+>                name="[item-param o_group]"
+>                passed="=--choose--,[item-param o_value]"
+>   ]
 
 
 
@@ -1557,7 +1557,7 @@ The optional C<form> argument allows you to encode a form in the link.
                         mv_order_size=[[EXAMPLE_SIZE]]
                         mv_order_quantity=1
                         mv_separate_items=1
-                        mv_todo=refresh"]"> Order [[EXAMPLE_SIZE]] [[EXAMPLE_PRODUCT]]</A>
+                        mv_todo=refresh"]"> Order [[EXAMPLE_SIZE]] [[EXAMPLE_DESCRIPTION]]</A>
 !endblock
 
 See the description of the {{CMD[jump="#page_form"]page}} tag for more
@@ -3340,7 +3340,7 @@ Only returns word characters. Locale does apply if collation is properly set.
 >                    return $val;
 >                },
 
-You can define your own filters in an GlobalSub (or Sub or ActionMap):
+You can define your own filters in a {{CMD[jump="icconfig.html#GlobalSub *global*"]GlobalSub}} (or Sub or ActionMap):
 
 >    package Vend::Interpolate;
 >
@@ -4794,9 +4794,6 @@ is set, then currency formatting will not be applied.
 
 
 
-
-
-
 H2: mail
 
 
@@ -4853,8 +4850,8 @@ and '%>' ASP delimiters allow you to mix HTML and perl code.
 H3: Summary
 
 !block example;
-    [B<mvasp> tables I<other_named_attributes>]
-    [B<mvasp> tables="db1 db2 ..." I<other_named_attributes>]
+    [B<mvasp> tables I<other_named_attributes>] I<ASP here> [/mvasp]
+    [B<mvasp> tables="db1 db2 ..." I<other_named_attributes>] I<ASP here> [/mvasp]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -4862,13 +4859,15 @@ Parameters|Description|Default
 tables|<<
 Database tables to be made available to ASP Perl code
 >>|I<none>
+table|Alias for C<tables>|I<none>
 !endblock
 
 !block table; colvaligns="TT"
 Attributes|Default
 {{CMD[jump="#mvasp_failure"]failure}}|I<none>
-{{CMD[jump="#mvasp_no_return"]no_return}}|I<No>
+{{CMD[jump="#mvasp_no_return"]no_return}}|I<Always true>
 {{CMD[jump="#mvasp_subs"]subs}}|I<No>
+{{CMD[jump="#mvasp_subs"]arg}}="subs"|I<Same as> C<subs>
 {{CMD[jump="#mvasp_global"]global}}|I<No>
 {{CMD[jump="#mvasp_file"]file}}|I<none>
 {{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
@@ -4879,7 +4878,7 @@ Attributes|Default
 A|B
 Other_Charactreristics|
 Invalidates cache|I<Yes>
-Has Subtags|I<No>
+Has Subtags|E<lt>% I<and> %>
 Container tag|I<Yes>
 Nests|I<No>
 !endblock
@@ -4887,28 +4886,28 @@ Nests|I<No>
 B<Tag expansion example:>
 
 !block example
-   [mvasp tables="db1 db2 ..."]
+   [mvasp tables="products" failure="ASP Broke <BR>"]
+      <P>This is HTMLE<lt>/p>
+      <% my $sku = $Values->{code}; %>
+      <P>More HTMLE<lt>/p>
+      <% my $result = "Looked up SKU $sku.  It is a ";
+         $result .= $Tag->data('products', 'description', $sku );
+         $Document->write( "$result <br>\n" ); %>
+      <P>Still more HTMLE<lt>/p>
+   [/mvasp]
 ---
-   Return value of Perl code
+      <P>This is HTMLE<lt>/p>
+      
+      <P>More HTMLE<lt>/p>
+      Looked up SKU [[EXAMPLE_SKU]].  It is a [[EXAMPLE_DESCRIPTION]] <br>
+
+      <P>Still more HTMLE<lt>/p>
 !endblock
 
-B<ASP-like Perl call:>
-
-!block example; lang='Perl'
-    $Tag->mvasp(  { tables   => join,
-                    ATT1 => , },
-                    $ASP_text_to_interpret  );
-!endblock
-
-or similarly with positional parameters,
-
-!block example; lang='Perl'
-    $Tag->mvasp($tables, $attribute_hash_reference);
-!endblock
 
 H4: See Also
 
-{{CMD[jump="#perl"]perl}}
+{{CMD[jump="#perl"]perl}}, {{CMD[jump="icconfig.html#Programming"]Interchange Programming}}
 
 
 H3: Description
@@ -4917,10 +4916,12 @@ Executes the ASP-style perl code contained by the tag.  The code will run under
 the restrictions of the 
 {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}}
 module. This is very similar to the
-E<lbracket>{{C[jump="#perl"]perl}}] tag, except that the standard '<%'
+E<lbracket>{{C[jump="#perl"]perl}} no_return=1] tag, except that the standard '<%'
 and '%>' ASP delimiters allow you to mix HTML and perl code.
 
-See the {{C[jump="#perl"]perl}} tag for a detailed description.
+See the {{C[jump="#perl"]perl}} tag and
+{{CMD[jump="icconfig.html#ASP-Like Perl"]ASP-Like Perl}}
+sections for more detail.
 
 H4: {{CMD[id="mvasp_tables"]tables}}
 
@@ -4934,19 +4935,25 @@ eval. See {{C[jump="#perl_failure"]perl}} tag.
 
 H4: {{CMD[id="mvasp_no_return"]no_return}}
 
-Suppress return value in page (available in session hash via
-E<lbracket>{{C[jump="#data"]data}}E<nbspace>sessionE<nbspace>mv_perl_result]).
+The return value of the perl code is always suppressed.  If you want
+output from the ASP code sections, you must explicitly write it with
+the &HTML or $Document->write() functions.
+
+You can also retrieve the return value of the perl code from the
+session hash via
+E<lbracket>{{C[jump="#data"]data}}E<nbspace>sessionE<nbspace>mv_perl_result].
 See {{C[jump="#perl_no_return"]perl}} tag.
 
 H4: {{CMD[id="mvasp_subs"]subs}}
 
-Enable GlobalSub routines (requires catalog directive
-{{C[jump="icconfig.html#AllowGlobal"]AllowGlobal}}).  See {{C[jump="#perl_subs"]perl}} tag.
+Enable {{CMD[jump="icconfig.html#GlobalSub *global*"]GlobalSub}} routines (requires catalog directive
+{{C[jump="icconfig.html#AllowGlobal *global*"]AllowGlobal}}).  See {{C[jump="#perl_subs"]perl}} tag.
 
 H4: {{CMD[id="mvasp_global"]global}}
 
-Turn off 'Safe' protection (requires catalog directive
-{{C[jump="icconfig.html#AllowGlobal"]AllowGlobal}}). See
+Turn off {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}}
+protection (requires catalog directive
+{{C[jump="icconfig.html#AllowGlobal *global*"]AllowGlobal}}). See
 {{C[jump="#perl_global"]perl}} tag.
 
 H4: {{CMD[id="mvasp_file"]file}}
@@ -4955,25 +4962,10 @@ Prepend the contents of the specified file or FileDatabase entry to
 the perl code before C<eval>'ing it. See {{C[jump="#perl_file"]perl}} tag.
 
 
-
-
 H4: Examples
 
-Tag expansion example:
-
-!block example
-   [mvasp tables="db1 db2 ..."] return "Return value of Perl code"; E<lbracket>/mvasp]
----
-   Return value of Perl code
-!endblock
-
-Positional call example:
-
->    [mvasp ] return "Return value of Perl code"; E<lbracket>/mvasp]
-
-Named call example:
-
->    [mvasp tables="db1 db2 ..."] return "Return value of Perl code"; E<lbracket>/mvasp]
+See the {{CMD[jump="icconfig.html#ASP-Like Perl"]ASP-Like Perl}}
+section of {{CMD[jump="icconfig.html#Programming"]Interchange Programming}}.
 
 
 H2: nitems
@@ -5338,7 +5330,7 @@ The optional C<form> argument allows you to encode a form in the link.
                     mv_order_size=[[EXAMPLE_SIZE]]
                     mv_order_quantity=1
                     mv_separate_items=1
-                    mv_todo=refresh"] Order [[EXAMPLE_SIZE]] [[EXAMPLE_PRODUCT]]</A>
+                    mv_todo=refresh"] Order [[EXAMPLE_SIZE]] [[EXAMPLE_DESCRIPTION]]</A>
 !endblock
 
 The two form values I<mv_session_id> and I<mv_arg> are automatically
@@ -5602,121 +5594,299 @@ This is not an actual end tag, but simply a macro that expands to
 \Tip: In large pages, just use the </A> tag for a small performance improvement.
 
 
-
 H2: perl
+
 
 Executes the perl code contained by the tag.  The code will run under
 the restrictions of the 
 {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}}
-module.  The tag expands to the value returned by the enclosed code
+module by default.  The tag expands to the value returned by the enclosed code
 (i.e., printing to STDOUT or STDERR is useless).
+
+See also {{CMD[jump="icconfig.html#Programming"]Interchange Programming}}.
 
 H3: Summary
 
-\Parameters: B<tables>
+!block example;
+    [B<perl> tables I<other_named_attributes>] I<Code here> [/perl]
+    [B<perl> tables="db1 db2 ..." I<other_named_attributes>] I<Code here> [/perl]
+!endblock
 
 
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+tables|<<
+Database tables to be made available to ASP Perl code
+>>|I<none>
+table|Alias for C<tables>|I<none>
+!endblock
 
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#perl_failure"]failure}}|I<none>
+{{CMD[jump="#perl_no_return"]no_return}}|I<Always true>
+{{CMD[jump="#perl_subs"]subs}}|I<No>
+{{CMD[jump="#perl_subs"]arg}}="subs"|I<Same as> C<subs>
+{{CMD[jump="#perl_global"]global}}|I<No>
+{{CMD[jump="#perl_file"]file}}|I<none>
+{{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
+{{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
+!endblock
 
-Positional parameters in same order.
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<Yes>
+Has Subtags|I<No>
+Container tag|I<Yes>
+!endblock
 
+B<Tag expansion example:>
 
-B<The attribute hash reference is passed> after the parameters but before
-the container text argument.
-B<This may mean that there are parameters not shown here.>
+!block example
+   [perl tables="products" failure="Perl code error <BR>"]
+!endblock
+!block example; lang='Perl'
+      my $result = "Looked up SKU $Values->{code}.  It is a ";
+      $result .= $Tag->data('products', 'description', $Values->{code} );
+      return ("$result <br>\n");
+!endblock
+!block example
+   [/perl]
+---
+   Looked up SKU [[EXAMPLE_SKU]].  It is a [[EXAMPLE_DESCRIPTION]] <br>
+!endblock
 
-Must pass named parameter interpolate=1 to cause interpolation.
+B<ASP-like Perl call:> (e.g., to use it like a runtime eval() within your code)
 
-This is a container tag, i.e. [perl] FOO [/perl].
-\Nesting: NO
+!block example; lang='Perl'
+    $Tag->perl(  { tables  => "products", },
+                 $code  );
+!endblock
 
-Invalidates cache: B<YES>
+or similarly with positional parameters,
 
-Called Routine: 
+!block example; lang='Perl'
+    $Tag->perl( $tables, $attribute_hash_reference );
+!endblock
 
-B<ASP-like Perl call:>
+H4: See Also
 
->    $Tag->perl(
->        {
->         tables => VALUE,
->        },
->        BODY
->    )
->
-> OR
->
->    $Tag->perl($tables, $ATTRHASH, $BODY);
-
-Attribute aliases
-
->            table ==> tables
-
-
- 
+See also {{CMD[jump="icconfig.html#Programming"]Interchange Programming}},
+E<lbracket>{{C[jump="#calc"]calc}}], and E<lbracket>{{C[jump="#mvasp"]mvasp}}].
 
 H3: Description
 
+This tag allows you to embed perl code within an Interchange page. The
+code will run under the restrictions of the 
+{{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}}
+module by default.  The tag expands to the value returned by the enclosed code
+(i.e., printing to STDOUT or STDERR is useless).
 
->    [perl]
->        $name    = $Values->{name};
->        $browser = $Session->{browser};
->        return "Hi, $name! How do you like your $browser?
->    [/perl]
+!block example
+    [perl]
+!endblock
+!block example; lang='Perl'
+        $name    = $Values->{name};
+        $browser = $Session->{browser};
+        return "Hi, $name! How do you like your $browser?
+!endblock
+!block example
+    [/perl]
+!endblock
 
 HTML example:
 
->    <PRE mv=perl>
->        $name    = $Values->{name};
->        $browser = $Session->{browser};
->        return "Hi, $name! How do you like your $browser?
->    </PRE>
-
-Perl code can be directly embedded in Interchange pages. The code
-is specified as [perl arguments*] any_legal_perl_code [/perl]. The
-value returned by the code will be inserted on the page.
+!block example
+    <PRE mv=perl>
+!endblock
+!block example; lang='Perl'
+        $name    = $Values->{name};
+        $browser = $Session->{browser};
+        return "Hi, $name! How do you like your $browser?
+!endblock
+!block example
+    </PRE>
+!endblock
 
 Object references are available for most Interchange tags and 
 functions, as well as direct references to Interchange session and
 configuration values.
 
->  $CGI->{key}               Hash reference to raw submitted values
->  $CGI_array->{key}         Arrays of submitted values
->  $Carts->{cartname}        Direct reference to shopping carts
->  $Config->{key}            Direct reference to $Vend::Cfg
->  $DbSearch->array(@args)   Do a DB search and get results
->  $Document->header()       Writes header lines
->  $Document->send()         Writes to output
->  $Document->write()        Writes to page
->  $Scratch->{key}           Direct reference to scratch area
->  $Session->{key}           Direct reference to session area
->  $Tag->tagname(@args)      Call a tag as a routine (UserTag too!)
->  $TextSearch->array(@args) Do a text search and get results
->  $Values->{key}            Direct reference to user form values
->  $Variable->{key}          Config variables (same as $Config->{Variable});
->  &HTML($html)              Same as $Document->write($html);
->  &Log($msg)                Log to the error log
+!block table
+Object|Description
+$CGI->{key}|Hash reference to raw submitted values
+$CGI_array->{key}|Arrays of submitted values
+$Carts->{cartname}|Direct reference to shopping carts
+$Config->{key}|Direct reference to $Vend::Cfg
+$DbSearch->array(@args)|Do a DB search and get results
+$Document->header()|Writes header lines
+$Document->send()|Writes to output
+$Document->write()|Writes to page
+$Scratch->{key}|Direct reference to scratch area
+$Session->{key}|Direct reference to session area
+$Tag->tagname(@args)|Call a tag as a routine (UserTag too!)
+$TextSearch->array(@args)|Do a text search and get results
+$Values->{key}|Direct reference to user form values
+$Variable->{key}|Config variables (same as $Config->{Variable});
+&HTML($html)|Same as $Document->write($html);
+&Log($msg)|Log to the error log
+!endblock
 
-For full descriptions of these objects, see I<Interchange Programming>.
+For full descriptions of these objects, see
+{{CMD[jump="icconfig.html#Interchange Perl Objects"]Interchange Perl Objects}}.
 
-If you wish to use database values in your Perl code, you must
-pre-open the table(s) you will be using. This can be done by including
-the table name in the C<tables> parameter of the Perl tag:
+H4: {{CMD[id="perl_tables"]tables}}
 
->    [perl tables=products]
->        $result = "You asked about $Values->{code}. Here is the description: ";
->        $result .= $Tag->data('products', 'description', $Values->{code});
->        return $result;
->    [/perl]
+This should ba a whitespace-separated list of database tables you want
+to make available within the Perl code.
+
+If you wish to use database values in your Perl code, the tag must
+pre-open the table(s) you will be using.  Here is an example using the
+products N<table:>
+
+!block example;
+    [perl tables=products]
+!endblock
+!block example; lang='Perl'
+        my $cost = $Tag->data('products', 'our_cost', $Values->{code});
+        $min_price = $cost * ( 1 + $min_margin );
+        return ($min_price > $sale_price) ? $min_price : $sale_price;
+!endblock
+!block example
+    [/perl]
+!endblock
 
 If you do not do this, your code will fail with a runtime Safe
-error.
+error when it tries to look up 'our_cost' in the products database
+with the {{C[jump="#data"]data}} tag.
 
+Even if you properly specify the tables to pre-open, some database
+operations will still be restricted because C<Safe> mode prohibits
+creation of new objects. For SQL, most operations can be performed if
+the C<Safe::Hole> module is installed. Otherwise, you may have to set
+the {{C[jump="#perl_global"]global}}C<=1> attribute to use data from
+SQL tables.
 
+Interchange databases can always be accessed as long as they are
+pre-opened by using an item first. 
 
+H4: {{CMD[id="perl_failure"]failure}}
+
+If your code contains a compile or runtime error and fails to evaluate
+(i.e., eval($code) would set $@), the tag will return the value set
+for the C<failure> attribute. The error will be logged as usual.
+
+For example,
+
+!block example;
+    [perl failure="It Broke"]
+!endblock
+!block example; lang='Perl'
+        my $cost = $Tag->data('products', 'our_cost', $Values->{code});
+        $min_price = $cost * ( 1 + $min_margin );
+        return ($min_price > $sale_price) ? $min_price : $sale_price;
+!endblock
+!block example
+    [/perl]
+!endblock
+
+will return 'It Broke' because the $Tag->Data(...) call will fail
+under the Safe module (see {{CMD[jump="#perl_tables"]tables}} above).
+
+H4: {{CMD[id="perl_no_return"]no_return}}
+
+If C<no_return=1> set, this attribute suppresses the return value of the perl code.
+
+You can retrieve the return value from the session hash via
+E<lbracket>{{C[jump="#data"]data}}E<nbspace>sessionE<nbspace>mv_perl_result]
+until it gets overwritten by another C<perl> tag.
+
+If C<no_return> is set, the C<perl> tag I<will> return any output
+explicitly written with the &HTML or $Document->write() functions.
+
+!block note; label="Note: "
+
+If C<no_return> is I<not> set, then the $Document->write() buffer is
+not returned (unless you use $Document->hot(1) or $Document->send(),
+in which case the contents of the write buffer will probably appear
+before anything else on the page).  See
+{{CMD[jump="icconfig.html#Interchange Perl Objects"]Interchange Perl Objects}}
+for more detail.
+!endblock
+
+Here is an example:
+
+!block example;
+    [perl tables=products no_return=1]
+!endblock
+!block example; lang='Perl'
+        my $cost = $Tag->data('products', 'our_cost', $Values->{code});
+        $min_price = $cost * ( 1 + $min_margin );
+        &HTML( ($min_price > $sale_price) ? $min_price : $sale_price );
+        return ($min_price > $sale_price) ? 'too low' : 'ok';
+!endblock
+!block example
+    [/perl]
+!endblock
+
+This will put the same price on the page as our earlier example, but
+$Session->{mv_perl_result} will be either 'too low' or 'ok'.
+
+The [{{C[jump="#mvasp"]mvasp}}] tag is very similar to
+E<lbracket>perlE<nbspace>no_return=1].
+
+H4: {{CMD[id="perl_subs"]subs}}
+
+If you have set the {{C[jump="icconfig.html#AllowGlobal *global*"]AllowGlobal}}
+catalog directive, setting C<subs=1> will enable you to call
+{{CMD[jump="icconfig.html#GlobalSub *global*"]GlobalSub}} routines
+within the enclosed perl code. Note that this can compromise security.
+
+H4: {{CMD[id="perl_global"]global}}
+
+If you have set the {{C[jump="icconfig.html#AllowGlobal *global*"]AllowGlobal}}
+catalog directive, setting C<global=1> will turn off
+{{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}}
+protection within the tag.
+
+The code within the tag will then be able to do anything the user ID
+running interchange can. This seriously compromises security, and
+you should know what you are doing before using it in a public site. It
+is especially dangerous if a single Interchange server is shared by
+multiple companies or user IDs.
+
+Also, full 'C<use strict>' checking is turned on by default when in
+global mode.  You can turn it off by using 'C<no strict;>' within your
+code.  Note that any C<strict> errors will go to the interchange error
+logs, and the tag itself will fail silently within the page.
+
+H4: {{CMD[id="perl_file"]file}}
+
+This prepends the contents of the specified file or FileDatabase entry to
+the enclosed perl code (if any), then executes as usual.
+
+For example, 
+
+!block example;
+    [perl file="my_script.pl"][/perl]
+!endblock
+
+would execute myscript.pl and expand to its return value.
+
+Absolute filenames (or filenames containing '../') are prohibited by
+the {{C[jump="icconfig.html#NoAbsolute *global* *global*"]NoAbsolute}}
+catalog directive.
+
+If the filename is not absolute, interchange first looks for a file in
+the current directory, then in the list set with the
+{{C[jump="icconfig.html#TemplateDir *global*"]TemplateDir}} catalog
+directive. If it fails to find a file by that name, it then looks for
+an entry by that name in the database specified with the
+{{C[jump="icconfig.html#FileDatabase *global*"]FileDatabase}} catalog directive.
 
 
 H2: price
-
 
 H3: Summary
 

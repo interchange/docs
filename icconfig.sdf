@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.37 2001-03-23 00:53:03 jon Exp $
+# $Id: icconfig.sdf,v 1.38 2001-03-31 04:16:22 bill Exp $
 
 !define DOC_NAME "Interchange Configuration"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.37 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.38 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icconfig.html"
@@ -1078,47 +1078,25 @@ ASP syntax can be used with:
    [/mvasp]
 !endblock
 
-The two snippets above are essentially equivalent.
+The two snippets above are essentially equivalent.  Please see the {{C[jump="ictags.html#perl"]perl}} and  {{C[jump="ictags.html#mvasp"]mvasp}} tags for usage details.
 
-The C<[perl]> tag enforces C<Safe.pm> checking, and many standard Perl operators are not available. This prevents user access to all files and programs on the system without the Interchange daemon's permissions. See C<GlobalSub> and C<UserTag> for ways to make external files and programs available to Interchange.
+The C<[{{CMD[jump="ictags.html#perl"]perl}}]> tag enforces {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe.pm}} checking, and many standard Perl operators are not available. This prevents user access to all files and programs on the system without the Interchange daemon's permissions. See {{C[jump="#GlobalSub *global*"]GlobalSub}} and {{C[jump="ictags.html#User-defined Tags"]User-defined Tags}} for ways to make external files and programs available to Interchange.
 
 .Named parameters:
 
+.See the {{C[jump="ictags.html#perl"]perl}} tag for description of the tag parameters and attributes.  These N<include:>
+
 !block example
-   [perl tables="tables-to-open"* subs=1 global=1* no_return=1*]
+       [perl tables="tables-to-open"*
+               subs=1*
+             global=1*
+          no_return=1*
+            failure="Return value in case of compile or runtime error"*
+               file="include_file"*]
 !endblock
 
 .Required parameters: none
 
-.Parameter information:
-
-LI2: global
-
-..When set to C<1>, and when the catalog is allowed to use global permissions via the C<interchange.cfg> directive C<AllowGlobal>, Safe.pm checking is turned off. In this case, the embedded Perl code can do anything that the user ID running it can! This is not recommended when a single Interchange server is shared by multiple companies/user ids.
-
-..When in global mode, full C<use strict> checking is on. Optionally, it can be turned off with C<no strict;>. In fact, this is recommended since strict errors will cause silent failure.
-
-LI2: subs
-
-..When set to C<1>, any C<GlobalSub> routines can be accessed by name.
-
-LI2: tables
-
-..Opens specified Interchange database tables, preparing them for access inside the Perl code.
-
-..When running under C<Safe>, some database operations are restricted due to the inability to create objects in this mode. For SQL, most operations can be performed if the C<Safe::Hole> module is installed. Otherwise, use C<global> to use data from SQL tables. Interchange databases can be accessed as long as they are pre-opened by using an item first.
-
-.Example:
-
-!block example; listitem=2
-    [perl tables="products pricing"]
-        $key = $Values->{sku};
-        $title = $Tag->data('products', 'title', $key):
-        return "You looked up the title $title";
-    [/perl]
-!endblock
-
-.If the tables=products> was not specified, there would be a syntax error trap from C<Safe.pm>.
 
 Any Interchange tag (except ones using SQL) can be accessed via the C<$Tag> object. If using SQL queries inside a Perl element, C<AllowGlobal> permissions are required and and the C<global=1> parameter must be set. Installing the module C<Safe::Hole> along with sharing the database table with <tables=tablename> will enable SQL use.
 
@@ -1131,7 +1109,7 @@ Any Interchange tag (except ones using SQL) can be accessed via the C<$Tag> obje
    [/perl]
 !endblock
 
-Note[label='IMPORTANT NOTE: '] Global subroutines are not subject to the stringent security checking of the C<Safe> module, so almost anything goes there. The subroutine will be able to modify any variable in Interchange, and will be able to write to read and write any file that the Interchange daemon has permission to write. Though this gives greater power, it should be used with caution. They are defined in the main C<interchange.cfg> file, so should be safe from individual users in a multi-catalog system.
+Note[label='Important Note: '] Global subroutines are not subject to the stringent security checking of the C<Safe> module, so almost anything goes there. The subroutine will be able to modify any variable in Interchange, and will be able to write to read and write any file that the Interchange daemon has permission to write. Though this gives greater power, it should be used with caution. They are defined in the main C<interchange.cfg> file, so should be safe from individual users in a multi-catalog system.
 
 Global subroutines are defined in C<interchange.cfg> with the C<GlobalSub> directive, or in user catalogs which have been enabled via C<AllowGlobal>. Catalog subroutines are defined in C<catalog.cfg>, with the C<Sub> directive. They are subject to the stringent Safe.pm security restrictions that are controlled by the global directive C<SafeUntrap>.
 
@@ -1172,7 +1150,7 @@ To show the user their name and the current time:
 
 H2: ASP-Like Perl
 
-Interchange supports an ASP-like syntax using the C<mvasp> tag.
+Interchange supports an ASP-like syntax using the E<lbracket>{{C[jump="ictags.html#mvasp"]mvasp}}] tag.
 
 !block example
    [mvasp]
@@ -1204,11 +1182,13 @@ There is a shorthand <% = $foo %>, which is exactly equivalent to <% $Document->
 
 The C<__VARIABLE__> will be replaced by the value of C<Variable VARIABLE>, but [value name] will be shown unchanged.
 
-IMPORTANT NOTE: If using the C<SQL::Statement> module, the catalog must be set to C<AllowGlobal> in C<interchange.cfg>. It will not work in "Safe" mode due to limitations of object creation in Safe. Also, the C<Safe::Hole> module must be installed to have SQL databases work in Safe mode.
+!block note; label="Important Note: "
+If using the C<SQL::Statement> module, the catalog must be set to C<AllowGlobal> in C<interchange.cfg>. It will not work in "Safe" mode due to limitations of object creation in Safe. Also, the C<Safe::Hole> module must be installed to have SQL databases work in Safe mode.
+!endblock
 
 H1: Interchange Perl Objects
 
-Interchange gives ready access to all objects associated with the catalog and the user settings, with opcode restrictions based on the standard Perl module C<Safe.pm>. There are some unique things to know about programming with Interchange.
+Interchange gives ready access to all objects associated with the catalog and the user settings, with opcode restrictions based on the standard Perl module {{C[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe.pm}}. There are some unique things to know about programming with Interchange.
 
 Under C<Safe>, certain things cannot be used. For instance, this is not legal when running Safe:
 
