@@ -11,27 +11,63 @@
 
 H1: INSTALLATION OF INTERCHANGE
 
-Akopia Interchange is the industry's most widely distributed and implemented e-commerce  platform. This document provides detailed installation instructions for Interchange and the demo store included with the program. 
+Akopia Interchange is the industry's most widely distributed and implemented e-commerce platform. This document provides detailed installation instructions for Interchange and the demo store included with the program. 
 
-H1: INTERCHANGE INSTALLATION PROCESS
+H1: GETTING READY -- BEFORE INSTALLING INTERCHANGE
+
+^ Verify that you have Perl 5.005 or newer installed. At a shell prompt, enter the command C<perl -v> to see what version you have.
+
++ Install the necessary Perl modules from CPAN (from C<Bundle::Interchange>)
+
++ Make sure Apache (or some other web server) is installed and works.
+
+** Know where the Apache configuration file is located. This is not required, but if available, can help the installer answer the next two questions automatically. The file is usually called httpd.conf or apache.conf and is often located somewhere like
+. /etc/httpd/conf/httpd.conf
+. /usr/local/apache/conf/httpd.conf
+
+** Know where the document root directory is located and have write access to it. It's usually something like
+. /var/www/html
+. /home/httpd/html
+. /usr/local/apache/htdocs
+
+** Know where the cgi-bin directory is located and have write access to it. It's usually something like
+. /var/www/cgi-bin
+. /home/httpd/cgi-bin
+. /usr/local/apache/cgi-bin
+
++ Install and test your database server (MySQL, PostgreSQL, Oracle, etc.) unless you plan to use Interchange's built-in database system. Know:
+
+** The DSN (data source name), which is what tells the Perl DBI how to connect to your database. If the database server is on the same host as the web server, it will probably be something like the following:
+. dbi:mysql:
+. dbi:Pg:
+. dbi:Oracle:
+
+** The database administrator user name and password
+
++ Create a new Unix username and group or choose an existing one (default is C<interch>).
+
++ Decide where you want to install the Interchange software, and make sure you have write access there. Common choices are:
+. /usr/local/interchange
+. /usr/lib/interchange
+. /home/someuser/interchange
+
++ Decide where you want the Interchange catalogs to be located, and make sure your C<interch> user has write access there. Common choices are:
+. /usr/local/interchange/catalogs
+. /var/lib/interchange
+. /home/someuser/interchange/catalogs
+
++ Choose a name for your first demo catalog, usually C<construct>.
+
+
+H1: INSTALLING INTERCHANGE
 
 To install Interchange, there are two required steps: downloading the program and setting up a catalog. The following sections will explain this installation process in detail.
 
-H2: Installing Interchange
+^Obtain, decompress, and untar the distribution on a UNIX server:
 
-^Before starting the Interchange installation, obtain user permissions to do the following:
+>        gzip -dc interchange-4.5.x.tar.gz | tar xvf -
 
-**Write on the catalog install directory.
-**Read on the Apache configuration file (if possible).
-**Write on the cgi-bin directory for the web server.
-
-Perl 5.005 or higher must be installed.
-
-+Obtain, decompress, and untar the distribution on a UNIX server:
-
->         gzip -dc interchange-4.5.x.tar.gz | tar xvf -
-
-Note: Check the Interchange developer site at C<http://developer.akopia.com/> for any patches that might have been issued since the last release.
+Note: Check the Interchange developer site at {{URL:http://developer.akopia.com/}} for any patches that might have been issued since the last release.
 
 +Run the configuration script:
 
