@@ -1,20 +1,20 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icinstall.sdf,v 1.13 2001-02-07 13:05:00 heins Exp $
+# $Id: icinstall.sdf,v 1.14 2001-03-02 15:47:12 jon Exp $
 
 !define DOC_NAME "Interchange Installation"
 !define DOC_TYPE ""
 !define DOC_CODE "ICINSTALL_D2a_100800"
-!define DOC_VERSION substr('$Revision: 1.13 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.14 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
 !build_title
 
-H1: INSTALLATION OF AKOPIA INTERCHANGE(TM)
+H1: Installation of Interchange
 
-Akopia Interchange is the industry's most widely distributed and implemented open source e-commerce platform. This document provides detailed installation instructions for Interchange and the demonstration store included with the program.
+Interchange is the industry's most widely distributed and implemented open source e-commerce platform. This document provides detailed installation instructions for Interchange and the demonstration store included with the program.
 
-H1: GETTING READY -- BEFORE INSTALLING INTERCHANGE
+H1: Getting Ready
 
 ^ Verify that Perl 5.005 or newer is installed. At a shell prompt, enter the command C<perl -v> to see what version you have.
 + Install the necessary Perl modules from CPAN (from C<Bundle::Interchange>).
@@ -58,9 +58,9 @@ H1: GETTING READY -- BEFORE INSTALLING INTERCHANGE
 + Choose a name for the first demo catalog, usually C<construct>.
 
 
-H1: INSTALLING INTERCHANGE
+H1: Installing Interchange
 
-To install Akopia Interchange, there are two required steps: downloading the program and setting up a catalog. The following sections will explain this installation process in detail.
+To install Interchange, there are two required steps: downloading the program and setting up a catalog. The following sections will explain this installation process in detail.
 
 ^Obtain, decompress, and untar the distribution on a UNIX server:
 
@@ -257,9 +257,9 @@ Note[label='IMPORTANT NOTE: '] Since catalogs are all run under one server, perm
 
 A public Web directory for inline image graphic files is needed. Interchange does not serve the images, only the HTML tags calling them. A useful convention is to place all buttonbars, backgrounds, and icons in the /images directory, with the catalog items located in the /images/catalog directory. Regardless of the directory structure, an I<absolute path> must be used. Relative paths are unacceptable. Interchange supports the I<ImageDir> directive, which places that as the absolute path in front of all relative IMG and INPUT SRC specifications.
 
-A CGI-bin directory in which to put the vlink or tlink program is also needed.
+A cgi-bin directory in which to put the vlink or tlink program is also needed.
 
-H1: DEMO STORE INSTALLATION PROCESS
+H1: Building the Demo Store
 
 This detailed process describes the entire installation and setup process of the demo store. The text seen during this process will be displayed with <-- next to it. The text marked with --> identifies the required response.
 
@@ -270,7 +270,7 @@ In order to begin, the following permissions on the server are needed:
 *Write on the cgi-bin directory
 *Write on the httpd document root
 
-Note: Akopia can set up a server with Interchange pre-installed. See the Akopia Web site C<http://www.akopia.com/> for more details.
+Note: Red Hat can set up a server with Interchange pre-installed. See the our Web site at C<http://www.akopia.com/> for more details.
 
 ^Change to the directory in which Interchange is installed:
 !block example; listitem=2
@@ -623,7 +623,7 @@ the UPS shipping methods.
 .UPS calculates shipping from one zip code to another zip code.
 This zip code is the origin of all shipments. If shipping
 from multiple locations, consult the documentation or contact
-Akopia support.
+us for paid support.
 
 +
 !block example; listitem=2
@@ -770,7 +770,39 @@ Double check the following items:
 
 -The C<tlink> program does not have this problem, but it must have the proper host name(s) and TCP ports set in the TcpHost and TcpPort directives in C<interchange.cfg>. Also, be careful of security if sensitive information, like customer credit card numbers, is being placed on a network wire.
 
-H1: FREQUENTLY ASKED QUESTIONS
+H1: Installing Perl Modules without Root Access
+
+Installing Interchange without root access is no problem. However, installing Perl modules without root access is a little trickier.
+
+You must build your makefile to work in your home dir. Something like:
+ 
+!block example
+PREFIX=~/usr/local \
+INSTALLPRIVLIB=~/usr/local/lib/perl5 \
+INSTALLSCRIPT=~/usr/local/bin \
+INSTALLSITELIB=~/usr/local/lib/perl5/site_perl \
+INSTALLBIN=~/usr/local/bin \
+INSTALLMAN1DIR=~/usr/local/lib/perl5/man \
+INSTALLMAN3DIR=~/usr/local/lib/perl5/man/man3
+!endblock
+ 
+Put this in a file, say 'installopts', and use it for the Makefile.PL.
+ 
+E:perl Makefile.PL `cat installopts`
+ 
+Then, forget ./config. Just do:
+ 
+!block example
+make
+make test
+make install
+!endblock
+ 
+Some of the tests may fail, but that's probably ok.
+
+Also make sure to install Bundle::Interchange, which will need the same config data as you put into 'installopts'.
+
+H1: Frequently Asked Questions
 
 H2: Where are the pages?
 
@@ -810,4 +842,4 @@ will become this:
 
 Absolute image paths are not affected. An image, such as </other/images/whatever.gif>, will not be changed.
 
-**Akopia and Interchange are registered trademarks of Akopia, Inc. All other product names are trademarks or registered trademarks of their respective manufacturers. This version of the document supersedes any and all previous versions.
+**Interchange is a registered trademarks of Red Hat, Inc. All other product names are trademarks or registered trademarks of their respective manufacturers.
