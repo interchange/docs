@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icfoundation.sdf,v 1.7 2001-05-11 22:06:13 larry Exp $
+# $Id: icfoundation.sdf,v 1.8 2001-05-11 22:16:56 bill Exp $
 
 !define DOC_NAME "Foundation Store"
 !define DOC_TYPE ""
 !define DOC_CODE "icfoundation"
-!define DOC_VERSION substr('$Revision: 1.7 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.8 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/doc/icfoundation.html"
@@ -353,6 +353,7 @@ theme.cfg pertain to the location of region templates for the high and
 low traffic settings. For example, if you need to define a separate
 set of high traffic templates, you would change the ConfigDir variable
 in theme.cfg to point to the directory containing those templates.
+
 
 H2: Template Definition Files
 
@@ -1846,9 +1847,9 @@ H2: area
 
 C<cat_root/products/area.txt>
 
-This table is used to implement dynamic navigation bars, for example in the category_horizontal and category_vertical components. It is also used for the administrative interface.
+This table is used to implement dynamic navigation bars, for example in the category_horizontal and category_vertical components. Note the similarity to the B<cat> table, since both B<area> and B<cat> tables supply data for building links to results pages.
 
-When building a navigation bar, it is the  B<bar_link> subroutine in the /dist/catalog_before.cfg configuration file that actually reads and processes the values from the table.
+When building entries in a navigation bar, it is the  B<bar_link> subroutine in the /dist/catalog_before.cfg configuration file that actually reads and processes the values from the table.
 
 See also the following catalog and administrative templates:
 * cat_root/templates/components/category_horizontal
@@ -1867,10 +1868,10 @@ Field|Description
 Unique key
 >>
 {{CMD[jump="#area_sel"]sel}}|<<
-Page area for the navigation bar entry
+Space-delimited list of navigation bars to contain the entry
 >>
 {{CMD[jump="#area_name"]name}}|<<
-A display label to replace C<code> or C<selector>
+Display label
 >>
 {{CMD[jump="#area_which_page"]which_page}}|<<
 Page class in which the navigation bar may appear
@@ -1879,22 +1880,22 @@ Page class in which the navigation bar may appear
 Sorting prefix for entry (preempts standard alphanumeric sort)
 >>
 {{CMD[jump="#area_display_type"]display_type}}|<<
-How to label the navbar (for example, name, icon, url or image)
+How to label links in the navbar (name, icon, url or image)
 >>
 {{CMD[jump="#area_image"]image}}|<<
-Image (if appropriate)
+Image URL (if appropriate)
 >>
 {{CMD[jump="#area_image_prop"]image_prop}}|<<
 HTML attributes for output <img> tag (if appropriate)
 >>
 {{CMD[jump="#area_banner_image"]banner_image}}|<<
-See below
+Image name for use in target page
 >>
 {{CMD[jump="#area_banner_text"]banner_text}}|<<
-See below
+Text for use in target page
 >>
 {{CMD[jump="#area_link_type"]link_type}}|<<
-See below
+Type of links in the navbar (external, internal, simple, complex)
 >>
 {{CMD[jump="#area_url"]url}}|<<
 Target for internal or external link_type
@@ -1909,7 +1910,7 @@ Results page to use with 'simple' B<link_type>
 Search spec used with 'complex' B<link_type>
 >>
 {{CMD[jump="#area_selector"]selector}}|<<
-See below
+The selector used to scan the C<products> table for products in the category
 >>
 {{CMD[jump="#area_link_template"]link_template}}|<<
 Overrides template used for building navbar links.
@@ -1926,7 +1927,7 @@ Example Data
    3
 !endblock
 
-Unique key
+Unique key.
 
 
 H3: {{CMD[id="area_sel"]sel}}
@@ -1937,7 +1938,7 @@ Example Data
    left
 !endblock
 
-Page area for the navigation bar entry.
+Space-delimited list of navigation bars that should contain the entry. Note that comma or null should also work as a delimiter.
 
 
 H3: {{CMD[id="area_name"]name}}
@@ -1955,7 +1956,7 @@ Example Data
    Tool Storage
 !endblock
 
-A display label to replace C<code> or C<selector>.
+Label to display.
 
 
 H3: {{CMD[id="area_which_page"]which_page}}
@@ -1999,10 +2000,18 @@ Example Data
 
 What to use for the labels in the navigation bar (for example, name, icon, url or image). The navigation bars in the foundation catalog are set up with 'name' display_type.
 
+!block table; colvaligns="TT"
+display_type|Link_shown_as
+name|Displays name only
+icon|Displays name and specified image
+image|Displays image only
+url|Displays link
+!endblock
+
 
 H3: {{CMD[id="area_image"]image}}
 
-Image to display for image or icon B<display_type>.
+Image URL for image or icon B<display_type>.
 
 
 H3: {{CMD[id="area_image_prop"]image_prop}}
@@ -2013,12 +2022,36 @@ E:  E<lt>img src="B<image>" alt="B<name>" B<image_prop>E<gt>B<name>
 
 H3: {{CMD[id="area_banner_image"]banner_image}}
 
-Sets 'va=banner_image=B<banner_image>' in 'simple' and 'complex' B<link_type>. The foundation catalog navigation bars are not set up with link types that use the B<banner_image> field.
+Example Data
+
+!block example
+   promo_image.gif
+!endblock
+
+This has nothing to do with banner ads.  It is useful if you want to pass your results page an image that is specific for the navbar entry (perhaps to display a banner above your results).
+
+If you are using an interchange search for your links (i.e., 'simple' or 'complex' B<link_type>), then this will add 'va=banner_image=B<banner_image>' to the resultant search specification. This puts the contents of B<banner_image> into the Values hash in your search results page.  You can access it with E<lbracket>{{C[jump="ictags.html#value"]value}} banner_image] (see the {{C[jump="ictags.html#value"]value}} tag). Note that you will have to modify the standard results page (or set up and specify your own) in order to display the image.
+
+!block example
+   <IMG src="[value banner_image]" alt="[value banner_text]">
+!endblock
+
+The foundation catalog does not implement banner_image in the preconfigured navigation bars.
 
 
 H3: {{CMD[id="area_banner_text"]banner_text}}
 
-Sets 'va=banner_text=B<banner_text>' in 'simple' and 'complex' B<link_type>. The foundation catalog navigation bars are not set up with link types that use the B<banner_text> field.
+Example Data
+
+!block example
+   This Is A Title For Hand Tools
+!endblock
+
+This has nothing to do with banner ads.  It is useful if you want to pass your results page some text that is specific for the navbar entry (perhaps to display a title above your results).
+
+If you are using an interchange search for your links (i.e., 'simple' or 'complex' B<link_type>), then this will add 'va=banner_text=B<banner_text>' to the resultant search specification. This puts the contents of B<banner_text> into the Values hash in your search results page.  You can access it with E<lbracket>{{C[jump="ictags.html#value"]value}} banner_text] (see the {{C[jump="ictags.html#value"]value}} tag). Note that you will have to modify the standard results page (or set up and specify your own) in order to display the text.
+
+The foundation catalog does not implement banner_text in the preconfigured navigation bars.
 
 
 H3: {{CMD[id="area_link_type"]link_type}}
@@ -2033,22 +2066,28 @@ Example Data
    complex
 !endblock
 
-Link type to create in the navigation bar. The navigation bars in foundation catalog are set up to use 'none' as the link_type.
+Link type to create in the navigation bar.
 
-Link types
-* external
-** External link. The HTML specified in B<url> will go directly into the navigation bar.
-
-* internal
-** Internal link. This will be highlit if it is the current page. If you specify both a page and a form for the link, the B<url> field should contain "I<page> I<form>".  See the Search Engine documentation for more detail on search forms.
-
-* simple or complex
-** See the B<bar_link> subroutine in the /dist/catalog_before.cfg configuration file for more detail if you need to use these (for example, to implement banners in the bar).
-
+!block table; colvaligns="TT"; format="28"
+Link_type|Description
+none|No link
+external|<<
+External link. The HTML specified in B<url> will go directly into the navigation bar.
+>>
+internal|<<
+Internal link. This will be highlit if it is the current page. If you specify both a page and a form for the link, the B<url> field should contain "I<page> I<form>".  See the Search Engine documentation for more detail on search forms.
+>>
+simple|<<
+Allows you to specify an Interchange search with a few values. See the B<bar_link> subroutine in the /dist/catalog_before.cfg configuration file for more detail.
+>>
+complex|<<
+Allows you to fully specify an Interchange search specification. See the B<bar_link> subroutine in the /dist/catalog_before.cfg configuration file for more detail if you need to use these.
+>>
+!endblock
 
 H3: {{CMD[id="area_url"]url}}
 
-Target URL (external link or internal page/search specification). See B<link_types> above. The foundation catalog navigation bars are not set up with link types that use the B<url> field.
+Target URL (external link or internal page/search specification). See B<link_type> above. The foundation catalog navigation bars are not set up with link types that use the B<url> field.
 
 
 H3: {{CMD[id="area_tab"]tab}}
@@ -2072,14 +2111,18 @@ The selector that is used to scan the C<products> table for products in the cate
 
 H3: {{CMD[id="area_link_template"]link_template}}
 
-Overrides the usual HTML link template for navbar entries. The foundation catalog navigation bars are not set up with link types that use the B<link_template> field.
+Overrides the usual HTML link template for navbar entries.  See the B<bar_link> subroutine in the /dist/catalog_before.cfg configuration file if you need to modify link templates.
+
+The foundation catalog navigation bars are not set up with link types that use the B<link_template> field.
 
 
 H2: banner
 
 C<cat_root/products/banner.txt>
 
-Banner ad table. The foundation catalog does not implement any banner ads with this table (though you will need to use it to add your banner ads).
+Banner ad table. The foundation catalog does not implement any banner ads with this table.
+
+Note that you do not need to use this table to display ads served by third parties (e.g., doubleclick). Since most banner ads on the internet are served by third parties (i.e., not managed by your catalog), you will probably not need to set up banners here unless you do your own advertising.
 
 Please see {{CMD[jump="ictemplates.html#Banner/Ad rotation"]Banner/Ad rotation}} in the template documentation for detailed description of the columns and content of the banner table.  See also the {{C[jump="ictags.html#banner"]banner}} tag documentation.
 
@@ -2161,39 +2204,283 @@ Example Data
 See {{CMD[jump="ictemplates.html#Banner/Ad rotation"]Banner/Ad rotation}}.
 
 
-H2: cat.txt
+H2: cat
 
-Categories.
+C<cat_root/products/cat.txt>
+
+This table contains properties of product categories.  Note the similarity to the B<area> table, since both B<area> and B<cat> tables supply data for building links to results pages.
+
+
+B<Fields>
+
+!block table; colvaligns="TT"
+Field|Description
+{{CMD[jump="#cat_code"]code}}|<<
+Unique key
+>>
+{{CMD[jump="#cat_sel"]sel}}|<<
+Space-delimited list of foreign keys into B<area> table
+>>
+{{CMD[jump="#cat_name"]name}}|<<
+Category name
+>>
+{{CMD[jump="#cat_which_page"]which_page}}|<<
+Page class in which the category may appear
+>>
+{{CMD[jump="#cat_sort"]sort}}|<<
+Sorting prefix for entry (preempts standard alphanumeric sort)
+>>
+{{CMD[jump="#cat_display_type"]display_type}}|<<
+How to label the category links (name, icon, url or image)
+>>
+{{CMD[jump="#cat_image"]image}}|<<
+Image URL (if appropriate)
+>>
+{{CMD[jump="#cat_image_prop"]image_prop}}|<<
+HTML attributes for output <img> tag (if appropriate)
+>>
+{{CMD[jump="#cat_banner_image"]banner_image}}|<<
+Image name for use in target page
+>>
+{{CMD[jump="#cat_banner_text"]banner_text}}|<<
+Text for use in target page
+>>
+{{CMD[jump="#cat_link_type"]link_type}}|<<
+Type of links in the navbar (external, internal, simple, complex)
+>>
+{{CMD[jump="#cat_url"]url}}|<<
+Target for internal or external link_type
+>>
+{{CMD[jump="#cat_tab"]tab}}|<<
+Database table file to use with 'simple' B<link_type>
+>>
+{{CMD[jump="#cat_page"]page}}|<<
+Results page to use with 'simple' B<link_type>
+>>
+{{CMD[jump="#cat_search"]search}}|<<
+Search spec used with 'complex' B<link_type>
+>>
+{{CMD[jump="#cat_selector"]selector}}|<<
+The selector used to scan the C<products> table for products in the category
+>>
+{{CMD[jump="#cat_link_template"]link_template}}|<<
+Overrides template used for building links
+>>
+!endblock
+
+H3: {{CMD[id="cat_code"]code}}
+
+Example Data
 
 !block example
-    code
-    sel
-    name
-    which_page
-    sort
-    display_type
-            name = Name
-            url = URL only
-            icon = Icon and name
-            image = Image
-    image
-    image_prop
-    banner_image
-    banner_text
-    link_type
-        Type of link:
-            none = No link
-            external = External link (http://...)
-            internal = Interchange page
-            simple = Simple search
-            complex = Complex search
-    url
-    tab
-    page
-    search
-    selector
-    link_template
+   1
+   4
+   5
 !endblock
+
+Unique key.
+
+H3: {{CMD[id="cat_sel"]sel}}
+
+Example Data
+
+!block example
+   6
+   8 9
+   9
+!endblock
+
+Space-delimited list of foreign key(s) into B<area> table. The category will appear in each navbar section (defined by a row in the B<area> table) where the key from B<cat.sel> matches the B<area.code>.
+
+For example, the foundation catalog (tools) places Gift Certificates in more than one category of the left navbar.
+
+
+H3: {{CMD[id="cat_name"]name}}
+
+Example Data
+
+!block example
+   Breathing Protection
+   Eye Protection
+   Gift Certificate
+   Picks & Hatchets
+   Pliers
+   Rulers
+   Sandpaper
+   Toolboxes
+!endblock
+
+Category name for display.
+
+
+H3: {{CMD[id="cat_which_page"]which_page}}
+
+Page class. When building links, you can select categories matching a page class, so you could set up your catalog to show a different list of links on page 'foo.html' than on page 'bar.html'.
+
+
+H3: {{CMD[id="cat_sort"]sort}}
+
+Example Data
+
+!block example
+   01
+   03
+!endblock
+
+Lexographic (alphanumeric) sorting prefix.  Note use of '03' rather than '3', which would sort after '13'. You can use this to control the order of the categories in a list of links.
+
+
+H3: {{CMD[id="cat_display_type"]display_type}}
+
+Example Data
+
+!block example
+   name
+   icon
+   url
+   image
+!endblock
+
+What to use for the labels in the navigation bar (for example, name, icon, url or image). The links in the foundation catalog are set up with 'name' display_type.
+
+!block table; colvaligns="TT"
+display_type|Link_shown_as
+name|Displays name only
+icon|Displays name and specified image
+image|Displays image only
+url|Displays link
+!endblock
+
+
+H3: {{CMD[id="cat_image"]image}}
+
+Image URL for image or icon B<display_type>.
+
+
+H3: {{CMD[id="cat_image_prop"]image_prop}}
+
+For image or icon B<display_type>, this contains the HTML E<lt>img ...E<gt> tag attributes for the links, for N<example:>
+E:  E<lt>img src="B<image>" alt="B<name>" B<image_prop>E<gt>B<name>
+
+
+H3: {{CMD[id="cat_banner_image"]banner_image}}
+
+Example Data
+
+!block example
+   promo_image.gif
+!endblock
+
+This has nothing to do with banner ads.  It is useful if you want to pass your results page an image that is specific for the navbar entry (perhaps to display a banner above your results).
+
+If you are using an interchange search for your links (i.e., 'simple' or 'complex' B<link_type>), then this will add 'va=banner_image=B<banner_image>' to the resultant search specification. This puts the contents of B<banner_image> into the Values hash in your search results page.  You can access it with E<lbracket>{{C[jump="ictags.html#value"]value}} banner_image] (see the {{C[jump="ictags.html#value"]value}} tag). Note that you will have to modify the standard results page (or set up and specify your own) in order to display the image.  For example, you might include the following in your results N<page:>
+
+!block example
+   <IMG src="[value banner_image]" alt="[value banner_text]">
+!endblock
+
+
+H3: {{CMD[id="cat_banner_text"]banner_text}}
+
+
+This has nothing to do with banner ads.  It is useful if you want to pass your results page some text that is specific for the navbar entry (perhaps to display a title above your results).
+
+If you are using an interchange search for your links (i.e., 'simple' or 'complex' B<link_type>), then this will add 'va=banner_text=B<banner_text>' to the resultant search specification. This puts the contents of B<banner_text> into the Values hash in your search results page.  You can access it with E<lbracket>{{C[jump="ictags.html#value"]value}} banner_text] (see the {{C[jump="ictags.html#value"]value}} tag). Note that you will have to modify the standard results page (or set up and specify your own) in order to display the text.
+
+
+H3: {{CMD[id="cat_link_type"]link_type}}
+
+Example Data
+
+!block example
+   none
+   external
+   internal
+   simple
+   complex
+!endblock
+
+Link type to create.
+
+!block table; colvaligns="TT"; format="28"
+Link_type|Description
+none|No link
+external|<<
+External link. The HTML specified in B<url> will go directly into the link.
+>>
+internal|<<
+Internal link. This will be highlit if it is the current page. If you specify both a page and a form for the link, the B<url> field should contain "I<page> I<form>".  See the Search Engine documentation for more detail on search forms.
+>>
+simple|<<
+Allows you to specify an Interchange search with a few values. See the B<bar_link> subroutine in the /dist/catalog_before.cfg configuration file for more detail.
+>>
+complex|<<
+Allows you to fully specify an Interchange search specification. See the B<bar_link> subroutine in the /dist/catalog_before.cfg configuration file for more detail if you need to use these.
+>>
+!endblock
+
+H3: {{CMD[id="cat_url"]url}}
+
+Target URL (external link or internal page/search specification). See B<link_types> above.
+
+
+H3: {{CMD[id="cat_tab"]tab}}
+
+Example Data
+
+!block example
+   products
+!endblock
+
+Database table file to use with 'simple' B<link_type> (searchspec fi=B<tab>).
+
+
+H3: {{CMD[id="cat_page"]page}}
+
+Example Data
+
+!block example
+   swap_results
+!endblock
+
+Results page to use with 'simple' B<link_type> (searchspec sp=B<page>).
+
+
+H3: {{CMD[id="cat_search"]search}}
+
+Example Data
+
+!block example
+   fi=merchandisingI<^M>sf=featuredI<^M>se=new
+   fi=merchandisingI<^M>sf=featuredI<^M>se=specialI<^M>su=yes
+!endblock
+
+Search spec used with 'complex' B<link_type>. See the Search Engine documentation for more detail on search forms.
+
+Note: The 'I<^M>' delimiters in the sample data represents a carriage return character (Control-M, or hexadecimal 0x0d).
+
+
+H3: {{CMD[id="cat_selector"]selector}}
+
+Example Data
+
+!block example
+   category=Breathing Protection
+   category=Eye Protection
+   category=Gift Certificate
+   category=Picks & Hatchets
+   category=Pliers
+   category=Rulers
+   category=Sandpaper
+   category=Toolboxes
+!endblock
+
+The selector that is used to scan the C<products> table for products in the category. Used with 'simple' B<link_type>.
+
+H3: {{CMD[id="cat_link_template"]link_template}}
+
+Overrides the usual HTML link template for navbar entries.  See the B<bar_link> subroutine in the /dist/catalog_before.cfg configuration file if you need to modify link templates.
+
 
 H2: component.txt
 
