@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.96 2002-07-31 19:54:41 kwalsh Exp $
+# $Id: ictags.sdf,v 1.97 2002-08-06 00:01:32 kwalsh Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.96 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.97 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -12885,8 +12885,21 @@ B<ASP-like Perl call:>
 
 !block table; colvaligns="TTT"; format="262"
 Parameters|Description|Default
+{{CMD[jump="#time_adjust"]adjust}}|<<
+Temporarily adjust the time for display purposes.
+>>|I<none>
+{{CMD[jump="#time_gmt"]gmt}}|<<
+Display time as GMT.
+>>|I<none>
 {{CMD[jump="#time_locale"]locale}}|<<
->>|DEFAULT_VALUE
+Format the time according to the named locale.
+>>|I<none>
+{{CMD[jump="#time_tz"]tz}}|<<
+Use the passed timezone to display the time.
+>>|I<none>
+{{CMD[jump="#time_zerofix"]zerofix}}|<<
+Strips leading zeroes from numbers.
+>>|I<none>
 !endblock
 
 !block table; colvaligns="TT"
@@ -12942,6 +12955,7 @@ the same as modern UNIX date commands).
 
 Accepts the following options:
 
+# BEGIN ########### time Subsections ##############
 
 H4: {{CMD[id="time_adjust"]adjust}}
 
@@ -13039,7 +13053,7 @@ should display:
 
 H4: {{CMD[id="time_tz"]tz}}
 
-Use the passed C<tz> to display the time. Will adjust for hours difference.
+Use the passed timezone to display the time. Will adjust for hours difference.
 
 \Example:
 
@@ -13061,13 +13075,6 @@ time. NOTE: This may not work on all operating systems.
 H4: {{CMD[id="time_zerofix"]zerofix}}
 
 Strips leading zeroes from numbers.
-
-
-
-
-# BEGIN ########### time Subsections ##############
-H4: {{CMD[id="time_locale"]locale}}
-
 
 
 # END ++++++++++++ time Subsections +++++++++++++
@@ -13117,8 +13124,21 @@ B<ASP-like Perl call:>
 
 !block table; colvaligns="TTT"; format="262"
 Parameters|Description|Default
+{{CMD[jump="#timed_build_auto"]auto}}|<<
+Turn on automatic region processing.
+>>|I<none>
 {{CMD[jump="#timed_build_file"]file}}|<<
->>|DEFAULT_VALUE
+Name of the cache file.
+>>|I<none>
+{{CMD[jump="#timed_build_if"]if}}|<<
+Conditional display of the cached region.
+>>|I<none>
+{{CMD[jump="#timed_build_minutes"]minutes}}|<<
+Number of minutes after which the timed build should be repeated.
+>>|60
+{{CMD[jump="#timed_build_period"]period}}|<<
+Alternative way of expressing time.
+>>|I<none>
 !endblock
 
 !block table; colvaligns="TT"
@@ -13180,6 +13200,8 @@ parameter is not passed specifying how often the page should be rebuilt,
 then it will not be rebuilt until the output file is removed.
 
 Accepts the following parameters:
+
+# BEGIN ########### timed-build Subsections ##############
 
 
 H4: {{CMD[id="timed_build_auto"]auto}}
@@ -13247,14 +13269,6 @@ place a [timed-build] tag at the top of pages you wish to build statically.
 Assuming the catalog is not busy and write lock can be obtained, the
 StaticDBM database will be updated to mark the page as static and the
 next time a link is made for that page the static version will be presented.
-
-
-
-
-
-
-# BEGIN ########### timed-build Subsections ##############
-H4: {{CMD[id="timed_build_file"]file}}
 
 
 
