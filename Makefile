@@ -1,5 +1,5 @@
 VERSION=4.7.2
-TARGETS=icintro icinstall iccattut icconfig ictemplates icdatabase ictags icbackoffice icupgrade
+TARGETS=icadvanced iccattut icconfig icfoundation ictemplates icdatabase ictags icupgrade
 SUFFIXES=txt mif html pdf pod 8
 TARNAME=icdocs.tar.gz
 FULLSUFFIXES=txt html
