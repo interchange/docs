@@ -1,0 +1,78 @@
+# $Id: html.sdn,v 1.1 2000-10-10 21:39:38 zarko Exp $
+#
+# >>Title::     HTML Tuning
+#
+# >>Copyright::
+# Copyright (c) 2000, Akopia, Inc.
+# You may distribute under the terms specified in the LICENSE file.
+#
+# >>History::
+# -----------------------------------------------------------------------
+# Date      Who     Change
+# 02-Oct-00 zarko   Akopia 1.0
+# -----------------------------------------------------------------------
+#
+# >>Purpose::
+# The {{look/akopia/html.sdn}} module defines [[SDF]] configuration details for
+# generating [[HTML]] files with the Akopia look.
+#
+# >>Description::
+#
+# >>Limitations::
+#
+
+#!message "Using akopia look & feel"
+
+# Inherit the standard configuration
+!use 'stdlib/html.sdn'
+
+!macro build_html_cover
+!if $var{'OPT_DRIVER'} eq 'html'
+        !div title
+        !default DOC_TOC 2
+        !default DOC_HTML_LOGO  $var{'DOC_LOGO'}
+        !if DOC_HTML_LOGO
+            !default DOC_HTML_LOGO_BASE  $var{'DOC_LOGO_BASE'}
+            !import DOC_HTML_LOGO; align=Right; base=$var{'DOC_HTML_LOGO_BASE'}
+            P1[notoc; class='doc-title'] [[DOC_TITLE]]
+        !else
+            P1[notoc; class='doc-title'] [[DOC_TITLE]]
+        !endif
+        Sign[class='doc-author'] [[join(", ", grep(/\w/, &Var('DOC_AUTHOR'), &Var('DOC_AUTHOR2'), &Var('DOC_AUTHOR3')))]]
+        !clear
+        !enddiv
+
+        # Setup the HTML title
+        !HTML_BUILD_TITLE
+
+        # This is no longer required now that the title is put in it's own div
+        ## Mark the contents so we know where it is in topics mode
+        #!block inline; target='html'
+        #!endblock
+!else
+    # This is used for HTML documents generated via Frame
+	dName: [[DOC_TITLE]]
+	dStat: [[DOC_ID]] ([[DOC_STATUS]])
+	dAuth: [[join(", ", grep(/\w/, @variable{'DOC_AUTHOR', 'DOC_AUTHOR2', 'DOC_AUTHOR3'}))]]
+!endif
+!endmacro
+
+!macro HTML_FOOTER
+    !HTML_NAVIGATE
+    !HTML_PRE_SECTION
+    !if $var{'OPT_STYLE'} eq 'paper'
+        #Sign: [[DOC_STATUS]]
+    !elsif DOC_STATUS
+        Sign: {{A[class='doc-id'][[DOC_ID]]}} {{A[class='doc-status']([[DOC_STATUS]])}}
+    !elsif DOC_ID
+        Sign: {{A[class='doc-id'][[DOC_ID]]}}
+    !endif
+    Sign[class='doc-modified'] [[DATE:DOC_MODIFIED]]
+    Sign[class='copyright'] [['Copyright E<c> ' . &Var('DOC_OWNER')]]
+!endmacro
+
+!default HTML_BG_COLOR COLOR_WHITE
+!default HTML_LINK_COLOR '3399ff'
+!default DOC_HTML_LOGO 'akopia-logo.gif'
+!default DOC_OWNER "1996-2000 Akopia, Inc. E<lt>info@akopia.comE<gt>"
+!default DOC_ID_SEP "-"
