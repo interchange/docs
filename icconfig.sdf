@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.13 2000-10-19 18:28:30 alison Exp $
+# $Id: icconfig.sdf,v 1.14 2000-10-19 20:43:12 zarko Exp $
 
 !define DOC_NAME "Interchange Configuration"
 !define DOC_TYPE ""
 !define DOC_CODE "ICCONFIG_D2_100800"
-!define DOC_VERSION substr('$Revision: 1.13 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.14 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
@@ -926,7 +926,6 @@ LI1: UseModifier
 
 LI1: PriceAdjustment
 
-B<PriceAdjustment>
 .Changes the fields from C<UseModifier> that will be used to adjust pricing to an automatic conversion factor based on locale.
 
 !block example; listitem=2
@@ -3842,7 +3841,6 @@ LI1: LINK_PORT
 
 LI1: LINK_TIMEOUT
 
-<<<<<<< icconfig.sdf
 .Set this to the number of seconds C<vlink> or C<tlink> should wait before announcing that the Interchange server is not running. The default of 45 is probably a reasonable value.
 
 H2: Compiling VLINK and TLINK
