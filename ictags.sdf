@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.69 2001-12-21 01:57:45 danb Exp $
+# $Id: ictags.sdf,v 1.70 2001-12-28 16:53:34 jon Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.69 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.70 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -8094,6 +8094,63 @@ produce a select list of options this way:
 >    	[on-match]</SELECT>[/on-match]
 >    [/loop]
 
+A nice shortcut is available when using [loop] to generate <OPTION>
+lists inside HTML <SELECT>...</SELECT> blocks, when you want the user's
+last selection to be chosen by default on subsequent page views. Interchange
+simplifies this with functions that output "SELECTED" (surrounded by
+appropriate whitespace) for an <OPTION> if a certain value is set to
+the <OPTION VALUE="...">. (It sounds more complicated than it really is.)
+
+For example, consider:
+
+!block example
+<select name=search_cat>
+[loop
+	search="
+		fi=cat
+		st=db
+		ra=yes
+		rf=name
+		tf=name
+		un=1
+	"
+]
+<option[selected search_cat [loop-code]>[loop-code]
+[/loop]
+</select>
+!endblock
+
+When the user returns to the page, their last selection will be chosen
+as the default. (Assuming the value search_cat was set after the search,
+which is normally is with standard searches.)
+
+\[loop] offers the C<option> attribute, which can give loops that parse
+faster and are easier to write. The following example is equivalent to
+the one above:
+
+!block example
+<select name=search_cat>
+[loop
+	option=search_cat
+	search="
+		fi=cat
+		st=db
+		ra=yes
+		rf=name
+		tf=name
+		un=1
+	"
+]
+<option>[loop-code]
+[/loop]
+</select>
+!endblock
+
+It works equally well when option values are explicitly specified:
+
+><option value="[loop-code]">So-called "[loop-code]"
+
+See also the C<ictemplates> documentation in the section "Checks and Selections."
 
 
 H4: E<lbracket>if-loop-data table column] IF [else] ELSE [/else][/if-loop-field]
