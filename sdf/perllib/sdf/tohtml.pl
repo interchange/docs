@@ -1,5 +1,5 @@
-# $Id: tohtml.pl,v 1.2 2001-04-23 13:35:42 jon Exp $
-$VERSION{''.__FILE__} = '$Revision: 1.2 $';
+# $Id: tohtml.pl,v 1.3 2001-05-18 03:42:25 jon Exp $
+$VERSION{''.__FILE__} = '$Revision: 1.3 $';
 #
 # >>Title::     HTML Format Driver
 #
@@ -38,18 +38,18 @@ $VERSION{''.__FILE__} = '$Revision: 1.2 $';
 # Mapping table for characters
 %_HTML_CHAR = (
     'bullet',       '.',
-    'c',            '&#169; ',
+    'c',            '&copy; ',
     'cent',         '&cent; ',
     'dagger',       '^',
     'doubledagger', '#',
     'emdash',       '--',
     'endash',       '-',
-    'emspace',      '&nbsp; ',
-    'enspace',      '&nbsp; ',
+    'emspace',      ' ',
+    'enspace',      ' ',
     'lbrace',       '{',
     'lbracket',     '[',
     'nbdash',       '-',
-    'nbspace',      '&nbsp; ',
+    'nbspace',      '&nbsp;',
     'nl',           '<BR>',
     'pound',        '&#163; ',
     'r',            '&#174; ',
