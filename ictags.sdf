@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.46 2001-05-31 18:25:45 heins Exp $
+# $Id: ictags.sdf,v 1.47 2001-06-05 20:10:04 jason Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.46 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.47 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -3335,28 +3335,8 @@ doesn't correspond to a standard Interchange tag, you can use the [calc] tag:
 >                                            [/calc][/currency]
 >    [/item-list]
 
-%%
-dump
-%%
-Prints a dump of the current user session as expanded by Data::Dumper.
-Includes any CGI environment passed from the server.
 
-For an example, create a page containing <XMP>[dump]</XMP> and see what
-it displays.
 
-%%
-either
-%%
-The E<lbracket>{{C[jump="#either"]either}}]this[{{C[jump="#or"]or}}]that[/either] implements a check for the first
-non-zero, non-blank value. It splits on [or], and then parses each
-piece in turn. If a value returns true (in the Perl senseE<nbspace>E<emdash> non-zero, non-blank)
-then subsequent pieces will be discarded without interpolation.
-
-\Example:
-
->  [either][value must_be_here][or][bounce href="[area incomplete]"][/either]
-
-Always strips leading and trailing whitespace.
 
 
 
