@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icfaq.sdf,v 1.5 2001-09-17 17:24:10 jon Exp $
+# $Id: icfaq.sdf,v 1.6 2001-12-11 20:41:44 racke Exp $
 
 !define DOC_NAME "Frequently Asked Questions"
 !define DOC_TYPE ""
 !define DOC_CODE "icfaq"
-!define DOC_VERSION substr('$Revision: 1.5 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.6 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/doc/icfaq.html"
@@ -725,7 +725,7 @@ LI1: Interchange user ID doesn't have keyring
 
 .You must have a C<.pgp> or C<.gnupg> directory in the home directory of the
 user running Interchange. It is also possible to set an environment variable
-(variously PGPPATH or GNUPGPATH) to orient the program correctly.
+(variously PGPPATH or GNUPGHOME) to orient the program correctly.
 
 LI1: EncryptProgram directive set wrong
 
