@@ -1,11 +1,11 @@
-# $Id: iccattut.sdf,v 1.2 2001-01-04 03:14:24 jon Exp $
+# $Id: iccattut.sdf,v 1.3 2001-01-11 23:44:32 jon Exp $
 
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
 
 !define DOC_NAME "Catalog-Building Tutorial"
 !define DOC_TYPE ""
 !define DOC_CODE "ICCATTUT"
-!define DOC_VERSION substr('$Revision: 1.2 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.3 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/iccattut.html"
@@ -70,8 +70,8 @@ H2:Your catalog URL
 
 N:Finally, you need to know the URL to access your store from a web browser. Again, this can vary widely depending on the setup of your web server. But given a common setup of the Apache web server, it is likely to be:
 
-*Root or RPM install: {{EX:http://localhost/cgi-bin/test/pagename}}
-*Manual install as user: {{EX:http://localhost/~username/test.cgi/pagename}}
+*Root or RPM install: {{EX:http://localhost/cgi-bin/tutorial/pagename}}
+*Manual install as user: {{EX:http://localhost/~username/tutorial.cgi/pagename}}
 
 N:If you aren't running your web browser on the server itself, you'll need to substitute your server's host name (something like {{EX:machine.domain.com}}) for {{EX:localhost}} whenever we mention URLs.
 
@@ -100,9 +100,9 @@ N:For the sake of simplicity, {{B:the remainder of this tutorial assumes you've 
 *Interchange user: interch
 *Demo catalog name: construct
 *Demo catalog URL base: http://localhost/cgi-bin/construct
-*Tutorial catalog name: test
-*Tutorial catalog URL base: http://localhost/cgi-bin/test
-*Tutorial catalog directory: /var/lib/interchange/test
+*Tutorial catalog name: tutorial
+*Tutorial catalog URL base: http://localhost/cgi-bin/tutorial
+*Tutorial catalog directory: /var/lib/interchange/tutorial
 
 N:Substitute the correct values for your system when we mention these settings in the tutorial.
 
@@ -112,48 +112,50 @@ H1:Starting our catalog
 
 H2:Create the link program
 
-N:We will now make a copy of the demo link program in your cgi-bin directory and name it {{FILE:test}}.
+N:We will now make a copy of the demo link program in your cgi-bin directory and name it {{FILE:tutorial}}.
 
 N:The demo link program has the same name as your demo catalog, usually {{EX:construct}}. This file links the Interchange daemon with your web server. You need to make sure that it has the same owner and file permissions as the one you copied from. Especially important is the set-UID bit (unless you installed as a regular user). You will probably need to be root to have write permission in the cgi-bin directory.
 
 N:Typing this command as root while in your cgi-bin directory should do what you need:
 
-E[keep_prev=1]cp -p construct test
+E[keep_prev=1]cp -p construct tutorial
 
-N:If everything's working correctly, typing {{EX:ls -l construct test}} should give you output similar to this:
+N:If everything's working correctly, typing {{EX:ls -l construct tutorial}} should describe your files roughly like this:
 
 !block example;
 -rwsr-xr-x    1 interch  interch      7708 Dec 16 22:47 construct
--rwsr-xr-x    1 interch  interch      7708 Dec 16 22:47 test
+-rwsr-xr-x    1 interch  interch      7708 Dec 16 22:47 tutorial
 !endblock
 
-H2:Create the test catalog directory
+H2:Create the tutorial catalog directory
 
-N:Create a subdirectory under your catalogs directory named {{FILE:test}}. This is where all of our catalog specific files will go. It needs to be readable, writable, and executable by the Interchange user. We will refer to this as your {{1:catalog directory}} (singular, not plural). These commands, run while in the catalogs directory, should do what you need:
+N:Create a subdirectory named {{FILE:tutorial}} under your catalogs directory (probably {{FILE:/var/lib/interchange/}}). This is where all of our catalog-specific files will go. It needs to be readable, writable, and executable by the Interchange user. We will refer to this as your {{1:catalog directory}} (singular, not plural). These commands, run while in the catalogs directory, should do what you need:
 
 !block example;
-mkdir test
-chown interch.interch test
-chmod 770 test
+mkdir tutorial
+chown interch.interch tutorial
+chmod 770 tutorial
 !endblock
 
 H2:Become the Interchange user
 
-N:From here on out, you should be able to do everything you need to do as the 'interch' user. So do {{EX:su interch}} now. You'll have to supply user interch's password if you weren't root.
+N:From here on out, you should be able to do everything you need to do as the 'interch' user. So do {{EX:su interch}} now. You'll have to supply user interch's password if you weren't root. (If you installed Interchange from RPM, user interch probably doesn't have a password. You'll have to set it with the {{FILE:passwd}} command while root.)
 
-H2:Go to the test catalog directory
+H2:Go to the tutorial catalog directory
 
-N:Change to the catalog directory with the 'cd' command now. {{B:From here on out, all file locations will be given relative to the test catalog directory.}} For example, {{FILE:pages/ord/basket.html}} would actually be {{FILE:/var/lib/interchange/test/pages/ord/basket.html}} or the equivalent on your system. The only exception is {{FILE:interchange.cfg}}, which is in the Interchange software directory and is described below.
+N:Change to the catalog directory with the 'cd' command now. {{B:From here on out, all file locations will be given relative to the tutorial catalog directory.}} For example, {{FILE:pages/ord/basket.html}} would actually be {{FILE:/var/lib/interchange/tutorial/pages/ord/basket.html}} or the equivalent on your system. The only exception is {{FILE:interchange.cfg}}, which is in the Interchange software directory and is described below.
+
+N:Note that to improve clarity, we will append a trailing slash to directory names, to more clearly distinguish them from file names. (This is similar to the output of the {{FILE::ls}} command with the {{EX:-F}} option.)
 
 H2:Create the session directory
 
-N:You need to create the session directory, which is where Interchange will save information on each visitor's browsing session. If you do not have this directory, Interchange may fail to work for you in what appears to be a mysterious way. This directory is called {{FILE:session}} and goes under your catalog directory. A simple {{EX:mkdir session}} should do the trick.
+N:You need to create the session directory, which is where Interchange will save information on each visitor's browsing session. If you do not have this directory, Interchange may fail to work for you in what appears to be a mysterious way. This directory is called {{FILE:session/}} and goes under your catalog directory. A simple {{EX:mkdir session}} should do the trick.
 
 H1:Configuration files
 
 N:Interchange configuration is controlled by a number of directives, which are specified in two kinds of configuration files. Global configuration directives go in {{FILE:interchange.cfg}} in the Interchange software directory. Catalog-specific configuration directives go in {{FILE:catalog.cfg}} in the catalog directory.
 
-N:A complete directive consists of the directive name followed by whitespace-separated parameters. It doesn't matter how many spaces or tabs are between the directive and its options, but the directive and all its options must be on the same line (with a few exceptions that don't concern us here).
+N:A complete directive consists of the directive name followed by whitespace-separated parameters. It doesn't matter how many spaces or tabs are between the directive and its options, but the directive and all its options must be on the same line (with a few exceptions that don't concern us here). The case of the directive isn't important, but it's recommended that you preserve the capitalization given for readability and consistency.
 
 N:You are free to insert blank lines or comment lines (lines where the first non-blank character is '#') freely throughout the configuration files to improve readability. The order the lines appear in is significant, but won't matter for our simple catalog.
 
@@ -167,45 +169,57 @@ E:Catalog   name   catalog_base_directory   link_url_path
 
 N:Open {{FILE:interchange.cfg}} (remember, it is in the Interchange software directory). Go near the top of the file, right below the other Catalog directives. Add this line:
 
-E:Catalog  test  /var/lib/interchange/test  /cgi-bin/test
+E:Catalog  tutorial  /var/lib/interchange/tutorial  /cgi-bin/tutorial
 
 N:That's it for this file! Save it.
 
 H2:catalog.cfg
 
-N:Now we need to create a {{FILE:catalog.cfg}} file for our test store (back in the test catalog directory). We'll start with a very simple products database table with a few fields and a few products.
+N:From here on out, most of the files we mention don't exist yet. You'll create them yourself with initial text we give.
+
+N:We need to create a {{FILE:catalog.cfg}} file for our tutorial store (back in the tutorial catalog directory). We'll start with a very simple products database table with a few fields and a few products.
 
 N:The {{2:Database}} directive describes a database table to the Interchange system in this format:
 
-E:Database   name   filename   format
+E:Database  name  filename  format
 
 N:Interchange has several database options available. We will use the simplest, which is the built-in default (specifically, some variant of DBM). The default location for {{1:filename}} is in a subdirectory called {{FILE:products}} under the catalog directory. Interchange recongnizes a number of file formats. We will use a tab-delimited text file. Enter this line into {{FILE:catalog.cfg}}:
 
-E:Database   products   products.txt   TAB
+E:Database  products  products.txt  TAB
 
 N:This tells Interchange that we have a database table named 'products' which is described in a tab-delimited file named {{FILE:products.txt}}. You can describe an unlimited number of arbitrary database tables for the system to use this way. Since Interchange is at heart an electronic commerce system, it expects to find at least a database table of products. We can specify all of the database tables that contain products by using the {{2:ProductFiles}} directive. There is no default for this, so we will have to specify our products database by adding the following line to {{FILE:catalog.cfg}}:
 
-E:ProductFiles   products
+E:ProductFiles  products
 
 N:There are a few other directives which Interchange expects to see in order to complete our minimum configuration. These are {{2:VendURL}}, {{2:SecureURL}}, and {{2:MailOrderTo}}. These are, respectively, your catalog's base URL, its secure URL, and the e-mail address to mail order notices to. We will supply these by adding the following lines to {{FILE:catalog.cfg}}:
 
 !block example;
-  VendURL  http://localhost/cgi-bin/test
-  SecureURL  http://localhost/cgi-bin/test
-  MailOrderTo  your@email.address
+VendURL  http://localhost/cgi-bin/tutorial
+SecureURL  http://localhost/cgi-bin/tutorial
+MailOrderTo  your@email.address
+!endblock
+
+N:Your first brand-new file, {{FILE:catalog.cfg}}, should look like this when you save it:
+
+!block example;
+Database  products  products.txt  TAB
+ProductFiles  products
+VendURL  http://localhost/cgi-bin/tutorial
+SecureURL  http://localhost/cgi-bin/tutorial
+MailOrderTo  your@email.address
 !endblock
 
 H1:The products database table
 
 H2:products/products.txt
 
-N:Create the {{FILE:products}} directory now.
+N:Create the {{FILE:products/}} directory in your tutorial catalog directory now.
 
-N:The products.txt file will serve two purposes. It will provide Interchange with the layout of the products database table and it will provide the data. When Interchange parses the products.txt file it will expect the first line to contain the names of the fields for the database table. The first field in the list is expected to be a primary key (unique identifier) for that row. In this case we are going to use the SKU (stock keeping unit) as the unique identifier for each product.
+N:The {{FILE:products/products.txt}} file will serve two purposes. It will provide Interchange with the layout of the products database table and it will provide the data. When Interchange parses the products.txt file it will expect the first line to contain the names of the fields for the database table. The first field in the list is expected to be a primary key (unique identifier) for that row. In this case we are going to use the SKU (stock keeping unit) as the unique identifier for each product.
 
 N:The product database is handled as a special case by Interchange. It expects to find at least a description and a price field in addition to the product ID. In other words, this file must at least contain fields named "sku", "price", and "description". Any other fields you wish to include are handled normally.
 
-N:Since this is a test catalog, let's sell tests. Digging through my files, I find the following tests from classes I've taken. Create the file {{FILE:products/products.txt}} to look like this, with a single tab separating each field:
+N:Since this is kind of a test catalog, let's sell tests. Digging through my files, I find the following tests from classes I've taken. Create the file {{FILE:products/products.txt}} to look like this, with a single tab separating each field:
 
 !block example;
 sku	description	price
@@ -241,7 +255,7 @@ N:Now we need something to display. Let's start by assuming that certain aspects
 
 N:The main section holds the content which will be different for each page. The top is for headers, banners, menus and the like. The left could be used for a sidebar or something similar, and the bottom can be the copyright and contact info. The top, left, and bottom sections will remain constant throughout the site.
 
-N:Now create the HTML for each template section in its own plain text file in the catalog directory, named simply 'top', 'left', and 'bottom', respectively. Why no '.html' suffix on these? Mostly to make clear that they're not meant to be parsed directly by Interchange as full pages.
+N:Now create the HTML for each template section in its own plain text file in the catalog directory, named simply 'top', 'left', and 'bottom', respectively. Why no '.html' suffix on these? Mostly to make clear that they're not meant to be parsed directly by Interchange as full pages. Why no '.txt' suffix? To make our [include] tags simpler (as you'll see below). And because we can.
 
 H2:top
 !block example;
@@ -279,7 +293,7 @@ H2:Interchange Tag Language
 
 N:Now we need a way to pull the template pieces into the proper places on our pages to make a complete page. It's time to introduce you to ITL, the Interchange Tag Language.
 
-N:ITL is at the heart of almost all Interchange catalog pages. It's how you tap Interchange's functionality. The tags spoken of appear between square brackets like [this]. Options appear after the tag, separated by whitespace, like this: [tag option1=value1 option2=value2]. They may span multiple lines. (That can help readability when the tag has many options.) There are many tags, and we will only scratch the surface of what can be done. Please refer to the ITL Tag Reference for full detauls.
+N:ITL is at the heart of almost all Interchange catalog pages. It's how you tap Interchange's functionality. The tags spoken of appear between square brackets like [this]. Options appear after the tag, separated by whitespace, like this: [tag value1 value2] and this: [tag option1=value1 option2=value2]. They may span multiple lines. (That can help readability when the tag has many options.) There are many tags, and we will only scratch the surface of what can be done. Please refer to the ITL Tag Reference for full details.
 
 N:Our first tag will be [include], which reads the file mentioned (relative to the catalog directory), parses any Interchange tags, and puts the result in place of the tag. We'll see how this works on the page we need to create next.
 
@@ -287,7 +301,9 @@ H1:A welcome page
 
 H2:pages/index.html
 
-N:Now we will create a very simple page to test that everything works so far. This file belongs in the {{FILE:pages}} subdirectory of the test directory, so go ahead and create that now. Type the following code and save it as {{FILE:index.html}}:
+N:Create a directory called {{FILE:pages/}} in your tutorial catalog directory now.
+
+N:Now we will create a very simple page to test that everything works so far. Type the following text and save it as {{FILE:pages/index.html}}:
 
 !block example;
 [include top]
@@ -296,7 +312,24 @@ This is where our content goes.
 [include bottom]
 !endblock
 
-N:Let's see if it works. Restart Interchange so your changes take effect. Now go to your web browser and load the page. The URL should look like {{EX:http://localhost/cgi-bin/test/index.html}}.
+N:Let's see if it works. Restart Interchange so your changes take effect. Now go to your web browser and load the page. The URL should look like {{EX:http://localhost/cgi-bin/tutorial/index.html}}.
+
+Note:Before we go on, we should mention that Interchange pages in the {{FILE:pages/}} or other directories {{B:must}} have the .html suffix on them. You may drop the suffix in your URL and other places such as the [page] tag you'll learn about later, but the file name itself must have the suffix.
+
+H1:Troubleshooting
+
+N:Hopefully your first Interchange page worked well. If it didn't, you'll need to try to figure out what went wrong. The vast majority of the time, overlooked details is the problem. Double-checking your typing is a good habit to get into.
+
+N:Here is a troubleshooting checklist that will come in handy whenever you run into problems:
+
+^Have you created directories with the proper names in the proper locations? (See Appendix A for a full directory and file structure of our tutorial catalog.)
++Have you misspelled any file names or put them in the wrong directories? Double-check with the {{FILE:ls}} command.
++Did you type letters in the proper case? Remember that both Unix and Interchange are case-sensitive, and for the most part you may not switch upper- and lower-case letters.
++Did you type all punctuation, ITL tags, and HTML tags correctly?
++Did you type whitespace correctly in the cases where it mattered? Remember to use tabs when tabs are called for (in lists and database text files).
++Check your catalog error log, {{FILE:error.log}} in your tutorial catalog directory, to see if Interchange reported anything of interest.
++Check the Interchange server error log, {{FILE:error.log}} in the Interchange software directory, to see if it had problems loading the catalog at all.
++View the HTML source of any catalog pages that are messed up. The problem may reveal itself when you see what HTML the browser is getting.
 
 H1:Displaying products
 
@@ -365,9 +398,9 @@ N:Now is a good time to test this. Go ahead and refresh the {{EX:index.html}} pa
 
 H2:pages/flypage.html
 
-N:Now let's go ahead and create an individual page for each item. All we have to do is to create a special generic page called {{FILE:pages/flypage.html}}. When a page is requested that does not exist in the {{FILE:pages/}} directory, Interchange will check and see if the requested page has the same name as a product ID from the product database table (in this case a SKU). If it does, it will show the flypage for that product. If there's no product with that ID, the special error page {{FILE:special_pages/missing.html}} will be displayed.
+N:Now let's go ahead and create an individual page for each item. All we have to do is to create a special generic page called {{FILE:pages/flypage.html}}. When a page is requested that does not exist in the {{FILE:pages/}} directory, Interchange will check and see if the requested page has the same name as a product ID from the product database table (in this case a SKU). If it does, it will show the flypage for that product. If there's no product with that ID, the special error page {{FILE:special_pages/missing.html}} (described in the next section) will be displayed.
 
-N:For example, if we request {{FILE:0198.html}}, Interchange will first check for a page with that name. Failing that, it will search the products database table and find the product with that ID. Then it will create a product page on "on the fly" using flypage.html in the {{FILE:pages/}} directory. When constructing the flypage, the entire entry for the requested product is available via the [item-field] tag (much like the [loop-field] tag). So, we can create {{FILE:flypage.html}} like so:
+N:For example, if we request {{FILE:0198.html}}, Interchange will first check for a page with that name. When it doesn't find one, it will search the products database table and see there is a product with that ID. Then it will create a product page "on the fly" using {{FILE::pages/flypage.html}}. When constructing the flypage, the entire product record for the requested product is available via the [item-field] tag (much like the [loop-field] tag). So, let's create {{FILE:pages/flypage.html}} like so:
 
 !block example;
 [include top]
@@ -393,7 +426,9 @@ H1:Unknown URL error page
 
 H2:special_pages/missing.html
 
-N:We mentioned above that an error page will be displayed if Interchange is asked for a page but can't find it in the pages/ directory and the URL doesn't list a SKU from which a flypage can be made. First we need to create the {{FILE:special_pages}} directory. Then let's create {{FILE:special_pages/missing.html}} to look like this:
+N:Create the {{FILE:special_pages/}} directory in your tutorial catalog directory now. ({{B:Not}} in the {{FILE:pages/}} directory!)
+
+N:We mentioned above that Interchange wants to display an error page when it is asked for an unknown page. Let's create {{FILE:special_pages/missing.html}} for this purpose. Make it look like this:
 
 !block example;
 [include top]
@@ -408,7 +443,7 @@ N:That will ensure users see a mildly friendly message instead of a mysterious s
 
 H1:The shopping basket
 
-H2:pages/ord/basket.html
+H2:A link for ordering
 
 N:Now that we have the products available for perusal, let's add a shopping cart so that folks can actually purchase our wares. For this we will use the [order] [/order] tags. These create an HTML link which will cause the specified item to be ordered and then will transfer the shopper to the basket page. This is actually just a built-in shortcut to the complete order process which uses an HTML form submission process. The parameter for the [order] tag is the product ID. To add these tags to the catalog, make the following change to {{FILE:pages/index.html}}:
 
@@ -424,9 +459,13 @@ N:Now that we have the products available for perusal, let's add a shopping cart
 
 Note:The line to add is marked by a '+'. Do not include the '+'. The other lines are shown to give you context. (This style is called a "context diff" and will be used frequently.)
 
-N:We now need to add a new subdirectory called {{FILE:ord/}} inside of the {{FILE:pages/}} directory. For the [order] tag Interchange will expect a default page by the name of {{FILE:basket.html}} in this new {{FILE:pages/ord/}} directory. This page will display the contents of the shopping basket as well as have other shopping basket functionality.
+H2:pages/ord/basket.html
 
-N:The Interchange demo store has a full-featured shopping basket available for you to use, but we'll cobble our own simple one together. The shopping basket items can be accessed using a set of tags which have an [item] prefix. Let's create this simple basket in {{FILE:pages/ord/basket.html}} first and then we'll discuss the tags used in it:
+N:Create the directory {{FILE:pages/ord/}} inside the tutorial catalog directory now. In other words, you should have an {{FILE:ord/}} {{I:inside}} the {{FILE:pages/}} directory.
+
+N:For the [order] tag Interchange will expect a default page called {{FILE:pages/ord/basket.html}}. This page will display the contents of the shopping basket as well as have other shopping basket functionality.
+
+N:The Interchange demo store has a full-featured shopping basket available for you to use, but we'll cobble our own simple one together. The shopping basket items can be accessed using a set of tags which have an [item] prefix. Let's put this text in the new file {{FILE:pages/ord/basket.html}} first and then we'll discuss the tags used in it:
 
 !block example;
 [include top]
@@ -493,6 +532,8 @@ N:Now we will also put a link in the index page so that shoppers can go to their
 + <p align=center>[page order]View shopping cart[/page]</p>
   [include bottom]
 !endblock
+
+N:Go ahead and test out the shopping basket in your browser.
 
 H1:Order checkout
 
@@ -592,7 +633,7 @@ Year (last two digits only):
 [include bottom]
 !endblock
 
-N:First we begin an HTML form with a method of 'post' (which sends the form data as its own stream, as opposed to the 'get' method which encodes the data as part of the URL). The [process] tag creates a special URL for form processing. Interchange has a built-in form processor which is configured by submitting certain fields in the form. The Finalize button will invoke this form processor and then link the user to the {{FILE:special_pages/receipt.html}} page.
+N:First we begin an HTML form with a method of 'post' (which sends the form data as its own stream, as opposed to the 'get' method which encodes the data as part of the URL). The [process] tag creates a special URL for form processing. Interchange has a built-in form processor which is configured by submitting certain fields in the form. The Finalize button will invoke this form processor and then link the user to the {{FILE:special_pages/receipt.html}} page (described later).
 
 N:We will submit some hidden form values which will tell Interchange how to process this form. The first value {{2:mv_todo}} has the value of {{1:submit}}; this causes the form to be submitted for validation. The second value sets {{2:mv_order_profile}} to {{1:order_profile}}. The order profile determines the validation process for the form. We'll go into this in the next section.
 
@@ -600,11 +641,13 @@ N:Lastly we set {{2:mv_cyber_charge}} to be {{1:minivend_test}}. The {{2:mv_cybe
 
 N:When preparing an order for processing, Interchange looks for certain named fields in the form values for name, address, and credit card info. We are using all of the expected field names in this form so that no translation has to take place.
 
+N:Have a look at the checkout page in your browser. The "Finalize!" link won't work yet, of course.
+
 H2:etc/profiles.order
 
-N:First, we need to create a new directory in the catalog directory called {{FILE:etc/}} for this next file.
+N:Create the {{FILE:etc/}} directory in the tutorial catalog directory now.
 
-N:Now we need to set up verification for the order form. This involves defining an order profile for the form. Create {{FILE:etc/profiles.order}} as follows and then we'll discuss the various features:
+N:Now we need to set up verification for the order form. This involves defining an order profile for the form. Create {{FILE:etc/profiles.order}} as follows and then we'll discuss the various features.
 
 !block example;
   __NAME__ order_profile
@@ -723,9 +766,7 @@ H2:Price pictures
 
 N:It's probably really been annoying you that the product prices aren't formatted as prices usually are. You may have even added a dollar sign ($) before the [loop-field price] tag in your {{FILE:pages/index.html}} file to help out. But that still didn't make the thirty-seven dollar price of the "Ubiquitous diff eq final" test show up as "$37.00" -- instead it was simply "$37". (Assuming you didn't change the price from our sample data.) The way to deal with this is an Interchange feature called {{1:price pictures}}.
 
-N:There are several properties of price pictures: the currency symbol, the thousands separator, the decimal point, the number of digits to show behind the decimal, and so on. We won't go into details here -- it's all described in detail in the Interchange documentation. But it's actually very easy for us to do a price picture for U.S. dollars, because that is the default.
-
-N:The only thing we need to specify is the currecy symbol, the dollar sign. To do this, add the following line to your {{FILE:catalog.cfg}} file:
+N:There are several properties of price pictures: the currency symbol, the thousands separator, the decimal point, the number of digits to show behind the decimal, and so on. Many Unix systems will have U.S. currency and English as the default locale, which we call {{EX:en_US}}. The only thing we need to do on such a system is specify the currency symbol, the dollar sign. To do this, add the following line to your {{FILE:catalog.cfg}} file:
 
 !block example;
 Locale en_US currency_symbol $
@@ -748,7 +789,23 @@ N:But that's probably not what you want to do. You're probably more interested i
 
 Note:The line that begins with '-' should be deleted. Do not type the '-' or anything after it. The next line that starts with '+' replaces it.
 
-N:A similar change to the {{EX:[item-field price]}} tag in {{FILE:pages/flypage.html}} will fix that page.
+N:A similar change to the {{EX:[item-field price]}} tag in {{FILE:pages/flypage.html}} will fix that page. Now take a look in your browser. All your prices should look pretty.
+
+N:If your prices are not being formatted correctly, your default system locale may be set up differently or your {{EX:en_US}} locale settings may be wrong. There are a few other {{FILE:catalog.cfg}} directives you can use to correct the situation:
+
+E:Locale en_US p_cs_precedes 1
+
+N:That will make the currency symbol precede the currency value. A '0' setting will make the symbol come after the currency value.
+
+E:Locale en_US mon_thousands_sep ,
+
+N:That sets your thousands separator to a comma. You can set it to whatever you want.
+
+E:Locale en_US mon_decimal_point .
+
+N:That should be pretty obvious too. Many countries use a comma instead of a period to separate the integer from the decimal part.
+
+N:Consult the Interchange documentation and your operating system manual for more information on locale settings.
 
 H2:Catalog variables
 
@@ -801,7 +858,7 @@ H2:Fancy credit card expiration date selection
 
 N:To reduce human error at checkout time, most online stores use pull-down option menus to list the months of the year and the years for the credit card expiration date, instead of expecting the user to type the numbers by hand. This also lets you avoid explaining whether the user should enter 2- or 4-digit years.
 
-N:The following change to your {{FILE:pages/checkout.html}} gives you just such an enhancement:
+N:The following change to your {{FILE:pages/checkout.html}} gives you just such an enhancement. (You may want to read the explanation below before typing it in so you know where tabs should be used instead of spaces, and where to watch out for `backticks`.)
 
 !block example;
   <tr>
@@ -959,6 +1016,24 @@ N:The search results will all be contained within [search-region] [/search-regio
 
 N:That's all there is to it.
 
+H2:Default catalog page
+
+N:As you know, a standard Interchange catalog page URL looks like:
+
+E[keep_prev=1]http://localhost/cgi-bin/tutorial/index.html
+
+N:But what happens if you leave off the page name, as people often do when typing URLs in by hand? Try:
+
+E:http://localhost/cgi-bin/tutorial
+
+N:And you get a nasty server error message. We can deal with this by adding a directive to {{FILE:catalog.cfg}}:
+
+E:SpecialPage catalog index
+
+N:Now restart Interchange and try the above URL again.
+
+N:If you want to make the welcome page something other than {{FILE:pages/index.html}}, just modify the 'index' part of the directive appropriately.
+
 H2:High-traffic changes
 
 N:All through the tutorial we've created catalog pages that use the [include] tag to include template pieces into our pages. This has worked well for us, but there are a few drawbacks. One is that if we want to rename any of the template piece files, or move them out of the main catalog directory and into their own subdirectory, we would have to update the [include] tags on every page. To avoid this, we can set up catalog variables set to the [include] tags. Add these lines to your {{FILE:catalog.cfg}} file:
@@ -969,7 +1044,9 @@ Variable LEFT   [include left]
 Variable BOTTOM [include bottom]
 !endblock
 
-N:Now just change every instance of [include top] to __TOP__, and so on for each [include] tag. A rename and move would require only a single change in {{FILE:catalog.cfg}} similar to this:
+N:Now just change every instance of [include top] to __TOP__, and so on for each [include] tag. You may not feel like doing a bunch of search-and-replace on all the .html files you just created, but it's a good idea to use this capability in the next catalog you work on.
+
+N:If you made all the replacements and then renamed and moved your {{FILE:top}} file, you would only have to make a single change for each region in {{FILE:catalog.cfg}} to get all your pages up to date:
 
 E:Variable TOP    [include templates/main-top]
 
@@ -998,10 +1075,10 @@ N:You can expand your skill with Interchange by adding more functionality to you
 
 A1:Catalog directory structure
 
-N:This diagram shows the directory and file structure used for the 'test' catalog in this tutorial. The base will be a directory with the name of your catalog:
+N:This diagram shows the directory and file structure used for the 'tutorial' catalog we built. The base will be a directory with the name of your catalog:
 
 !block example;
-  test/
+  tutorial/
   |
   |----bottom
   |----catalog.cfg
@@ -1036,26 +1113,4 @@ A1:Document history
 
 N:October 2000. Conceived and written by Sonny Cook.
 N:December 2000. Edited and expanded by Jon Jensen.
-
-A1:To do
-
-A2:Write up
-*Case-sensitivity issues, both IC and Unix
-*catalog error.log, Interchange error.log
-*template pages MUST end in .html
-*deal with "cgi-bin/test" and no page -- shouldn't give a 404
-
-A2:Find out
-*are global & catalog directives case-sensitive?
-*[on-match] gets used if search returned no results on an empty search string. Why?
-*Why can't search parms be whitespace-separated (vs. /, &, and \n)?
-
-A2:Docs irregularities
-*Has the default search page changed? now pages/results.html, was special_pages/search.html.
-*[no-match] missing doesn't seem to go to special_pages/nomatch.html anymore.
-*[on-match] doesn't seem to be documented at all.
-
-A2:Think about fixing
-*even missing.html won't work if pages/ dir doesn't exist! q.v. 127.0.0.1 csRgI56j:127.0.0.1 - [18/December/2000:22:32:58 -0500] test /cgi-bin/test/index.html Runtime error: Missing special page: ../special_pages/missing
-*No error message is given in [error] if required form variables weren't passed at all (vs. being simply empty)
-*No error message if profiles.order can't be found
+N:January 2001. Proofread and new clarifications given by Alison Smith and David Adams.
