@@ -1,0 +1,97 @@
+Question: should we be using the DBI ChopBlanks setting for Oracle or
+is Interchange trimming trailing space from CHAR fields itself?
+
+Also: IC daemon user should have environment variables ORACLE_HOME and
+NLS_LANG set. Any others?
+
+
+
+Date: Wed, 18 Oct 2000 18:10:34 -0400
+From: Mark Johnson <mark.johnson@akopia.com>
+To: jon@akopia.com, bill@akopia.com
+Subject: Oracle Install on 8i
+ 
+Jon,
+ 
+Everything went smoothly. The only issue was that I did have to set
+ORACLE_HOME in bin/interchange to pick it up. This, I assume, occurred
+since it wasn't in my user's environment at install time. What I might
+suggest for makecat would be to put a prompt in if the user chooses
+Oracle and (1) the system config did not get an ORACLE_HOME at install
+time, and (2) $ENV{ORACLE_HOME} is not set.
+ 
+The following error was logged for index creation statements on
+gift_certs, userdb, recurring_items, recurring_orders, inventory, and
+ship_addresses tables:
+ 
+  ORA-01408: such column list already indexed (DBD ERROR:
+OCIStmtExecute)
+ 
+I'll get you the trigger creation statement ASAP.
+ 
+ 
+--
+Mark Johnson
+Akopia Professional Services
+mark.johnson@akopia.com
+703-456-2912
+
+
+
+Date: Thu, 19 Oct 2000 10:07:48 -0400
+From: Mark Johnson <mark.johnson@akopia.com>
+To: jon@akopia.com
+Subject: Trigger
+ 
+To set a trigger on TABLE_NAME to update the MOD_TIME column on insert
+or update:
+ 
+CREATE TRIGGER tr_modtime_for_TABLE_NAME
+BEFORE INSERT OR UPDATE ON TABLE_NAME
+FOR EACH ROW
+BEGIN
+  :new.MOD_TIME := SYSDATE;
+END;
+/
+ 
+In SQL*Plus, you execute the creation statement with the /  I assume it
+will be the same thing passing the creation through DBI. But, this could
+be tricky since it is a PL/SQL block. I'll go ahead and see if I can
+create a trigger from a Perl script just to be sure.
+ 
+--
+Mark Johnson
+Akopia Professional Services
+mark.johnson@akopia.com
+703-456-2912
+ 
+
+
+Date: Fri, 20 Oct 2000 09:32:45 -0400
+From: Mark Johnson <mark.johnson@akopia.com>
+To: Jon Jensen <jon@akopia.com>
+Subject: Re: Oracle Install on 8i
+ 
+Jon Jensen wrote:
+>
+> On Thu, 19 Oct 2000, Mark Johnson wrote:
+>
+> Thanks for sending that trigger. I decided to leave it out of the release
+> for the time being because my user wasn't allowed to create triggers. I
+> want to look into the permissions issues behind triggers first and then
+> put them in. It does fail gracefully, at least.
+>
+ 
+The user must have been granted the RESOURCE role to create triggers on
+his/her own tables. Or, alternatively, there's probably a grant that is
+specific to triggers. I would think it's likely that anyone with rights
+to muck around in Oracle and create tables should have at least the
+RESOURCE role. Or, you could give it as a prompt in makecat if the user
+chooses Oracle as to whether they have the correct privs. If they don't
+know, they probably don't.
+ 
+--
+Mark Johnson
+Akopia Professional Services
+mark.johnson@akopia.com
+703-456-2912

@@ -1,0 +1,165 @@
+From mikeh@minivend.com Wed Jan 17 20:38:35 2001
+Date: Thu, 13 Jul 2000 11:49:56 -0400
+From: Mike Heins <mikeh@minivend.com>
+Reply-To: minivend-users@minivend.com
+To: minivend-users@minivend.com
+Subject: Re: [mv] Upgrade to Preview of Akopia Interchange
+
+******    message to minivend-users from Mike Heins <mikeh@minivend.com>     ******
+
+Quoting Lee Hoffman (lee@rsub.net):
+> 
+> Does anyone know how to upgrade minivend 4 to Interchange?? The docs and
+> press releases say the upgrade will be easy but there is no mention of how.
+
+We will be providing an update document when we do the official release.
+We expect that to happen next month some time.
+
+Here is a bit of a start on that:
+
+MINIVEND.CFG:
+
+	Remove references to MiniMate.
+
+	Add this line to minivend.cfg:
+
+	#include lib/UI/ui.cfg
+
+	Make sure the files catalog_before.cfg and catalog_after.cfg
+	are there, or add their contents to etc/your_cat_name.before
+	and  etc/your_cat_name.after to it only for some catalogs.
+
+ACCESS MANAGER:
+
+    You need to get the minimate.asc file renamed to access.asc and
+    add the following fields to the first line:
+	    
+	    groups
+	    last_login
+	    name
+	    password
+
+	Remove these catalog.cfg lines:
+
+		Variable            MINIMATE_META   mv_metadata
+		Variable            MINIMATE_TABLE  minimate
+		Database            minimate        minimate.asc      TAB
+
+	Add this one:
+		Database            affiliate    affiliate.txt     TAB
+
+    Authentication for admin users is now done from a separate 
+    table than customers, and passwords are encrypted.
+
+DATABASE EDITORS:
+
+	Update the mv_metadata.asc file as appropriate.
+
+ORDER MANAGER:
+
+    Some things that are needed for the order manager:
+
+    --- Add these fields to transactions:
+		    affiliate approx. char(32)
+		    archived  char(1)
+		    campaign  approx. char(32)
+		    comments  blob/text
+		    complete  char(1)
+		    deleted   char(1)
+		    order_wday char(10)
+		    order_ymd char(8)
+		    po_number approx. char(32)
+
+    --- Add these fields to transactions:
+		    affiliate approx. char(32)
+		    campaign  approx. char(32)
+
+    --  Remove this field from userdb:
+		    mv_credit_card_info
+    --  Add these fields to userdb:
+		    inactive  char(1)
+		    credit_limit char(14) or decimal(12,2)
+
+    --- Create the directory 'logs'.
+    --- Create the directory 'orders' if it doesn't already exist.
+    --- Update your order routes to those in the Interchange distribution.
+		Note that the route log_entry is necessary if you want to enter
+		orders from the Interchange UI.
+    --- Update the etc/log_transaction file.
+    --- Add the etc/log_entry file.
+	--- Add this to catalog.cfg:
+
+			## Don't want people setting their credit_limit directly
+			UserDB default scratch credit_limit
+
+AFFILIATES:
+
+	Add an affiliate table:
+
+	affiliate	name	campaigns	join_date	url	timeout	active	password
+
+PAGE EDITOR:
+
+	--- Add the directories 'templates' and 'backup'. Copy the contents
+		of the interchange simple/templates to templates.
+
+ITEM EDITOR:
+
+	-- If you want the merchandising feature, add the fields blurb_begin
+	   and blurb end; char(128) or whatever will hold your promo data works.
+
+KNAR EDITOR:
+
+	Create the file variable.txt with these fields:
+
+		code	Variable
+
+	Add this as the *first* line of catalog.cfg:
+
+		VariableDatabase variable
+
+ROUTE EDITOR:
+
+	Create the file route.txt with these fields:
+
+		code
+		report
+		receipt
+		encrypt_program
+		encrypt
+		pgp_key
+		pgp_cc_key
+		cyber_mode
+		credit_card
+		profile
+		inline_profile
+		email
+		attach
+		counter
+		increment
+		continue
+		partial
+		supplant
+		track
+		errors_to
+
+	Add this line in catalog.cfg:
+
+		RouteDatabase route
+
+Basically, if you are starting from Minivend 4 you should just be able
+to install it. Your catalog should continue to work just fine, and the
+admin interface will be somewhat usable. I haven't actually tried this
+yet, but I will be doing so soon. 8-)
+
+-- 
+Akopia, Inc., 131 Willow Lane, Floor 2, Oxford, OH  45056
+phone +1.513.523.8220 fax 7501 <heins@akopia.com>
+
+Unix version of an Outlook-style virus:
+It works on the honor system. Please forward this message to everyone
+you know, and delete a bunch of your files at random.
+-
+To unsubscribe from the list, DO NOT REPLY to this message.  Instead, send
+email with 'UNSUBSCRIBE minivend-users' in the body to Majordomo@minivend.com.
+Archive of past messages: http://www.minivend.com/minivend/minivend-list
