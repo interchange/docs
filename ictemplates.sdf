@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ictemplates.sdf,v 1.7 2000-10-19 20:55:31 alison Exp $
+# $Id: ictemplates.sdf,v 1.8 2000-10-19 21:14:03 zarko Exp $
 
 !define DOC_NAME "Interchange Templates"
 !define DOC_TYPE ""
 !define DOC_CODE "ICTEMPLATES_D2a_100800"
-!define DOC_VERSION substr('$Revision: 1.7 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.8 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
@@ -846,19 +846,15 @@ LI1: E<lbracket>/if]
 
 .Terminates an if conditional.
 
-=head1 PROGRAMMING
+H1: PROGRAMMING
 
-Interchange has a powerful paradigm for extending and enhancing its functionality.
-It uses two mechanisms, C<user-defined tags> and C<user subroutines> on two
-different security levels, global and catalog. In addition, C<Embedded Perl Code> may be used to build functionality into a site’s pages.
+Interchange has a powerful paradigm for extending and enhancing its functionality.  It uses two mechanisms, C<user-defined tags> and C<user subroutines> on two different security levels, global and catalog. In addition, C<Embedded Perl Code> may be used to build functionality into a site’s page.
 
-C<User-defined tags> are defined with the UserTag directive in either
-C<minivend.cfg> or C<catalog.cfg>. The ones in C<minivend.cfg> are global, i.e., they are not constrained by the C<Safe> Perl module as to which opcodes and  routines they may use. Normally, the user-defined tags in  C<catalog.cfg> are constrained by C<Safe>, but if the C<AllowGlobal> global directive is set for the particular catalog in use, its C<UserTag> and C<Sub> definitions will have global capability.
+C<User-defined tags> are defined with the UserTag directive in either C<minivend.cfg> or C<catalog.cfg>. The ones in C<minivend.cfg> are global, i.e., they are not constrained by the C<Safe> Perl module as to which opcodes and  routines they may use. Normally, the user-defined tags in  C<catalog.cfg> are constrained by C<Safe>, but if the C<AllowGlobal> global directive is set for the particular catalog in use, its C<UserTag> and C<Sub> definitions will have global capability.
 
-Many of the internal Interchange routines can be accessed by the savvy programmer
-who reads the source and finds the entry points. Also, many internal Interchange
-routines can be overridden:
+Many of the internal Interchange routines can be accessed by the savvy programmer who reads the source and finds the entry points. Also, many internal Interchange routines can be overridden:
 
+!block example
     GlobalSub <<EOS
     sub just_for_overriding {
         package Vend::Module;
@@ -868,23 +864,26 @@ routines can be overridden:
         }
     }
     EOS
+!endblock
 
-The effect of the above is to override the C<to_override> routine in the
-module C<Vend::Module>. This is preferable to hacking on the code if the functionality change is expected to last long. Then, the Interchange code can be updated, in most cases, while still keeping your hack.
+The effect of the above is to override the C<to_override> routine in the module C<Vend::Module>. This is preferable to hacking on the code if the functionality change is expected to last long. Then, the Interchange code can be updated, in most cases, while still keeping your hack.
 
-=head2 Embedded Perl Code
+H2: Embedded Perl Code
 
 Perl code can be directly embedded in Interchange pages. The code is specified as:
 
-    [perl]
+!block example
+    E<lbracket>perl]
         $name    = $Values->{name};
         $browser = $Session->{browser};
         return "Hi, $name! How do you like your $browser?";
-    [/perl]
+    E<lbracket>/perl]
+!endblock
 
 ASP syntax can be used with:
 
-    [mvasp]
+!block example
+    E<lbracket>mvasp]
         <%
         $name    = $Values->{name};
         $browser = $Session->{browser};
@@ -893,79 +892,98 @@ ASP syntax can be used with:
         <%
             HTML "How do you like your $browser?";
         %>
-    [/mvasp]
+    E<lbracket>/mvasp]
+!endblock
 
 The two snippets above are essentially equivalent.
 
+H2: Export
 
+.Named Parameters: E<lbracket>export table="dbtable"]
 
-=head2 Export
+.Positional Parameters: E<lbracket>export db_table]
 
-Parameters: table 
-Positional parameters in same order. 
+.The attribute hash reference is passed to the subroutine after the parameters as the last argument. This may mean that there are parameters not shown here. Must pass named parameter interpolate=1 to cause interpolation.
 
-The attribute hash reference is passed to the subroutine after the parameters as the last argument. This may mean that there are parameters not shown here. 
-Must pass named parameter interpolate=1 to cause interpolation. 
+.Invalidates cache: YES
 
-Invalidates cache: YES 
-
-Called Routine:
+.Called Routine:
  
-ASP/perl tag calls: 
+.ASP/perl tag calls: 
 
+!block example; listitem=2
     $Tag->export(
         {
          table => VALUE,
         }
     )
+!endblock
   
- OR
+.OR
  
+!block example; listitem=2
     $Tag->export($table, $ATTRHASH);
+!endblock
 
-Attribute aliases: 
+.Attribute aliases: 
 
+!block example; listitem=2
 	base ==> table
 	database ==> table
+!endblock
 
-=head2 Time
+H2: Time
 
-Parameters: locale 
-Positional parameters in same order. 
+.Named Parameters: E<lbracket>time locale="loc"]
 
-The attribute hash reference is passed after the parameters but before the container text argument. This may mean that there are parameters not shown here. 
-Must pass named parameter interpolate=1 to cause interpolation. 
-This is a container tag, i.e., [time] FOO [/time]. Nesting: NO. Invalidates cache: NO. 
+.Positional Parameters: E<lbracket>time loc]
 
-Called Routine: 
+.The attribute hash reference is passed after the parameters but before the container text argument. This may mean that there are parameters not shown here. Must pass named parameter interpolate=1 to cause interpolation.
 
-ASP/perl tag calls: 
+.This is a container tag, i.e., E<lbracket>time] FOO E<lbracket>/time].
 
+.Nesting: NO.
+
+.Invalidates cache: NO.
+
+.Called Routine: 
+
+.ASP/perl tag calls: 
+
+!block example; listitem=2
     $Tag->time(
         {
          locale => VALUE,
         },
         BODY
     )
+!endblock
   
- OR
+.OR
  
+!block example; listitem=2
     $Tag->time($locale, $ATTRHASH, $BODY);
+!endblock
 
-=head2 Import
+H2: Import
 
-Parameters: table type 
-Positional parameters in same order. 
+.Named Parameters: E<lbracket>import table=table_name type=(TAB|PIPE|CSV|%%|LINE) continue=(NOTES|UNIX|DITTO) separator=c]
 
-The attribute hash reference is passed after the parameters but before the container text argument. This may mean that there are parameters not shown here. Interpolates container text by default>. 
+.Positional Parameters: E<lbracket>import table_name TAB]
 
-This is a container tag, i.e., [import] FOO [/import]. Nesting: NO 
-Invalidates cache: YES. 
+.The attribute hash reference is passed after the parameters but before the container text argument. This may mean that there are parameters not shown here. Interpolates container text by default>. 
 
-Called Routine: 
+.This is a container tag, i.e., E<lbracket>import] FOO E<lbracket>/import].
 
-ASP/perl tag calls: 
+.Nesting: NO 
 
+.Invalidates cache: YES. 
+
+.Called Routine: 
+
+.ASP/perl tag calls: 
+
+!block example; listitem=2
     $Tag->import(
         {
          table => VALUE,
@@ -973,71 +991,81 @@ ASP/perl tag calls:
         },
         BODY
     )
+!endblock
   
- OR
+.OR
  
+!block example; listitem=2
     $Tag->import($table, $type, $ATTRHASH, $BODY);
+!endblock
 
-Attribute aliases:
+.Attribute aliases:
  
+!block example; listitem=2
 	base ==> table
 	database ==> table
+!endblock
  
-Description:
+.Description:
  
-Named attributes: 
-    [import table=table_name
-            type=(TAB|PIPE|CSV|%%|LINE)
-            continue=(NOTES|UNIX|DITTO)
-            separator=c]
+.Import one or more records into a database. The type is any of the valid Interchange delimiter types, with the default being defined by the setting of the database DELIMITER. The table must already be a defined Interchange database table; it cannot be created on-the-fly. (Use SQL for on-the-fly tables.) 
 
-Import one or more records into a database. The type is any of the valid Interchange delimiter types, with the default being defined by the setting of the database DELIMITER. The table must already be a defined Interchange database table; it cannot be created on-the-fly. (Use SQL for on-the-fly tables.) 
+.The type of LINE and continue setting of NOTES is particularly useful, for it allows the naming of fields so that the order in which they appear in the database will not have to be remembered. The following two imports are identical in effect: 
 
-The type of LINE and continue setting of NOTES is particularly useful, for it allows the naming of fields so that the order in which they appear in the database will not have to be remembered. The following two imports are identical in effect: 
-
-    [import table=orders]
-    code: [value mv_order_number]
-    shipping_mode: [shipping-description]
+!block example; listitem=2
+    E<lbracket>import table=orders]
+    code: E<lbracket>value mv_order_number]
+    shipping_mode: E<lbracket>shipping-description]
     status: pending
-    [/import]
+    E<lbracket>/import]
   
-    [import table=orders]
-    shipping_mode: [shipping-description]
+    E<lbracket>import table=orders]
+    shipping_mode: E<lbracket>shipping-description]
     status: pending
-    code: [value mv_order_number]
-    [/import]
+    code: E<lbracket>value mv_order_number]
+    E<lbracket>/import]
+!endblock
 
-The code or key must always be present, and is always named code. If NOTES mode is not used, import the fields in the same order as they appear in the ASCII source file. 
-The [import ....] TEXT [/import] region may contain multiple records. If using NOTES mode, use a separator, which by default is a form-feed character (^L). 
+.The code or key must always be present, and is always named code. If NOTES mode is not used, import the fields in the same order as they appear in the ASCII source file. The E<lbracket>import ....] TEXT E<lbracket>/import] region may contain multiple records. If using NOTES mode, use a separator, which by default is a form-feed character (^L).
 
-=head2 Log
+H2: Log
 
-Parameters: file 
-Positional parameters in same order. 
+.Named Parameters: E<lbracket>log file=file_name]
 
-The attribute hash reference is passed after the parameters but before the container text argument. This may mean that there are parameters not shown here. 
-Must pass named parameter interpolate=1 to cause interpolation. This is a container tag, i.e., [log] FOO [/log]. Nesting: NO. Invalidates cache: NO.
+.Positional Parameters: E<lbracket>log file_name]
+
+.The attribute hash reference is passed after the parameters but before the container text argument. This may mean that there are parameters not shown here. Must pass named parameter interpolate=1 to cause interpolation. This is a container tag, i.e., E<lbracket>log] FOO E<lbracket>/log].
+
+.Nesting: NO.
+
+.Invalidates cache: NO.
  
-Called Routine: 
+.Called Routine: 
 
-ASP/perl tag calls: 
+.ASP/perl tag calls: 
 
+!block example; listitem=2
     $Tag->log(
         {
          file => VALUE,
         },
         BODY
     )
+!endblock
   
- OR
+.OR
  
+!block example; listitem=2
     $Tag->log($file, $ATTRHASH, $BODY);
+!endblock
 
-Attribute aliases:
+.Attribute aliases:
  
+!block example; listitem=2
 	arg ==> file
+!endblock
 
-=head2 Header
+H2: Header
 
 H2: PRICE, DESCRIPTION, ACCESSORIES
 
