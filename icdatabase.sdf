@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.17 2001-03-16 05:53:25 jon Exp $
+# $Id: icdatabase.sdf,v 1.18 2001-03-28 05:05:08 jon Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.17 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.18 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icdatabase.html"
@@ -1171,8 +1171,6 @@ IMPORTANT NOTE: An incompatibility in earlier Interchange catalogs is specifying
                    se=searchstring
            "]
 !endblock
-
-cause a bad URL. Change this to C<[page scan se=searchstring]>.
 
 A one-click search may be specified in three different ways.
 
