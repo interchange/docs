@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.108 2003-02-05 15:57:59 mheins Exp $
+# $Id: ictags.sdf,v 1.109 2003-04-24 17:09:10 mheins Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.108 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.109 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ictags.html"
@@ -385,25 +385,19 @@ like E<lbracket>{{CMD[jump="#loop"]loop}}], E<lbracket>{{CMD[jump="#item-list"]i
 . E<lbracket>{{CMD[jump="#PREFIX-description"]PREFIX-description}}] (Note C<safe-data> and C<ed()> escape)
 . E<lbracket>{{CMD[jump="#PREFIX-discount"]PREFIX-discount}}]
 . E<lbracket>{{CMD[jump="#PREFIX-discount-subtotal"]PREFIX-discount-subtotal}}]
-. C<[if-PREFIX-exec]>
 . E<lbracket>{{CMD[jump="#PREFIX-field"]PREFIX-field}}] (Optimization note-- one query per field if you use this; we optimize around this if only one products table) 
-. C<[if-PREFIX-filter]>
 . E<lbracket>{{CMD[jump="#PREFIX-increment"]PREFIX-increment}}]
 . E<lbracket>{{CMD[jump="#PREFIX-last"]PREFIX-last}}]
 . E<lbracket>{{CMD[jump="#PREFIX-line"]PREFIX-line}}] (tab-delimited list of parameters returned)
-. C<[if-PREFIX-match]>
 . E<lbracket>{{CMD[jump="#PREFIX-modifier"]PREFIX-modifier}}]
 . E<lbracket>{{CMD[jump="#PREFIX-next"]PREFIX-next}}]
-. C<[if-PREFIX-options]>
 . E<lbracket>{{CMD[jump="#PREFIX-param"]PREFIX-param}}]
 . E<lbracket>{{CMD[jump="#PREFIX-pos"]PREFIX-pos}}]
 . E<lbracket>{{CMD[jump="#PREFIX-price"]PREFIX-price}}]
 . E<lbracket>{{CMD[jump="#PREFIX-quantity"]PREFIX-quantity}}]
-. C<[if-PREFIX-sub]>
 . E<lbracket>{{CMD[jump="#PREFIX-subtotal"]PREFIX-subtotal}}]
 . E<lbracket>{{CMD[jump="#if-PREFIX-data"]if-PREFIX-data}}]
 . E<lbracket>{{CMD[jump="#if-PREFIX-field"]if-PREFIX-field}}]
-. C<[if-PREFIX-modifier]> (hash list only)
 . C<[if-PREFIX-param]>
 . C<[if-PREFIX-pos]>
 . E<lbracket>{{CMD[jump="#PREFIX-modifier-name"]modifier-name}}]
@@ -3957,10 +3951,11 @@ H2: data
 
 H3: Summary
 
-\Parameters: B<table field key>
+Main Parameters: B<table field key>
 
 Positional parameters in same order.
 
+Additional parameters: hash foreign value
 
 B<The attribute hash reference is passed> to the subroutine after
 the parameters as the last argument.
@@ -4067,13 +4062,13 @@ B<ASP-like Perl call:>
    $Tag->data(  { field => VALUE_field
                    key => VALUE_key
                    table => VALUE_table
-}, $body  );
+});
 !endblock
 
 or similarly with positional parameters,
 
 !block example; lang="Perl"
-    $Tag->data(table,field,key, $attribute_hash_reference, $body);
+    $Tag->data(table,field,key, $attribute_hash_reference);
 !endblock
 
 # END +++++++++++++++ data End Summary Tables ++++++++++++++++++++
@@ -4088,6 +4083,7 @@ H3: Description
                   key=key
                   filter="uc|lc|name|namecase|no_white|etc."*
                   append=1*
+				  foreign="foreign_key_column"*
                   value="value to set to"*
                   increment=1*]
 
@@ -4141,6 +4137,44 @@ H4: {{CMD[id="data_field"]field}}
 
 The name of the field whose value you want to fetch. Required unless returning the entire row in combination with the C<hash> option.
 
+H4: {{CMD[id="data_foreign"]foreign}}
+
+To select a data element based on a foreign key, specify the foreign key
+column in this field. Allows selection of a data element or record based
+on a column that is not the primary key.
+
+If the key is not unique, returns the first selected element.
+
+From this table named "foo":
+
+>  sku  name    partno  group   subgroup
+>  AB   Item 1  1       A       1
+>  AC   Item 2  2       A       2
+>  AD   Item 3  3       B       1
+>  AE   Item 4  4       C       1
+
+These calls:
+
+>  [data table=foo col=name key=AB]
+>  [data table=foo col=name key=1 foreign=partno]
+
+would both return "Item 1".
+
+If the C<foreign> parameter is a hash value, a single value matching the
+query-by-example set up by the hash is returned. For instance, from our 
+example table "foo", the following
+
+>  [data table=foo col=name key=1 foreign.group=A foreign.subgroup=2]
+
+would return "Item 2".
+
+If the query needs to be optimized in a particular order, you need to
+use custom code or the array form of C<foreign>. In our table "foo", the
+following
+
+>  [data table=foo col=name key=1 foreign.0="group=A" foreign.1="subgroup=2"]
+
+also returns "Item 2".
 
 H4: {{CMD[id="data_hash"]hash}}
 
