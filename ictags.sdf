@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.72 2002-01-23 17:30:31 mheins Exp $
+# $Id: ictags.sdf,v 1.73 2002-01-23 19:37:31 mheins Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.72 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.73 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -581,22 +581,14 @@ For example:
 
 >    [item-alternate 2]EVEN[else]ODD[/else][/item-alternate]
 >    [item-alternate 3]BY 3[else]NOT by 3[/else][/item-alternate]
-<<<<<<< ictags.sdf
-=======
 
 # H2: {{CMD[id="sub_PREFIX-calc"]I<prefix>-calc}}
 {{CMD[id="prefix_calc"]}}
->>>>>>> 1.71
 
-<<<<<<< ictags.sdf
-H2: E<lbracket>{{CMD[id="sub_PREFIX-calc"]PREFIX-calc}}] 2 + [item-field price] [/PREFIX-calc]
-
-=======
 H2: I<prefix>-calc
 
 E:   E<lbracket>I<prefix>-calc] 2 + [item-field price] [/PREFIX-calc]
 
->>>>>>> 1.71
 Executes Perl code in the tag body. This is equivalent to the [calc] [/calc] tag pair, except it's calculated at loop time instead of later when the rest of the page is parsed.
 
 # H2: {{CMD[id="sub_PREFIX-change"]I<prefix>-change}}
@@ -684,22 +676,14 @@ E:   E<lbracket>I<prefix>-data table field]
 Calls the column C<field> in database table C<table> for the current
 \[I<prefix>-code]. This may or may not be equivalent to E<lbracket>I<prefix>C<-field field>E<rbracket>
 depending on whether your search table is defined as one of the C<ProductFiles>.
-<<<<<<< ictags.sdf
-=======
 
 # H2: {{CMD[id="sub_PREFIX-description"]I<prefix>-description}}
 {{CMD[id="prefix_description"]}}
->>>>>>> 1.71
 
-<<<<<<< ictags.sdf
-H2: E<lbracket>{{CMD[id="sub_PREFIX-description"]PREFIX-description}}]
-
-=======
 H2: I<prefix>-description
 
 E:   E<lbracket>I<prefix>-description]
 
->>>>>>> 1.71
 The description of the current item, as defined in the C<catalog.cfg> directive
 C<DescriptionField>. In the demo, it would be the value of the field C<description>
 in the table C<products>.
@@ -707,22 +691,14 @@ in the table C<products>.
 If the list is a hash list, and the lookup of C<DescriptionField> fails,
 then the attribute C<description> will be substituted. This is useful to 
 supply shopping cart descriptions for on-the-fly items.
-<<<<<<< ictags.sdf
-
-H2: E<lbracket>{{CMD[id="sub_PREFIX-discount"]PREFIX-discount}}]
-=======
 
 # H2: {{CMD[id="sub_PREFIX-discount"]I<prefix>-discount}}
 {{CMD[id="prefix_discount"]}}
 
 H2: I<prefix>-discount
->>>>>>> 1.71
 
-<<<<<<< ictags.sdf
-=======
 E:   E<lbracket>I<prefix>-discount]
 
->>>>>>> 1.71
 The price of the current item is calculated, and the difference between
 that price and the list price (quantity one) price is output. This may have
 different behavior than you expect if you set the [discount] [/discount]
@@ -738,22 +714,14 @@ E:   E<lbracket>I<prefix>-discount_subtotal]
 
 Inserts the discounted subtotal of the ordered items.
 
-<<<<<<< ictags.sdf
-=======
 
 # H2: {{CMD[id="sub_PREFIX-field"]I<prefix>-field}}
 {{CMD[id="prefix_field"]}}
 
 H2: I<prefix>-field
->>>>>>> 1.71
 
-<<<<<<< ictags.sdf
-H2: E<lbracket>{{CMD[id="sub_PREFIX-field"]PREFIX-field}}]
-
-=======
 E:   E<lbracket>I<prefix>-field]
 
->>>>>>> 1.71
 Looks up a field value for the current item in one of several places,
 in this order:
 
@@ -777,30 +745,17 @@ of C<bar>. When it is found, you wish to display the value of C<foo_field>.
 Unless C<foo> is in C<ProductFiles> and the code is not present in a previous
 product file, you will get a blank or some value you don't want. What
 you really want is C<[loop-data foo foo_field]>, which specifically 
-<<<<<<< ictags.sdf
-addresses the table C<foo>. See also E<lbracket>{{C[jump="#sub_PREFIX-param"]PREFIX-param}}]>
-and E<lbracket>{{C[jump="#sub_PREFIX-pos"]PREFIX-pos}}]>.
-
-=======
 addresses the table C<foo>. See also E<lbracket>{{C[jump="#I<prefix>-param"]I<prefix>-param}}]>
 and E<lbracket>{{C[jump="#I<prefix>-pos"]I<prefix>-pos}}]>.
 
->>>>>>> 1.71
 
-<<<<<<< ictags.sdf
-H2: E<lbracket>{{CMD[id="sub_PREFIX-increment"]PREFIX-increment}}]
-=======
 # H2: {{CMD[id="sub_PREFIX-increment"]I<prefix>-increment}}
 {{CMD[id="prefix_increment"]}}
->>>>>>> 1.71
 
-<<<<<<< ictags.sdf
-=======
 H2: I<prefix>-increment
 
 E:   E<lbracket>I<prefix>-increment]
 
->>>>>>> 1.71
 The current count on the list, starting from either 1 in a zero-anchored
 list like E<lbracket>{{C[jump="#loop"]loop}}] or E<lbracket>{{C[jump="#item_list"]item-list}}], or from the match count in a
 search list.
@@ -834,40 +789,24 @@ for however many fields were returned in that row.
 This is useful as a quick way to see all your results at a glance and verify your search specification.
 
 If the optional C<start_column> attribute is given, the output starts with that column instead of column 0.
-<<<<<<< ictags.sdf
-=======
 
 # H2: {{CMD[id="sub_PREFIX-modifier"]I<prefix>-modifier}}
 {{CMD[id="prefix_modifier"]}}
 
 H2: I<prefix>-modifier
->>>>>>> 1.71
 
-<<<<<<< ictags.sdf
-H2: E<lbracket>{{CMD[id="sub_PREFIX-modifier"]PREFIX-modifier}} attribute]
-
-=======
 E:   E<lbracket>I<prefix>-modifier attribute]
 
->>>>>>> 1.71
 If the item is a hash list (i.e. [item-list]), this will return the value
 of the C<attribute>.
-<<<<<<< ictags.sdf
-=======
 
 # H2: {{CMD[id="sub_PREFIX-next"]I<prefix>-next}}
 {{CMD[id="prefix_next"]}}
 
 H2: I<prefix>-next
->>>>>>> 1.71
 
-<<<<<<< ictags.sdf
-H2: E<lbracket>{{CMD[id="sub_PREFIX-next"]PREFIX-next}}] CONDITION [/PREFIX-next]
-
-=======
 E:   E<lbracket>I<prefix>-next] CONDITION [/PREFIX-next]
 
->>>>>>> 1.71
 If CONDITION evaluates true (a non-whitespace value that is not specifically
 zero) then this item is skipped.
 
@@ -903,22 +842,14 @@ In this case, [prefix-code] and [prefix-param foo] are synonymns, for
 C<foo> is the first returned parameter and becomes the code for this row.
 Another synonym is [prefix-pos 0]; and [prefix-pos 1] is the same
 as [prefix-param bar].
-<<<<<<< ictags.sdf
-
-H2: E<lbracket>{{CMD[id="sub_PREFIX-price"]PREFIX-price}}]
-=======
 
 # H2: {{CMD[id="sub_PREFIX-price"]I<prefix>-price}}
 {{CMD[id="prefix_price"]}}
 
 H2: I<prefix>-price
->>>>>>> 1.71
 
-<<<<<<< ictags.sdf
-=======
 E:   E<lbracket>I<prefix>-price]
 
->>>>>>> 1.71
 The price of the product identified by the current code, formatted for currency. If
 Interchange's pricing routines cannot determine the price (i.e. it is not
 a valid product or on-the-fly item) then zero is returned. If the list
@@ -963,29 +894,14 @@ You cannot place a condition; i.e. [if-I<prefix>-data table field eq 'something'
 Use C<[if type=data ...]> for that.
 
 Careful, a space is not a false value!
-<<<<<<< ictags.sdf
-=======
 
 # H2: {{CMD[id="sub_if-PREFIX-field"]if-I<prefix>-field}}
 {{CMD[id="if_prefix_field"]}}
->>>>>>> 1.71
 
-<<<<<<< ictags.sdf
-H2: E<lbracket>{{CMD[id="sub_if-PREFIX-field"]if-PREFIX-field}} field] IF text [else] ELSE text [/else] [/if-PREFIX-field]
-=======
 H2: if-I<prefix>-field
->>>>>>> 1.71
 
-<<<<<<< ictags.sdf
-Same as [if-PREFIX-data ...] except uses the same data rules as C<[PREFIX-field]>.
-=======
 E:   E<lbracket>if-I<prefix>-field field] IF text [else] ELSE text [/else] [/if-I<prefix>-field]
->>>>>>> 1.71
 
-<<<<<<< ictags.sdf
-H2: E<lbracket>{{CMD[id="sub_modifier-name"]modifier-name}} attribute]
-
-=======
 Same as [if-I<prefix>-data ...] except uses the same data rules as E<lbracket>I<prefix>C<-field>E<rbracket>.
 
 # H2: {{CMD[id="modifier-name"]modifier-name}}
@@ -993,7 +909,6 @@ H2: modifier-name
 
 E:   E<lbracket>modifier-name attribute]
 
->>>>>>> 1.71
 Outputs a variable name which will set an appropriate variable name for setting
 the attribute in a form (usually a shopping cart). Outputs for successive items
 in the list:
@@ -1957,12 +1872,6 @@ H3: Summary
 
 \Parameters: B<type term op compare>
 
-<<<<<<< ictags.sdf
-THIS TAG HAS SPECIAL POSITIONAL PARAMETER HANDLING.
-
-
-=======
->>>>>>> 1.71
 
 Pass attribute hash as last to subroutine: B<no>
 
@@ -2036,24 +1945,8 @@ B<Tag expansion example:>
 
 B<ASP-like Perl call:>
 
-!block example; lang="Perl"
-   $Tag->and(  { compare => VALUE_compare
-                  op => VALUE_op
-                  term => VALUE_term
-                  type => VALUE_type
-}, $body  );
-!endblock
-
-or similarly with positional parameters,
-
-<<<<<<< ictags.sdf
-!block example; lang="Perl"
-    $Tag->and(type,term,op,compare, $attribute_hash_reference, $body);
-!endblock
-=======
 Not applicable. The [and ...] tag only is used with [if ...], and Perl
 logic obviates the [if ...] tag.
->>>>>>> 1.71
 
 # END +++++++++++++++ and End Summary Tables ++++++++++++++++++++
 
@@ -2288,7 +2181,6 @@ E<lbracket>{{C[jump="#subtotal"]subtotal}}]
 The assignment is persistent within a user's session until you clear it, an assigned tag will return your value
 instead of calculating a value.
 
-
 WarningE<nbspace>E<emdash> please be sure you understand the
 dependencies within the pricing system before using the C<assign>
 tag. In particular, you must have the value C<mv_shipmode> set to
@@ -2440,54 +2332,12 @@ tags.
 
 
 H2: attr_list
-<<<<<<< ictags.sdf
 
-
-H3: Summary
-=======
->>>>>>> 1.71
-
-<<<<<<< ictags.sdf
-\Parameters: B<hash>
-=======
 This tag is intended for use within embedded perl rather than as a standalone tag within a template (i.e., the E<lbracket>attr_list ...] syntax does not apply).
->>>>>>> 1.71
 
-<<<<<<< ictags.sdf
-Positional parameters in same order.
-
-
-Pass attribute hash as last to subroutine: B<no>
-
-Must pass named parameter interpolate=1 to cause interpolation.
-=======
 The C<$Tag-E<gt>attr_list($template, $hashref)> usage provides a shorthand for accessing values of a hash within embedded perl. It also allows you to control defaults or set up conditional values.
->>>>>>> 1.71
 
-<<<<<<< ictags.sdf
-This is a container tag, i.e. [attr_list] FOO [/attr_list].
-\Nesting: NO
-
-Invalidates cache: B<no>
-
-Called Routine: 
-
-B<ASP-like Perl call:>
-
->    $Tag->attr_list(
->        {
->         hash => VALUE,
->        },
->        BODY
->    )
->
-> OR
->
->    $Tag->attr_list($hash, $BODY);
-
-=======
 H3: Summary
->>>>>>> 1.71
  
 # BEGIN ############### attr_list Summary Tables ####################
 !block example;
@@ -2540,28 +2390,9 @@ EOF
      return $out;
   [/perl]
 ---
-<<<<<<< ictags.sdf
-   TAGRESULT
-!endblock
-
-
-B<ASP-like Perl call:>
-
-!block example; lang="Perl"
-   $Tag->attr_list(  { hash => VALUE_hash
-}, $body  );
-!endblock
-=======
         os28113 - The Claw Hand Rake - Call for price
         <IMG SRC="/[[EXAMPLE_CATALOG]]/images/os28113.gif">
->>>>>>> 1.71
 
-<<<<<<< ictags.sdf
-or similarly with positional parameters,
-
-!block example; lang="Perl"
-    $Tag->attr_list(hash, $attribute_hash_reference, $body);
-=======
         <br>
         More body Text here
         <br>
@@ -2572,7 +2403,6 @@ or similarly with positional parameters,
         More body Text here
         <br>
         ...
->>>>>>> 1.71
 !endblock
 
 # END +++++++++++++++ attr_list End Summary Tables ++++++++++++++++++++
@@ -4593,9 +4423,7 @@ Dumps client connection information, cart contents, query value, contents of env
 
 H3: Summary
 
-\Parameters: B<key>
-
-Positional parameters in same order.
+No parameters.
 
 Pass attribute hash as last to subroutine: B<no>
 
@@ -4607,7 +4435,7 @@ Called Routine:
 
 B<ASP-like Perl call:>
 
->    $Tag->dump($key)
+>    $Tag->dump(
 >        {
 >        }
 >    )
@@ -4618,23 +4446,16 @@ B<ASP-like Perl call:>
 
  
 
-<<<<<<< ictags.sdf
-H3: Description
-=======
 # BEGIN ############### dump Summary Tables ####################
 !block example;
     [B<dump> ]
 !endblock
->>>>>>> 1.65
 
 !block table; colvaligns="TT"
 Attributes|Default
 {{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
 !endblock
 
-<<<<<<< ictags.sdf
-Dumps client connection information, cart contents, query value, contents of environment, session, and CGI with Data::Dumper to the page. This is useful for debugging.
-=======
 !block table; headings=1; colvaligns="TT"
 A|B
 Other_Charactreristics|
@@ -4644,32 +4465,15 @@ Has Subtags|I<No>
 Nests|I<Yes>
 !endblock
 
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
-If the I<key> parameter is passed, only the subkey of Session that is
-specified will be shown. Most importantly, C<[dump key=scratch]> will
-dump the $Scratch, [dump key=values] will dump $Values.
-=======
 B<Tag expansion example:>
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
-=======
 !block example
    [dump ]
 ---
    TAGRESULT
 !endblock
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
-H2: ecml
-
-Uses ECML (Electronic Commerce Markup Language) module to map Interchange forms/userdb to ECML checkout
-
-H3: Summary
-=======
 
 B<ASP-like Perl call:>
 
@@ -4679,7 +4483,6 @@ B<ASP-like Perl call:>
 !endblock
 
 or similarly with positional parameters,
->>>>>>> 1.65
 
 !block example; lang="Perl"
     $Tag->dump(, $attribute_hash_reference, $body);
@@ -5120,9 +4923,9 @@ error format. The HTML formatting can be set
 via the global variable MV_ERROR_STD_LABEL with
 the default being:
 
->        <FONT COLOR=RED>{LABEL} <SMALL><I>(%s)</I></SMALL></FONT>
+>        <FONT COLOR=RED>label_str<SMALL><I>(%s)</I></SMALL></FONT>
 
-where {LABEL} is what you set std_label to and %s
+where <label_str> is what you set std_label to and %s
 is substituted with the error message. This option
 can not be used with the text= option.
 
@@ -5815,28 +5618,6 @@ Strips leading slashes and dots.
 >                    return $_[0];
 >                },
 
-H4: {{CMD[id="filter_op_sql"]restrict_html}}
-
-Restricts HTML tags to a certain subset.
-
->    restrict_html => sub {
->					my $val = shift;
->					shift;
->					my %allowed;
->					@allowed{@_} = @_;
->					$val =~ s{<(/?(\w[-\w]*)[\s>])}
->						     { ($allowed{lc $2} ? '<' : '&lt;') . $1 }ge;
->					return $val;
->				},
-
-Called with:
-
->   [filter restrict_html.a.b.i.u.p.br]
->		<SCRIPT> malicious('Gotcha!') </SCRIPT>
->	[/filter]
-
-which prevents the <SCRIPT> from executing.
-
 H4: {{CMD[id="filter_op_sql"]sql}}
 
 Change single-quote characters into doubled versions, i.e. ' becomes ''.
@@ -5955,26 +5736,10 @@ and transactions for those databases able to support these
 features. See also the E<lbracket>{{C[jump="#tag"]tag}}] tag.
 
 H3: Summary
-<<<<<<< ictags.sdf
 
-\Parameters: B<type>
-=======
->>>>>>> 1.65
-
-<<<<<<< ictags.sdf
-C<type> may be one of the following
-
-* read
-** Flags the table read-only
-
-* write
-** Flags the table writeable by default (or read-only if you also set
-the C<value>=0 attribute)
-=======
 !block example;
     [B<flag> type]
 !endblock
->>>>>>> 1.65
 
 !block table; colvaligns="TTT"; format="262"
 Parameters|Description|Default
@@ -6087,9 +5852,6 @@ Using E<lbracket>C<flag> build] forces static build of a page, even if
 it contains dynamic elements.
 
 
-<<<<<<< ictags.sdf
-H2: fly_list
-=======
 
 # BEGIN ############ flag Subsections ##############
 H4: {{CMD[id="flag_build"]build}}
@@ -6155,7 +5917,6 @@ the C<value>=0 attribute)
 # END +++++++++++++ flag Subsections ++++++++++++
 
 H2: fly_list
->>>>>>> 1.65
 
 
 H3: Summary
@@ -6192,73 +5953,6 @@ B<ASP-like Perl call:>
 
  
 
-<<<<<<< ictags.sdf
-H3: Description
-
-
-\Syntax: [fly-list prefix=tag_prefix* code=code*]
-
-Defines an area in a random page which performs the flypage lookup
-function, implementing the tags below.
-
->   [fly-list]
->    (contents of flypage.html)
->   [/fly-list]
-
-If you place the above around the contents of the demo flypage, 
-in a file named C<flypage2.html>, it will make these two calls
-display identical pages:
-
->    [page 00-0011] One way to display the Mona Lisa [/page]
->    [page flypage2 00-0011] Another way to display the Mona Lisa [/page]
-
-If you place a [fly-list] tag alone at the top of the page, it will
-cause any page to act as a flypage.
-
-By default, the prefix is C<item>, meaning the C<[item-code]> tag will
-display the code of the item, the C<[item-price]> tag will display price, etc.
-But if you use the prefix, i.e. C<[fly-list prefix=fly]>, then it will
-be [fly-code]; C<prefix=foo> would cause C<[foo-code]>, etc.
-
-
-
-
-
-H2: fly_tax
-
-
-H3: Summary
-
-\Parameters: B<area>
-
-Positional parameters in same order.
-
-
-Pass attribute hash as last to subroutine: B<no>
-
-Must pass named parameter interpolate=1 to cause interpolation.
-
-Invalidates cache: B<no>
-
-Called Routine: 
-
-B<ASP-like Perl call:>
-
->    $Tag->fly_tax(
->        {
->         area => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->fly_tax($area);
-
- 
-
-H3: Description
-
-=======
 # BEGIN ############### fly_list Summary Tables ####################
 !block example;
     [B<fly_list> code base]
@@ -6442,7 +6136,6 @@ or similarly with positional parameters,
 
 H3: Description
 
->>>>>>> 1.65
 Builds a tax rate from C<taxarea>, C<taxrate>, C<taxshipping>, variable values, and the C<SalesTax> directive value.
 
 
@@ -6497,8 +6190,6 @@ I<No>, but you use it like N<this:>
 Has Subtags|E<lbracket>label] interpreted by C<goto>
 !endblock
 
-<<<<<<< ictags.sdf
-=======
 
 B<ASP-like Perl call:>
 
@@ -6641,29 +6332,12 @@ or similarly with positional parameters,
 
 
 H3: Description
->>>>>>> 1.65
 
-B<ASP-like Perl call:>
-
-No Perl call available (Note that this tag is not parsed in the standard way).
+Calculates and inserts handling costs. Accepts the same noformat and convert arguments as the shipping tag.
 
 
-H3: Description
-
-<<<<<<< ictags.sdf
-Skips page content between E<lbracket>C<goto> I<name>] and E<lbracket>{{C[jump="#label"]label}} I<name>]. Note that the C<goto> tag is not interpreted in the standard way, and you cannot use the '$Tag->goto()' Perl syntax. Note also that skipping endtags with C<goto> will probably break your page.
-
-The correspondingly named E<lbracket>C<label>] tag marks the end of the page content the C<goto> should skip. Note that the E<lbracket>C<label>] tag is not an end tag, but simply a marker for the end of the text to skip.
-
-!block note; label="Technical note (Interchange 4.8): "
-This tag may not work properly if you have more than one goto/label pair on a page.
-!endblock
 
 
-H4: {{CMD[id="goto_name"]name}}
-
-This should match the name set in a E<lbracket>label] tag I<after> the goto tag in the page (i.e., don't create loops).
-=======
 
 # BEGIN ########### handling Subsections ##############
 H4: {{CMD[id="handling_mode"]mode}}
@@ -6673,28 +6347,13 @@ H4: {{CMD[id="handling_mode"]mode}}
 # END ++++++++++++ handling Subsections +++++++++++++
 
 H2: harness
->>>>>>> 1.65
 
+Test harness block. Similar to try/catch. Interprets the body text and checks the return value against expected and explicitly bad cases.
 
-H4:  {{CMD[id="goto_if"]if}}
-
-Condition for goto. If the argument to 'C<if>' is true, the tag will skip the text between the C<goto> and <label>.  Note that the tag itself does not evaluate the condition. The condition must evaluate to a true or false value before the C<goto> tag processes it.
-
-<<<<<<< ictags.sdf
-For example, this will not execute the goto:
-
-!block example
-   [set go]0[/set]
-   [goto name="there" if="[scratch go]"]
-!endblock
-
-
-
-H2: handling
-
+Returns DIED, OK, or NOT OK message along with your result if not the expected value.
 
 H3: Summary
-=======
+
 !block example;
     [B<harness> I<other_named_attributes>]
 !endblock
@@ -6733,137 +6392,28 @@ B<Tag expansion example:>
 ---
    TAGRESULT
 !endblock
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
-\Parameters: B<mode>
-=======
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
-Positional parameters in same order.
-=======
 B<ASP-like Perl call:>
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
-=======
 !block example; lang="Perl"
    $Tag->harness(  { 
 }, $body  );
 !endblock
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
-B<The attribute hash reference is passed> to the subroutine after
-the parameters as the last argument.
-B<This may mean that there are parameters not shown here.>
-=======
 or similarly with positional parameters,
->>>>>>> 1.65
 
 !block example; lang="Perl"
     $Tag->harness(, $attribute_hash_reference, $body);
 !endblock
 
-<<<<<<< ictags.sdf
-Invalidates cache: B<YES>
-=======
 H3: Description
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
-Called Routine: 
-=======
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
-B<ASP-like Perl call:>
-=======
 Test harness block. Similar to try/catch. Interprets the body text and checks the return value against expected and explicitly bad cases.
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
->    $Tag->handling(
->        {
->         mode => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->handling($mode, $ATTRHASH);
-=======
 Returns DIED, OK, or NOT OK message along with the harness name and your result if not the expected value.
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
-Attribute aliases
-
->            carts ==> cart
->            modes ==> mode
->            name ==> mode
->            tables ==> table
-
-
- 
-
-H3: Description
-
-Calculates and inserts handling costs. Accepts the same noformat and convert arguments as the shipping tag.
-
-
-
-
-H2: harness
-
-Test harness block. Similar to try/catch. Interprets the body text and checks the return value against expected and explicitly bad cases.
-
-Returns DIED, OK, or NOT OK message along with your result if not the expected value.
-
-H3: Summary
-
-!block example
-  [harness expected="good" name=my_test_number_1]
-    [good]The Expected Return Value[/good]
-    [not]Some Specifically Bad Return Value[/not]
-    I<Tags and code to test here>
-  [/harness]
-!endblock
-
-No parameters.
-
-* expected (default "OK")
-** Tagname for delimiting your expected return value
-
-* name (default "testI<nnn>")
-** This will appear in your output message (useful for distinguishing harness tags from one another)
-
-B<The attribute hash reference is passed> after the parameters but before
-the container text argument.
-B<This may mean that there are parameters not shown here.>
-
-Must pass named parameter interpolate=1 to cause interpolation.
-
-This is a container tag, i.e. [harness] FOO [/harness].
-\Nesting: NO
-
-Invalidates cache: B<no>
-
-Called Routine: 
-
-B<ASP-like Perl call:>
-
->    $Tag->harness(
->        {
->        },
->        BODY
->    )
->
-> OR
->
->    $Tag->harness($ATTRHASH, $BODY);
-=======
 
 
 # BEGIN ############ harness Subsections ##############
@@ -6949,7 +6499,6 @@ B<Tag expansion example:>
 
 
 B<ASP-like Perl call:>
->>>>>>> 1.65
 
 !block example; lang="Perl"
    $Tag->html_table(  { 
@@ -7486,104 +7035,6 @@ Interpolates B<container text> by default>.
 
 This is a container tag, i.e. [import] FOO [/import].
 \Nesting: NO
-<<<<<<< ictags.sdf
-
-Invalidates cache: B<YES>
-
-Called Routine: 
-
-B<ASP-like Perl call:>
-
->    $Tag->import(
->        {
->         table => VALUE,
->         type => VALUE,
->        },
->        BODY
->    )
->
-> OR
->
->    $Tag->import($table, $type, $ATTRHASH, $BODY);
-
-Attribute aliases
-
->            base ==> table
->            database ==> table
-
-
- 
-
-H3: Description
-
-
-Named attributes:
-
->    [import table=table_name
->            type=(TAB|PIPE|CSV|%%|LINE)
->            continue=(NOTES|UNIX|DITTO)
->            separator=c]
-
-Import one or more records into a database. The C<type> is any
-of the valid Interchange delimiter types, with the default being defined
-by the setting of the database I<DELIMITER>. The table must already be a defined
-Interchange database table; it cannot be created on the fly. (If you need
-that, it is time to use SQL.)
-
-The C<type> of C<LINE> and C<continue> setting of C<NOTES> is particularly
-useful, for it allows you to name your fields and not have to remember
-the order in which they appear in the database. The following two imports
-are identical in effect:
-
->    [import table=orders]
->    code: [value mv_order_number]
->    shipping_mode: [shipping-description]
->    status: pending
->    [/import]
->
->    [import table=orders]
->    shipping_mode: [shipping-description]
->    status: pending
->    code: [value mv_order_number]
->    [/import]
-
-The C<code> or key must always be present, and is always named C<code>.
-
-If you do not use C<NOTES> mode, you must import the fields in the
-same order as they appear in the ASCII source file.
-
-The C<[import ....] TEXT [/import]> region may contain multiple records.
-If using C<NOTES> mode, you must use a separator, which by default is
-a form-feed character (^L).
-
-
-
-
-
-H2: include
-
-
-H3: Summary
-
-\Parameters: B<file locale>
-
-Positional parameters in same order.
-
-
-Pass attribute hash as last to subroutine: B<no>
-
-Must pass named parameter interpolate=1 to cause interpolation.
-
-Invalidates cache: B<no>
-
-Called Routine: 
-
-B<ASP-like Perl call:>
-
-Not applicable.
- 
-
-=======
 
 Invalidates cache: B<YES>
 
@@ -7808,7 +7259,6 @@ or similarly with positional parameters,
 # END +++++++++++++++ include End Summary Tables ++++++++++++++++++++
 
 
->>>>>>> 1.65
 H3: Description
 
 
@@ -7819,9 +7269,6 @@ and variables. Does NOT do locale translations.
 
 
 
-<<<<<<< ictags.sdf
-H2: index
-=======
 
 # BEGIN ########### include Subsections ##############
 H4: {{CMD[id="include_file"]file}}
@@ -7835,22 +7282,15 @@ H4: {{CMD[id="include_locale"]locale}}
 # END ++++++++++++ include Subsections +++++++++++++
 
 H2: index
->>>>>>> 1.65
 
 Creates an index for the specified table.
 
 H3: Summary
-<<<<<<< ictags.sdf
-=======
 
 !block example;
     [B<index> tableI<other_named_attributes>]
 !endblock
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
-\Parameters: B<table>
-=======
 !block table; colvaligns="TTT"; format="262"
 Parameters|Description|Default
 {{CMD[jump="#index_table"]base}}|<<
@@ -7889,22 +7329,13 @@ The index specification
 {{CMD[jump="#index_table"]table}}|<<
 >>|DEFAULT_VALUE
 !endblock
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
-Positional parameters in same order.
-=======
 !block table; colvaligns="TT"
 Attributes|Default
 {{CMD[jump="#index_ATT1"]ATT1}}|I<none>
 {{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
 !endblock
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
-* extension (default "idx")
-** Index file extension
-=======
 !block table; headings=1; colvaligns="TT"
 A|B
 Other_Charactreristics|
@@ -7913,47 +7344,19 @@ Container tag|I<No>
 Has Subtags|I<No>
 Nests|I<Yes>
 !endblock
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
-* basefile
-** Database filename. Exports the table to this filename if old or missing before indexing. See also the {{C[jump="#export"]export}} tag for additional relevent attributes such as delimiter type, etc.
-=======
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
-* export_only
-** Just do the export if necessary (not the index).
-=======
 B<Tag expansion example:>
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
-* spec
-** The index specification
-
-* fn or fields or col or columns
-** field(s) to index
-=======
 !block example
    [index table]
 ---
    TAGRESULT
 !endblock
 
->>>>>>> 1.65
 
-* show_status
-** Return '1' to the page if successful
+B<ASP-like Perl call:>
 
-<<<<<<< ictags.sdf
-
-B<The attribute hash reference is passed> to the subroutine after
-the parameters as the last argument.
-B<This may mean that there are parameters not shown here.>
-
-Must pass named parameter interpolate=1 to cause interpolation.
-=======
 !block example; lang="Perl"
    $Tag->index(  { table => VALUE_table
 }, $body  );
@@ -7964,56 +7367,20 @@ or similarly with positional parameters,
 !block example; lang="Perl"
     $Tag->index(table, $attribute_hash_reference, $body);
 !endblock
->>>>>>> 1.65
 
-Invalidates cache: B<YES>
+H3: Description
 
-<<<<<<< ictags.sdf
-Called Routine: 
-=======
 Creates an index for the specified table.
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
-B<ASP-like Perl call:>
-=======
->>>>>>> 1.65
 
->    $Tag->index(
->        {
->         table => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->index($table, $ATTRHASH);
 
-Attribute aliases
 
-<<<<<<< ictags.sdf
->            base ==> table
->            database ==> table
-=======
 # BEGIN ############ index Subsections ##############
 H4: {{CMD[id="index_basefile"]basefile}}
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
- 
-=======
 Database filename. Exports the table to this filename if old or missing before indexing. See also the {{C[jump="#export"]export}} tag for additional relevent attributes such as delimiter type, etc.
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
-H3: Description
-=======
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
-Creates an index for the specified table.
-
-=======
 H4: {{CMD[id="index_col"]col}}
 
 alias for fields
@@ -8056,14 +7423,10 @@ The index specification
 
 H4: {{CMD[id="index_table"]table}}
 
->>>>>>> 1.65
 
 
-<<<<<<< ictags.sdf
-=======
 # END +++++++++++++ index Subsections ++++++++++++
 
->>>>>>> 1.65
 H2: item_list
 
 
@@ -8533,22 +7896,14 @@ Record delimiter
 
 H4: {{CMD[id="log_type"]type}}
 
-<<<<<<< ictags.sdf
-Log contained text to specified file.
-=======
 Log type
 * text (ordinary text file)
 * quot (delimited entries)
 * error (add Interchange error formatting and time/location stamps)
 
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
-
-=======
 # END +++++++++++++ log Subsections ++++++++++++
 
->>>>>>> 1.65
 H2: loop
 
 
@@ -8742,9 +8097,6 @@ produce a select list of options this way:
 >    	[on-match]</SELECT>[/on-match]
 >    [/loop]
 
-<<<<<<< ictags.sdf
-
-=======
 A nice shortcut is available when using [loop] to generate <OPTION>
 lists inside HTML <SELECT>...</SELECT> blocks, when you want the user's
 last selection to be chosen by default on subsequent page views. Interchange
@@ -8802,7 +8154,7 @@ It works equally well when option values are explicitly specified:
 ><option value="[loop-code]">So-called "[loop-code]"
 
 See also the C<ictemplates> documentation in the section "Checks and Selections."
->>>>>>> 1.71
+
 
 H4: E<lbracket>if-loop-data table column] IF [else] ELSE [/else][/if-loop-field]
 
@@ -9402,17 +8754,6 @@ B<Tag expansion example:>
    TAGRESULT
 !endblock
 
-<<<<<<< ictags.sdf
-(Note that the output was reformatted to fit this page)
-
-* price
-** N<Default:> False
-** Boolean. If set and the options have prices, the HTML widget(s) will show the prices. This is like the {{C[jump="#accessories_price"]price}} attribute of the accessories tag.
-
-... Note that the {{C[jump="#accessories_price_data"]price_data}} setting comes from the 'price' column of the options table.
-
-... Technical note-- If your options table has different mappings, you can control this with $::Variable->{MV_OPTION_TABLE_MAP}
-=======
 
 B<ASP-like Perl call:>
 
@@ -9441,19 +8782,10 @@ Boldfaces the labels if the C<'label'> option is set.
 
 
 H4: {{CMD[id="options_code"]code}}
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
-* label
-** Shows labels for the options with the widgets.
-** N<Default:> False
-=======
 Product key (usually sku).
 * No default
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
-=======
 
 H4: {{CMD[id="options_joiner"]joiner}}
 
@@ -9465,7 +8797,6 @@ H4: {{CMD[id="options_label"]label}}
 
 Shows labels for the options with the widgets.
 
->>>>>>> 1.65
 The following example (using another item from the 'tools' data) illustrates the price and label N<attributes:>
 
 >===
@@ -10745,12 +10076,9 @@ or similarly with positional parameters,
 !endblock
 
 
-<<<<<<< ictags.sdf
-=======
 H2: process_search
 
 This is an exact alias for [area search].
->>>>>>> 1.71
 
 
 H2: query
@@ -11422,8 +10750,6 @@ Positional parameters in same order.
 
 
 Pass attribute hash as last to subroutine: B<no>
-<<<<<<< ictags.sdf
-=======
 
 Interpolates B<container text> by default>.
 
@@ -11483,48 +10809,17 @@ B<Tag expansion example:>
 ---
    TAGRESULT
 !endblock
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
-Interpolates B<container text> by default>.
-=======
->>>>>>> 1.65
 
-This is a container tag, i.e. [row] FOO [/row].
-\Nesting: NO
+B<ASP-like Perl call:>
 
-<<<<<<< ictags.sdf
-Invalidates cache: B<no>
-=======
 !block example; lang="Perl"
    $Tag->row(  { width => VALUE_width
 }, $body  );
 !endblock
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
-Called Routine: 
-=======
 or similarly with positional parameters,
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
-B<ASP-like Perl call:>
-
->    $Tag->row(
->        {
->         width => VALUE,
->        },
->        BODY
->    )
->
-> OR
->
->    $Tag->row($width, $BODY);
-
- 
-
-=======
 !block example; lang="Perl"
     $Tag->row(width, $attribute_hash_reference, $body);
 !endblock
@@ -11532,7 +10827,6 @@ B<ASP-like Perl call:>
 # END +++++++++++++++ row End Summary Tables ++++++++++++++++++++
 
 
->>>>>>> 1.65
 H3: Description
 
 
@@ -12499,21 +11793,9 @@ Sets locale and/or currency for the current page. Can be made persistent for the
 
 H3: Summary
 
-B<Parameters:> B<locale currency>
-
-<<<<<<< ictags.sdf
-* locale
-** The locale to use.
-** N<Default:> [scratch mv_locale] (see also 'persist' attribute)
-
-* currency
-** The currency format to use.
-** N<Default:> [scratch mv_currency] (see also 'persist' attribute)
-=======
 !block example;
     [B<setlocale> ]
 !endblock
->>>>>>> 1.65
 
 !block table; colvaligns="TTT"; format="262"
 Parameters|Description|Default
@@ -12902,17 +12184,6 @@ H2: soap
 
 
 H3: Summary
-<<<<<<< ictags.sdf
-
-\Parameters: B<call uri proxy>
-
-Positional parameters in same order.
-
-
-B<The attribute hash reference is passed> to the subroutine after
-the parameters as the last argument.
-B<This may mean that there are parameters not shown here.>
-=======
 
 \Parameters: B<call uri proxy>
 
@@ -13007,60 +12278,20 @@ H3: Description
 
 B<NO Description>
 
->>>>>>> 1.65
 
-Must pass named parameter interpolate=1 to cause interpolation.
 
-<<<<<<< ictags.sdf
-Invalidates cache: B<YES>
-=======
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
-Called Routine: 
-=======
 # BEGIN ########### soap Subsections ##############
 H4: {{CMD[id="soap_call"]call}}
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
-B<ASP-like Perl call:>
-=======
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
->    $Tag->soap(
->        {
->         call => VALUE,
->         uri => VALUE,
->         proxy => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->soap($call, $uri, $proxy, $ATTRHASH);
-=======
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
- 
-=======
 H4: {{CMD[id="soap_proxy"]proxy}}
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
-H3: Description
-=======
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
-B<NO Description>
-=======
 
 H4: {{CMD[id="soap_uri"]uri}}
 
->>>>>>> 1.65
 
 
 # END ++++++++++++ soap Subsections +++++++++++++
@@ -14565,9 +13796,6 @@ Forces an update of the specified interchange function. Function may be one of t
 
 H3: Summary
 
-<<<<<<< ictags.sdf
-\Parameters: B<function>
-=======
 !block example;
     [B<update> function]
 !endblock
@@ -14577,48 +13805,13 @@ Parameters|Description|Default
 {{CMD[jump="#update_function"]function}}|<<
 * cart
 ** Upates current or named cart (see C<name> attribute)
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
-* function
-** cart
-*** Upates current or named cart (see C<name> attribute)
-
-** process
-*** Updates an order or a search page
-
-** values
-*** Updates user-entered fields
-
-** data
-*** Updates database, using current B<mv_> CGI form variables, for N<example:>
-**** B<mv_data_table> Table to update
-**** B<mv_data_key> Key into table
-**** B<mv_data_fields> Fields to update (space or null delimited)
-**** B<mv_data_function> One of the N<following:>
-***** delete
-***** update
-***** insert
-***** delete
-**** etc.
-
-* name
-** Cart name to update (if 'function=cart')
-** N<Default:> current cart
-=======
 * process
 ** Updates an order or a search page
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
-=======
 * values
 ** Updates user-entered fields
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
-Must pass named parameter interpolate=1 to cause interpolation.
-=======
 * data
 ** Updates database, using current B<mv_> CGI form variables, for N<example:>
 *** B<mv_data_table> Table to update
@@ -14636,14 +13829,7 @@ Cart name to update (if 'function=cart')
 * N<Default:> current cart
 >>|DEFAULT_VALUE
 !endblock
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
-Invalidates cache: B<YES>
-
-Called Routine: 
-
-=======
 !block table; colvaligns="TT"
 Attributes|Default
 {{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
@@ -14668,7 +13854,6 @@ B<Tag expansion example:>
 !endblock
 
 
->>>>>>> 1.65
 B<ASP-like Perl call:>
 
 !block example; lang="Perl"
@@ -15209,20 +14394,13 @@ fails. Defaults to the empty string.
 
 
 
-<<<<<<< ictags.sdf
-=======
 # BEGIN ########### value_extended Subsections ##############
 H4: {{CMD[id="value_extended_name"]name}}
 
->>>>>>> 1.65
 
-<<<<<<< ictags.sdf
-
-=======
 
 # END ++++++++++++ value_extended Subsections +++++++++++++
 
->>>>>>> 1.65
 H1: User-defined Tags
 
 To define a tag that is catalog-specific, place I<UserTag> directives in
@@ -15447,24 +14625,6 @@ the tags. If encapsulated text is appropriate (I<HasEndTag> is set),
 it will be the last argument.
 
 >    UserTag tagname Order param1 param2
-
-H2: MapRoutine *global*
-
-Replaces Routine with one that is already compiled. For instance, if you
-want to map a tag to a routine that is already defined in Interchange, you
-can use this parameter I<instead of> Routine.
-
->   UserTag  get MapRoutine  LWP::Simple::get
-
-The get routine takes one parameter, so the Order definition will need
-to be made:
-
->   UserTag  get Order  url
-
-At this point, [get url="URL"], [get URL], and $Tag->get($url) will be 
-completely operational.
-
-This only works for Global UserTag definitions.
 
 H2: PosRoutine
 
