@@ -52,15 +52,139 @@ In no particular order
 
 * The templates and components explained
 
+The STYLE directive in products/variable.txt indicates the template
+style to be used for the catalog; the appropriate templates are found
+in templates/__STYLE__/.
+
 - Region Templates
 
 /home/ic/catalogs/ft/templates/regions:
+
 LEFTONLY_BOTTOM
+
+The LEFTONLY_BOTTOM template region is used in the following template pages:
+
+pages/aboutus.html
+pages/account.html
+pages/affiliate/index.html
+pages/affiliate/login.html
+pages/canceled.html
+pages/contact.html
+pages/customerservice.html
+pages/flypage.html
+pages/help.html
+pages/login.html
+pages/logout.html
+pages/modular_modify.html
+pages/new_account.html
+pages/ord/basket.html
+pages/privacypolicy.html
+pages/process_return.html
+pages/quantity.html
+pages/query/check_orders.html
+pages/query/order_detail.html
+pages/query/order_return.html
+pages/returns.html
+pages/saved_carts.html
+pages/ship_addresses.html
+pages/ship_addresses_added.html
+pages/ship_addresses_removed.html
+pages/stock-alert-added.html
+pages/stock-alert.html
+
+The LEFTONLY_BOTTOM template region is used in the following templates:
+
+templates/foundation/cart
+templates/foundation/leftonly
+templates/foundation/simple
+
 LEFTONLY_TOP
+
+The LEFTONLY_TOP template region is used in the following template pages:
+
+pages/aboutus.html
+pages/account.html
+pages/affiliate/index.html
+pages/affiliate/login.html
+pages/canceled.html
+pages/contact.html
+pages/customerservice.html
+pages/flypage.html
+pages/help.html
+pages/login.html
+pages/logout.html
+pages/modular_modify.html
+pages/new_account.html
+pages/ord/basket.html
+pages/privacypolicy.html
+pages/process_return.html
+pages/quantity.html
+pages/query/check_orders.html
+pages/query/order_detail.html
+pages/query/order_return.html
+pages/returns.html
+pages/saved_carts.html
+pages/ship_addresses.html
+pages/ship_addresses_added.html
+pages/ship_addresses_removed.html
+pages/stock-alert-added.html
+pages/stock-alert.html
+
+The LEFTONLY_TOP template region is used in the following templates:
+
+templates/foundation/cart
+templates/foundation/leftonly
+templates/foundation/simple
+
 LEFTRIGHT_BOTTOM
+
+The LEFTRIGHT_BOTTOM template region is used in the following template pages:
+
+pages/browse.html
+pages/index.html
+pages/results.html
+pages/results_big.html
+pages/swap_results.html
+
+The LEFTRIGHT_BOTTOM template region is used in the following templates:
+
+templates/foundation/leftright
+
 LEFTRIGHT_TOP
+
+The LEFTRIGHT_TOP template region is used in the following template pages:
+
+pages/browse.html
+pages/index.html
+pages/results.html
+pages/results_big.html
+pages/swap_results.html
+
+The LEFTRIGHT_TOP template region is used in the following templates:
+
+templates/foundation/leftright
+
 NOLEFT_BOTTOM
+
+The NOLEFT_BOTTOM template region is used in the following template pages:
+
+pages/ord/checkout.html
+pages/splash.html
+
+The NOLEFT_BOTTOM template region is used in the following templates:
+
+templates/foundation/fullwidth
+
 NOLEFT_TOP
+
+The NOLEFT_TOP template region is used in the following template pages:
+
+pages/ord/checkout.html
+pages/splash.html
+
+The NOLEFT_TOP template region is used in the following templates:
+
+templates/foundation/fullwidth
 
 - Template Pages
 
@@ -143,30 +267,269 @@ violation.html
 - Components
 
 /home/ic/catalogs/ft/templates/components:
+
 affiliate_receptor
+
+Not used in Foundation demo
+
 best_horizontal
+
+The best_horizontal component is used in the following templates:
+
+templates/foundation/cart
+templates/foundation/leftonly
+templates/foundation/leftright
+
+Not used in Foundation demo pages
+
 best_vertical
+
+The best_vertical component is used in the following template:
+
+templates/foundation/leftright
+
+Not used in Foundation demo pages
+
 cart
+
+The cart component is used in the following page:
+
+pages/ord/basket.html
+
 cart_display
+
+The cart_display component is used in the following pages:
+
+pages/results.html
+
 cart_tiny
+
+The cart_tiny component is used in the following pages:
+
+pages/account.html
+pages/browse.html
+pages/canceled.html
+pages/customerservice.html
+pages/flypage.html
+pages/help.html
+pages/index.html
+pages/logout.html
+pages/modular_modify.html
+pages/new_account.html
+pages/privacypolicy.html
+pages/process_return.html
+pages/quantity.html
+pages/query/check_orders.html
+pages/query/order_detail.html
+pages/query/order_return.html
+pages/saved_carts.html
+pages/ship_addresses.html
+
 category_horizontal
+
+Not used in Foundation demo pages or templates.
+
 category_vertical
+
+The category_vertical component is used in the following pages:
+
+pages/aboutus.html
+pages/account.html
+pages/affiliate/index.html
+pages/affiliate/login.html
+pages/browse.html
+pages/canceled.html
+pages/contact.html
+pages/customerservice.html
+pages/flypage.html
+pages/help.html
+pages/index.html
+pages/login.html
+pages/logout.html
+pages/modular_modify.html
+pages/new_account.html
+pages/ord/basket.html
+pages/privacypolicy.html
+pages/process_return.html
+pages/quantity.html
+pages/query/check_orders.html
+pages/query/order_detail.html
+pages/query/order_return.html
+pages/results.html
+pages/results_big.html
+pages/returns.html
+pages/saved_carts.html
+pages/ship_addresses.html
+pages/stock-alert-added.html
+pages/stock-alert.html
+pages/swap_results.html
+
 cross_horizontal
+
+The cross_horizontal component is used in the following pages:
+
+pages/browse.html
+pages/index.html
+pages/results.html
+pages/results_big.html
+
+The cross_horizontal component is used in the following templates:
+
+templates/foundation/cart
+templates/foundation/leftonly
+templates/foundation/leftright
+
 cross_vertical
+
+Not used in Foundation demo pages.
+
+The cross_horizontal component is used in the following templates:
+
+templates/foundation/leftright
+
 modular_buy
+
+The modular_buy component is used in the following pages:
+
+pages/flypage.html
+
+The modular_buy component is used in the following templates:
+
+templates/components/modular_update
+
 modular_update
-none
+
+The modular_update component is used in the following pages:
+
+pages/modular_modify.html
+
 promo
+
+The promo component is used in the following pages:
+
+pages/contact.html
+pages/results_big.html
+
 promo_horizontal
+
+The promo_horizontal component is used in the following pages:
+
+pages/aboutus.html
+pages/canceled.html
+
+The promo_horizontal component is used in the following templates:
+
+templates/foundation/cart
+templates/foundation/leftonly
+templates/foundation/leftright
+
 promo_vertical
+
+Not used in Foundation demo pages.
+
+The promo_horizontal component is used in the following templates:
+
+templates/foundation/leftright
+
 random
+
+The random component is used in the following pages:
+
+pages/browse.html
+pages/index.html
+pages/ord/basket.html
+pages/privacypolicy.html
+pages/process_return.html
+pages/results.html
+pages/swap_results.html
+
 random_horizontal
+
+Not used in Foundation demo pages.
+
+The random_horizontal component is used in the following templates:
+
+templates/foundation/cart
+templates/foundation/leftonly
+templates/foundation/leftright
+
 random_vertical
+
+Not used in Foundation demo pages.
+
+The random_vertical component is used in the following templates:
+
+templates/foundation/leftright
+
 saved_carts_list_small
+
+The saved_carts_list_small component is used in the following pages:
+
+pages/ord/basket.html
+
 search_box_small
+
+The search_box_small component is used in the following pages:
+
+pages/aboutus.html
+pages/account.html
+pages/affiliate/index.html
+pages/affiliate/login.html
+pages/browse.html
+pages/canceled.html
+pages/contact.html
+pages/customerservice.html
+pages/flypage.html
+pages/help.html
+pages/index.html
+pages/login.html
+pages/logout.html
+pages/modular_modify.html
+pages/new_account.html
+pages/ord/basket.html
+pages/privacypolicy.html
+pages/process_return.html
+pages/quantity.html
+pages/query/check_orders.html
+pages/query/order_detail.html
+pages/query/order_return.html
+pages/results.html
+pages/results_big.html
+pages/returns.html
+pages/saved_carts.html
+pages/ship_addresses.html
+pages/stock-alert-added.html
+pages/stock-alert.html
+pages/swap_results.html
+
+The search_box_small component is used in the following templates:
+
+templates/regions/LEFTONLY_TOP
+templates/regions/LEFTRIGHT_TOP
+
 upsell
+
+Not used in Foundation demo pages.
+
 upsell_horizontal
+
+The upsell_horizontal component is used in the following pages:
+
+pages/flypage.html
+
+The upsell_horizontal component is used in the following templates:
+
+templates/foundation/cart
+templates/foundation/leftonly
+templates/foundation/leftright
+
 upsell_vertical
+
+Not used in Foundation demo pages.
+
+The upsell_vertical component is used in the following templates:
+
+templates/foundation/leftright
 
 * The actions
 
@@ -179,3 +542,5 @@ upsell_vertical
   - catalog.cfg
   - catalog_before.cfg
   - catalog_after.cfg
+
+
