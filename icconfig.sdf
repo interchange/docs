@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.56 2002-01-23 18:40:02 mheins Exp $
+# $Id: icconfig.sdf,v 1.57 2002-02-11 15:07:55 racke Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.56 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.57 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
@@ -2003,12 +2003,20 @@ Default is C<30 days>.
 
 H2: ScratchDefault
 
-The default scratch variable settings that the user will start with when their session is initialized. To disable placing URL rewrite strings after the user has given a cookie, set:
+The default scratch variable settings that the user will start with when their session is initialized. 
+
+To disable placing URL rewrite strings after the user has given a cookie, set:
 
 !block example
    ScratchDefault  mv_no_session_id  1
    ScratchDefault  mv_no_count       1
    ScratchDefault  mv_add_dot_html   1
+!endblock
+
+To set the default locale:
+
+!block example
+   ScratchDefault  mv_locale         de_DE
 !endblock
 
 H2: ScratchDir

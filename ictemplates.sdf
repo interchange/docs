@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ictemplates.sdf,v 1.30 2001-12-29 21:14:04 jon Exp $
+# $Id: ictemplates.sdf,v 1.31 2002-02-11 15:07:55 racke Exp $
 
 !define DOC_NAME "Template Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "ictemplates"
-!define DOC_VERSION substr('$Revision: 1.30 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.31 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictemplates.html"
@@ -2902,6 +2902,15 @@ Replace C</cgi-bin/construct> with the path to your Interchange link.
 H1: Internationalization
 
 Interchange has a rich set of internationalization (I18N) features that allow conditional message display, differing price formats, different currency definitions, price factoring, sorting, and other settings. The definitions are maintained in the catalog.cfg file through the use of built-in POSIX support and Interchange's C<Locale> directive. All settings are independent for each catalog and each user visiting that catalog, since customers can access the same catalog in an unlimited number of languages and currencies.
+
+H2: Configuring the Locale
+
+It is recommended to use the C<ScratchDefault> directive for setting the
+catalog's default locale:
+
+!block example
+   ScratchDefault mv_locale de_DE
+!endblock
 
 H2: Setting the Locale
 
