@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ictags.sdf,v 1.1 2001-02-25 07:39:02 jon Exp $
+# $Id: ictags.sdf,v 1.2 2001-03-09 21:07:56 jon Exp $
  
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ICTAGS"
-!define DOC_VERSION substr('$Revision: 1.1 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.2 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -447,7 +447,7 @@ etc. C<[modifier-name quantity]> would be the same as C<[quantity-name]>.
 
 =back
 
-=head1 TAGS
+=head1 Tags
 
 Each ITL tag is show below. Calling information is defined for the main tag,
 sub-tags are described in C<Sub-tags>.
@@ -1585,13 +1585,6 @@ B<NO DESCRIPTION>
 
 Positional parameters in same order.
 
-
-B<The attribute hash reference is passed> to the subroutine after
-the parameters as the last argument.
-B<This may mean that there are parameters not shown here.>
-
-Must pass named parameter interpolate=1 to cause interpolation.
-
 Invalidates cache: B<YES>
 
 Called Routine: 
@@ -1612,14 +1605,13 @@ Attribute aliases
 
 >            name ==> file
 
-
- 
-
 =item DESCRIPTION
 
-Manipulates a file-based counter, by default incrementing it.
-The file name is passed with the parameter C<file> -- default
-is C<etc/counter>.
+Manipulates a persistent counter, by default incrementing it and returning the new value.
+
+The counter value is stored in the specified file. If the file name begins with a "/" then it is an absolute path. Otherwise, it is relative to VendRoot. The default file is C<etc/counter>. If the file does not exist, it is created and initialized to the value of the C<start> parameter.
+
+The counter is implemented using Perl's C<File::Counter> module, which protects the file against simultaneous access by multiple processes.
 
 \WARNING: This tag will not work under Safe, i.e. in embedded Perl.
 
@@ -1630,6 +1622,10 @@ Additional parameters:
 =item decrement=1
 
 Causes the counter to count down instead of up.
+
+=item start=50
+
+Causes a new counter to be created and to start from 50 (for example) if it did not exist before.
 
 =item value=1
 
@@ -2046,6 +2042,16 @@ Always strips leading and trailing whitespace.
 
 =back
 
+
+=head2 discount_subtotal
+
+=over 4
+
+=item DESCRIPTION
+
+Inserts the discounted subtotal of the ordered items.
+
+=back
 
 
 =head2 dump
@@ -2504,7 +2510,7 @@ ASP/perl tag calls:
 =item DESCRIPTION
 
 
-Applies any of Interchange's standard filters to an arbitray value, or 
+Applies any of Interchange's standard filters to an arbitrary value, or 
 you may define your own. The filters are also available as parameters
 to the C<cgi>, C<data>, and C<value> tags.
 
@@ -2923,7 +2929,7 @@ ASP/perl tag calls:
 
 =item DESCRIPTION
 
-B<NO DESCRIPTION>
+Builds a tax rate from C<taxarea>, C<taxrate>, C<taxshipping>, variable values, and the C<SalesTax> directive value.
 
 =back
 
@@ -3016,7 +3022,7 @@ Attribute aliases
 
 =item DESCRIPTION
 
-B<NO DESCRIPTION>
+Calculates and inserts handling costs. Accepts the same noformat and convert arguments as the shipping tag.
 
 =back
 
