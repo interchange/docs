@@ -1,4 +1,4 @@
-# $Id: html.sdn,v 1.1 2000-10-10 21:39:38 zarko Exp $
+# $Id: html.sdn,v 1.2 2000-10-13 21:08:20 zarko Exp $
 #
 # >>Title::     HTML Tuning
 #
@@ -26,8 +26,51 @@
 # Inherit the standard configuration
 !use 'stdlib/html.sdn'
 
+# Subroutine to build the main document navigation line
+!block script
+sub _html_mdnav {
+    local($mdn);
+
+    $mdn .= qq!{{INLINE:<A HREF="$var{'HTML_URL_HOME'}" TARGET="_top">$var{'HTML_TEXT_HOME'}</A>}} | ! if $var{'HTML_URL_HOME'};
+    $mdn .= qq!{{INLINE:<A HREF="$var{'HTML_URL_CATALOG'}" TARGET="_top">$var{'HTML_TEXT_CATALOG'}</A>}} | ! if $var{'HTML_URL_CATALOG'};
+    $mdn .= qq!{{INLINE:<A HREF="$var{'HTML_URL_SEARCH'}" TARGET="_top">$var{'HTML_TEXT_SEARCH'}</A>}} | ! if $var{'HTML_URL_SEARCH'};
+    $mdn =~ s/ \| $//;
+    return $mdn;
+}
+!endblock
+
 !macro build_html_cover
 !if $var{'OPT_DRIVER'} eq 'html'
+    !if HTML_FRAMES
+        !default DOC_TOC 2
+        !block script
+            sub toc_html_Filter {
+                local(*text, %param) = @_;
+                local($toc_text, $toc_tag);
+                for(my $i = 0; $i <= $#text; $i++) {
+                    if($text[$i] =~ s/^L1\[/N:{{[bold;/) {
+                        $text[$i] .= '}}';
+                    } elsif($text[$i] =~ s!^L2\[!E<nl>{{IMPORT[base=DOC_HTML_LOGO_BASE]bullet.gif}}{{[size="-1";!) {
+                        $text[$i-1] .= splice(@text,$i,1) . '}}';
+                        $i--;
+                    }
+                }
+
+                # Prepend an "all in one file" link
+                unshift(@text, 'N[noevents;notoc]({{INLINE:<A HREF="index.html" TARGET="_top">all in one file</A>}})');
+
+                # Prepend a section separator and a title
+                $toc_text = $var{'DOC_TOC_TITLE'};
+                $toc_text = 'Table of Contents' unless $toc_text;
+                $toc_tag = $parastyles_to{'TOCT'};
+                $toc_tag = "P2" unless $toc_tag;
+                unshift(@text, $toc_tag . "[noevents;notoc]$toc_text");
+
+                # set the base target
+                unshift(@text, '{{INLINE:<BASE TARGET="main">}}');
+            }
+        !endblock
+    !else
         !div title
         !default DOC_TOC 2
         !default DOC_HTML_LOGO  $var{'DOC_LOGO'}
@@ -41,14 +84,15 @@
         Sign[class='doc-author'] [[join(", ", grep(/\w/, &Var('DOC_AUTHOR'), &Var('DOC_AUTHOR2'), &Var('DOC_AUTHOR3')))]]
         !clear
         !enddiv
+    !endif
 
-        # Setup the HTML title
-        !HTML_BUILD_TITLE
+    # Setup the HTML title
+    !HTML_BUILD_TITLE
 
-        # This is no longer required now that the title is put in it's own div
-        ## Mark the contents so we know where it is in topics mode
-        #!block inline; target='html'
-        #!endblock
+    # This is no longer required now that the title is put in it's own div
+    ## Mark the contents so we know where it is in topics mode
+    #!block inline; target='html'
+    #!endblock
 !else
     # This is used for HTML documents generated via Frame
 	dName: [[DOC_TITLE]]
@@ -57,22 +101,83 @@
 !endif
 !endmacro
 
-!macro HTML_FOOTER
-    !HTML_NAVIGATE
-    !HTML_PRE_SECTION
-    !if $var{'OPT_STYLE'} eq 'paper'
-        #Sign: [[DOC_STATUS]]
-    !elsif DOC_STATUS
-        Sign: {{A[class='doc-id'][[DOC_ID]]}} {{A[class='doc-status']([[DOC_STATUS]])}}
-    !elsif DOC_ID
-        Sign: {{A[class='doc-id'][[DOC_ID]]}}
+# Macro for building the title of the document and/or topic
+!macro HTML_BUILD_TITLE
+    !if HTML_SUBTOPICS_MODE
+        !define HTML_TITLE "$var{'HTML_MAIN_TITLE'}: $var{'DOC_TITLE'}"
+    !else
+        !define HTML_TITLE DOC_TITLE
     !endif
-    Sign[class='doc-modified'] [[DATE:DOC_MODIFIED]]
-    Sign[class='copyright'] [['Copyright E<c> ' . &Var('DOC_OWNER')]]
+!endmacro
+
+!macro HTML_HEADER
+    !if $var{'HTML_FRAMES'}
+    !else
+        !HTML_NAVIGATE
+    !endif
+!endmacro
+
+!macro HTML_FOOTER
+    !if $var{'HTML_FRAMES'}
+    !else
+        !HTML_NAVIGATE
+        !HTML_PRE_SECTION
+        !if $var{'OPT_STYLE'} eq 'paper'
+            #Sign: [[DOC_STATUS]]
+        !elsif DOC_STATUS
+            Sign: {{A[class='doc-id'][[DOC_ID]]}} {{A[class='doc-status']([[DOC_STATUS]])}}
+        !elsif DOC_ID
+            Sign: {{A[class='doc-id'][[DOC_ID]]}}
+        !endif
+        Sign[class='doc-modified'] [[DATE:DOC_MODIFIED]]
+        Sign[class='copyright'] [['Copyright E<c> ' . &Var('DOC_OWNER')]]
+    !endif
+!endmacro
+
+!macro HTML_TOPIC_NAVIGATE
+!div navigate
+    !block script
+    if ($var{'HTML_TOPICS_MODE'}) {
+        $_next = $topics[0] . ".html";
+        $_prev = $topics[$#topics] . ".html";
+    }
+    else {
+        $_base = $var{'HTML_TOPIC'};
+        $_next = $topic_next{$_base} ? $topic_next{$_base} . ".html" : '';
+        $_prev = $topic_prev{$_base} ? $topic_prev{$_base} . ".html" : '';
+        $_up   = $topic_up{$_base} ? $topic_up{$_base} . ".html" : '';
+    }
+
+    if(defined($var{'HTML_FRAMES'})) {
+        undef($_next) if($_next eq $var{'HTML_URL_CONTENTS'});
+        undef($_prev) if($_prev eq $var{'HTML_URL_CONTENTS'});
+        undef($_up) if($_up eq $var{'HTML_URL_CONTENTS'});
+    }
+
+    my(@_nav);
+    push(@_nav, "{{A[jump='$_up'] $var{'HTML_TEXT_PARENT'}}}") if($_up);
+    push(@_nav, "{{A[jump='$_prev'] $var{'HTML_TEXT_PREVIOUS'}}}") if($_prev);
+    push(@_nav, "{{A[jump='$_next'] $var{'HTML_TEXT_NEXT'}}}") if($_next);
+
+    $_nav1 = join(' | ', @_nav);
+
+    # Build the second navigation line, if any
+    $_nav2 = &_html_mdnav;
+    if ($_nav2) {
+        $_nav2 = "{{CHAR:nl}}" . $_nav2;
+    }
+    !endblock
+
+    [align='Center']
+    [[$_nav1]]
+    [[$_nav2]]
+!enddiv
 !endmacro
 
 !default HTML_BG_COLOR COLOR_WHITE
 !default HTML_LINK_COLOR '3399ff'
+!default HTML_URL_CATALOG '..'
+!default DOC_HTML_LOGO_BASE '../'
 !default DOC_HTML_LOGO 'akopia-logo.gif'
 !default DOC_OWNER "1996-2000 Akopia, Inc. E<lt>info@akopia.comE<gt>"
 !default DOC_ID_SEP "-"
