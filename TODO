@@ -9,6 +9,7 @@ icdatabase.sdf (SDF -> dev_html, PDF, POD)
 ictemplates.sdf (SDF -> dev_html, PDF, POD)
 icbackoffice.sdf (SDF -> dev_html, PDF, POD)
 iccattut.sdf (SDF -> dev_html, PDF, POD)
+icupgrade.sdf (new, from UPGRADE_FROM_MV3 and various notes)
 usertag.pod (./pod/usertag.pod, developer.akopia.com in database as HTML)
 
 On developer site, in docs repository as POD:
@@ -38,6 +39,8 @@ Currently only in Word or FrameMaker format by Alison:
 ?
 
 Needed:
+* Documentation explaining what every default table and column is for, its spec, and the format of the data there
+
 * FAQ for each catalog (construct, foundation, barry, artstore)
 
 * FAQ for each database (DBM, MySQL, PostgreSQL, Oracle)
