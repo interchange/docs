@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.73 2002-09-13 15:17:33 jon Exp $
+# $Id: icconfig.sdf,v 1.74 2002-10-14 13:16:45 racke Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.73 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.74 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icconfig.html"
@@ -2678,6 +2678,9 @@ H2: TrackFile
 Name of a logfile that tracks user traffic. This is used in the back office administration report on traffic by affiliate.
 
 The default is that no such file is kept.
+
+See {{CMD[jump="icadvanced.html#Usertracking"]Usertracking}} for more
+information.
 
 H2: UpsZoneFile
 

@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icadvanced.sdf,v 1.8 2002-04-12 22:53:18 jon Exp $
+# $Id: icadvanced.sdf,v 1.9 2002-10-14 13:16:45 racke Exp $
 
 !define DOC_NAME "Advanced Interchange Topics"
 !define DOC_TYPE ""
 !define DOC_CODE "icadvanced"
-!define DOC_VERSION substr('$Revision: 1.8 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.9 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
@@ -16,7 +16,8 @@ H1: Advanced Interchange Topics
 * Interchange Administration Tool Development
 * Making catalog skeletons for use with makecat
 * Building custom link programs
-
+* Installation tips and troubleshooting
+* Usertracking
 
 H1: Maintaining Interchange
 
@@ -1016,6 +1017,24 @@ Double check the following items:
 
 -The C<tlink> program does not have this problem, but it must have the proper host name(s) and TCP ports set in the TcpHost and TcpMap directives in C<interchange.cfg>. Also, be careful of security if sensitive information, like customer credit card numbers, is being placed on a network wire.
 
+H1: Usertracking
+
+Several actions from the user are recorded by Interchange's usertracking 
+facility. The usertracking data is logged at two locations, depending on 
+your setup. 
+
+The first location is the one specified by the 
+{{CMD[jump="icconfig.html#TrackFile"]TrackFile}} configuration
+directive, e.g. C<logs/usertrack> in the foundation demo.
+
+The second location are the HTTP headers. You can configure Apache to
+write this header into the access logs.
+
+!block example
+LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %T %v \"%{X-Track}o\"" track
+CustomLog /var/log/apache/access.log track
+!endblock
+
 Line:
 
-N:Copyright 2001-2002 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.
+N:Copyright 2001-2002 Red Hat, Inc., and others. Freely redistributable under terms of the GNU General Public License.
