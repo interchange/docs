@@ -412,25 +412,25 @@ set the domain with the CookieDomain directive. This must contain at least two p
 
 H2: Basic Interchange Tags
 
-\NOTE: In the descriptions that follow, parameters marked with an asterisk (*) are optional. When a tag is separated by an underscore, as in item_list, a dash is just as appropriate (i.e., C<item-list>). They are interchangeable, except that the ending tag and beginning tag should match (don't use C<[item-list] list [/item_list]>). B<*> I<indicates an optional argument>
+Note: In the descriptions that follow, parameters marked with an asterisk (*) are optional. When a tag is separated by an underscore, as in item_list, a dash is just as appropriate (i.e., C<item-list>). They are interchangeable, except that the ending tag and beginning tag should match (don't use C<[item-list] list [/item_list]>). B<*> I<indicates an optional argument>
 
 H2: Inserting hyperlinks
 
-\Named: [area href="dir/page" secure=1* arg="argument"* form="form string"*]
+.Named parameters: [area href="dir/page" secure=1* arg="argument"* form="form string"*]
 
-\Positional: [area pg arg*]
+.Positional parameters: [area pg arg*]
 
-Produces the URL to call an Interchange page, without the surrounding A HREF notation. This can be used to get control of HREF items, perhaps to place an ALT string or a JavaScript construct. It was originally named C<area> because it also can be used in a client-side image map.
+.Produces the URL to call an Interchange page, without the surrounding A HREF notation. This can be used to get control of HREF items, perhaps to place an ALT string or a JavaScript construct. It was originally named C<area> because it also can be used in a client-side image map.
 
-!block example
+!block example; listitem=2
        <A HREF="[area catalog]" ALT="Main catalog page">
 !endblock
 
-The optional arg is used just as in the page tag.
+.The optional arg is used just as in the page tag.
 
-The optional C<form> argument is used to encode a form in the link.
+.The optional C<form> argument is used to encode a form in the link.
 
-!block example
+!block example; listitem=2
        <A HREF="[area form="
                mv_order_item=99-102
                mv_order_size=L
@@ -440,23 +440,28 @@ The optional C<form> argument is used to encode a form in the link.
        ]"> Order t-shirt in Large size </A>
 !endblock
 
-See above for more information.
+.See above for more information.
 
 LI1: [/page], [/order]
 
 .Expands into </a>. Used with the page element, such as:
-.{{EX:[page shirts]Our shirt collection[/page].}}
-.\TIP: A small efficiency boost in large pages is to just use the </A> tag.
+
+!block example; listitem=2
+    [page shirts]Our shirt collection[/page].
+!endblock
+
+Note[label='TIP: '] A small efficiency boost in large pages is to just use the </A> tag.
 
 LI1: [page ...]
 
-.\Named: {{EX:[page href="dir/page" arg="argument" secure=1* form="form string"]}}
+.Named parameters: {{EX:[page href="dir/page" arg="argument" secure=1* form="form string"]}}
 
-.\Positional: {{EX:[page dir/page arg*] (only two positional parameters)}}
+.Positional parameters: {{EX:[page dir/page arg*] (only two positional parameters)}}
 
 .Insert a hyperlink to the specified catalog page pg. For example, [page shirts] will expand into <a href="http://machine.company.com/cgi-bin/vlink/shirts?id=WehUkATn&pc=33">. The catalog page displayed will come from "shirts.html" in the pages directory.
 
 .If the user has sent a cookie to Interchange (meaning the second page they access), and the scratch value C<mv_no_session_id> is set in their session, the session ID will not be appended to the URL. If the scratch value C<mv_no_count> is set, then the page count will not be appended. This is not dependent on cookies. So, if placed in the initial page:
+
 !block example; listitem=2
     [set mv_no_session_id]1[/set]
     [set mv_no_count]1[/set]
@@ -511,7 +516,7 @@ Interchange can either use a form-based order or a link-based order to place an 
 
 LI1: [order code]
 
-.Named attributes:
+.Named parameters:
 
 !block example; listitem=2
         C<[order code="sku" href="page" cart="cartname"* base="table"]>
@@ -519,17 +524,23 @@ LI1: [order code]
 
 .Expands into a hypertext link which will include the specified code in the list of products to order and display the order page. B<code> should be a product SKU listed in one of the "products" tables. The optional argument B<cart/page> selects the shopping cart where the item will be placed (begin with / to use the default cart C<main>) and the order page that will display the order. The optional argument base constrains the order to a particular products file. If not specified, all tables defined as products files will be searched in sequence for the item.
 
-.\Example:
+.Example:
 
-.{{EX:Order a [order TK112]Toaster[/order] today.}}
+!block example; listitem=2
+Order a [order TK112]Toaster[/order] today.
+!endblock
 
 .Note that this is the same as:
 
-.{{EX:Order a [page order TK112]Toaster</A> today.}}
+!block example; listitem=2
+Order a [page order TK112]Toaster</A> today.
+!endblock
 
 .You can change frames for the order with:
 
-.{{EX:Order a <A HREF="[area order TK112]" TARGET=newframe>Toaster</A> today.}}
+!block example; listitem=2
+Order a <A HREF="[area order TK112]" TARGET=newframe>Toaster</A> today.
+!endblock
 
 LI1: [/order]
 
@@ -1093,33 +1104,33 @@ The two snippets above are essentially equivalent.
 
 The C<[perl]> tag enforces Safe.pm checking, and many standard Perl operators are not available. This prevents user access to all files and programs on the system without the Interchange daemon's permissions. See GlobalSub and UserTag for ways to make external files and programs available to Interchange.
 
-Named attributes:
+.Named parameters:
 
 !block example
    [perl tables="tables-to-open"* subs=1 global=1* no_return=1*]
 !endblock
 
-Required attributes: none
+.Required parameters: none
 
-Attribute information:
+.Parameter information:
 
-LI1: global
+LI2: global
 
-.When set to C<1>, and when the catalog is allowed to use global permissions via the C<interchange.cfg> directive C<AllowGlobal>, Safe.pm checking is turned off. In this case, the embedded Perl code can do anything that the user ID running it can! This is not recommended when a single Interchange server is shared by multiple companies/user ids.
+..When set to C<1>, and when the catalog is allowed to use global permissions via the C<interchange.cfg> directive C<AllowGlobal>, Safe.pm checking is turned off. In this case, the embedded Perl code can do anything that the user ID running it can! This is not recommended when a single Interchange server is shared by multiple companies/user ids.
 
-.When in global mode, full C<use strict> checking is on. Optionally, it can be turned off with C<no strict;>. In fact, this is recommended since strict errors will cause silent failure.
+..When in global mode, full C<use strict> checking is on. Optionally, it can be turned off with C<no strict;>. In fact, this is recommended since strict errors will cause silent failure.
 
-LI1: subs
+LI2: subs
 
-.When set to C<1>, any C<GlobalSub> routines can be accessed by name.
+..When set to C<1>, any C<GlobalSub> routines can be accessed by name.
 
-LI1: tables
+LI2: tables
 
-.Opens specified Interchange database tables, preparing them for access inside the Perl code. 
+..Opens specified Interchange database tables, preparing them for access inside the Perl code. 
 
-.When running under C<Safe>, some database operations are restricted due to the inability to create objects in this mode. For SQL, most operations can be performed if the C<Safe::Hole> module is installed. Otherwise, use C<global> to use data from SQL tables. Interchange databases can be accessed as long as they are pre-opened by using an item first.
+..When running under C<Safe>, some database operations are restricted due to the inability to create objects in this mode. For SQL, most operations can be performed if the C<Safe::Hole> module is installed. Otherwise, use C<global> to use data from SQL tables. Interchange databases can be accessed as long as they are pre-opened by using an item first.
 
-.\Example:
+.Example:
 
 !block example; listitem=2
     [perl tables="products pricing"]
@@ -1133,16 +1144,16 @@ LI1: tables
 
 Any Interchange tag (except ones using SQL) can be accessed via the $Tag object. If using SQL queries inside a Perl element, C<AllowGlobal> permissions are required and and the C<global=1> parameter must be set. Installing the module C<Safe::Hole> along with sharing the database table with <tables=tablename> will enable SQL use.
 
-\Examples:
+.Examples:
 
-!block example
+!block example; listitem=2
    # If the item might contain a single quote
    [perl]
    $comments = $Values->{comments};
    [/perl]
 !endblock
 
-IMPORTANT NOTE: Global subroutines are not subject to the stringent security checking of the Safe module, so almost anything goes there. The subroutine will be able to modify any variable in Interchange, and will be able to write to read and write any file that the Interchange daemon has permission to write. Though this gives greater power, it should be used with caution. They are defined in the main interchange.cfg file, so should be safe from individual users in a multi-catalog system.
+Note[label='IMPORTANT NOTE: '] Global subroutines are not subject to the stringent security checking of the Safe module, so almost anything goes there. The subroutine will be able to modify any variable in Interchange, and will be able to write to read and write any file that the Interchange daemon has permission to write. Though this gives greater power, it should be used with caution. They are defined in the main interchange.cfg file, so should be safe from individual users in a multi-catalog system.
 
 Global subroutines are defined in interchange.cfg with the GlobalSub directive, or in user catalogs which have been enabled via AllowGlobal. 
 Catalog subroutines are defined in catalog.cfg, with the Sub directive. They are subject to the stringent Safe.pm security restrictions that are controlled by the global directive SafeUntrap. 
@@ -1214,8 +1225,7 @@ There is a shorthand <% = $foo %>, which is exactly equivalent to <% $Document->
    <% = "This is code<BR>" %>
 !endblock
 
-The __VARIABLE__ will be replaced by the value of C<Variable VARIABLE>, but
-\[value name] will be shown unchanged.
+The __VARIABLE__ will be replaced by the value of C<Variable VARIABLE>, but [value name] will be shown unchanged.
 
 IMPORTANT NOTE: If using the SQL::Statement module, the catalog must be set to AllowGlobal in C<interchange.cfg>. It will not work in "Safe" mode due to limitations of object creation in Safe. Also, the Safe::Hole module must be installed to have SQL databases work in Safe mode.
 
@@ -1617,18 +1627,22 @@ LI1: $Tag
 
 Note[label='IMPORTANT NOTE: '] If the tag will access a database that has not been previously opened, the table name must be passed in the ASP call. For example: 
 
+.HTML style:
 !block example; listitem=2
-    # HTML style
     <HTML MV="mvasp" MV.TABLES="products pricing">
+!endblock
 
-      or
+.or
 
-    # Named parameters
+.Named parameters:
+!block example; listitem=2
     [mvasp tables="products pricing"] 
+!endblock
 
-      or
+.or
 
-    # Positional parameters
+.Positional parameters:
+!block example; listitem=2
     [mvasp products pricing] 
 !endblock
 
@@ -2150,7 +2164,7 @@ Note: To map large numbers of ports, use the <<MARKER here document notation in 
    *:7789   search
 !endblock
 
-\NOTE: This does not pertain to the use of C<tlink>, which still relies on the CGI SCRIPT_PATH. To enable this, the SCRIPT_PATH aliases /simple, /sample, etc. must be set in the C<Catalog> directive. This would look like:
+Note: This does not pertain to the use of C<tlink>, which still relies on the CGI SCRIPT_PATH. To enable this, the SCRIPT_PATH aliases /simple, /sample, etc. must be set in the C<Catalog> directive. This would look like:
 
 !block example
  Catalog  simple  /home/interchange/catalogs/simple /cgi-bin/simple /simple
@@ -2165,7 +2179,7 @@ To bind to specific IP addresses, add them in the same fashion that they would a
    EOF
 !endblock
 
-\NOTE: As usual, the EOF should be at the beginning of a line with no leading
+Note: As usual, the EOF should be at the beginning of a line with no leading
 or trailing whitespace.
 
 H2: TemplateDir *global*
@@ -4702,4 +4716,4 @@ Expect lots of crashes if this isn't done.
 
 Apache with SUEXEC: VLINK/UNIX socket mode will not work well unless installed as a normal user. If supporting multiple users, the TLINK/INET mode must be used.
 
-\Windows: Interchange will not work properly with Windows. No strategy has been yet developed for providing reliable operation on Windows.
+Note[label='Windows: '] Interchange will not work properly with Windows. No strategy has been yet developed for providing reliable operation on Windows.

@@ -592,9 +592,12 @@ Some Perl-style regular expressions can be written, and combine conditions:
 While the named parameter tag syntax works for C<E<lbracket>if ...]>, it is more convenient to use the positional syntax in most cases. The only exception is when planning on doing a test on the results of another tag sequence:
 
 This will not work:
-\    E<lbracket>if value name =~ /E<lbracket>value b_name]/]
-        Shipping name matches billing name.
-\    E<lbracket>/if]
+
+!block example
+   E<lbracket>if value name =~ /E<lbracket>value b_name]/]
+       Shipping name matches billing name.
+   E<lbracket>/if]
+!endblock
 
 This will not work. Do this instead:
 
@@ -1522,7 +1525,7 @@ H2: Item Lists
 
 Within any page, the C<E<lbracket>item-list cart*]> element shows a list of all the items ordered by the customer so far. It works by repeating the source between C<E<lbracket>item-list]> and C<E<lbracket>/item-list]> once for each item ordered.
 
-\NOTE: The special tags that reference item within the list are not normal Interchange tags, do not take named attributes, and cannot be contained in an HTML tag (other than to substitute for one of its values or provide a conditional container). They are interpreted only inside their corresponding list container. Normal Interchange tags can be interspersed, though they will be interpreted I<after> all of the list-specific tags.
+Note: The special tags that reference item within the list are not normal Interchange tags, do not take named attributes, and cannot be contained in an HTML tag (other than to substitute for one of its values or provide a conditional container). They are interpreted only inside their corresponding list container. Normal Interchange tags can be interspersed, though they will be interpreted I<after> all of the list-specific tags.
 
 Between the item_list markers the following elements will return information for the current item:
 
@@ -1736,7 +1739,7 @@ A number of HTML pages are special for Interchange operation. Typically, they
 are used to transmit error messages, status of search or order operations, and
 other out of boundary conditions.
 
-\NOTE: The distributed demo does not use all of the default values.
+Note: The distributed demo does not use all of the default values.
 
 The names of these pages can be set with the I<SpecialPage> directive. The standard pages and their default locations:
 
@@ -2308,7 +2311,7 @@ H2: Updating Interchange Database Tables With a Form
 Any Interchange database can be updated with a form using the following method.
 The Interchange user interface uses this facility extensively.
 
-\NOTE: All operations are performed on the database, not the ASCII source file. An E<lbracket>export table_name] operation will have to be performed for the ASCII source file to reflect the results of the update. Records in any  database may be inserted or updated with the E<lbracket>query] tag, but form-based updates or inserts may also be performed.
+Note: All operations are performed on the database, not the ASCII source file. An E<lbracket>export table_name] operation will have to be performed for the ASCII source file to reflect the results of the update. Records in any  database may be inserted or updated with the E<lbracket>query] tag, but form-based updates or inserts may also be performed.
 
 In an update form, special Interchange variables are used to select the database parameters:
 

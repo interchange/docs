@@ -27,7 +27,7 @@ H1: DATABASES
 
 As with most powerful shopping cart programs, Interchange is all about databases. Interchange can use GDBM, DB_File, SQL, DAP, or in-memory database formats. In most cases, these different database formats should operate the same when called by Interchange's access methods. 
 
-\NOTE: No other database besides Interchange's internal one is required. 
+Note: No other database besides Interchange's internal one is required. 
 
 Keeping a database in an SQL manager makes it easier to integrate Interchange with other tools. Interchange can be used to maintain a spreadsheet containing product information by only modifying the file C<products.txt> as needed. References to SQL, DBI, and DBD can be ignored.
 
@@ -43,7 +43,8 @@ Note the following configuration directive:
 
 This says that the C<products> table will obtain its source information from the file C<products.txt>. What is done with it depends on the type of underlying database being used. The different types:
 
-B<GDBM>
+LI1: GDBM
+
 .The database source file is checked to see if it is newer than the actual database file, which would be C<products.gdbm>. If it is, then the database table is re-imported from the file.
 
 .This behavior can be changed in a couple of ways. If files are never to be imported unless the C<.gdbm> file disappears, set the C<NoImport> directive:
@@ -60,7 +61,8 @@ B<GDBM>
 
 .GDBM is the default type if the GDBM_File Perl module is installed (as it will be on Linux).
 
-B<DB_File>
+LI1: DB_File
+
 .The database source file is checked to see if it is newer than the actual database file, which would be C<products.db>. If it is, then the database table is re-imported from the file. You can change this behavior in the same way as with GDBM_File (above).
 
 .DB_File is the default type if you do not have the GDBM_File Perl module installed. This is typical on FreeBSD. To explicitly specify DB_File as the type, specify it with a Database directive in C<catalog.cfg>:
@@ -69,7 +71,8 @@ B<DB_File>
    Database  products  DB_FILE   1
 !endblock
 
-B<DBI/SQL>
+LI1: DBI/SQL
+
 .If a file named C<products.sql> is present in the same directory as C<products.txt>, the database table will not be imported from ASCII source. If there is no C<products.sql>, then the following will occur:
 
 .DBI/SQL imports only happen at catalog configuration time.
@@ -82,7 +85,8 @@ B<DBI/SQL>
 
 ..The text source file will be imported into the SQL database. Interchange will place the data in the columns. Data typing must be user-configured. This means that if "none" is placed in a field, and it is defined as a numeric type, the database import will not succeed. If it does not, the catalog will not become active.
 
-B<In-Memory>
+LI1: In-Memory
+
 .Every time the catalog is configured, the C<products.txt> file is imported into memory and forms the database. The database is not changed otherwise. In-memory is the default type if there is no GDBM_File or DB_File Perl module installed; you can also specify it with:
 
 !block example; listitem=2
@@ -91,17 +95,20 @@ B<In-Memory>
 
 H2: Interchange Database Operation
 
-\NOTE: In the following descriptions, the following terms are used somewhat interchangeably:
+Note: In the following descriptions, the following terms are used somewhat interchangeably:
 
-B<key, code>
+LI1: key, code
+
 .Either one is a reference to the key for the database. In Interchange, this is often the product code or SKU, which is the part number for the product. Other key values may be used to generate relationships to other database tables.
 
 .It is suggested that the key be the first column of the ASCII source file, since Interchange's import, export, and search facilities will work much better with that practice.
 
-B<field, column>
+LI1: field, column
+
 .This is a column of the database. One of the columns is always the key; Interchange prefers that the key be the first column. 
 
-B<table, database>
+LI1: table, database
+
 .A table in the database. Because of the evolution of Interchange from a single-table database to an access method for an unlimited number of tables (and databases, for that matter), a table will sometimes be referred to as a database. The only time database refers to something different is when describing that concept as it relates to SQL, where a database contains a series of tables. Interchange cannot create SQL databases, but given the proper permissions it may drop and create tables within that database.
 
 If necessary, Interchange reads the data to place in tables from standard
@@ -111,7 +118,8 @@ Interchange's default ASCII delimiter is TAB.
 
 IMPORTANT NOTE: The items must be separated by a single delimiter. The items are lined up for reading convenience.
 
-B<TAB>
+LI1: TAB
+
 .Fields separated by ^I characters. No whitespace should be at the beginning of the line.
 
 !block example; listitem=2
@@ -119,7 +127,8 @@ B<TAB>
     SH543   Men's fine cotton shirt 14.95   shirts.jpg
 !endblock
 
-B<PIPE>
+LI1: PIPE
+
 .Fields separated by C<|> characters. No whitespace should be at the beginning of the line.
 
 !block example; listitem=2
@@ -127,7 +136,8 @@ B<PIPE>
     SH543|Men's fine cotton shirt|14.95|shirts.jpg
 !endblock
 
-B<CSV>
+LI1: CSV
+
 .Fields enclosed in quotes, separated by commas. No whitespace should be at the beginning of the line.
 
 !block example; listitem=2
@@ -143,10 +153,12 @@ Note[label='IMPORTANT NOTE: '] Field names are usually case-sensitive. Unless th
 
 .Interchange also has a two of standard, but optional, databases, which are in fixed special formats:
 
-.B<shipping.asc>
+LI2: shipping.asc
+
 ..The database of shipping options if the CustomShipping directive is in use.  This is a fixed-format database, and must be created as specified. See SHIPPING.
 
-.B<salestax.asc>
+LI2: salestax.asc
+
 ..The database of sales tax information if the C<[salestax]> tag is to be used. A default is supplied. NOTE: Caution, these things change! This is a fixed-format database, and must be created as specified. See Sales Tax.
 
 .These are never stored in SQL or DBM.
@@ -210,7 +222,8 @@ In addition to the database, the session files will be kept in the default forma
 
 The order of preference is:
 
-B<GDBM>
+LI1: GDBM
+
 .This uses the Perl GDBM_File module to build a GDBM database. The following command will indicate if GDBM is in Perl:
 
 !block example; listitem=2
@@ -219,7 +232,8 @@ B<GDBM>
 
 .Installing GDBM_File requires rebuilding Perl after obtaining the GNU GDBM package, and is beyond the scope of this document. Linux will typically have this by default; most other operating systems will need to specifically build in this capability.
 
-B<DB_File (Berkeley DB)>
+LI1: DB_File (Berkeley DB)
+
 .This uses the DB_File module to build a Berkeley DB (hash) database. The following command will indicate if DB_File is in Perl:
 
 !block example; listitem=2
@@ -246,7 +260,8 @@ B<DB_File (Berkeley DB)>
     Database arbitrary  DB_FILE  1
 !endblock
 
-B<In-memory>
+LI1: In-memory
+
 .This uses Perl hashes to store the data directly in memory. Every time the Interchange server is restarted, it will re-import all in-memory databases for every catalog. 
 
 .If this is used, despite the presence of GDBM_File or DB_File, set the environment variable MINIVEND_NODBM as above or specify the memory type in the Database directive:
@@ -279,9 +294,10 @@ H2: Database Attributes
 Especially in SQL databases, there are certain functions that can be set with
 additional database attributes. For text import, the CONTINUE extended database import attribute allows additional control over the format of imported text.
 
-\NOTE: CONTINUE applies to all types except CSV. (Do not use NOTES unless using type LINE.)
+Note: CONTINUE applies to all types except CSV. (Do not use NOTES unless using type LINE.)
 
-B<CONTINUE>
+LI1: CONTINUE
+
 .One of UNIX, DITTO, LINE, NONE, or NOTES. The default, NONE, is to simply split the line/record according to the delimiter, with no possible spanning of records. Setting CONTINUE to UNIX appends the next line to the current when it encounters a backslash (C<\>) at the end of a record, just like many UNIX commands and shells.
 
 .DITTO is invoked when the key field is blank. It adds the contents of following fields to the one above, separated by a new line character. This allows additional text to be added to a field beyond the 255 characters available with most spreadsheets and flat-file databases.
@@ -379,7 +395,8 @@ Note: Fields are separated by tabs, formatted for reading convenience.
     ~
 !endblock
 
-B<EXCEL>
+LI1: EXCEL
+
 .Microsoft Excel is a widely-used tool to maintain Interchange databases, but has several problems with its standard TAB-delimited export, like encasing fields containing commas in quotes, generating extra carriage returns embedded in records, and not including trailing blank fields. To avoid problems, use a text-qualifier of none.
 
 .Set the EXCEL attribute to 1 to fix these problems on import:
@@ -459,8 +476,9 @@ H2: Importing In A Page
 
 To add a data record to a database as a result of an order or other operation, use Interchange's C<[import ...]> tag.
 
-B<[import table type*] RECORD [/import]>
-.Named attributes:
+LI1: [import table type*] RECORD [/import]
+
+.Named parameters:
 
 !block example; listitem=2
  [import table=table_name
@@ -576,7 +594,8 @@ As a shorthand method, include the DSN as the type:
 
 Supported configuration attributes include (but are not limited to):
 
-B<DSN>
+LI1: DSN
+
 .A specification of the DBI driver and its data source. To use the DBD::mSQL driver for DBI, use:
 
 !block example; listitem=2
@@ -587,31 +606,40 @@ B<DSN>
 
 .This is the same as the B<DBI_DSN> environment variable, if the DSN parameter is not set. Then, the value of B<DBI_DSN> will be used to try and find the proper database to connect to.
 
-B<USER>
+LI1: USER
+
 .The user name used to log into the database. It is the same as the environment variable B<DBI_USER>. If a user name is not needed, just don't set the USER directive.
 
-B<PASS>
+LI1: PASS
+
 .The password used to log into the database. It is the same as the environment variable B<DBI_PASS>. If a password is not needed, just don't set the PASS directive.
 
-B<COLUMN_DEF>
+LI1: COLUMN_DEF
+
 .A comma-separated set of lines in the form NAME=TYPE(N), where NAME is the name of the field/column, TYPE is the SQL data type reference, and N is the length (if needed). Most Interchange fields should be the fixed-length character type, something like char(128). In fact, this is the default if a type is not chosen for a column. There can be as many lines as needed. This is not a DBI parameter, it is specific to Interchange.
 
-B<NAME>
+LI1: NAME
+
 .A space-separated field of column names for a table. Normally not used. Interchange should resolve the column names properly upon query. Set this if a catalog errors out with "dbi: can't find field names" or the like. The first field should always be B<code>. This is not a DBI parameter, it is specific to Interchange. All columns must be listed, in order of their position in the table.
 
-B<NUMERIC>
+LI1: NUMERIC
+
 .Tells Interchange not to quote values for this field. It allows numeric data types for SQL databases. It is placed as a comma-separated field of column names for a table, in no particular order. This should be defined if a numeric value is used because many DBD drivers do not yet support type queries.
 
-B<UPPERCASE>
+LI1: UPPERCASE
+
 .Tells Interchange to force field names to UPPER case for row accesses using the C<[item-data ...]>, C<[loop-data ...]>, C<[item-field ...>, etc. Typically used for Oracle and some other SQL implementations.
 
-B<DELIMITER>
+LI1: DELIMITER
+
 .A Interchange delimiter type, either TAB,CSV,PIPE,%%,LINE or the corresponding numeric type. The default for SQL databases is TAB. Use DELIMITER if another type will be used to import. This is not a DBI parameter. It is specific to Interchange.
 
-B<KEY>
+LI1: KEY
+
 .The keying default of C<code> in the first column of the database can be changed with the KEY directive. Don't use this unless prepared to alter all searches, imports, and exports accordingly. It is best to just accept the default and make the first column the key for any Interchange database.
 
-B<ChopBlanks,LongReadLen,LongTruncOK,RaiseError, etc.>
+LI1: ChopBlanks,LongReadLen,LongTruncOK,RaiseError, etc.
+
 .Sets the corresponding DBI attribute. Of particular interest is ChopBlanks, which should be set on drivers which by default return space-padded fixed-length character fields (Solid is an example).
 
 .The supported list as of this release of Interchange is:
@@ -712,7 +740,7 @@ To use an existing SQL database instead of importing, set the NoImport directive
    NoImport  products inventory
 !endblock
 
-\WARNING: If Interchange has write permission on the products database, be careful to set the NoImport directive or create the proper .sql file. If that is not done, and the database source file is changed, the SQL database could be overwritten. In any case, always back up the database before enabling it for use by Interchange.
+Note[label='WARNING: '] If Interchange has write permission on the products database, be careful to set the NoImport directive or create the proper .sql file. If that is not done, and the database source file is changed, the SQL database could be overwritten. In any case, always back up the database before enabling it for use by Interchange.
 
 H1: THE SEARCH ENGINE
 
@@ -720,7 +748,7 @@ Interchange implements a search engine which will search the product database (o
 
 If the search is implemented in a link or a form, it will always display formatted results on the results page, an Interchange page that uses some combination of the C<[search-region]>, C<[search-list]>, C<[more-list]>, C<[more]>, and other Interchange tags to format and display the results. The search results are usually a series of product codes/SKUs or other database keys, which are then iterated over similar to the C<[item-list]>.
 
-\NOTE: Examples of search forms and result pages are included in the demos.
+Note: Examples of search forms and result pages are included in the demos.
 
 Two search engine interfaces are provided, and five types of searching are available. The default is a text-based search of the first products database source file (i.e., products.txt). A binary search of a dictionary-ordered file can be specified. An optional Glimpse search is enabled by placing the command specification for Glimpse in the C<catalog.cfg> directive Glimpse. There is a range-based search, used in combination with one of the above. And finally, there is a fully-coordinated search with grouping.
 
@@ -797,7 +825,7 @@ This will dramatically increase search speeds for large catalogs, at least if th
 
 To search for numbers, add the C<-n> option to the Glimpse command line.
 
-\NOTE: A large catalog is one of more than several thousand items; smaller ones have acceptable speed in any of the search modes.
+Note: A large catalog is one of more than several thousand items; smaller ones have acceptable speed in any of the search modes.
 
 If the Glimpse executable is not found at Interchange startup, the Glimpse
 search will be disabled and the regular text-based search used instead.
@@ -1162,7 +1190,8 @@ cause a bad URL. Change this to C<[page scan se=searchstring]>.
 
 You may specify a one-click search in three different ways.
 
-B<Original>
+LI1: Original
+
 .To do an OR search on the fields category and artist for the strings "Surreal" and "Gogh", while matching substrings, do:
 
 !block example; listitem=2
@@ -1173,7 +1202,8 @@ B<Original>
 
 .In this method of specification, to replace a / (slash) in a file name (for the sp, bd, or fi parameter), the shorthand of :: must be used, i.e., sp=results::standard. (This may not work for some browsers, so put the page in the main pages directory or define the page in a search profile.)
 
-B<Multi-Line>
+LI1: Multi-Line
+
 .Specify parameters one to a line, as well. 
 
 !block example; listitem=2
@@ -1189,7 +1219,8 @@ B<Multi-Line>
 
 .Any "unsafe" characters will be escaped. To search for trailing spaces (unlikely), quote.
 
-B<Ampersand>
+LI1: Ampersand
+
 .Substitute & for / in the specification and be able to use / and quotes and spaces in the specification.
 
 !block example; listitem=2
@@ -1265,25 +1296,31 @@ H2: Search Profiles
 
 An unlimited number of search profiles can be predefined that reside in a file or files. To use this, make up a series of lines like:
 
+!block example
 mv_search_field=artist
 mv_search_field=category
 mv_orsearch=yes
+!endblock
 
 These correspond to the Interchange search variables that can be set on a form. Set it right on the page that contains the search.
 
-\[set artist_profile]
+!block example
+[set artist_profile]
 mv_search_field=artist
 mv_search_field=category
 mv_orsearch=yes
-\[/set]
+[/set]
+!endblock
 
 This is the same:
 
-\[set artist_profile]
+!block example
+[set artist_profile]
 sf=artist
 sf=category
 os=yes
-\[/set]
+[/set]
+!endblock
 
 Then, in the search form, set a variable with the name of the profile:
 
@@ -1293,7 +1330,9 @@ Then, in the search form, set a variable with the name of the profile:
 
 In a one-click search, use the C<mp> modifier:
 
-\[page scan se=Leonardo/mp=artist_profile]A left-handed artist[/page]
+!block example
+[page scan se=Leonardo/mp=artist_profile]A left-handed artist[/page]
+!endblock
 
 They can also be placed in a file. Define the file name in the SearchProfile directive. The catalog must be reconfigured for Interchange to read it. The profile is named by placing a name following a __NAME__ pragma:
 
@@ -1321,27 +1360,32 @@ H2: Search Reference
 
 The supplied C<simple/srchform.html> and C<simple/results.html> pages show example search forms. Modify them to present the search in any way desired. Be careful to use the proper variable names for passing to Interchange. It is also necessary to copy the hidden variables as-is. They are required to interpret the request as a search.
 
-\NOTE: The following definitions frequently refer to field name and column and column number. All are the references to the columns of a searched text file as separated by delimiter characters.
+Note: The following definitions frequently refer to field name and column and column number. All are the references to the columns of a searched text file as separated by delimiter characters.
 
 The field names can be specified in several ways.
 
-B<ProductFiles>
+LI1: ProductFiles
+
 .If the file to be searched is left empty in the search form or definition (it is set with C<mv_search_file (fi)>), the text files associated with the products databases will be searched, and field names are already available as named in the first line of the file(s). This is defined to be C<products.txt> in the Interchange demonstrations.
 
 .Be Careful if using SQL! If the database is change and not exporte with C<[tag export products][/tag]>, searches will not be successful.
 
-B<Other database files>
+LI1: Other database files
+
 .If the file or files to be searched are ASCII delimited files, and have field names specified on the first line of the file, Interchange will read the first line (of the first file) and determine the field names.
 
-B<Other files>
+LI1: Other files
+
 .If the file or files to be searched are ASCII delimited files, but don't have field names specified on the first line of the file, set the variable C<mv_field_names> to a comma-separated list of field names as they will be referenced.
 
 Fields can also always be specified by an integer column number, with 0 as the first column.
 
-B<mv_all_chars>
+LI1: mv_all_chars
+
 .Scan abbreviation: ac=[1|0]. Set this if searching is anticipated for lots of punctuation characters that might be special characters for Perl. The characters ()[]\$^ are included.
 
-B<mv_base_directory>
+LI1: mv_base_directory
+
 .Scan abbreviation: bd=/directory/name. In the text search, set to the directory from which to base file searches. File names without leading / characters will be based from there. In the Glimpse search, passed to Glimpse with the C<-H> option, and Glimpse will look for its indices there. Default is ProductDir.
 
 .If an absolute path directory is used, for security enable it in the users session with:
@@ -1352,17 +1396,20 @@ B<mv_base_directory>
 
 .This prevents users from setting an arbitrary value and viewing arbitrary files.
 
-B<mv_begin_string>
+LI1: mv_begin_string
+
 .If this is set, the string will only match if it is at the beginning of a field. The handling is a bit different for the default AND search compared to the OR search. With OR searches all words are searched for from the beginning of the field, with AND searches all are.
 
 .This is a multiple parameter. If mv_coordinate is in force, it should be set as many times as necessary to match the field/searchstring combination. If set only once, it applies to all fields. If set more than once but not as many times as the fields, it will default to off.
 
-B<mv_case>
+LI1: mv_case
+
 .If this item is set to C<no>, the search will return items without regard to upper or lower case. This is the default -- set to C<yes> if case should be matched. Implement with a checkbox <INPUT TYPE=CHECKBOX> field.
 
 .If stacked to match the mv_search_field and mv_searchspec variables, and C<mv_coordinate> is set, it will operate only for the corresponding field.
 
-B<mv_coordinate>
+LI1: mv_coordinate
+
 .If this item is set to yes, and the number of search fields equals the number of search specs, the search will return only items that match field to spec. (The search specifications are set by stacked C<mv_searchspec> and C<mv_search_field> variables.)
 
 .Case sensitivity, substring matching, and negation all work on a field-by field basis according to the following:
@@ -1375,14 +1422,17 @@ B<mv_coordinate>
 
 ..If a search specification is blank, it will be removed and all case-sensitivity/negation/substring options will be adjusted accordingly.
 
-B<mv_dict_end>
+LI1: mv_dict_end
+
 .If the string at the beginning of a line lexically exceeds this value, matching will stop. Ignored without mv_dict_look.
 
-B<mv_dict_fold>
+LI1: mv_dict_fold
+
 .Make dictionary matching case-insensitive. Ignored without mv_dict_look.
 Note: This is the reverse sense from mv_case.
 
-B<mv_dict_limit>
+LI1: mv_dict_limit
+
 .Automatically set the limiting string (mv_dict_end) to be one character greater than the mv_dict_look variable, at the character position specified. A value of 1, for instance, will set the limiting string to "fprsythe" if the value of C<mv_dict_look> is "forsythe". A useful value is -1, which will increment the last character (setting the mv_dict_end to "forsythf" in our example). This prevents having to scan the whole file once a unique match is found.
 
 Note: The order of this and the C<mv_dict_end> variable is significant. Each will overwrite the other.
@@ -1418,93 +1468,120 @@ Note: The order of this and the C<mv_dict_end> variable is significant. Each wil
 
 .Combined with the C<INDEX> attribute to the Database directive, this allows fast binary search qualification combined with regular C<mv_searchspec> text searches.
 
-B<mv_dict_look>
+LI1: mv_dict_look
+
 .The string at which to begin matching at in a dictionary-based search. If not set, the mv_dict_end, mv_dict_fold, and mv_dict_case variables will be ignored. May be set in a search profile based on other form variables.
 
-B<mv_dict_order>
+LI1: mv_dict_order
+
 .Make dictionary matching follow dictionary order, where only word characters and whitespace matter. Ignored without mv_dict_look.
 
-B<mv_doit>
+LI1: mv_doit
+
 .This must be set to C<search> to make this a search page.
 
-B<mv_exact_match>
+LI1: mv_exact_match
+
 .Normally Interchange searches match words, as opposed to sentences. This behavior can be overridden with mv_exact_match, which when set will place quotes around any value in mv_searchspec or mv_dict_look.
 
-B<mv_field_names>
+LI1: mv_field_names
+
 .Deprecated in favor of in-list sorting. Defines the field names for the file being searched. This guarantees that they will be available, and prevents a disk access if using named fields on a search file (that is not the product database ASCII source, where field names are already known). This must be exactly correct, or it will result in anomalous search operation. Usually passed in a hidden field or search profile as a comma-separated list.
 
 Note: Use this on the product database only if planning on both pre-sorting with C<mv_sort_field> and then post-sorting C<with [sort]field:opt[/sort]>.
 
-B<mv_first_match>
+LI1: mv_first_match
+
 .Normally Interchange will return the first page of a search. If this variable is set, it will start the search return at the match specified, even if there is only one page. If set to a value greater than the number of matches, it will act as if no matches were found.
 
-B<mv_head_skip>
+LI1: mv_head_skip
+
 .Normally Interchange searches all lines of an index/product file but the first. Set this to the number of lines to skip at the beginning of the index. Default is 1 for the text search, which skips the header line in the product file. Default is 0 for a Glimpse search.
 
-B<mv_index_delim>
+LI1: mv_index_delim
+
 .Sets the delimiter for counting fields in a search index. The default is TAB.
 
-B<mv_matchlimit>
+LI1: mv_matchlimit
+
 .The page size for matches that are returned. If more matches than mv_matchlimit are found, the search paging mechanism will be employed if the proper C<[more-list]> is present. Can be implemented as a scrolling list (INPUT TYPE=SELECT) or radiobox (INPUT TYPE=RADIO) field.
 
-B<mv_max_matches>
+LI1: mv_max_matches
+
 .The maximum number of records that will be returned in a search. Default is 2000. This only applies to Glimpse. Use mv_matchlimit to set the search page size.
 
-B<mv_min_string>
+LI1: mv_min_string
+
 .Sets the minimum size of a search string for a search operation. Default is 4 for the Glimpse search, and 1 for the text search.
 
-B<mv_negate>
+LI1: mv_negate
+
 .Specifies that records NOT matching the search criteria will be returned. Default is no. It is not operative for the Glimpse search.
 
 .If stacked to match the mv_search_field and mv_searchspec variables, and mv_coordinate is set, it will operate only for the corresponding field.
 
-B<mv_orsearch>
+LI1: mv_orsearch
+
 .If this item is set to yes, the search will return items matching any of the words in searchspec. The default is no.
 
-B<mv_profile>
+LI1: mv_profile
+
 .Selects one of the pre-defined search specifications set by the SearchProfile directive. If the special variable within that file, C<mv_last>, is defined, it will prevent the scanning of the form input for further search modifications. The values of C<mv_searchspec> and C<mv_dict_look> are always scanned, so you can specify this to do the equivalent of setting multiple checkboxes or radioboxes with one click, while still reading the search input text.
 
-B<mv_range_alpha>
+LI1: mv_range_alpha
+
 .Sets the type of match, numeric or alphanumeric, for the range search in its corresponding range field. The search will return true, assuming it is greater than the mv_range_min specification, if the field searched is less than or equal to mv_range_max, in an alphanumeric sense.
 
-B<mv_range_look>
+LI1: mv_range_look
+
 .This sets a field to scan for a range of numbers. It must be accompanied with corresponding mv_range_min and mv_range_max variables. It can be specified with either a field name or a column number. 
 
-B<mv_range_max>
+LI1: mv_range_max
+
 .Sets the high bound for the range search in its corresponding range field. The search will return true, assuming it is greater than the mv_range_min specification, if the field searched is less than or equal to mv_range_max. To set the bound at infinity, or whatever your integer limit is, set mv_range_min to 0.
 
-B<mv_range_min>
+LI1: mv_range_min
+
 .Sets the low bound for the range search in its corresponding range field. The search will return true, assuming it is less than the mv_range_max specification, if the field searched is less than or equal to mv_range_min.
 
-B<mv_record_delim>
+LI1: mv_record_delim
+
 .Sets the delimiter for counting records in a search index. The default is newline, which works for the products and most line-based index files.
 
-B<mv_return_fields>
+LI1: mv_return_fields
+
 .The fields that should be returned by the match, specified either by field name or by column number. Specify 0 as the first field to be returned if searching the products database, since that is the key for accessing database fields.
 
-B<mv_return_spec>
+LI1: mv_return_spec
+
 .Returns the string specified as the search (i.e., the value of C<mv_searchspec>) as the one and only match. Typically used in a SKU/part number search.
 
-B<mv_search_field>
+LI1: mv_search_field
+
 .The field(s) to be searched, specified either by column name or by column number.
 
 .If the number of instances matches the number of fields specified in the C<mv_searchspec> variable and C<mv_coordinate> is set to true, each search field (in order specified on the form) will be matched with each search spec (again in that order).
 
-B<mv_search_file>
+LI1: mv_search_file
+
 .In the text search, set this variable to the file(s) to be scanned for a match. The default, if not set, is to scan the default ProductFiles (i.e., products.txt). If set multiple times in a form (for a text search), will cause a search all the files. One file name per instance.
 
 .In the Glimpse search, follows the Glimpse wildcard-based file name matching scheme. Use with caution and a liberal dose of the Glimpse man page.
 
-B<mv_search_match_count>
+LI1: mv_search_match_count
+
 .Set by the search to indicate the total number of matches found.
 
-B<mv_search_over_msg>
+LI1: mv_search_over_msg
+
 .The message that should be displayed if there is an overflow condition (C<mv_matchlimit> is exceeded). Overrides the SearchOverMsg directive. It is cleared by Interchange if there is no overflow. Somewhat deprecated by match paging.
 
-B<mv_search_page>
+LI1: mv_search_page
+
 .The Interchange-style name of the page that should display the search results. Overrides the FrameSearchPage directive, and the default value of C<search>.
 
-B<mv_searchspec>
+LI1: mv_searchspec
+
 .The actual search string that is typed in by the customer. It is a text INPUT TYPE=TEXT field, or can be put in a select (drop-down) list to enable category searches. If multiple instances are found, they will be concatenated just as if multiple words had been placed in a text field.
 
 .The user can place quotes around words to specify that they match as a string. To enable this by default, use the C<mv_exact_match> variable.
@@ -1513,7 +1590,8 @@ B<mv_searchspec>
 
 .If the number of instances matches the number of fields specified in the C<mv_search_field> variable and C<mv_coordinate> is set to true, each search field (in order specified on the form) will be matched with each search spec (again in that order).
 
-B<mv_searchtype>
+LI1: mv_searchtype
+
 .If set to Glimpse, selects the Glimpse search (if Glimpse is defined).
 
 .If set to db, iterates over every row of the database (not the associated text source file).
@@ -1526,26 +1604,32 @@ B<mv_searchtype>
 
 .Defaults to text if Glimpse is not defined; defaults to Glimpse if it is defined. This can allow use of both search types if that is desirable. For instance, searching for very common strings is better done by the text-based search. An example might be searching for categories of items instead of individual items.
 
-B<mv_sort_field>
+LI1: mv_sort_field
+
 .The file field(s) the search is to be sorted on, specified in one of two ways. If the file(s) to be searched have a header line (the first line) that contains delimiter-separated field names, it can be specified by field name. It can also be specified by column number (the code or key is specified with a value of 0, for both types). These can be stacked if coming from a form or placed in a single specification separated by commas.
 
 Note[label='NOTE FOR ADVANCED USERS: '] If specifying a sort for the product database, C<mv_field_names> must be specified if doing a fieldname-addressed post-sort.
 
-B<mv_sort_option>
+LI1: mv_sort_option
+
 .The way that each field should be sorted. The flags are C<r>, C<n>, and C<f>, reverse, numeric, and case-insensitive respectively. These can be stacked if coming from a form or placed in a single specification separated by commas. The stacked options will be applied to the sort fields as they are defined, presuming those are stacked.
 
-B<mv_spelling_errors>
+LI1: mv_spelling_errors
+
 .The number of spelling errors that will be tolerated. Ignored unless using Glimpse. For a large catalog, limit this to two.
 
-B<mv_substring_match>
+LI1: mv_substring_match
+
 .If C<mv_substring_match> is set to yes, matches on substrings as well as whole words. Typically set this for dictionary-based searches.
 
 .If stacked to match the C<mv_search_field> and C<mv_searchspec> variables and C<mv_coordinate> is set, it will operate only for the corresponding field.
 
-B<mv_unique>
+LI1: mv_unique
+
 .If set to a true value, causes the sort to return only unique results. This operates on whatever the search return is, as defined by C<mv_return_fields>.
 
-B<mv_value>
+LI1: mv_value
+
 .This is normally only used in the one-click search (va=var=value). It allows setting of a session variable based on the clicked link, which makes for easy definition of headers and other display choices. (If had trouble using C<mv_searchspec> for this before, this is what is needed.)
 
 H2: The Results Page
@@ -1556,21 +1640,24 @@ On the search page, some special Interchange tags are used to format the otherwi
 
 The basic structure looks like this:
 
-\[search-region]
-\[search-list]
+!block example
+[search-region]
+[search-list]
     your iterating code, once for each match
-\[/search-list]
-\[no-match] 
+[/search-list]
+[no-match] 
     Text / tags to be output if no matches found (optional but recommended)
-\[/no-match]
-\[more-list]
+[/no-match]
+[more-list]
     More / paging area (optional)
-\[/more-list]
-\[/search-region]
+[/more-list]
+[/search-region]
+!endblock
 
 TIP FOR MV3 PORTS: A C<[search-list][/search-list]> must always be surrounded by a C<[search-region][/search-region]> pair. This is a change from Interchange 3.
 
-B<[search-list]>
+LI1: [search-list]
+
 .Starts the representation of a search list. Interchange tags can be embedded in the search list, yielding a table or formatted list of items with part number, description, price, and hyperlinks to order or go to its catalog page. 
 
 .The example tags shown have an C<item-> prefix, which is the default. Set any prefix desired with the C<prefix> parameter to C<[search-region]>:
@@ -1613,21 +1700,26 @@ B<[search-list]>
 
 Note: those that reference the shopping cart do not apply, i.e., [item-quantity], [item-modifier ...] and friends.
 
-B<[/search-list]>
+LI1: [/search-list]
+
 .Ends the search list. 
 
-B<[no-match]>
+LI1: [no-match]
+
 .Starts the region of the search results page that should be returned if there is no match (and no error) for the search. If this is not on the page, the special page nomatch will be displayed instead.
 
-B<[/no-match]>
+LI1: [/no-match]
+
 .Ends the no match region.
 
-B<[sort database:field:option* database:field:option*]>
+LI1: [sort database:field:option* database:field:option*]
+
 .Sorts the search list return based on database fields. If no options are supplied, sorts according to the return code. See SORTING.
 
 .This is slow, and it is far better to pre-sort the return in the search specification.
 
-B<[item-change marker]>
+LI1: [item-change marker]
+
 .Active only within C<[search-list][/search-list]>.
 
 .Along with the companion C<[/item-change marker]>, surrounds a region which should only be output when a field (or other repeating value) changes its value. This allows indented lists similar to database reports to be easily formatted. The repeating value must be a tag interpolated in the search process, such as C<[item-field field]> or C<[item-data database field]>.
@@ -1672,13 +1764,16 @@ B<[item-change marker]>
 
 .The above should output a table that only shows the category and subcategory once, while showing the name for every product. (The C<&nbsp;> will prevent blanked table cells if using a border.)
 
-B<[/item-change marker]>
+LI1: [/item-change marker]
+
 .Companion to C<[item-change marker]>.
 
-B<[matches]>
+LI1: [matches]
+
 .Replaced with the range of match numbers displayed by the search page. Looks something like "1-50". Make sure to insert this item between a C<[more-list]> and C<[/more-list]> element pair.
 
-B<[more-list next_img* prev_img* page_img* border* border_current*]>
+LI1: [more-list next_img* prev_img* page_img* border* border_current*]
+
 .Starts the section of the search page which is only displayed if there are more matches than specified in C<mv_matchlimit>. If there are less matches than the number in mv_matchlimit, all text/html between the C<[more_list]> and C<[/more_list]> elements is stripped.
 
 .Use in conjunction with the C<[more]> element to place pointers to additional pages of matches.
@@ -1751,10 +1846,12 @@ B<[more-list next_img* prev_img* page_img* border* border_current*]>
 
 .Of course, image-based anchors can be used as well.
 
-B<[/more-list]>
+LI1: [/more-list]
+
 .Companion to C<[more-list]>. 
 
-B<[more]>
+LI1: [more]
+
 .Inserts a series of hyperlinks that will call up the next matches in a series. They look like this:
 
 !block example; listitem=2
@@ -1765,10 +1862,12 @@ B<[more]>
 
 .See the C<fr_resul.html> or C<search.html> files for examples. Make sure to insert this item between a C<[more-list]> and C<[/more-list]> element pair.
 
-B<[process-search]>
+LI1: [process-search]
+
 .Calls the search with the proper URL, including Interchange session tags. Used as the ACTION value for the search form.
 
-B<[process-target frame]>
+LI1: [process-target frame]
+
 .Calls the search with the proper URL, including Interchange session tags. Used as the ACTION value for the search form if the results are to be targeted to a different window than the one set by SearchFrame (which is "_self" by default).
 
 H1: SORTING
@@ -1803,13 +1902,16 @@ All sort situations, C<[search list]>, C<[loop list]>, C<[tag each table]>, and 
  [sort database:field:option* -n +n =n-n ... ]
 !endblock
 
-B<database>
+LI1: database
+
 .The Interchange database identifier. This must be supplied and should normally be 'products' if using the default name for the database.
 
-B<field>
+LI1: field
+
 .The field (column) of the database to be sorted on.
 
-B<option>
+LI1: option
+
 .None, any, or combinations of the options:
 
 !block example; listitem=2
@@ -1818,23 +1920,28 @@ B<option>
   r   reverse sort
 !endblock
 
-B<-n>
+LI1: -n
+
 .The starting point of the list to be displayed, beginning at 1 for the first entry.
 
-B<+n>
+LI1: +n
+
 .The number of entries to display in this list segment.
 
-B<=n-n>
+LI1: =n-n
+
 .The starting and ending point of the list display. This is an alternative to C<-n> and +n. They should be specified in only one form. If both are specified, the last one will take effect.
 
-B<...>
+LI1: ...
+
 .Don't really put C<...> in. This means that many sort levels are specified. Lots of sort levels with large databases will be quite slow.
 
 Multiple levels of sort are supported, and database boundaries on different sort levels can be crossed. Cross-database sorts on the same level are not supported. If using multiple product databases, they must be sorted with embedded Perl. This is actually a feature in some cases, all items in a C<used> database can be displayed before or after new ones in C<products>.
 
 Examples, all based on the C<simple> demo:
 
-B<Loop list>
+LI1: Loop list
+
 
 !block example; listitem=2
     [loop 00-0011 19-202 34-101 99-102]
@@ -1870,7 +1977,8 @@ B<Loop list>
 
 .The tag C<[sort products:title =3-4]> is equivalent to the above.
 
-B<Search list>
+LI1: Search list
+
 .A search of all products (i.e., http://yoursystem.com/cgi-bin/simple/scan/ra=yes):
 
 !block example; listitem=2
@@ -1916,7 +2024,7 @@ B<Search list>
 
 .If the end value/chunk size exceeds the size of the list, only the elements that exist will be displayed, starting from the start value.
 
-B<Shopping cart>
+LI1: Shopping cart
 
 !block example; listitem=2
     [item-list]
@@ -1927,7 +2035,7 @@ B<Shopping cart>
  
 .will display the items in the shopping cart sorted on their price, with the most expensive shown first. NOTE: This is based on the database field and doesn't take quantity price breaks or discounts into effect. Modifier values or quantities cannot be sorted.
 
-B<Complete database contents>
+LI1: Complete database contents
 
 !block example; listitem=2
     [tag each products]
@@ -2004,24 +2112,30 @@ The second format has several advantages. Multiple lines can be spanned with the
     
 The definable fields are, in order, for the tab-separated format:
 
-B<MODE>
+LI1: MODE
+
 .The unique identifier for that shipping method. It may be repeated as many times as needed.
 
-B<DESCRIPTION>
+LI1: DESCRIPTION
+
 .Text to describe the method (can be accessed on a page with the C<[shipping-description]> element).
 
-B<CRITERIA>
+LI1: CRITERIA
+
 .Whether shipping is based on weight, quantity, price, etc. Valid Interchange tags can be placed in the field to do a dynamic lookup. If a number is returned, that is used as the accumulated criteria. That is, the total of weight, quantity, or price as applied to all items in the shopping cart.
 
 .See C<Criteria Determination> below.
 
-B<MINIMUM>
+LI1: MINIMUM
+
 .The low bound of quantity/weight/criteria this entry applies to.
 
-B<MAXIMUM>
+LI1: MAXIMUM
+
 .The high bound of quantity/weight/criteria this entry applies to. The first found entry is used in case of ties.
 
-B<COST>
+LI1: COST
+
 .The method of developing cost. It can be a number which will be used directly as the shipping cost, or a function, determined by a single character at the beginning of the field:
 
 !block example; listitem=2
@@ -2032,25 +2146,32 @@ B<COST>
    i       Interchange chained cost lookup (items summed individually)
 !endblock
 
-B<NEXT>
+LI1: NEXT
+
 .The C<next> field supplies an alternative shipping mode to substitute if the cost of the current one is zero.
 
-B<ZONE>
+LI1: ZONE
+
 .The UPS zone that is being defined.
 
-B<QUERY>
+LI1: QUERY
+
 .Interchange tags which will return a SQL query to select lines matching this specification. The current mode is replaced with this selection. If there is a query parameter of ?, it will be replaced with the mode name.
 
-B<QUAL>
+LI1: QUAL
+
 .The geographic qualification (if any) for this mode.
 
-B<PERL>
+LI1: PERL
+
 .Perl code that is read and determines the B<criterion>, not the cost. Use the C<cost> option with "f " as the prelim to supply Perl code to determine cost.
 
-B<TOTAL>
+LI1: TOTAL
+
 .Set to the accumulated criterion before passing to Perl.
 
-B<OPT >
+LI1: OPT
+
 .Used to maintain UPS and freeform options. Normally these are set by separate lines in the shipping definition.
 
 H2: Criteria Determination
@@ -2059,13 +2180,16 @@ The criteria field varies according to whether it is the first field in the ship
 
 The return must be one of:
 
-B<quantity>
+LI1: quantity
+
 .The literal value quantity as the main criterion will simply count the number of items in the shopping cart and return it as the accumulated criteria. If using a database table field named C<quantity>, then use the C<table::field> notation.
 
-B<o <field name> or <table>::<field name>>
+LI1: o <field name> or <table>::<field name>
+
 .A valid database field (column) name as main criterion will cause the number of items in the shopping cart to be multiplied by the value of the field for each item to obtain the accumulated criteria. If the table is not supplied, defaults to the first C<ProductFiles> table.
 
-B<o n.nn>
+LI1: o n.nn
+
 .Where B<n.nn> is any number, it will be directly used as the accumulated criteria. This can be effectively returned from a Perl subroutine or Interchange C<[calc][item-list] ... [/item-list][/calc]> to create custom shipping routines.
 
 Note[label='IMPORTANT NOTE: '] The above only applies to the first field that matches the shipping mode exactly. Following criteria fields contain qualifier matching strings.
@@ -2075,28 +2199,36 @@ H2: Shipping Calculation Modes
 There are eight ways that shipping cost may be calculated. The method used
 depends on the first character of the C<cost> field in the shipping database.
 
-B<N.NN (digits)>
+LI1: N.NN (digits)
+
 .If the first character is a digit, a number is assumed and read directly as the shipping cost.
 
-B<e>
+LI1: e
+
 .If the first character is an C<e>, a cost of zero is returned and an error message is placed in the session value C<ship_message> (i.e., C<[data session ship_message]> or $Session->{ship_message}).
 
-B<f>
+LI1: f
+
 .If the character C<f> is the first, Interchange will first interpret the text for any Interchange tags and then interpret the result as a formula. It is read as Perl code; the entire set of Interchange objects may be referenced with the code.
 
-B<i>
+LI1: i
+
 .Specifies a chained shipping lookup which will be applied to each item in the shopping cart.
 
-B<m>
+LI1: m
+
 .Specifies a chained shipping lookup which will be applied to the entire shopping cart.
 
-B<u>
+LI1: u
+
 .Calls the UPS-style lookup. Can pre-define as many as desired. Though if want to do the hundreds available, it is best done on the fly.
 
-B<x>
+LI1: x
+
 .If an C<x> is first, a number is expected and is applied as a fixed multiplier for the accumulated criterion (@@TOTAL@@).
 
-B<A-Z>
+LI1: A-Z
+
 .If the first character is a capital letter, calls one of the 26 secondary UPS-style lookup zones. (Deprecated now that zones can be named directly).
 
 H2: How Shipping Is Calculated
@@ -2129,7 +2261,7 @@ Note: The same mode name may be used for all lines in the same group, but the fi
 
 Here is an example shipping file using all of the methods of determining shipping cost.
 
-\NOTE: The columns are lined up for reading convenience. The actual entries should have ONE tab between fields.
+Note: The columns are lined up for reading convenience. The actual entries should have ONE tab between fields.
 
 global Option   n/a               0   0      g PriceDivide
  
@@ -2156,16 +2288,20 @@ upsca  UPS/CA   weight            150 99999  e @@TOTAL@@ lb too heavy for UPS
  
 fedex  FedEx    quantity          1   9999   s fedex_cost ;[value country]
 
-B<global>
+LI1: global
+
 .This is a global option setting, called out by the C<g> at the beginning. PriceDivide tells the shipping routines to multiply all shipping settings by the PriceDivide factor, except those explicitly set differently with the C<o> individual modifier. This allows currency conversion. (Currently the only option is PriceDivide.)
 
-B<rpsg>
+LI1: rpsg
+
 .If the user selected RPS, (code rpsg) and the quantity on the order was 3, the cost of 7.00 from the second rpsg line would be applied. If the quantity were 7, the next entry from the third rpsg line would be selected for a cost of 10.00. If the quantity were 15, the last rpsg would be selected and the quantity of 15 multiplied by 0.95, for a total cost of 14.25.
 
-B<usps>
+LI1: usps
+
 .The next mode, C<usps>, is a more complicated formula using price as the criteria. If the total price of all items in the shopping cart (same as C<[subtotal]> without quantity price breaks in place) is from 1 to 50, the cost will be 7.00 plus 10% of the order. If the total is from 50.01 to 100, the cost will be 12.00 plus 9% of the order total. If the cost is 100.01 or greater, 5% of the order total will be used as the shipping cost.
 
-B<upsg>
+LI1: upsg
+
 .The next, C<upsg>, is a special case. It specifies a UPS lookup based on the store's UPS zone and two required values (and two optional arguments):
 
 !block example; listitem=2
@@ -2208,7 +2344,8 @@ B<upsg>
 
 .The example above also illustrates geographic qualification. If the value of the form variable state on the checkout form is AK or HI, the U.S. states Alaska and Hawaii, a $10.00 additional charge (over and above the normal 2.00 handling charge) is made.  This can also be used to select on country, product type, or any other qualification that can be encoded in the file.
 
-B<upsca>
+LI1: upsca
+
 .The next entry is just like the UPS definition except it defines a different lookup zone file (C<products/can.csv>) and uses a different database, C<upsca>. It also disables the global PriceDivide option for itself only, not allowing currency conversion. Otherwise, the process is the same.
 
 .Up to 27 different lookup zones can be defined in the same fashion. If one of the cost lines (the last field) in the C<shipping.asc> file begins with a "c," it configures another lookup zone which must be lettered from C<A to Z>.  It takes the format:
@@ -2229,7 +2366,8 @@ B<upsca>
 
 .The only difference is that the beginning code to call the lookup is upper-case C<U> instead of lower-case C<u>.
 
-B<fedex>
+LI1: fedex
+
 .The last entry, C<fedex>, uses a named subroutine. The example is designed to work with this subroutine defined in catalog.cfg:
 
 !block example; listitem=2
@@ -2514,7 +2652,7 @@ The field names to be used are not set in concrete. They may be changed with opt
 
 A few of those fields are special in naming, though all can be changed via an option. A couple of the fields are reserved for Interchange's use.
 
-IMPORTANT NOTE: If not running with PGP or other encryption for credit card numbers, which should NEVER be done anyway, it is important that the mv_credit_card_info field be removed from the database. 
+Note[label='IMPORTANT NOTE: '] If not running with PGP or other encryption for credit card numbers, which should NEVER be done anyway, it is important that the mv_credit_card_info field be removed from the database. 
 
 The special database fields are:
 
@@ -2533,7 +2671,7 @@ The special database fields are:
 
 If not defined, the corresponding capability is not available.
 
-\NOTE: The fields C<accounts>, C<address_book>, C<carts>, and C<preferences> should
+Note: The fields C<accounts>, C<address_book>, C<carts>, and C<preferences> should
 be defined as a BLOB type, if using SQL. This is also suggested for the acl fields if those lists could be large.
 
 Reserved fields include:
@@ -2682,7 +2820,8 @@ H2: User Database functions
 
 The user database features are implemented as a series of functions attached to the C<userdb> tag. The functions are:
 
-B<login>
+LI1: login
+
 .Active parameters: username, password, crypt, pass_field, ignore_case
 
 .Log in to Interchange. By default, the username is contained in the form variable C<mv_username> and the password in C<mv_password>. If the login is successful, the session value C<username> (C<[data session username]>) will be set to the user name.
@@ -2691,10 +2830,12 @@ B<login>
 
 .The I<CookieLogin> directive (catalog.cfg) allows users to save their username/password in a cookie. Expiration time is set by I<SaveExpire>, renewed every time they log in. To cause the cookie to be generated originally, the form variable C<mv_cookie_password> or C<mv_cookie_username> must be set in the login form. The former causes both username and password to be saved, the latter just the username.
 
-B<logout>
+LI1: logout
+
 .Log out of Interchange. No additional parameters are needed.
 
-B<new_account>
+LI1: new_account
+
 .Active parameters: username, password, verify, assign_username, username_mask, ignore_case
 
 .Create a new account. It requires the C<username>, C<password>, and C<verify> parameters, which are by default contained in the form variables C<mv_username>, C<mv_password>, C<mv_verify> respectively.
@@ -2726,12 +2867,14 @@ B<new_account>
 
 .This would be coupled with a login form that asks for order number and zip code, thereupon allowing the display of the contents of a transaction database with (presumably updated) order status information or a shipping company tracking number.
 
-B<change_pass>
+LI1: change_pass
+
 .Active parameters: username, password, verify, oldpass
 
 .Change the password on the currently logged-in account. It requires the C<username>, C<password>, C<verify>, and C<oldpass> parameters, which are by default contained in the form variables C<mv_username>, C<mv_password>, C<mv_verify>, C<mv_password_old> respectively.
 
-B<set_shipping>
+LI1: set_shipping
+
 .Active parameters: nickname, shipping, ship_field
 
 .Place an entry in the shipping Address book. For example:
@@ -2742,7 +2885,8 @@ B<set_shipping>
 
 .See Address Book below.
 
-B<get_shipping>
+LI1: get_shipping
+
 .Active parameters: nickname, shipping, ship_field
 
 .Recall an entry from the shipping Address book. For example:
@@ -2753,7 +2897,8 @@ B<get_shipping>
 
 .See Address Book below.
 
-B<get_shipping_names>
+LI1: get_shipping_names
+
 .Active parameters: ship_field
 
 .Gets the names of shipping address book entries and places them in the variable C<address_book>. By default, it does not return the values. To have the values returned, set the parameter C<show> to 1, as in:
@@ -2765,7 +2910,8 @@ B<get_shipping_names>
     [/set]
 !endblock
 
-B<set_billing>
+LI1: set_billing
+
 .Active parameters: nickname, billing, bill_field
 
 .Place an entry in the billing accounts book. For example:
@@ -2776,7 +2922,8 @@ B<set_billing>
 
 .See Accounts Book below.
 
-B<get_billing>
+LI1: get_billing
+
 .Active parameters: nickname, billing, bill_field
 
 .Recall an entry from the billing accounts book. For example:
@@ -2787,10 +2934,12 @@ B<get_billing>
 
 .See Accounts Book below.
 
-B<save>
+LI1: save
+
 .Saves all non-special form values that have columns in the user database.
 
-B<set_cart>
+LI1: set_cart
+
 .Save the contents of a shopping cart.
 
 !block example; listitem=2
@@ -2799,7 +2948,8 @@ B<set_cart>
 
 .See Carts below.
 
-B<get_cart>
+LI1: get_cart
+
 .Active parameters: nickname, carts_field, target
 
 .Recall a saved shopping cart. 
@@ -2810,7 +2960,8 @@ B<get_cart>
 
 .Setting C<target> saves to a different shopping cart than the default main cart. The C<carts_field> controls the database field used for storage.
 
-B<set_acl>
+LI1: set_acl
+
 .Active parameters: location, acl_field, delete
 
 .Set a simple acl. For example:
@@ -2833,7 +2984,8 @@ B<set_acl>
     [userdb function=set_acl location=cartcf/editcart show=1]
 !endblock
 
-B<check_acl>
+LI1: check_acl
+
 .Active parameters: location, acl_field
 
 .Checks the simple access control listing for a location, returning 1 if allowed and the empty string if not allowed.
@@ -2848,7 +3000,8 @@ B<check_acl>
     [/if]
 !endblock
 
-B<set_file_acl, set_db_acl>
+LI1: set_file_acl, set_db_acl
+
 .Active parameters: location, mode, db_acl_field, file_acl_field, delete
 
 .Sets a complex access control value. Takes the form:
@@ -2861,7 +3014,8 @@ B<set_file_acl, set_db_acl>
 
 .where mode is any value to be checked with check_file_acl. As with the simple ACL, you can use delete=1 to delete the location entirely.
 
-B<check_file_acl, check_db_acl>
+LI1: check_file_acl, check_db_acl
+
 .Active parameters: location, mode, db_acl_field, file_acl_field
 
 .Checks a complex access control value and returns a true/false (1/0) value. Takes the form:
@@ -3084,17 +3238,20 @@ H2: I can't get SQL to work: Undefined subroutine &Vend::Table::DBI::create ...
 
 This probably means one of the following:
 
-B<No SQL database.>
+LI1: No SQL database.
+
 .Interchange doesn't include a SQL database. You must select one and install it.
 
-B<No DBI.>
+LI1: No DBI.
+
 .You must install Perl's DBI module before using Interchange with SQL. You can see where to get it at http://www.cpan.org, or try:
 
 !block example; listitem=2
     perl -MCPAN -e 'install DBI'
 !endblock
 
-B<No DBD.>
+LI1: No DBD.
+
 .You must install the specific Perl DBD module for your database before using Interchange with SQL. You can see where to get it at http://www.cpan.org, or try:
 
 !block example; listitem=2
@@ -3128,15 +3285,18 @@ B<No DBD.>
 
 .Then you don't have one of the above, and Interchange will never run a SQL type.
 
-B<I don't like the column types that Interchange defines!>
+LI1: I don't like the column types that Interchange defines!
+
 .They can be changed. See the simple/mysql directory for some examples under MySQL.
 
-B<I change the ASCII file, but the table is not updated. Why?>
+LI1: I change the ASCII file, but the table is not updated. Why?
+
 .Interchange writes an empty file TABLE.sql (where TABLE is the name of the table). When this is present, Interchange will never update the table from disk.
 
 .Also, if you have changed the field names in the file, you must restart the catalog (Apply Changes) before they will be picked up.
 
-B<Why do I even need an ASCII file?>
+LI1: Why do I even need an ASCII file?
+
 .Interchange wants some source for column names initially. If you don't want to have one, just create a TABLENAME.sql file in the C<products> directory. For example, if you have this:
 
 !block example; listitem=2
@@ -3153,7 +3313,8 @@ B<Why do I even need an ASCII file?>
 
 .Create a file C<products/pricing.sql>. .
 
-B<Interchange overwrites my predefined table!>
+LI1: Interchange overwrites my predefined table!
+
 .Yes, it will if you don't create a file called TABLENAME.sql, where C<TABLENAME> is the name of the Interchange table. If you want this to happen by default, then set C<NoImport TABLENAME>.
 
 H2: How can I use Interchange with Microsoft Access?
@@ -3223,23 +3384,21 @@ H1: INTERCHANGE DATABASE USERTAGS
 
 H2: Data
 
-CALL INFORMATION 
+.Named Parameters: [data table=db_table column=column_name key=key filter=``uc|lc|name|namecase|no_white|etc.''* append=1* value=``value to set to''* increment=1* ] 
 
-\Parameters: table field key 
+.Positional parameters: [data db_table column key] 
 
-Positional parameters in same order. 
+.The attribute hash reference is passed to the subroutine after the parameters as the last argument. This may mean that there are parameters not shown here. 
 
-The attribute hash reference is passed to the subroutine after the parameters as the last argument. This may mean that there are parameters not shown here. 
+.Must pass named parameter interpolate=1 to cause interpolation. 
 
-Must pass named parameter interpolate=1 to cause interpolation. 
+.Invalidates cache: no 
 
-Invalidates cache: no 
+.Called Routine: 
 
-Called Routine: 
+.ASP/perl tag calls: 
 
-ASP/perl tag calls: 
-
-!block example
+!block example; listitem=2
    $Tag->data(
        {
         table => VALUE,
@@ -3247,15 +3406,17 @@ ASP/perl tag calls:
         key => VALUE,
        }
    )
+!endblock
 
-OR
+.OR
 
+!block example; listitem=2
    $Tag->data($table, $field, $key, $ATTRHASH);
 !endblock
 
-Attribute aliases 
+.Attribute aliases:
 
-!block example
+!block example; listitem=2
            base ==> table
            code ==> key
            col ==> field
@@ -3265,14 +3426,13 @@ Attribute aliases
            row ==> key
 !endblock
  
-DESCRIPTION 
-\Syntax: [data table=db_table column=column_name key=key filter=``uc|lc|name|namecase|no_white|etc.''* append=1* value=``value to set to''* increment=1* ] 
+.Returns the value of the field in a database table, or (DEPRECATED) from the session namespace. If the optional value is supplied, the entry will be changed to that value. If the option increment* is present, the field will be  automatically incremented with the value in value. Use negative numbers in value to decrement. The append attribute causes the value to be appended. The filter attribute is a set of Interchange filters that are applied to the data 1) after it is read; or 2) before it is placed in the table. 
 
-Returns the value of the field in a database table, or (DEPRECATED) from the session namespace. If the optional value is supplied, the entry will be changed to that value. If the option increment* is present, the field will be  automatically incremented with the value in value. Use negative numbers in value to decrement. The append attribute causes the value to be appended. The filter attribute is a set of Interchange filters that are applied to the data 1) after it is read; or 2) before it is placed in the table. 
+.If a DBM-based database is to be modified, it must be flagged writable on the page calling the write tag. Use [tag flag write]products[/tag] to mark the products database writable, for example. This must be done before ANY access to that table. 
 
-If a DBM-based database is to be modified, it must be flagged writable on the page calling the write tag. Use [tag flag write]products[/tag] to mark the products database writable, for example. This must be done before ANY access to that table. 
+.DEPRECATED BEHAVIOR: (replace with session tag). In addition, the [data ...]  tag can access a number of elements in the Interchange session database: 
 
-DEPRECATED BEHAVIOR: (replace with session tag). In addition, the [data ...]  tag can access a number of elements in the Interchange session database: 
+!block example; listitem=2
     accesses           Accesses within the last 30 seconds
     arg                The argument passed in a [page ...] or [area ...] tag
     browser            The user browser string
@@ -3290,12 +3450,13 @@ DEPRECATED BEHAVIOR: (replace with session tag). In addition, the [data ...]  ta
     time               Time (seconds since Jan 1, 1970) of last access
     user               The REMOTE_USER string
     username           User name logged in as (UserDB feature)
+!endblock
 
-\NOTE: Databases will hide session values, so don't name a database `session''. or you won't be able to use the [data ...] tag to read them. Case is sensitive, so in a pinch you could call the database ``Session'', but it would be better not to use that name at all. 
+Note: Databases will hide session values, so don't name a database `session''. or you won't be able to use the [data ...] tag to read them. Case is sensitive, so in a pinch you could call the database ``Session'', but it would be better not to use that name at all. 
 
 H2: db_date 
 
-!block example
+!block example; listitem=1
    # [db-date table format]
    #
    # This tag returns the last-modified time of a database table,
@@ -3329,57 +3490,23 @@ H2: db_date
    EOF
 !endblock
 
-H2: Search
-
-CALL INFORMATION 
-
-\Parameters: arg 
-
-Positional parameters in same order. 
-
-Pass attribute hash as last to subroutine: no 
-
-Must pass named parameter interpolate=1 to cause interpolation. 
-
-Invalidates cache: no 
-
-Called Routine: 
-
-ASP/perl tag calls: 
-
-!block example
-   $Tag->search(
-       {
-        arg => VALUE,
-       }
-   )
-
-OR
-
-   $Tag->search($arg);
-!endblock
-
-
-
 H2: Search_region
 
-CALL INFORMATION 
+.Named Parameters: [search_region arg="arg"]
 
-\Parameters: arg 
+.Positional Parameters: [search_region arg]
 
-ONLY THE PARAMETERS ARE POSITIONAL. 
+.The attribute hash reference is passed after the parameters but before the container text argument. This may mean that there are parameters not shown here. 
 
-The attribute hash reference is passed after the parameters but before the container text argument. This may mean that there are parameters not shown here. 
+.Must pass named parameter interpolate=1 to cause interpolation. 
 
-Must pass named parameter interpolate=1 to cause interpolation. 
+.This is a container tag, i.e. [search_region] FOO [/search_region]. Nesting: NO
 
-This is a container tag, i.e. [search_region] FOO [/search_region]. Nesting: NO 
+.Invalidates cache: no 
 
-Invalidates cache: no 
+.Called Routine: 
 
-Called Routine: 
-
-ASP/perl tag calls: 
+.ASP/perl tag calls: 
 
 !block example; listitem=2
     $Tag->search_region(
@@ -3388,11 +3515,17 @@ ASP/perl tag calls:
         },
         BODY
     )
+!endblock
 
- OR
+.OR
 
+!block example; listitem=2
     $Tag->search_region($arg, $ATTRHASH, $BODY);
-Attribute aliases 
+!endblock
+
+.Attribute aliases:
+
+!block example; listitem=2
             args ==> arg
             params ==> arg
             search ==> arg
