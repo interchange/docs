@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.66 2001-11-22 14:49:48 bill Exp $
+# $Id: ictags.sdf,v 1.67 2001-11-27 17:15:44 jon Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.66 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.67 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -7431,9 +7431,6 @@ H3: Summary
 
 \Parameters: B<name>
 
-ONLY THE B<> PARAMETERS ARE POSITIONAL.
-
-
 B<The attribute hash reference is passed> after the parameters but before
 the container text argument.
 B<This may mean that there are parameters not shown here.>
@@ -11115,9 +11112,6 @@ H3: Summary
 
 \Parameters: B<arg>
 
-ONLY THE B<> PARAMETERS ARE POSITIONAL.
-
-
 B<The attribute hash reference is passed> after the parameters but before
 the container text argument.
 B<This may mean that there are parameters not shown here.>
@@ -13257,8 +13251,6 @@ H2: tree
 H3: Summary
 
 \Parameters: B<table master subordinate start>
-
-ONLY THE B<> PARAMETERS ARE POSITIONAL.
 
 
 B<The attribute hash reference is passed> after the parameters but before
