@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.98 2002-08-30 05:14:38 kwalsh Exp $
+# $Id: ictags.sdf,v 1.99 2002-09-01 15:13:56 mheins Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.98 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.99 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -6295,7 +6295,7 @@ or similarly with positional parameters,
 
 H3: Description
 
-Builds a tax rate from C<taxarea>, C<taxrate>, C<taxshipping>, variable values, and the C<SalesTax> directive value.
+Builds a tax rate from C<TAXAREA>, C<TAXRATE>, and C<TAXSHIPPING> {{CMD[jump="icconfig.html#Variable"]Variable}} values, and the {{CMD[jump="icconfig.html#SalesTax"]SalesTax}} directive value.
 
 
 

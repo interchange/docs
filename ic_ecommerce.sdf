@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ic_ecommerce.sdf,v 1.16 2002-08-12 02:09:52 mheins Exp $
+# $Id: ic_ecommerce.sdf,v 1.17 2002-09-01 15:13:56 mheins Exp $
 
 !define DOC_NAME "Interchange Ecommerce Functions"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_ecommerce"
-!define DOC_VERSION substr('$Revision: 1.16 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.17 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ic_ecommerce.html"
@@ -1089,19 +1089,19 @@ H1: Taxing
 
 Interchange allows taxing in a number of ways.
 
-L1: Simple salestax.asc table
+LI1: Simple salestax.asc table
 
 The {{CMD[jump="icconfig.html#SalesTax"]SalesTax}} directive is
 set to a form field or fields for user input, and those form fields
-look up the tax rate in salestax.asc.
+are used look up the tax rate in salestax.asc.
 
-L1: Fly tax
+LI1: Fly tax
 
 Another simple tax method. A series of Interchange Variable settings
 are read to develop a salestax rate for one or a few localities, usually
 a state in the US.
 
-L1: Salestax multi -- VAT taxing
+LI1: Salestax multi -- VAT taxing
 
 The {{CMD[jump="icfoundation.html#country"]country}}
 and {{CMD[jump="icfoundation.html#state"]state}} tables are used
@@ -1109,7 +1109,7 @@ to develop complex VAT or salestax rate calculations based on
 country and state, possibly with different rates based on product
 type.
 
-L1: Levies -- multiple levels of tax
+LI1: Levies -- multiple levels of tax
 
 Using the {{CMD[jump="icconfig.html#Levies"]Levies}} setting
 and the {{CMD[jump="icconfig.html#Levy"]Levy}} structure, any or all of
@@ -1186,13 +1186,13 @@ in the DEFAULT setting of salestax.asc, and the variables
 C<TAXAREA>, C<TAXRATE>, and C<TAXSHIPPING> are used to build
 the rates.
 
-L1: TAXAREA
+LI1: TAXAREA
 
 A space-separated or comma-seperated list of states to apply
 tax to. Not needed for anything in the calculation, it is used
 to build the UI list of states to tax.
 
-L1: TAXRATE
+LI1: TAXRATE
 
 An Interchange accessory-list style of value, with the
 format
@@ -1207,13 +1207,13 @@ Nevada, you would use:
 
 	IL=7.25, NV=5.5
 
-L1: TAXSHIPPING
+LI1: TAXSHIPPING
 
 A space- or comma-separated list of states where shipping is
 taxed. For the above example, if Nevada taxed shipping and Illinois
 did not, you would make TAXSHIPPING equal to "NV".
 
-L1: The Salestax Directive
+LI1: The Salestax Directive
 
 To set the field that is used for the state code, you use the
 standard Interchange {{CMD[jump="icconfig.html#SalesTax"]SalesTax}} directive. It would almost always
@@ -1222,15 +1222,15 @@ be set to C<state>.
 H2: Salestax "multi" -- VAT taxing
 
 If the SalesTax directive is set to "multi", then the type of
-tax is read from the country table (or the value that Variable
-MV_COUNTRY_TABLE is set to be). To see the tax type in
+tax is read from the {{CMD[jump="icfoundation.html#country"]country}} table. To see the tax type in
 force for the UK, you can place in a page:
 
 !block example
 	[data table=country col=tax key="UK"].
 !endblock
 
-Most everything is configurable for variable name and field name via
+.NOTE: We mention the "country" table above. In actual practice, most
+everything is configurable for variable name and field name via
 different Variable settings. They are:
 
 !block example
