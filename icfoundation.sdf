@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icfoundation.sdf,v 1.16 2001-05-30 15:01:54 bill Exp $
+# $Id: icfoundation.sdf,v 1.17 2001-05-30 21:00:57 bill Exp $
 
 !define DOC_NAME "Foundation Store"
 !define DOC_TYPE ""
 !define DOC_CODE "icfoundation"
-!define DOC_VERSION substr('$Revision: 1.16 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.17 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/doc/icfoundation.html"
@@ -3301,17 +3301,18 @@ H3: {{CMD[id="options_o_value"]o_value}}
 Example Data
 
 !block example
-   1=One 8GB tape,2=Two 8GB tapes,=None*
-   a=One 8GB tape,b=Two 8GB tapes,=None*
-   baby=Baby Tower,mid=Mid-tower,full=Full Tower
-   baby=Baby tower,mid=Mid-tower,full=Full tower
-   red=Passion Red,blue=Electric Blue,green=Sea Green,grey=S...
-   red=Passion Red,yellow=Lemon Yellow,blue=Electric Blue,gr...
-   red=Rage Red,yellow=Honey Yellow
+   1=One 8GB tape,I<\r>2=Two 8GB tapes,I<\r>=None*
+   a=One 8GB tape,I<\r>b=Two 8GB tapes,I<\r>=None*
+   baby=Baby Tower,I<\r>mid=Mid-tower,I<\r>full=Full Tower
+   baby=Baby tower,I<\r>mid=Mid-tower,I<\r>full=Full tower
+   red=Passion Red,I<\r>blue=Electric Blue,I<\r>green=Sea Green,I<\r>grey=S...
+   red=Passion Red,I<\r>yellow=Lemon Yellow,I<\r>blue=Electric Blue,I<\r>gr...
+   red=Rage Red,I<\r>yellow=Honey Yellow
 !endblock
 
 This is an Interchange value set for a simple option. It is typically a comma-delimited list of labels and values with '*' indicating the default value.  See the {{C[jump="ictags.html#accessories"]accessories}} tag for more detail.
 
+Note that the "I<\r>" characters in the above example represent carriage returns in the actual data ("\r" in perl, or Ctrl-M, or hexadecimal 0D), and the ... indicates a line too long to show.
 
 H3: {{CMD[id="options_o_widget"]o_widget}}
 
@@ -3321,7 +3322,7 @@ Example Data
    select
 !endblock
 
-This determines the HTML Widget type (for example, a select box).
+This determines the HTML Widget type (I<e.g.>, a select box).  For example, the E<lbracket>{{C[jump="ictags.html#options"]options}}] tag uses this entry when building HTML widgets in a page.  See also the E<lbracket>{{C[jump="ictags.html#accessories"]accessories}}] tag for available widgets.
 
 
 H3: {{CMD[id="options_o_footer"]o_footer}}

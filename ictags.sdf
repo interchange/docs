@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.42 2001-05-30 15:01:54 bill Exp $
+# $Id: ictags.sdf,v 1.43 2001-05-30 21:00:57 bill Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.42 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.43 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -5256,63 +5256,11 @@ Attribute aliases
 >            base ==> table
 >            database ==> table
 
-
  
 
 H3: Description
 
 Creates an index for the specified table.
-
-
-H2: input_filter
-
-
-H3: Summary
-
-\Parameters: B<name>
-
-Positional parameters in same order.
-
-
-B<The attribute hash reference is passed> after the parameters but before
-the container text argument.
-B<This may mean that there are parameters not shown here.>
-
-Must pass named parameter interpolate=1 to cause interpolation.
-
-This is a container tag, i.e. [input_filter] FOO [/input_filter].
-\Nesting: NO
-
-Invalidates cache: B<YES>
-
-Called Routine: 
-
-B<ASP-like Perl call:>
-
->    $Tag->input_filter(
->        {
->         name => VALUE,
->        },
->        BODY
->    )
->
-> OR
->
->    $Tag->input_filter($name, $ATTRHASH, $BODY);
-
-Attribute aliases
-
->            ops ==> op
->            var ==> name
->            variable ==> name
-
-
- 
-
-H3: Description
-
-B<NO Description>
-
 
 
 
@@ -6025,7 +5973,7 @@ H3: Summary
 
 * qualifier
 ** An item attribute that must be true in order to count the item.
-** N<Default:>
+** N<Default:> None
 
 * compare
 ** Regular expression the specified qualifier attribute's value must match to be counted. This replaces the truth value comparison.
@@ -6059,58 +6007,6 @@ H3: Description
 Expands into the total number of items ordered so far. Takes an
 optional cart name as a parameter.
 
-
-
-
-
-H2: onfly
-
-
-H3: Summary
-
-\Parameters: B<code quantity>
-
-Positional parameters in same order.
-
-* code
-** Unique key (typically sku) if not already set
-
-* quantity
-** How many (if not already set)
-
-* text
-** Delimited list of additional item fields and values to set. Default delimiter is the pipe ('|') character.
-*** text="field1=val1|field2=val2|field3=val3"
-
-
-B<The attribute hash reference is passed> to the subroutine after
-the parameters as the last argument.
-B<This may mean that there are parameters not shown here.>
-
-Must pass named parameter interpolate=1 to cause interpolation.
-
-Invalidates cache: B<no>
-
-Called Routine: 
-
-B<ASP-like Perl call:>
-
->    $Tag->onfly(
->        {
->         code => VALUE,
->         quantity => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->onfly($code, $quantity, $ATTRHASH);
-
- 
-
-H3: Description
-
-B<NO Description>
 
 
 
@@ -7271,64 +7167,6 @@ or similarly with positional parameters,
 !endblock
 
 
-
-H2: profile
-
-Note: Documentation incomplete for this tag.
-
-Saves and restores profile of session configuration variables and $Session->{Autoload}.
-
-If given a C<name>, 
-
-If not given a C<name>, returns the contents of the $Session->{Autoload} array delimited with the specified C<joiner>.  If not given a name, the C<restore> option restores saved session configuration and filters the 
-
-
-
-H3: Summary
-
-\Parameters: B<name>
-
-
-* name
-** Either C<name>='I<tag>-B<profilename>' or C<name>='profilename'. Specifies the profile name (and possibly also the profile tag) in the profile repository to save or restore (see {{CMD[jump="icconfig.html#ProfileRepository"]ProfileRepository}}).  The C<'restore'> option without a name restores the last saved configuration profile.
-
-* tag
-** This is the profile tag.  On restoration, the $Session->{Autoload} array will be filtered to match the given profile tag.  When saving, the current $Session->{Autoload} array is saved 
-** N<Default:> 'default'
-
-* restore
-** Restores previously saved session configuration associated. The B<profile> tag must not specify a profile C<name>N<:>
-... E<lbracket>profile restore=1]
-** N<Default:> False
-
-* joiner
-** N<Default:> Space (' ')
-
-* run
-** Internal option, set within the routine if C<name>="I<tagname>-profilename"
-
-* set
-** Causes the $Session->{Autoload} array to be filtered to match the given tag after saving the configuration.
-
-* failure
-** Return value in case of failure
-
-* success
-** Return value if the tag succeeds
-
-
-
-Must pass named parameter interpolate=1 to cause interpolation.
-
-Invalidates cache: B<YES>
-
-Called Routine: 
-
-B<ASP-like Perl call:>
-
->    $Tag->profile($name, $ATTRHASH);
-
- 
 
 
 H2: query
