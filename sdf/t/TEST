@@ -1,4 +1,4 @@
-#!/usr/local/bin/perl
+#!/usr/bin/perl
 
 # This script is run Test::Harness on the tests found under the
 # "t" directory.

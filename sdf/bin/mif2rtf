@@ -1,6 +1,6 @@
-#!/usr/local/bin/perl
+#!/usr/bin/perl
 # -*- mode:perl -*-
-# $Id: mif2rtf,v 1.1 2001-03-29 20:30:38 jon Exp $
+# $Id: mif2rtf,v 1.2 2001-04-20 18:32:45 jason Exp $
 #
 # mif2rtf       - Frame Maker Interchange Format to Microsoft Rich Text Format
 #

@@ -52,7 +52,7 @@ dev_html:
 		base=`basename $$target .sdf`; \
 		echo building $$base; \
 		( echo '1s/akopia/developer_site/' ; echo 'wq dev/'$$target ) | ed $$target > /dev/null 2>&1 ; \
-		( cd dev ; sdf -2html_topics -DITL_ESCAPE -n2 -k=developer_site $$target); \
+		( cd dev ; sdf/bin/sdf -2html_topics -DITL_ESCAPE -n2 -k=developer_site $$target); \
 	done
 	@echo building index
 	@( echo '1s/akopia/developer_site/' ; echo 'wq dev_index.sdf' ) | ed index.sdf > /dev/null 2>&1
@@ -61,7 +61,7 @@ dev_html:
 	mv dev_index.html dev/index.html
 
 %_toc.html: %.sdf
-	sdf -2html_topics -n2 -DHTML_FRAMES=1 $<
+	sdf/bin/sdf -2html_topics -n2 -DHTML_FRAMES=1 $<
 	mv $(basename $<).html $@
 
 %_frames.html: %.sdf

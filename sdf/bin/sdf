@@ -1,7 +1,7 @@
-#!/usr/local/bin/perl
-# $Id: sdf,v 1.1 2001-03-29 20:30:38 jon Exp $
+#!/usr/bin/perl
+# $Id: sdf,v 1.2 2001-04-20 18:32:45 jason Exp $
 $VERSION{'PUBLIC'} = '2.001';
-$VERSION{''.__FILE__} = '$Revision: 1.1 $';
+$VERSION{''.__FILE__} = '$Revision: 1.2 $';
 #
 # >>Title::     SDF Conversion Utility
 #
