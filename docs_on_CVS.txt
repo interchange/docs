@@ -1,0 +1,28 @@
+Index of documents stored in CVS
+--------------------------------
+
+icadminfaq	
+icapache.txt	New notes files for future FAQs.
+icbackoffice	Developer doc on backoffice procedures.
+iccattut-todo	Jon's list of additional Catalog Tutorial info to add.
+iccattut	Sonny and Jon's Catalog Tutorial Doc.
+icconfig	Developer doc on configuration procedures.
+icdatabase	Developer doc on database procedures.
+icinstall	RETIRED DOC, replaced by Getting Started Guide.
+icintro		RETIRED DOC, replaced by Getting Started Guide.
+icoracle
+icparseorder.inc
+icpostgresql.txt	New notes files for future FAQs.
+ictags.sdf	Developer doc on ITL tags.
+ictemplates.sdf	Developer doc on template procedures.
+icupgrade.sdf	Jon's doc on upgrading to Interchange.
+index.sdf
+layout-bj.txt
+local-perl.txt	Jon's doc adding Cameron's local Perl install notes.
+makefile	SDF file for converting docs to distributable formats.
+manuals.reg
+mvdocs.pod	Original Minivend documentation written by Mike Heins.
+README
+Tagref.pm
+templates.txt
+
