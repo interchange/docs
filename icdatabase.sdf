@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.20 2001-04-10 21:34:43 jon Exp $
+# $Id: icdatabase.sdf,v 1.21 2001-04-10 22:06:21 jon Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.20 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.21 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icdatabase.html"
@@ -3145,6 +3145,221 @@ Access can be disallowed with:
 !endblock
 
 Of course, a pre-existing database with the ACL values will work as well. It need not be in the UserDB setup.
+
+H1: Tracking and Back-End Order Entry
+
+Interchange allows the entry of orders into a system through one of several methods. The C<AsciiBackend> capability allows submission of parameters to an external order entry script. Support for SQL allows the entry of orders directly into an SQL database. Orders can be written to an ASCII file. They can be formatted precisely for e-mail-based systems. The orders can be placed in a DBM file. Finally, embedded Perl allows completely flexible order entry, including real-time credit card verification and settlement.
+
+H2: ASCII Backup Order Tracking
+
+If C<AsciiTrack> is set to a legal file name (based in VendRoot unless it has a leading "/"). A copy of the order is saved and sent in an e-mail.
+
+If the file name string begins with a pipe "|," a program will be run and the output "piped" to that program. This allows easy back-end entry of orders with an external program.
+
+H2: Database Tracking
+
+Once the order report is processed, the order is complete. Therefore, it is the ideal place to put Interchange tags that make order entries in database tables.
+
+A good model is to place a single record in a database summarizing the order and a series of lines that correspond to each line item in the order. This can be in the same database table. If the order number itself is the key for the summary, a line number can be appended to the order number to show each line of the order.
+
+The following would summarize a sample order number S00001 for part number 00-0011 and 99-102:
+
+!block example
+   code     order_number part_number  quantity   price    shipping  tax
+   S00001   S00001                    3          2010     12.72     100.50
+   S00001-1 S00001       00-0011      2          1000     UPS       yes
+   S00001-2 S00001       99-102       1          10       UPS       yes
+!endblock
+
+Fields can be added where needed, perhaps with order status, shipping tracking number, address, customer number, or other information.
+
+The above is accomplished with Interchange's C<[import ....]> tag using the convenient C<NOTES> format:
+
+!block example
+   [set import_status]
+   [import table=orders type=LINE continue=NOTES]
+
+   code: [value mv_order_number]
+   order_number: [value mv_order_number]
+   quantity: [nitems]
+   price: [subtotal noformat=1]
+   shipping: [shipping noformat=1]
+   tax: [salestax noformat=1]
+
+   [/import]
+
+   [item-list]
+   [import table=orders type=LINE continue=NOTES]
+
+   code: [value mv_order_number]-[item-increment]
+   order_number: [value mv_order_number]
+   quantity: [item-quantity]
+   price: [item-price noformat=1]
+   shipping: [shipping-description]
+   tax: [if-item-field nontaxable]No[else]Yes[/else][/if]
+
+   [/import][/item-list]
+!endblock
+
+H2: Custom Order Routing
+
+Interchange can send order emails and perform custom credit card charges and/or logging for each item. The Route directive is used to control this behavior, along with the C<mv_order_route> item attribute and C<mv_order_route> form variable.
+
+Routes are established with the C<Route> directive, which is similar to the C<Locale> directive. Each route is like a locale, so that key-value pairs can be set. Here is an example setting:
+
+!block example
+   Route  VEN  pgp_key         0x67798115
+   Route  VEN  email           orders@akopia.com
+   Route  VEN  reply           service@akopia.com
+   Route  VEN  encrypt         1
+   Route  VEN  encrypt_program "/usr/bin/pgpe -fat -q -r %s"
+   Route  VEN  report          etc/report_mail
+!endblock
+
+This route would be used whenever the value C<VEN> was contained in the form variable C<mv_order_route>.
+
+The last route that is defined provides the defaults for all other routes. For example, if C<encrypt_program> is set there, then the same value will be the default for all routes.
+
+The attributes that can be set are:
+
+LI1: attach
+.Determines whether the order report should be attached to the main order report e-mail. This is useful if certain items must be printed separately from others, perhaps for FAX to a fulfillment house.
+
+LI1: counter
+.The location of a counter file which should be used instead of C<OrderCounter> for this route. It will generate a different value for C<mv_order_number> for the route.
+
+LI1: credit_card
+.Determines whether credit card encryption should be done for this order. Either this or C<encrypt> should always be set.
+
+LI1: cybermode
+.If this is set, enables I<CyberCash> for the route. Variables can also be set for C<CYBER_CONFIGFILE>, C<CYBER_SECRET>, and all other normal CYBERCASH variables. For example:
+
+!block example; listitem=2
+   Route VEN cybermode         mauthonly
+   Route VEN CYBER_CONFIGFILE  config/vendor1_cfg
+   Route VEN CYBER_VERSION     3.2
+!endblock
+
+LI1: email
+.The email address(es) where the order should be sent. Set just like the C<MailOrderTo> directive, which is also the default.
+
+LI1: encrypt
+.Whether the entire order should be encrypted with the B<encrypt_program>.
+If C<credit_card> is set, the credit card will first be encrypted, then the entire order encrypted.
+
+LI1: encrypt_program
+.The encryption program incantaton which should be used. Set identically to the C<EncryptProgram> directive, except that %s will be replaced with the C<pgp_key>. Default is C<pgpe -fat -r %s>.
+
+LI1: errors_to
+.Sets the C<Errors-To:> e-mail header so that bounced orders will go to the proper address. Default is the same as C<MailOrderTo>.
+
+LI1: increment
+.Whether the order number should be incremented as a result of this result. Default is not to increment, as the order number should usually be the same for different routes within the same customer order.
+
+LI1: individual_track
+.A directory where individual order tracking files will be placed. The file name will correspond to the value of C<mv_order_number>. This can be useful for batching orders via download.
+
+LI1: individual_track_ext
+.The extension that will be added to the file name for C<individual_track>.
+Must contain a period (C<.>), if that is desired.
+
+!block example
+   individual_track_ext     .pgp
+!endblock
+
+LI1: pgp_cc_key
+.The PGP key selector that is used to determine which public key is used for encryption of credit cards only. With PGP 5 and 6, see appropriate values by using the command C<pgpk -l>.
+
+LI1: pgp_key
+.The PGP key selector that is used to determine which public key is used for encryption. If C<pgp_cc_key> is set, that key will be used for credit card encryption instead of C<pgp_key>. With PGP 5 and 6, see appropriate values by using the command C<pgpk -l>.
+
+LI1: profile
+.The custom order profile which should be performed to check the order. If it fails, the route will not be performed. See C<OrderProfile> and C<mv_order_profile>.
+
+LI1: receipt
+.The receipt page that should be used for this routing. This only applies if supplant is set for the route.
+
+LI1: report
+.The report page that should be used for this routing. If C<attach> is defined, the contents of the report will be placed in a MIME attachment in the main order report.
+
+LI1: reply
+.The C<Reply-To> header that should be set. Default is the same as C<email>.
+.If there are only word characters (A-Za-z0-9 and underscore), it describes an Interchange variable name where the address can be found.
+
+LI1: supplant
+.Whether this route should supplant the main order report. If set, the C<AsciiTrack> operation will use this route and the normal Interchange order e-mail sequence will not be performed.
+
+LI1: track
+.The name of a file which should be used for tracking. If the C<supplant> attribute is set, the normal order tracking will be used as well.
+
+LI1: track_mode
+.A number representing the mode to change either C<track> or C<individual_track> files.
+
+An individual item routing causes all items labeled with that route to be placed in a special sub-cart that will be used for the order report. This means that the C<[item-list] LIST [/item-list]> will only contain those items, allowing operations to be performed on subsets of the complete order.
+
+Here is an example of an order routing:
+
+!block example
+   Route  HARD  pgp_key          0x67798115
+   Route  HARD  email            hardgoods@akopia.com
+   Route  HARD  reply            service@akopia.com
+   Route  HARD  encrypt          1
+   Route  HARD  encrypt_program  "/usr/bin/pgpe -fat -q -r %s"
+   Route  HARD  report           etc/report_mail
+
+   Route  SOFT  email            ""
+   Route  SOFT  profile          create_download_link
+   Route  SOFT  empty            1
+
+   Route  main  cybermode        mauthonly
+   Route  main  CYBER_VERSION    3.2
+   Route  main  CYBER_CONFIGFILE etc/cybercash.cfg
+   Route  main  pgp_key          0x67798115
+   Route  main  email            orders@akopia.com
+   Route  main  reply            service@akopia.com
+   Route  main  encrypt          1
+   Route  main  encrypt_program  "/usr/bin/pgpe -fat -q -r %s"
+   Route  main  report           etc/report_all
+!endblock
+
+To tell Interchange that order routing is in effect, the variable
+C<mv_order_route> is set on the final order submission form:
+
+!block example
+   <INPUT TYPE="hidden" NAME="mv_order_route" VALUE="main">
+!endblock
+
+To set the order routing for individual items, some method of determining their status must be made and the C<mv_order_route> attribute must be set. This could be set at the time of the item being placed in the basket, or have a database field called C<goods_type> set to the appropriate value. The following example uses a Perl routine on the final order form:
+
+!block example
+[perl arg=carts interpolate=1]
+   my $string = <<'EOF';
+[item-list][item-code]  [item-field goods_type]
+[/item-list]
+EOF
+   my @items;
+   my %route;
+   @items = grep /\S/, split /\n+/, $string;
+   for(@items) {
+       my ($code, $keycode) = split /\t/, $_;
+       $route{$code} = $keycode;
+   }
+   my $cart = $Carts->{'main'};
+   my $item;
+   foreach $item ( @{ $Carts->{'main'} } ) {
+       $item->{mv_order_route} = $route{$item->{'code'}} || undef;
+   }
+   return '';
+[/perl]
+!endblock
+
+Now the individual items are labeled with a C<mv_order_route> value which causes their inclusion in the appropriate order routing.
+
+Upon submission of the order form, any item labeled C<HARD> will be accumulated and sent to the e-mail address C<hardgoods@akopia.com>, where the item will be pulled from inventory and shipped.
+
+Any item labeled C<SOFT> will be passed to the order profile C<create_download_link>, which will place it in a staging area for customer download. (This would be supported by a link on the receipt, possibly by reading a value set in the profile).
+
+The C<main> order routing will use CyberCash to charge the order, and will be completely encrypted for e-mailing.
 
 
 H1: Frequently Asked Questions
