@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.70 2002-09-01 15:07:06 mheins Exp $
+# $Id: icconfig.sdf,v 1.71 2002-09-01 17:05:27 mheins Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.70 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.71 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icconfig.html"
@@ -1955,11 +1955,11 @@ For instance, if a page was found that did not have a @_VARIABLE_@ in
 it, you could wrap it with a template:
 
 !block example
-    Pragma  init_page  
+    Pragma  init_page=wrap_page
 	Sub <<EOS
 	sub wrap_page {
 		my $pref = shift;
-		return if $$pref =~ m{\@_[A-Z][\w+]_\@};
+		return if $$pref =~ m{\@_[A-Z]\w+_\@};
 		$$pref =~ m{<!--+ title:\s*(.*?)\s+-->}
 			and $Scratch->{page_title} = $1;
 		$$pref = <<EOF;
