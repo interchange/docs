@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: ictemplates.sdf,v 1.48 2003-02-05 15:58:00 mheins Exp $
+# $Id: ictemplates.sdf,v 1.49 2003-03-26 16:01:32 mheins Exp $
 
 !define DOC_NAME "Template Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "ictemplates"
-!define DOC_VERSION substr('$Revision: 1.48 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.49 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ictemplates.html"
@@ -2452,10 +2452,13 @@ mv_dict_order|do|S|Sets dictionary order mode
 mv_doit||A|Sets default action
 mv_email||O|Reply-to address for orders
 mv_exact_match|em|S|Sets word-matching mode
-mv_failpage|fp|O,S|Sets page to display on failed order check/search
+mv_fail_form||A|Sets CGI values to use on failed profile check
+mv_fail_href||A|Sets page to display on on failed profile check
+mv_fail_zero||A|Forces zeroing of current form values on failed profile check
 mv_field_file|ff|S|Sets file to find field names for Glimpse
 mv_field_names|fn|S|Sets field names for search, starting at 1
 mv_first_match|fm|S|Start displaying search at specified match
+mv_form_profile||A|Check form with Interchange profile
 mv_head_skip|hs|S|Sets skipping of header line(s) in index
 mv_index_delim|id|S|Delimiter for search fields (TAB default)
 mv_matchlimit|ml|S|Sets match page size
@@ -2495,7 +2498,9 @@ mv_sort_field|tf|S|Field(s) to sort on
 mv_sort_option|to|S|Options for sort
 mv_spelling_errors|er|S|Number of spelling errors for Glimpse
 mv_substring_match|su|S|Turns off word-matching mode
-mv_successpage||O|Page to display on successful order check
+mv_success_form||A|Sets CGI values to use on successful profile check
+mv_success_href||A|Sets page to display on on successful profile check
+mv_success_zero||A|Forces zeroing of current form values on successful profile check
 mv_todo||A|Common to all forms, sets form action
 mv_todo.map||A|Contains form imagemap
 mv_todo.checkout.x||O|Causes checkout action on click of image
@@ -2509,8 +2514,11 @@ mv_value|va|S|Sets value on one-click search (va=var=value)
 
 H2: Form Actions
 
-Interchange form processing is based on an C<action> and a C<todo>. The
-predefined actions at the first level are:
+Interchange form processing is based on an C<action> and a C<todo>. This can be
+gated with C<mv_form_profile> to determine actions and form values based on
+a check for required values or other preconditions.
+
+The predefined actions at the first level are:
 
 !block example
    process       process a todo
@@ -2616,6 +2624,329 @@ LI1: submit
 .Submits the form for order processing. If no order profile is defined with the C<mv_order_profile> variable, the order is checked to see if the current cart contains any items and the order is submitted.
 
 .If there is an order profile defined, the form will be checked against the definition in the order profile and submitted if the pragma &final is set to yes. If C<&final> is set to no (the default) and the check succeeds, the user will be routed to the Interchange page defined in mv_successpage or mv_nextpage. If the check fails, the user will be routed to mv_failpage or mv_nextpage in that order.
+
+H2: Profile checking
+
+Interchange can check forms for compliance with requirements. The mechanism uses
+a B<profile>, which is set via the C<mv_form_profile> or C<mv_order_profile>
+variables. 
+
+H3: mv_form_profile
+
+The C<mv_form_profile> checks happen before any other action. They are designed
+to prevent submission of a form if required parameters are not present.
+
+You define the profiles either in scratch space or with files specified
+in the I<OrderProfile> directive.
+
+Specifications take the form of an order page variable (like name
+or address), followed by an equals sign and a check type. There are many
+provided check types, and custom ones can be defined in a user-specified
+file using the C<CodeDef> configuration directive.
+
+Standard check types:
+
+=over 4
+
+=item required
+
+A non-blank value is required in the user session space. It may have
+been submitted on a previous form.
+
+=item mandatory
+
+Must be non-blank, and must have been specified on this
+form, not a saved value from a previous form
+
+=item phone
+
+The field must look like a phone number, by a very
+loose specification allowing numbers from all countries
+
+=item phone_us
+
+Must have US phone number formatting, with area code
+
+=item state
+
+Must be a US state, including DC and Puerto Rico.
+
+=item province
+
+Must be a Canadian province or pre-1997 territory.
+
+=item state_province
+
+Must be a US state or Canadian province.
+
+=item zip
+
+Must have US postal code formatting, with optional ZIP+4.
+Also called by the alias C<us_postcode>.
+
+=item ca_postcode
+
+Must have Canadian postal code formatting. Checks for a valid
+first letter.
+
+=item postcode
+
+Must have Canadian or US postal code formatting.
+
+=item true
+
+Field begins with B<y>, B<1>, or B<t> (Yes, 1, or True) - not case sensitive
+
+=item false
+
+Field begins with B<n>, B<0>, or B<f> (No, 0, or False) - not case sensitive
+
+=item email
+
+Rudimentary email address check, must have an '@' sign,
+a name, and a minimal domain
+
+=item regex
+
+One or more regular expressions (space-separated) to check against. To
+check that all submissions of the "foo" variable have "bar" at the
+beginning, do:
+
+>	foo=regex ^bar
+
+You can add an error message by putting it in quotes at the end:
+
+>   foo=regex ^bar "You must have bar at the beginning of this"
+
+You can require that the value B<not> match the regex by preceding the regex with a B<!> character (and no space afterwards):
+
+>   foo=regex !^bar "You may not have bar at the beginning!"
+
+=item length
+
+A range of lengths you want the input to be:
+
+>   foo=length 4-10
+
+That will require C<foo> be from 4 to 10 characters long.
+
+=item unique
+
+Tests to see that the value would be a unique key in a table:
+
+>   foo=unique userdb Sorry, that username is already taken
+
+=item filter
+
+Runs the value through an Interchange filter and checks that the returned value is equal
+to the original value.
+
+>   foo=filter entities Sorry, no HTML allowed
+
+To check for all lower-case characters:
+
+>	foo=filter lower Sorry, no uppercase characters
+
+=back
+
+Also, there are pragmas that can be used to change behavior:
+
+=over 4
+
+=item &charge
+
+Perform a real-time charge operation. If set to any value but
+"custom", it will use Interchange's CyberCash routines. To set to
+something else, use the value "custom ROUTINE". The ROUTINE should
+be a GlobalSub which will cause the charge operation to occur -- if
+it returns non-blank, non-zero the profile will have succeeded. If
+it returns 0 or undef or blank, the profile will return failure.
+
+=item &credit_card
+
+Checks the mv_credit_card_* variables for validity. If set to
+"standard", it will use Interchange's C<encrypt_standard_cc> routines.
+This destroys the CGI value of mv_credit_card_number -- if you don't
+want that to happen (perhaps to save it for sending to CyberCash)
+then add the word C<keep> on the end.
+
+\Example:
+
+>    # Checks credit card number and destroys number after encryption
+>    # The charge operation can never work
+>
+>    &credit_card=standard
+>    &charge=custom authorizenet
+>
+>    # Checks credit card number and keeps number after encryption
+>    # The charge operation can now work
+>
+>    &credit_card=standard keep
+>    &charge=custom authorizenet
+
+You can supply your own check routine with a GlobalSub:
+
+>    &credit_card=check_cc
+
+The C<GlobalSub> check_cc will be used to check and encrypt the
+credit card number, and its return value will be used to determine
+profile success.
+
+=item C<&>fail
+
+Sets the mv_nextpage value for a failed check.
+
+>    &fail=page4
+
+If the submit process succeeds, the user will be sent to the
+page C<page4>.
+
+
+=item C<&>fatal
+
+Set to '&fatal=yes' if an error should generate
+the error page.
+
+=item C<&>final
+
+Set to '&final=yes' if a successful check should cause the order to be placed.
+
+=item C<&>update
+
+Set to '&update=yes' if a successful check should cause the variable to be copied from the CGI space to the Values space. This is like [update values] except only
+for that variable.
+
+This is typically used when using a C<mv_form_profile> check so that
+a failing check will not cause all values to be reset to their former
+state upon returning to the form.
+
+=item C<&>return
+
+Causes profile processing to terminate with either a success
+or failure depending on what follows. If it is non-blank and
+non-zero, the profile succeeds. 
+
+>    # Success :)
+>    &return 1
+>
+>    # Failure :\
+>    &return 0
+
+Will ignore the &fatal pragma, but &final is still in effect if set.
+
+=item C<&>set
+
+Set a user session variable to a value, i.e. C<&set=mv_email [value email]>.
+This will not cause failure if blank or zero.
+
+=item C<&>setcheck
+
+Set a user session variable to a value, i.e. C<&set=mv_email [value
+email]>.  This B<will> cause failure if set to a blank or zero. It is
+usually placed at the end after a &fatal pragma would have caused the
+process to stop if there was an error -- can also be used to determine
+pass/fail based on a derived value, as it will cause failure if it
+evaluates to zero or a blank value.
+
+=item C<&>success
+
+Sets the mv_nextpage value if the profile succeeds. Example:
+
+>    &success=page5
+
+If the submit process succeeds, the user will be sent to the
+page C<page5>.
+
+=item C<&>update
+
+Normally if an mv_form_profile check fails none of the form values
+are put in the user session, meaning that the C<[value ...]> tag will
+not reflect what the user has submitted. If you set C<&update=yes>,
+then as each variable is checked its value will be updated. Example:
+
+>    &update=yes
+
+Even if the profile check fails, any variables checked before the &fatal=yes
+setting will be updated. 
+
+=back
+
+As an added measure of control, the specification is evaluated for the
+special Interchange tags to provide conditional setting of order
+parameters. With the C<[perl]> C<[/perl]> capability, quite complex checks
+can be done. Also, the name of the page to be displayed on an error can
+be set in the C<mv_failpage> variable.
+
+Error messages are set by appending the desired error message to the
+line containing the check:
+
+	city=required Please fill in your city.
+
+This sets the value of the error associated with name, and can be displayed
+with the C<error> tag:
+
+	[error name=city show_error=1]
+
+H2: Profile examples
+
+The following file specifies a simple check of formatted parameters:
+
+> name=required You must give us your name.
+> address=required Oops! No address.
+> city=required
+> state=required
+> zip=required
+> email=required
+> phone_day=phone_us XXX-XXX-XXXX phone-number for US or Canada
+> &fatal=yes
+> email=email Email address missing the domain?
+> &success=ord/shipping
+
+The profile above only performs the &success directive if all of the
+previous checks have passed -- the &fatal=yes will stop processing after
+the check of the email address if any of the previous checks failed.
+
+If you want to place multiple order profiles in the same file,
+separate them with __END__, which must be on a line by itself.
+
+H2: User defined check routines
+
+User-defined check routines can be defined with CodeDef in a file
+included in the code/ directory, the same as a C<UserTag>.
+
+> CodeDef foo  OrderCheck
+> CodeDef foo Routine <<EOR
+> sub {
+> 	# $ref is to Vend::Session->{'values'} hash
+> 	# $var is the passed name of the variable
+> 	# $val is current value of checked variable
+> 	my($ref, $var, $val) = @_;
+> 
+>     my($ref, $var, $val) = @_; 
+> 
+> 	if($val ne 'bar') {
+> 		return (undef, $var, "The value of foo must be bar");
+>     }   
+>     else {
+>         return (1, $var, '');
+>     }
+> }
+> EOF
+
+Now you can specify in an order profile:
+
+>  foo_variable=foo
+
+Very elaborate checks are possible. The return value of the subroutine 
+should be a three-element array, consisting of:
+^ the pass/fail ('1' or 'undef') status of the check;
++ the name of the variable which was checked;
++ a standard error message for the failure, in case a custom one has 
+  not been specified in the order profile.
+
+The latter two elements are used by the C<[error]> tag for on-screen 
+display of form errors. The checkout page of the Foundation demo includes
+examples of this. 
 
 H2: One-click Multiple Variables
 
