@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.51 2001-12-06 01:21:20 jon Exp $
+# $Id: icconfig.sdf,v 1.52 2001-12-11 06:17:26 jon Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.51 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.52 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
@@ -1549,11 +1549,23 @@ The names of Interchange pages that are not to be built statically if STATIC PAG
 
 H2: NoImport
 
-When set to one or more Interchange database identifiers, those database(s) will never be subject to import. Useful for SQL databases or databases that will "never" change.
+When set to one or more Interchange database identifiers, those database(s) will never be subject to import. Normally, Interchange checks to see if each database needs to be created and populated (from the source text file) when the Interchange daemon is started or restarted, or a catalog is reconfigured.
+
+This is useful for SQL databases used by other applications besides Interchange, or large databases you load and back up outside of Interchange. With this option you can omit the source text file for SQL databases entirely.
 
 !block example
    NoImport   inventory
 !endblock
+
+H2: NoImportExternal
+
+When set to true, this directive prevents database imports for all "external" databases:
+
+E:   NoImportExternal  Yes
+
+External database types are DBI (all popular SQL databases) and LDAP. Internal database types are the DBM variants (GDBM, DB_File, SDBM) and in-memory databases. 
+
+The default setting is false (databases may be imported).
 
 H2: NonTaxableField
 
