@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icupgrade.sdf,v 1.12 2001-04-10 21:20:44 jon Exp $
+# $Id: icupgrade.sdf,v 1.13 2001-04-10 23:01:33 jon Exp $
 
 !define DOC_NAME "Interchange Upgrade Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "icupgrade"
-!define DOC_VERSION substr('$Revision: 1.12 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.13 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/icupgrade.html"
@@ -330,6 +330,7 @@ allowed you to refer to the nested values with a [loop-code-a] construct. In Min
 		[/loop]
 		<P>
 	[/loop]
+!endblock
           
 H2:All frame features removed
 
