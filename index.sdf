@@ -1,8 +1,9 @@
 !init OPT_LOOK="akopia"
-# $Id: index.sdf,v 1.4 2000-10-18 19:24:22 zarko Exp $
+# $Id: index.sdf,v 1.5 2000-10-18 20:18:39 zarko Exp $
 
 !define DOC_NAME "Interchange Documentation"
-!define DOC_VERSION substr('$Revision: 1.4 $',11)
+!define DOC_CODE "index"
+!define DOC_VERSION substr('$Revision: 1.5 $',11, -2)
 !define DOC_TOC  0
 !define HTML_URL_CATALOG ''
 !build_title
@@ -26,6 +27,8 @@ This page lists the supporting documentation supplied with Interchange.
 
 P1: Manuals
 
-#!catalog references 'Section:Manuals'; \
-!catalog references ''; \
-  columns="PDF,POD,TXT,Document,TOC:Reference,CONCISE:Date"
+!if $var{'OPT_LOOK'} eq 'developer_site'
+    !catalog references ''; columns="DOC:Document,CONCISE:Date"
+!else
+    !catalog references ''; columns="PDF,POD,TXT,Document,TOC:Reference,CONCISE:Date"
+!endif

@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icbackoffice.sdf,v 1.7 2000-10-18 19:24:20 zarko Exp $
+# $Id: icbackoffice.sdf,v 1.8 2000-10-18 20:18:39 zarko Exp $
 
 !define DOC_NAME "Interchange Back-Office"
 !define DOC_TYPE ""
 !define DOC_CODE "ICBACKOFFICE_D2_100700"
-!define DOC_VERSION substr('$Revision: 1.7 $',11)
+!define DOC_VERSION substr('$Revision: 1.8 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
