@@ -1,5 +1,5 @@
-# $Id: tohtml.pl,v 1.1 2001-03-29 20:31:46 jon Exp $
-$VERSION{''.__FILE__} = '$Revision: 1.1 $';
+# $Id: tohtml.pl,v 1.2 2001-04-23 13:35:42 jon Exp $
+$VERSION{''.__FILE__} = '$Revision: 1.2 $';
 #
 # >>Title::     HTML Format Driver
 #
@@ -1360,7 +1360,7 @@ sub _HtmlHandlerOutput {
         @topic_data = &_HtmlFinalise(*topic_data, *dummy_contents);
 
         # Output the topic
-        $file = pop(@_html_topic_file);
+		$file = &NameJoin($out_dir, pop(@_html_topic_file), '');
 #print STDERR "offset: $offset, file: $file.\n";
         unless (open(TOPIC, ">$file")) {
             &AppMsg("error", "unable to write to topic file '$file'");
