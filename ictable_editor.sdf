@@ -1,13 +1,12 @@
-!init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ictable_editor.sdf,v 1.2 2002-09-26 04:31:47 danb Exp $
-
+!init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
+# $Id: ictable_editor.sdf,v 1.3 2002-09-28 02:59:13 mheins Exp $
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.2 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.3 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
-!define DOC_URL "http://interchange.redhat.com/doc/icconfig.html"
+!define DOC_URL "http://www.icdevgroup.org/doc/ictable_editor.html"
 !build_title
 
 H1: Interchange Table Editor
@@ -516,165 +515,404 @@ template. You might pass a valign, align, class, or other attribute:
     break-cell-extra=|class="myclass"|
 !endblock
 
-break_row_extra
-break_template
-cancel_button_style
-cancel_text
-cell_span
-cgi
-check
-clear_image
-color_fail
-color_success
-combo_row_extra
-combo_template
-data_cell_extra
-data_row_extra
-database
-default
-default_ref
-defaults
-elabel
-enctype
-end_label
-error
-extra
-field
-file_upload
-filter
-force_defaults
-form_extra
-form_name
-get
-height
-help
-help_anchor
-help_cell_extra
-help_url
-hidden
-href
-include_before
-include_form
-inner_table_width
-item_id
-js_changed
-keep_errors
-label
-label_cell_extra
-label_cell_width
-layer_panel_style
-layer_tab_style
-left_width
-link_before
-link_extra
-link_fields
-link_key
-link_label
-link_sort
-link_table
-link_template
-link_view
-lookup
-lookup_query
-mailto
-message_label
-meta
-meta_anchor
-meta_anchor_specific
-meta_append
-meta_class
-meta_extra
-meta_prepend
-meta_style
-method
-mv_auto_export
-mv_blob_field
-mv_blob_label
-mv_blob_nick
-mv_blob_only
-mv_blob_pointer
-mv_blob_title
-mv_cancelpage
-mv_data_auto_number
-mv_data_fields
-mv_data_function
-mv_data_table
-mv_failpage
-mv_nextpage
-mv_prevpage
-next_text
-no_bottom
-no_meta
-no_table_meta
-no_top
-nodelete
-noexport
-nosave
-notable
-ok_button_style
-options
-orig_back_text
-orig_cancel_text
-outboard
-override
-panel_append
-panel_height
-panel_id
-panel_prepend
-panel_style
-panel_width
-passed
-pre_filter
-prepend
-promiscuous
-reload
-reparse
-restrict_allow
-row_template
-save_meta
-secure
-show_reset
-simple_row
-start_at
-start_at_index
-tab_bgcolor_template
-tab_height
-tab_horiz_offset
-tab_style
-tab_vert_offset
-tab_width
-tabbed
-table
-table_width
-td_extra
-template
-ui_blob_hidden
-ui_blob_widget
-ui_break_before
-ui_break_before_label
-ui_clone_id
-ui_clone_tables
-ui_data_fields
-ui_data_fields_all
-ui_data_key_name
-ui_display_only
-ui_hide_key
-ui_meta_specific
-ui_meta_view
-ui_new_item
-ui_profile
-ui_profile_success
-ui_wizard_fields
-widget
-widget_cell_extra
-widgets_only
-width
-wizard
-wizard_cancel
-wizard_next
+LI1: break_row_extra
+
+Extra HTML attributes for the table row in the standard break_row
+template. You might pass a valign, align, class, or other attribute:
+
+!block example
+    break-row-extra=|class="myclass"|
+!endblock
+
+LI1: break_template
+
+The HTML template that is used to present a break row. Default is:
+
+!block example
+	<tr$opt->{break_row_extra>
+		<td colspan=$span $opt->{break_cell_extra>&nbsp;</td>
+	</tr>
+!endblock
+
+LI1: cancel_button_style
+
+The HTML style for the cancel button.
+
+LI1: cancel_text
+
+The text placed in the "Cancel" button in both editor and wizard mode.
+Default is "Cancel".
+
+LI1: cell_span
+
+The number of cells that are in the span of a normal widget-label
+pair. The default is two, which is appropriate for the label in one
+table cell and the widget in the other. If you have a row_template
+like:
+
+!block example
+	<td>{LABEL}</td><td> --&gt; </td><td>{WIDGET}</td>
+!endblock
+
+you would want a cell_span of three. For the row_template 
+
+!block example
+	<td align=left>
+		<b>{LABEL}</b><br>
+		{WIDGET}
+	</td>
+!endblock
+
+you would want a cell_span of 1.
+
+This allows the formatter to build the right number of cells for spacers
+and whole_row templates.
+
+LI1: cgi
+
+Signifies that some options may come from the URL calling the page where
+the C<[table-editor]> resides.
+
+This allows a simple:
+
+!block example
+	[table-editor cgi=1][/table-editor]
+!endblock
+
+to be active for any table and key that are called with a URL like:
+
+!block example
+  http://your.catalog.url/cat/admin/flex_editor?mv_data_table=products?item_id=1
+!endblock
+	
+The C<auto-secure> option is turned off if this option is set, for it would
+then be possible for people to call a table and set their own security.
+
+LI1: check
+
+A hash option that is active for every field. Defines a profile check that
+should be run on the field before the record will be allowed to be set
+(or the wizard allowed to go to the B<Next> option.
+
+This call
+
+!block example
+	[table-editor
+		table=products
+		item_id="[cgi sku]"
+		check.description=required
+	][/table-editor]
+!endblock
+
+ensures that the description field will be non-blank and non-zero
+before the record is written.
+
+Works in conjunction with the C<process_filter> profile provided
+as a part of the UI. If using the table editor outside the province
+of the UI, you will need to make sure you get this profile included;
+it normally resides in lib/UI/profiles.
+
+LI1: clear_image
+
+In cases where the table-editor templates need a transparent image for
+display padding, can set the path where that image is. Default
+is C<bg.gif>, which comes with the Interchange UI.
+
+LI1: color_fail
+
+The color to set failure messages to in HTML. Default Red.
+
+LI1: color_success
+
+The color to set success messages to in HTML. Default Green.
+
+LI1: data_cell_class
+LI1: data_cell_style
+LI1: data_cell_valign
+LI1: data_cell_width
+LI1: data_cell_align
+LI1: data_cell_extra
+
+The settable parameters allowing change of the HTML appearance of the
+data cell in the standard C<[table-editor]> presentation. The 
+default is C<data_cell_class> set to I<cdata>.
+
+The easiest thing to do to alter the look is define the CSS class for
+I<cdata> how you want it. But you can individually set the width, style,
+and alignments; and you can attach scripting events or other CSS calls
+to the cell as well with C<data_cell_extra>.
+
+The following table-editor call:
+
+!block example
+	[table-editor
+		table=products
+		item_id="[cgi sku]"
+		data_cell_class=newclass
+		data_cell_style="color:red"
+		data_cell_extra=|onMouseOver="alert('move that mouse!'"|
+		data_cell_valign=top
+	][/table-editor]
+!endblock
+
+will result in a templated row of:
+
+!block example
+	<td class=clabel>{LABEL}</td>
+	<td class="myclass"
+		style="color:red"
+		valign="top"
+		onMouseOver="alert('move that mouse!')">
+			{WIDGET}{HELP?}{HELP} ... (rest of template)
+	</td>
+!endblock
+
+LI1: database
+
+A hash attribute with a key associated with every field. Specifies the
+database table that will be used for a lookup (if any).
+
+LI1: default
+
+A hash attribute with a key associated with every field. Specifies the
+default value that will be used in the field if none is found in the
+table or otherwise available via the B<default_ref>.
+
+This is only active if the C<defaults> flag is set.
+
+LI1: default_ref
+
+The hash reference that is used to set the defaults for the fields 
+if there is no data in the table for that row. Default is $Values,
+the Interchange values hash.
+
+You can set this in options with:
+
+!block example
+	[table-editor default_ref=`$CGI`]
+!endblock
+
+Note the backticks. This calls Perl, which returns the $CGI reference.
+
+If you have previously collected some defaults in a scratch variable,
+you could use that with:
+
+!block example
+	[table-editor default_ref=`$Scratch->{myhash}`]
+!endblock
+
+Not settable in metadata, and it *must* be a hash reference or there
+will be a fatal error.
+
+This is only active if the C<defaults> flag is set.
+
+LI1: defaults
+
+Allows defaults to be set from the C<default> hash above. When used in
+combination with C<force_defaults=1> forces the passed defaults to
+override any data previously residing in the table record.
+
+LI1: enctype
+
+The encoding type for the form generated by [table-editor]. If
+the C<file_upload> option is set, it defaults to C<multipart/form-data>,
+otherwise uses the form default for the browser (which is 
+normally C<application/x-www-form-urlencoded>).
+
+LI1: extra
+
+A hash attribute with a key associated with every field. Specifies some
+extra HTML parameter(s) which will be attached to the widget for the
+field, based on the behavior of Vend::Form.
+
+Normally used to pass an onChange or other scripting event.
+
+LI1: field
+
+A hash attribute with a key associated with every field. Specifies the
+fields to be used as a value-label pair for a lookup (if there is one).
+Works in conjunction with the C<lookup> and C<database> tags.
+
+To build a list of products for selection by SKU in the C<foo> widget, without
+having to use the SKU as the label, you can do:
+
+!block example
+  [table-editor
+  	foo.widget=select
+  	foo.lookup=1
+  	foo.database=products
+  	foo.field="sku,description"
+  /]
+!endblock
+
+Essentiallly the same as:
+
+!block example
+  [table-editor
+	foo.widget=select
+	foo.lookup_query="select sku,description from products order by description"
+  /]
+!endblock
+
+LI1: file_upload
+
+Specifies that file upload should be enabled by changing the form encoding type.
+Forms using the C<imagehelper> widget need this set.
+
+LI1: filter
+
+Specifies a filter that will be applied to the widget result data before
+it is put in the database. To make sure that an integer value doesn't have
+extraneous whitespace that could cause an error, do:
+
+!block example
+  [table-editor
+	foo.widget=text_5
+	foo.label="Seconds before we should become impatient and beep"
+	foo.filter=digits
+  /]
+!endblock
+
+Filters can be chained; they are the normal Interchange filters active
+in many situations.
+
+Works in conjunction with the C<process_filter> profile provided
+as a part of the UI. If using the table editor outside the province
+of the UI, you will need to make sure you get this profile included;
+it normally resides in lib/UI/profiles.
+
+LI1: force_defaults
+LI1: form_extra
+LI1: form_name
+LI1: get
+LI1: height
+LI1: help
+LI1: help_anchor
+LI1: help_cell_extra
+LI1: help_url
+LI1: hidden
+LI1: href
+LI1: include_before
+LI1: include_form
+LI1: inner_table_width
+LI1: item_id
+LI1: js_changed
+LI1: keep_errors
+LI1: label
+LI1: label_cell_extra
+LI1: label_cell_width
+LI1: layer_panel_style
+LI1: layer_tab_style
+LI1: left_width
+LI1: link_before
+LI1: link_extra
+LI1: link_fields
+LI1: link_key
+LI1: link_label
+LI1: link_sort
+LI1: link_table
+LI1: link_template
+LI1: link_view
+LI1: lookup
+LI1: lookup_query
+LI1: mailto
+LI1: message_label
+LI1: meta
+LI1: meta_anchor
+LI1: meta_anchor_specific
+LI1: meta_append
+LI1: meta_class
+LI1: meta_extra
+LI1: meta_prepend
+LI1: meta_style
+LI1: method
+LI1: mv_auto_export
+LI1: mv_blob_field
+LI1: mv_blob_label
+LI1: mv_blob_nick
+LI1: mv_blob_only
+LI1: mv_blob_pointer
+LI1: mv_blob_title
+LI1: mv_cancelpage
+LI1: mv_data_auto_number
+LI1: mv_data_fields
+LI1: mv_data_function
+LI1: mv_data_table
+LI1: mv_failpage
+LI1: mv_nextpage
+LI1: mv_prevpage
+LI1: next_text
+LI1: no_bottom
+LI1: no_meta
+LI1: no_table_meta
+LI1: no_top
+LI1: nodelete
+LI1: noexport
+LI1: nosave
+LI1: notable
+LI1: ok_button_style
+LI1: options
+LI1: orig_back_text
+LI1: orig_cancel_text
+LI1: outboard
+LI1: override
+LI1: panel_append
+LI1: panel_height
+LI1: panel_id
+LI1: panel_prepend
+LI1: panel_style
+LI1: panel_width
+LI1: passed
+LI1: pre_filter
+LI1: prepend
+LI1: promiscuous
+LI1: reload
+LI1: reparse
+LI1: restrict_allow
+LI1: row_template
+LI1: save_meta
+LI1: secure
+LI1: show_reset
+LI1: simple_row
+LI1: start_at
+LI1: start_at_index
+LI1: tab_bgcolor_template
+LI1: tab_height
+LI1: tab_horiz_offset
+LI1: tab_style
+LI1: tab_vert_offset
+LI1: tab_width
+LI1: tabbed
+LI1: table
+LI1: table_width
+LI1: td_extra
+LI1: template
+LI1: ui_blob_hidden
+LI1: ui_blob_widget
+LI1: ui_break_before
+LI1: ui_break_before_label
+LI1: ui_clone_id
+LI1: ui_clone_tables
+LI1: ui_data_fields
+LI1: ui_data_fields_all
+LI1: ui_data_key_name
+LI1: ui_display_only
+LI1: ui_hide_key
+LI1: ui_meta_specific
+LI1: ui_meta_view
+LI1: ui_new_item
+LI1: ui_profile
+LI1: ui_profile_success
+LI1: ui_wizard_fields
+LI1: widget
+LI1: widget_cell_extra
+LI1: widgets_only
+LI1: width
+LI1: wizard
+LI1: wizard_cancel
+LI1: wizard_next
 
 Line:
 
 N:Copyright 2002 Interchange Development Group. Freely redistributable
 under terms of the GNU General Public License.
-
