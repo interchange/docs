@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: iccattut.sdf,v 1.18 2002-10-30 17:24:00 mheins Exp $
+# $Id: iccattut.sdf,v 1.19 2003-02-06 20:38:41 jon Exp $
 
 !define DOC_NAME "Catalog-Building Tutorial"
 !define DOC_TYPE ""
 !define DOC_CODE "iccattut"
-!define DOC_VERSION substr('$Revision: 1.18 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.19 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/iccattut.html"
@@ -817,8 +817,8 @@ N:Now make the following change to your template file {{FILE:bottom}}:
 !block example;
   </td>
   </tr>
-- <tr colspan=2><td>(bottom)</td></tr>
-+ <tr colspan=2><td><a href="mailto:__CONTACT_EMAIL__">Contact us</a>
+- <tr><td colspan=2>(bottom)</td></tr>
++ <tr><td colspan=2><a href="mailto:__CONTACT_EMAIL__">Contact us</a>
 + if you have any questions.</td></tr>
   </table>
   </div>
