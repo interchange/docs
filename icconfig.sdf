@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.30 2001-03-09 21:19:57 jon Exp $
+# $Id: icconfig.sdf,v 1.31 2001-03-09 21:24:22 jon Exp $
 
 !define DOC_NAME "Interchange Configuration"
 !define DOC_TYPE ""
 !define DOC_CODE "ICCONFIG"
-!define DOC_VERSION substr('$Revision: 1.30 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.31 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icconfig.html"
@@ -2858,7 +2858,7 @@ Disallows access to pages which are marked with C<AlwaysSecure> unless the brows
 
 H2: Filter
 
-Assigns one or more filters to be automatically applied to a variable.
+Assigns one or more filters (comma separated) to be automatically applied to a variable.
 
 As an example, multiple form variable submissions on the same page come back null-separated, like 'value1\0value2\0value3'. To automatically change those nulls to spaces, you could use this directive:
 
