@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.57 2003-10-15 17:34:13 mheins Exp $
+# $Id: icdatabase.sdf,v 1.58 2003-11-26 03:33:05 mheins Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.57 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.58 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/icdatabase.html"
@@ -3491,17 +3491,17 @@ Of course, a pre-existing database with the ACL values will work as well. It nee
 H2: Using more than one table
 
 You can save/retrieve userdb information from more than one table with the
-C<outboard> specifier. It is a key-value comma-separated series of field
+C<outboard> specifier. It is a quoted key-value comma-separated series of field
 specifications. For instance, if the billing address is to be stored in 
 a separate table named "billing", you would do:
 
 !block example
         UserDB  default outboard  <<EOF
-            b_fname=billing::first_name,
-            b_lname=billing::last_name,
-            b_address1=billing::address1,
-            b_address2=billing::address2,
-			b_etc=billing::etc
+            "b_fname=billing::first_name,
+             b_lname=billing::last_name,
+             b_address1=billing::address1,
+             b_address2=billing::address2,
+			 b_etc=billing::etc"
         EOF
 !endblock
 
