@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.119 2004-07-25 15:31:22 mheins Exp $
+# $Id: ictags.sdf,v 1.120 2004-07-26 21:50:13 racke Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.119 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.120 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ictags.html"
@@ -13215,9 +13215,9 @@ held in Interchange internal DBM format:
 SQL databases are always writable if allowed by the SQL database itselfE<nbspace>E<emdash>
 in-memory databases will never be written.
 
-The [tag flag build][/tag] combination forces static build of a page, even
-if dynamic elements are contained. Similarly, the [tag flag cache][/tag]
-forces search or page caching (not usually wise).
+The [tag flag build][/tag] and [tag flag cache][/tag] combinations available
+in former versions of Interchange have been removed in conjunction with
+the static page building code.
 
 H4: {{CMD[id="tag_log"]log dir/file}}
 
