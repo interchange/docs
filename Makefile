@@ -28,11 +28,7 @@ FULLDOCNAME=icfull
 	$(SDFBIN) -2pdf_html $<
 
 .pod.8:
-	pod2man --section=8 \
-		--release='Interchange $(VERSION)' \
-		--center='Interchange' \
-		--lax \
-		$< > $@
+	pod2man --section=8 --release='Interchange $(VERSION)' --center='Interchange' --lax $< > $@ || true
 
 all :: $(SUFFIXES)
 
