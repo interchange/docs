@@ -1,9 +1,10 @@
 VERSION=4.7.0
 TARGETS=icintro icinstall iccattut icconfig ictemplates icdatabase ictags icbackoffice icupgrade
+SUFFIXES=txt html pdf pod 8
 FULLSUFFIXES=txt html
 FULLDOCNAME=icfull
 
-.SUFFIXES: .html .pod .sdf .txt .pdf .8
+.SUFFIXES: .sdf $(addprefix .,$(SUFFIXES))
 
 .sdf.html:
 	sdf -2html $<
@@ -24,7 +25,7 @@ FULLDOCNAME=icfull
 		--lax \
 		$< > $@
 
-all :: pdf pod txt html man
+all :: $(SUFFIXES)
 
 dev_html:
 	@mkdir -p dev
@@ -64,9 +65,15 @@ pod: $(addsuffix .pod,$(TARGETS))
 
 txt: $(addsuffix .txt,$(TARGETS))
 
-man: $(addsuffix .8,$(TARGETS))
+8: $(addsuffix .8,$(TARGETS))
+man: 8
 
 pdf: $(addsuffix .pdf,$(TARGETS))
+
+$(TARGETS):
+	@for i in $(SUFFIXES) ; do \
+		$(MAKE) $@.$$i ; \
+	done
 
 full :: txt
 	@for i in $(FULLSUFFIXES) ; do \
@@ -82,12 +89,12 @@ full :: txt
 
 clean:
 	@for i in $(TARGETS) ; do \
-		for j in pod txt pdf 8 html ; do \
-			rm -fv $$i.$$j ; \
+		for j in $(SUFFIXES) ; do \
+			rm -f $$i.$$j ; \
 		done ; \
-		rm -fv $$i_*.html ; \
+		rm -f $$i_*.html ; \
 	done
 	@for i in $(FULLSUFFIXES) ; do \
-		rm -fv $(FULLDOCNAME).$$i ; \
+		rm -f $(FULLDOCNAME).$$i ; \
 	done
-	rm -rf dev
+	@rm -rf dev
