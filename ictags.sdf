@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.37 2001-05-18 03:39:29 jon Exp $
+# $Id: ictags.sdf,v 1.38 2001-05-18 03:52:21 jon Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.37 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.38 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -10948,12 +10948,12 @@ to white.
 H4: {{CMD[id="title_bar_color"]color}}
 
 Sets the background color of the bar. You can set the color as 'red', 
-'#ff000', or 'bgcolor="#ff0000"'.
+'#ff0000', or 'bgcolor="#ff0000"'.
 
 H4: {{CMD[id="title_bar_size"]size}}
 
 Determines the size of the text. Parameter shoud be set to a value accepted 
-by the html font-tag size attribute.
+by the HTML <font> tag size attribute.
 
 H4: {{CMD[id="title_bar_width"]width}}
 
@@ -10994,12 +10994,10 @@ A3: Summary
 !endblock
 
 !block note; label="Positional parameters: "
-
 The first line shows the usage with positional parameters (given in
 order). The second line shows usage with named parameters.
 !endblock
 
-#!block table; style="plain"; colvaligns="TTT"; format="262"
 !block table; colvaligns="TTT"; format="262"
 Parameters|Description|Default
 first|<<
@@ -11021,7 +11019,6 @@ to [dummyE<nbspace>first="X"]
 >>|Same default as B<first>, of course
 !endblock
 
-#!block table; style="plain"; colvaligns="TT"
 !block table; colvaligns="TT"
 Attributes|Default
 {{CMD[jump="#dummy_more"]more}}|I<none>
@@ -11031,10 +11028,9 @@ Attributes|Default
 {{CMD[jump="#attr_reparse"]reparse}}|I<No>
 !endblock
 
-#!block table; style="plain";headings=1
 !block table;headings=1
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
 {{CMD[jump="#macro_tags"]Macro}}|I<No>
 Has end tag|[/dummy]
