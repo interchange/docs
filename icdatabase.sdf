@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.56 2003-07-08 19:12:59 mheins Exp $
+# $Id: icdatabase.sdf,v 1.57 2003-10-15 17:34:13 mheins Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.56 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.57 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/icdatabase.html"
@@ -3496,12 +3496,12 @@ specifications. For instance, if the billing address is to be stored in
 a separate table named "billing", you would do:
 
 !block example
-        UserDB  outboard  <<EOF
+        UserDB  default outboard  <<EOF
             b_fname=billing::first_name,
             b_lname=billing::last_name,
             b_address1=billing::address1,
             b_address2=billing::address2,
-                b_etc=billing::etc
+			b_etc=billing::etc
         EOF
 !endblock
 
