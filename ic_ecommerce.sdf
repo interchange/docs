@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ic_ecommerce.sdf,v 1.1 2001-10-31 00:25:38 edl Exp $
+# $Id: ic_ecommerce.sdf,v 1.2 2001-10-31 00:58:11 edl Exp $
 
 !define DOC_NAME "Interchange Ecommerce Functions"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_ecommerce"
-!define DOC_VERSION substr('$Revision: 1.1 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.2 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ic_ecommerce.html"
@@ -58,14 +58,17 @@ named attributes:
 
 Expands into a hypertext link which will include the specified
 code in the list of products to order and display the order page. B<code>
-should be a product SKU listed in one of the "products" tables. The
-optional argument B<cart/page> selects the shopping cart the item will be
-placed in (begin with / to use the default cart C<main>) and the order page
-that will display the order. The optional argument B<base> constrains
+should be a product SKU listed in one of the "products" tables, and is the 
+only required parameter. B<quantity> may be specified if more than one 
+(the default) of the item should be 
+placed in the cart. B<href> allows some page other than the default order
+page to be displayed once the item has been added to the cart. B<cart> 
+selects the shopping cart the item will be placed in. The optional argument 
+B<base> constrains
 the order to a particular products file -- if not specified, all tables
 defined as products files will be searched in sequence for the item.
-
-\Example:
+N:
+N: Example:
 
 >  Order a [order TK112]Toaster[/order] today.
 
@@ -114,9 +117,8 @@ You may batch select whole groups of items:
 Items that have a quantity of zero (or blank) will be skipped, and only
 items with a positive quantity will be placed in the basket.
 
-You may also specify attributes like size or color at time of order.
-
-
+You may also specify attributes like size or color at time of order (see 
+I<How to set up an order button>).
 
 
 =head2 How to set up an order link
