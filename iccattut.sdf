@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: iccattut.sdf,v 1.5 2001-01-15 17:44:55 jon Exp $
+# $Id: iccattut.sdf,v 1.6 2001-03-02 17:25:41 jon Exp $
 
 !define DOC_NAME "Catalog-Building Tutorial"
 !define DOC_TYPE ""
 !define DOC_CODE "ICCATTUT"
-!define DOC_VERSION substr('$Revision: 1.5 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.6 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/iccattut.html"
@@ -322,7 +322,7 @@ N:Hopefully your first Interchange page worked well. If it didn't, you'll need t
 N:Here is a troubleshooting checklist that will come in handy whenever you run into problems:
 
 ^Have you created directories with the proper names in the proper locations? (See Appendix A for a full directory and file structure of our tutorial catalog.)
-+Have you misspelled any file names or put them in the wrong directories? Are the files and parent directories readable by the {{E:interch}} user? Double-check with the {{FILE:ls}} command.
++Have you misspelled any file names or put them in the wrong directories? Are the files and parent directories readable by the {{EX:interch}} user? Double-check with the {{FILE:ls}} command.
 +Did you type letters in the proper case? Remember that both Unix and Interchange are case-sensitive, and for the most part you may not switch upper- and lower-case letters.
 +Did you type all punctuation, ITL tags, and HTML tags correctly?
 +Did you type whitespace correctly in the cases where it mattered? Remember to use tabs when tabs are called for (in lists and database text files).
