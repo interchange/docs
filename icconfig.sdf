@@ -1,20 +1,20 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.28 2001-03-09 17:04:48 jon Exp $
+# $Id: icconfig.sdf,v 1.29 2001-03-09 20:43:49 jon Exp $
 
 !define DOC_NAME "Interchange Configuration"
 !define DOC_TYPE ""
-!define DOC_CODE "ICCONFIG_D2_100800"
-!define DOC_VERSION substr('$Revision: 1.28 $',11, -2)
+!define DOC_CODE "ICCONFIG"
+!define DOC_VERSION substr('$Revision: 1.29 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
-!define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
+!define DOC_URL "http://help.akopia.com/interchange/doc/icconfig.html"
 !build_title
 
-H1: CONFIGURATION OF AKOPIA INTERCHANGE(TM)
+H1: Interchange Configuration
 
-Akopia Interchange is the industry's most widely distributed and implemented open source e-commerce platform. This document provides detailed configuration instructions for Interchange and the Construct Something demo store demo included with the program, and answers a variety of frequently asked questions. The Interchange program must be installed before continuing. For more information on the Installation process, see the Installation (icinstall) manual.
+Interchange is the industry's most widely distributed and implemented open source e-commerce platform. This document provides detailed configuration instructions for Interchange and the Construct Something demo store demo included with the program, and answers a variety of frequently asked questions. The Interchange program must be installed before continuing. For more information on the Installation process, see the Installation (icinstall) manual.
 
-H1: CREATING A CATALOG
+H1: Creating a Catalog
 
 Interchange uses unique tags to implement catalog functions. The tags are similar to HTML, but the code is in C<[square brackets]>. The Interchange tags will be referred to as either tags or elements in this document.
 
@@ -58,7 +58,7 @@ LI1: Related
 
 .If using one of the internal database methods, any changes made to the ASCII source file will be reflected in the database in the next user session. If the product database contains less than a thousand records, updates will be instantaneous. If the product database is substantially larger, updates will take longer. Use the C<NoImport> reference tag to stop auto updating.
 
-H2:  Features to Use
+H2: Features to Use
 
 The Interchange demo catalog shows many features of Interchange, such as list and category building, controlled search or query, random selection of feature items, and templating with active elements. However, each feature has its cost in complexity and performance. Expect reduced performance if the computer has to do more for every page it displays.
 
@@ -171,8 +171,7 @@ Once familiar with this method, it can be quite convenient. But other methods ma
 
 Yet, most users stick with the userdb and checkout strategies employed in this catalog. This is because these strategies have been developed and proven successful over a period of years. Still, they can be customized to operate like Amazon.com or another site.
 
-As stated previously, Interchange catalogs are all about the database. The
-C<simple> demo has several tables:
+As stated previously, Interchange catalogs are all about the database. The C<simple> demo has several tables:
 
 LI1: area
 
@@ -377,7 +376,7 @@ As an introduction, a few of the tag names and their general function follow:
 [value_extended]  Display form array values or do file upload functions
 !endblock
 
-A complete list of tags and all tag syntax is available in ICTAGS.POD.
+A complete list of tags and all tag syntax is available in the ictags document.
 
 H2: HTML Hypertext links
 
@@ -397,8 +396,7 @@ Instead of:
 
 H2: Images
 
-Inline images are placed in Interchange pages in the normal fashion with
-<IMG SRC="URL">. But since Interchange pages are served by a CGI program, do not use relative links. Interchange has the capability of defining an image directory (with the C<ImageDir> and C<ImageDirSecure> directives) that automatically adjusts the image path to a set base directory.
+Inline images are placed in Interchange pages in the normal fashion with <IMG SRC="URL">. But since Interchange pages are served by a CGI program, do not use relative links. Interchange has the capability of defining an image directory (with the C<ImageDir> and C<ImageDirSecure> directives) that automatically adjusts the image path to a set base directory.
 
 H2: Browser Cookies
 
@@ -474,7 +472,7 @@ LI1: [page ...]
 
 .No session ID or count will be shown. That makes the URL shown above to be http://machine.company.com/cgi-bin/vlink/shirts.html. Once again, this is on the second page the user accesses, if they are taking and sending cookies. If the user has a pre-existing C<MV_SESSION_ID> or C<MV_USERNAME> cookie from a prior session, the effect will be immediate.
 
-.The C<argument> will be passed to Interchange and placed in the C<mv_arg> session parameter. This allows programming of a conditional page display based on where the link came from. The argument is then available with the tag [data session arg], or the embedded Perl session variable $Session->{arg}. If the catalog configuration option NewEscape is set, which is the default, then spaces and some other characters will be escaped with the %NN HTTP-style notation and unescaped when the argument is read back into the session.
+.The C<argument> will be passed to Interchange and placed in the C<mv_arg> session parameter. This allows programming of a conditional page display based on where the link came from. The argument is then available with the tag [data session arg], or the embedded Perl session variable $Session->{arg}. Spaces and some other characters will be escaped with the %NN URL-style notation and unescaped when the argument is read back into the session.
 
 .A bit of magic occurs if Interchange has built a static plain HTML page for the target page. Instead of generating a normal Interchange-parsed page reference, a static page reference will be inserted if the user has accepted and sent back a cookie with the session ID.
 
@@ -677,9 +675,9 @@ www.yourcompany.com/cgi-bin/simple;
 www.theirs.com/cgi-bin/simple may call a different catalog.
 !endblock
 
-H1: INTERNATIONALIZATION
+H1: Internationalization
 
-Interchange has a rich set of I18N features to allow conditional message display, differing price formats, different currency definitions, price factoring, sorting, and other settings. The definitions are maintained in the catalog.cfg file through the use of built-in POSIX support and Interchange's C<Locale> directive. All settings are independent for each catalog and each user of that catalog. Customers can access the same catalog in an unlimited number of languages and currencies.
+Interchange has a rich set of internationalization (I18N) features to allow conditional message display, differing price formats, different currency definitions, price factoring, sorting, and other settings. The definitions are maintained in the catalog.cfg file through the use of built-in POSIX support and Interchange's C<Locale> directive. All settings are independent for each catalog and each user of that catalog. Customers can access the same catalog in an unlimited number of languages and currencies.
 
 H2: Setting the Locale
 
@@ -711,8 +709,6 @@ LI1: [setlocale locale=locale* currency=locale* persist=1*]
     [comment] Return to the user's default locale [/comment]
     [setlocale]
 !endblock
-
-.This tag is only available in new mode ("NewTags Yes" or C<[new]>).
 
 LI1: [page process/locale/fr_FR/page/catalog]
 
@@ -959,7 +955,7 @@ The Interchange C<[sort database:field]> keys will use the LC_COLLATE setting fo
 
 *The locale setting matches any configured locales.
 
-It is beyond the scope of this document to discuss these issues. Contact your system administrator or local wizard for help setting up locales on your system. NOTE: Windows locales are not supported for sorting.
+It is beyond the scope of this document to discuss these issues. Contact your system administrator or local wizard for help setting up locales on your system.
 
 If this arbitrary database named C<letters>:
 
@@ -1031,9 +1027,9 @@ This would translate I<exactly> into:
    Locale de_DE ps_cs_precedes      1
 !endblock
 
-These settings append and overwrite any that are set in the catalog configuration files, including any #include files. IMPORTANT NOTE: This information is only read during catalog configuration. It is not reasonable to access a database for translation or currency conversion in the normal course of events.
+These settings append and overwrite any that are set in the catalog configuration files, including any include files. Important note: This information is only read during catalog configuration. It is not reasonable to access a database for translation or currency conversion in the normal course of events.
 
-H1: PROGRAMMING
+H1: Programming
 
 Interchange has a powerful paradigm for extending and enhancing its functionality. It uses two mechanisms, user-defined tags and user subroutines on two different security levels, global and catalog. In addition, C<Embedded Perl Code> may be used to build functionality into pages.
 
@@ -1210,7 +1206,7 @@ The C<__VARIABLE__> will be replaced by the value of C<Variable VARIABLE>, but [
 
 IMPORTANT NOTE: If using the C<SQL::Statement> module, the catalog must be set to C<AllowGlobal> in C<interchange.cfg>. It will not work in "Safe" mode due to limitations of object creation in Safe. Also, the C<Safe::Hole> module must be installed to have SQL databases work in Safe mode.
 
-H1: INTERCHANGE PERL OBJECTS
+H1: Interchange Perl Objects
 
 Interchange gives ready access to all objects associated with the catalog and the user settings, with opcode restrictions based on the standard Perl module C<Safe.pm>. There are some unique things to know about programming with Interchange.
 
@@ -1230,12 +1226,10 @@ The backtick operator violates a number of the default Safe opcode restrictions.
 This will also cause a trap, and the code will fail to compile. However, Interchange equivalent routines can be used:
 
 !block example
-   # This will work if your administrator doesn't have NoAbsolute
-   # set
+   # This will work if your administrator doesn't have NoAbsolute set
    $users = $Tag->file('/home/you/list');
 
-   # This will always work, file names are based in the
-   # catalog directory
+   # This will always work, file names are based in the catalog directory
    $users = $Tag->file('userlist');
 !endblock
 
@@ -1321,7 +1315,7 @@ LI1: $Config
     $Config->{CyberCash} = 0;
 !endblock
 
-.Changes are not persistent except when running in the foreground (Debug mode or on Windows).
+.Changes are not persistent except when running in the foreground (Debug mode).
 
 LI1: %Db
 
@@ -1724,15 +1718,15 @@ LI1: &Log
     %>
 !endblock
 
-H1: INTERCHANGE CONFIGURATION FILES
+H1: Interchange Configuration Files
 
 Interchange can and usually does run multiple catalogs on the same server.
 
-Cconfiguration directives are normally called with the directive as the first word on the line, with it's value or values following. Leading whitespace is stripped from the value. Additional files may be called with an #include file statement. Files are relative to the catalog directory (or Interchange software directory, if in the main C<interchange.cfg> file).
+Cconfiguration directives are normally called with the directive as the first word on the line, with it's value or values following. Leading whitespace is stripped from the value. Additional files may be called with an include file statement. Files are relative to the catalog directory (or Interchange software directory, if in the main C<interchange.cfg> file).
 
 A type of "here document" can be used to specify Interchange directives, with the usual Perl <<MARKER syntax. No semicolon is used to terminate the marker.
 
-H1: INTERCHANGE.CFG
+H1: interchange.cfg
 
 The VendRoot directory, specified in the main program C<interchange>, is the default location of all of the Interchange program, configuration, special, and library files. Unless changed in the call to C<interchange>, the main Interchange server configuration file will be C<interchange.cfg> in the VendRoot directory.
 
@@ -1762,7 +1756,7 @@ Marks a global subroutine for use only by catalogs that are set to C<AllowGlobal
 
 H2: AllowGlobal *global*
 
-Specifies catalog identifiers that may define subroutines and UserTag entries that can operate with the full permissions of the server. DON'T USE THIS UNLESS THE CATALOG USER IS TRUSTED IMPLICITLY. Default is blank.
+Specifies catalog identifiers that may define subroutines and UserTag entries that can operate with the full permissions of the server. {{B:Don't use this unless the catalog user is trusted implicitly.}} Default is blank.
 
 !block example
    AllowGlobal  simple
@@ -1770,16 +1764,7 @@ Specifies catalog identifiers that may define subroutines and UserTag entries th
 
 H2: AutoVariable *global*
 
-Specifies directives which should be translated to Variable settings.
-For scalars, the directive name becomes the Variable name and yields its
-value, i.e. C<DescriptionField> becomes C<__>C<DescriptionField__>,
-which would by default be C<description>. Array variables have a
-C<_N> added, where C<_N> is the ordinal index, i.e. C<ProductFiles>
-becomes C<__>C<ProductFiles_0__>, C<__>C<ProductFiles_1__>,
-etc. Hash variables have a _KEY added, i.e.  C<SpecialPage> becomes
-C<__>C<SpecialPage_missing__>, C<__>C<SpecialPage_violation>, etc. Doesn't
-handle hash keys that have non-word characters or whitespace. Only
-single-level arrays and hashes are translated properly.
+Specifies directives which should be translated to Variable settings. For scalars, the directive name becomes the Variable name and yields its value, i.e. C<DescriptionField> becomes C<__>C<DescriptionField__>, which would by default be C<description>. Array variables have a C<_N> added, where C<_N> is the ordinal index, i.e. C<ProductFiles> becomes C<__>C<ProductFiles_0__>, C<__>C<ProductFiles_1__>, etc. Hash variables have a _KEY added, i.e. C<SpecialPage> becomes C<__>C<SpecialPage_missing__>, C<__>C<SpecialPage_violation>, etc. Doesn't handle hash keys that have non-word characters or whitespace. Only single-level arrays and hashes are translated properly.
 
 !block example
    AutoVariable  PriceField DescriptionField ProductFiles SpecialPage
@@ -1838,6 +1823,21 @@ The name of a file (or files) which should be read as a part of every catalog's 
 !block example
    ConfigAllBefore   set_actions.cfg set_variables.cfg
 !endblock
+
+H2: ConfigParseComments *global*
+
+Set to No if you want old-style '#include', '#ifdef', or '#ifndef' to be treated as the comments they appear to be. The default is Yes, which means both '#include' and 'include' do the same thing. (Use a space after the '#' if you really want to comment out the command.)
+
+Interchange prior to version 4.7 used a different syntax for meta-directives 'include', 'ifdef', and 'ifndef' in configuration files. The commands were borrowed from the C preprocessor, and true to their C heritage, they started with '#': '#include', '#ifdef', '#ifndef'. Interchange configuration files, unlike C, uses '#' to begin one-line comments, which meant that a newcomer at first glance might assume that:
+
+!block example
+#Variable DEBUG 1
+#include more.cfg
+!endblock
+
+were both comments, when in fact the second was a live #include command.
+
+To begin to make things more consistent, Interchange 4.7 and up now recognize those meta-directives without the leading '#', and the included demo catalog sets this directive to No so that lines beginning with '#' really are skipped as comments, regardless of what comes after.
 
 H2: Database *global*
 
@@ -2124,29 +2124,21 @@ settings that will apply for all catalogs.
 
 H2: SafeUntrap *global*
 
-Sets the codes that will be untrapped in the C<Safe.pm> module and used for
-embedded Perl and conditional operations. The Safe.pm documentation is visible
-by typing C<perldoc Safe> at the command prompt. The default is C<249 148> for
-Perl 5.003, and C<ftfile sort> for Perl 5.003_20 and above, which untraps the
-file existence test operator and the sort operator. Define it as blank to
-prevent any operators but the default restrictive ones.
+Sets the codes that will be untrapped in the C<Safe.pm> module and used for embedded Perl and conditional operations. View the Safe.pm documentation by typing C<perldoc Safe> at the command prompt. The default is C<ftfile sort>, which untraps the file existence test operator and the sort operator. Define it as blank to prevent any operators but the default restrictive ones.
 
 !block example
-   SafeUntrap     ftfile sort ftewrite
+   SafeUntrap     ftfile sort ftewrite rand
 !endblock
 
 H2: SendMailProgram *global*
 
-Specifies the program used to send email. Defaults to '/usr/lib/sendmail'. If
-it is not found at startup, Interchange will return an error message and refuse
-to start.
+Specifies the program used to send email. Defaults to '/usr/lib/sendmail'. If it is not found at startup, Interchange will return an error message and refuse to start.
 
 !block example
    SendMailProgram     /bin/mailer
 !endblock
 
-A value of 'none' will disable the sending of emailed orders. Orders must be
-read from a tracking file, log, or by other means.
+A value of 'none' will disable the sending of emailed orders. Orders must be read from a tracking file, log, or by other means.
 
 H2: SocketFile *global*
 
@@ -2273,9 +2265,9 @@ specified in a space-separated list. Default is localhost.
 
 H2: TcpMap *global*
 
-When running in INET mode, using C<tlink> or the internal HTTP server, specifies the port(s) which will be monitored by the Interchange server. Default is 7786>.
+When running in INET mode, using C<tlink> or the internal HTTP server, specifies the port(s) which will be monitored by the Interchange server. Default is 7786.
 
-To use the internal HTTP server (perhaps only for password-protected queries), a catalog may be mapped to a port. If three catalogs were running on the server C<www.akopia.com>, named C<simple>, C<sample>, and C<search>, the directive might look like this::
+To use the internal HTTP server (perhaps only for password-protected queries), a catalog may be mapped to a port. If three catalogs were running on the server C<www.akopia.com>, named C<simple>, C<sample>, and C<search>, the directive might look like this:
 
 !block example
    TcpMap    7786 -  7787 simple 7788 sample 7789 search
@@ -2300,7 +2292,7 @@ To bind to specific IP addresses, add them in the same fashion that they would a
 
 !block example
    TcpMap <<EOF
-       127.0.0.1:7786         -
+       127.0.0.1:7786       -
        www.akopia.com:7787  -
    EOF
 !endblock
@@ -2309,8 +2301,7 @@ Note: As usual, the EOF should be at the beginning of a line with no leading or 
 
 H2: TemplateDir *global*
 
-Sets a directory which will be searched for pages if not found in the users
-C<pages> directory. Interchange uses this; use it to supply some default pages so the user will not have them in their directory.
+Sets a directory which will be searched for pages if not found in the user's C<pages> directory. Interchange uses this; use it to supply some default pages so the user will not have them in their directory.
 
 !block example
    TemplateDir    /usr/local/interchange/default_pages
@@ -2324,20 +2315,13 @@ This defines a UserTag which is global in nature, meaning not limited by the C<S
 
 H2: Variable *global*
 
-Defines a global variable that will be available in all catalogs
-with the notation @@Variable@@. Variable identifiers must begin with a
-capital letter, and can contain only word characters (B<A-Z,a-z,0-9> and
-underscore). They are case-sensitive. If using the C<ParseVariables>
-directive, only variables in ALL CAPS will be parsed. These are
-substituted first in any Interchange page, and can contain any valid
-Interchange tags including catalog variables.
+Defines a global variable that will be available in all catalogs with the notation @@Variable@@. Variable identifiers must begin with a capital letter, and can contain only word characters (B<A-Z,a-z,0-9> and underscore). They are case-sensitive. If using the C<ParseVariables> directive, only variables in ALL CAPS will be parsed. These are substituted first in any Interchange page, and can contain any valid Interchange tags including catalog variables.
 
 !block example
    Variable   DOCUMENT_ROOT   /usr/local/etc/httpd/htdocs
 !endblock
 
-If a variable is called with @_VARIABLE_@, and there is no catalog
-Variable with its name, the global Variable value will be inserted.
+If a variable is called with @_VARIABLE_@, and there is no catalog Variable with its name, the global Variable value will be inserted.
 
 There are several standard variables which should not be used:
 
@@ -2363,17 +2347,17 @@ LI1: LANG, MV_LANG
 
 H2: VarName *global*
 
-Sets the names of variables that will be remapped to and from the URL when
-Interchange writes it. For instance, to display the variable C<mv_session_id> as C<session> in the users URL:
+Sets the names of variables that will be remapped to and from the URL when Interchange writes it. For instance, to display the variable C<mv_session_id> as C<session> in the users URL:
 
 !block example
    VarName   mv_session_id  session
 !endblock
 
 The default can also be set in the C<etc/varnames> file after the first time Interchange is run. Setting it in C<interchange.cfg> is probably better for clarity.
+
 There is also a catalog-specific version of this setting.
 
-H1: CATALOG.CFG
+H1: catalog.cfg
 
 If multiple catalogs are to be run, each must have a C<catalog.cfg> file located in the catalog base directory. It contains most of the configurable parameters for Interchange. Each is independent from catalog to catalog.
 
@@ -2412,50 +2396,50 @@ LI1: Include single setting from file
 
 .This works well for includes that must be of the highest possible performance. They can be simply placed in a page with __VARIABLE__.
 
-LI1: Include multiple settings from file
+LI1: include
 
-.Common settings can be set in one file:
-
-!block example; listitem=2
-    #include common.cfg
-!endblock
-
-.Or all files in one directory
+.Other configuration files can be included in the current one. For example, common settings can be set in one file:
 
 !block example; listitem=2
-    #include usertag/*
+    include common.cfg
 !endblock
 
-LI1: #ifdef and #ifndef
+.Or all files in one directory:
 
-.\#ifdef / #endif and #ifndef / #endif pairs can be used:
+!block example; listitem=2
+    include usertag/*
+!endblock
+
+LI1: ifdef and ifndef
+
+.ifdef/endif and ifndef/endif pairs can be used:
 
 !block example; listitem=2
     Variable ORDERS_TO email_address
 
-    #ifdef ORDERS_TO
+    ifdef ORDERS_TO
     ParseVariables Yes
     MailOrderTo __ORDERS_TO__
     ParseVariables No
-    #endif
+    endif
 
-    #ifdef ORDERS_TO =~ /foo.com/
+    ifdef ORDERS_TO =~ /foo.com/
     # Send all orders at foo.com to one place now
     # Set ORDERS_TO to stop default setting
     Variable  ORDERS_TO  1
     MailOrderTo   orders@foo.com
-    #endif
+    endif
 
-    #ifdef ORDERS_TO eq 'nobody@nowhere.com'
+    ifdef ORDERS_TO eq 'nobody@nowhere.com'
     # Better change to something else, set ORDERS_TO to stop default
     Variable  ORDERS_TO  1
     MailOrderTo   someone@somewhere.com
-    #endif
+    endif
 
-    #ifndef ORDERS_TO
+    ifndef ORDERS_TO
     #Needs to go somewhere....
     MailOrderTo  webmaster@localhost
-    #endif
+    endif
 !endblock
 
 LI1: Define subroutine watches
@@ -2763,7 +2747,7 @@ A Yes/No directive, default is No. Enables CyberCash payment protocols. See Usin
 
 H2: Database
 
-Definition of an arbitrary database, in the form "Database database file type," where "file" is the name of an ASCII file in the same format as the products database. The file is relative to VendRoot, and is put in C<DataDir> if no path is provided. Records can be accessed with the C<[data database field key]> tag. Database names are restricted to the alphanumeric characters (including the underscore), and it is recommended that they be either all lower or all upper case. See C<DATABASES>.
+Definition of an arbitrary database, in the form "Database database file type," where "file" is the name of an ASCII file in the same format as the products database. The file is relative to VendRoot. Records can be accessed with the C<[data database field key]> tag. Database names are restricted to the alphanumeric characters (including the underscore), and it is recommended that they be either all lower or all upper case. See C<DATABASES>.
 
 !block example
    Database      reviews  reviews.txt  CSV
@@ -2910,6 +2894,10 @@ The pathname for the C<glimpse> command, used if C<glimpse> searches are to be e
    Glimpse  /usr/local/bin/glimpse -C -J srch_engine -K2345
 !endblock
 
+H2: History
+
+How many of the most recent user clicks should be stored in the session history. Default is 0.
+
 H2: HTMLsuffix
 
 The file extension that will be seen as a page in the C<pages> directory. Default is C<.html>.
@@ -2976,7 +2964,7 @@ See Internationalization.
 
 H2: LocaleDatabase
 
-Set to the Interchange database identifier of a table that contains C<Locale> settings. These settings add on to and overwrite any that are set in the catalog configuration files, including any #include files.
+Set to the Interchange database identifier of a table that contains C<Locale> settings. These settings add on to and overwrite any that are set in the catalog configuration files, including any include files.
 
 !block example
    Database       locale  locale.asc  TAB
@@ -3108,7 +3096,7 @@ Sets a products database column which can be used to select the on-the-fly templ
 
 H2: ParseVariables
 
-Determines whether global and catalog variables will be parsed in the configuration file. Should be set to No until parsing is needed, turned on for the parsed directives, then, set back to No. Default is No.
+Determines whether global and catalog variables will be parsed in the configuration file. Default is No. The foundation catalog.cfg turns ParseVariables on and usually expects it to be on. If you need to turn it off, you should probably turn it back on as soon as possible.
 
 !block example
    Variable STORE_ID  topshop
@@ -3141,7 +3129,7 @@ If a C<Route> is set up to C<supplant>, this is ignored.
 
 H2: Pragma
 
-Sets the default value of an Interchange pragma. The only one to date is:
+Sets the default value of an Interchange pragma. There are currently only a few:
 
 LI1: no_html_parse
 
@@ -3160,6 +3148,10 @@ To disable a pragma for a particular page, set it anywhere in the page:
 !endblock
 
 Note: This is a good place to place a DTD.
+
+LI1: substitute_table_image
+
+.When this pragma it set, Interchange checks pages for <tr>, <th>, and <td> HTML tags and rewrites any background image URLs appropriate for the current catalog. Such image URLs are always rewritten in <body background="..."> and <img src="...">, but not in tables by default.
 
 H2: PriceCommas
 
@@ -3209,16 +3201,13 @@ Database tables that should be seen as the "products" database.
    ProductFiles    vendor_a vendor_b
 !endblock
 
-The key thing about this is that each will be searched in sequence for a product code to order or an C<[item-field ....]> or C<[loop-field ...]>
-to insert. The main difference between C<[item-field ....]> and
-C<[item-data table ...]> is this fall-through behavior.
+The key thing about this is that each will be searched in sequence for a product code to order or an C<[item-field ....]> or C<[loop-field ...]> to insert. The main difference between C<[item-field ....]> and C<[item-data table ...]> is this fall-through behavior.
 
 Default is C<products>.
 
 H2: ReadPermission and WritePermission
 
-By default, only the user account that Interchange runs under (as set by the SETUID permission on vlink) can read and write files created by Interchange. C<WritePermission> and C<ReadPermission> can be set to C<user>, C<group>, or
-'world.'
+By default, only the user account that Interchange runs under (as set by the SETUID permission on vlink) can read and write files created by Interchange. C<WritePermission> and C<ReadPermission> can be set to C<user>, C<group>, or 'world'.
 
 !block example
    ReadPermission      group
@@ -3245,9 +3234,7 @@ Capitalization must be exact on each directive.
 
 H2: Require
 
-Forces a Perl module, global C<UserTag>, or C<GlobalSub> to be present before
-the catalog will configure. This is useful when transporting catalogs to make
-sure they will have all needed facilities.
+Forces a Perl module, global C<UserTag>, or C<GlobalSub> to be present before the catalog will configure. This is useful when transporting catalogs to make sure they will have all needed facilities.
 
 !block example
    Require usertag   email
@@ -3257,7 +3244,7 @@ sure they will have all needed facilities.
 
 H2: RobotLimit
 
-The RobotLimit directive defines the number of consecutive pages a user session may access without a 30 second pause. If the limit is exceeded, the command defined in the Global directive C<LockoutCommand> will be executed. The default is 0, disabling the check.
+The RobotLimit directive defines the number of consecutive pages a user session may access without a 30 second pause. If the limit is exceeded, the command defined in the Global directive C<LockoutCommand> will be executed and catalog URLs will be rewritten with host 127.0.0.1, sending the robot back to itself. The default is 0, disabling the check.
 
 !block example
    RobotLimit  200
@@ -3449,12 +3436,9 @@ The type of session management to be used. Use one of the following:
    GDBM        GDBM
 !endblock
 
-The default is file-based sessions, which provides the best performance and
-reliablility in most environments.
+The default is file-based sessions, which provides the best performance and reliablility in most environments.
 
-If you are planning on running Interchange servers with an NFS-mounted
-filesystem as the session target, you must set SessionType to "NFS". The
-other requisites are usually:
+If you are planning on running Interchange servers with an NFS-mounted filesystem as the session target, you must set SessionType to "NFS". The other requisites are usually:
 
 	1. fcntl() supported in Perl
 	2. lock daemon running on server system
@@ -3658,6 +3642,12 @@ A comma or space-separated list of states or jurisdictions that tax shipping cos
    TaxShipping         UT,NV,94024
 !endblock
 
+H2: TrackFile
+
+Name of a logfile that tracks user traffic. This is used in the back office administration report on traffic by affiliate.
+
+The default is that no such file is kept.
+
 H2: UpsZoneFile
 
 The file containing the UPS zone information, specified relative to the catalog directory unless it begins with a /. It can be in the format distributed by UPS or can be in a tab-delimited format, with the three-letter zip prefix of the customer used to determine the zone. It interpolates based on the value in C<mv_shipmode>. A user database named the same as the mv_shipmode variable must be present or the lookup will return zero.
@@ -3750,9 +3740,9 @@ Specifies the base URL that will run vlink as a cgi-bin program.
 
 H2: WideOpen
 
-Disables IP qualification of user sessions. THIS DEGRADES CATALOG SECURITY. Do not use unless using PGP/CreditCardAuto or CyberCash.
+Disables IP qualification of user sessions. {{B:This degrades catalog security.}} Do not use unless using PGP/CreditCardAuto or CyberCash.
 
-H1: ADMINISTERING INTERCHANGE
+H1: Administering Interchange
 
 Some utilities are supplied in the VendRoot/bin directory:
 
@@ -3867,7 +3857,7 @@ H2: Updating Individual Records
 
 If it takes a long time to build a very large DBM database, consider using the C<bin/update> script to change just one field in a record, or to add from a corrections list.
 
-The following updates the products database C<price> field for item 19-202 with the new value 25.00
+The following updates the products database C<price> field for item 19-202 with the new value 25.00:
 
 !block example
    update -c catalog -f price 25.00
@@ -3905,8 +3895,6 @@ On a UNIX server, add a crontab entry such as the following:
 !endblock
 
 Interchange will wait until the current transaction is finished before expiring, so this can be done at any time without disabling web access. Any search paging files for the affected session (kept in C<ScratchDir>) will be removed as well.
-
-With Windows or other operating systems which don't fork(), stop the server before running C<expire>. This will prevent corruption of the database.
 
 If not running DBM sessions, use a Perl script to delete all files not modified in the last one or two days. The following will work if given an argument of a session directory or session files:
 
@@ -3947,7 +3935,7 @@ Multiple directory names are acceptable, if there is more than one catalog.
 
 This script can be adjusted as necessary. Refinements might include reading the file to "eval" the session reference and expire only customers who are not members.
 
-H1: DEBUGGING
+H1: Debugging
 
 No debug output is provided by default. The source files contain commented-out '::logDebug(SOMETHING)' statements which can be edited to activate them. Set the value of C<DebugFile> to a file that will be written to:
 
@@ -3955,13 +3943,13 @@ No debug output is provided by default. The source files contain commented-out '
    DebugFile /tmp/mvdebug
 !endblock
 
-H1: SETUP FOR HTTP SERVERS
+H1: Setup for HTTP Servers
 
 Interchange requires a web server that is already installed on a system. It does have an internal server which can be used for administration, testing, and maintenance, but this will not be useful or desireable in a production environment.
 
 As detailed previously, Interchange is always running in the background as a daemon, or resident program. It monitors either a UNIX-domain file-based socket or a series of INET-domain sockets. The small CGI link program, called in the demo C<simple>, is run to connect to one of those sockets and provide the link to a browser.
 
-Note: Since Apache and other CERN/NCSA-derived servers are the most popular, these instructions will focus on them. If using another type of web server, some translation of terms may be necessary. For instance, on MS Personal Web server, the standard C<ScriptAlias> is C</scripts>.
+Note: Since Apache is the most popular web server, these instructions will focus on it. If using another type of web server, some translation of terms may be necessary.
 
 A C<ScriptAlias> or other CGI execution capability is needed to use the link program. (The default C<ScriptAlias> for many web servers is C</cgi-bin>.) If C<ExecCGI> is set for all directories, then any program ending in a particular file suffix (usually C<.cgi>) will be seen as a CGI program.
 
@@ -3971,8 +3959,7 @@ H2: UNIX-Domain Sockets
 
 This is a socket which is not reachable from the Internet directly, but which must come from a request on the server. The link program C<vlink> is the provided facility for such communication with Interchange. This is the most secure way to run a catalog, for there is no way for systems on the Internet to interact with Interchange except through its link program.
 
-The most important issue with UNIX-domain sockets on Interchange is the
-permissions with which the CGI program and the Interchange server run. To improve security, Interchange normally runs with the socket file having 0600 permissions (rw-------), which mandates that the CGI program and the server run as the same user ID. This means that the C<vlink> program must be SUID to the same user ID as the server executes under. (Or that CGIWRAP is used on a single catalog system).
+The most important issue with UNIX-domain sockets on Interchange is the permissions with which the CGI program and the Interchange server run. To improve security, Interchange normally runs with the socket file having 0600 permissions (rw-------), which mandates that the CGI program and the server run as the same user ID. This means that the C<vlink> program must be SUID to the same user ID as the server executes under. (Or that CGIWRAP is used on a single catalog system).
 
 With Interchange's multiple catalog capability, the permissions situation gets a bit tricky. Interchange comes with a program, C<makecat>, which configures catalogs for a multiple catalog system. It should properly set up ownership and permissions for multiple users if run as the superuser.
 
@@ -4074,7 +4061,7 @@ Most systems unset the SUID bit when moving the file, so change it after moving.
 
 The SCRIPT_NAME, as produced by the HTTP server, must match the name of the program. (As usual, let the makecat program do the work.)
 
-H1: FREQUENTLY ASKED QUESTIONS
+H1: Frequently Asked Questions
 
 H2: Configuration Problems
 
@@ -4082,7 +4069,7 @@ Most Interchange configuration and setup problems are due to one of the followin
 
 LI1: Wrong information given to makecat program.
 
-.THIS IS BY FAR THE MOST COMMON PROBLEM. To install a working demo, Interchange needs to know what the C<DocumentRoot> is and how to run CGI programs. Details of this setup are server- and site-specific, which may require some research.
+.{{B:This is by far the most common problem.}} To install a working demo, Interchange needs to know what the C<DocumentRoot> is and how to run CGI programs. Details of this setup are server- and site-specific, which may require some research.
 
 .Re-run the configuration again, and pay close attention to the prompts given. There are examples given which apply to most systems.
 
@@ -4098,23 +4085,21 @@ LI1: Perl compiled with USE_THREADS.
 
 H2: VLINK or TLINK Compile Problems
 
-(None of this is valid for Windows. Use the precompiled C<tlink.exe or tlink.pl>.)
-
-The latest version of C<vlink.c> and C<tlink.c> have been compiled on
-the following systems:
+The latest version of C<vlink.c> and C<tlink.c> have been compiled on the following systems:
 
 !block example
    AIX 4.1
    BSD2.0 (Pentium/x86)
+   Debian GNU/Linux
    Digital Unix (OSF/Alpha)
-   FreeBSD 2.x and 3.x
+   FreeBSD 2.x, 3.x, 4.x
    IRIX 5.3, IRIX 6.1
-   Linux
+   OpenBSD 2.7
    SCO OpenServer 5.x
    Solaris 2.x (Sun compiler and GCC)
    Solaris 7 (Sun compiler and GCC)
    SunOS 4.1.4
-   Red Hat 6.2, 7.0
+   Red Hat Linux 6.2, 7.0
 !endblock
 
 Some problems may occur. In general, ignore warnings about pointers.
@@ -4132,9 +4117,9 @@ You can compile manually with the proper settings with this series of commands:
 
 There is also a C<compile_link> program which has docmentation embedded and which will compile an approprate link. If you cannot compile, try using the C<tlink.pl> script which should work on most any system.
 
-H2: You cannot run the Interchange software as> C<root>.
+H2: You cannot run the Interchange software as C<root>.
 
-If you are setting Interchange up for the entire machine, and not just as a virtual host user, it is usual to create a special C<ichange> or C<interchange> user to run the daemon and the link program. This means the directory listing for your CGI-BIN should be something like:
+If you are setting Interchange up for the entire machine, and not just as a virtual host user, it is usual to create a special C<interch> user to run the daemon and the link program. This means the directory listing for your cgi-bin should be something like:
 
 !block example
 -rwsr-xr-x   1 interchange users        6312 Dec 30 11:39 cgi-bin/simple
@@ -4169,8 +4154,7 @@ This will make files default to the proper group when created (on most UNIX vers
        find /home/user/catalogs -type d -print | xargs chmod g+s
 !endblock
 
-If you are on a virtual hosting system, the procedure varies. Making the program setuid should work for most systems. If your setup uses CGI-WRAP or another setuid scheme, it should still work. However, you may have to unset the setuid bit with C<chmod u-s cgi-bin/simple> or the like. If you have a non-standard CGI setup, as some virtual host
-systems do, you will need to know something about UNIX and the web or engage a consultant to properly set up the paths. Usually switching to TLINK/INET mode is the easiest thing to do, though with Iserver and a few others it may take more than that.
+If you are on a virtual hosting system, the procedure varies. Making the program setuid should work for most systems. If your setup uses CGI-WRAP or another setuid scheme, it should still work. However, you may have to unset the setuid bit with C<chmod u-s cgi-bin/simple> or the like. If you have a non-standard CGI setup, as some virtual host systems do, you will need to know something about UNIX and the web or engage a consultant to properly set up the paths. Usually switching to TLINK/INET mode is the easiest thing to do, though with Iserver and a few others it may take more than that.
 
 If you used the C<makecat> program to build the catalog, it should have warned you if it was not able to make the link program setuid. To set the program (in the file C<cgi-bin/simple> in this example) to be setuid, use the command:
 
@@ -4180,7 +4164,7 @@ If you used the C<makecat> program to build the catalog, it should have warned y
 
 H2: Error -- the Interchange server was not running...
 
-This indicates that the link CGI is not communicating with the Interchange server. IMPORTANT NOTE: The server should always be started by the same user ID which owns the suid vlink program. (This does not apply to TLINK/INET mode.)
+This indicates that the link CGI is not communicating with the Interchange server. {{B:Important note:}} The server should always be started by the same user ID which owns the suid vlink program. (This does not apply to TLINK/INET mode.)
 
 The server must be running, first of all. If you didn't start it, you can do so by going to the Interchange home directory and typing:
 
@@ -4241,9 +4225,9 @@ H2: Can I run Interchange on my Macintosh?
 
 Interchange will not run on a Macintosh running System 7 or other "Finder" operating system.
 
-After some manual effort to install the proper Perl modules, Interchange has been run on the Macintosh OS/X server (DP 3). Given the degree of effort involved this is not considered a tested configuration.
+After some manual effort to install the proper Perl modules, Interchange has been run on Mac OS X. Given the degree of effort involved this is not considered a tested configuration.
 
-Interchange's *files* can be manipulated by any computer. As long as uploads/downloads of database source, pages, and configuration files are done in ASCII mode, there is no reason why they can't be edited on a Mac. And with MySQL or other ODBC databases on your UNIX-based ISP, you can even directly interface to the database you use with Interchange provided you have the scarce ODBC middleware needed for the Mac. But, you must run it on UNIX or another Mac operating system. Interchange does run on MkLinux, Linux PPC, and OS/X.
+Interchange's *files* can be manipulated by any computer. As long as uploads/downloads of database source, pages, and configuration files are done in ASCII mode, there is no reason why they can't be edited on a Mac. And with MySQL or other ODBC databases on your UNIX-based ISP, you can even directly interface to the database you use with Interchange provided you have the scarce ODBC middleware needed for the Mac. But, you must run it on UNIX or another Mac operating system. Interchange does run on MkLinux, LinuxPPC, and Mac OS X.
 
 H2: Shopping cart is dropped when using SSL.
 
@@ -4279,7 +4263,7 @@ H2: Interchange doesn't work with RedHat 5.0 (glibc).
 
 This is a defective Perl distributed by RedHat. The problem is that they don't take GLIBC into account. It will pass make test 100 percent, but strftime dumps core on a segfault. You shouldn't run RedHat 5.0 anyway. It has drastic security problems. Update to a later version and build a new Perl.
 
-H1: ISP PROBLEMS
+H1: ISP Problems
 
 Great strides have been made since Interchange's early days. The great majority of ISPs provide some CGI service, and more and more run systems that are compatible with Interchange. The new catalog configurator for Interchange makes setup much easier. A word of warning: if you chose your ISP mostly on price, you can expect problems. The low-cost providers typically have heavily-loaded machines and many domains. The more domains and the more load the unhappier you will be with Interchange. Interchange works best on a fast machine with plenty of memory.
 
@@ -4305,7 +4289,7 @@ H2: We're sorry, the Interchange server is unavailable...
 
 (The following assumes that you were able to start the Interchange server.)
 
-This could be almost anything, but with a properly configured Interchange it is almost undoubtedly due to your CGI-BIN and/or your Interchange directory being located on a different filesystem than the actua machine that is executing the program. VLINK uses UNIX-domain sockets, which don't work on NFS-mounted filesystems.
+This could be almost anything, but with a properly configured Interchange it is almost undoubtedly due to your cgi-bin and/or your Interchange directory being located on a different filesystem than the actua machine that is executing the program. VLINK uses UNIX-domain sockets, which don't work on NFS-mounted filesystems.
 
 Iserver.com and other systems which use chroot HTTP servers require quite a bit of extra configuration to get going. If you have not been careful to set permissions properly when running in VLINK/UNIX mode, the link CGI will not be able to communicate with the Interchange server. Please read the documentation that covers this in detail.
 
@@ -4319,15 +4303,15 @@ This usually happens in frames catalogs, when Interchange is sending more than o
 
 Go to <http://www.deja.com> and try searching for MAXUSERS. This should give you plenty of pointers on how to set these parameters properly.
 
-H2: My provider runs Windows NT.
+H2: My provider runs Windows NT or Windows 2000.
 
-Interchange is unlikely to work on Windows NT ISPs in the near future. If you have a dedicated NT machine, there is a version of Interchange for Windows NT. It may work for you, but there are differences in operation from the UNIX version (mostly due to NT's lack of fork() or and lack of user-space threading support in Perl).
+Interchange is unlikely to work on Windows in the near future.
 
 H2: Interchange server only runs for a while, then dies.
 
 Many ISPs don't allow your user ID to run a program unless it is logged in! The moment a watchdog program notices a daemon running with a non-logged-in UID, it terminates the program. Or, it terminates programs that haven't been active for XX minutes. Contact your ISP about this. They may be able to do something for you.
 
-H1: SETUP QUESTIONS
+H1: Setup Questions
 
 Interchange is quite powerful, but also quite complex. There are many possibilities opened up with its conditional HTML, but also many pitfalls. Read the documentation thoroughly, then inspect the C<basic> and C<simple> demo pages for help. Pay particular attention to:
 
@@ -4339,8 +4323,7 @@ Interchange is quite powerful, but also quite complex. There are many possibilit
    ord/checkout.html
 !endblock
 
-These pages use many of the powerful features of Interchange, and studying
-them will be instructive.
+These pages use many of the powerful features of Interchange, and studying them will be instructive.
 
 H2: Can I run multiple catalogs on one server?
 
@@ -4352,7 +4335,7 @@ Use the standard facility on your operating system. For BSD-style systems, the f
 
 On SVR4 systems, it is quite a bit more complex. Look for the /etc/rc.d directory and see what other programs do. Often the file is called S99startup or something similar.
 
-IMPORTANT NOTE: Interchange must not run as root, which is the user identity that the startup file executes. The technique to start up depends on the facility of your su(1) command. This should work on most operating systems:
+{{B:Important note:}} Interchange must not run as root, which is the user identity that the startup file executes. The technique to start up depends on the facility of your su(1) command. This should work on most operating systems:
 
 !block example
    su interchange <<EOF
@@ -4368,7 +4351,7 @@ The B<EOF> must be the only thing on the line (no leading or trailing whitespace
 
 Interchange supplies a C<restart> script which tries to do the above portably. It works on many operating systems.
 
-H2: How do I set up a Mall?
+H2: How do I set up a mall?
 
 Interchange can share product databases, session files, and any other databases. It has many features which support mall building. You can easily build separate and mostly identical catalogs which you link to via HTML. But building a mall is as much an exercise in data and process as in software. Consider the following questions:
 
@@ -4382,12 +4365,9 @@ If you cannot answer those questions and visualize how to build a mall, you prob
 
 H2: Can I attach a size or color to a product?
 
-Interchange has product modifiers, or attributes, which can be carried around with the product. The [item-accessories attribute] tag will automatically place a suitable select widget on an HTML form, and "remember" what should
-be selected. See the Interchange documentation for Item Attributes.
+Interchange has product modifiers, or attributes, which can be carried around with the product. The [item-accessories attribute] tag will automatically place a suitable select widget on an HTML form, and "remember" what should be selected. See the Interchange documentation for Item Attributes.
 
-You can use the SeparateItems directive or set the mv_separate_items
-variable on the order form to cause ordered items to be put on separate
-lines in the shopping basket. (This is the default in the demo catalogs.) This makes size/color handling much easier for multiple items. They can be stacked, which means that you can add multiple instances of a size or color to an individual product within a shopping cart entry line, but this is too much trouble.
+You can use the SeparateItems directive or set the mv_separate_items variable on the order form to cause ordered items to be put on separate lines in the shopping basket. (This is the default in the demo catalogs.) This makes size/color handling much easier for multiple items. They can be stacked, which means that you can add multiple instances of a size or color to an individual product within a shopping cart entry line, but this is too much trouble.
 
 The attribute information is placed on the form with form fields, like:
 
@@ -4417,7 +4397,7 @@ LI1: Interchange user ID doesn't have keyring
 
 LI1: Trust problems
 
-.If the key you are sending has not been signed by another (trusted) user, then you will get error returns from some flavors of PGP, which causes the problem.  Sometimes the fix is to route the error output to /dev/null (at least on UNIX) by changing the EncryptProgram directive in catalog.cfg:
+.If the key you are sending has not been signed by another (trusted) user, then you will get error returns from some flavors of PGP, which causes the problem.  Sometimes the fix is to route the error output to /dev/null by changing the EncryptProgram directive in catalog.cfg:
 
 !block example; listitem=2
 EncryptProgram  /usr/bin/pgp -fat -r sales@your.com 2>/dev/null
@@ -4428,8 +4408,6 @@ EncryptProgram  /usr/bin/pgp -fat -r sales@your.com 2>/dev/null
 !block example; listitem=2
 EncryptProgram /usr/local/bin/gpg -ea --always-trust -r sales@your.com
 !endblock
-
-.On Windows or other operating systems, the only fix is to sign the key or otherwise prevent the error from occurring.
 
 H2: PGP encryption -- What do I do now that it is working?
 
@@ -4473,12 +4451,6 @@ Once this is done, you can read mail using your PGP client as a helper applicati
    xterm -e pgp -m %s
 !endblock
 
-On Windows, it might be:
-
-!block example
-   c:\mycommands\pgp -m %s
-!endblock
-
 More automated or user-friendly setups are left as an exercise for the user.
 
 H2: How do I get the number of items in a shopping cart?
@@ -4514,10 +4486,9 @@ If you have SeparateItems in effect, and need the number of unique items, you co
    [/perl]
 !endblock
 
-H2: The demo doesn't do...(pick one)
+H2: The demo doesn't do ... (pick one)
 
-That is because it is a demo. It is not intended to be a finished catalog, just a starting point. Though Akopia likes to get reports of malfunctions in
-the demo, they feel absolutely no urgency about fixing or responding to such reports.
+That is because it is a demo. It is not intended to be a finished catalog, just a starting point. Though we like to get reports of malfunctions in the demo, we feel little urgency about fixing or responding to such reports.
 
 H2: Difficulty interacting with browser: Request method for form submission is not POST
 
@@ -4531,7 +4502,7 @@ There are many possible causes for this error. The main ones are:
 
 *If you are using SSL and don't have a later HTTP server (released after roughly September 1997), there is a bug in earlier versions Microsoft Internet Explorer's version of SSL3. Stronghold 2.1.1 works around this bug. So, if you use Stronghold, you should update.
 
-Interchange also allows you to have forms with METHOD=GET.  To use, set the session ID in your form:
+Interchange also allows you to have forms with METHOD=GET. To use, set the session ID in your form:
 
 !block example
    <INPUT TYPE=hidden NAME=mv_session_id VALUE="[data session id]">
@@ -4570,7 +4541,7 @@ This is supported in Interchange via a UserTag, [email ...]. See the "simple" an
 
 H2: Configuring catalog whatever...Use of uninitialized value at Config.pm line 1614, <CONFIG> chunk 322.
 
-This is a warning from Perl indicating that an empty value was found where one is expected. The warning is left in so that you know that something is missing. Whatever it is, it can be found at the specified "chunk," or line, of catalog.cfg. If you use the #include capability, it would have to be factored in as well.
+This is a warning from Perl indicating that an empty value was found where one is expected. The warning is left in so that you know that something is missing. Whatever it is, it can be found at the specified "chunk," or line, of catalog.cfg. If you use the include capability, it would have to be factored in as well.
 
 The usual reason is that a file is specified in one of the directives (usually one of Help, SearchProfile, OrderProfile, Buttonbars, or UpsZoneFile) and does not exist. See the documentation for the directive on how the file name should be specified.
 
@@ -4631,7 +4602,7 @@ On your pages (this is from a search results page, the [item-.... ...] notation 
 
 Any questions? Read the docs about "Internationalization."
 
-H1: PERFORMANCE ISSUES
+H1: Performance Issues
 
 Interchange is not a lightweight program. If you are running it on a low-end ISP, whose major selling point is low cost, you will frequently find that Interchange performance is very poor. This is due to either:
 
@@ -4655,22 +4626,21 @@ This is almost certainly due to a system that has inadequate memory or network b
 
 H2: Interchange slows down over time.
 
-There are many possible reasons for this, but most have to do with memory
-or session database size.
+There are many possible reasons for this, but most have to do with memory or session database size.
 
-*See the documentation on INTERCHANGE ADMINISTRATION and learn how to expire your session database. If it is megabytes in size, accessing a key will significantly slow down the session.
+*See the documentation on Interchange administration (icadmin) and learn how to expire your session database. If it is megabytes in size, accessing a key will significantly slow down the session.
 
 *Second, if your machine is memory-poor, you will find that Interchange gets swapped to disk. Unless your system is very fast, this will greatly hurt performance. Interchange works best on a machine that rarely if ever swaps to disk.
 
 *Third, this often has nothing to do with Interchange at all but has to do with your HTTP server. Any long-running daemon has the potential for a memory leak. Try stopping and starting your HTTP server and seeing what happens to performance.
 
-H2: The browse.html page (from the demo) is SLOW+!
+H2: The browse.html page (from the demo) is SLOW!
 
 That is because it is only useful for small product lines. It pulls out all keys from the entire database and iterates over them, which is not reasonable for more then 50 products or so (depending on your server speed). Look at the browse1.html page instead.
 
 A better approach is to use a search and browse by category, an example of which is given in the demo.
 
-H2: I am using SQL, and Interchange is so SLOW.....
+H2: I am using SQL, and Interchange is so SLOW ...
 
 It isn't Interchange. First of all, did you index your 'SKU' or other key fields? The reason Interchange doesn't do it for you is that every SQL database seems to do that a bit differently. Even then, you can try Interchange's COLUMN_DEF parameter:
 
@@ -4678,8 +4648,7 @@ Database  products  COLUMN_DEF  code=char(16) PRIMARY KEY
 
 This will at least index the C<code> field for MySQL. Other databases differ.
 
-Interchange can return VERY fast SQL search results. But you need to at least
-give it something to work with. The proper method for fast selection is:
+Interchange can return VERY fast SQL search results. But you need to at least give it something to work with. The proper method for fast selection is:
 
 !block example
 [query sql="select code,category,title,price from products" ]
@@ -4703,100 +4672,28 @@ Note that the extended.desc field will be accessed as [sql-param desc]. Don't fo
 
 H2: My session files change to owner root every day!
 
-You have the expireall C<-r> entry in the root crontab, and it should
-either be in the Interchange user crontab or run as:
+You have the expireall C<-r> entry in the root crontab, and it should either be in the Interchange user crontab or run as:
 
 !block example
 44 4 * * * su -c "/INTERCHANGE_ROOT/bin/expireall -r" INTERCHANGE_USERNAME
 !endblock
 
+{{B:When in doubt, restart the server.}} It won't take but a few seconds, and changes in configurable options don't take effect until it is done. You may even change a page and not see the effect until the server is restarted.
 
-WHEN IN DOUBT, RE-START THE SERVER. It won't take but a few seconds, and changes in configurable options don't take effect until it is done. You may even change a page and not see the effect until the server is restarted.
+H1: Availability and Compatibility
 
-H1: AVAILABILITY AND COMPATIBILITY
+Interchange has been tested on Linux, Solaris, FreeBSD, OpenBSD, and Digital UNIX/Tru64. Its predecessor, Minivend 3, also reportedly runs on SCO, AIX, and other Unix ports. It should work on any UNIX-like operating system with Perl 5.005 or higher and the requisite modules.
 
-Interchange 4.6 has been tested on Solaris 2, Linux, FreeBSD, and Digital UNIX/Tru64. Its predecessor, Minivend 3, also reportedly runs on SCO, AIX,
-and other Unix ports. It should work on any UNIX or Win32 OS with Perl 5.005 or higher.
+H1: Demo Catalogs
 
-IMPORTANT NOTE FOR BSD USERS: Interchange has been known to segfault when reading sockets on Perl. This occurs more frequently on a busy system.
-The workaround is to set in interchange.cfg:
-
-!block example
-   MaxServers   0
-   Housekeeping 1
-!endblock
-
-Windows does not support fork(), so the server runs in the foreground. There are other differences, and there may be portablity problems. Interchange is
-not yet tested to run on Windows; the canonical installation is UNIX.
-
-H1: DEMO APPLICATIONS
-
-There are two demo applications included. One is not so aptly named "simple," while the other other is named "barry."
-
-To install the demo, go to the directory where Interchange is installed (default is "mvend" in the home directory or /usr/local/interchange for root installations) and run:
+There is a demo catalog included called "foundation". To install the demo, go to the directory where Interchange is installed and run:
 
 !block example
-   bin/makecat barry
-!endblock
-
-or
-
-!block example
-   bin/makecat simple
-!endblock
-
-or
-
-!block example
-   bin/makecat any_id_you_pick
+   bin/makecat
 !endblock
 
 Follow the prompts and after restarting the Interchange server, the demo catalog should be accessable.
 
-H1: KNOWN PROBLEMS
-
-BSDI, FreeBSD, Net BSD: make sure the following are in effect in interchange.cfg:
-
-!block example
-       MaxServers 0
-       Housekeeping 1
-!endblock
-
-Expect lots of crashes if this isn't done.
+H1: Known Problems
 
 Apache with SUEXEC: VLINK/UNIX socket mode will not work well unless installed as a normal user. If supporting multiple users, the TLINK/INET mode must be used.
-
-Note[label='Windows: '] Interchange will not work properly with Windows. No strategy has been yet developed for providing reliable operation on Windows.
-
-H1: Extra tags
-
-H2: Counter
-
-Inserts the value of a persistent counter. The counter value is stored in the given file, which is created if necessary. If the file name begins with a "/," then it is an absolute path. Otherwise, it is relative to VendRoot. If the tag causes the counter file to be created, the value is initialized to start. If value is given, the counter's value is set to the given value. If value is not supplied, the counter is incremented and its value is returned, unless decrement is supplied. In this case, the counter is decremented and its value is returned. The counter is implemented using Perl's C<File::Counter> module, which protects the file against simultaneous access by multiple processes.
-
-!block example
-   [counter file=FILE start=START value=VALUE decrement*]
-!endblock
-
-H2: Discount-Subtotal
-
-Inserts the discounted subtotal of the ordered items.
-
-H2: Filter
-
-Applies any of Interchange's standard filters to an arbitray value, or custom filters may be defined. The filters are also available as parameters to the C<cgi>, C<data>, and C<value> tags. Filters can be applied in sequence and as many as needed can be applied. Here is an example. If author or artist names are stored in the database ``LAST, First'' so that they sort properly, they may be displayed normally as ``First Last''. This call
->    [filter op="name namecase"]WOOD, Grant[/filter]
-will display as
->    Grant Wood
-Another way to do this would be:
->    [data table=products column=artist key=99-102 filter="name namecase"]
-
-H2: Fly-Tax
-
-Builds a tax rate from C<taxarea>, C<taxrate>, C<taxshipping>, variable values, and the C<SalesTax> directive value.
-
-H2: Handling
-
-Calculates and inserts handling costs. Accepts the same noformat and convert arguments as the shipping tag.
-
-**Akopia and Interchange are registered trademarks of Akopia, Inc. All other product names are trademarks or registered trademarks of their respective manufacturers. This version of the document supersedes any and all previous versions.
