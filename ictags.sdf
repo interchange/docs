@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.65 2001-11-05 22:14:22 jon Exp $
+# $Id: ictags.sdf,v 1.66 2001-11-22 14:49:48 bill Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.65 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.66 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -427,43 +427,40 @@ H1: Looping tags and Sub-tags
 
 {{CMD[id="subtags"]}}Certain tags are not standalone; these are the
 ones that are interpreted as part of a surrounding looping tag
-like E<lbracket>{{C[jump="#loop"]loop}}],
-E<lbracket>{{C[jump="#item_list"]item-list}}],
-E<lbracket>{{C[jump="#query"]query}}], or
-E<lbracket>{{C[jump="#region"]region}}].
+like E<lbracket>{{CMD[jump="#loop"]loop}}], E<lbracket>{{CMD[jump="#item_list"]item-list}}], E<lbracket>{{CMD[jump="#query"]query}}], or E<lbracket>{{CMD[jump="#region"]region}}E<rbracket>.
 
-. E<lbracket>{{C[jump="#sub_PREFIX-accessories"]PREFIX-accessories}}]
-. E<lbracket>{{C[jump="#sub_PREFIX-alternate"]PREFIX-alternate}}]
-. E<lbracket>{{C[jump="#sub_PREFIX-calc"]PREFIX-calc}}]
-. E<lbracket>{{C[jump="#sub_PREFIX-change"]PREFIX-change}}]
-. E<lbracket>{{C[jump="#sub_PREFIX-code"]PREFIX-code}}]
-. E<lbracket>{{C[jump="#sub_PREFIX-data"]PREFIX-data}}]
-. E<lbracket>{{C[jump="#sub_PREFIX-description"]PREFIX-description}}] (Note safe-data and ed( ) escape)
-. E<lbracket>{{C[jump="#sub_PREFIX-discount"]PREFIX-discount}}]
-. E<lbracket>{{C[jump="#sub_PREFIX-discount_subtotal"]PREFIX-discount_subtotal}}]
-. E<lbracket>{{C[jump="#sub_PREFIX-exec"]PREFIX-exec}}] 
-. E<lbracket>{{C[jump="#sub_PREFIX-field"]PREFIX-field}}] (Optimization note-- one query per field if you use this; we optimize around this if only one products table) 
-. E<lbracket>{{C[jump="#sub_PREFIX-filter"]PREFIX-filter}}] (like filter tag but doesn't interpolate)
-. E<lbracket>{{C[jump="#sub_PREFIX-increment"]PREFIX-increment}}]
-. E<lbracket>{{C[jump="#sub_PREFIX-last"]PREFIX-last}}]
-. E<lbracket>{{C[jump="#sub_PREFIX-line"]PREFIX-line}}] (tab-delimited list of parameters returned)
-. E<lbracket>{{C[jump="#sub_PREFIX-match"]PREFIX-match}}]
-. E<lbracket>{{C[jump="#sub_PREFIX-modifier"]PREFIX-modifier}}]
-. E<lbracket>{{C[jump="#sub_PREFIX-next"]PREFIX-next}}]
-. E<lbracket>{{C[jump="#sub_PREFIX-options"]PREFIX-options}}]
-. E<lbracket>{{C[jump="#sub_PREFIX-param"]PREFIX-param}}]
-. E<lbracket>{{C[jump="#sub_PREFIX-pos"]PREFIX-pos}}]
-. E<lbracket>{{C[jump="#sub_PREFIX-price"]PREFIX-price}}]
-. E<lbracket>{{C[jump="#sub_PREFIX-quantity"]PREFIX-quantity}}]
-. E<lbracket>{{C[jump="#sub_PREFIX-sub"]PREFIX-sub}}]
-. E<lbracket>{{C[jump="#sub_PREFIX-subtotal"]PREFIX-subtotal}}]
-. E<lbracket>{{C[jump="#sub_if-PREFIX-data"]if-PREFIX-data}}]
-. E<lbracket>{{C[jump="#sub_if-PREFIX-field"]if-PREFIX-field}}]
-. E<lbracket>{{C[jump="#sub_if-PREFIX-modifier"]if-PREFIX-modifier}}] (hash list only)
-. E<lbracket>{{C[jump="#sub_if-PREFIX-param"]if-PREFIX-param}}]
-. E<lbracket>{{C[jump="#sub_if-PREFIX-pos"]if-PREFIX-pos}}]
-. E<lbracket>{{C[jump="#sub_modifier-name"]modifier-name}}]
-. E<lbracket>{{C[jump="#sub_quantity-name"]quantity-name}}]
+. E<lbracket>I<prefix>-{{CMD[jump="#prefix_accessories"]accessories}}]
+. E<lbracket>I<prefix>-{{CMD[jump="#prefix_alternate"]alternate}}]
+. E<lbracket>I<prefix>-{{CMD[jump="#prefix_calc"]calc}}]
+. E<lbracket>I<prefix>-{{CMD[jump="#prefix_change"]change}}]
+. E<lbracket>I<prefix>-{{CMD[jump="#prefix_code"]code}}]
+. E<lbracket>I<prefix>-{{CMD[jump="#prefix_data"]data}}]
+. E<lbracket>I<prefix>-{{CMD[jump="#prefix_description"]description}}] (Note safe-data and ed( ) escape)
+. E<lbracket>I<prefix>-{{CMD[jump="#prefix_discount"]discount}}]
+. E<lbracket>I<prefix>-{{CMD[jump="#prefix_discount_subtotal"]discount_subtotal}}]
+. E<lbracket>I<prefix>-{{CMD[jump="#prefix_exec"]exec}}] 
+. E<lbracket>I<prefix>-{{CMD[jump="#prefix_field"]field}}] (Optimization note-- one query per field if you use this; we optimize around this if only one products table) 
+. E<lbracket>I<prefix>-{{CMD[jump="#prefix_filter"]filter}}] (like filter tag but doesn't interpolate)
+. E<lbracket>I<prefix>-{{CMD[jump="#prefix_increment"]increment}}]
+. E<lbracket>I<prefix>-{{CMD[jump="#prefix_last"]last}}]
+. E<lbracket>I<prefix>-{{CMD[jump="#prefix_line"]line}}] (tab-delimited list of parameters returned)
+. E<lbracket>I<prefix>-{{CMD[jump="#prefix_match"]match}}]
+. E<lbracket>I<prefix>-{{CMD[jump="#prefix_modifier"]modifier}}]
+. E<lbracket>I<prefix>-{{CMD[jump="#prefix_next"]next}}]
+. E<lbracket>I<prefix>-{{CMD[jump="#prefix_options"]options}}]
+. E<lbracket>I<prefix>-{{CMD[jump="#prefix_param"]param}}]
+. E<lbracket>I<prefix>-{{CMD[jump="#prefix_pos"]pos}}]
+. E<lbracket>I<prefix>-{{CMD[jump="#prefix_price"]price}}]
+. E<lbracket>I<prefix>-{{CMD[jump="#prefix_quantity"]quantity}}]
+. E<lbracket>I<prefix>-{{CMD[jump="#prefix_sub"]sub}}]
+. E<lbracket>I<prefix>-{{CMD[jump="#prefix_subtotal"]subtotal}}]
+. E<lbracket>if-I<prefix>-{{CMD[jump="#if_prefix_data"]data}}]
+. E<lbracket>if-I<prefix>-{{CMD[jump="#if_prefix_field"]field}}]
+. E<lbracket>if-I<prefix>-{{CMD[jump="#if_prefix_modifier"]modifier}}] (hash list only)
+. E<lbracket>if-I<prefix>-{{CMD[jump="#if_prefix_param"]param}}]
+. E<lbracket>if-I<prefix>-{{CMD[jump="#if_prefix_pos"]pos}}]
+. E<lbracket>{{CMD[jump="#modifier-name"]modifier-name}}]
+. E<lbracket>{{CMD[jump="#quantity-name"]quantity-name}}]
 
 PREFIX represents the prefix that is used in that looping tag.
 They are only interpreted within their container and only accept
@@ -544,7 +541,12 @@ Now the data structure will look like:
 >    ]
 
 
-H2: E<lbracket>{{CMD[id="sub_PREFIX-accessories"]PREFIX-accessories}} arglist]
+# H2: {{CMD[id="sub_PREFIX-accessories"]I<prefix>-accessories}}
+{{CMD[id="prefix_accessories"]}}
+
+H2: I<prefix>-accessories
+
+E:   E<lbracket>I<prefix>-accessories arglistE<rbracket>
 
 Except for the usual differences that apply to all subtags (such as
 parsing order), these are more or less equivalent for an array-type
@@ -564,7 +566,12 @@ If the list is a hash list, i.e. an [item-list], then the value of
 the current item hash is passed so that a value default can be established.
 
 
-H2: E<lbracket>{{CMD[id="sub_PREFIX-alternate"]PREFIX-alternate}} N] DIVISIBLE [else] NOT DIVISIBLE [/else][/PREFIX-alternate]
+# H2: {{CMD[id="sub_PREFIX-alternate"]I<prefix>-alternate}}
+{{CMD[id="prefix_alternate"]}}
+
+H2: I<prefix>-alternate
+
+E:   E<lbracket>I<prefix>-alternate N] DIVISIBLE [else] NOT DIVISIBLE [/else][/PREFIX-alternate]
 
 Set up an alternation sequence. If the item-increment is divisible by
 `N', the text will be displayed. If an `[else]NOT DIVISIBLE TEXT[/else]'
@@ -575,11 +582,21 @@ For example:
 >    [item-alternate 2]EVEN[else]ODD[/else][/item-alternate]
 >    [item-alternate 3]BY 3[else]NOT by 3[/else][/item-alternate]
 
-H2: E<lbracket>{{CMD[id="sub_PREFIX-calc"]PREFIX-calc}}] 2 + [item-field price] [/PREFIX-calc]
+# H2: {{CMD[id="sub_PREFIX-calc"]I<prefix>-calc}}
+{{CMD[id="prefix_calc"]}}
+
+H2: I<prefix>-calc
+
+E:   E<lbracket>I<prefix>-calc] 2 + [item-field price] [/PREFIX-calc]
 
 Executes Perl code in the tag body. This is equivalent to the [calc] [/calc] tag pair, except it's calculated at loop time instead of later when the rest of the page is parsed.
 
-H2: E<lbracket>{{CMD[id="sub_PREFIX-change"]PREFIX-change}}][condition] ... [/condition] TEXT [/PREFIX-change]
+# H2: {{CMD[id="sub_PREFIX-change"]I<prefix>-change}}
+{{CMD[id="prefix_change"]}}
+
+H2: I<prefix>-change
+
+E:   E<lbracket>I<prefix>-change][condition] ... [/condition] TEXT [/PREFIX-change]
 
 Sets up a breaking sequence that occurs when the contents of 
 \[condition] [/condition] change. The most common one is a category
@@ -589,15 +606,15 @@ The region is only output when a field or other repeating value between
 \[condition] and [/condition] changes its value. This allows indented lists
 similar to database reports to be easily formatted. The repeating value
 must be a tag interpolated in the search process, such as
-C<[PREFIX-field field]> or C<[PREFIX-data database field]>. If you need
-access to ITL tags, you can use [PREFIX-calc] with a $Tag->foo() 
+E<lbracket>I<prefix>C<-field field>] or E<lbracket>I<prefix>C<-data database field>]. If you need
+access to ITL tags, you can use [I<prefix>-calc] with a $Tag->foo() 
 call.
 
 Of course, this will only work as you expect when the search results
 are properly sorted.
 
 The value to be tested is contained within a
-C<[condition]value[/condition]> tag pair. The C<[PREFIX-change]> tag
+C<[condition]value[/condition]> tag pair. The E<lbracket>I<prefix>C<-change>E<rbracket> tag
 also processes an C<[else] [/else]> pair for output when the value does
 not change.
 
@@ -638,19 +655,34 @@ The above should put out a table that only shows the category and
 subcategory once, while showing the name for every product. (The C<&nbsp;>
 will prevent blanked table cells if you use a border.)
 
-H2: E<lbracket>{{CMD[id="sub_PREFIX-code"]PREFIX-code}}]
+# H2: {{CMD[id="sub_PREFIX-code"]I<prefix>-code}}
+{{CMD[id="prefix_code"]}}
+
+H2: I<prefix>-code
+
+E:   E<lbracket>I<prefix>-code]
 
 The key or code of the current loop. In an [item-list] this is always
 the product code; in a loop list it is the value of the current argument;
 in a search it is whatever you have defined as the first mv_return_field (rf).
 
-H2: E<lbracket>{{CMD[id="sub_PREFIX-data"]PREFIX-data}} table field]
+# H2: {{CMD[id="sub_PREFIX-data"]I<prefix>-data}}
+{{CMD[id="prefix_data"]}}
+
+H2: I<prefix>-data
+
+E:   E<lbracket>I<prefix>-data table field]
 
 Calls the column C<field> in database table C<table> for the current
-\[PREFIX-code]. This may or may not be equivalent to C<[PREFIX-field field]>
+\[I<prefix>-code]. This may or may not be equivalent to E<lbracket>I<prefix>C<-field field>E<rbracket>
 depending on whether your search table is defined as one of the C<ProductFiles>.
 
-H2: E<lbracket>{{CMD[id="sub_PREFIX-description"]PREFIX-description}}]
+# H2: {{CMD[id="sub_PREFIX-description"]I<prefix>-description}}
+{{CMD[id="prefix_description"]}}
+
+H2: I<prefix>-description
+
+E:   E<lbracket>I<prefix>-description]
 
 The description of the current item, as defined in the C<catalog.cfg> directive
 C<DescriptionField>. In the demo, it would be the value of the field C<description>
@@ -660,7 +692,12 @@ If the list is a hash list, and the lookup of C<DescriptionField> fails,
 then the attribute C<description> will be substituted. This is useful to 
 supply shopping cart descriptions for on-the-fly items.
 
-H2: E<lbracket>{{CMD[id="sub_PREFIX-discount"]PREFIX-discount}}]
+# H2: {{CMD[id="sub_PREFIX-discount"]I<prefix>-discount}}
+{{CMD[id="prefix_discount"]}}
+
+H2: I<prefix>-discount
+
+E:   E<lbracket>I<prefix>-discount]
 
 The price of the current item is calculated, and the difference between
 that price and the list price (quantity one) price is output. This may have
@@ -668,12 +705,22 @@ different behavior than you expect if you set the [discount] [/discount]
 tag along with quantity pricing.
 
 
-H2: E<lbracket>{{CMD[id="sub_PREFIX-discount_subtotal"]PREFIX-discount_subtotal}}]
+# H2: {{CMD[id="sub_PREFIX-discount_subtotal"]I<prefix>-discount_subtotal}}
+{{CMD[id="prefix_discount_subtotal"]}}
+
+H2: I<prefix>-discount_subtotal
+
+E:   E<lbracket>I<prefix>-discount_subtotal]
 
 Inserts the discounted subtotal of the ordered items.
 
 
-H2: E<lbracket>{{CMD[id="sub_PREFIX-field"]PREFIX-field}}]
+# H2: {{CMD[id="sub_PREFIX-field"]I<prefix>-field}}
+{{CMD[id="prefix_field"]}}
+
+H2: I<prefix>-field
+
+E:   E<lbracket>I<prefix>-field]
 
 Looks up a field value for the current item in one of several places,
 in this order:
@@ -698,29 +745,44 @@ of C<bar>. When it is found, you wish to display the value of C<foo_field>.
 Unless C<foo> is in C<ProductFiles> and the code is not present in a previous
 product file, you will get a blank or some value you don't want. What
 you really want is C<[loop-data foo foo_field]>, which specifically 
-addresses the table C<foo>. See also E<lbracket>{{C[jump="#sub_PREFIX-param"]PREFIX-param}}]>
-and E<lbracket>{{C[jump="#sub_PREFIX-pos"]PREFIX-pos}}]>.
+addresses the table C<foo>. See also E<lbracket>{{C[jump="#I<prefix>-param"]I<prefix>-param}}]>
+and E<lbracket>{{C[jump="#I<prefix>-pos"]I<prefix>-pos}}]>.
 
 
-H2: E<lbracket>{{CMD[id="sub_PREFIX-increment"]PREFIX-increment}}]
+# H2: {{CMD[id="sub_PREFIX-increment"]I<prefix>-increment}}
+{{CMD[id="prefix_increment"]}}
+
+H2: I<prefix>-increment
+
+E:   E<lbracket>I<prefix>-increment]
 
 The current count on the list, starting from either 1 in a zero-anchored
 list like E<lbracket>{{C[jump="#loop"]loop}}] or E<lbracket>{{C[jump="#item_list"]item-list}}], or from the match count in a
 search list.
 
-If you skip items with [PREFIX-last] or [PREFIX-next], the count is NOT
+If you skip items with [I<prefix>-last] or [I<prefix>-next], the count is NOT
 adjusted.
 
-H2: E<lbracket>{{CMD[id="sub_PREFIX-last"]PREFIX-last}}] CONDITION [/PREFIX-last]
+# H2: {{CMD[id="sub_PREFIX-last"]I<prefix>-last}}
+{{CMD[id="prefix_last"]}}
+
+H2: I<prefix>-last
+
+E:   E<lbracket>I<prefix>-last] CONDITION [/PREFIX-last]
 
 If CONDITION evaluates true (a non-whitespace value that is not specifically
 zero) then this will be the last item displayed.
 
-H2: E<lbracket>{{CMD[id="sub_PREFIX-line"]PREFIX-line}} start_column]
+# H2: {{CMD[id="sub_PREFIX-line"]I<prefix>-line}}
+{{CMD[id="prefix_line"]}}
+
+H2: I<prefix>-line
+
+E:   E<lbracket>I<prefix>-line start_column]
 
 Returns all array values from the current looping row in a single string, with each value separated by a tab, roughly equivalent to this:
 
-> [PREFIX-pos 0](tab)[PREFIX-pos 1](tab)[PREFIX-pos 2](tab)[...]
+E:  E<lbracket>I<prefix>-pos 0](tab)[I<prefix>-pos 1](tab)[I<prefix>-pos 2](tab)[...]
 
 for however many fields were returned in that row.
 
@@ -728,27 +790,46 @@ This is useful as a quick way to see all your results at a glance and verify you
 
 If the optional C<start_column> attribute is given, the output starts with that column instead of column 0.
 
-H2: E<lbracket>{{CMD[id="sub_PREFIX-modifier"]PREFIX-modifier}} attribute]
+# H2: {{CMD[id="sub_PREFIX-modifier"]I<prefix>-modifier}}
+{{CMD[id="prefix_modifier"]}}
+
+H2: I<prefix>-modifier
+
+E:   E<lbracket>I<prefix>-modifier attribute]
 
 If the item is a hash list (i.e. [item-list]), this will return the value
 of the C<attribute>.
 
-H2: E<lbracket>{{CMD[id="sub_PREFIX-next"]PREFIX-next}}] CONDITION [/PREFIX-next]
+# H2: {{CMD[id="sub_PREFIX-next"]I<prefix>-next}}
+{{CMD[id="prefix_next"]}}
+
+H2: I<prefix>-next
+
+E:   E<lbracket>I<prefix>-next] CONDITION [/PREFIX-next]
 
 If CONDITION evaluates true (a non-whitespace value that is not specifically
 zero) then this item is skipped.
 
-H2: E<lbracket>{{CMD[id="sub_PREFIX-param"]PREFIX-param}} name]
+# H2: {{CMD[id="sub_PREFIX-param"]I<prefix>-param}}
+{{CMD[id="prefix_param"]}}
 
-H2: E<lbracket>{{CMD[id="sub_PREFIX-param"]PREFIX-pos}} N]
+H2: I<prefix>-param
 
-Returns the value of the array parameter associated with the looping tag row. Each
-looping list returns an array of C<return fields>, set in searches with
+E:   E<lbracket>I<prefix>-param name]
+
+# H2: {{CMD[id="sub_PREFIX-param"]I<prefix>-pos}}
+{{CMD[id="prefix_pos"]}}
+
+H2: I<prefix>-pos
+
+E:   E<lbracket>I<prefix>-pos N]
+
+Returns the value of the array parameter associated with the looping tag row. Each looping list returns an array of C<return fields>, set in searches with
 C<mv_return_field> or C<rf>. The default is only to return the code of
 the search result, but by setting those parameters you can return
 whichever columns you wish.
 
-E<lbracket>PREFIX-pos N] outputs the data from the I<N>th field as returned (starting with 0); E<lbracket>PREFIX-param] lets you access the data by field name instead of number.
+E<lbracket>I<prefix>-pos N] outputs the data from the I<N>th field as returned (starting with 0); E<lbracket>I<prefix>-param] lets you access the data by field name instead of number.
 
 In a E<lbracket>query ...] ITL tag you can select multiple return fields with
 something like:
@@ -762,7 +843,12 @@ C<foo> is the first returned parameter and becomes the code for this row.
 Another synonym is [prefix-pos 0]; and [prefix-pos 1] is the same
 as [prefix-param bar].
 
-H2: E<lbracket>{{CMD[id="sub_PREFIX-price"]PREFIX-price}}]
+# H2: {{CMD[id="sub_PREFIX-price"]I<prefix>-price}}
+{{CMD[id="prefix_price"]}}
+
+H2: I<prefix>-price
+
+E:   E<lbracket>I<prefix>-price]
 
 The price of the product identified by the current code, formatted for currency. If
 Interchange's pricing routines cannot determine the price (i.e. it is not
@@ -770,35 +856,58 @@ a valid product or on-the-fly item) then zero is returned. If the list
 is a hash list, the price will be modified by its C<quantity> or other
 applicable attributes (like C<size> in the demo).
 
-H2: E<lbracket>{{CMD[id="sub_PREFIX-quantity"]PREFIX-quantity}}]
+# H2: {{CMD[id="sub_PREFIX-quantity"]I<prefix>-quantity}}
+{{CMD[id="prefix_quantity"]}}
+
+H2: I<prefix>-quantity
+
+E:   E<lbracket>I<prefix>-quantity]
 
 The value of the C<quantity> attribute in a hash list. Most commonly
 used to display the quantity of an item in a shopping cart [item-list].
 
-H2: E<lbracket>{{CMD[id="sub_PREFIX-subtotal"]PREFIX-subtotal}}]
+# H2: {{CMD[id="sub_PREFIX-subtotal"]I<prefix>-subtotal}}
+{{CMD[id="prefix_subtotal"]}}
 
-The [PREFIX-quantity] times the [PREFIX-price]. This does take discounts
+H2: I<prefix>-subtotal
+
+E:   E<lbracket>I<prefix>-subtotal]
+
+The [I<prefix>-quantity] times the [I<prefix>-price]. This does take discounts
 into effect.
 
-H2: E<lbracket>{{CMD[id="sub_if-PREFIX-data"]if-PREFIX-data}} table field] IF text [else] ELSE text [/else] [/if-PREFIX-data]
+# H2: {{CMD[id="sub_if-PREFIX-data"]if-I<prefix>-data}}
+{{CMD[id="if_prefix_data"]}}
 
-Examines the data field, i.e. [PREFIX-data table field], and if it is
+H2: if-I<prefix>-data
+
+E:   E<lbracket>if-I<prefix>-data table field] IF text [else] ELSE text [/else] [/if-I<prefix>-data]
+
+Examines the data field, i.e. [I<prefix>-data table field], and if it is
 non-blank and non-zero then the C<IF text> will be returned. If it is false,
 i.e. blank or zero, the C<ELSE text> will be returned to the page.
 
 This is much more efficient than the otherwise equivalent
-C<[if type=data term=table::field::[PREFIX-code]]>.
+C<[if type=data term=table::field::[>I<prefix>C<-code]]>.
 
-You cannot place a condition; i.e. [if-PREFIX-data table field eq 'something'].
+You cannot place a condition; i.e. [if-I<prefix>-data table field eq 'something'].
 Use C<[if type=data ...]> for that.
 
 Careful, a space is not a false value!
 
-H2: E<lbracket>{{CMD[id="sub_if-PREFIX-field"]if-PREFIX-field}} field] IF text [else] ELSE text [/else] [/if-PREFIX-field]
+# H2: {{CMD[id="sub_if-PREFIX-field"]if-I<prefix>-field}}
+{{CMD[id="if_prefix_field"]}}
 
-Same as [if-PREFIX-data ...] except uses the same data rules as C<[PREFIX-field]>.
+H2: if-I<prefix>-field
 
-H2: E<lbracket>{{CMD[id="sub_modifier-name"]modifier-name}} attribute]
+E:   E<lbracket>if-I<prefix>-field field] IF text [else] ELSE text [/else] [/if-I<prefix>-field]
+
+Same as [if-I<prefix>-data ...] except uses the same data rules as E<lbracket>I<prefix>C<-field>E<rbracket>.
+
+# H2: {{CMD[id="modifier-name"]modifier-name}}
+H2: modifier-name
+
+E:   E<lbracket>modifier-name attribute]
 
 Outputs a variable name which will set an appropriate variable name for setting
 the attribute in a form (usually a shopping cart). Outputs for successive items
@@ -810,7 +919,10 @@ in the list:
 
 etc.
 
-H2: E<lbracket>{{CMD[id="sub_quantity-name"]quantity-name}}]
+# H2: {{CMD[id="quantity-name"]quantity-name}}
+H2: quantity-name
+
+E:   E<lbracket>quantity-name]
 
 Outputs for successive items in the list:
 
@@ -1760,9 +1872,6 @@ H3: Summary
 
 \Parameters: B<type term op compare>
 
-THIS TAG HAS SPECIAL POSITIONAL PARAMETER HANDLING.
-
-
 
 Pass attribute hash as last to subroutine: B<no>
 
@@ -1770,25 +1879,11 @@ Must pass named parameter interpolate=1 to cause interpolation.
 
 Invalidates cache: B<no>
 
-Called Routine: 
-
-Called Routine for positonal: 
-
-B<ASP-like Perl call:>
-
-Not applicable. The [and ...] tag only is used with [if ...], and Perl
-logic obviates the [if ...] tag.
-
-Attribute aliases
-
->            base ==> type
->            comp ==> compare
->            operator ==> op
-
-
  
 
 # BEGIN ############### and Summary Tables ####################
+Note: This tag has special positional parameter handling.
+
 !block example;
     [B<and> type term op compare]
 !endblock
@@ -1832,27 +1927,26 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [and type term op compare]
+   [value name=fname set="Mike" hide=1]
+   [value name=lname set="" hide=1]
+     ...
+
+   [if value fname]
+   [and value lname]
+      Both first and last name are present.
+   [else]
+      Missing one of "fname" and "lname" from $Values.
+   [/else]
+   [/if]
 ---
-   TAGRESULT
+   Missing one of "fname" and "lname" from $Values.
 !endblock
 
 
 B<ASP-like Perl call:>
 
-!block example; lang="Perl"
-   $Tag->and(  { compare => VALUE_compare
-                  op => VALUE_op
-                  term => VALUE_term
-                  type => VALUE_type
-}, $body  );
-!endblock
-
-or similarly with positional parameters,
-
-!block example; lang="Perl"
-    $Tag->and(type,term,op,compare, $attribute_hash_reference, $body);
-!endblock
+Not applicable. The [and ...] tag only is used with [if ...], and Perl
+logic obviates the [if ...] tag.
 
 # END +++++++++++++++ and End Summary Tables ++++++++++++++++++++
 
@@ -2236,40 +2330,12 @@ tags.
 
 H2: attr_list
 
+This tag is intended for use within embedded perl rather than as a standalone tag within a template (i.e., the E<lbracket>attr_list ...] syntax does not apply).
+
+The C<$Tag-E<gt>attr_list($template, $hashref)> usage provides a shorthand for accessing values of a hash within embedded perl. It also allows you to control defaults or set up conditional values.
 
 H3: Summary
-
-\Parameters: B<hash>
-
-Positional parameters in same order.
-
-
-Pass attribute hash as last to subroutine: B<no>
-
-Must pass named parameter interpolate=1 to cause interpolation.
-
-This is a container tag, i.e. [attr_list] FOO [/attr_list].
-\Nesting: NO
-
-Invalidates cache: B<no>
-
-Called Routine: 
-
-B<ASP-like Perl call:>
-
->    $Tag->attr_list(
->        {
->         hash => VALUE,
->        },
->        BODY
->    )
->
-> OR
->
->    $Tag->attr_list($hash, $BODY);
-
  
-
 # BEGIN ############### attr_list Summary Tables ####################
 !block example;
     [B<attr_list> hash]
@@ -2291,32 +2357,49 @@ Attributes|Default
 A|B
 Other_Charactreristics|
 Invalidates cache|I<no>
-Container tag|I<Yes>
+Container tag|I<NA> (Though the template is technically body text)
 Has Subtags|I<No>
 Nests|I<No>
 !endblock
 
 
-B<Tag expansion example:>
+B<Tag expansion example> (ASP-like Perl call):
 
 !block example
-   [attr_list hash]
+  [perl tables=products]
+     my %opt = ( hashref => 1,
+                 sql     => 'select * from  products', );
+
+     my $ary_of_hash = $Db{products}->query(\%opt);
+
+     my B<$template> = <<EOF;
+        {sku} - {description} - {price|Call for price}
+        {image?}<IMG SRC="{image}">{/image?}
+        {image:}No image available{/image:}
+        <br>
+        More body Text here
+        <br>
+EOF
+
+     foreach my B<$ref> (@$ary_of_hash) {
+        $out .= $Tag->B<attr_list($template, $ref)>;
+     }
+     return $out;
+  [/perl]
 ---
-   TAGRESULT
-!endblock
+        os28113 - The Claw Hand Rake - Call for price
+        <IMG SRC="/[[EXAMPLE_CATALOG]]/images/os28113.gif">
 
+        <br>
+        More body Text here
+        <br>
+        os28006 - Painters Brush Set - 29.99
+        No image available
 
-B<ASP-like Perl call:>
-
-!block example; lang="Perl"
-   $Tag->attr_list(  { hash => VALUE_hash
-}, $body  );
-!endblock
-
-or similarly with positional parameters,
-
-!block example; lang="Perl"
-    $Tag->attr_list(hash, $attribute_hash_reference, $body);
+        <br>
+        More body Text here
+        <br>
+        ...
 !endblock
 
 # END +++++++++++++++ attr_list End Summary Tables ++++++++++++++++++++
@@ -2326,25 +2409,6 @@ H3: Description
 
 Tags an attribute list with values from a hash. Designed for use in
 embedded Perl.
-
-\Example:
-
->        [perl tables=products]
->                my %opt = (
->                        hashref => 1,
->                        sql => 'select * from  products',
->                );
->                my $ary_of_hash = $Db{products}->query(\%opt);
->                my $template = <<EOF;
->{sku} - {description} - {price|Call for price}
->        {image?}<IMG SRC="{image}">{/image?}
->        {image:}No image available{/image:}
->EOF
->                foreach my $ref (@$ary_of_hash) {
->                        $out .= $Tag->attr_list($template, $ref);
->                }
->                return $out;
->        [/perl]
 
 Tags according to the following rules:
 
@@ -2356,7 +2420,7 @@ is the column name.
 
 H4: E<lbrace>key|fallback string}
 
-Displays the value of {key} or if it is zero or blank, the fallback string.
+Displays the value of {key} or if it is zero or blank, the fallback string (i.e., default).
 
 H4: E<lbrace>key true string}
 
@@ -2378,7 +2442,7 @@ otherwise.
 # BEGIN ########### attr_list Subsections ##############
 H4: {{CMD[id="attr_list_hash"]hash}}
 
-
+This is the hash reference whose keys will be expanded within the template (see above).
 
 # END ++++++++++++ attr_list Subsections +++++++++++++
 
@@ -8040,7 +8104,7 @@ H4: E<lbracket>if-loop-data table column] IF [else] ELSE [/else][/if-loop-field]
 Outputs the IF if the C<column> in C<table> is non-empty, and the ELSE (if any)
 otherwise.
 
-See [if-PREFIX-data].
+See E<lbracket>{{CMD[jump="#if-PREFIX-data"]if-I<prefix>-data}}E<rbracket>.
 
 H4: E<lbracket>if-loop-field column] IF [else] ELSE [/else][/if-loop-field]
 
@@ -8048,7 +8112,7 @@ Outputs the B<IF> if the C<column> in the C<products> table is non-empty,
 and the B<ELSE> (if any) otherwise. Will fall through to the first
 non-empty field if there are multiple C<ProductFiles>.
 
-See [if-PREFIX-field].
+See E<lbracket>{{CMD[jump="#if-PREFIX-field"]if-I<prefix>-field}}E<rbracket>.
 
 H4: E<lbracket>if-loop-param param] IF [else] ELSE [/else][/if-loop-param]
 
@@ -8058,7 +8122,7 @@ passed list with the lr=1 parameter).
 Outputs the B<IF> if the returned C<param> is non-empty, and the
 B<ELSE> (if any) otherwise.
 
-See [if-PREFIX-param].
+See E<lbracket>{{CMD[jump="#if-PREFIX-param"]if-I<prefix>-param}}E<rbracket>.
 
 H4: E<lbracket>if-loop-pos N] IF [else] ELSE [/else][/if-loop-pos]
 
@@ -8071,30 +8135,30 @@ equivalent of [loop-code].
 Outputs the B<IF> if the returned positional parmeter C<N> is
 non-empty, and the B<ELSE> (if any) otherwise.
 
-See [if-PREFIX-pos].
+See E<lbracket>{{CMD[jump="#if-PREFIX-pos"]if-I<prefix>-pos}}E<rbracket>.
 
 H4: E<lbracket>loop-accessories]
 
 Outputs an [accessories ...] item.
 
-See [PREFIX-accessories].
+See E<lbracket>{{CMD[jump="#PREFIX-accessories"]I<prefix>-accessories}}E<rbracket>.
 
 H4: E<lbracket>loop-change marker]
 
-See [PREFIX-change].
+See E<lbracket>{{CMD[jump="#PREFIX-change"]I<prefix>-change}}E<rbracket>.
 
 H4: E<lbracket>loop-code]
 
 Evaluates to the code for the current item.
 
-See [PREFIX-code].
+See E<lbracket>{{CMD[jump="#PREFIX-code"]I<prefix>-code}}E<rbracket>.
 
 H4: E<lbracket>loop-data database fieldname]
 
 Evaluates to the field name I<fieldname> in the arbitrary database
 table I<database>, for the current item.
 
-See [PREFIX-data].
+See E<lbracket>{{CMD[jump="#PREFIX-data"]I<prefix>-data}}E<rbracket>.
 
 H4: E<lbracket>loop-description]
 
@@ -8102,14 +8166,14 @@ Evaluates to the product description (from the products file, passed
 description in on-fly item, or description attribute in cart)
 for the current item.
 
-See [PREFIX-description].
+See E<lbracket>{{CMD[jump="#PREFIX-description"]I<prefix>-description}}E<rbracket>.
 
 H4: E<lbracket>loop-field fieldname]
 
 Evaluates to the field name I<fieldname> in the database,  for
 the current item.
 
-See [PREFIX-field].
+See E<lbracket>{{CMD[jump="#PREFIX-field"]I<prefix>-field}}E<rbracket>.
 
 H4: E<lbracket>loop-increment]
 
@@ -8118,7 +8182,7 @@ for numbering items in the list.
 
 Starts from integer 1.
 
-See [PREFIX-increment].
+See E<lbracket>{{CMD[jump="#PREFIX-increment"]I<prefix>-increment}}E<rbracket>.
 
 H4: E<lbracket>loop-last]tags[/loop-last]
 
@@ -9474,7 +9538,7 @@ $Variable->{key}|Config variables (same as $Config->{Variable});
 !endblock
 
 For full descriptions of these objects, see
-{{CMD[jump="icconfig.html#Interchange Perl Objects"]Interchange Perl Objects}}.
+{{CMD[jump="ictemplates.html#Interchange Perl Objects"]Interchange Perl Objects}}.
 
 H4: {{CMD[id="perl_tables"]tables}}
 
@@ -9580,7 +9644,7 @@ If C<no_return> is I<not> set, then the $Document->write() buffer is
 not returned (unless you use $Document->hot(1) or $Document->send(),
 in which case the contents of the write buffer will probably appear
 before anything else on the page). See
-{{CMD[jump="icconfig.html#Interchange Perl Objects"]Interchange Perl Objects}}
+{{CMD[jump="ictemplates.html#Interchange Perl Objects"]Interchange Perl Objects}}
 for more detail.
 !endblock
 
