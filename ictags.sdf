@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.19 2001-04-11 10:41:53 bill Exp $
+# $Id: ictags.sdf,v 1.20 2001-04-11 22:40:03 bill Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.19 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.20 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -867,7 +867,6 @@ move_combo, reverse_combo, show, options, labels, checkbox, radio, links
 {{CMD[jump="#accessories_joiner"]joiner}} (C<type>=links)|I<none>
 {{CMD[jump="#accessories_href"]href}} (C<type>=links)|I<none>
 {{CMD[jump="#accessories_template"]template}} (C<type>=links)|I<none>
-{{CMD[jump="#accessories_selected_begin"]selected_begin}} (C<type>=links)|I<none>
 {{CMD[jump="#accessories_form"]form}} (C<type>=links)|C<mv_action=return>
 {{CMD[jump="#accessories_empty"]empty}} (C<type>=links)|I<none>
 {{CMD[jump="#accessories_secure"]secure}} (C<type>=links)|I<none>
@@ -1608,10 +1607,6 @@ Allows you to override the standard Interchange template for a
 hyperlink.  You probably don't need to use thisE<nbspace>E<emdash>
 grep the code to grok it if you do (see 'sub build_accessory_links').
 
-H4: {{CMD[id="accessories_selected_begin"]selected_begin}}
-
-Requires '{{CMD[jump="#accessories_type"]type}}=links'.
-
 
 H4: {{CMD[id="accessories_form"]form}}
 
@@ -1936,6 +1931,171 @@ HTML-embedded example (disabled if no_html_parse {{CMD[jump="#Pragma"]Pragma}} a
 
 >    <A MV="area dir/page" HREF="dir/page.html">
 
+
+H2: assign
+
+Allows you to assign numeric values to preempt calculation of one or more of the
+following N<tags:>
+
+* E<lbracket>{{C[jump="#handling"]handling}}],
+E<lbracket>{{C[jump="#salestax"]salestax}}],
+E<lbracket>{{C[jump="#shipping"]shipping}}], and
+E<lbracket>{{C[jump="#subtotal"]subtotal}}]
+
+The assignment is persistent within a user's session until you clear it, an assigned tag will return your value
+instead of calculating a value.
+
+WarningE<nbspace>E<emdash> please be sure you understand the
+dependencies within the pricing system before using the C<assign>
+tag.
+
+H3: Summary
+
+!block example;
+    [B<assign> I<tag_name=value> I<tag_name=value> ...]
+    [B<assign> C<clear=1>]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Attributes|Description|Default
+{{CMD[jump="#assign_clear"]clear}}|<<
+Clears all pending 'C<assign>' tag assignments
+>>|I<none>
+{{CMD[jump="#assign_handling"]handling}}|<<
+Assigns an override value for E<lbracket>{{C[jump="#handling"]handling}}] tags
+>>|I<none>
+{{CMD[jump="#assign_salestax"]salestax}}|<<
+Assigns an override value for E<lbracket>{{C[jump="#salestax"]salestax}}] tags
+>>|I<none>
+{{CMD[jump="#assign_shipping"]shipping}}|<<
+Assigns an override value for E<lbracket>{{C[jump="#shipping"]shipping}}] tags
+>>|I<none>
+{{CMD[jump="#assign_subtotal"]subtotal}}|<<
+Assigns an override value for E<lbracket>{{C[jump="#subtotal"]subtotal}}] tags
+>>|I<none>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<No>
+Container tag|I<No>
+!endblock
+
+B<ASP-like Perl call:>
+
+!block example; lang='Perl'
+    $Tag->assign(  { shipping => 2.99, }  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang='Perl'
+    $Tag->assign($NP1, $NP2, $attribute_hash_reference);
+!endblock
+
+H4: See Also
+
+E<lbracket>{{C[jump="#handling"]handling}}],
+E<lbracket>{{C[jump="#salestax"]salestax}}],
+E<lbracket>{{C[jump="#shipping"]shipping}}],
+E<lbracket>{{C[jump="#subtotal"]subtotal}}], 
+E<lbracket>{{C[jump="icdatabase.html#Shipping"]Shipping}}]
+
+
+H3: Description
+
+The C<assign> tag allows you to assign numeric override values to one
+or more of the following N<tags:>
+
+* E<lbracket>{{C[jump="#handling"]handling}}],
+E<lbracket>{{C[jump="#salestax"]salestax}}],
+E<lbracket>{{C[jump="#shipping"]shipping}}], and
+E<lbracket>{{C[jump="#subtotal"]subtotal}}]
+
+An assigned tag will return your value rather than calculating its own
+until you clear the assignment.
+
+Assignment is persistent within the user's session (unless cleared)
+and affects only that user.
+
+Assigning an empty string clears the tag's assignment. You can also
+clear all pending assignments at once with the
+{{C[jump="#assign_clear"]clear}} attribute.
+
+For example, the following eliminates salestax and sets shipping to
+$4.99 regardless of weight and N<destination:>
+
+!block example
+  [assign salestax=0 shipping=4.99]
+!endblock
+
+This restores the E<lbracket>{{C[jump="#salestax"]salestax}}] tag and
+eliminates handling N<charges:>
+
+!block example
+  [assign salestax="" handling=0]
+!endblock
+
+This restores the normal behavior to the
+E<lbracket>{{C[jump="#shipping"]shipping}}] and
+E<lbracket>{{C[jump="#handling"]handling}}] N<tags:>
+
+!block example
+  [assign clear=1]
+!endblock
+
+Assignment affects only the value returned by a tag.  Other behavior,
+such as formatting for the local currency, is not affected by the assignment.
+
+NoteE<nbspace>E<emdash> you will get an error in the error log (and
+any pending assignment for the specified tag will be cleared) if you
+try to assign a value other than a number or the empty string ("").
+
+
+H4: {{CMD[id="assign_clear"]clear}}
+
+Setting this to a true value clears all pending assignments (i.e., all
+assignable tags return to normal behavior).
+
+H4: {{CMD[id="assign_shipping"]shipping}}
+
+This sets the total value of shipping, rounded to locale-specific fractional digits. Always
+active if assigned a numeric value. See the
+E<lbracket>{{C[jump="#shipping"]shipping}}] tag for detail about rounding, etc.
+
+H4: {{CMD[id="assign_handling"]handling}}
+
+This option sets the total value of handling, rounded to fractional
+digits.
+
+!block note; label="Important note"
+
+The E<lbracket>{{C[jump="#handling"]handling}}]
+tag is unlike the others in that it will be inactive (despite your
+assignment) unless the E<lbracket>{{C[jump="#value"]value}}
+B<mv_handling>] variable is true (i.e., a nonzero, non-blank value).
+!endblock
+
+H4: {{CMD[id="assign_salestax"]salestax}}
+
+This preempts the salestax calculation. The assigned value is not rounded.
+
+
+H4: {{CMD[id="assign_subtotal"]subtotal}}
+
+This preempts the cart subtotal derived from prices. The assigned
+value is not rounded.
+
+
+Note that you cannot assign to
+E<lbracket>{{C[jump="#total_cost"]total-cost}}]E<nbspace>E<emdash> it
+will always be the sum of the four above.
+
+Before using the C<assign> tag, please be sure you understand the
+dependencies within the pricing system, such as the relationship
+between E<lbracket>{{C[jump="#total_cost"]total-cost}}] and assigned
+tags.
 
 
 H2: attr_list
@@ -7315,6 +7475,12 @@ The shipping cost of the items in the basket via C<mode>E<nbspace>E<emdash> the 
 mode is the shipping mode currently selected in the C<mv_shipmode>
 variable. See I<SHIPPING>.
 
+H4: Rounding
+
+The tag rounds the calculated shipping cost to a locale-specific
+number of fractional digits (e.g., to the nearest penny, or 2 digits
+after the decimal point in the USA).
+
 
 
 
@@ -9236,13 +9402,13 @@ is parsed in the following order:
 + Any E<lbracket>{{C[jump="ictags.html#pragma"]pragma}}] tags anywhere
 in the text are processed, and the specified pragmas are set.
 
-**Since E<lbracket>{{C[jump="ictags.html#pragma"]pragma}}] tags are
+** Since E<lbracket>{{C[jump="ictags.html#pragma"]pragma}}] tags are
 preprocessed before any other content,
 {{C[jump="ictags.html#attr_reparse"]reparse}} will not catch them, nor
 will they work if included in variables. Also, the specified pragma
 will apply to the entire template (not just the section after the tag).
 
-**If you want to apply a pragma with a variable or only to part of a
+** If you want to apply a pragma with a variable or only to part of a
 document, you must use E<lbracket>{{C[jump="ictags.html#tag"]tag}}E<nbspace>pragma="..."]
 instead.
 
@@ -9287,7 +9453,7 @@ this, '<!-- E<lbracket>tagname] -->'.
 {{C[jump="ictags.html#attr_interpolate"]interpolate}} settings, of course).
 
 ** Some tags (e.g., E<lbracket>{{C[jump="ictags.html#loop"]loop}}])
-process prefix-tags in their contained body text.  The prefix-tags are
+process I<prefix>-tags in their contained body text.  The I<prefix>-tags are
 not handled recursively.
 
 .{{}}
@@ -9297,6 +9463,17 @@ not handled recursively.
 ..{{}}
 
 .{{}}
+
+
+A2: Nonstandard parsing within the admin interface
+
+Parsing of content via the specialized
+{{C[jump="ictags.html#UI_ut_regenerate"]regenerate}} usertag included
+with the administrative interface does not obey the above order.  The
+MV_AUTOLOAD and '<!--[tagname]-->' escapes are skipped.  There are
+some other more subtle differences as well; in the very unlikely event
+that you need to check this in the source code, compare the
+'interpolate_html' and 'cache_html' routines in Interpolate.pm.
 
 
 A2: Nonstandard parsing of Subtags
@@ -9309,8 +9486,8 @@ context created by the containing tag (see
 the next level.
 * Within the same level, tags are proccessed in the order the appear on
 the page.
-* Any standard tags are processed during 'interpolate' or 'reparse'
-phases of processing the containing tag.
+* Any standard tags are processed during 'interpolate' (before) or
+'reparse' (after) phases of processing the containing tag.
 
 !block note; label="Technical note"
 
@@ -9322,79 +9499,68 @@ associated with it.
 
 In array-list context, subtags are processed in the following N<order:>
 
-^ Check for PREFIX_line and prepare for it if present (does not
-process PREFIX-line at this time)
-+ PREFIX-sub definitions processed
-+ if-PREFIX-I<etc.> nesting resolved
-+ PREFIX-alternate processed
-+ if-PREFIX-param  processed
-+ if-PREFIX-pos  processed
-+ PREFIX-pos  processed
-+ if-PREFIX-field  processed
-+ PREFIX-line  processed
-+ PREFIX-increment  processed
-+ PREFIX-accessories  processed
-+ PREFIX-options  processed
-+ PREFIX-code  processed
-+ PREFIX-description  processed
-+ PREFIX-field  processed
-+ PREFIX-price  processed
-+ PREFIX-change  processed
-+ PREFIX-calc  processed
-+ PREFIX-exec  processed
-+ PREFIX-filter  processed
-+ PREFIX-last  processed
-+ PREFIX-next  processed
+^ Check for I<prefix>_line and prepare for it if present (does not process I<prefix>-line at this time)
++ I<prefix>-sub definitions processed
++ if-I<prefix>-I<etc.> nesting resolved
++ I<prefix>-alternate processed
++ if-I<prefix>-param  processed
++ if-I<prefix>-pos  processed
++ I<prefix>-pos  processed
++ if-I<prefix>-field  processed
++ I<prefix>-line  processed
++ I<prefix>-increment  processed
++ I<prefix>-accessories  processed
++ I<prefix>-options  processed
++ I<prefix>-code  processed
++ I<prefix>-description  processed
++ I<prefix>-field  processed
++ I<prefix>-price  processed
++ I<prefix>-change  processed
++ I<prefix>-calc  processed
++ I<prefix>-exec  processed
++ I<prefix>-filter  processed
++ I<prefix>-last  processed
++ I<prefix>-next  processed
 + User's previous HTML widget SELECTED settings restored
 + Reparse standard tags in output of above (if reparse enabled for the containing tag)
 
 
 In hash-list context, subtags are processed in the following N<order:>
 
-^ PREFIX-sub definitions processed
-+ if-PREFIX-I<etc.> nesting resolved
-+ PREFIX-alternate processed
-+ PREFIX-line  processed
-+ if-PREFIX-param  processed
-+ if-PREFIX-field  processed
-+ if-PREFIX-modifier  processed (if-PREFIX-param and if-PREFIX-modifier are functionally identical except for parse order)
-+ PREFIX-increment  processed
-+ PREFIX-accessories  processed
-+ PREFIX-options  processed
-+ PREFIX-sku  processed
-+ PREFIX-code  processed
-+ PREFIX-quantity  processed
-+ PREFIX-modifier  processed
-+ PREFIX-param  processed
-+ PREFIX-quantity-name  processed
-+ PREFIX-modifier-name  processed
-+ PREFIX-subtotal  processed
-+ PREFIX-discount-subtotal  processed
-+ PREFIX-code  processed again differently (operating on new instances of PREFIX-code in output of above?)
-+ PREFIX-field  processed
-+ PREFIX-description  processed
-+ PREFIX-price  processed
-+ PREFIX-discount-price  processed
-+ PREFIX-difference  processed
-+ PREFIX-discount  processed
-+ PREFIX-change  processed
-+ PREFIX-tag  processed (*** CHECK THIS TAGNAME ***)
-+ PREFIX-calc  processed
-+ PREFIX-exec  processed
-+ PREFIX-filter  processed
-+ PREFIX-last  processed
-+ PREFIX-next  processed
+^ I<prefix>-sub definitions processed
++ if-I<prefix>-I<etc.> nesting resolved
++ I<prefix>-alternate processed
++ I<prefix>-line  processed
++ if-I<prefix>-param  processed
++ if-I<prefix>-field  processed
++ if-I<prefix>-modifier  processed (if-I<prefix>-param and if-I<prefix>-modifier are functionally identical except for parse order)
++ I<prefix>-increment  processed
++ I<prefix>-accessories  processed
++ I<prefix>-options  processed
++ I<prefix>-sku  processed
++ I<prefix>-code  processed
++ I<prefix>-quantity  processed
++ I<prefix>-modifier  processed
++ I<prefix>-param  processed
++ I<prefix>-quantity-name  processed
++ I<prefix>-modifier-name  processed
++ I<prefix>-subtotal  processed
++ I<prefix>-discount-subtotal  processed
++ I<prefix>-code  processed again differently (operating on new instances of I<prefix>-code in output of above?)
++ I<prefix>-field  processed
++ I<prefix>-description  processed
++ I<prefix>-price  processed
++ I<prefix>-discount-price  processed
++ I<prefix>-difference  processed
++ I<prefix>-discount  processed
++ I<prefix>-change  processed
++ I<prefix>-tag  processed (*** CHECK THIS TAG NAME ***)
++ I<prefix>-calc  processed
++ I<prefix>-exec  processed
++ I<prefix>-filter  processed
++ I<prefix>-last  processed
++ I<prefix>-next  processed
 + User's previous HTML widget SELECTED settings restored
 + Reparse standard tags in output of above (if reparse enabled for the containing tag)
 
-
-A2: Nonstandard parsing within the admin interface
-
-Parsing of content via the specialized
-{{C[jump="ictags.html#UI_ut_regenerate"]regenerate}} usertag included
-with the administrative interface does not obey the above order.  The
-MV_AUTOLOAD and '<!--[tagname]-->' escapes are skipped.  There are
-some other more subtle differences as well; in the very unlikely event
-that you need to check this in the source code, compare the
-'interpolate_html' and 'cache_html' routines in Interpolate.pm.
 
