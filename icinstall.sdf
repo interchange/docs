@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icinstall.sdf,v 1.10 2000-10-19 22:55:53 alison Exp $
+# $Id: icinstall.sdf,v 1.11 2000-10-26 22:43:48 zarko Exp $
 
 !define DOC_NAME "Interchange Installation"
 !define DOC_TYPE ""
 !define DOC_CODE "ICINSTALL_D2a_100800"
-!define DOC_VERSION substr('$Revision: 1.10 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.11 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
@@ -65,7 +65,7 @@ To install Akopia Interchange, there are two required steps: downloading the pro
 ^Obtain, decompress, and untar the distribution on a UNIX server:
 
 !block example
-       gzip -dc interchange-4.5.x.tar.gz | tar xvf -
+       gzip -dc interchange-4.6.x.tar.gz | tar xvf -
 !endblock
 
 Note: Check the Interchange developer site at {{URL:http://developer.akopia.com/}} for any patches that might have been issued since the last release.
@@ -715,7 +715,7 @@ when it starts up.
        Low traffic settings.
         Calling UI....
         ....UI is loaded....
-        Interchange V4.5.x
+        Interchange V4.6.x
         Configuring catalog example...done.
         Interchange server started in INET and UNIX mode(s) (process id 22200)
 !endblock
