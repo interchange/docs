@@ -37,19 +37,20 @@ dev_html:
 	sdf -2html_topics -n2 -DHTML_FRAMES=1 $<
 	mv $(basename $<).html $@
 
-html: $(addsuffix _toc.html,$(TARGETS)) $(addsuffix .html,$(TARGETS)) index.html
-	@for target in ic*.sdf ; do \
-		base=`basename $$target .sdf`; \
-		echo building $$base; \
-		echo '\
+%_frames.html: %.sdf
+	echo '\
 <html><head>\
   <title>'$$title'</title>\
 </head><frameset cols="200,*">\
-  <frame name="nav"  src="'$$base'_toc.html">\
-  <frame name="main" src="'$$base'_1.html">\
+  <frame name="nav"  src="$(basename $<)_toc.html">\
+  <frame name="main" src="$(basename $<)_1.html">\
 </frameset></html>\
-' > $${base}_frames.html; \
-	done
+' > $@
+
+html:: $(addsuffix _frames.html,$(TARGETS))
+html:: $(addsuffix _toc.html,$(TARGETS))
+html:: $(addsuffix .html,$(TARGETS))
+html:: index.html
 
 pod: $(addsuffix .pod,$(TARGETS))
 
