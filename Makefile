@@ -32,6 +32,11 @@ dev_html:
 		( echo '1s/akopia/developer_site/' ; echo 'wq dev/'$$target ) | ed $$target > /dev/null 2>&1 ; \
 		( cd dev ; sdf -2html_topics -n2 -k=developer_site $$target); \
 	done
+	@echo building index
+	@( echo '1s/akopia/developer_site/' ; echo 'wq dev_index.sdf' ) | ed index.sdf > /dev/null 2>&1
+	@make dev_index.html
+	@rm dev_index.sdf
+	mv dev_index.html dev/index.html
 
 %_toc.html: %.sdf
 	sdf -2html_topics -n2 -DHTML_FRAMES=1 $<
