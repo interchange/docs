@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: iccattut.sdf,v 1.19 2003-02-06 20:38:41 jon Exp $
+# $Id: iccattut.sdf,v 1.20 2003-06-30 22:42:01 mheins Exp $
 
 !define DOC_NAME "Catalog-Building Tutorial"
 !define DOC_TYPE ""
 !define DOC_CODE "iccattut"
-!define DOC_VERSION substr('$Revision: 1.19 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.20 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/iccattut.html"
@@ -917,27 +917,54 @@ H2:Sorting the product list
 
 N:The products listed on your welcome page are shown in the same order that you entered them into {{FILE:products/products.txt}}. As you add more products, you will want this list to show up in a predictable order. To do this, you need to change the search parameters in {{FILE:index.html}}, which were originally:
 
-E:  [loop search="ra=yes/fi=products"]
+E:  [loop search="
+E:          ra=yes
+E:          fi=products
+E:          "]
 
 N:You will recall that 'ra' stands for 'return all' and 'fi' stands for file. Let's add the search parameter 'tf', which specifies the sor{{B:t f}}ield. You can specify the field either by name or by number (starting with 0), with names and order as given in the first line of {{FILE:products/products.txt}}). Make the following change in {{FILE:index.html}}:
 
-E:  [loop search="ra=yes/fi=products/tf=price"]
+E:  [loop search="
+E:          ra=yes
+E:          fi=products
+E:          tf=price
+E:          "]
 
 N:Refresh your browser. The default ordering is done on a character-by-character basis, but we were looking to do a numeric sort. For this you need to set 'to', the sor{{B:t o}}rder, to 'n', for {{1:numeric}}:
 
-E:  [loop search="ra=yes/fi=products/tf=price/to=n"]
+E:  [loop search="
+E:          ra=yes
+E:          fi=products
+E:          tf=price
+E:          to=n
+E:          "]
 
 N:Refresh your browser. Now try reversing the sort order by adding 'r' to the 'to' setting:
 
-E:  [loop search="ra=yes/fi=products/tf=2/to=nr"]
+E:  [loop search="
+E:          ra=yes
+E:          fi=products
+E:          tf=2
+E:          to=nr
+E:          "]
 
 N:You'll notice that it worked equally well to specify the sort field by number instead of name. You could also do a reverse alphabetical sort by description:
 
-E:  [loop search="ra=yes/fi=products/tf=1/to=r"]
+E:  [loop search="
+E:          ra=yes
+E:          fi=products
+E:          tf=1
+E:          to=r
+E:          "]
 
 N:Now let's try narrowing the search down a bit. Instead of returning all, we'll give 'se', the {{B:se}}arch parameter, and and use 'su', which allows {{B:su}}bstring matches. To search only for products that have the word "test" in one of their fields, and sort the results by description, type:
 
-E:  [loop search="se=test/su=yes/fi=products/tf=description"]
+E:  [loop search="
+E:          se=test
+E:          su=yes
+E:          fi=products
+E:          tf=description
+E:          "]
 
 N:Which seems like something that would be better done in a search box for your store visitors. 
 
@@ -955,7 +982,12 @@ N:Your customers might appreciate the ability to search for a test by SKU or par
 + <td align=center>
 + <form action="[area search]" method=post>
 + Search:<br>
-+ [set testname]su=yes/fi=products/sf=sku/sf=description[/set]
++ [set testname]
++    su=yes
++    fi=product
++    sf=sk
++    sf=descriptio
++  [/set]
 + <input type=hidden name=mv_profile value=testname>
 + <input type=text name=mv_searchspec size=15 value="">
 + </form>
