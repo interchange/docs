@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: icadvanced.sdf,v 1.15 2003-11-26 04:56:52 mheins Exp $
+# $Id: icadvanced.sdf,v 1.16 2003-12-08 18:09:29 kwalsh Exp $
 
 !define DOC_NAME "Advanced Interchange Topics"
 !define DOC_TYPE ""
 !define DOC_CODE "icadvanced"
-!define DOC_VERSION substr('$Revision: 1.15 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.16 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/icadvanced.html"
@@ -102,12 +102,13 @@ Use the C<->i and C<->u flags if you only want to use one communication method:
 
 H2: User Reconfiguration
 
-The individual catalogs can be reconfigured by the user by running the [reconfig] support tag. This should be protected by one of the several forms of Interchange authentication, preferably by HTTP basic authorization. See C<RemoteUser>.
+The individual catalogs can be reconfigured by the user by running the [reconfig] support tag. This should be protected by one of the several forms of Interchange authentication, preferably by HTTP basic authorization.
+See {{C[jump="icconfig.html#RemoteUser"]RemoteUser}}.
 
 The command line can be reconfigured (as the Interchange user) with:
 
 !block example
-   VENDROOT/bin/interchange -reconfig <catalog>
+   VENDROOT/bin/interchange --reconfig=I<catalog>
 !endblock
 
 It is easy for the administrator to manually reconfigure a catalog. Interchange simply looks for a file C<etc/reconfig> (based in the Interchange software directory) at HouseKeeping time. If it finds a script name that matches one of the catalogs, it will reconfigure that catalog.
