@@ -1,0 +1,254 @@
+
+December 5, 2000
+
+
+
+INTERCHANGE TEMPLATING
+Author: Cameron B. Prince
+
+Interchange has the ability to dynamically insert portions of HTML code using variables and include functions. The included code can also contain ITL (Interchange Tag Language) as well as variables or include functions for other portions of code.
+
+Interchange also has the ability to insert commonly used site components such as text and images using variables.
+
+This provides a major advantage to webmasters and site designers as it allows them to build sites using common pieces of code. This helps them maintain consistency and increases productivity considerably. Minor changes to a common page area such as a top navigation bar, or an image are now made a lot less difficult as they can be made to one file versus editing each page within a site.
+
+Interchange Variables
+
+The most common templating function is the use of Interchange Variables. Variables are defined in the catalog.cfg file for each catalog as follows:
+
+High Traffic Setting:
+
+Variable      LEFTRIGHT_TOP    <LEFTRIGHT_TOP
+
+Low Traffic Setting:
+
+Variable      LEFTRIGHT_TOP    [include templates/regions/LEFTRIGHT_TOP]
+
+This definition will result in the Interchange variable __LEFTRIGHT_TOP__ or @_LEFTRIGHT_TOP_@, added to html files in the pages directory, to be replaced with the contents of the file located in CATROOT/templates/regions/LEFTRIGHT_TOP.
+
+The traffic setting, defined in interchange.cfg, causes the variable to be included in different ways. High traffic settings cause the file to be read into memory each time Interchange is started or the catalog is reconfigured. (Apply changes)
+
+The low traffic setting will result in the file contents being read each time a page is called that references the variable. I normally use low traffic while a site is in development so that I am not required to restart after each modification to a template file. Then once the site goes live, switch over to high traffic for the improved performance.
+Examples for creating text or image variables:
+
+Variable	TEXT_1	Commonly used text!
+Variable	IMAGE_1	<img src=http://www.something.com/images/image.gif">
+
+
+__VARIABLE_NAME__ or @_VARIABLE_NAME_@
+
+When a site uses more than one Interchange catalog, such as in a mall, global variables can be defined in interchange.cfg instead of catalog.cfg. These global variables are called with @_VARIABLE_NAME_@ This will result in the catalog.cfg variable space to be searched first. If the variable definition is not found in this space, the interchange.cfg variable space is searched.
+
+This allows the globally defined variables to be used by any catalog for which Interchange is configured. The use of the @_ variable calls is extensive within the admin UI because it's templates are consistent regardless of the catalog you are administering.
+
+
+Interchange Components
+
+Interchange components are merely portions of HTML/ITL that are included into pages within the site depending on options set in the Admin UI. The default component set includes the following:
+
+best_horizontal
+best_vertical
+cart
+cart_display
+cart_tiny
+category_vertical
+cross_horizontal
+cross_vertical
+promo_horizontal
+promo_vertical
+random_horizontal
+random_vertical
+upsell_horizontal
+upsell_vertical
+
+More on components below.
+
+
+
+
+Interchange Include Tags
+
+One of the more commonly used ITL tags is the include. It basically causes Interchange to read in the contents of a file and dynamically insert them into a page.
+
+Examples:
+
+[include file="path/to/filename"]
+
+Or with a scratch or value as the file name:
+
+[include file="path/to/[scratch something]"]
+
+
+Content -> Page Edit
+
+The Interchange Admin UI offers a page editor function that allows component definitions and options to be modified for each page within the catalog.
+
+1) Template
+
+The choices for the Template drop-down are read from template definition files located in the CATROOT/template directory. These files store the name and description of the template, as well as components and options for the particular template.
+
+To create a new template for use in the admin, it is best to copy an existing template definition to a new file name and edit it's contents to suit. Once the catalog is reconfigured, the new choice will be visible within the Content Page Editor admin function.
+
+Each template option is looped through and a scratch is set using its same name and value.
+  
+ITL is used near the bottom of this file to set each option to default values before the page is displayed.
+
+[set page_title][set] 
+[set page_banner][set]
+[set members_only][set]
+[set component_before][set]
+[set component_after][set]
+[set bgcolor]#FFFFFF[/set]
+
+
+2) Page Title
+
+Sets the title of the page which is synonymous with the html <title></title> code.
+
+The following code within the template definition file is used to display this option within in the content editor:
+
+page_title:
+        description: Page title
+
+This code dynamically adds the title to the page:
+
+<title>[scratch page_title]</title>
+
+3) Page Banner
+
+Sets a textual title for each page which is called by [either][scratch page_banner][or][scratch page_title][/either] This results in the Page Banner being displayed if defined. Otherwise, the Page Title is used.
+
+4) Members Only
+
+The members only function is handled by the following code within each template file:
+
+[if scratch members_only]
+    [set members_only][/set]
+    [if !session logged_in]
+    [set mv_successpage]@@MV_PAGE@@[/set]
+    [bounce page=login]
+    [/if]
+[/if]
+
+This code says if members only is set to yes and the visitor is logged in, display the page. Otherwise, redirect the visitor to the login page.
+
+5) Break 1
+
+This code causes a separation in the Content Editor between the next set of options. (A blue line)
+
+6) Horizontal Before Component
+
+This allows the inclusion of a defined component to be displayed before, or above, the page's content. It is called with the following code within the LEFTRIGHT_TOP template:
+
+[if scratch component_before]
+[include file="templates/components/[scratch component_before]"]
+[set component_before][/set]
+[/if]
+
+7) Horizontal After Component
+
+This function allows the inclusion of a defined component to be displayed after or below the pages's content. It's called with the following code within the LEFTRIGHT_BOTTOM template:
+
+[if scratch component_after]
+[include file="templates/components/[scratch component_after]"]
+[set component_after][/set]
+[/if]
+
+8) Horizontal Item Width
+
+This setting allows you to choose how many items the horizontal components display. For example, the horizontal best sellers component uses this setting to randomly select the best sellers. Notice the default to 2 if nothing is defined.
+
+random="[either][scratch component_hsize][or]2[/either]"
+
+9) Special Tag
+
+This setting is only viable when a promotion is used for a horizontal component. It tells the promotional component which rows to evaluate in the merchandising table for display within the component. This setting normally corelates to the featured column of the merchandising table as follows:
+
+        [query arrayref=main
+                   sql="
+                        SELECT sku,timed_promotion,start_date,finish_date
+                        FROM merchandising
+                        WHERE featured = '[scratch hpromo_type]'
+                        "][/query]
+
+10) Before/After Banner
+
+Allows a title for the horizontal components to be defined to displayed in a header above the component's items. It is called with the [scratch hbanner] tag.
+
+
+
+
+11) Break 2
+
+This code causes a separation in the Content Editor between the next set of options. (A blue line)
+
+12) Vertical Component
+
+Defines a component to be displayed along the right side of the LEFTRIGHT_BOTTOM template. It is called from the template with the following code:
+
+[include file="templates/components/[scratch component_right]"]
+
+13) Vertical Items Height
+
+Sets the number of items to display within the vertical component. Called with the following code:
+
+random="[either][scratch component_vsize][or]3[/either]"
+
+14) Right Banner
+
+Allows a title to be set for a vertical component which is displayed as a header above the items in the vertical component. It's called with the [scratch vbanner] tag.
+
+15) Special Tag
+
+Essentially the same as the Special Tag setting described in item number 9 above.
+
+16) Background Color
+
+Allows the background color of the page to be selected. The choices are stored within the page or template definition as in:
+
+bgcolor:
+        options: #FFFFFF=White,pink=Pink
+        widget: select
+        description: Background color
+
+17) Content
+
+Allows the page code to be downloaded, uploaded and viewed/edited. Only the code between <!-- BEGIN CONTENT --> and <!-- END CONTENT --> is displayed or can be edited here.
+
+
+
+18) Preview, Save, and Cancel buttons
+
+Allows the changes to the edited page to be previewed in a pop-up browser window, or saved. Cancel returns you to the page editor selection page.
+
+19) Save template in page
+
+Template settings are stored in the template definitions by default. This allows a common set of choices for template settings for all pages. If specific setting options are desired for a page, the template can be saved within the page so that it may have individual options.
+
+The in-page template definition must be surrounded by [comment]  [/comment].
+
+
+
+Custom Admin UI Options
+
+Other options may be added to the template by defining them in the default definition file, or using in-page definitions.
+
+When the following lines are added to the template definition, the new option is added to the Admin UI.
+
+option_name:
+options: 1,2*,3
+widget: select
+description: Option Description
+help: Other Details
+
+
+
+Each time the template is used, an option_name scratch variable is created. ( Called with: [scratch option_name] ) This scratch value will be equal to what's selected here in the admin tool.
+
+The possible widgets include:
+
+break - produces the blue line separator.
+radio - produces radio button type selections.
+select - standard drop-down selector.
+move_combo - select drop down with options and text input for new option.
+
