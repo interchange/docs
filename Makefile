@@ -1,5 +1,14 @@
 all :: html pod txt
 
+dev_html:
+	@for target in ic*.sdf ; do \
+		base=`basename $$target .sdf`; \
+		echo building $$base; \
+		mkdir -p dev/$$base; \
+		( echo '1s/akopia/developer_site/' ; echo 'wq dev/'$$base'/'$$target ) | ed $$target > /dev/null 2>&1 ; \
+		(cd dev/$$base; sdf -2html_topics -n2 -k=developer_site $$target); \
+	done
+
 html:
 	@for target in ic*.sdf ; do \
 		base=`basename $$target .sdf`; \
