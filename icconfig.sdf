@@ -1,12 +1,12 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.39 2001-04-02 05:50:07 bill Exp $
+# $Id: icconfig.sdf,v 1.40 2001-04-02 21:17:41 alison Exp $
 
-!define DOC_NAME "Interchange Configuration"
+!define DOC_NAME "Developer Resource Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.39 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.40 $',11, -2)
 !define DOC_STATUS "Draft"
-!define DOC_PROJECT "Interchange"
+!define DOC_PROJECT "The Red Hat Interchange 4.8:"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icconfig.html"
 !define EXAMPLE_SESSION "6CZ2whqo"
 !define EXAMPLE_DOMAIN "www.here.com"
@@ -14,6 +14,10 @@
 !define EXAMPLE_VLINK "mycatalog"
 !define EXAMPLE_SECURE_DOMAIN "secure.here.com"
 !build_title
+
+H1: Introduction
+
+The purpose of the Red Hat Interchange 4.8 Developer Resource Guide is to help you to set up your catalog environment. The following is a list of the topics covered in this guide:
 
 H1: Interchange Configuration
 
