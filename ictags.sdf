@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.31 2001-05-09 04:12:58 jon Exp $
+# $Id: ictags.sdf,v 1.32 2001-05-09 04:22:20 jon Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.31 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.32 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -58,7 +58,7 @@ element, as in:
 
 !block example
     E<lbracket>{{C[jump="#if"]if}} value name]
-    You have a name.  It is [C<value> name].
+    You have a name. It is [C<value> name].
     E<lbracket>/if]
 !endblock
 
@@ -67,7 +67,7 @@ We will usually call the ITL tags B<Interchange tags> or just B<tags>.
 H3: Standard Syntax
 
 The most common syntax is to enclose the tag with its parameters and
-attributes in C<[square brackets]>.  If the tag has an end tag, the tag and
+attributes in C<[square brackets]>. If the tag has an end tag, the tag and
 its end tag will delimit contained body text:
 
 !block example
@@ -99,7 +99,7 @@ C<E<lbracket>tagname]> and C<E<lt>!--[tagname]--E<gt>> are
 equivalent.
 
 This allows you make your raw tags appear as comments to HTML browsers
-or editors.  You might want to do this if your editor has trouble with
+or editors. You might want to do this if your editor has trouble with
 ITL tags when editing Interchange page templates, or alternatively, if
 you want to use one .html file both as an Interchange template and as
 a static page delivered directly by your web server, without
@@ -112,7 +112,7 @@ E: E<lt>!--[tagname] Contained Body Text E<lbracket>/tagname]-->
 
 Note that you must include whitespace between the HTML comment
 delimiters and the square brackets if you wish to actually comment out
-tag output in the browser.  For example, if
+tag output in the browser. For example, if
 E<lbracket>{{C[jump="#value"]value}}E<nbspace>name] expands to 'Bill':
 
 E: 'E<lt>!--[value name]-->'  becomes  'Bill'
@@ -132,9 +132,9 @@ pages and intend to use this syntax.
 H3: HTML-Embedded
 
 As an alternative syntax, you can usually embed an Interchange tag as
-an attribute within an HTML tag.  This allows some HTML editors to
+an attribute within an HTML tag. This allows some HTML editors to
 work more easily with Interchange templates (though you should
-consider the above HTML-comment-style brackets first).  The following
+consider the above HTML-comment-style brackets first). The following
 is a basic example of HTML-Embedded syntax:
 
 !block example
@@ -174,9 +174,9 @@ in the cart.
 Avoid the HTML-embedded usage if you can.
 
 The foundation catalog included with interchange disables parsing of
-the HTML-embedded syntax.  This is for better performance, since it
+the HTML-embedded syntax. This is for better performance, since it
 saves the server from checking every HTML tag for interchange tag
-calls.  This is done in the catalog by setting the pragma
+calls. This is done in the catalog by setting the pragma
 {{C[jump="icconfig.html#Pragma"]no_html_parse}} in C<catalog.cfg>.
 !endblock
 
@@ -210,8 +210,8 @@ parameter or attribute for another tag.
 H4: Interpolating parameters
 
 If you wish to use the value of a tag within a parameter of another
-tag, you cannot use a positional call.  You must also double-quote the
-argument containing the tag you wish to have expanded.  For example,
+tag, you cannot use a positional call. You must also double-quote the
+argument containing the tag you wish to have expanded. For example,
 this will not work:
 
 E:    E<lbracket>{{C[jump="#page"]page}} scan se=[{{C[jump="#scratch"]scratch}} somevarE<2]>
@@ -227,7 +227,7 @@ only the argument to B<arg>, which contained a tag, needed the quotes.
 H3: {{CMD[id="attributes"]Universal Attributes}}
 
 Universal attributes apply to all tags, though each tag specifies
-its own default for the attribute.  The code implementing universal
+its own default for the attribute. The code implementing universal
 attributes is external to the core routines that implement specific
 tags.
 
@@ -249,16 +249,16 @@ any tags within the body text before passing it to the enclosing tag.
 body text.
 
 I<For standalone tags (reparsed)>
-* If true, the server will process the I<output> of the tag.  This is
+* If true, the server will process the I<output> of the tag. This is
 identical to the behavior of the {{CMD[jump="#attr_reparse"]reparse}} attribute (see below for
 explanation and examples).
 
 (Note: The mixing of 'interpolate' and 'reparse' logic occurred
 because 'interpolate' already worked this way when 'reparse' was added
-to interchange.  This may be fixed in a later release...)
+to interchange. This may be fixed in a later release...)
 
 Most standalone tags are not reparsed by default (i.e., interpolate=0
-by default).  There are some exceptions, such as the
+by default). There are some exceptions, such as the
 E<lbracket>{{CMD[jump="#include"]include}}] tag.
 
 N: Interpolation example:
@@ -300,13 +300,13 @@ H4: {{CMD[id="attr_reparse"]reparse}}
 If true ("reparse=1"), the server will process any tags in the text
 output by the reparsed tag.
 
-Reparse applies only to container tags (those with an end tag).  The
+Reparse applies only to container tags (those with an end tag). The
 C<interpolate> attribute controls reparsing of the output of
 standalone tags (see above).
 
 Most container tags will have their output re-parsed for more
 Interchange tags by default. If you wish to inhibit this behavior, you
-must explicitly set the attribute B<reparse> to 0.  Note that you will
+must explicitly set the attribute B<reparse> to 0. Note that you will
 almost always want the default action. The only container ITL tag that
 doesn't have reparse set by default is
 C<E<lbracket>{{CMD[jump="#mvasp"]mvasp}}]>. 
@@ -344,14 +344,14 @@ Deprecated
 H3: Tag-specific Attributes
 
 Each tag may accept additional named attributes which vary from tag to
-tag.  Please see the entry for the tag in question for details about
+tag. Please see the entry for the tag in question for details about
 tag-specific attributes.
 
 
 H3: {{CMD[id="attr_array_hash"]Attribute Arrays and Hashes}}
 
 Some tags allow you to pass an array or hash as the value of an
-attribute.  For an ordinary tag, the syntax is as follows:
+attribute. For an ordinary tag, the syntax is as follows:
 
 !block example
     attribute.I<n>=value
@@ -359,7 +359,7 @@ attribute.  For an ordinary tag, the syntax is as follows:
     attribute.hashkey=value
 !endblock
 
-where I<n> is an integer array index.  Note that you cannot use both an
+where I<n> is an integer array index. Note that you cannot use both an
 array and a hash with the same attributeE<nbspace>E<emdash> if you use
 B<attribute.I<n>>, you cannot also use B<attribute.key> for the same
 attribute.
@@ -382,13 +382,13 @@ search ({{CMD[jump="icdatabase.html#Coordinated and Joined Searching"]joined sea
 are described in the Interchange database documentation).
 
 Note that it is up to the tag to handle an array or hash value
-properly.  See the documentation for the specific tag before passing
+properly. See the documentation for the specific tag before passing
 it an attribute array or hash value.
 
 H4: Perl calls
 
 Before passing attributes to a tag, the interchange parser would
-convert the above example to an anonymous array reference.  It would
+convert the above example to an anonymous array reference. It would
 use the resulting arrayref as the value for the 'search' attribute in
 this example.
 
@@ -583,7 +583,7 @@ break to nest or place headers.
 
 The region is only output when a field or other repeating value between
 \[condition] and [/condition] changes its value. This allows indented lists
-similar to database reports to be easily formatted.  The repeating value
+similar to database reports to be easily formatted. The repeating value
 must be a tag interpolated in the search process, such as
 C<[PREFIX-field field]> or C<[PREFIX-data database field]>. If you need
 access to ITL tags, you can use [PREFIX-calc] with a $Tag->foo() 
@@ -1053,7 +1053,7 @@ E<lbracket>{{C[jump="#item_list"]item_list}}]C<[/item-list]> pair.)
 
 The output of the above would be similar to the output of
 E<lbracket>item-accessories size, select] if the product database
-field C<size> contained the value C<S, M, L, XL>.  The difference is
+field C<size> contained the value C<S, M, L, XL>. The difference is
 that the options in the loop emulation show the adjusted price in
 addition to the size within each option value.
 
@@ -1065,10 +1065,10 @@ example, as E<lbracket>C<item-accessories>] within an
 E<lbracket>{{C[jump="#item_list"]item-list}}].
 
 In this context, the tag will have access to ancillary data from the
-item (including, perhaps, a user's chosen item attribute value).  For
+item (including, perhaps, a user's chosen item attribute value). For
 example, if building a TEXTAREA widget within an
 E<lbracket>{{C[jump="#item_list"]item-list}}], the widget will show
-the chosen item attribute value.  On the other hand, within an array
+the chosen item attribute value. On the other hand, within an array
 list such as a E<lbracket>{{C[jump="#search_list"]search-list}}] in a
 E<lbracket>{{C[jump="#search_region"]search-region}}], the widget
 would be empty.
@@ -1116,7 +1116,7 @@ the comma(s) if you are setting anything after it in the N<list:>
 E:  B<arg>="attribute, type, , table"
 
 The above examples show the attribute names for clarity; you would
-actually use the values.  Hence, the previous example might actually
+actually use the values. Hence, the previous example might actually
 be something like the N<following:>
 
 E:  B<arg>="color, radio, , products"
@@ -1131,7 +1131,7 @@ For detail about a specific attribute, please see its subheading below.
 
 H4: {{CMD[id="accessories_attribute"]attribute}}
 
-Despite the name, this has nothing to do with tag attributes.  You can
+Despite the name, this has nothing to do with tag attributes. You can
 set attributes for I<items> in a database table (typically the products
 table) with the {{C[jump="icconfig.html#UseModifier"]UseModifier}}
 configuration directive. Typical are C<size> or C<color>.
@@ -1374,7 +1374,7 @@ defaults to the first products file where the item code is found.
 If you have configured your database so that the attributes are kept
 in a different table from other item data,
 '{{C[jump="#accessories_code"]code}}' should be set to the master key
-in this table.  See '{{C[jump="#accessories_outboard"]outboard}}') if
+in this table. See '{{C[jump="#accessories_outboard"]outboard}}') if
 you are using E<lbracket>item-accessoriesE<nbspace>...] and cannot
 specify C<code>=key.
 
@@ -1433,7 +1433,7 @@ continuation and are not part of the tag output.
 
 H4: {{CMD[id="accessories_delimiter"]delimiter}}
 
-The list of attribute values will be a delimited string.  This allows
+The list of attribute values will be a delimited string. This allows
 you to specify an alternative delimiter if the list is not
 comma-delimited (the default).
 
@@ -1469,7 +1469,7 @@ treated within the tag.
 H4: {{CMD[id="accessories_extra"]extra}}
 
 Setting the 'C<extra>' attribute appends its value as the last
-attribute of the HTML output tag.  The following example illustrates
+attribute of the HTML output tag. The following example illustrates
 the C<append>, C<extra> and C<js> N<options:>
 
 !block example
@@ -1524,7 +1524,7 @@ See also '{{C[jump="#accessories_rows"]rows}}' above.
 H4: {{CMD[id="accessories_width"]width}}
 
 This is a quasi-alias for '{{C[jump="#accessories_cols"]cols}}' that
-only works with the 'C<text>' and '<password>' types.  Use
+only works with the 'C<text>' and '<password>' types. Use
 '{{C[jump="#accessories_cols"]cols}}' instead.
 
 H4: {{CMD[id="accessories_default"]default}}
@@ -1556,7 +1556,7 @@ it has an item hash referenceE<nbspace>E<emdash> see
 H4: {{CMD[id="accessories_price"]price}}
 
 When combined with the C<price_data> tag attribute, this allows you to
-force prices for item attributes.  You probably do not want to use
+force prices for item attributes. You probably do not want to use
 this; just let the tag pick pu prices from your database table(s) when
 appropriate.
 
@@ -1592,8 +1592,8 @@ H4: {{CMD[id="accessories_joiner"]joiner}}
 Requires '{{CMD[jump="#accessories_type"]type}}=links'.
 
 With C<type=links>, the accessories tag returns a link for each
-option.  This allows you to override the default string ('<BR>') that joins
-these links.  You can use Perl's metacharacter escapes, such as '\n'
+option. This allows you to override the default string ('<BR>') that joins
+these links. You can use Perl's metacharacter escapes, such as '\n'
 for newline or '\t' for tab.
 
 
@@ -1611,7 +1611,7 @@ H4: {{CMD[id="accessories_template"]template}}
 Requires '{{CMD[jump="#accessories_type"]type}}=links'.
 
 Allows you to override the standard Interchange template for a
-hyperlink.  You probably don't need to use thisE<nbspace>E<emdash>
+hyperlink. You probably don't need to use thisE<nbspace>E<emdash>
 grep the code to grok it if you do (see 'sub build_accessory_links').
 
 
@@ -1668,7 +1668,7 @@ H4: {{CMD[id="accessories_new"]new}}
 Requires '{{CMD[jump="#accessories_type"]type}}=combo' or 'reverse_combo'.
 
 You can use this to set a value in place of the 'New' or 'Current'
-option in a combo box.  For example, if item 'os28044' has size
+option in a combo box. For example, if item 'os28044' has size
 attribute values of "Sm=10oz,E<nbspace>Med=15oz,E<nbspace>Lg=20oz"N<:>
 
 !block example
@@ -1766,7 +1766,7 @@ H2: area
 N:Alias:  B<href>
 
 Expands to the URL for an Interchange page or action,
-including the Interchange session ID and supplied arguments.  This is
+including the Interchange session ID and supplied arguments. This is
 very similar to the {{CMD[jump="#page"]page}} tagE<nbspace>E<emdash> these are
 equivalent:
 >    [page href=dir/page arg=mv_arg]TargetName[/page]
@@ -1842,7 +1842,7 @@ H3: Description
 
 
 The C<area> tag is very similar to the {{CMD[jump="#page"]page}}
-tag.  It produces the URL to call an Interchange page, but it differs
+tag. It produces the URL to call an Interchange page, but it differs
 from C<page> in that it does not supply the surrounding
 E<lt>AE<nbspace>HREFE<nbspace>...E<gt> notation. This can be used to
 get control of your HREF items, perhaps to place an ALT string or a
@@ -2048,7 +2048,7 @@ E<lbracket>{{C[jump="#handling"]handling}}] N<tags:>
   [assign clear=1]
 !endblock
 
-Assignment affects only the value returned by a tag.  Other behavior,
+Assignment affects only the value returned by a tag. Other behavior,
 such as formatting for the local currency, is not affected by the assignment.
 
 NoteE<nbspace>E<emdash> you will get an error in the error log (and
@@ -2191,7 +2191,7 @@ otherwise.
 
 H2: banner
 
-Implements random or rotating banner ads.  See also
+Implements random or rotating banner ads. See also
 {{CMD[jump="ictemplates.html#Banner/Ad rotation"]Banner/Ad rotation}}.
 
 
@@ -2254,7 +2254,7 @@ H4: See Also
 H3: Description
 
 
-Implements random or rotating banner ads.  See
+Implements random or rotating banner ads. See
 {{CMD[jump="ictemplates.html#Banner/Ad rotation"]Banner/Ad rotation}}
 in the Interchange Template documentation.
 
@@ -2306,7 +2306,7 @@ H4: {{CMD[id="banner_b_field"]b_field}}
 N<Default:> b_field="banner"
 
 This specifies the column containing the banner descriptor(s). The
-default is 'banner'.  Note that an entry might be a delimited list of
+default is 'banner'. Note that an entry might be a delimited list of
 banner descriptors to rotate (see
 {{CMD[jump="#banner_delimiter"]delimiter}} below).
 
@@ -2317,7 +2317,7 @@ N<Default:> separator=":"
 Unweighted ads only.
 
 This sets the separator within the table key (i.e., code) for
-multi-level categorized ads.  See
+multi-level categorized ads. See
 {{CMD[jump="ictemplates.html#Banner/Ad rotation"]Banner/Ad rotation}}.
 
 
@@ -2334,7 +2334,7 @@ the 'banner' column.
 H4: {{CMD[id="banner_weighted"]weighted}}
 
 The C<banner> tag will not apply weighting from the table unless you set
-C<weighted>=1.  Note that the tag will behave as if you gave it a
+C<weighted>=1. Note that the tag will behave as if you gave it a
 standard unweighted entryE<nbspace>E<emdash> it will look for a
 matching row rather than a matching category.
 
@@ -2344,7 +2344,7 @@ Weighted ads only.
 
 If the option once is passed (i.e., [banner once=1 weighted=1], then
 the banners will not be rebuilt until the total_weight file is
-removed.  See {{CMD[jump="ictemplates.html#Banner/Ad rotation"]Banner/Ad rotation}}.
+removed. See {{CMD[jump="ictemplates.html#Banner/Ad rotation"]Banner/Ad rotation}}.
 
 
 H4: {{CMD[id="banner_c_field"]c_field}}
@@ -2354,7 +2354,7 @@ N<Default:> c_field="category"
 Weighted ads only.
 
 This specifies the column containing the banner category for weighted
-ads.  The C<banner> tag will display ads from rows in the table whose
+ads. The C<banner> tag will display ads from rows in the table whose
 category matches the category given in the tag, with frequency
 corresponding to the weights in the table.
 
@@ -2551,7 +2551,7 @@ H3: Summary
 \Parameters: B<label>
 
 * label
-** The label specifying the corresponding E<lbracket>{{C[jump="#try"]try}} block.  Defaults to 'default'.
+** The label specifying the corresponding E<lbracket>{{C[jump="#try"]try}} block. Defaults to 'default'.
 
 
 ONLY THE B<> PARAMETERS ARE POSITIONAL.
@@ -2727,7 +2727,7 @@ H3: Summary
 
 Attributes
 * reset (must not specify name; may specify default)
-** Resets scratchpad (i.e. $::Control array) by setting special scratch variable 'control_index' to 0.  Control_index is an index into the $::Control == $Vend::Session->{control} array of hashrefs.
+** Resets scratchpad (i.e. $::Control array) by setting special scratch variable 'control_index' to 0. Control_index is an index into the $::Control == $Vend::Session->{control} array of hashrefs.
 
 * set
 ** Copies named scratch variable (i.e., from $::Scratch) to scratchpad with current control index.
@@ -3000,7 +3000,7 @@ H3: Description
 Returns the value of the field in a database table, or (DEPRECATED) from
 the C<session>
 namespace. If the optional B<value> is supplied, the entry will be
-changed to that value.  If the option increment* is present, the field
+changed to that value. If the option increment* is present, the field
 will be atomically incremented with the value in B<value>. Use negative
 numbers in C<value> to decrement. The C<append> attribute causes the value
 to be appended; and finally, the C<filter> attribute is a set of Interchange
@@ -3271,7 +3271,7 @@ Always strips leading and trailing whitespace.
 
 H2: dump
 
-Dumps client connection information, cart contents, query value, contents of environment, session, and CGI with Data::Dumper to the page.  This is useful for debugging.
+Dumps client connection information, cart contents, query value, contents of environment, session, and CGI with Data::Dumper to the page. This is useful for debugging.
 
 H3: Summary
 
@@ -3301,7 +3301,7 @@ B<ASP-like Perl call:>
 H3: Description
 
 
-Dumps client connection information, cart contents, query value, contents of environment, session, and CGI with Data::Dumper to the page.  This is useful for debugging.
+Dumps client connection information, cart contents, query value, contents of environment, session, and CGI with Data::Dumper to the page. This is useful for debugging.
 
 
 
@@ -3641,10 +3641,10 @@ Positional parameters in same order.
 ** The table to export
 
 * file
-* Filename to export to.  Note that the NoAbsolute directive and other conditions may affect actual location of the output file.
+* Filename to export to. Note that the NoAbsolute directive and other conditions may affect actual location of the output file.
 
 * type
-** Specifies the [line, record] delimiter types.  Either NOTES or one of the following:
+** Specifies the [line, record] delimiter types. Either NOTES or one of the following:
 
 !block example; lang="Perl"
   my %Delimiter = (
@@ -3714,7 +3714,7 @@ Attribute aliases
 
 H3: Description
 
-Exports 'table' to a delimited text file.  See also {{C[jump="#import"]import}} tag which imports files into databases.
+Exports 'table' to a delimited text file. See also {{C[jump="#import"]import}} tag which imports files into databases.
 
 
 H2: field
@@ -4432,7 +4432,7 @@ Calculates and inserts handling costs. Accepts the same noformat and convert arg
 
 H2: harness
 
-Test harness block.  Similar to try/catch.  Interprets the body text and checks the return value against expected and explicitly bad cases.
+Test harness block. Similar to try/catch. Interprets the body text and checks the return value against expected and explicitly bad cases.
 
 Returns DIED, OK, or NOT OK message along with your result if not the expected value.
 
@@ -4484,7 +4484,7 @@ B<ASP-like Perl call:>
 H3: Description
 
 
-Test harness block.  Similar to try/catch.  Interprets the body text and checks the return value against expected and explicitly bad cases.
+Test harness block. Similar to try/catch. Interprets the body text and checks the return value against expected and explicitly bad cases.
 
 Returns DIED, OK, or NOT OK message along with the harness name and your result if not the expected value.
 
@@ -5068,7 +5068,7 @@ Positional parameters in same order.
 ** Index file extension
 
 * basefile
-** Database filename.  Exports the table to this filename if old or missing before indexing.  See also the {{C[jump="#export"]export}} tag for additional relevent attributes such as delimiter type, etc.
+** Database filename. Exports the table to this filename if old or missing before indexing. See also the {{C[jump="#export"]export}} tag for additional relevent attributes such as delimiter type, etc.
 
 * export_only
 ** Just do the export if necessary (not the index).
@@ -5320,7 +5320,7 @@ E<lbracket>{{C[jump="#search_list"]search-list}}] or
 flypage) and the weight field is empty, then a numerical C<-1> will be
 output from the [calc][/calc] tags; the list will end and the item
 will B<not> be shown. If the product's weight field is less than 1, a
-numerical 1 is output.  The item will be shown, but will be the last
+numerical 1 is output. The item will be shown, but will be the last
 item shown. (If it is an
 E<lbracket>{{C[jump="#item_list"]item-list}}], any price for
 the item will still be added to the subtotal.) NOTE: no HTML style.
@@ -5387,7 +5387,7 @@ customer can enter the quantity to order.
 
 H2: label
 
-The page label for goto.  I believe this is deprecated.
+The page label for goto. I believe this is deprecated.
 
 H3: Summary
 
@@ -5420,7 +5420,7 @@ B<ASP-like Perl call:>
 
 H3: Description
 
-The page label for goto.  I believe this is deprecated.
+The page label for goto. I believe this is deprecated.
 
 
 H2: log
@@ -5432,7 +5432,7 @@ H3: Summary
 \Parameters: B<file>
 
 * file
-** name of file to log to.  'file="E<gt>I<filename>"' also sets 'create' attribute.
+** name of file to log to. 'file="E<gt>I<filename>"' also sets 'create' attribute.
 
 * create 
 ** Set create=1 to create the file if not present
@@ -5674,7 +5674,7 @@ last on the list.
 If this is contained in your C<[loop list]> and the weight field is empty,
 then a numerical C<-1> will be output from the [calc][/calc] tags; the
 list will end and the item will B<not> be shown. If the product's weight
-field is less than 1, a numerical 1 is output.  The item will be shown,
+field is less than 1, a numerical 1 is output. The item will be shown,
 but will be the last item shown.
 
 H4: E<lbracket>loop-next]tags[/loop-next]
@@ -5717,7 +5717,7 @@ Positional parameters in same order.
 ** Tag return value if successful (default is 1).
 
 * hide
-** Suppress tag return value.  This would otherwise be the 'success' attribute setting.
+** Suppress tag return value. This would otherwise be the 'success' attribute setting.
 
 * show
 ** The tag will return the final message with headers in the page
@@ -5759,7 +5759,7 @@ Mail contained text to recipient specified by 'to' using the program specified w
 
 H2: mvasp
 
-Executes the ASP-style perl code contained by the tag.  The code will run under
+Executes the ASP-style perl code contained by the tag. The code will run under
 the restrictions of the 
 {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}}
 module. This is very similar to the
@@ -5810,7 +5810,7 @@ B<Tag expansion example:>
       <P>This is HTMLE<lt>/p>
       <% my $sku = $Values->{code}; %>
       <P>More HTMLE<lt>/p>
-      <% my $result = "Looked up SKU $sku.  It is a ";
+      <% my $result = "Looked up SKU $sku. It is a ";
          $result .= $Tag->data('products', 'description', $sku );
          $Document->write( "$result <br>\n" ); %>
       <P>Still more HTMLE<lt>/p>
@@ -5819,7 +5819,7 @@ B<Tag expansion example:>
       <P>This is HTMLE<lt>/p>
       
       <P>More HTMLE<lt>/p>
-      Looked up SKU [[EXAMPLE_SKU]].  It is a [[EXAMPLE_DESCRIPTION]] <br>
+      Looked up SKU [[EXAMPLE_SKU]]. It is a [[EXAMPLE_DESCRIPTION]] <br>
 
       <P>Still more HTMLE<lt>/p>
 !endblock
@@ -5832,7 +5832,7 @@ H4: See Also
 
 H3: Description
 
-Executes the ASP-style perl code contained by the tag.  The code will run under
+Executes the ASP-style perl code contained by the tag. The code will run under
 the restrictions of the 
 {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}}
 module. This is very similar to the
@@ -5846,7 +5846,7 @@ sections for more detail.
 H4: {{CMD[id="mvasp_tables"]tables}}
 
 Whitespace-separated list of database tables to make available within
-the ASP-Perl code.  See {{C[jump="#perl_tables"]perl}} tag.
+the ASP-Perl code. See {{C[jump="#perl_tables"]perl}} tag.
 
 H4: {{CMD[id="mvasp_failure"]failure}}
 
@@ -5855,7 +5855,7 @@ eval. See {{C[jump="#perl_failure"]perl}} tag.
 
 H4: {{CMD[id="mvasp_no_return"]no_return}}
 
-The return value of the perl code is always suppressed.  If you want
+The return value of the perl code is always suppressed. If you want
 output from the ASP code sections, you must explicitly write it with
 the &HTML or $Document->write() functions.
 
@@ -5867,7 +5867,7 @@ See {{C[jump="#perl_no_return"]perl}} tag.
 H4: {{CMD[id="mvasp_subs"]subs}}
 
 Enable {{CMD[jump="icconfig.html#GlobalSub *global*"]GlobalSub}} routines (requires catalog directive
-{{C[jump="icconfig.html#AllowGlobal *global*"]AllowGlobal}}).  See {{C[jump="#perl_subs"]perl}} tag.
+{{C[jump="icconfig.html#AllowGlobal *global*"]AllowGlobal}}). See {{C[jump="#perl_subs"]perl}} tag.
 
 H4: {{CMD[id="mvasp_global"]global}}
 
@@ -6303,7 +6303,7 @@ For better performance, Interchange can prebuild and cache pages that
 would otherwise be generated dynamically. If Interchange has built
 such a static page for the target, the C<page> tag produces a link to
 the cached page whenever the user has accepted and sent back a cookie
-with the session ID.  If the user did not accept the cookie,
+with the session ID. If the user did not accept the cookie,
 Interchange cannot use the cache, since the link must then include the
 I<mv_session_id> argument in order to preserve session.
 
@@ -6320,11 +6320,11 @@ The optional C<form> argument allows you to encode a form in the link.
 !endblock
 
 The two form values I<mv_session_id> and I<mv_arg> are automatically
-added when appropriate.  The form value I<mv_arg> receives the value
+added when appropriate. The form value I<mv_arg> receives the value
 of the tag's C<arg> parameter.
 
 This would generate a form that ordered quantity one of item number
-C<[[EXAMPLE_SKU]]> with size C<[[EXAMPLE_SIZE]]>.  The item would
+C<[[EXAMPLE_SKU]]> with size C<[[EXAMPLE_SIZE]]>. The item would
 appear on a separate line in the shopping cart, since
 C<mv_separate_items> is set. Since the C<href> is not set, you will go
 to the default shopping cart pageE<nbspace>E<emdash> alternatively,
@@ -6434,7 +6434,7 @@ characters, you won't have to worry about this.
 
 You may specify a one-click search in three different ways. The first is as
 used in previous versions, with the scan URL being specified completely as the
-page name.  The second two use the "argument" parameter to the C<[page ...]> or
+page name. The second two use the "argument" parameter to the C<[page ...]> or
 E<lbracket>{{C[jump="#area"]area}} ...]> tags to specify the search
 (an argument to a scan is never valid anyway).
 
@@ -6522,10 +6522,10 @@ This is not an actual end tag, but simply a macro that expands to
 H2: perl
 
 
-Executes the perl code contained by the tag.  The code will run under
+Executes the perl code contained by the tag. The code will run under
 the restrictions of Perl's
 {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}}
-module by default.  The tag expands to the value returned by the enclosed code
+module by default. The tag expands to the value returned by the enclosed code
 (i.e., printing to STDOUT or STDERR is useless).
 
 See also {{CMD[jump="icconfig.html#Programming"]Interchange Programming}}.
@@ -6572,14 +6572,14 @@ B<Tag expansion example:>
    [perl tables="products" failure="Perl code error <BR>"]
 !endblock
 !block example; lang="Perl"
-      my $result = "Looked up SKU $Values->{code}.  It is a ";
+      my $result = "Looked up SKU $Values->{code}. It is a ";
       $result .= $Tag->data('products', 'description', $Values->{code} );
       return ("$result <br>\n");
 !endblock
 !block example
    [/perl]
 ------------------------------------------------------
-   Looked up SKU [[EXAMPLE_SKU]].  It is a [[EXAMPLE_DESCRIPTION]] <br>
+   Looked up SKU [[EXAMPLE_SKU]]. It is a [[EXAMPLE_DESCRIPTION]] <br>
 !endblock
 
 B<ASP-like Perl call:> (e.g., to use it like a runtime eval() within your code)
@@ -6605,9 +6605,9 @@ H3: Description
 This tag allows you to embed perl code within an Interchange page. The
 code will run under the restrictions of Perl's 
 {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}}
-module by default.  Perl's 'C<warnings>' and 'C<strict>' pragmas are
+module by default. Perl's 'C<warnings>' and 'C<strict>' pragmas are
 both turned off, and Safe will block you from turning them on, since
-it blocks Perl's 'C<use>' command.  (This is not usually a problem,
+it blocks Perl's 'C<use>' command. (This is not usually a problem,
 since you should probably use an alternative such as a usertag if your
 code is complex enough to need C<strict>.)
 
@@ -6673,7 +6673,7 @@ This should ba a whitespace-separated list of database tables you want
 to make available within the Perl code.
 
 If you wish to use database values in your Perl code, the tag must
-pre-open the table(s) you will be using.  Here is an example using the
+pre-open the table(s) you will be using. Here is an example using the
 products N<table:>
 
 !block example;
@@ -6706,7 +6706,7 @@ Technical note:
 
 Safe objects (including database handles) may persist within
 a page, and the C<perl> tag does not necessarily destroy objects
-created earlier in the page.  As a result, your code may work even
+created earlier in the page. As a result, your code may work even
 though you did not set 'C<tables>' properly, only to break later when
 you change something elsewhere on the page.
 
@@ -6770,7 +6770,7 @@ explicitly written with the &HTML or $Document->write() functions.
 If C<no_return> is I<not> set, then the $Document->write() buffer is
 not returned (unless you use $Document->hot(1) or $Document->send(),
 in which case the contents of the write buffer will probably appear
-before anything else on the page).  See
+before anything else on the page). See
 {{CMD[jump="icconfig.html#Interchange Perl Objects"]Interchange Perl Objects}}
 for more detail.
 !endblock
@@ -6818,8 +6818,8 @@ is especially dangerous if a single Interchange server is shared by
 multiple companies or user IDs.
 
 Also, full 'C<use strict>' checking is turned on by default when in
-global mode.  You can turn it off by using 'C<no strict;>' within your
-code.  Note that any C<strict> errors will go to the interchange error
+global mode. You can turn it off by using 'C<no strict;>' within your
+code. Note that any C<strict> errors will go to the interchange error
 logs, and the tag itself will fail silently within the page.
 
 H4: {{CMD[id="perl_file"]file}}
@@ -7177,7 +7177,7 @@ or similarly with positional parameters,
 
 H3: Description
 
-The C<query> tag allows you to make SQL queries.  If you are using an
+The C<query> tag allows you to make SQL queries. If you are using an
 SQL database table, the tag will pass your SQL statement directly to
 the database and return the result.
 
@@ -7215,7 +7215,7 @@ The 'C<list>' subtag defines a region where you can use any of the
 looping subtags that work in array-list context (see
 {{CMD[jump="#Looping tags and Sub-tags"]Looping tags and Sub-tags}}).
 
-The default looping tag prefix will be 'sql'.  Note however that you
+The default looping tag prefix will be 'sql'. Note however that you
 can override this by setting the {{C[jump="#query_prefix"]prefix}}
 attribute in the enclosing C<query> tag.
 
@@ -7316,7 +7316,7 @@ H4: {{CMD[id="query_type"]type}}
 
 If you are not setting the '{{C[jump="#query_arrayref"]arrayref}}' or
 '{{C[jump="#query_arrayref"]hashref}}' attributes, then the type
-attribute defines the way the query will return its results.  The
+attribute defines the way the query will return its results. The
 C<type> should be one of the N<following:>
 
 !block table; colvaligns="TT"
@@ -7336,7 +7336,7 @@ E: </TABLE>
 >>
 list|<<
 This allows you to use subtags to control the query output and
-pagination.  See the {{CMD[jump="#query_subtags"]Subtags}} section
+pagination. See the {{CMD[jump="#query_subtags"]Subtags}} section
 above for detail.
 >>
 row_count|<<
@@ -7434,7 +7434,7 @@ H4: {{CMD[id="query_list_prefix"]list_prefix}}
 Requires '{{C[jump="#query_type"]type}}=list'.
 
 Setting 'C<list_prefix>=bar' overrides the default region tagname of
-'list'.  The best way to show this is by example. Compare the
+'list'. The best way to show this is by example. Compare the
 following two examples of list queries, the first using the defaults
 and the second with explicitly set C<prefix> and C<list_prefix>.
 
@@ -7527,7 +7527,7 @@ Requires '{{C[jump="#query_type"]type}}=list'.
 
 If you are setting up multiple simultaneously active search objects
 within a page, this allows you to distinguish them. The default label
-is 'current'.  Most people will not need this.
+is 'current'. Most people will not need this.
 
 
 H4: {{CMD[id="query_form"]form}}
@@ -7535,7 +7535,7 @@ H4: {{CMD[id="query_form"]form}}
 Requires '{{C[jump="#query_type"]type}}=list'.
 
 You can use this to pass one CGI form variable in the pagination links
-of a E<lbracket>more-list].  For example, 'C<form>="foo=bar"' to
+of a E<lbracket>more-list]. For example, 'C<form>="foo=bar"' to
 include '&foo=bar' in the URL of each of the pagination links.
 
 Note that the variable will not be available in the initial result set
@@ -7547,7 +7547,7 @@ H4: {{CMD[id="query_wantarray"]wantarray}}
 
 This is relevant only when calling $Tag->query( ... ) within global
 Perl code such as a globalsub or global usertag where $MVSAFE::Safe is
-not defined.  In these cases, setting 'C<wantarray>=1' allows the call
+not defined. In these cases, setting 'C<wantarray>=1' allows the call
 to
 
 E:  $Tag->query( { wantarray => 1, ... }, ... ); 
@@ -7567,7 +7567,7 @@ are also affected by this unless you set wantarray.
 
 H2: read_cookie
 
-Returns the value of the named cookie.  Returns nothing if the cookie
+Returns the value of the named cookie. Returns nothing if the cookie
 does not exist.
 
 
@@ -7901,8 +7901,8 @@ B<NO Description>
 
 H2: search_list
 
-Formats results returned by a search.  Must be enclosed within a
-{{C[jump="#search_region"]search_region}}.  Has sub-tags (see
+Formats results returned by a search. Must be enclosed within a
+{{C[jump="#search_region"]search_region}}. Has sub-tags (see
 {{C[jump="#Looping tags and Sub-tags"]LoopingE<nbspace>tagsE<nbspace>andE<nbspace>Sub-tags}}). 
 
 H2: search_region
@@ -8197,7 +8197,7 @@ This is the value to store in the cookie.
 H4:  {{CMD[id="set_cookie_expire"]expire}}
 
 Persistent cookies (that outlive a browser session) require an
-expiration date.  The date must be a string of the N<form:>
+expiration date. The date must be a string of the N<form:>
 
 . "Wdy,E<nbspace>DD-Mon-YYYYE<nbspace>HH:MM:SSE<nbspace>GMT"
 
@@ -8703,7 +8703,7 @@ The following is the string for Thursday, April 30, 1997.
 H4: {{CMD[id="tag_touch"]touch }}
 
 Touches a database to allow use of the tag_data() routine in 
-user-defined subroutines.  If this is not done, the routine
+user-defined subroutines. If this is not done, the routine
 will error out if the database has not previously been accessed
 on the page.
 
@@ -9113,7 +9113,7 @@ Attribute aliases
 
 H3: Description
 
-Provides iterative list capability for binary trees.  It produces
+Provides iterative list capability for binary trees. It produces
 hash-based rows use the same tags as E<lbracket>{{C[jump="#item_list"]item-list}}]; sets some additional
 hash key entries to describe the tree and provide display control.
 
@@ -9140,7 +9140,7 @@ tree.
 
 H4: {{CMD[id="tree_key_mv_level"]mv_level}}
 
-Level of the item. If it is in the first level, it is 0.  Sublevels are
+Level of the item. If it is in the first level, it is 0. Sublevels are
 infinite (except for performance).
 
 H4: {{CMD[id="tree_key_mv_increment"]mv_increment}}
@@ -9324,7 +9324,7 @@ H4: {{CMD[id="tree_show_error"]show_error}}
 
 When set to a true value, and an endless tree is detected (i.e. the
 child branch contains a parent) then the error will be returned in the
-page.  Errors are NOT shown by default.
+page. Errors are NOT shown by default.
 
 
 In addition to the above values, all valid options for a list tag are
@@ -9616,7 +9616,7 @@ the value you set unless you also set the
 {{CMD[jump="#value_hide"]hide}}=1 attribute.
 
 Use this to "uncheck" a checkbox or set other form variable values to
-defaults.  If you simply want a place to store your own data, use the
+defaults. If you simply want a place to store your own data, use the
 {{C[jump="#set"]set}} and {{C[jump="#scratch"]scratch}} tags
 instead.
 
@@ -9659,7 +9659,7 @@ hash. An illustrative N<example:>
 H4: {{CMD[id="value_default"]default}}
 
 This sets a return value in case the named value is missing or
-otherwise false.  The following will expand to N<"Using default":>
+otherwise false. The following will expand to N<"Using default":>
 
 !block example
    [value name=myname set=0 hide=1]
@@ -9814,7 +9814,7 @@ An alias:
 This will change [product_name 99-102] into [data products title 99-102],
 which will output the C<title> database field for product code C<99-102>.
 Don't use this with C<[item-data ...]> and C<[item-field ...]>, as they
-are parsed separately.  You can do C<[product-name [item-code]]>, though.
+are parsed separately. You can do C<[product-name [item-code]]>, though.
 
 A simple subroutine:
 
@@ -9906,7 +9906,7 @@ Notifies Interchange that this tag must be checked for nesting.
 Only applies to tags that have I<HasEndTag> defined, of course.
 \NOTE: Your routine must handle the subtleties of nesting, so
 don't use this unless you are quite conversant with parsing
-routines.  See the routines C<tag_loop_list> and C<tag_if> in 
+routines. See the routines C<tag_loop_list> and C<tag_if> in 
 lib/Vend/Interpolate.pm for an example of a nesting tag.
 
 >    UserTag tagname CanNest
@@ -9981,7 +9981,7 @@ to expand to this:
 >   </SELECT>
 
 Without the InsideHTML setting, the [loop ...] would have been B<outside>
-of the selectE<nbspace>E<emdash> not what you want.  If you want to turn off this
+of the selectE<nbspace>E<emdash> not what you want. If you want to turn off this
 behavior on a per-tag basis, add the attribute mv.noinside=1 to the tag
 on your page.
 
@@ -9990,7 +9990,7 @@ H2: Interpolate
 The behavior for this attribute depends on whether the tag is a container
 (i.e. C<HasEndTag> is defined). If it is not a container, the C<Interpolate>
 attribute causes the B<the resulting HTML> from the C<UserTag> to be
-re-parsed for more Interchange tags.  If it is a container, C<Interpolate>
+re-parsed for more Interchange tags. If it is a container, C<Interpolate>
 causes the contents of the tag to be parsed B<before> the tag routine
 is run.
 
@@ -10096,7 +10096,7 @@ This is not recommended for the novice, thoughE<nbspace>E<emdash> keep it simple
 H1: Standard Usertags
 
 The distribution includes a number of prebuilt usertags in the
-C<interchange_root/usertag> directory.  Some of these are used by the
+C<interchange_root/usertag> directory. Some of these are used by the
 foundation catalog or its administrative interface.
 
 H2: {{CMD[id="ut_bar_button"]bar_button}}
@@ -10183,7 +10183,7 @@ N:Alias: B<pedagogy>, B<dummy_alias>
 E<lbracket>B<dummy>E<nbspace>...], [B<pedagogy>E<nbspace>...] and [B<dummy-alias>E<nbspace>...] are equivalent.
 !endblock
 
-A short description of the tag goes here.  This example (B<dummy>) is
+A short description of the tag goes here. This example (B<dummy>) is
 not an actual tag.
 
 
@@ -10253,7 +10253,7 @@ B<Tag expansion example:>
 
 !block note; label="Reading the tag expansion example: "
 
-. B<format:> The tag is listed first.  A blank line separates it from
+. B<format:> The tag is listed first. A blank line separates it from
 the expanded return value.
 
 . B<long lines:> When this document must break a line from an example
@@ -10286,7 +10286,7 @@ Section describing the first parameter
 
 A5: {{CMD[id="dummy_special_value"]special_value}}
 
-Description of treatment of the special argument.  For example, giving
+Description of treatment of the special argument. For example, giving
 the {{CMD[jump="#page"]page}} tag an B<href> of 'scan' causes it to
 link to a search specification rather than a page.
 
@@ -10297,7 +10297,7 @@ C<more> is a named attribute that applies to this tag.
 A4: {{CMD[id="dummy_still_more"]still-more}}
 
 C<still-more> is a named attribute that applies to this tag only when
-the C<more> attribute has been given.  It would be an error to use the
+the C<more> attribute has been given. It would be an error to use the
 C<still-more> attribute without specifying a value for C<more>
 
 A4: {{CMD[id="dummy_other"]other}}
@@ -10373,7 +10373,7 @@ this, '<!-- E<lbracket>tagname] -->'.
 {{C[jump="ictags.html#attr_interpolate"]interpolate}} settings, of course).
 
 ** Some tags (e.g., E<lbracket>{{C[jump="ictags.html#loop"]loop}}])
-process I<prefix>-tags in their contained body text.  The I<prefix>-tags are
+process I<prefix>-tags in their contained body text. The I<prefix>-tags are
 not handled recursively.
 
 .{{}}
@@ -10389,8 +10389,8 @@ A2: Nonstandard parsing within the admin interface
 
 Parsing of content via the specialized
 {{C[jump="ictags.html#UI_ut_regenerate"]regenerate}} usertag included
-with the administrative interface does not obey the above order.  The
-MV_AUTOLOAD and '<!--[tagname]-->' escapes are skipped.  There are
+with the administrative interface does not obey the above order. The
+MV_AUTOLOAD and '<!--[tagname]-->' escapes are skipped. There are
 some other more subtle differences as well; in the very unlikely event
 that you need to check this in the source code, compare the
 'interpolate_html' and 'cache_html' routines in Interpolate.pm.
