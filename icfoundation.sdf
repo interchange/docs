@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icfoundation.sdf,v 1.10 2001-05-14 13:20:01 bill Exp $
+# $Id: icfoundation.sdf,v 1.11 2001-05-14 21:13:09 larry Exp $
 
 !define DOC_NAME "Foundation Store"
 !define DOC_TYPE ""
 !define DOC_CODE "icfoundation"
-!define DOC_VERSION substr('$Revision: 1.10 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.11 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/doc/icfoundation.html"
@@ -827,6 +827,79 @@ The LEFTONLY_TOP template region is used in the following N<templates:>
     templates/foundation/simple
 !endblock
 
+H4: Region Template Walkthrough -- LEFTONLY_TOP
+
+!block example
+     1	<!-- BEGIN LEFTONLY_TOP -->
+     2	[if scratch members_only]
+     3	    [set members_only][/set]
+     4	    [if !session logged_in]
+     5	    [set mv_successpage]@@MV_PAGE@@[/set]
+     6	    [bounce page=login]
+     7	    [/if]
+     8	[/if]
+     9	
+    10	<html>
+    11	<head>
+    12	  <title>[scratch page_title]</title>
+    13	  __THEME_CSS__
+    14	</head>
+    15	
+    16	<body marginheight="0" marginwidth="0">
+    17	
+    18	<!--- top left and right logo --->
+    19	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    20	<tr>
+    21	  <td align="left" valign="middle" class="maincontent">
+    22	    &nbsp;<img src="__THEME_IMG_DIR____LOGO__">
+    23	  </td>        	
+    24	  <td align="right" valign="middle" class="maincontent">
+    25	    <img width="174" height="60" src="__THEME_IMG_DIR__logo2.gif">&nbsp;
+    26	  </td>
+    27	</tr>
+    28	</table>
+    29	
+    30	<!--- menu bar along the top --->
+    31	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    32	<tr>
+    33	  <td width="100%" class="menubar">
+    34	    <a href="[area index]"><img name="Home" border="0" src="__THEME_IMG_DIR__home.gif"></a>
+    35	      <img src="__THEME_IMG_DIR__sep.gif">
+    36	    <a href="[area login]">
+    37	    [if session logged_in]
+    38	      <img alt="Log Out" border="0" src="__THEME_IMG_DIR__logout.gif"></a>
+    39	    [else]
+    40	      <img alt="Log In" border="0" src="__THEME_IMG_DIR__login.gif"></a>
+    41	    [/else]
+    42	    [/if]
+    43	      <img src="__THEME_IMG_DIR__sep.gif">
+    44	    <a href="[area ord/basket]"><img alt="Your Cart" border="0" src="__THEME_IMG_DIR__cart.gif"></a>
+    45	      <img src="__THEME_IMG_DIR__sep.gif">
+    46	    <a href="[area ord/checkout]"><img alt="Check Out" border="0" src="__THEME_IMG_DIR__checkout.gif"></a>
+    47	      <img src="__THEME_IMG_DIR__sep.gif">
+    48	    <a href="[area customerservice]"><img alt="Customer Service" border="0" src="__THEME_IMG_DIR__service.gif"></a>
+    49	      <img src="__THEME_IMG_DIR__sep.gif">
+    50	    <a href="[area aboutus]"><img alt="About Us" border="0" src="__THEME_IMG_DIR__about.gif"></a>
+    51	  </td>
+    52	</tr>
+    53	</table>
+    54	
+    55	<!--- left category column, main content column, and right special column --->
+    56	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    57	<tr> 
+    58	  <td width="20%" valign="top" align="left" class="categorybar"> 
+    59	    <!--Left Sidebar-->
+    60	    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    61	      [include file="templates/components/[control component none]"][control]
+    62	      [include file="templates/components/[control component none]"][control]
+    63	      [include file="templates/components/[control component none]"][control]
+    64	    </table>				  
+    65	  </td>
+    66	  <td width="80%" valign="top" align="center" class="maincontent"> 
+    67	    [include file="templates/components/[control component none]"][control]
+    68	
+!endblock
+
 H3: LEFTONLY_BOTTOM
 
 The LEFTONLY_BOTTOM template region is used in the following template N<pages:>
@@ -1109,11 +1182,165 @@ The cart component is used in the following N<page:>
 
 H3: cart_display
 
+The cart_display component creates a small shopping cart that is
+displayed on the search results page (pages/results.html) after an
+item in a list of results from a search is added to the shopping
+cart. cart_display is called in results.html by the following include
+statement:
+
+!block example
+    [include file="templates/components/cart_display"]
+!endblock
+
 The cart_display component is used in the following N<pages:>
 
 !block example
     pages/results.html
 !endblock
+
+H4: Component Walkthrough -- cart_display
+
+The remainder of this section is best read while viewing the file
+CATROOT/templates/components/cart_display in a text editor.
+
+B<Lines 1-6:> Component Specification
+
+!block example
+     1	[comment]
+     2	ui_component: cart_display
+     3	ui_component_group: info
+     4	ui_component_label: Smaller cart for display in content area
+     5	
+     6	[/comment]
+     7
+!endblock
+
+These lines control what is shown in the Edit page screen of the
+admin interface.
+
+!block example
+     8	<!-- BEGIN COMPONENT [control component cart_display] -->
+!endblock
+
+Line 8 is an HTML comment noting the start of the code for the
+component. (Note that this can serve as a useful debugging tool to
+help you locate the component in the resulting HTML generated by
+Interchange when you view the source of a page loaded in the browser.)
+
+!block example
+     9	[if items]
+!endblock
+
+Line 9 checks to see whether there are items in the shopping
+basket. If there are, the remaining code up to the closing [/if] tag
+on line 64 is executed. If not, Interchanges continues executing the
+remaining code in results.html (the file that calls the cart_display
+component).
+
+!block example
+    10	<center>
+    11	  <table width="95%" border="0" cellspacing="0" cellpadding="0">
+    12			<TR class="contentbar2" VALIGN=TOP>
+    13	                        <td align=center class="contentbar2">Action</td>
+    14	                        <td class="contentbar2"> 
+    15	                          SKU
+    16	                        </td>
+    17	                        <td class="contentbar2"> 
+    18	                          Description
+    19	                        </td>
+    20	                        <td class="contentbar2"> 
+    21	                          Quantity
+    22	                        </td>
+    23	                        <td class="contentbar2"> 
+    24	                          Price
+    25	                        </td>
+    26	                        <td class="contentbar2"> 
+    27	                          Extension
+    28	                        </td>
+    29			</TR>
+!endblock
+
+Line 10 centers the table started in line 11. Lines 12-29 create a
+header row in the shopping cart consisting of the header titles
+Action, SKU, Description, Quantity, Price, and Extension.
+
+!block example
+    30		<TBODY>
+    31	[item-list]
+    32
+!endblock
+
+Line 30 defines the remainder of the table as a section, while the
+[item-list] tag on line 31 tells Interchange to execute the code up to
+the closing tag ([/item-list] on line 59) for each item the customer
+has ordered so far.
+
+    33	<tr class="[item-alternate 2]maincontent[else]contentbar1[/else][/item-alternate]">
+    34		<td align=center valign=top>
+    35		  [page ord/basket]edit</A>
+    36		</TD>
+    37		<td valign=top>[item-code]</TD>
+    38		<td valign=top>[page [item-code]][item-description]</A>
+    39	</TD>
+    40
+
+Line 33 begins the next row in the table. The [item-alternate] tag
+provided as the value of the class attribute tells Interchange to
+alternate between displaying the rows according to the "maincontent"
+and "contentbar1" styles (gray and white, respectively).
+
+Lines 34-36 create a link to the shopping cart (basket.html) where the
+customer can remove or change the quantity of the item ordered.
+
+Line 37 displays the SKU of the item, while lines 38 and 39 provide a
+link to the product display page (flypage.html) for the item. The
+[item-description] tag providing the content of the [page] tag enables
+the item's name to be displayed as the link to the product display
+page.
+
+!block example	
+    41	[if-item-modifier gift_cert]
+    42		<TD ALIGN=CENTER><small>Amount of gift:</small></TD>
+    43		<TD ALIGN=CENTER>[item-quantity]</TD>
+    44		<TD ALIGN=right>
+    45				[item-subtotal]
+    46		</TD>
+    47	[else]
+    48		<TD ALIGN=CENTER>[item-quantity]</TD>
+    49		<TD ALIGN=right>
+    50				[item-price]
+    51		</TD>
+    52		<TD ALIGN=right>
+    53				[item-subtotal]
+    54		</TD>
+    55	[/else]
+    56	[/if-item-modifier]
+    57	</TR>
+    58
+!endblock
+
+Line 41 checks whether the item is a gift certificate and, if it is,
+displays "Amount of gift:" and displays the [item-quantity] (amount of
+the gift certificate, in this case) under the headings "Quantity" and
+"Price", respectively. Otherwise, lines 48 through 50 display the
+quantity and price of the item ordered. Lines 45 or 53 (depending on
+whether the item is a gift certificate) display the item subtotal
+(quantity multiplied by price) for the item under the heading
+"Extension".
+
+!block example
+    59	[/item-list]
+    60	</TBODY>
+    61	</table>
+    62	</FORM>
+    63	</center>
+    64	[/if]
+    65
+    66	<!-- END COMPONENT [control component cart_display] -->
+!endblock
+
+Lines 59 through 64 close out the tags for the component, and line 66
+indicates the end of the component code.
 
 H3: cart_tiny
 
@@ -1145,6 +1372,11 @@ H3: category_horizontal
 Not used in Foundation demo pages or templates.
 
 H3: category_vertical
+
+The category_vertical component provides a listing of all products in
+the catalog, organized by prod_group (e.g., Hand Tools,
+Ladders). category_vertical is usually displayed in the LEFTSIDE
+section of the page, under the search_box_small component.
 
 The category_vertical component is used in the following N<pages:>
 
@@ -1180,6 +1412,116 @@ The category_vertical component is used in the following N<pages:>
     pages/stock-alert.html
     pages/swap_results.html
 !endblock
+
+H4: Component Walkthrough -- category_vertical
+
+The remainder of this section is best read while viewing the file
+CATROOT/templates/components/cart_display in a text editor.
+
+B<Lines 1-6:> Component Specification
+
+!block example
+     1	[comment]
+     2	ui_component: category_vertical
+     3	ui_component_group: Navigation
+     4	ui_component_label: Vertical category list
+     5	
+     6	page_class:
+     7		label: Page class
+     8		widget: select
+     9		lookup: which_page
+    10		db: area
+    11		help: Defines which sets of items should be displayed
+    12		advanced: 1
+    13	
+    14	set_selector:
+    15		label: Page area selector
+    16		widget: select
+    17		db: area
+    18		lookup: sel
+    19		help: Defines which sets of items should be displayed
+    20		advanced: 1
+    21	[/comment]
+    22	
+!endblock
+
+These lines control what is shown in the Edit page screen of the
+admin interface.
+
+!block example
+    23	<tr><td align="center" class="categorybar">
+    24	  <br>
+    25	  <table>
+    26	
+    27	<!-- BEGIN COMPONENT [control component category_vertical] -->
+!endblock
+
+Lines 23-25 set up the row and table within that row that will hold
+the vertical category list. Line 27 identifies the start of the code
+for the list.
+
+!block example
+    28	[loop
+    29		prefix=box
+    30		search="
+    31			fi=area
+    32			st=db
+    33			tf=sort
+    34			ac=0
+    35			ac=0
+    36			co=yes
+    37			
+    38			sf=sel
+    39			op=eq
+    40			se=[control set_selector left]
+    41	
+    42			sf=which_page
+    43			op=rm
+    44			se=[control page_class all|@@MV_PAGE@@]
+    45	"]
+    46	
+!endblock
+
+Lines 28-45 build a list of product categories obtained through a
+search of the area table.
+
+!block example
+    47	  <tr> 
+    48	    <td valign="top" class="categorybar">
+    49	      <b>[box-exec bar_link]area[/box-exec]</b>
+    50	    </td>
+    51	  </tr>
+    52	  <tr> 
+    53	    <td valign="top" class="categorybar">
+    54	
+    55	[set found_cat][/set]
+    56	[loop prefix=cat
+    57		search="
+    58			fi=cat
+    59			st=db
+    60			tf=sort
+    61			tf=name
+    62			rf=code,name
+    63			sf=sel
+    64			se=[box-code]
+    65		"
+    66		]
+    67	      &nbsp;&nbsp;[cat-exec bar_link]cat[/cat-exec]<BR>
+    68	[/loop]
+    69	
+    70	    </td>
+    71	  </tr>
+    72	[/loop]
+    73	  
+    74	  </table>
+    75	  <br>
+    76	</td></tr>
+    77	
+    78	<!-- END COMPONENT [control component category_vertical] -->
+!endblock
+
+Lines 47-78 generate a list of links based on the products and product
+categories identified in the search.
 
 H3: cross_horizontal
 
