@@ -1,5 +1,0 @@
-# To remove the header/footer borders, uncomment the line below
-#!default OPT_BORDERS 0
-
-# Inherit the simple look
-!inherit "look/simple"
