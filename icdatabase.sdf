@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.24 2001-04-13 17:31:10 bill Exp $
+# $Id: icdatabase.sdf,v 1.25 2001-06-16 05:58:23 jon Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.24 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.25 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icdatabase.html"
@@ -2079,11 +2079,13 @@ directory, set the C<Special> directive:
 
 There are two styles of setting which can be mixed in the same file. The first is line-based and expects six or more TAB-separated fields. They would look like:
 
+!block example
 default No shipping weight  0   99999999    0
 
 upsg    UPS Ground  weight  0   0   e Nothing to ship!
 upsg    UPS Ground  weight  0   150 u Ground [default zip 98366] 3.00
 upsg    UPS Ground  weight  150 999999  e @@TOTAL@@ lbs too heavy for UPS
+!endblock
 
 The second is a freeform method with a C<mode: Description text> introducing
 the mode line. The special encoding is called out by indented parameters. The below is identical to the above:
@@ -2272,8 +2274,9 @@ Note: The same mode name may be used for all lines in the same group, but the fi
 
 Here is an example shipping file using all of the methods of determining shipping cost.
 
-Note: The columns are lined up for reading convenience. The actual entries should have ONE tab between fields.
+Note: The columns are lined up for reading convenience. The actual entries should have B<one> tab between fields.
 
+!block example
 global Option   n/a               0   0      g PriceDivide
 
 rpsg   RPS      quantity          0   0      R RPS products/rps.csv
@@ -2286,8 +2289,7 @@ usps   US Post  price             0   50     f 7 + (1 * @@TOTAL@@ / 10)
 usps   US Post  price             50  100    f 12 + (.90 * @@TOTAL@@ / 10)
 usps   US Post  price             100 99999  f @@TOTAL@@ * .05
 
-upsg   UPS      weight [value       0      e Nothing to ship
-state]0.
+upsg   UPS      weight [value state]  0   0    e Nothing to ship.
 upsg   UPS      AK HI             0   150    u upsg [default zip 980] 12.00 round
 upsg   UPS                        0   150    u Ground [default zip 980] 2.00 round
 upsg   UPS                        150 9999   e @@TOTAL@@ lb too heavy for UPS
@@ -2296,6 +2298,7 @@ upsca  UPS/CA   weight            0   0      c C UPS_Canada products/can.csv
 upsca  UPS/CA   weight            -1   -1    o PriceDivide=0
 upsca  UPS/CA   weight            0   150    C upsca [default zip A7G] 5.00
 upsca  UPS/CA   weight            150 99999  e @@TOTAL@@ lb too heavy for UPS
+!endblock
 
 LI1: global
 
