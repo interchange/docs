@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.31 2001-12-06 01:23:13 jon Exp $
+# $Id: icdatabase.sdf,v 1.32 2001-12-06 03:27:27 jon Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.31 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.32 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
@@ -1900,11 +1900,7 @@ LI1: [more]
 
 LI1: [process-search]
 
-.Calls the search with the proper URL, including Interchange session tags. Used as the ACTION value for the search form.
-
-LI1: [process-target frame]
-
-.Calls the search with the proper URL, including Interchange session tags. Used as the ACTION value for the search form if the results are to be targeted to a different window than the one set by SearchFrame (which is "_self" by default).
+.Outputs the complete URL for a search, including Interchange session tags. Used as the ACTION value for the search form. This is exactly the same as [area search].
 
 H1: Sorting
 
@@ -2665,7 +2661,7 @@ It is normally called in an C<mv_click> or C<mv_check> setting, as in:
    [userdb function=login]
    [/set]
 
-   <FORM ACTION="[process-target]" METHOD=POST>
+   <FORM ACTION="[process]" METHOD=POST>
    <INPUT TYPE=hidden NAME=mv_click VALUE=Login>
    Username <INPUT NAME=mv_username SIZE=10>
    Password <INPUT NAME=mv_password SIZE=10>
@@ -3025,7 +3021,7 @@ To get the names of the addresses, use the C<get_shipping_names> function:
 By default, they are placed in the variable C<address_book>. Here is a little snippet that builds a select box:
 
 !block example
-   <FORM ACTION="[process-target]" METHOD=POST>
+   <FORM ACTION="[process]" METHOD=POST>
    [userdb function=get_shipping_names]
    [if value address_book]
    <SELECT NAME="s_nickname">
@@ -3211,13 +3207,13 @@ can specify the column in the userdb that contains the key value:
 
 H1: Tracking and Back-End Order Entry
 
-Interchange allows the entry of orders into a system through one of several methods. The C<AsciiBackend> capability allows submission of parameters to an external order entry script. Support for SQL allows the entry of orders directly into an SQL database. Orders can be written to an ASCII file. They can be formatted precisely for e-mail-based systems. The orders can be placed in a DBM file. Finally, embedded Perl allows completely flexible order entry, including real-time credit card verification and settlement.
+Interchange allows the entry of orders into a system through one of several methods. Orders can be written to an ASCII file or formatted precisely for email-based systems. Or they can go directly into an SQL or DBM database. Finally, embedded Perl allows completely flexible order entry, including real-time credit card verification and settlement.
 
 H2: ASCII Backup Order Tracking
 
-If C<AsciiTrack> is set to a legal file name (based in VendRoot unless it has a leading "/"). A copy of the order is saved and sent in an e-mail.
+If C<AsciiTrack> is set to a legal file name (based in VendRoot unless it has a leading "/"), a copy of the order is saved and sent in an email.
 
-If the file name string begins with a pipe "|," a program will be run and the output "piped" to that program. This allows easy back-end entry of orders with an external program.
+If the file name string begins with a pipe "|", a program will be run and the output "piped" to that program. This allows easy back-end entry of orders with an external program.
 
 H2: Database Tracking
 
@@ -3609,7 +3605,7 @@ Interchange has several features that enable secure ordering via SSL (Secure Soc
 
 Note[label='IMPORTANT NOTE: '] Interchange attempts to perform operations securely, but no guarantees or warranties of any kind are made! Since Interchange comes with source code, it is fairly easy to modify the program to create security problems. One way to minimize this possibility is to record digital signatures, using MD5 or PGP or GnuPG, of C<interchange>, C<interchange.cfg>, and all modules included in Interchange. Check them on a regular basis to ensure they have not been changed.
 
-Interchange uses the C<SecureURL> directive to set the base URL for secure transactions, and the C<VendURL> directive for normal non-secure transactions. Secure URLs can be enabled for forms through a form action of C<[process-target secure=1]>. An individual page can be displayed via SSL with C<[page href=mvstyle_pagename secure=1]>. A certain page can be set to be always secure with the C<AlwaysSecure> catalog.cfg directive.
+Interchange uses the C<SecureURL> directive to set the base URL for secure transactions, and the C<VendURL> directive for normal non-secure transactions. Secure URLs can be enabled for forms through a form action of C<[process secure=1]>. An individual page can be displayed via SSL with C<[page href=mvstyle_pagename secure=1]>. A certain page can be set to be always secure with the C<AlwaysSecure> catalog.cfg directive.
 
 Interchange incorporates additional security for credit card numbers. The field C<mv_credit_card_number> will not ever be written to disk.
 

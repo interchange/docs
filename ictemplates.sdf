@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ictemplates.sdf,v 1.27 2001-11-02 17:47:33 edl Exp $
+# $Id: ictemplates.sdf,v 1.28 2001-12-06 03:27:27 jon Exp $
 
 !define DOC_NAME "Template Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "ictemplates"
-!define DOC_VERSION substr('$Revision: 1.27 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.28 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictemplates.html"
@@ -2634,7 +2634,7 @@ H2: Stacking Variables on the Form
 Many Interchange variables can be "stacked," meaning they can have multiple values for the same variable name. As an example, to allow the user to order multiple items with one click, set up a form like this:
 
 !block example
-<FORM METHOD=POST ACTION="[process-order]">
+<FORM METHOD=POST ACTION="[process]">
 <input type=checkbox name="mv_order_item" value="M3243"> Item M3243
 <input type=checkbox name="mv_order_item" value="M3244"> Item M3244
 <input type=checkbox name="mv_order_item" value="M3245"> Item M3245
@@ -2648,7 +2648,7 @@ The stackable C<mv_order_item> variable with be decoded with multiple values, ca
 To place a "delete" checkbox on the shopping basket display:
 
 !block example
-<FORM METHOD=POST ACTION="[process-order]">
+<FORM METHOD=POST ACTION="[process]">
 [item-list]
   <input type=checkbox name="[quantity-name]" value="0"> Delete
   Part number: [item-code]

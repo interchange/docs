@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ic_ecommerce.sdf,v 1.9 2001-12-06 01:23:13 jon Exp $
+# $Id: ic_ecommerce.sdf,v 1.10 2001-12-06 03:27:27 jon Exp $
 
 !define DOC_NAME "Interchange Ecommerce Functions"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_ecommerce"
-!define DOC_VERSION substr('$Revision: 1.9 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.10 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ic_ecommerce.html"
@@ -436,7 +436,7 @@ C<[total-cost]> by itself, if you wish.
 You can also order items from a form, using the C<mv_order_item>,
 C<mv_cartname>, and optional C<mv_order_quantity> variables.
 
-> <FORM METHOD=POST ACTION="[process-order]">
+> <FORM METHOD=POST ACTION="[process]">
 > <input type=checkbox name="mv_order_item" value="M3243"> Item M3243
 > <input name="mv_order_quantity" value="1"> Quantity
 > <input type=hidden name="mv_cartname" value="layaway">
@@ -1451,9 +1451,6 @@ report which gets mailed on the completion of the order. For example,
 
 Any input field from the order page can be included using the dollar
 sign notation.
-
-To prevent a value from being included in the order report, just add it
-to the B<ReportIgnore> configuration directive. 
 
 Interchange defines some values for use in the search form -- they begin
 with C<mv_> and are automatically ignored.

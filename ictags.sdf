@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.67 2001-11-27 17:15:44 jon Exp $
+# $Id: ictags.sdf,v 1.68 2001-12-06 03:27:27 jon Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.67 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.68 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -9021,7 +9021,7 @@ To order with a form, you set the form variable C<mv_order_item> to
 the item-code/SKU and use the C<refresh> N<action:>
 
 !block example
-   <FORM ACTION="[process-target]" METHOD=POST>
+   <FORM ACTION="[process]" METHOD=POST>
    <INPUT TYPE=hidden  NAME="mv_todo"        VALUE="refresh">
    <INPUT TYPE=hidden  NAME="mv_order_item"  VALUE="[[EXAMPLE_SKU]]">
 
@@ -9034,7 +9034,7 @@ the item-code/SKU and use the C<refresh> N<action:>
 Groups of items may be batched:
 
 !block example
-   <FORM ACTION="[process-target]" METHOD=POST>
+   <FORM ACTION="[process]" METHOD=POST>
    <INPUT TYPE=hidden  NAME="mv_todo"        VALUE="refresh">
 
    <INPUT TYPE=hidden  NAME="mv_order_item"  VALUE="TK112">
@@ -9944,7 +9944,7 @@ H4: {{CMD[id="price_code"]code}}
 
 H2: process
 
-This is a shortcut for the 'process' action, expanding to your catalog URL and session ID.  It is analogous to the {{C[jump="#area"]area}} tag, but is more limited. The following expansion is N<illuastrative:>
+This is a shortcut for the 'process' action, expanding to your catalog URL and session ID. It is analogous to the {{C[jump="#area"]area}} tag for the 'process' page, but is more limited. The following expansion is N<illustrative:>
 
 !block example
    [process target=targetframe]
@@ -9961,7 +9961,7 @@ Note the mismatched quotes in the expansion.  Your surrounding HTML should suppl
    <A HREF="[process target=targetframe]">...
 !endblock
 
-N:Alias:  B<process_target>
+N:Aliases:  B<process_target>, B<process_order>
 
 
 H3: Summary
@@ -10016,6 +10016,9 @@ or similarly with positional parameters,
 !endblock
 
 
+H2: process_search
+
+This is an exact alias for [area search].
 
 
 H2: query
@@ -13975,7 +13978,7 @@ It is normally called in an C<mv_click> or C<mv_check> setting, as in:
 >    [userdb function=login]
 >    [/set]
 >
->    <FORM ACTION="[process-target]" METHOD=POST>
+>    <FORM ACTION="[process]" METHOD=POST>
 >    <INPUT TYPE=hidden NAME=mv_click VALUE=Login>
 >    Username <INPUT NAME=mv_username SIZE=10>
 >    Password <INPUT NAME=mv_password SIZE=10>
