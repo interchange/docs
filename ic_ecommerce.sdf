@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ic_ecommerce.sdf,v 1.13 2002-06-06 02:01:51 jon Exp $
+# $Id: ic_ecommerce.sdf,v 1.14 2002-06-23 01:04:09 jon Exp $
 
 !define DOC_NAME "Interchange Ecommerce Functions"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_ecommerce"
-!define DOC_VERSION substr('$Revision: 1.13 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.14 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ic_ecommerce.html"
@@ -532,7 +532,7 @@ should not normally be whitespace in a setting). A chained item ends
 with a comma.  A fallback item has a leading semi-colon.  Final atoms
 have no comma appended or semi-colon prepended.
 
-A I<settor> is the means by which the price is set. There are
+A I<settor> is the means by which the price is set.
 There are eight different types of price settors. All settors
 can then yield another CommonAdjust string. 
 
