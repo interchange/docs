@@ -1,4 +1,4 @@
-VERSION=4.8.4
+VERSION=4.8.5
 TARGETS=icadvanced iccattut icconfig icfoundation ictemplates icdatabase ic_ecommerce ictags icfaq icupgrade ic_howto_cvs
 SUFFIXES=txt html pdf pod 8
 MAXSUFFIXES=mif
