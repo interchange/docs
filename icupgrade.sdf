@@ -1,14 +1,14 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icupgrade.sdf,v 1.16 2001-09-17 17:24:11 jon Exp $
+# $Id: icupgrade.sdf,v 1.17 2002-04-12 22:53:18 jon Exp $
 
 !define DOC_NAME "Interchange Upgrade Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "icupgrade"
-!define DOC_VERSION substr('$Revision: 1.16 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.17 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icupgrade.html"
-!define DOC_OWNER "1996-2001 Red Hat, Inc. E<lt>{{EMAIL:interchange@redhat.com}}E<gt>"
+!define DOC_OWNER "1996-2002 Red Hat, Inc. E<lt>{{EMAIL:interchange@redhat.com}}E<gt>"
 !build_title
 
 H1:Introduction
@@ -944,4 +944,4 @@ In January 2001, Red Hat acquired Akopia and created its new E-Business Solution
 
 Line:
 
-N:Copyright 2001 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.
+N:Copyright 2001-2002 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.

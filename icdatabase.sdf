@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.38 2002-04-01 16:09:10 kwalsh Exp $
+# $Id: icdatabase.sdf,v 1.39 2002-04-12 22:53:18 jon Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.38 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.39 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
@@ -147,7 +147,7 @@ Note[label='IMPORTANT NOTE: '] Field names are usually case-sensitive. Use consi
 
 LI2: shipping.asc
 
-..The database of shipping options that is accessed if the C<CustomShipping> directive is in use.  This is a fixed-format database, and must be created as specified. For more information, see the Shipping ITL tag in the {{1:Red Hat Interchange 4.8: Tag Reference Guide}}.
+..The database of shipping options that is accessed if the C<CustomShipping> directive is in use.  This is a fixed-format database, and must be created as specified. For more information, see the Shipping ITL tag in the {{1:Interchange Tag Reference Guide}}.
 
 LI2: salestax.asc
 
@@ -3790,4 +3790,4 @@ Here is a quick procedure that might get you started:
 
 Line:
 
-N:Copyright 2001 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.
+N:Copyright 2001-2002 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.

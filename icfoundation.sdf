@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icfoundation.sdf,v 1.24 2001-12-29 21:31:13 jon Exp $
+# $Id: icfoundation.sdf,v 1.25 2002-04-12 22:53:18 jon Exp $
 
 !define DOC_NAME "Foundation Store"
 !define DOC_TYPE ""
 !define DOC_CODE "icfoundation"
-!define DOC_VERSION substr('$Revision: 1.24 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.25 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icfoundation.html"
@@ -1806,7 +1806,7 @@ Shipping table from UPS (http://www.ups.com/using/services/rave/rate/).
 H2: access.asc
 
 
-Administrative access table.  This table is used by the Administration Tool. For more description on these fields, see the Red Hat Interchange Administration Tool guide.
+Administrative access table.  This table is used by the Administration Tool. For more description on these fields, see the Interchange Administration Tool guide.
 
 
 B<Fields>
@@ -4211,4 +4211,4 @@ In general, it's a good idea to leave fields empty if you don't want to use them
 
 Line:
 
-N:Copyright 2001 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.
+N:Copyright 2001-2002 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.

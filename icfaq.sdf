@@ -1,13 +1,13 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icfaq.sdf,v 1.7 2001-12-21 03:30:08 danb Exp $
+# $Id: icfaq.sdf,v 1.8 2002-04-12 22:53:18 jon Exp $
 
 !define DOC_NAME "Frequently Asked Questions"
 !define DOC_TYPE ""
 !define DOC_CODE "icfaq"
-!define DOC_VERSION substr('$Revision: 1.7 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.8 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
-!define DOC_URL "http://developer.akopia.com/doc/icfaq.html"
+!define DOC_URL "http://interchange.redhat.com/doc/icfaq.html"
 !build_title
 
 H1: How does Interchange work?
@@ -843,14 +843,11 @@ it will then be placed in the session identifier C<source>.
 
 This URL:
 
-!block example
-   C<<>A HREF="http://yourcatalog.com/cgi-in/yourcat/sp_offer?mv_pc=Source1">
-       Special offer!&lt;/A>
-!endblock
+E:http://yourcatalog.com/cgi-in/yourcat/sp_offer?mv_pc=Source1
 
 will yield C<Source1> from the Interchange tag [data session source].
 
-The Interchange 3 idiom C<?;;Source1> continues to be supported, so existing partner sites should work without change.
+The Minivend 3 idiom C<?;;Source1> continues to be supported, so existing partner sites should work without change.
 
 H2: How can I send an email copy of the receipt to a user?
 
@@ -1605,7 +1602,7 @@ N:Question: should we be using the DBI ChopBlanks setting for Oracle or is Inter
 IC daemon user should have environment variables ORACLE_HOME and
 possibly NLS_LANG set.
 
-Mark Johnson (Red Hat E-Business Professional Services) wrote this
+Mark Johnson (Red Hat Professional Services) wrote this
 trigger on TABLE_NAME to update the MOD_TIME column on insert or update.
 The user must have been granted the RESOURCE role to create triggers.
 Here it is:
@@ -1683,77 +1680,64 @@ using a fairly recent version of Apache as your webserver).
 
 H1: Perl/Interchange FAQ
 
+H2: Cameron Prince's local Perl installation how-to
+
++Login as user. In this example, we'll call the user bob. Bob's home directory is /home/bob.
+
++Get the perl tarball and extract it in /home/bob. (tar -xzvf perl-5.6.0.tar.gz)
+
++Create a directory for the local perl. (mkdir /home/bob/local-perl)
+
++Compile perl.
+
+++cd perl-5.6.0
+
+++sh Configure
+
+++Choose all the defaults until you get to: "Directories to use for library searches?" Here you want to enter the new local perl path, as well as the defaults. So you should enter something like: /home/bob/local-perl/lib /usr/local/lib /lib /usr/lib
+
+++Continue choosing defaults till you get to: "Any additional ld flags (NOT including libraries)?" This should be: -L/home/bob/local-perl/lib
+
+++Continue choosing defaults till you get to: "Installation prefix to use? (~name ok)" This should be: /home/bob/local-perl
+
+++Choose all defaults till you get to: "Directory /home/bob/local-perl/bin doesn't exist.  Use that name anyway?" Enter y.
+
+++Continue choosing defaults till you get to: "Do you want to install perl as /usr/bin/perl?" Enter n.
+
+++Continue choosing defaults till you get to: "Directory /home/bob/local-perl/bin doesn't exist.  Use that name anyway?" Enter y.
+
+++Directory /home/bob/local-perl/bin doesn't exist.  Use that name anyway? Enter y.
+
+++Continue taking defaults till you return to a prompt.
+
+++make
+
+++make test
+
+++make install
+
++/home/bob/local-perl/bin/perl -v
+
+.You should see: This is perl, v5.6.0
+
+
++edit /home/bob/.bash_rc
+
+.Change: PATH=$PATH:$HOME/bin
+.To: PATH=/home/bob/local-perl/bin:$PATH:$HOME/bin
+
++Logout and log back in.
+
++which perl
+
+.You should see: ~/local-perl/bin/perl or /home/bob/local-perl/bin/perl
+
+
++perl -MCPAN -e 'install Bundle::Interchange'
+
+.Keep running this until you see:
+
 !block example
-Date: Wed, 14 Feb 2001 10:20:18 -0600
-From: Cameron B. Prince <cameron@akopia.com>
-To: support@akopia.com
-Subject: Local Perl Install Steps
- 
-Hi all,
- 
-Here's the steps I took to install the local perl for the client who had an
-old system perl (5.004) and couldn't upgrade.
- 
-This was tested on a Red Hat v5.x system as well as v7.0.
- 
-Cameron
-
-
-1) Login as user. In this example, we'll call the user bob. Bob's home directory is /home/bob.
-
-2) Get the perl tarball and extract it in /home/bob. (tar -xzvf perl-5.6.0.tar.gz)
-
-3) Create a directory for the local perl. (mkdir /home/bob/local-perl)
-
-4) Compile perl.
-
-        A) cd perl-5.6.0
-
-        B) sh Configure
-
-        C) Choose all the defaults until you get to: "Directories to use for library searches?" Here you want to enter the new local perl path, as well as the defaults. So you should enter something like: /home/bob/local-perl/lib /usr/local/lib /lib /usr/lib
-
-        D) Continue choosing defaults till you get to: "Any additional ld flags (NOT including libraries)?" This should be: -L/home/bob/local-perl/lib
-
-        E) Continue choosing defaults till you get to: "Installation prefix to use? (~name ok)" This should be: /home/bob/local-perl
-
-        F) Choose all defaults till you get to: "Directory /home/bob/local-perl/bin doesn't exist.  Use that name anyway?" Enter y.
-
-        G) Continue choosing defaults till you get to: "Do you want to install perl as /usr/bin/perl?" Enter n.
-
-        H) Continue choosing defaults till you get to: "Directory /home/bob/local-perl/bin doesn't exist.  Use that name anyway?" Enter y.
-
-        I) Directory /home/bob/local-perl/bin doesn't exist.  Use that name anyway? Enter y.
-
-        J) Continue taking defaults till you return to a prompt.
-
-        K) make
-
-        L) make test
-
-        M) make install
-
-        O) /home/bob/local-perl/bin/perl -v
-
-                You should see: This is perl, v5.6.0
-
-
-5) edit /home/bob/.bash_rc
-
-                Change: PATH=$PATH:$HOME/bin
-                To: PATH=/home/bob/local-perl/bin:$PATH:$HOME/bin
-
-6) Logout and log back in.
-
-7) which perl
-
-                You should see: ~/local-perl/bin/perl or /home/bob/local-perl/bin/perl
-
-
-8) perl -MCPAN -e 'install Bundle::Interchange'
-
-Keep running this until you see:
-
 MD5 is up to date.
 MIME::Base64 is up to date.
 URI is up to date.
@@ -1771,27 +1755,26 @@ SQL::Statement is up to date.
 Storable is up to date.
 DBI is up to date.
 Safe::Hole is up to date.
+!endblock
 
 You may need to get the modules via ftp and install them by hand. For instance, during the test used to create this document, I had to get URI and LWP and install by hand before everything reported that it was up to date. To do this, follow these steps:
 
-1) ftp ftp.cpan.org
-2) cd /CPAN/modules/by-module/URI
-3) bin
-4) get URI-1.10.tar.gz
-5) quit
-6) tar -xzvf URI-1.10.tar.gz
-7) cd URI-1.10
-8) perl Makefile.pl
-9) make
-10) make test
-11) make install
+++ftp ftp.cpan.org
+++cd /CPAN/modules/by-module/URI
+++bin
+++get URI-1.10.tar.gz
+++quit
+++tar -xzvf URI-1.10.tar.gz
+++cd URI-1.10
+++perl Makefile.pl
+++make
+++make test
+++make install
 
 Use the same basic steps for any module not properly installed by using perl -MCPAN -e 'install Bundle::Interchange'
 
-
-9) Install Interchange as normal.
-!endblock
+Now, install Interchange as normal.
 
 Line:
 
-N:Copyright 2001 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.
+N:Copyright 2001-2002 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.

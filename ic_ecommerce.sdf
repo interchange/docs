@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ic_ecommerce.sdf,v 1.10 2001-12-06 03:27:27 jon Exp $
+# $Id: ic_ecommerce.sdf,v 1.11 2002-04-12 22:53:18 jon Exp $
 
 !define DOC_NAME "Interchange Ecommerce Functions"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_ecommerce"
-!define DOC_VERSION substr('$Revision: 1.10 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.11 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ic_ecommerce.html"
@@ -54,7 +54,7 @@ special C<[order item-code]> tag:
 named attributes:
 
 >        [order code="sku" quantity="n"* href="page"* cart="cartname"* base="table"*]
->        * = optional paramenters
+>        * = optional parameters
 
 Expands into a hypertext link which will include the specified
 code in the list of products to order and display the order page. B<code>
@@ -83,7 +83,7 @@ You can change frames for the order with:
 =item [/order]
 
 Expands into </a>. Used with the order element, such as: Buy a
-C<[order TK112]>ToasterC<[/order]> today.
+C<[order TK112]>Toaster<[/order]> today.
 
 =back
 
@@ -196,7 +196,7 @@ A basic link can be generated like:
 
 The form parameter value C<mv_order_fly> can contain any number of fields
 which will set corresponding parameters in the item attributes. The fields
-are separated by the pipe (C<|>) character and contain value-parmeter
+are separated by the pipe (C<|>) character and contain value-parameter
 pairs separated by an = sign. (These are URL-encoded by the C<[area ...]> or
 C<[page ...]> tag, of course.) You can set a size, color, or any other parameter.
 
@@ -504,7 +504,7 @@ will be used to set the price of the items.
 
 =item 4
 
-If PriceBreaks is in use, it's price will take precedence over the
+If PriceBreaks is in use, its price will take precedence over the
 value of C<CommonAdjust>, though it may also contain a CommonAdjust string.
 
 =item 5
@@ -619,7 +619,7 @@ to the package Vend::Interpolate. That means that in a UserTag:
 >  $Vend::Interpolate::item->{size}  gives size for current item (if there)
 >  $Vend::Interpolate::item->{mv_ib} gives database ordered from
 
-=item [valid minivend tags]
+=item [valid Interchange tags]
 
 If the settor begins with a square bracket (C<[>) or underscore, it
 is parsed for Interchange tags with variable substitution (but no Locale
@@ -787,7 +787,7 @@ the above would negate anything set with the I<PriceBreaks> directive/option.
 
 Numbers that begin with an equals sign (C<=>) are used as absolute
 prices and are I<interpolated for Interchange tags first>, so you can
-use subroutines to set the price. To facilite coordination with the
+use subroutines to set the price. To facilitate coordination with the
 subroutine, the session variables C<item_code> and C<item_quantity> are
 set to the code and quantity of the item being evaluated. They would
 be accessed in a global subroutine with C<$Vend::Session->>C<{item_code}>
@@ -1002,7 +1002,7 @@ apply only to the customer receiving them, and are of one of three types:
 
 >    1. A discount for one particular item code (key is the item-code)
 >    2. A discount applying to all item codes (key is ALL_ITEMS)
->    3. A discount for an individual line item (set the mv_disount attribute
+>    3. A discount for an individual line item (set the mv_discount attribute
 >       with embedded Perl)
 >    4. A discount applied after all items are totaled
 >       (key is ENTIRE_ORDER)
@@ -1525,7 +1525,7 @@ you should set it large enough to be comfortable for the customer.
 
 Line:
 
-N:Copyright 2001 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.
+N:Copyright 2001-2002 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.
 
 
 

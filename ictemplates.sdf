@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ictemplates.sdf,v 1.32 2002-02-18 00:41:59 mheins Exp $
+# $Id: ictemplates.sdf,v 1.33 2002-04-12 22:53:18 jon Exp $
 
 !define DOC_NAME "Template Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "ictemplates"
-!define DOC_VERSION substr('$Revision: 1.32 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.33 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictemplates.html"
@@ -38,7 +38,7 @@ C<@@VARIABLENAME@@> is replaced by the global variable called VARIABLENAME.
 
 C<@_VARIABLENAME_@> is replaced by the catalog variable VARIABLENAME if it exists; otherwise, it is replaced by the global variable VARIABLENAME.
 
-For more information on how to use the C<Variable> configuration file directive to set global variables in C<interchange.cfg> and catalog variables in C<catalog.cfg>, see the {{1:Red Hat Interchange 4.8: Development Guide}}.
+For more information on how to use the C<Variable> configuration file directive to set global variables in C<interchange.cfg> and catalog variables in C<catalog.cfg>, see the {{1:Interchange Configuration Guide}}.
 
 H1: Using Interchange Template Tags
 
@@ -3257,4 +3257,4 @@ Important note: This information is only read during catalog configuration. It i
 
 Line:
 
-N:Copyright 2001 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.
+N:Copyright 2001-2002 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.

@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icadvanced.sdf,v 1.7 2001-12-06 03:27:27 jon Exp $
+# $Id: icadvanced.sdf,v 1.8 2002-04-12 22:53:18 jon Exp $
 
 !define DOC_NAME "Advanced Interchange Topics"
 !define DOC_TYPE ""
 !define DOC_CODE "icadvanced"
-!define DOC_VERSION substr('$Revision: 1.7 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.8 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
@@ -272,7 +272,7 @@ This allows the inclusion of a defined component to be displayed before, or abov
 
 H3: Horizontal After Component
 
-This function allows the inclusion of a defined component to be displayed after or below the pages's content. It's called with the following code within the LEFTRIGHT_BOTTOM template:
+This function allows the inclusion of a defined component to be displayed after or below the page's content. It's called with the following code within the LEFTRIGHT_BOTTOM template:
 
 !block example
 [if scratch component_after]
@@ -289,7 +289,7 @@ E:random="[either][scratch component_hsize][or]2[/either]"
 
 H3: Special Tag
 
-This setting is only viable when a promotion is used for a horizontal component. It tells the promotional component which rows to evaluate in the merchandising table for display within the component. This setting normally corelates to the featured column of the merchandising table as follows:
+This setting is only viable when a promotion is used for a horizontal component. It tells the promotional component which rows to evaluate in the merchandising table for display within the component. This setting normally correlates to the featured column of the merchandising table as follows:
 
 !block example
         [query arrayref=main
@@ -438,7 +438,7 @@ If the directory containing the page has a file C<.access> and that file's size 
 
 H2: display tag and mv_metadata
 
-Interchange can store meta information for selected columns of tables in a site's database. This meta information is used when the user interacts with the database. For example, the meta informaton for a C<Hide Item> field might specify that a checkbox be displayed when the user edits that field, since the only reasonable values are C<on> and C<off>. Or, the meta information might specify a filter on data entered for a C<Filename> field which makes sure that the characters entered are safe for use in a filename.
+Interchange can store meta information for selected columns of tables in a site's database. This meta information is used when the user interacts with the database. For example, the meta information for a C<Hide Item> field might specify that a checkbox be displayed when the user edits that field, since the only reasonable values are C<on> and C<off>. Or, the meta information might specify a filter on data entered for a C<Filename> field which makes sure that the characters entered are safe for use in a filename.
 
 C<Widget type> specifies the C<HTML INPUT> tag type to use when displaying the field in, say, the item editor.
 
@@ -794,7 +794,7 @@ An Interchange installation is complex, and requires quite a few distinct steps.
 
 H1: Link Programs
 
-Interchange requires a web server that is already installed on a system. It does have an internal server which can be used for administration, testing, and maintenance, but this will not be useful or desireable in a production environment.
+Interchange requires a web server that is already installed on a system. It does have an internal server which can be used for administration, testing, and maintenance, but this will not be useful or desirable in a production environment.
 
 As detailed previously, Interchange is always running in the background as a daemon, or resident program. It monitors either a UNIX-domain file-based socket or a series of INET-domain sockets. The small CGI link program, called in the demo C<simple>, is run to connect to one of those sockets and provide the link to a browser.
 
@@ -942,7 +942,7 @@ You can compile manually with the proper settings with this series of commands:
    perl -e 'do "syscfg"; system ("$CC $CFLAGS $DEFS $LIBS -o vlink vlink.c")'
 !endblock
 
-There is also a C<compile_link> program which has docmentation embedded and which will compile an approprate link. If you cannot compile, try using the C<tlink.pl> script, written in Perl instead of C, which should work on most any system. Since vlink needs to have values set before compilation, a pre-compiled version will not work unless it has the exact values you need on your system. If you can use the defaults of 'localhost' and port 7786, you may be in luck.
+There is also a C<compile_link> program which has documentation embedded and which will compile an appropriate link. If you cannot compile, try using the C<tlink.pl> script, written in Perl instead of C, which should work on most any system. Since vlink needs to have values set before compilation, a pre-compiled version will not work unless it has the exact values you need on your system. If you can use the defaults of 'localhost' and port 7786, you may be in luck.
 
 
 H1: Installing Perl Modules without Root Access
@@ -1002,20 +1002,20 @@ Double check the following items:
 
 -If having trouble with the vlink program (named C<construct> in the demo configuration), try re-running C<makecat> and using INET mode instead. (Or copy the C<tlink> INET mode link program over C<vlink>). This should work unchanged for many systems.
 
--If using an ISP or have a non-standard network configuration, some changes to interchange.cfg are necessary. For C<tlink> to work, the proper host name(s) must be configured into the TcpHost directive in interchange.cfg. The program selects port 7786 by default (the ASCII codes for "M" and "V"). If another port is used, it must be set to the same number in both the tlink program (by running C<compile_link>) and the C<minivend.cfg> file. The C<tlink> program does not need to be SUID.
+-If using an ISP or have a non-standard network configuration, some changes to interchange.cfg are necessary. For C<tlink> to work, the proper host name(s) must be configured into the TcpHost directive in interchange.cfg. The program selects port 7786 by default (the ASCII codes for "M" and "V", for MiniVend). If another port is used, it must be set to the same number in both the tlink program (by running C<compile_link>) and the C<interchange.cfg> file. The C<tlink> program does not need to be SUID.
 
 +Proper file permissions?
 
--The Interchange server should not run as the user C<nobody>! The program files can be owned by anyone, but any databases, ASCII database source files, error logs, and the directory that holds them must be writable by the proper user ID, that is the one that is executing the MiniVend program.
+-The Interchange server should not run as the user C<nobody>! The program files can be owned by anyone, but any databases, ASCII database source files, error logs, and the directory that holds them must be writable by the proper user ID, that is the one that is executing the Interchange program.
 
 -The best way to operate in multi-user, multiple catalog setups is to create a special C<interch> user, then put that user in the group that contains each catalog user. If a group is defined for each individual user, this provides the best security. All associated files can be in 660 or 770 mode. There should be no problems with permissions and no problems with security.
 
 +Is the C<vlink> program being executed on a machine that has the socket file C<etc/socket> on a directly attached disk?
 
--UNIX-domain sockets will not work on NFS-mounted file systems! This means that the server C<minivend> and the CGI program C<vlink> must be executing on the same machine.
+-UNIX-domain sockets will not work on NFS-mounted file systems! This means that the Interchange server and the CGI program C<vlink> must be executing on the same machine.
 
 -The C<tlink> program does not have this problem, but it must have the proper host name(s) and TCP ports set in the TcpHost and TcpMap directives in C<interchange.cfg>. Also, be careful of security if sensitive information, like customer credit card numbers, is being placed on a network wire.
 
 Line:
 
-N:Copyright 2001 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.
+N:Copyright 2001-2002 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.

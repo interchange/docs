@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.59 2002-04-01 14:54:51 racke Exp $
+# $Id: icconfig.sdf,v 1.60 2002-04-12 22:53:18 jon Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.59 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.60 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
@@ -12,13 +12,13 @@
 
 H1: Interchange Configuration Files
 
-The Red Hat Interchange 4.8 Configuration Reference is an alphabetical reference to the configuration directives used in Interchange global and catalog configuration files.
+This is an alphabetical reference to the configuration directives used in Interchange global and catalog configuration files.
 
 Interchange has multiple catalog capability, and therefore splits its configuration into two pieces. One is global, C<interchange.cfg>, and affects every catalog running under it. The other, C<catalog.cfg> is specific to an individual catalog, and has no effect on other catalogs.
 
 H2: Directive syntax
 
-Configuration directives are normally specified with the directive as the first word on the line, with its value or values following. Capitalization of the directive name is not signifigant. Leading and trailing whitespace is stripped from the line.
+Configuration directives are normally specified with the directive as the first word on the line, with its value or values following. Capitalization of the directive name is not significant. Leading and trailing whitespace is stripped from the line.
 
 LI1: Including files in directives
 
@@ -225,7 +225,7 @@ Global directives may be specified that will change for that catalog only. This 
 
 H2: CheckHTML *global*
 
-Set to the name of an external program that will check the users HTML when they set C<[flag checkhtml]> or C<[tag flag checkhtml][/tag]> in their page.
+Set to the name of an external program that will check the user's HTML when they set C<[flag checkhtml]> or C<[tag flag checkhtml][/tag]> in their page.
 
 !block example
    CheckHTML  /usr/local/bin/weblint
@@ -594,7 +594,7 @@ to a high value (perhaps 600, for 10 minutes), or use the offline script.
 H2: PIDfile *global*
 
 The file which will contain the Interchange server process ID so that
-it can be read to determine which proces should be sent a signal for
+it can be read to determine which process should be sent a signal for
 stopping or reconfiguring the server.
 
 !block example
@@ -933,7 +933,7 @@ string|'string'
 
 H2: VarName *global*
 
-Sets the names of variables that will be remapped to and from the URL when Interchange writes it. For instance, to display the variable C<mv_session_id> as C<session> in the users URL:
+Sets the names of variables that will be remapped to and from the URL when Interchange writes it. For instance, to display the variable C<mv_session_id> as C<session> in the user's URL:
 
 !block example
    VarName   mv_session_id  session
@@ -1270,7 +1270,7 @@ LI1: C<mv_credit_card_valid>
 
 .Set by Interchange to true, or 1, if the the card validates properly. Set to 0 otherwise.
 
-PGP is recommended as the encryption program, though remember that U.S. commercial organizations may require a license for RSA. Interchange will work with GPG, the Gnu Privacy Guard.
+GnuPG is recommended as the encryption program. Interchange will also work with PGP.
 
 !block example
    CreditCardAuto     Yes
@@ -1534,7 +1534,7 @@ A value for C<ImageDir> only when the pages are being served via HTTPS. It must 
    ImageDirSecure   /secure/images/
 !endblock
 
-This is useful if using separate HTTPS and HTTP servesr, and cannot make the image directory path heads match.
+This is useful if using separate HTTPS and HTTP servers, and cannot make the image directory path heads match.
 
 H2: Locale
 
@@ -2128,7 +2128,7 @@ The type of session management to be used. Use one of the following:
    GDBM        GDBM
 !endblock
 
-The default is file-based sessions, which provides the best performance and reliablility in most environments.
+The default is file-based sessions, which provides the best performance and reliability in most environments.
 
 If you are planning on running Interchange servers with an NFS-mounted filesystem as the session target, you must set SessionType to "NFS". The other requisites are usually:
 
@@ -2458,4 +2458,4 @@ Disables IP qualification of user sessions. {{B:This degrades catalog security.}
 
 Line:
 
-N:Copyright 2001 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.
+N:Copyright 2001-2002 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.
