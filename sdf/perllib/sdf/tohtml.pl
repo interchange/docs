@@ -1,5 +1,5 @@
-# $Id: tohtml.pl,v 1.3 2001-05-18 03:42:25 jon Exp $
-$VERSION{''.__FILE__} = '$Revision: 1.3 $';
+# $Id: tohtml.pl,v 1.4 2002-01-09 23:13:44 jon Exp $
+$VERSION{''.__FILE__} = '$Revision: 1.4 $';
 #
 # >>Title::     HTML Format Driver
 #
@@ -1005,7 +1005,7 @@ sub _HtmlAddAnchors {
         }
         $value = &_HtmlEscape($value);
 
-        $text =~ s/\<A HREF\=[^>]+\>(.*)\<\/A\>/$1/;
+		$text =~ s/<A (?:HREF|NAME)=[^>]+>(.*)<\/A>/$1/;
         $text = "<A HREF=\"$value\">$text</A>";
         delete $attr{'jump'};
         $result++;
