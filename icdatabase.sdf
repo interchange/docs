@@ -1,13 +1,13 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.25 2001-06-16 05:58:23 jon Exp $
+# $Id: icdatabase.sdf,v 1.26 2001-08-06 23:23:05 jon Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.25 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.26 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
-!define DOC_URL "http://help.akopia.com/interchange/doc/icdatabase.html"
+!define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
 !build_title
 
 H1: Databases and Interchange

@@ -1,13 +1,13 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icadvanced.sdf,v 1.3 2001-05-15 11:59:44 bill Exp $
+# $Id: icadvanced.sdf,v 1.4 2001-08-06 23:23:04 jon Exp $
 
 !define DOC_NAME "Advanced Interchange Topics"
 !define DOC_TYPE ""
 !define DOC_CODE "icadvanced"
-!define DOC_VERSION substr('$Revision: 1.3 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.4 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
-!define DOC_URL "http://help.akopia.com/interchange/doc/icadvanced.html"
+!define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
 !build_title
 
 H1: Advanced Interchange Topics
@@ -653,7 +653,7 @@ The supplied C<makecat> script, which is in the Interchange program directory C<
 
 Note: A catalog can only be created once. All further configuration is done by editing the files within the catalog directory.
 
-The C<makecat> script requires a catalog skeleton to work from. The Foundation demo is distributed with Interchange. See the icfoundation document for information on building the Foundation demo store. Other demo catalogs are available at C<http://developer.akopia.com/>.
+The C<makecat> script requires a catalog skeleton to work from. The Foundation demo is distributed with Interchange. See the icfoundation document for information on building the Foundation demo store. Other demo catalogs are available at C<http://interchange.redhat.com/>.
 
 It is not normally necessary for you to understand how to build catalog skeletons for use with makecat, but the following information will help you if you should ever need to.
 
@@ -991,7 +991,7 @@ Check the two error log files: C<error.log> in the Interchange home directory (w
 Check the README file, the FAQ, and mail list archive at the official Interchange web site for information:
 
 !block example
-       http://developer.akopia.com/
+       http://interchange.redhat.com/
 !endblock
 
 Double check the following items:

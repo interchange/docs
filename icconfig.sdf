@@ -1,13 +1,13 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.45 2001-07-20 13:46:01 heins Exp $
+# $Id: icconfig.sdf,v 1.46 2001-08-06 23:23:05 jon Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.45 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.46 $',11, -2)
 !define DOC_STATUS "Draft"
-!define DOC_PROJECT "Interchange 4.8"
-!define DOC_URL "http://help.akopia.com/interchange/doc/icconfig.html"
+!define DOC_PROJECT "Interchange"
+!define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
 !build_title
 
 H1: Interchange Configuration Files
@@ -2335,4 +2335,3 @@ Specifies the base URL that will run vlink as a cgi-bin program.
 H2: WideOpen
 
 Disables IP qualification of user sessions. {{B:This degrades catalog security.}} Do not use unless using encryption or a real-time payment gateway.
-

@@ -1,13 +1,15 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.55 2001-07-18 16:24:22 heins Exp $
+# $Id: ictags.sdf,v 1.56 2001-08-06 23:23:05 jon Exp $
+
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.55 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.56 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
-!define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
-!define DOC_OWNER "1996-2001 Red Hat, Inc. {{EMAIL:info@akopia.com}}"
+!define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
+!define DOC_OWNER "1996-2001 Red Hat, Inc. {{EMAIL:interchange@redhat.com}}"
+
 !define SHOW_COMMENTS 0
 !define EXAMPLE_SESSION "6CZ2whqo"
 !define EXAMPLE_DOMAIN "www.here.com"

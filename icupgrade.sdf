@@ -1,14 +1,14 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icupgrade.sdf,v 1.13 2001-04-10 23:01:33 jon Exp $
+# $Id: icupgrade.sdf,v 1.14 2001-08-06 23:23:05 jon Exp $
 
 !define DOC_NAME "Interchange Upgrade Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "icupgrade"
-!define DOC_VERSION substr('$Revision: 1.13 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.14 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
-!define DOC_URL "http://developer.akopia.com/ic/dev/icupgrade.html"
-!define DOC_OWNER "1996-2001 Red Hat, Inc. E<lt>{{EMAIL:info@akopia.com}}E<gt>"
+!define DOC_URL "http://interchange.redhat.com/doc/icupgrade.html"
+!define DOC_OWNER "1996-2001 Red Hat, Inc. E<lt>{{EMAIL:interchange@redhat.com}}E<gt>"
 !build_title
 
 H1:Introduction

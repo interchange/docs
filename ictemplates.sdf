@@ -1,13 +1,13 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ictemplates.sdf,v 1.23 2001-07-20 13:46:01 heins Exp $
+# $Id: ictemplates.sdf,v 1.24 2001-08-06 23:23:05 jon Exp $
 
 !define DOC_NAME "Template Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "ictemplates"
-!define DOC_VERSION substr('$Revision: 1.23 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.24 $',11, -2)
 !define DOC_STATUS "Draft"
-!define DOC_PROJECT "Red Hat Interchange 4.8"
-!define DOC_URL "http://help.akopia.com/interchange/doc/ictemplates.html"
+!define DOC_PROJECT "Interchange"
+!define DOC_URL "http://interchange.redhat.com/doc/ictemplates.html"
 !build_title
 
 H1: Introduction
@@ -1004,7 +1004,7 @@ LI1: $Config
 
 .A reference to the $Vend::Cfg array. This is normally used with a large amount of the Interchange source code, but for simple things use something like:
 
-!block example; listitem=2
+!block example;
     # Allow searching the User database this page only
     $Config->{NoSearch} =~ s/\buserdb\b//;
 !endblock
@@ -3256,4 +3256,3 @@ This would translate to the following:
 These settings append and overwrite any that are set in the catalog configuration files, including any include files. 
 
 Important note: This information is only read during catalog configuration. It is not reasonable to access a database for translation or currency conversion in the normal course of events.
-
