@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ic_ecommerce.sdf,v 1.15 2002-06-25 03:25:30 mheins Exp $
+# $Id: ic_ecommerce.sdf,v 1.16 2002-08-12 02:09:52 mheins Exp $
 
 !define DOC_NAME "Interchange Ecommerce Functions"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_ecommerce"
-!define DOC_VERSION substr('$Revision: 1.15 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.16 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ic_ecommerce.html"
@@ -1085,7 +1085,37 @@ use the C<[calc]> capability:
 >                                            [/calc][/currency]
 >    [/item-list]
 
-=head2 Sales Tax
+H1: Taxing
+
+Interchange allows taxing in a number of ways.
+
+L1: Simple salestax.asc table
+
+The {{CMD[jump="icconfig.html#SalesTax"]SalesTax}} directive is
+set to a form field or fields for user input, and those form fields
+look up the tax rate in salestax.asc.
+
+L1: Fly tax
+
+Another simple tax method. A series of Interchange Variable settings
+are read to develop a salestax rate for one or a few localities, usually
+a state in the US.
+
+L1: Salestax multi -- VAT taxing
+
+The {{CMD[jump="icfoundation.html#country"]country}}
+and {{CMD[jump="icfoundation.html#state"]state}} tables are used
+to develop complex VAT or salestax rate calculations based on
+country and state, possibly with different rates based on product
+type.
+
+L1: Levies -- multiple levels of tax
+
+Using the {{CMD[jump="icconfig.html#Levies"]Levies}} setting
+and the {{CMD[jump="icconfig.html#Levy"]Levy}} structure, any or all of
+the above methods is used to implement one or more taxes.
+
+H2: Sales Tax -- simple salestax.asc table
 
 Interchange allows calculation of sales tax on a straight percentage basis,
 with certain items allowed to be tax-exempt. To enable this feature,
@@ -1099,13 +1129,16 @@ which contains a database with the percentages. Each line of
 F<salestax.asc> should be a code (again, usually a five-digit zip or
 a two letter state) followed by a tab, then a percentage. Example:
 
->    45056   .0525
->    61821   .0725
->    61801   .075
->    IL      .0625
->    OH      .0525
->    VAT     .15
->    WA      .08
+!block example
+	DEFAULT 0.0
+    45056   .0525
+    61821   .0725
+    61801   .075
+    IL      .0625
+    OH      .0525
+    VAT     .15
+    WA      .08
+!endblock
 
 Based on the user's entry of information in the order form, Interchange
 will look up (for our example SalesTax directive) first the zip, then
@@ -1114,7 +1147,7 @@ subtotal will include any taxable items, and will also include the
 shipping cost if the state/zip is included in the I<TaxShipping> directive.
 It will add the percentage, then make that available with the C<[salestax]>
 tag for display on the order form. If no match is found, the entry
-'default' is applied -- that is normally 0, but can be anything.
+C<DEFAULT> is applied -- it is normally zero.
 
 If business is being done on a national basis, it is now common to have
 to collect sales tax for multiple states. If you are doing so, it is possible
@@ -1146,8 +1179,128 @@ or to do it without submitting a form:
 
 >    [perl] $Values->{tax_code} = 'VAT'; return; [/perl]
 
+H2: Fly tax
+
+The {{CMD[jump="ictags.html#fly-tax"][fly-tax]}} tag is placed
+in the DEFAULT setting of salestax.asc, and the variables 
+C<TAXAREA>, C<TAXRATE>, and C<TAXSHIPPING> are used to build
+the rates.
+
+L1: TAXAREA
+
+A space-separated or comma-seperated list of states to apply
+tax to. Not needed for anything in the calculation, it is used
+to build the UI list of states to tax.
+
+L1: TAXRATE
+
+An Interchange accessory-list style of value, with the
+format
+
+!block example
+  XX=N.NN, XX=N.NN
+!endblock
+
+where XX is the two-letter state code and N.NN is the tax rate
+in percent. To apply a tax of 7.25% for Illinois and 5.5% for
+Nevada, you would use:
+
+	IL=7.25, NV=5.5
+
+L1: TAXSHIPPING
+
+A space- or comma-separated list of states where shipping is
+taxed. For the above example, if Nevada taxed shipping and Illinois
+did not, you would make TAXSHIPPING equal to "NV".
+
+L1: The Salestax Directive
+
+To set the field that is used for the state code, you use the
+standard Interchange {{CMD[jump="icconfig.html#SalesTax"]SalesTax}} directive. It would almost always
+be set to C<state>.
+
+H2: Salestax "multi" -- VAT taxing
+
+If the SalesTax directive is set to "multi", then the type of
+tax is read from the country table (or the value that Variable
+MV_COUNTRY_TABLE is set to be). To see the tax type in
+force for the UK, you can place in a page:
+
+!block example
+	[data table=country col=tax key="UK"].
+!endblock
+
+Most everything is configurable for variable name and field name via
+different Variable settings. They are:
+
+!block example
+  MV_COUNTRY_TABLE      Table for country info (default "country")
+  MV_COUNTRY_FIELD      Form field determining country (default "country")
+  MV_COUNTRY_TAX_FIELD  Table column for country-wide tax (default "tax")
+  MV_STATE_TABLE        Table for state/province info (default "state")
+  MV_STATE_FIELD        Form field determining state/province (default "state")
+  MV_STATE_TAX_FIELD    Table column for state-wide tax (default "tax")
+  MV_TAX_TYPE_FIELD     Table column enumerating tax types (default "tax_type")
+  MV_TAX_CATEGORY_FIELD Table column for product type (default tax_category)
+!endblock
+
+Below, we refer to the tables, columns, and fields by their default names.
+
+The first lookup is done in table C<country> based on the user input
+of C<country> (i.e. C<[value country]>). The C<tax> field is read and one
+of the following is done:
+
+1. If no string is found, tax returns 0.
+
+2. If string "simple:XX" is found, uses [fly-tax] with the area
+specifed in XX.
+
+3. If string "state" is found, does a re-lookup with
+
+!block example
+     select tax from state where country = country and state = state
+!endblock
+
+and value is applied as below.
+
+4. If just digits are found, rate applied directly -- i.e. "0.05"
+
+5. If N.NN% is found, applied as percentage.
+
+6. If C<category = N.NN%, default = N.NN%> is found, the C<tax_category> 
+field in the {{CMD[jump="icfoundation.html#products"]products}} table is used to determine tax basis.
+If no tax_category is found for the product, C<default> rate is used.
+
+This product data
+
+!block example
+    sku      price     tax_category
+    os28003  10.00     tools
+    os28004  20.00     food
+!endblock
+
+with this country and state data:
+
+!block example
+    code     name     tax
+    US       U.S.A.   state
+    JP       Japan    tools=10%, default=15%
 
 
+    code   country   state   name      tax
+    0001   US        IL      Illinois  6.5%
+    0002   US        OH      Ohio      default = 5.5%, food = 1%
+    0003   US        AZ      Arizona
+!endblock
+
+Will yield tax for one each of os28003 and os28004 of:
+
+!block example
+    Japan   $4.00
+    US/IL   $1.95
+    US/OH   $0.75
+    US/AZ   $0.00
+!endblock
 
 =head1 THE CHECKOUT PROCESS
 

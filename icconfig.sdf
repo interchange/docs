@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.68 2002-08-11 13:43:37 racke Exp $
+# $Id: icconfig.sdf,v 1.69 2002-08-12 02:09:52 mheins Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.68 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.69 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icconfig.html"
@@ -30,7 +30,7 @@ DirectiveName <includefile
 
 Files included from interchange.cfg are relative to the Interchange software directory. Files included from catalog.cfg are relative to the catalog directory.
 
-L1: Here documents
+LI1: Here documents
 
 A "here document" can be used to spread directive values over several lines, with the usual Perl <<MARKER syntax. No semicolon is used to terminate the marker. The closing marker must be the only thing on the line. No leading or trailing characters are allowed, not even whitespace. Here is a hypothetical directive using a here document:
 
