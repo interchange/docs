@@ -1,21 +1,20 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icbackoffice.sdf,v 1.12 2000-11-22 21:53:06 jon Exp $
+# $Id: icbackoffice.sdf,v 1.13 2001-03-09 19:35:18 jon Exp $
 
-!define DOC_NAME "Interchange Back-Office"
+!define DOC_NAME "Interchange Back Office"
 !define DOC_TYPE ""
 !define DOC_CODE "ICBACKOFFICE_D2_100700"
-!define DOC_VERSION substr('$Revision: 1.12 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.13 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
 !build_title
 
-H1: AKOPIA INTERCHANGE(TM) BACK-OFFICE
+H1: Interchange Back Office
 
-Akopia Interchange is the industry's most widely distributed and implemented open source e-commerce platform. This document describes how to administer a commerce site with Interchange's back-office functionality, and discusses site management and security.
+Interchange is the industry's most widely distributed and implemented open source e-commerce platform. This document describes how to administer a commerce site with Interchange's back-office functionality, and discusses site management and security.
 
-
-H1: TRACKING AND BACK-END ORDER ENTRY
+H1: Tracking and Back-End Order Entry
 
 Interchange allows the entry of orders into a system through one of several methods. The C<AsciiBackend> capability allows submission of parameters to an external order entry script. Support for SQL allows the entry of orders directly into an SQL database. Orders can be written to an ASCII file. They can be formatted precisely for e-mail-based systems. The orders can be placed in a DBM file. Finally, embedded Perl allows completely flexible order entry, including real-time credit card verification and settlement.
 
@@ -72,7 +71,7 @@ The above is accomplished with Interchange's C<[import ....]> tag using the conv
 
 H2: Custom Order Routing
 
-Akopia Interchange can send order emails and perform custom credit card charges and/or logging for each item. The Route directive is used to control this behavior, along with the C<mv_order_route> item attribute and C<mv_order_route> form variable.
+Interchange can send order emails and perform custom credit card charges and/or logging for each item. The Route directive is used to control this behavior, along with the C<mv_order_route> item attribute and C<mv_order_route> form variable.
 
 Routes are established with the C<Route> directive, which is similar to the C<Locale> directive. Each route is like a locale, so that key-value pairs can be set. Here is an example setting:
 
@@ -230,7 +229,7 @@ Any item labeled C<SOFT> will be passed to the order profile C<create_download_l
 
 The C<main> order routing will use CyberCash to charge the order, and will be completely encrypted for e-mailing.
 
-H1: ADMINISTERING AKOPIA INTERCHANGE
+H1: Administering Interchange
 
 Some utilities are supplied with Interchange and are located in the VendRoot/bin directory:
 
@@ -464,7 +463,7 @@ Transfer pages, templates, and configuration files to and from the Interchange i
 
 H2: Import/Export
 
-Akopia Interchange makes it easy to import and export data to and from a commerce Web site.
+Interchange makes it easy to import and export data to and from a commerce Web site.
 
 Use C<Database Upload> to import a tab delimited database of all product information to Interchange to make set-up faster and easier. C<Database Download> does just the opposite, allowing data to be downloaded from Interchange.
 
@@ -476,7 +475,7 @@ This feature will only be useful if there are multiple users in the Access Manag
 
 H2: Meta Field Information
 
-Akopia Interchange can store meta information for selected columns of tables in a site's database. This meta information is used when the user interacts with the database. For example, the meta informaton for a C<Hide Item> field might specify that a checkbox be displayed when the user edits that field, since the only reasonable values are C<on> and C<off>. Or, the meta information might specify a filter on data entered for a C<Filename> field which makes sure that the characters entered are safe for use in a filename.
+Interchange can store meta information for selected columns of tables in a site's database. This meta information is used when the user interacts with the database. For example, the meta informaton for a C<Hide Item> field might specify that a checkbox be displayed when the user edits that field, since the only reasonable values are C<on> and C<off>. Or, the meta information might specify a filter on data entered for a C<Filename> field which makes sure that the characters entered are safe for use in a filename.
 
 C<Widget type> specifies the C<HTML INPUT> tag type to use when displaying the field in, say, the item editor.
 
@@ -492,11 +491,11 @@ C<Lookup> can be used when a field is acting like a foreign key into another tab
 
 C<Filter> and C<pre_filter> can be used to filter data destined for that field or data read from that field, respectively.
 
-H1: INTERCHANGE SECURITY
+H1: Interchange Security
 
 H2: SSL Support
 
-Akopia Interchange has several features that enable secure ordering via SSL (Secure Sockets Layer). Despite their mystique, SSL servers are actually quite easy to operate. The difference between the standard HTTP server and the SSL HTTPS server, from the standpoint of the user, is only in the encryption and the specification of the URL; C<https:> is used for the URL protocol specification instead of the usual http: designation.
+Interchange has several features that enable secure ordering via SSL (Secure Sockets Layer). Despite their mystique, SSL servers are actually quite easy to operate. The difference between the standard HTTP server and the SSL HTTPS server, from the standpoint of the user, is only in the encryption and the specification of the URL; C<https:> is used for the URL protocol specification instead of the usual http: designation.
 
 Note[label='IMPORTANT NOTE: '] Interchange attempts to perform operations securely, but no guarantees or warranties of any kind are made! Since Interchange comes with Perl source, it is possible to modify the program to create security problems. One way to minimize this possibility is to record digital signatures, using MD5 or PGP, of C<interchange>, C<interchange.cfg>, and all modules included in Interchange. Check them on a regular basis to ensure they have not been changed.
 
@@ -515,7 +514,7 @@ See C<CreditCardAuto> for more information on how to set the form variables.
 
 H2: Administrative Pages
 
-With Akopia Interchange's C<GlobalSub> capability, very complex add-on schemes can be implemented with Perl subroutines. And with the new writable database, pages that modify the catalog data can be made. If a page is marked as an C<AdminPage>, only the catalog administrator may use it. See C<MasterHost>, C<RemoteUser>, and C<Password>.
+With Interchange's C<GlobalSub> capability, very complex add-on schemes can be implemented with Perl subroutines. And with the new writable database, pages that modify the catalog data can be made. See C<MasterHost>, C<RemoteUser>, and C<Password>.
 
 In addition, any Interchange page subdirectory can be protected from access by anyone except the administrator if a file called '.access' is present and non-zero in size.
 
@@ -569,7 +568,7 @@ If the directory containing the page has a file C<.access> and that file's size 
 
 +If the variables C<MV_USERDB_ACL_TABLE> is set to a valid database identifier, the UserDB module can control access with simple ACL logic. See USER DATABASE. NOTE: If there is a C<.access_gate> file, it overrides this. Also, if C<MV_USERDB_REMOTE_USER> is set, this capability is not available.
 
-H1: USERTAG REFERENCE
+H1: Usertag Reference
 
 H2: email
 
@@ -696,5 +695,3 @@ H2: loc
    }
    EOF
 !endblock
-
-**Akopia and Interchange are registered trademarks of Akopia, Inc. All other product names are trademarks or registered trademarks of their respective manufacturers. This version of the document supersedes any and all previous versions.

@@ -1,18 +1,18 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.15 2001-03-01 23:06:45 jon Exp $
+# $Id: icdatabase.sdf,v 1.16 2001-03-09 19:35:19 jon Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "ICDATABASE_D2a_100800"
-!define DOC_VERSION substr('$Revision: 1.15 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.16 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
-!define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
+!define DOC_URL "http://help.akopia.com/interchange/doc/icdatabase.html"
 !build_title
 
 H1: Interchange Databases
 
-Akopia Interchange is the industry's most widely distributed and implemented open source e-commerce platform. This document discusses databases, SQL support, the Interchange search engine, frequently asked questions, and usertags.
+Interchange is the industry's most widely distributed and implemented open source e-commerce platform. This document discusses databases, SQL support, the Interchange search engine, frequently asked questions, and usertags.
 
 H2: A Typical User Session
 
@@ -518,7 +518,7 @@ The C<[import ....] TEXT [/import]> region may contain multiple records. If usin
 
 H2: Exporting from a Database
 
-To export an existing database to a file suitable for searching by Interchange, create an AdminPage (or any page, for that matter) that contains a C<[tag export ...][/tag]> element. Perhaps a better method is to define the same sort of tags in an OrderProfile, and use forms and buttons to access the profile.
+To export an existing database to a file suitable for searching by Interchange, create a page that contains a C<[tag export ...][/tag]> element. Perhaps a better method is to define the same sort of tags in an OrderProfile, and use forms and buttons to access the profile.
 
 H2: Write Control
 
@@ -4204,7 +4204,7 @@ H2: db_date
    EOF
 !endblock
 
-H2: Search_region
+H2: search_region
 
 .Named Parameters: [search_region arg="arg"]
 
@@ -4244,5 +4244,3 @@ H2: Search_region
             params ==> arg
             search ==> arg
 !endblock
-
-**Interchange is a registered trademark of Red Hat, Inc. All other product names are trademarks or registered trademarks of their respective owners.
