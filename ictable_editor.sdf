@@ -1,9 +1,9 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: ictable_editor.sdf,v 1.6 2003-12-16 22:42:26 mheins Exp $
+# $Id: ictable_editor.sdf,v 1.7 2004-03-02 17:17:16 racke Exp $
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.6 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.7 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ictable_editor.html"
@@ -978,7 +978,7 @@ LI1: mv_nextpage
 LI1: mv_prevpage
 LI1: next_text
 
-You can customze an alternative text for the OK/Next button.
+You can customize an alternative text for the OK/Next button.
 
 Note! If your alternative text is long, and you get the text chopped, be
 sure to specify a wider button with the ok_button_style setting (eg.
