@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: icprogrammer.sdf,v 1.2 2002-07-26 00:41:13 mheins Exp $
+# $Id: icprogrammer.sdf,v 1.3 2002-07-26 02:54:59 mheins Exp $
 
 !define DOC_NAME "Interchange Programmer Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icprogrammer"
-!define DOC_VERSION substr('$Revision: 1.2 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.3 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icvars.html"
@@ -59,8 +59,8 @@ H2: Software installation
 To follow along, it is recommended you get the latest release of
 Interchange (4.9.1 as of this writing), unpack it from the tar file, and
 install it at a private directory. For the purposes of this document, it
-will be assumed that Interchange is installed at C</usr/tmp/interchange>
-and that the catalogs are installed at C</usr/tmp/catalogs>.
+will be assumed that Interchange is installed at C</usr/local/interchange>
+and that the catalogs are installed at C</usr/local/catalogs>.
 
 H2: Software prerequisites
 
@@ -72,8 +72,7 @@ Install that (usually as root) with:
 	perl -MCPAN -e 'install Bundle::Interchange'
 !endblock
 
-To get most of the modules Interchange can use, you can get a more
-complete set:
+To get most of the modules Interchange can use:
 
 !block example
 	perl -MCPAN -e 'install Bundle::InterchangeKitchenSink'
@@ -278,16 +277,147 @@ produced by parsing interchange.cfg with the routine
 C<Vend::Config::global_config>.
 
 Directives can be defined for parsing by the catalog configuration
-within the global configuration. The only way to define new global
-directives is via hacking the source.
-but the 
+within the global configuration -- and they can be deleted as well.
+
+The only way to define new global directives is via hacking the source.
+Luckily, this is just about never needed -- you can define settings for
+use by your programs in Variable or other repositories.
+
 H3: The Catalog configuration
 
 Each Interchange catalog has its own configuration completely
-independent from others. It is produced by parsing the file
-C<catalog.cfg> in the directory defined as the base for the catalog --
-it is parsed by the subroutine C<Vend::Config::config>.
+independent from others. It is basically produced from the file
+C<catalog.cfg> in the directory defined as the base for the catalog.
+It is parsed by the subroutine C<Vend::Config::config>.
 
+We say basically, because there are many ways to alter catalog
+configuration. (CATNAME below refers to the name of the
+catalog being configured.)
+
+LI1: ConfigAllBefore
+
+Global catalog configuration preamble, affecting all catalogs, can be
+defined by the Global directive C<ConfigAllBefore>. It defaults to
+C<catalog_before.cfg> in the Interchange software directory
+(/usr/local/interchange).
+
+LI1. CATNAME.before
+
+An individual per-catalog preamble configuration is defined
+in C<$Global::ConfDir/CATNAME.before>.
+
+By default it would be /usr/local/interchange/etc/CATNAME.before.
+
+LI1: CATNAME.site
+
+A file in the catalog directory which is read before C<catalog.cfg>.
+Deprecated.
+
+LI1: catalog.cfg
+
+The normal configuration file.
+
+LI1: CATNAME.after
+
+An individual per-catalog postamble configuration is defined
+in C<$Global::ConfDir/CATALOGNAME.after>. This can be used to
+prevent user catalogs from doing unsafe things -- for instance
+enforcing the use of encryption, or preventing running in WideOpen
+mode.
+
+By default it would be /usr/local/interchange/etc/CATALOGNAME.after.
+
+LI1: ConfigAllAfter
+
+Global catalog configuration postamble, affecting all catalogs, can be
+defined by the Global directive C<ConfigAllAfter>. It defaults to
+C<catalog_after.cfg> in the Interchange software directory
+(/usr/local/interchange).
+
+LI1: command line
+
+Any configuration passed on the command line at Interchange startup
+is applied last. For instance, to test out a catalog named C<foundation>
+with a different invocation URL without having to alter the config files:
+
+  bin/interchange --foundation:VendURL=http://localhost/cgi-bin/found \
+                  --foundation:SecureURL=http://localhost/cgi-bin/found \
+                  --foundation:RobotLimit=1000
+
+That will set the C<foundation> catalog directive values VendURL,
+SecureURL, and RobotLimit, overriding any settings in the configuration
+files.
+
+LI1: Tied configuration
+
+Interchange has dynamic catalog configuration as well. See
+{{CMD[jump="icconfig.html#Programming Watch Points in catalog.cfg"]Programming Watch Points in catalog.cfg}}.
+
+H2: Session data structure
+
+Each user session is a hash reference saved in some sort of data repository.
+By default it is file-based using L<Storable>, but it can reside in any
+Interchange database type as well.
+
+It is placed at the global variable location $Vend::Session, which for
+programming use in UserTag and GlobalSub routines is $Session (meaning
+$Vend::Interpolate::Session).
+
+The structure is initialized when the session is created (or canceled by
+the user). The initial form is described in C<Vend::Session::init_session>:
+
+!block example
+    $Vend::Session = {
+		'ohost'		=> $CGI::remote_addr,
+		'arg'		=> $Vend::Argument,
+		'browser'	=> $CGI::useragent,
+		'referer'	=> $CGI::referer,
+		'scratch'	=> { %{$Vend::Cfg->{ScratchDefault}} },
+		'values'	=> { %{$Vend::Cfg->{ValuesDefault}} },
+		'carts'		=> {main => []},
+		'levies'	=> {main => []},
+    };
+!endblock
+
+This structure is used as a repository for the transitory user session
+values like form values, scratch variable settings, payment transaction
+results, errors, and any other user-tied values. It is also possible to
+add code that can be run on a user-by-user basis with the Autoload,
+Filter, and Profile facilities.
+
+H1: Tour the source
+
+Navigating the Interchange source requires a couple of clues. The
+main program invocation point is C<bin/interchange> in the Interchange
+software directory. 
+
+Once Interchange is invoked, it does some basic program
+configuration at the top of that file. The types of available
+database facilities and modules is determined, and the base 
+modules are brought in with "use" or "require". Execution by
+a non-root user ID is checked.
+
+
+After the initial program configuration, execution goes to the
+main_loop() subroutine in bin/interchange. Some more initialization is
+done, then the command line options are parsed. Options mostly will set
+the program mode (i.e. start, stop, kill, test, cron, or other command
+line actions), but can also set Global and Catalog configuration values.
+
+Once the options are parsed, Interchange will chdir() to
+the Interchange software directory (/usr/local/interchange)
+and run its global configuration. That means all file names
+passed to it during this phase are relative to that program
+root.
+
+Part of global configuration is determination of the ITL tags
+that will be used by Interchange. By default, that is all
+files with appropriate extensions under the C<code> directory.
+Sets of tags to be used can be set with the
+{{CMD[jump="icconfig.html#TagGroup *global*"]TagGroup}} and
+{{CMD[jump="icconfig.html#TagInclude *global*"]TagInclude}} directives.
+
+H1: Interchange Special Variables
 
 Interchange defines some special variables which control behavior. They
 can be of several types, and the conventions for using them depend on
@@ -488,25 +618,25 @@ H2: Values not transmitted from CGI
 The following variables are never copied from CGI:
 
 !block example
-	mv_todo
-	mv_todo.submit.x
-	mv_todo.submit.y
-	mv_todo.return.x
-	mv_todo.return.y
-	mv_todo.checkout.x
-	mv_todo.checkout.y
-	mv_todo.todo.x
-	mv_todo.todo.y
-	mv_todo.map
-	mv_doit
-	mv_check
-	mv_click
-	mv_nextpage
-	mv_failpage
-	mv_successpage
-	mv_more_ip
-	mv_credit_card_number
-	mv_credit_card_cvv2
+        mv_todo
+        mv_todo.submit.x
+        mv_todo.submit.y
+        mv_todo.return.x
+        mv_todo.return.y
+        mv_todo.checkout.x
+        mv_todo.checkout.y
+        mv_todo.todo.x
+        mv_todo.todo.y
+        mv_todo.map
+        mv_doit
+        mv_check
+        mv_click
+        mv_nextpage
+        mv_failpage
+        mv_successpage
+        mv_more_ip
+        mv_credit_card_number
+        mv_credit_card_cvv2
 !endblock
 
 You can define more with the C<FormIgnore> catalog.cfg directive.
@@ -534,5 +664,3 @@ shown here, but most will not.
 H1: Variable listing
 
 H2: Standard global (interchange.cfg) Variable values
-
-
