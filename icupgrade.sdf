@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icupgrade.sdf,v 1.15 2001-08-21 15:10:58 jon Exp $
+# $Id: icupgrade.sdf,v 1.16 2001-09-17 17:24:11 jon Exp $
 
 !define DOC_NAME "Interchange Upgrade Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "icupgrade"
-!define DOC_VERSION substr('$Revision: 1.15 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.16 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icupgrade.html"
@@ -941,3 +941,7 @@ Separately, an experienced e-commerce development team founded Akopia. Their goa
 Akopia acquired MiniVend in June 2000. Mike Heins and the Tallyman developers combined MiniVend with Tallyman's features to create Interchange. Interchange replaces both MiniVend and Tallyman. In order to preserve compatibility, the name "minivend" and prefixes like "mv_" and "MVC_" will still appear in source code and configuration files.
 
 In January 2001, Red Hat acquired Akopia and created its new E-Business Solutions Division. Interchange development is going forward and the user community continues to grow.
+
+Line:
+
+N:Copyright 2001 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.

@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.47 2001-09-17 17:16:32 mheins Exp $
+# $Id: icconfig.sdf,v 1.48 2001-09-17 17:24:10 jon Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.47 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.48 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
@@ -2357,3 +2357,7 @@ Specifies the base URL that will run vlink as a cgi-bin program.
 H2: WideOpen
 
 Disables IP qualification of user sessions. {{B:This degrades catalog security.}} Do not use unless using encryption or a real-time payment gateway.
+
+Line:
+
+N:Copyright 2001 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.

@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.27 2001-08-17 22:49:21 heins Exp $
+# $Id: icdatabase.sdf,v 1.28 2001-09-17 17:24:10 jon Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.27 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.28 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
@@ -3747,3 +3747,7 @@ Here is a quick procedure that might get you started:
 .You install this package on your Windows 95 or NT box. It is a simple setup.exe process which leads you to the control panel for setting up an ODBC data source. Set up a data source named C<test_odbc> that points to the database C<test_odbc> on the UNIX box. You will need to know the host name and the port (usually 3306).
 
 *With Microsoft Access, you can then open a blank database and select: File/Get External Data/Link Tables. Select File Type of 'ODBC databases' and the proper data source, and you should have access to the database residing on the UNIX side.
+
+Line:
+
+N:Copyright 2001 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.

@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.57 2001-08-15 19:31:31 heins Exp $
+# $Id: ictags.sdf,v 1.58 2001-09-17 17:24:10 jon Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.57 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.58 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -12501,3 +12501,7 @@ to|{{CMD[jump="#mv_sort_option"]mv_sort_option}}
 un|{{CMD[jump="#mv_unique"]mv_unique}}
 va|{{CMD[jump="#mv_value"]mv_value}}
 !endblock
+
+Line:
+
+N:Copyright 2001 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.

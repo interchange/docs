@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icfoundation.sdf,v 1.22 2001-08-06 23:23:05 jon Exp $
+# $Id: icfoundation.sdf,v 1.23 2001-09-17 17:24:10 jon Exp $
 
 !define DOC_NAME "Foundation Store"
 !define DOC_TYPE ""
 !define DOC_CODE "icfoundation"
-!define DOC_VERSION substr('$Revision: 1.22 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.23 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icfoundation.html"
@@ -4220,3 +4220,7 @@ If planning to use more than one host name within the same domain for naming pur
 H1: Dependencies in administration
 
 In general, it's a good idea to leave fields empty if you don't want to use them, instead of removing them from the database altogether. That way nothing in admin or demo will break.
+
+Line:
+
+N:Copyright 2001 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.

@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icfaq.sdf,v 1.4 2001-08-03 14:24:10 heins Exp $
+# $Id: icfaq.sdf,v 1.5 2001-09-17 17:24:10 jon Exp $
 
 !define DOC_NAME "Frequently Asked Questions"
 !define DOC_TYPE ""
 !define DOC_CODE "icfaq"
-!define DOC_VERSION substr('$Revision: 1.4 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.5 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/doc/icfaq.html"
@@ -1747,3 +1747,7 @@ Use the same basic steps for any module not properly installed by using perl -MC
 
 9) Install Interchange as normal.
 !endblock
+
+Line:
+
+N:Copyright 2001 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.
