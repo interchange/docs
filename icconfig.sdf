@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.67 2002-07-26 22:14:45 mheins Exp $
+# $Id: icconfig.sdf,v 1.68 2002-08-11 13:43:37 racke Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.67 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.68 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icconfig.html"
@@ -1370,6 +1370,37 @@ GnuPG is recommended as the encryption program. Interchange will also work with 
 !block example
    CreditCardAuto     Yes
 !endblock
+
+H2: Cron *5.0 and up*
+
+Configuration for jobs run with the C<--cron> commandline option.
+
+LI1: base_directory, use_global
+
+Directory to search for cron jobs. The default is C<etc/cron> in
+the catalog directory. If C<use_global> is set, the same directory
+is searched in the global configuration directory.
+
+LI1: initialize, autoload
+
+The macros C<initialize> and C<autoload> are executed once resp. before 
+each job.
+
+LI1: email, log, add_session
+
+The output of a single run of cron jobs is written to a log file and
+send by email if the corresponding configuration values C<email> and
+C<log> are set. An email address passed by the commandline option
+C<--email> has higher preference than the email address in C<email>.
+
+If the run produces no output, neither the email will be send nor
+the log file entry will be written.
+
+C<add_session> adds the current session to the output.
+
+LI1: from, subject, reply_to, extra_headers
+
+Additional configuration values for the generation of the email.
 
 H2: CustomShipping
 
