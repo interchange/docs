@@ -128,7 +128,7 @@ $(TARGETS):
 
 clean:
 	@for i in $(TARGETS) icfull ; do \
-		for j in $(SUFFIXES) ; do \
+		for j in $(SUFFIXES) $(MAXSUFFIXES) ; do \
 			rm -f $$i.$$j ; \
 		done ; \
 		rm -f $${i}_*.html ; \
