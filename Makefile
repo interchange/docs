@@ -9,19 +9,19 @@ DOCDBNAME=documentation.txt
 .SUFFIXES: .sdf $(addprefix .,$(SUFFIXES))
 
 .sdf.html:
-	sdf -2html $<
+	sdf/bin/sdf -2html $<
 
 .sdf.pod:
-	sdf -2pod $<
+	sdf/bin/sdf -2pod $<
 
 .sdf.txt:
-	sdf -2txt $<
+	sdf/bin/sdf -2txt $<
 
 .sdf.mif:
-	sdf -2mif $<
+	sdf/bin/sdf -2mif $<
 
 .sdf.pdf:
-	sdf -2pdf_html $<
+	sdf/bin/sdf -2pdf_html $<
 
 .pod.8:
 	pod2man --section=8 \
