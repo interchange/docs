@@ -1,60 +1,64 @@
-all :: html pod txt
+VERSION=4.5.6
+TARGETS=icbackoffice icconfig icdatabase icinstall icintro ictemplates
+
+.SUFFIXES: .html .pod .sdf .txt .pdf .8
+
+.sdf.html:
+	sdf -2html $<
+
+.sdf.pod:
+	sdf -2pod $<
+
+.sdf.txt:
+	sdf -2txt $<
+
+.sdf.pdf:
+	sdf -2pdf_html $<
+
+.pod.8:
+	pod2man --section=8 \
+		--release='Interchange $(VERSION)' \
+		--center='Akopia Interchange' \
+		--lax \
+		$< $@
+
+all :: pdf pod txt html
 
 dev_html:
+	@mkdir -p dev
 	@for target in ic*.sdf ; do \
 		base=`basename $$target .sdf`; \
 		echo building $$base; \
-		mkdir -p dev/$$base; \
-		( echo '1s/akopia/developer_site/' ; echo 'wq dev/'$$base'/'$$target ) | ed $$target > /dev/null 2>&1 ; \
-		(cd dev/$$base; sdf -2html_topics -n2 -k=developer_site $$target); \
+		( echo '1s/akopia/developer_site/' ; echo 'wq dev/'$$target ) | ed $$target > /dev/null 2>&1 ; \
+		( cd dev ; sdf -2html_topics -n2 -k=developer_site $$target); \
 	done
 
-html:
+%_toc.html: %.sdf
+	sdf -2html_topics -n2 -DHTML_FRAMES=1 $<
+	mv $(basename $<).html $@
+
+html: $(addsuffix _toc.html,$(TARGETS)) $(addsuffix .html,$(TARGETS)) index.html
 	@for target in ic*.sdf ; do \
 		base=`basename $$target .sdf`; \
 		echo building $$base; \
-		mkdir -p $$base; \
-		sdf -2html $$target; \
-		mv $${base}.html $$base/index.html; \
-		(cd $$base; sdf -2html_topics -n2 -DHTML_FRAMES=1 ../$$target); \
-		mv $$base/$${base}.html $$base/nav.html; \
 		echo '\
 <html><head>\
   <title>'$$title'</title>\
 </head><frameset cols="200,*">\
-  <frame name="nav"  src="nav.html">\
+  <frame name="nav"  src="'$$base'_toc.html">\
   <frame name="main" src="'$$base'_1.html">\
 </frameset></html>\
-' > $$base/frtoc.html; \
-	done
-	sdf -2html index.sdf
-
-pod:
-	sdf -2pod ic*.sdf
-
-man: pod
-	@for target in *.pod ; do \
-		echo "Manifying $$target" ; \
-		base=`basename $$target .pod` ; \
-		pod2man --section=8 \
-			--release='Interchange 4.5.6' \
-			--center='Akopia Interchange' \
-			--lax \
-			$$target \
-			$$base.8 ; \
+' > $${base}_frames.html; \
 	done
 
-txt:
-	sdf -2txt ic*.sdf
+pod: $(addsuffix .pod,$(TARGETS))
 
-pdf:
-	sdf -2pdf_html ic*.sdf
+txt: $(addsuffix .txt,$(TARGETS))
+
+man: $(addsuffix .8,$(TARGETS))
+
+pdf: $(addsuffix .pdf,$(TARGETS))
 
 clean:
 	rm -f *.html *.pod *.txt *.8 *.pdf
 	rm -rf dev
-	@for target in ic*.sdf ; do \
-		base=`basename $$target .sdf`; \
-		echo rm -rf $$base; \
-		rm -rf $$base; \
-	done
