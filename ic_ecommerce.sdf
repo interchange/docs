@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ic_ecommerce.sdf,v 1.5 2001-11-01 19:43:19 edl Exp $
+# $Id: ic_ecommerce.sdf,v 1.6 2001-11-02 00:07:53 edl Exp $
 
 !define DOC_NAME "Interchange Ecommerce Functions"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_ecommerce"
-!define DOC_VERSION substr('$Revision: 1.5 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.6 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ic_ecommerce.html"
@@ -179,7 +179,7 @@ Interchange will add items to the basket that are not in the product
 database. Interchange supplies an internal C<onfly> subroutine, which 
 will work according to the examples given below. 
 
-In I<catalog.cfg>:
+In C<catalog.cfg>:
 
 >    OnFly  onfly
 
@@ -209,7 +209,7 @@ basket. Note that C<[item-field description]> or C<[item-data products descripti
 will NOT work, as both of these tags reference an actual field value for 
 a record in the products table - not applicable for on-the-fly items.
 Similarly, an attempt to generate a flypage for an on-the-fly item 
-(<[page 000101]>, for example>) will fail, resulting in the display of
+(C<[page 000101]>, for example) will fail, resulting in the display of
 the SpecialPage B<missing>.
 
 If you wish to set up a UserTag to process on-the-fly items, it should
@@ -311,9 +311,14 @@ When the master item C<00-0011> is deleted from the basket,
 C<00-0011a> will be deleted as well. And when 19-202 is deleted,
 then 99-102 will be deleted from the basket.
 
-\NOTE: You cannot use checkboxes for this type of thing, for they
-do not pass a value when unchecked.  Use radio groups or select/drop-down
-buttons.
+\NOTE: Use of checkboxes for this type of thing can be hazardous, as they
+do not pass a value when unchecked.  It is preferable to use radio groups 
+or select/drop-down widgets. If you must use checkboxes, be sure to 
+explicitly clear C<mv_order_group> and C<mv_order_item> somewhere on the
+page which contains the form:
+
+>    [value name=mv_order_group set='']
+>    [value name=mv_order_item set='']
 
 The attributes C<mv_mi> and C<mv_si> are set to the group and sub-item status
 of each item.  The group, contained in the attribute C<mv_mi>, is a
@@ -334,13 +339,13 @@ ways:
 
 ^ Set the SpecialPage C<order> to the page to display
   when an item is ordered.
-+ Use the C<[order item cart/page] Order it! [/order]> form of
++ Use the C<[order code=item page=page_name] Order it! [/order]> form of
   order tag to specify an arbitrary order page for an item.
-+ If already on an order page, set the mv_checkout, mv_orderpage,
++ If already on an order page, set the mv_orderpage,
   mv_nextpage, mv_successpage, or mv_failpage variables.
 
-The variables mentioned above modify the page display in the
-following ways:
+The following variables can be used to control cart selection and
+page display:
 
 =over 4
 
@@ -348,10 +353,6 @@ following ways:
 
 The shopping cart (default is main) to be used for this order
 operation.
-
-=item mv_checkout
-
-Page to be displayed when checkout is called from the form
 
 =item mv_failpage
 
