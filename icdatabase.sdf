@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.48 2002-07-16 12:41:44 jon Exp $
+# $Id: icdatabase.sdf,v 1.49 2002-07-20 03:14:37 mheins Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.48 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.49 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icdatabase.html"
@@ -14,7 +14,12 @@ H1: Databases and Interchange
 
 Interchange can use GDBM, DB_File, SQL, LDAP, or in-memory databases. In most cases, these different database formats should operate the same when called by Interchange's access methods.
 
-Also, Interchange does not require an external SQL database. If you have a small database and do not want to integrate your own tool set, you might want to use Interchange's internal database. However, the order management functions of Interchange will be slower and not as robust without an SQL database. SQL is strongly recommended for at least the orderline, transactions, and userdb tables.
+Also, Interchange does not require an external SQL database. If you have
+a small database and do not want to integrate your own tool set, you
+might want to use Interchange's internal database. However, the order
+management functions of Interchange will be slower and not as robust
+without an SQL database. SQL is strongly recommended for at least the
+orderline, transactions, and userdb tables.
 
 Keeping a database in an SQL manager makes it easier to integrate Interchange with other tools. Interchange can be used to maintain a spreadsheet containing product information through modifying the file C<products.txt> as needed. References to SQL, DBI, and DBD can be ignored.
 
@@ -405,7 +410,7 @@ LI1: LARGE
 .Set the LARGE attribute to 1 to avoid this problem:
 
 !block example
-	Database transactions LARGE 1
+        Database transactions LARGE 1
 !endblock
 
 .In this case the UI supplies only input boxes to search records in the
@@ -414,9 +419,15 @@ them and creating more lists.
 
 H2: Dictionary Indexing With INDEX
 
-Interchange will automatically build index files for a fast binary search of an individual field. This type of search is useful for looking up the author of a book based on the beginning of their last name, a book title based on its beginning, or other similar situations.
+Interchange will automatically build index files for a fast binary
+search of an individual field. This type of search is useful for looking
+up the author of a book based on the beginning of their last name, a
+book title based on its beginning, or other similar situations.
 
-Such a search requires a dictionary ordered index with the field to be searched contained in the first field and the database key (product code) in the second field. If the C<INDEX field> modifier is specified, Interchange will build the index upon database import:
+Such a search requires a dictionary ordered index with the field to be
+searched contained in the first field and the database key (product
+code) in the second field. If the C<INDEX field> modifier is specified,
+Interchange will build the index upon database import:
 
 !block example
   Database  products  products.txt   TAB
@@ -434,51 +445,73 @@ something like:
    The Starry Night  00-343
 !endblock
 
-Options can be appended to the field name after a colon (:). The most useful will be C<f>, which does a case-insensitive sort. The C<mv_dict_fold> option must be added to the search in this case.
+Options can be appended to the field name after a colon (:). The most
+useful will be C<f>, which does a case-insensitive sort. The
+C<mv_dict_fold> option must be added to the search in this case.
 
-Another option is C<c>, which stands for "comma index." To index on comma-separated sub-fields within a field, use the :c option:
+Another option is C<c>, which stands for "comma index." To index on
+comma-separated sub-fields within a field, use the :c option:
 
 !block example
   Database  products  products.txt   TAB
   Database  products  INDEX          category:c
 !endblock
 
-This can get slow for larger databases and fields. Interchange will split the field on a comma (stripping surrounding whitespace) and make index entries for each one. This allows multiple categories in one field while retaining the fast category search mechanism. It might also be useful for a C<keywords> field.
+This can get slow for larger databases and fields. Interchange will
+split the field on a comma (stripping surrounding whitespace) and make
+index entries for each one. This allows multiple categories in one field
+while retaining the fast category search mechanism. It might also be
+useful for a C<keywords> field.
 
 The fast binary search is described in greater detail in THE SEARCH ENGINE below.
 
 H2: MEMORY for Memory-Only Databases
 
-Interchange's memory-based databases are the fastest possible way to organize
-and store frequently used data. To force a database to be built in memory instead of DBM, use the MEMORY modifier:
+Interchange's memory-based databases are the fastest possible way to
+organize and store frequently used data. To force a database to be built
+in memory instead of DBM, use the MEMORY modifier:
 
 !block example
   Database  country  country.asc   TAB
   Database  country  MEMORY        1
 !endblock
 
-Obviously, large tables will use a great deal of memory, and the data will need to be re-imported from the ASCII source file at every catalog reconfiguration or Interchange restart. The big advantage of using MEMORY is that the database remains open at all times and does not need to be reinitialized at every connect. Use it for smaller tables that will be frequently accessed.
+Obviously, large tables will use a great deal of memory, and the data
+will need to be re-imported from the ASCII source file at every catalog
+reconfiguration or Interchange restart. The big advantage of using
+MEMORY is that the database remains open at all times and does not need
+to be reinitialized at every connect. Use it for smaller tables that
+will be frequently accessed.
 
 The MEMORY modifier forces IMPORT_ONCE.
 
 H2:  IMPORT_ONCE
 
-The IMPORT_ONCE modifier tells Interchange not to re-import the database from the ASCII file every time it changes. Normally, Interchange does a comparison of the database file modification time with the ASCII source every time it is accessed, and if the ASCII source is newer it will re-import the file.
+The IMPORT_ONCE modifier tells Interchange not to re-import the database
+from the ASCII file every time it changes. Normally, Interchange does a
+comparison of the database file modification time with the ASCII source
+every time it is accessed, and if the ASCII source is newer it will
+re-import the file.
 
-IMPORT_ONCE tells it only to import on a server restart or catalog reconfiguration:
+IMPORT_ONCE tells it only to import on a server restart or catalog
+reconfiguration:
 
 !block example
   Database  products  products.txt   TAB
   Database  products  IMPORT_ONCE    1
 !endblock
 
-SQL databases don't normally need this. They will only be imported once in normal operation. Also see C<NoImport> for a way to guarantee that the table will never be imported.
+SQL databases don't normally need this. They will only be imported once
+in normal operation. Also see C<NoImport> for a way to guarantee that
+the table will never be imported.
 
-IMPORT_ONCE is always in effect for MEMORY databases. A catalog reconfiguration is required to force a change.
+IMPORT_ONCE is always in effect for MEMORY databases. A catalog
+reconfiguration is required to force a change.
 
 H2: Importing in a Page
 
-To add a data record to a database as a result of an order or other operation, use Interchange's C<[import ...]> tag.
+To add a data record to a database as a result of an order or other
+operation, use Interchange's C<[import ...]> tag.
 
 LI1: [import table type*] RECORD [/import]
 
@@ -492,7 +525,11 @@ LI1: [import table type*] RECORD [/import]
          separator=c*]
 !endblock
 
-Import one or more records into a database. The C<type> is any of the valid Interchange delimiter types, with the default being TAB. The table must already be a defined Interchange database table. It cannot be created on-the-fly. If on-the-fly functionality is need, it is time to use SQL.
+Import one or more records into a database. The C<type> is any of the
+valid Interchange delimiter types, with the default being TAB. The
+table must already be a defined Interchange database table. It cannot
+be created on-the-fly. If on-the-fly functionality is need, it is time
+to use SQL.
 
 The import type selected need not match the type the database was specified. Different delimiters may be used.
 
@@ -778,6 +815,59 @@ The following takes input from C<file>, which must be formatted exactly like the
 
 Invoke the command without any arguments for a usage message describing the options.
 
+H1: Other Database Capabilities
+
+Interchange has a number of other options that can affect operation
+of or operations on a defined database.
+
+H2: Search Modification
+
+Normally, Interchange can search any database and will return all records
+that match the search specification. Some attributes affect this.
+
+H3: HIDE_FIELD
+
+When set to a field name, i.e.:
+
+!block example
+   Database  sometable  HIDE_FIELD  inactive
+!endblock
+
+Interchange will not return records that have that field (in the
+example, c<inactive>) set to a true (non-blank, non-zero) value.
+
+H3: NO_SEARCH
+
+An indication that the database should not be searchable by default. Used to
+determine the default search files for a product searc.
+
+!block example
+   Database  sometable  NO_SEARCH  1
+!endblock
+
+In the C<foundation> demo, this is used to prevent the C<options> table from
+being searched for products.
+
+H2: Indexing
+
+You can indicate that a database should be indexed on a field with the
+INDEX modifier:
+
+!block example
+        Database sometable  INDEX  category
+!endblock
+
+This will create an ASCII index on every import, and will also create an
+index on the field at SQL creation time. (See L<Dictionary Indexing with INDEX>.)
+
+If you wish to create SQL indices at table creation time I<without> creating
+an ASCII index, use the NO_ASCII_INDEX parameter:
+
+!block example
+        Database sometable  NO_ASCII_INDEX  1
+!endblock
+
+Of course you can create a SQL index manually at any time via your SQL toolset.
 
 H1: The Search Engine
 
@@ -1381,7 +1471,6 @@ LI1: mv_all_chars
 
 LI1: mv_base_directory
 
-
 .Scan abbreviation: bd=/directory/name. In the text search, set to the directory from which to base file searches. File names without leading / characters will be based from there. In the Glimpse search, passed to Glimpse with the C<-H> option, and Glimpse will look for its indices there. Default is ProductDir.
 
 .If an absolute path directory is used, for security enable it in the users session with:
@@ -1398,11 +1487,50 @@ LI1: mv_begin_string
 
 .This is a multiple parameter. If C<mv_coordinate> is in force, it should be set as many times as necessary to match the field/searchstring combination. If set only once, it applies to all fields. If set more than once but not as many times as the fields, it will default to off.
 
+LI1: mv_cache_key
+
+.Not normally set by the user. It is a value that provides a pointer to the search
+reference by the C<more> function.
+
 LI1: mv_case
 
 .If this item is set to C<No>, the search will return items without regard to upper or lower case. This is the default. Set to C<Yes> if case should be matched. Implement with a checkbox <INPUT TYPE=CHECKBOX> field.
 
 .If stacked to match the C<mv_search_field> and C<mv_searchspec> variables, and C<mv_coordinate> is set, it will operate only for the corresponding field.
+
+.Scan abbreviation: cs
+
+LI1: mv_column_op
+
+.In the coordinated search, the operation that will be performed to check the 
+field for a search match. These operations are supported:
+
+!block example
+	!=		Not equal to
+	!~		Not matching regular expression
+	<		Less than
+	<=		Less than or equal to
+	<>		Not equal to
+	=		Equal to
+	==		Equal to
+	=~		Matching regular expression
+	>		Greater than
+	>=		Greater than or equal to
+	em		Exact match
+	eq		Equal to
+	ge		Greater than or equal to
+	gt		Greater than
+	le		Less than or equal to
+	lt		Less than
+	ne		Not equal to
+	rm		Matching regular expression
+	rn		Not matching regular expression
+!endblock
+
+.If stacked to match the C<mv_search_field> and C<mv_searchspec> variables, and C<mv_coordinate> is set, it will operate only for the corresponding field.
+
+Note that several of the operators are the same. They do either numeric or string
+comparisons based on the status of C<mv_numeric> (alias C<nu>) for that column.
 
 LI1: mv_coordinate
 
@@ -1416,7 +1544,8 @@ LI1: mv_coordinate
 
 .*If more than one instance of the options are set, but fewer than the number of search specifications, the default setting will be used for the trailing unset options.
 
-..If a search specification is blank, it will be removed and all case-sensitivity/negation/substring options will be adjusted accordingly.
+..If a search specification is blank, it will be removed and all case-sensitivity/negation/substring options will be adjusted accordingly. If you need a blank string to
+match on, use quotes (C<"">).
 
 LI1: mv_dict_end
 
@@ -1474,11 +1603,18 @@ LI1: mv_dict_order
 
 LI1: mv_doit
 
-.This must be set to C<search> to make this a search page.
+.This can be set to C<search> to make a form with a C<process> action be a
+search page by default. The C<mv_todo> variable takes precedence.
 
 LI1: mv_exact_match
 
 .Normally Interchange searches match words, as opposed to sentences. This behavior can be overridden with C<mv_exact_match>, which when set will place quotes around any value in C<mv_searchspec> or C<mv_dict_look>.
+
+LI1: mv_field_file
+
+.If you want to search a file which has no field header on the first line, you can
+specify a file to get the field names from. It expects a single line with the
+field names separated by TAB characters.
 
 LI1: mv_field_names
 
@@ -1496,7 +1632,19 @@ LI1: mv_head_skip
 
 LI1: mv_index_delim
 
-.Sets the delimiter for counting fields in a search index. The default is TAB.
+.Sets the delimiter for counting fields in a search index. The default is TAB. It
+should rarely be changed unless you are searching a pipe-delimited or colon-delimited
+file.
+
+LI1: mv_like_field
+
+.Specifies a field in a database search which should be used for a screening
+function based on the SQL C<like> function. Needs C<mv_like_spec>.
+
+LI1: mv_like_spec
+
+.The string that should be searched for in C<mv_like_field>. The behavior of
+the % character and case-sensitivity depends on your SQL implementation.
 
 LI1: mv_matchlimit
 
@@ -1607,6 +1755,16 @@ LI1: mv_searchtype
 .When using C<st=db>, returned keys may be affected by C<TableRestrict>. See C<CATALOG.CFG>.
 
 .Defaults to text if Glimpse is not defined; defaults to Glimpse if it is defined. This can allow use of both search types if that is desirable. For instance, searching for very common strings is better done by the text-based search. An example might be searching for categories of items instead of individual items.
+
+LI1: mv_small_data
+
+Tells the search engine that there is a small amount of data in the file and that
+it should perform the search function on every line.
+
+Normally, when Interchange can find a fixed search expression it produces a
+"screening" function which will allow records to be quickly rejected when
+they don't match. If there are less than 50 records in the file or database,
+this may be counterproductive.
 
 LI1: mv_sort_field
 
@@ -2825,7 +2983,10 @@ recommended if using email address as a login.
             ]
 !endblock
 
-.This would be coupled with a login form that asks for order number and zip code, thereupon allowing the display of the contents of a transaction database with (presumably updated) order status information or a shipping company tracking number.
+.This would be coupled with a login form that asks for order number and
+zip code, thereupon allowing the display of the contents of a
+transaction database with (presumably updated) order status information
+or a shipping company tracking number.
 
 LI1: change_pass
 
