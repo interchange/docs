@@ -448,3 +448,24 @@ Most other issues have more to do with the catalogs skeleton (i.e. simple
 or barry or basic or art) than they do the core. For instance, the
 "basic" catalog produced for MV3 ran unchanged except for the issues
 discussed above.
+
+
+
+Accessing global subs from [perl] tags is done slightly differently.
+
+Minivend 3 method:
+
+[perl sub]
+myfunsub();
+[/perl]
+
+Minivend 4/IC method:
+
+[perl subs=1]
+myfunsub();
+[/perl]
+
+If you do this wrong, you'll get an error that looks like this:
+
+115.202.115.237 H8gbq6oK:115.202.115.237 - [28/February/2001:18:58:50 -0500] testcat /cgi-bin/testcat.cgi Safe: Undefined subroutine &MVSAFE::myfunsub called at (eval 283) line 2.
+
