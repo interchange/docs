@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icfoundation.sdf,v 1.6 2001-05-11 15:10:50 bill Exp $
+# $Id: icfoundation.sdf,v 1.7 2001-05-11 22:06:13 larry Exp $
 
 !define DOC_NAME "Foundation Store"
 !define DOC_TYPE ""
 !define DOC_CODE "icfoundation"
-!define DOC_VERSION substr('$Revision: 1.6 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.7 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/doc/icfoundation.html"
@@ -93,65 +93,7 @@ LI1: tmp
 
 H1: Page Templates
 
-The Simple Demo uses the C<Variable> feature extensively to simplify hand page editing. Basically speaking, a C<Variable> is a define that permits the substitution of text for a simple C<__VARIABLE__> string in a page.
-
-For example, in the simple demo, this is a complete page with the standard layout:
-
-!block example
-   __LOGOBAR__
-   __MENUBAR__
-   __LEFTSIDE__
-
-       This is unique content.
-
-   __RIGHTSIDE__
-   __MENUBOTTOM__
-   __COPYRIGHT__
-!endblock
-
-The following illustration shows how this looks on the page.
-
-!block example
-   +--------------------------------------------------------+
-   |   __LOGOBAR__                                          |
-   |--------------------------------------------------------+
-   |   __MENUBAR__                                          |
-   |--------------+-------------------------+---------------+
-   |              |                         |               |
-   | __LEFTSIDE__ |   This is your content  | __RIGHTSIDE__ |
-   |              |                         |               |
-   |              |                         |               |
-   +--------------+-------------------------+---------------+
-   |   __MENUBOTTOM__                                       |
-   |--------------------------------------------------------+
-   |   __COPYRIGHT__                                        |
-   +--------------------------------------------------------+
-!endblock
-
-In HTML, the C<__RIGHTSIDE__> is simply defined to be empty, closing the table row in most cases. The following illustration is actually how the page looks.
-
-!block example
-   +--------------------------------------------------------+
-   |   __LOGOBAR__                                          |
-   |--------------------------------------------------------+
-   |   __MENUBAR__                                          |
-   |--------------+-----------------------------------------+
-   |              |                                         |
-   | __LEFTSIDE__ |   This is your content                  |
-   |              |                                         |
-   |              |                                         |
-   +--------------+-----------------------------------------+
-   |   __MENUBOTTOM__                                       |
-   |--------------------------------------------------------+
-   |   __COPYRIGHT__                                        |
-   +--------------------------------------------------------+
-!endblock
-
-The variables are defined in C<catalog.cfg>, and come from files in the config directory. There are conditional templates with different color schemes.
-
-Once familiar with this method, it can be quite convenient. But other methods may be chosen, such as using an HTML editor. Interchange can coexist with editors that use the <NOTOUCH> </NOTOUCH> or <NOEDIT> </NOEDIT> pairs to delimit information that should not be altered or interpreted by the editor. Bear in mind that this templating method and the database layout of the simple catalog is only a suggestion on how a catalog might be organized. Many users decide to create their own database structure for product display.
-
-Yet, most users stick with the userdb and checkout strategies employed in this catalog. This is because these strategies have been developed and proven successful over a period of years. Still, they can be customized to operate like Amazon.com or another site.
+Intro to templating in the Foundation demo. Roadmap.
 
 
 H2: Template Locations
@@ -196,12 +138,12 @@ with the name of your catalog, here called CATROOT.
     	      |----leftonly
     	      |----leftright
     	      |----regions/
-    		  |----LEFTONLY_BOTTOM
-    		  |----LEFTONLY_TOP
-    		  |----LEFTRIGHT_BOTTOM
-    		  |----LEFTRIGHT_TOP
-    		  |----NOLEFT_BOTTOM
-    		  |----NOLEFT_TOP
+ 		   |----LEFTONLY_BOTTOM
+ 		   |----LEFTONLY_TOP
+ 		   |----LEFTRIGHT_BOTTOM
+ 		   |----LEFTRIGHT_TOP
+ 		   |----NOLEFT_BOTTOM
+ 		   |----NOLEFT_TOP
     	      |----simple
     	      |----theme.cfg
          |----fullwidth
@@ -355,28 +297,62 @@ with the name of your catalog, here called CATROOT.
 
 H2: Themes
 
-What is a theme in Interchange? How is a theme defined?
+This section explains how themes are defined in Interchange via the
+STYLE variable and the theme configuration file, theme.cfg.
 
-The STYLE directive in products/variable.txt indicates the template
-style to be used as the theme for the catalog; the appropriate
-templates are found in templates/__STYLE__/. The theme is defined in
-catalog.cfg as N<follows:>
+H3: STYLE
+
+The STYLE variable in CATROOT/products/variable.txt indicates the
+template style to be used as the theme for the catalog; the
+appropriate templates for that theme are found in
+CATROOT/templates/__STYLE__/. (To change the value of the STYLE
+variable, either edit variable.txt directly or use the table editor
+feature of the admin interface.)
+
+The default theme for Interchange is the Foundation demo; hence, the
+STYLE variable is assigned the value 'Foundation' in variable.txt. The
+theme is defined in catalog.cfg as N<follows (line numbers added):>
 
 !block example
     # Here we set up the catalog theme.
     
-    ParseVariables Yes
+  1 ParseVariables Yes
     
-    ifndef STYLE
-    Variable STYLE default
-    endif
-    include templates/__STYLE__/theme.cfg
+  2 ifndef STYLE
+  3 Variable STYLE default
+  4 endif
+  5 include templates/__STYLE__/theme.cfg
 !endblock
 
 Variables that make up the look and feel of the STYLE (theme) are
-defined in the file templates/theme.cfg [or is it
-templates/foundation/theme.cfg?].
+defined in the file CATROOT/templates/foundation/theme.cfg, which is
+read by Interchange in line 5 above.
 
+H3: theme.cfg
+
+The file CATROOT/templates/foundation/theme.cfg serves three
+N<purposes:>
+
+^ It defines the THEME and THEME_IMG_DIR variables,
++ It defines a cascading stylesheet for the theme, and
++ It defines the location of region templates according to the traffic
+settings for the Interchange daemon.
+
+The THEME variable is used to set the location of the region templates
+in the traffic settings section of the theme.cfg file. It is also used
+in the cart template definition file (CATROOT/templates/cart) to set
+the path of an image. The THEME_IMG_DIR variable is used to set image
+paths in the template region files and the template component files.
+
+The look and feel of the Foundation theme are defined primarily in the
+cascading style sheet specified in the theme.cfg file.
+
+The Interchange TRAFFIC setting, defined system-wide in
+interchange.cfg, is described in the ??document??. The settings in
+theme.cfg pertain to the location of region templates for the high and
+low traffic settings. For example, if you need to define a separate
+set of high traffic templates, you would change the ConfigDir variable
+in theme.cfg to point to the directory containing those templates.
 
 H2: Template Definition Files
 
@@ -396,10 +372,7 @@ template as well as components and options for that template.
     templates/foundation/simple
 !endblock
 
-
 H3: Template Walkthrough -- leftonly
-
-Walkthrough of the 'leftonly' template definition N<file:>
 
 This section is best read while viewing the file
 CATROOT/templates/leftonly and the 'Edit Page' page within the Content
@@ -418,14 +391,14 @@ B<Lines 2-5:> Template specification
     5  ui_template_description: Page with top/left areas.
 !endblock
 
-Line 2 indicates that this file is a template for the user interface
-??CORRECT??. Line 3 names the template, while Line 4 indicates the
+Line 2 indicates that this file is a template for the user
+interface. Line 3 names the template, while Line 4 indicates the
 template regions that comprise the template and will make up the new
-page that is created from the template. () Line 5 provides a description
-that identifies the template that appears in a select (pull-down) menu
-on the Edit Page. This description can, of course, be changed to
-better describe a new template that is created from the stock
-templates provided with Interchange.
+page that is created from the template. () Line 5 provides a
+description that identifies the template that appears in a select
+(pull-down) menu on the Edit Page. This description can, of course, be
+changed to better describe a new template that is created from the
+stock templates provided with Interchange.
 
 B<Lines 7-8:> Break
 
@@ -528,13 +501,13 @@ The scratch variable members_only is assigned by the ITL code
 and set on the new page using the tag
 
 !block example
-    [set members_only]0[/set]
+       [set members_only]0[/set]
 !endblock
 
 if the page can be accessed without logging in or
 
 !block example
-        [set members_only]1[/set]
+       [set members_only]1[/set]
 !endblock
 
 if not.
@@ -692,8 +665,7 @@ the featured column of the merchandising table as N<follows:>
     [/query]
 !endblock
 
-
-H2: Edit Page function
+H2: Edit Page Function
 
  What is generated when we create a page using the Edit Page content
   editor?
@@ -704,16 +676,16 @@ Page function results in the HTML and ITL code displayed below.
 B<Specifications:>
 
 !block example
-    Template:            Page with top/left areas.
-    Page title:            test
-    Page banner:            test
-    Members only:            No
+    Template:                    Page with top/left areas.
+    Page title:                  test
+    Page banner:                 test
+    Members only:                No
     Component before content:    Best Sellers
-    Component after content:    Random items
-    Component items horizontal:    3
-    Before/after Banner:        New items
-    Special tag:            Specials
-    Content:            <P>My first HTML/ITL page!
+    Component after content:     Random items
+    Component items horizontal:  3
+    Before/after Banner:         New items
+    Special tag:                 Specials
+    Content:                     <P>My first HTML/ITL page!
 !endblock
 
 B<Resulting code:>
@@ -742,22 +714,30 @@ B<Resulting code:>
 !endblock
 
 A key point here is the inclusion of the region templates LEFTONLY_TOP
-and LEFTONLY_BOTTOM. These are included because of line 4 of the
-leftonly template definition N<file:>
+and LEFTONLY_BOTTOM via the @_VARIABLE_NAME_@ notation. These are
+included because of line 4 of the leftonly template definition
+N<file:>
 
 !block example
     4  ui_template_layout: LEFTONLY_TOP, UI_CONTENT, LEFTONLY_BOTTOM
 !endblock
 
 However, note that you are free to change the region templates used in
-the file, simply by editing the file itself.
+the file, simply by editing the file itself or (better yet) using an
+existing region as a starting point for a region of your own design.
+
+The next section explains the structure of region templates.
 
 H2: Region Templates
 
 Interchange region templates ("regions") are portions of HTML and ITL
-that are included in pages within a catalog. Using regions allows you
-to control the look and feel of specific parts of each catalog
-page. The default Foundation region set includes the N<following:>
+that are included in pages within a catalog. Using regions, along with
+the cascading stylesheet defined in theme.cfg (described above),
+allows you to control the look and feel of specific parts of each
+catalog page.
+
+The default Foundation region set, found in
+CATROOT/templates/foundation/regions, includes the N<following:>
 
 !block example
     LEFTONLY_TOP
@@ -769,13 +749,13 @@ page. The default Foundation region set includes the N<following:>
 !endblock
 
 The Foundation demo uses the Variable feature extensively to simplify
-hand page editing. Basically speaking, a Variable is a define that
-permits the substitution of text for a simple __VARIABLE__ string in a
-page. For example, in our test page above, the variables LEFTONLY_TOP
-and LEFTONLY_BOTTOM correspond to region templates that provide a
-logobar, menubar, leftside menu, and copyright footer. Content,
-consisting of HTML and ITL, is placed within the BEGIN and END CONTENT
-comments. The following illustration shows how this looks on the N<page:>
+hand page editing. Basically, a Variable is a define that permits the
+substitution of text for a simple __VARIABLE__ string in a page. For
+example, in our test page above, the variables LEFTONLY_TOP and
+LEFTONLY_BOTTOM correspond to region templates that provide a logobar,
+menubar, leftside menu, and copyright footer. Content, consisting of
+HTML and ITL, is placed within the BEGIN and END CONTENT comments. The
+following illustration shows how this looks on the N<page:>
 
 !block example
    +--------------------------------------------------------+
@@ -799,13 +779,14 @@ In this diagram, LEFTONLY_TOP contributes the LEFTSIDE, LOGOBAR, and
 MENUBAR sections, while LEFTONLY_BOTTOM contributes the COPYRIGHT
 section.
 
-
-
-> /home/ic/catalogs/ft/templates/regions:
+The following subsections provide an inventory of where each of the
+region templates included with the Foundation demo are used in the
+pages and template definition files that make up the catalog.
 
 H3: LEFTONLY_TOP
 
-The LEFTONLY_TOP template region is used in the following template N<pages:>
+The LEFTONLY_TOP template region is used in the following template
+N<pages:>
 
 !block example
     pages/aboutus.html
@@ -1053,6 +1034,11 @@ N</home/ic/catalogs/ft/special_pages/:>
 !endblock
 
 H2: Components
+
+
+* Added new [control] and [control-set] tags to set series of Scratch-
+  like option areas. Used for components in UI content editing.
+
 
 Interchange components are portions of HTML and ITL that are included
 in pages within a catalog depending on options set in the Admin
