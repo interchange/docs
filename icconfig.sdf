@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.32 2001-03-14 23:38:08 jon Exp $
+# $Id: icconfig.sdf,v 1.33 2001-03-16 05:01:26 jon Exp $
 
 !define DOC_NAME "Interchange Configuration"
 !define DOC_TYPE ""
-!define DOC_CODE "ICCONFIG"
-!define DOC_VERSION substr('$Revision: 1.32 $',11, -2)
+!define DOC_CODE "icconfig"
+!define DOC_VERSION substr('$Revision: 1.33 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icconfig.html"
@@ -3147,29 +3147,57 @@ If a C<Route> is set up to C<supplant>, this is ignored.
 
 H2: Pragma
 
-Sets the default value of an Interchange pragma. There are currently only a few:
+Sets the default value of an Interchange pragma. The directive is set like this:
 
-LI1: no_html_parse
-
-.Disallows HTML tag parsing. This is a BIG parser performance gain and is enabled in the demo catalog.
+!block example
+   Pragma my_pragma_name
+!endblock
 
 To enable a pragma for only a particular page, set it anywhere in the page:
 
 !block example
-   [pragma no_html_parse]
+   [pragma my_pragma_name]
 !endblock
 
 To disable a pragma for a particular page, set it anywhere in the page:
 
 !block example
-   [pragma no_html_parse 0]
+   [pragma my_pragma_name 0]
 !endblock
 
-Note: This is a good place to place a DTD.
+There are currently only two pragmas:
 
-LI1: substitute_table_image
+LI1: no_html_parse
 
-.When this pragma it set, Interchange checks pages for <tr>, <th>, and <td> HTML tags and rewrites any background image URLs appropriate for the current catalog. Such image URLs are always rewritten in <body background="..."> and <img src="...">, but not in tables by default.
+.Disallows HTML tag parsing. This is a {{B:big}} parser performance gain and is enabled in the demo catalog.
+
+.When this pragma is set, you can't encapsulate Interchange tags inside HTML tags like this:
+
+!block example
+   <P MV="if scratch something"> ... </P>
+!endblock
+
+.Note that a page with no HTML parsing is a good place to put a DTD (document type descriptor).
+
+LI1: no_image_rewrite
+
+.Prevents image locations in pages from being altered by Interchange. Added in Interchange 4.7.0.
+
+.Interchange normally rewrites image locations to point to ImageDir. This applies to image locations mentioned in <img src="...">, <body background="...">, and <tr/th/td background="...">.
+
+.When this pragma is {{B:not}} set, the following tag:
+
+!block example
+   <img src="fancy.gif">
+!endblock
+
+.Would, assuming an ImageDir set to /foundation/images, be transformed into:
+
+!block example
+   <img src="/foundation/images/fancy.gif">
+!endblock
+
+.When pragma no_image_rewrite {{B:is}} set, the <img> tag would remain unchanged.
 
 H2: PriceCommas
 
