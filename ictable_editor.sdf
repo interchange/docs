@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ictable_editor.sdf,v 1.1 2002-09-26 02:26:14 mheins Exp $
+# $Id: ictable_editor.sdf,v 1.2 2002-09-26 04:31:47 danb Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.1 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.2 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icconfig.html"
@@ -315,7 +315,7 @@ The width of the widget. Meaningful in some way for most types.
 
 LI1: height
 
-In the field metadata, it is meaning ful for textarea, multiple select
+In the field metadata, it is meaningful for textarea, multiple select
 types (including the combo widgets), and for groups of radio and checkboxes.
 
 In the table metadata context, defines the number of rows that will
@@ -490,7 +490,7 @@ allow unfettered writes by setting the scratch variable C<mv_data_enable>,
 but that it is rarely right to do so.
 
 This prevents people from hacking together a duplicate of the [table-editor]
-form and writing columns or records they 
+form and writing columns or records they shouldn't.
 
 This option is automatically disabled if the C<cgi> option is enabled. Still,
 you should pay attention to what you are allowing users to write to your
