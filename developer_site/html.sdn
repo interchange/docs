@@ -1,4 +1,4 @@
-# $Id: html.sdn,v 1.2 2000-10-17 17:51:56 zarko Exp $
+# $Id: html.sdn,v 1.3 2000-10-17 18:03:31 zarko Exp $
 #
 # >>Title::     HTML Tuning
 #
@@ -65,9 +65,6 @@ sub ::_HtmlFinalise {
         '__LEFTSIDE__',
         '',
         '<!-- BEGIN CONTENT -->',
-        '<table cellpadding=0 cellspacing=0 border=0>',
-        '<TR><td colspan=2>',
-        '<BR CLEAR=LEFT>',
     );
 
     # Build the body contents, unless we're generating an input file for
@@ -78,56 +75,6 @@ sub ::_HtmlFinalise {
 
     # Return result
     push(@body,
-        '',
-        '</td>',
-        '</tr>',
-        '[query',
-        '        base=docnote',
-        '        list=1',
-        '        sql=|',
-        '                SELECT * FROM   docnote',
-        q{                WHERE document = '[data table=documentation col=document key="[value link_overview]" filter=sql]'},
-        q{                AND   section  = '[data table=documentation col=section key="[value link_overview]" filter=sql]'},
-        q{                AND   title  = '[data table=documentation col=title key="[value link_overview]" filter=sql]'},
-        '        |][sql-change 1][condition]1[/condition]',
-        '<TR>',
-        '        <TD BGCOLOR="__BARBG__" COLSPAN=2 ALIGN=center>',
-        '                <B><FONT COLOR="__BARTEXT__">Notes from Users</B>',
-        '        </td>',
-        '</tr>',
-        '',
-        '[/sql-change 1]',
-        '<TR>',
-        '        <TD __HEADERBG__ WIDTH="60%" VALIGN=top>',
-        '                <B><FONT COLOR="__HEADERTEXT__">[sql-param subject]</B>',
-        '        </td>',
-        '        <TD __HEADERBG__ VALIGN=top>',
-        '                <A HREF="mailto:[sql-param email]"><FONT COLOR="__HEADERTEXT__">[if-sql-param name][sql-param name][else][sql-param email][/else][/if-sql-param]</A><br><i>[convert-date][sql-param mod_date][/convert-date]</i>',
-        '        </td>',
-        '</tr>',
-        '<td colspan=2 __TABLEFG__>',
-        '<blockquote>',
-        '[sql-param comments]',
-        '</blockquote>',
-        '</td>',
-        '</tr>',
-        '<TR><td colspan=2 BGCOLOR=__BARBG__><IMG SRC="clear.gif"></td></tr>',
-        '[/query]',
-        '<tr>',
-        '<td colspan=2 valign=center><br>',
-        '<A HREF="[area',
-        '                        href=add_doc_note',
-        '                        form=|',
-        '        code=[data table=documentation col=code row="[value link_overview]"]',
-        '        section=[data table=documentation col=section row="[value link_overview]"]',
-        '        title=[data table=documentation col=title row="[value link_overview]"]',
-        '        document=[data table=documentation col=document row="[value link_overview]"]',
-        '                        |',
-        ']"><IMG SRC="admin/icon_pages.gif" border=0 align=textmiddle> Add note</A>',
-        '</td>',
-        '</tr>',
-        '</table>',
-        '',
         '',
         '<!-- END CONTENT -->',
         '',
@@ -167,7 +114,68 @@ sub ::_HtmlFinalise {
     !endif
 !endmacro
 
+!macro HTML_TOPIC_HEADER
+    !HTML_TOPIC_NAVIGATE
+    !block inline
+<table cellpadding=0 cellspacing=0 border=0>
+<TR><td colspan=2>
+<BR CLEAR=LEFT>
+    !endblock
+!endmacro
+
 !macro HTML_TOPIC_FOOTER
+    !block inline
+
+</td>
+</tr>
+[query
+        base=docnote
+        list=1
+        sql=|
+                SELECT * FROM   docnote
+                WHERE document = '[data table=documentation col=document key="[value link_overview]" filter=sql]'
+                AND   section  = '[data table=documentation col=section key="[value link_overview]" filter=sql]'
+                AND   title  = '[data table=documentation col=title key="[value link_overview]" filter=sql]'
+        |][sql-change 1][condition]1[/condition]
+<TR>
+        <TD BGCOLOR="__BARBG__" COLSPAN=2 ALIGN=center>
+                <B><FONT COLOR="__BARTEXT__">Notes from Users</B>
+        </td>
+</tr>
+
+[/sql-change 1]
+<TR>
+        <TD __HEADERBG__ WIDTH="60%" VALIGN=top>
+                <B><FONT COLOR="__HEADERTEXT__">[sql-param subject]</B>
+        </td>
+        <TD __HEADERBG__ VALIGN=top>
+                <A HREF="mailto:[sql-param email]"><FONT COLOR="__HEADERTEXT__">[if-sql-param name][sql-param name][else][sql-param email][/else][/if-sql-param]</A><br><i>[convert-date][sql-param mod_date][/convert-date]</i>
+        </td>
+</tr>
+<td colspan=2 __TABLEFG__>
+<blockquote>
+[sql-param comments]
+</blockquote>
+</td>
+</tr>
+<TR><td colspan=2 BGCOLOR=__BARBG__><IMG SRC="clear.gif"></td></tr>
+[/query]
+<tr>
+<td colspan=2 valign=center><br>
+<A HREF="[area
+                        href=add_doc_note
+                        form=|
+        code=[data table=documentation col=code row="[value link_overview]"]
+        section=[data table=documentation col=section row="[value link_overview]"]
+        title=[data table=documentation col=title row="[value link_overview]"]
+        document=[data table=documentation col=document row="[value link_overview]"]
+                        |
+]"><IMG SRC="admin/icon_pages.gif" border=0 align=textmiddle> Add note</A>
+</td>
+</tr>
+</table>
+
+    !endblock
     !HTML_TOPIC_NAVIGATE
 !endmacro
 
