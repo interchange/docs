@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.34 2001-12-11 06:18:47 jon Exp $
+# $Id: icdatabase.sdf,v 1.35 2002-01-09 15:04:01 racke Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.34 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.35 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
@@ -1822,6 +1822,10 @@ LI1: [matches]
 
 .Replaced with the range of match numbers displayed by the search page. Looks something like "1-50". Make sure to insert this item between a C<[more-list]> and C<[/more-list]> element pair.
 
+LI1: [match-count]
+
+.Replaced with the total number of matches. This tag works even on C<[query]> searches where C<[value mv_search_match_count]> isn't set unless the query is applied to a non-SQL database. Make sure to insert this item between a C<[more-list]> and C<[/more-list]> element pair.
+ 
 LI1: [more-list next_img* prev_img* page_img* border* border_current*]
 
 .Starts the section of the search page which is only displayed if there are more matches than specified in C<mv_matchlimit>. If there are less matches than the number in mv_matchlimit, all text/html between the C<[more_list]> and C<[/more_list]> elements is stripped.
