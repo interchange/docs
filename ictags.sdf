@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.81 2002-05-31 04:52:15 kwalsh Exp $
+# $Id: ictags.sdf,v 1.82 2002-06-03 18:13:36 kwalsh Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.81 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.82 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -2759,7 +2759,7 @@ ASP Note: There is never a reason to call this tag from within Perl or ASP code.
 
 # END ++++++++++++ calc Subsections +++++++++++++
 
-H2: calc_no
+H2: calcn
 
 Calculates the value of the enclosed arithmetic expression.
 
@@ -2767,7 +2767,7 @@ Calculates the value of the enclosed arithmetic expression.
 H3: Summary
 
 !block example;
-    [B<calc_no>] I<Expression> [/calc_no]
+    [B<calcn>] I<Expression> [/calcn]
 !endblock
 
 B<No parameters>
@@ -2798,7 +2798,7 @@ it does not {{CMD[jump="#attr_interpolate"]interpolate}} by default.
 available in earlier versions.
 
 
-# END ++++++++++++ calc_no Subsections +++++++++++++
+# END ++++++++++++ calcn Subsections +++++++++++++
 
 
 H2: cart
@@ -13154,7 +13154,7 @@ H4: {{CMD[id="tmp_name"]name}}
 
 # END ++++++++++++ tmp Subsections +++++++++++++
 
-H2: tmp_no
+H2: tmpn
 
 
 H3: Summary
@@ -13168,7 +13168,7 @@ Pass attribute hash as last to subroutine: B<no>
 
 Must pass named parameter interpolate=1 to cause interpolation.
 
-This is a container tag, i.e. [tmp_no] FOO [/tmp_no].
+This is a container tag, i.e. [tmpn] FOO [/tmpn].
 \Nesting: NO
 
 Invalidates cache: B<YES>
@@ -13177,7 +13177,7 @@ Called Routine:
 
 B<ASP-like Perl call:>
 
->    $Tag->tmp_no(
+>    $Tag->tmpn(
 >        {
 >         name => VALUE,
 >        },
@@ -13186,18 +13186,18 @@ B<ASP-like Perl call:>
 >
 > OR
 >
->    $Tag->tmp_no($name, $BODY);
+>    $Tag->tmpn($name, $BODY);
 
  
 
-# BEGIN ############### tmp_no Summary Tables ####################
+# BEGIN ############### tmpn Summary Tables ####################
 !block example;
-    [B<tmp_no> name]
+    [B<tmpn> name]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
 Parameters|Description|Default
-{{CMD[jump="#tmp_no_name"]name}}|<<
+{{CMD[jump="#tmpn_name"]name}}|<<
 >>|DEFAULT_VALUE
 !endblock
 
@@ -13220,17 +13220,17 @@ Nests|I<No>
 B<ASP-like Perl call:>
 
 !block example; lang="Perl"
-   $Tag->tmp_no(  { name => VALUE_name
+   $Tag->tmpn(  { name => VALUE_name
 }, $body  );
 !endblock
 
 or similarly with positional parameters,
 
 !block example; lang="Perl"
-    $Tag->tmp_no(name, $attribute_hash_reference, $body);
+    $Tag->tmpn(name, $attribute_hash_reference, $body);
 !endblock
 
-# END +++++++++++++++ tmp_no End Summary Tables ++++++++++++++++++++
+# END +++++++++++++++ tmpn End Summary Tables ++++++++++++++++++++
 
 
 H3: Description
@@ -13248,7 +13248,7 @@ H4: {{CMD[id="tmp_name"]name}}
 
 
 
-# END ++++++++++++ tmp_no Subsections +++++++++++++
+# END ++++++++++++ tmpn Subsections +++++++++++++
 
 
 H2: total_cost
