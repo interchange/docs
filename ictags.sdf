@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.33 2001-05-10 06:10:53 jon Exp $
+# $Id: ictags.sdf,v 1.34 2001-05-12 21:31:46 jon Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.33 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.34 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -120,9 +120,9 @@ E: 'E<lt>!-- [value name] -->'  becomes  '<!-- Bill -->'
 
 H5: Technical notes
 
-While '<!--[' and '[' are interchangeable, the Interchange parser
-does not replace ']-->' with ']' unless it sees '<!--[' elsewhere in
-the page.
+While '<!--[' and '[' are completely interchangeable, the Interchange
+parser does not replace ']-->' with ']' unless it also sees '<!--['
+at least once somewhere on the page. (This is a small parsing speed optimization.)
 
 See the {{CMD[jump="#Template Parsing Order"]Template Parsing Order}}
 appendix if you are modifying the special administrative interface
@@ -175,7 +175,7 @@ Avoid the HTML-embedded usage if you can.
 
 The foundation catalog included with interchange disables parsing of
 the HTML-embedded syntax. This is for better performance, since it
-saves the server from checking every HTML tag for interchange tag
+saves the server from checking every HTML tag for Interchange tag
 calls. This is done in the catalog by setting the pragma
 {{C[jump="icconfig.html#Pragma"]no_html_parse}} in C<catalog.cfg>.
 !endblock
@@ -183,15 +183,14 @@ calls. This is done in the catalog by setting the pragma
 
 H3: {{CMD[id="parameters"]Named vs. Positional Parameters}}
 
-There are two styles of supplying parameters to a
-tagE<nbspace>E<emdash> named and positional.
+There are two styles of supplying parameters to a tag: named and positional.
 
-In the named style you supply a parameter/value pair just as most HTML
+In the named style you supply a parameter name=value pair just as most HTML
 tags use:
 
 E:    E<lbracket>{{CMD[jump="#value"]value}} name="foo"]
 
-The same thing can be accomplished for the C<E<lbracket>{{CMD[jump="#value"]value}}]> tag with
+The positional-style tag that accomplishes the same thing looks like this:
 
 E:    E<lbracket>value foo]
 
@@ -201,11 +200,21 @@ positional usage simpler for common tags, and Interchange interprets
 them somewhat faster. If you wish to avoid ambiguity you can always
 use named calling. 
 
-In most cases, tags specified in the positional fashion will work
-the same as named parameters. The only time you will need to modify them
-is when there is some ambiguity as to which parameter is which (usually
-due to whitespace), or when you need to use the output of a tag as the
-parameter or attribute for another tag.
+In most cases, tag parameters specified in the positional fashion work
+the same as named parameters. However, there are a few situations where
+you need to use named parameters:
+
+^If you want to specify a parameter that comes positionally after a
+parameter that you want to omit, e.g. omit the first parameter but specify
+the second. The parser would have no way of knowing which is which, so
+you just specify the second by name. This is rare, though, because the
+first positional parameters are usually required for a given tag anyway.
+
++When there is some ambiguity as to which parameter is which, usually
+due to whitespace.
+
++When you need to use the output of a tag as the parameter or attribute
+for another tag.
 
 H4: Interpolating parameters
 
@@ -10488,160 +10497,160 @@ A1: Search and Form Variables
 
 A2: Variable Names
 
+A4: {{CMD[id="dummy_other"]other}}
 !block table; colvaligns="TTTT"; format="3115"
 Name|scan|Type|Description
-mv_all_chars|ac|S|Turns on punctuation matching
-mv_arg[0-9]+||A|Parameters for mv_subroutine (mv_arg0,mv_arg1,...)
-mv_base_directory|bd|S|Sets base directory for search file names
-mv_begin_string|bs|S|Pattern must match beginning of field
-mv_case|cs|S|Turns on case sensitivity
-mv_cartname||O|Sets the shopping cart name
-mv_cache_params||S|Determines caching of searches
-mv_change_frame||A|Any form, changes frame target of form output
-mv_check||A|Any form, sets multiple user variables after update
-mv_checkout||O|Sets the checkout page
-mv_click||A|Any form, sets multiple form variables before update
-mv_click||XA|Default mv_click routine, click is mv_click_arg
-mv_click I<name>||XA|Routine for a click I<name>, sends click as arg
-mv_click_arg||XA|Argument name in scratch space
-mv_coordinate|co|S|Enables field/spec matching coordination
-mv_column_op|op|S|Operation for coordinated search
-mv_credit_card*||O|Discussed in order security (some are read-only)
-mv_delay_page|dp|S|Delay search until after inital page display
-mv_dict_end|de|S|Upper bound for binary search
-mv_dict_fold|df|S|Non-case sensitive binary search
-mv_dict_limit|di|S|Sets upper bound based on character position
-mv_dict_look|dl|S|Search specification for binary search
-mv_dict_order|do|S|Sets dictionary order mode
-mv_doit||A|Sets default action
-mv_email||O|Reply-to address for orders
-mv_exact_match|em|S|Sets word-matching mode
-mv_failpage|fp|O,S|Sets page to display on failed order check/search
-mv_field_file|ff|S|Sets file to find field names for Glimpse
-mv_field_names|fn|S|Sets field names for search, starting at 1
-mv_first_match|fm|S|Start displaying search at specified match
-mv_head_skip|hs|S|Sets skipping of header line(s) in index
-mv_index_delim|id|S|Delimiter for search fields (TAB default)
-mv_matchlimit|ml|S|Sets match page size
-mv_max_matches|mm|S|Sets maximum match return (only for Glimpse)
-mv_min_string|ms|S|Sets minimum search spec size
-mv_negate|ne|S|Records NOT matching will be found
-mv_nextpage|np|A|Sets next page user will go to
-mv_numeric|nu|S|Comparison numeric in coordinated search
-mv_order_group||O|Allows grouping of master item/sub item
-mv_order_item||O|Causes the order of an item
-mv_order_number||O|Order number of the last order (read-only)
-mv_order_quantity||O|Sets the quantity of an ordered item
-mv_order_profile||O|Selects the order check profile
-mv_order_receipt||O|Sets the receipt displayed
-mv_order_report||O|Sets the order report sent
-mv_order_subject||O|Sets the subject line of order email
-mv_orsearch|os|S|Selects AND/OR of search words
-mv_profile|mp|S|Selects search profile
-mv_range_alpha|rg|S|Sets alphanumeric range searching
-mv_range_look|rl|S|Sets the field to do a range check on
-mv_range_max|rx|S|Upper bound of range check
-mv_range_min|rm|S|Lower bound of range check
-mv_record_delim|dr|S|Search index record delimiter
-mv_return_all|ra|S|Return all lines found (subject to range search)
-mv_return_delim|rd|S|Return record delimiter
-mv_return_fields|rf|S|Fields to return on a search
-mv_return_file_name|rn|S|Set return of file name for searches
-mv_return_spec|rs|S|Return the search string as the only result
-mv_save_session||C|Set to non-zero to prevent expiration of user session
-mv_search_field|sf|S|Sets the fields to be searched
-mv_search_file|fi|S|Sets the file(s) to be searched
-mv_search_line_return|lr|S|Each line is a return code (loop search)
-mv_search_match_count||S|Returns the number of matches found (read-only)
-mv_search_page|sp|S|Sets the page for search display
-mv_searchspec|se|S|Search specification
-mv_searchtype|st|S|Sets search type (text, glimpse, db or sql)
-mv_separate_items||O|Sets separate order lines (one per item ordered)
-mv_session_id|id|A|Suggests user session id (overridden by cookie)
-mv_shipmode||O|Sets shipping mode for custom shipping
-mv_sort_field|tf|S|Field(s) to sort on
-mv_sort_option|to|S|Options for sort
-mv_spelling_errors|er|S|Number of spelling errors for Glimpse
-mv_substring_match|su|S|Turns off word-matching mode
-mv_successpage||O|Page to display on successful order check
-mv_todo||A|Common to all forms, sets form action
-mv_todo.map||A|Contains form imagemap
-mv_todo.checkout.x||O|Causes checkout action on click of image
-mv_todo.return.x||O|Causes return action on click of image
-mv_todo.submit.x||O|Causes submit action on click of image
-mv_todo.x||A|Set by form imagemap
-mv_todo.y||A|Set by form imagemap
-mv_unique|un|S|Return unique search results only
-mv_value|va|S|Sets value on one-click search (va=var=value)
+{{CMD[id="mv_all_chars"]mv_all_chars}}|ac|S|Turns on punctuation matching
+{{CMD[id="mv_arg"]mv_arg[0-9]+}}||A|Parameters for mv_subroutine (mv_arg0,mv_arg1,...)
+{{CMD[id="mv_base_directory"]mv_base_directory}}|bd|S|Sets base directory for search file names
+{{CMD[id="mv_begin_string"]mv_begin_string}}|bs|S|Pattern must match beginning of field
+{{CMD[id="mv_case"]mv_case}}|cs|S|Turns on case sensitivity
+{{CMD[id="mv_cartname"]mv_cartname}}||O|Sets the shopping cart name
+{{CMD[id="mv_cache_params"]mv_cache_params}}||S|Determines caching of searches
+{{CMD[id="mv_change_frame"]mv_change_frame}}||A|Any form, changes frame target of form output
+{{CMD[id="mv_check"]mv_check}}||A|Any form, sets multiple user variables after update
+{{CMD[id="mv_checkout"]mv_checkout}}||O|Sets the checkout page
+{{CMD[id="mv_click"]mv_click}}||A|Any form, sets multiple form variables before update
+{{CMD[id="mv_click"]mv_click}}||XA|Default mv_click routine, click is mv_click_arg
+{{CMD[id="mv_click_NAME"]mv_click I<name>}}||XA|Routine for a click I<name>, sends click as arg
+{{CMD[id="mv_click_arg"]mv_click_arg}}||XA|Argument name in scratch space
+{{CMD[id="mv_coordinate"]mv_coordinate}}|co|S|Enables field/spec matching coordination
+{{CMD[id="mv_column_op"]mv_column_op}}|op|S|Operation for coordinated search
+{{CMD[id="mv_credit_card*"]mv_credit_card*}}||O|Discussed in order security (some are read-only)
+{{CMD[id="mv_delay_page"]mv_delay_page}}|dp|S|Delay search until after inital page display
+{{CMD[id="mv_dict_end"]mv_dict_end}}|de|S|Upper bound for binary search
+{{CMD[id="mv_dict_fold"]mv_dict_fold}}|df|S|Non-case sensitive binary search
+{{CMD[id="mv_dict_limit"]mv_dict_limit}}|di|S|Sets upper bound based on character position
+{{CMD[id="mv_dict_look"]mv_dict_look}}|dl|S|Search specification for binary search
+{{CMD[id="mv_dict_order"]mv_dict_order}}|do|S|Sets dictionary order mode
+{{CMD[id="mv_doit"]mv_doit}}||A|Sets default action
+{{CMD[id="mv_email"]mv_email}}||O|Reply-to address for orders
+{{CMD[id="mv_exact_match"]mv_exact_match}}|em|S|Sets word-matching mode
+{{CMD[id="mv_failpage"]mv_failpage}}|fp|O,S|Sets page to display on failed order check/search
+{{CMD[id="mv_field_file"]mv_field_file}}|ff|S|Sets file to find field names for Glimpse
+{{CMD[id="mv_field_names"]mv_field_names}}|fn|S|Sets field names for search, starting at 1
+{{CMD[id="mv_first_match"]mv_first_match}}|fm|S|Start displaying search at specified match
+{{CMD[id="mv_head_skip"]mv_head_skip}}|hs|S|Sets skipping of header line(s) in index
+{{CMD[id="mv_index_delim"]mv_index_delim}}|id|S|Delimiter for search fields (TAB default)
+{{CMD[id="mv_matchlimit"]mv_matchlimit}}|ml|S|Sets match page size
+{{CMD[id="mv_max_matches"]mv_max_matches}}|mm|S|Sets maximum match return (only for Glimpse)
+{{CMD[id="mv_min_string"]mv_min_string}}|ms|S|Sets minimum search spec size
+{{CMD[id="mv_negate"]mv_negate}}|ne|S|Records NOT matching will be found
+{{CMD[id="mv_nextpage"]mv_nextpage}}|np|A|Sets next page user will go to
+{{CMD[id="mv_numeric"]mv_numeric}}|nu|S|Comparison numeric in coordinated search
+{{CMD[id="mv_order_group"]mv_order_group}}||O|Allows grouping of master item/sub item
+{{CMD[id="mv_order_item"]mv_order_item}}||O|Causes the order of an item
+{{CMD[id="mv_order_number"]mv_order_number}}||O|Order number of the last order (read-only)
+{{CMD[id="mv_order_quantity"]mv_order_quantity}}||O|Sets the quantity of an ordered item
+{{CMD[id="mv_order_profile"]mv_order_profile}}||O|Selects the order check profile
+{{CMD[id="mv_order_receipt"]mv_order_receipt}}||O|Sets the receipt displayed
+{{CMD[id="mv_order_report"]mv_order_report}}||O|Sets the order report sent
+{{CMD[id="mv_order_subject"]mv_order_subject}}||O|Sets the subject line of order email
+{{CMD[id="mv_orsearch"]mv_orsearch}}|os|S|Selects AND/OR of search words
+{{CMD[id="mv_profile"]mv_profile}}|mp|S|Selects search profile
+{{CMD[id="mv_range_alpha"]mv_range_alpha}}|rg|S|Sets alphanumeric range searching
+{{CMD[id="mv_range_look"]mv_range_look}}|rl|S|Sets the field to do a range check on
+{{CMD[id="mv_range_max"]mv_range_max}}|rx|S|Upper bound of range check
+{{CMD[id="mv_range_min"]mv_range_min}}|rm|S|Lower bound of range check
+{{CMD[id="mv_record_delim"]mv_record_delim}}|dr|S|Search index record delimiter
+{{CMD[id="mv_return_all"]mv_return_all}}|ra|S|Return all lines found (subject to range search)
+{{CMD[id="mv_return_delim"]mv_return_delim}}|rd|S|Return record delimiter
+{{CMD[id="mv_return_fields"]mv_return_fields}}|rf|S|Fields to return on a search
+{{CMD[id="mv_return_file_name"]mv_return_file_name}}|rn|S|Set return of file name for searches
+{{CMD[id="mv_return_spec"]mv_return_spec}}|rs|S|Return the search string as the only result
+{{CMD[id="mv_save_session"]mv_save_session}}||C|Set to non-zero to prevent expiration of user session
+{{CMD[id="mv_search_field"]mv_search_field}}|sf|S|Sets the fields to be searched
+{{CMD[id="mv_search_file"]mv_search_file}}|fi|S|Sets the file(s) to be searched
+{{CMD[id="mv_search_line_return"]mv_search_line_return}}|lr|S|Each line is a return code (loop search)
+{{CMD[id="mv_search_match_count"]mv_search_match_count}}||S|Returns the number of matches found (read-only)
+{{CMD[id="mv_search_page"]mv_search_page}}|sp|S|Sets the page for search display
+{{CMD[id="mv_searchspec"]mv_searchspec}}|se|S|Search specification
+{{CMD[id="mv_searchtype"]mv_searchtype}}|st|S|Sets search type (text, glimpse, db or sql)
+{{CMD[id="mv_separate_items"]mv_separate_items}}||O|Sets separate order lines (one per item ordered)
+{{CMD[id="mv_session_id"]mv_session_id}}|id|A|Suggests user session id (overridden by cookie)
+{{CMD[id="mv_shipmode"]mv_shipmode}}||O|Sets shipping mode for custom shipping
+{{CMD[id="mv_sort_field"]mv_sort_field}}|tf|S|Field(s) to sort on
+{{CMD[id="mv_sort_option"]mv_sort_option}}|to|S|Options for sort
+{{CMD[id="mv_spelling_errors"]mv_spelling_errors}}|er|S|Number of spelling errors for Glimpse
+{{CMD[id="mv_substring_match"]mv_substring_match}}|su|S|Turns off word-matching mode
+{{CMD[id="mv_successpage"]mv_successpage}}||O|Page to display on successful order check
+{{CMD[id="mv_todo"]mv_todo}}||A|Common to all forms, sets form action
+{{CMD[id="mv_todo.map"]mv_todo.map}}||A|Contains form imagemap
+{{CMD[id="mv_todo.checkout.x"]mv_todo.checkout.x}}||O|Causes checkout action on click of image
+{{CMD[id="mv_todo.return.x"]mv_todo.return.x}}||O|Causes return action on click of image
+{{CMD[id="mv_todo.submit.x"]mv_todo.submit.x}}||O|Causes submit action on click of image
+{{CMD[id="mv_todo.x"]mv_todo.x}}||A|Set by form imagemap
+{{CMD[id="mv_todo.y"]mv_todo.y}}||A|Set by form imagemap
+{{CMD[id="mv_unique"]mv_unique}}|un|S|Return unique search results only
+{{CMD[id="mv_value"]mv_value}}|va|S|Sets value on one-click search (va=var=value)
 !endblock
-
 
 A2: Abbreviations
 
 The two-letter abbreviations are mapped with these letters:
 
-!block table; colvaligns="TT"
+!block table; colvaligns="TT"; format="19"
 Abbr|Long name
-DL|mv_raw_dict_look
-MM|mv_more_matches
-SE|mv_raw_searchspec
-ac|mv_all_chars
-ar|mv_arg
-bd|mv_base_directory
-bs|mv_begin_string
-ck|mv_cache_key
-co|mv_coordinate
-cs|mv_case
-cv|mv_verbatim_columns
-de|mv_dict_end
-df|mv_dict_fold
-di|mv_dict_limit
-dl|mv_dict_look
-do|mv_dict_order
-dp|mv_delay_page
-dr|mv_record_delim
-em|mv_exact_match
-er|mv_spelling_errors
-fi|mv_search_file
-fm|mv_first_match
-fn|mv_field_names
-hs|mv_head_skip
-id|mv_session_id
-il|mv_index_delim
-ix|mv_index_delim
-lb|mv_search_label
-lo|mv_list_only
-lr|mv_line_return
-lr|mv_search_line_return
-ml|mv_matchlimit
-mm|mv_max_matches
-mp|mv_profile
-ms|mv_min_string
-ne|mv_negate
-np|mv_nextpage
-nu|mv_numeric
-op|mv_column_op
-os|mv_orsearch
-pc|mv_pc
-ra|mv_return_all
-rd|mv_return_delim
-rf|mv_return_fields
-rg|mv_range_alpha
-rl|mv_range_look
-rm|mv_range_min
-rn|mv_return_file_name
-rr|mv_return_reference
-rs|mv_return_spec
-rx|mv_range_max
-se|mv_searchspec
-sf|mv_search_field
-si|mv_search_immediate
-sp|mv_search_page
-sq|mv_sql_query
-st|mv_searchtype
-su|mv_substring_match
-tf|mv_sort_field
-to|mv_sort_option
-un|mv_unique
-va|mv_value
+DL|{{CMD[jump="#mv_raw_dict_look"]mv_raw_dict_look}}
+MM|{{CMD[jump="#mv_more_matches"]mv_more_matches}}
+SE|{{CMD[jump="#mv_raw_searchspec"]mv_raw_searchspec}}
+ac|{{CMD[jump="#mv_all_chars"]mv_all_chars}}
+ar|{{CMD[jump="#mv_arg"]mv_arg}}
+bd|{{CMD[jump="#mv_base_directory"]mv_base_directory}}
+bs|{{CMD[jump="#mv_begin_string"]mv_begin_string}}
+ck|{{CMD[jump="#mv_cache_key"]mv_cache_key}}
+co|{{CMD[jump="#mv_coordinate"]mv_coordinate}}
+cs|{{CMD[jump="#mv_case"]mv_case}}
+cv|{{CMD[jump="#mv_verbatim_columns"]mv_verbatim_columns}}
+de|{{CMD[jump="#mv_dict_end"]mv_dict_end}}
+df|{{CMD[jump="#mv_dict_fold"]mv_dict_fold}}
+di|{{CMD[jump="#mv_dict_limit"]mv_dict_limit}}
+dl|{{CMD[jump="#mv_dict_look"]mv_dict_look}}
+do|{{CMD[jump="#mv_dict_order"]mv_dict_order}}
+dp|{{CMD[jump="#mv_delay_page"]mv_delay_page}}
+dr|{{CMD[jump="#mv_record_delim"]mv_record_delim}}
+em|{{CMD[jump="#mv_exact_match"]mv_exact_match}}
+er|{{CMD[jump="#mv_spelling_errors"]mv_spelling_errors}}
+fi|{{CMD[jump="#mv_search_file"]mv_search_file}}
+fm|{{CMD[jump="#mv_first_match"]mv_first_match}}
+fn|{{CMD[jump="#mv_field_names"]mv_field_names}}
+hs|{{CMD[jump="#mv_head_skip"]mv_head_skip}}
+id|{{CMD[jump="#mv_session_id"]mv_session_id}}
+il|{{CMD[jump="#mv_index_delim"]mv_index_delim}}
+ix|{{CMD[jump="#mv_index_delim"]mv_index_delim}}
+lb|{{CMD[jump="#mv_search_label"]mv_search_label}}
+lo|{{CMD[jump="#mv_list_only"]mv_list_only}}
+lr|{{CMD[jump="#mv_line_return"]mv_line_return}}
+lr|{{CMD[jump="#mv_search_line_return"]mv_search_line_return}}
+ml|{{CMD[jump="#mv_matchlimit"]mv_matchlimit}}
+mm|{{CMD[jump="#mv_max_matches"]mv_max_matches}}
+mp|{{CMD[jump="#mv_profile"]mv_profile}}
+ms|{{CMD[jump="#mv_min_string"]mv_min_string}}
+ne|{{CMD[jump="#mv_negate"]mv_negate}}
+np|{{CMD[jump="#mv_nextpage"]mv_nextpage}}
+nu|{{CMD[jump="#mv_numeric"]mv_numeric}}
+op|{{CMD[jump="#mv_column_op"]mv_column_op}}
+os|{{CMD[jump="#mv_orsearch"]mv_orsearch}}
+pc|{{CMD[jump="#mv_pc"]mv_pc}}
+ra|{{CMD[jump="#mv_return_all"]mv_return_all}}
+rd|{{CMD[jump="#mv_return_delim"]mv_return_delim}}
+rf|{{CMD[jump="#mv_return_fields"]mv_return_fields}}
+rg|{{CMD[jump="#mv_range_alpha"]mv_range_alpha}}
+rl|{{CMD[jump="#mv_range_look"]mv_range_look}}
+rm|{{CMD[jump="#mv_range_min"]mv_range_min}}
+rn|{{CMD[jump="#mv_return_file_name"]mv_return_file_name}}
+rr|{{CMD[jump="#mv_return_reference"]mv_return_reference}}
+rs|{{CMD[jump="#mv_return_spec"]mv_return_spec}}
+rx|{{CMD[jump="#mv_range_max"]mv_range_max}}
+se|{{CMD[jump="#mv_searchspec"]mv_searchspec}}
+sf|{{CMD[jump="#mv_search_field"]mv_search_field}}
+si|{{CMD[jump="#mv_search_immediate"]mv_search_immediate}}
+sp|{{CMD[jump="#mv_search_page"]mv_search_page}}
+sq|{{CMD[jump="#mv_sql_query"]mv_sql_query}}
+st|{{CMD[jump="#mv_searchtype"]mv_searchtype}}
+su|{{CMD[jump="#mv_substring_match"]mv_substring_match}}
+tf|{{CMD[jump="#mv_sort_field"]mv_sort_field}}
+to|{{CMD[jump="#mv_sort_option"]mv_sort_option}}
+un|{{CMD[jump="#mv_unique"]mv_unique}}
+va|{{CMD[jump="#mv_value"]mv_value}}
 !endblock
