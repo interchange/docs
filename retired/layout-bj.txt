@@ -1,0 +1,158 @@
+
+layout.txt
+by Bob Jordan
+Akopia, Inc.
+
+Step 1: Define your databases
+==============================
+
+sample based on: http://www.bagshop.com/product/lisecharmel/lisechl23.php3
+refer to catalogs/simple/products/products.asc in the simple demo
+
+BagShop.com database
+sku                 0023
+mfr                 Lise Charmel
+category            Lingerie
+subcat              Panty ??
+discount_group      Lingerie
+description         Erable Series Thong
+text                -optional- could contain more text for a separate
+                    product flypage
+price               53.00
+weight              1
+size                S M L XL
+color               French Vanilla   (comma separated list)
+image               product/lisecharmel/images/lc-erable1.jpg
+image_height        453
+image_width         310
+tn_height           75
+tn_width            50
+etc...
+
+Image could be simplified, and the path built up with mv tags like
+  <a href="product/[item-field mfr]/images/[item-field image]
+  height="[item-field image_height]" width=[item-field image_width]"
+	alt="[item-description]">
+and on a category page with thumbnails:
+  <a href="product/[item-field mfr]/images/tn_[item-field image]
+  height="[item-field tn_height]" width=[item-field tn_width]"
+	alt="[item-description]">
+
+Discount group -might- be of value when we learn what their discount
+policy is.  All I know currently is "10% discount for Lingerie orders
+over $200".  See discounts in the docs - this would allow us to set
+several products to perhaps discount group "A".  Then we define a
+discount rule such as 'buy 2 from this group, get a third free', etc.
+
+BagShop.com category list database
+----------------------------------
+code              L23 
+image             product/lisecharmel/images/lc-erable1.jpg
+image_height      453
+image_width       310
+mfr               Lise Charmel
+description       Erable Series L23
+text              Lise Charmel Erable Series L23 - Multi-tones pf ecru cream and white guipure lace in a rich leaf motif.
+min_price         42
+max_price         86
+list              0023 0123 0323 0523 3023 3123 3223 3323A 3323B 4923
+
+The above is for a particular product line.  We would also use this 
+format to enter the main category data, for example:
+
+code              Lingerie
+image             product/category/lingerie.jpg
+image_height      453
+image_width       310
+mfr               Lingerie
+description       optional text describing category
+min_price         42
+max_price         86
+list              L23 etc. etc. list of product lines within lingerie
+
+This may not be complete, but would be a good start.  Additional
+fields can be added as needs arise.
+
+Erik - you could go through this process with RCCW after you get a
+feel for their products and site layout.
+--
+Category concept revisited...
+The above method of listing categories is subject to:
+  Pros:
+     Total control over order of products on the category page
+     Ability to add related products to any group of products
+     Faster display of pages; no searches or sorts required
+  Cons:
+     Requires someone to maintain the lists of products
+
+The other method of organizing products would be to add some 
+additional field to our products.asc database.  For example, with
+  category   Lingerie
+  mfr        Lise Charmel
+  line       Erable Series L23
+we can create the referenced page by searching on 
+'line=Erable Series L23' providing all the 'line's are unique.
+If not, we might have to use a compound search on 2 or 3 of the
+fields.
+  Pros:
+     A new product addition with the proper category/mfr/line
+       will automatically appear upon a search
+  Cons:
+     Grouping (sorting) the search results may be difficult
+       on reference page, we want panties to be grouped and
+       the bras to appear in a logical order - not necessarily
+       alphabetical or numerical order.  It is possible to add
+       yet another field for 'sort order'.
+     Compound searching/sorting take time on.  Okay on a lightly
+       loaded server, but perhaps not on a busy one.  Static page
+       build is one technique to lesson the burden.(see docs)
+
+Cross-sell/up-sell
+-------------------
+We can add another field to our db - 'related'.  If we populate 
+this with a list of sku's for companion products, then on our
+product page we can have a section listing links to related items.
+For instance, for our Erable Series L23 the panties could link
+to the bras in the line, and vice versa.
+
+The new Interchange Admin interface refers to this as 
+'product matrixes'. 
+
+Step 2: Identify Navigation Requirements
+=========================================
+
+Identify common navigation elements that can be broken into html
+snippets and used on pages as mv includes.
+
+Typically, we might have
+header
+left-side (optional)
+footer
+copyright  
+
+Additional headers/footers might be defined for specific pages or
+page groups, such as the basket/checkout pages.  These files are
+typically defined near the top of catalog.cfg in the form:
+ConfigDir pages
+Variable    COPYRIGHT       <copyright
+Variable    MASTHEAD        <masthead
+Variable    SHOPNAV         <shopnav
+Variable    RECEIPTNAV      <receiptnav
+Variable    GENERALNAV      <generalnav
+Variable    DIVIDER         <divider
+ConfigDir config
+
+In the case above, each html snippet exists in the pages directory (as
+defined by ConfigDir).  They are truly snippets - no <html>,<body> etc
+tags, as they will be included within existing thml pages.  Not a nav
+element, strictly speaking, but the divider
+definition above could contain simply <hr width="50%">, a properly
+specified image tag, or might even contain nothing.  This allows us to
+easily modify page dividers across the entire site from one location.
+
+Masthead might contain simply a logo image definition, or could contain
+the entire html definition at the top of the page - <html>,<body>,<head>
+logo, etc. - but note that if you include basic html stuff, you may not
+be able to view the page in a gui editor - since it requires mv parsing
+to add the html codes. . .
+
