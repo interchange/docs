@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.84 2002-06-06 02:02:25 jon Exp $
+# $Id: ictags.sdf,v 1.85 2002-06-08 01:06:06 jon Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.84 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.85 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -3247,12 +3247,20 @@ B<ASP-like Perl call:>
 
 # BEGIN ############### checked Summary Tables ####################
 !block example;
-    [B<checked> name valueI<other_named_attributes>]
+    [B<checked> name value I<other_named_attributes>]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
 Parameters|Description|Default
+{{CMD[jump="#checked_case"]case}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#checked_cgi"]cgi}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#checked_default"]default}}|<<
+>>|DEFAULT_VALUE
 {{CMD[jump="#checked_name"]name}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#checked_multiple"]multiple}}|<<
 >>|DEFAULT_VALUE
 {{CMD[jump="#checked_value"]value}}|<<
 >>|DEFAULT_VALUE
@@ -3277,25 +3285,15 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [checked name value]
+   [value name=example set=neato]
+   <INPUT TYPE=checkbox NAME=neato VALUE=1 [checked name=neato value=1]>
+   <INPUT TYPE=checkbox NAME=silly VALUE=1 [checked name=silly value=1]>
 ---
-   TAG RESULT
+
+   <INPUT TYPE=checkbox NAME=neato VALUE=1 CHECKED>
+   <INPUT TYPE=checkbox NAME=silly VALUE=1 >
 !endblock
 
-
-B<ASP-like Perl call:>
-
-!block example; lang="Perl"
-   $Tag->checked(  { name => VALUE_name
-                      value => VALUE_value
-}, $body  );
-!endblock
-
-or similarly with positional parameters,
-
-!block example; lang="Perl"
-    $Tag->checked(name,value, $attribute_hash_reference, $body);
-!endblock
 
 # END +++++++++++++++ checked End Summary Tables ++++++++++++++++++++
 
@@ -3328,19 +3326,27 @@ By default, the Values space (i.e. [value foo]) is checkedE<nbspace>E<emdash> if
 want to use the volatile CGI space (i.e. [cgi foo]) use the option
 C<cgi=1>.
 
+Use the parameter C<default=1> to specify that this checkbox should be
+marked CHECKED if the value/CGI variable has never been set.
 
-
+If the parameter C<multiple=1> is set, the C<value> parameter can
+contain multiple (stacked) values that should be checked, separated
+by ASCII null characters ("\0" in Perl).
 
 
 
 # BEGIN ########### checked Subsections ##############
+H4: {{CMD[id="checked_case"]case}}
+
+H4: {{CMD[id="checked_cgi"]cgi}}
+
+H4: {{CMD[id="checked_default"]default}}
+
 H4: {{CMD[id="checked_name"]name}}
 
-
+H4: {{CMD[id="checked_multiple"]multiple}}
 
 H4: {{CMD[id="checked_value"]value}}
-
-
 
 # END ++++++++++++ checked Subsections +++++++++++++
 
@@ -11336,12 +11342,20 @@ B<ASP-like Perl call:>
 
 # BEGIN ############### selected Summary Tables ####################
 !block example;
-    [B<selected> name valueI<other_named_attributes>]
+    [B<selected> name value I<other_named_attributes>]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
 Parameters|Description|Default
+{{CMD[jump="#selected_case"]case}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#selected_cgi"]cgi}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#selected_default"]default}}|<<
+>>|DEFAULT_VALUE
 {{CMD[jump="#selected_name"]name}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#selected_multiple"]multiple}}|<<
 >>|DEFAULT_VALUE
 {{CMD[jump="#selected_value"]value}}|<<
 >>|DEFAULT_VALUE
@@ -11366,24 +11380,13 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [selected name value]
+   [value name=example set=neato]
+   <OPTION[selected example neato]>Neato
+   <OPTION[selected example silly]>Silly
 ---
-   TODO: (tag result)
-!endblock
 
-
-B<ASP-like Perl call:>
-
-!block example; lang="Perl"
-   $Tag->selected(  { name => VALUE_name
-                       value => VALUE_value
-}, $body  );
-!endblock
-
-or similarly with positional parameters,
-
-!block example; lang="Perl"
-    $Tag->selected(name,value, $attribute_hash_reference, $body);
+   <OPTION SELECTED>Neato
+   <OPTION>Silly
 !endblock
 
 # END +++++++++++++++ selected End Summary Tables ++++++++++++++++++++
@@ -11409,8 +11412,7 @@ color selection:
 >    <OPTION [selected color red]> Red
 >    </SELECT>
 
-Here is the same thing, but for a shopping-basket color
-selection
+Here is the same thing, but for a shopping-basket color selection:
 
 >    <SELECT NAME="[modifier-name color]">
 >    <OPTION [selected [modifier-name color] blue]> Blue
@@ -11419,24 +11421,33 @@ selection
 >    </SELECT>
 
 By default, the Values space (i.e. [value foo]) is checkedE<nbspace>E<emdash> if you
-want to use the volatile CGI space (i.e. [cgi foo]) use the option
+want to use the volatile CGI space (i.e. [cgi foo]) use the parameter
 C<cgi=1>.
 
+Use the parameter C<default=1> to specify the option that should be
+marked SELECTED if the value/CGI variable has never been set.
 
-
+If the parameter C<multiple=1> is set, the C<value> parameter can
+contain multiple (stacked) values that should be selected, separated
+by ASCII null characters ("\0" in Perl).
 
 
 
 # BEGIN ########### selected Subsections ##############
+H4: {{CMD[id="selected_case"]case}}
+
+H4: {{CMD[id="selected_cgi"]cgi}}
+
+H4: {{CMD[id="selected_default"]default}}
+
 H4: {{CMD[id="selected_name"]name}}
 
-
+H4: {{CMD[id="selected_multiple"]multiple}}
 
 H4: {{CMD[id="selected_value"]value}}
 
-
-
 # END ++++++++++++ selected Subsections +++++++++++++
+
 
 H2: set
 
@@ -14023,23 +14034,7 @@ B<The attribute hash reference is passed> to the subroutine after
 the parameters as the last argument.
 B<This may mean that there are parameters not shown here.>
 
-Must pass named parameter interpolate=1 to cause interpolation.
-
 Invalidates cache: B<YES>
-
-Called Routine: 
-
-B<ASP-like Perl call:>
-
->    $Tag->userdb(
->        {
->         function => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->userdb($function, $ATTRHASH);
 
 Attribute aliases
 
@@ -14051,7 +14046,7 @@ Attribute aliases
 
 # BEGIN ############### userdb Summary Tables ####################
 !block example;
-    [B<userdb> functionI<other_named_attributes>]
+    [B<userdb> function I<other_named_attributes>]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -14094,14 +14089,15 @@ B<Tag expansion example:>
 B<ASP-like Perl call:>
 
 !block example; lang="Perl"
-   $Tag->userdb(  { function => VALUE_function
-}, $body  );
+   $Tag->userdb({
+       function => VALUE
+   });
 !endblock
 
 or similarly with positional parameters,
 
 !block example; lang="Perl"
-    $Tag->userdb(function, $attribute_hash_reference, $body);
+    $Tag->userdb(function, $attribute_hash_reference);
 !endblock
 
 # END +++++++++++++++ userdb End Summary Tables ++++++++++++++++++++
@@ -14124,6 +14120,8 @@ Interchange provides a C<[userdb ...]> tag to access the UserDB functions.
 >        force_lower=1
 >        param1=value*
 >        param2=value*
+>        hide=1
+>        show=1
 >        ...
 >        ]
 
@@ -14150,6 +14148,8 @@ then you should include a C<database=table> parameter with any
 call to C<userdb>. The global parameters (default in parentheses):
 
 >    database     Sets user database table (userdb)
+>    hide         Hide the return value of certain functions
+>                 (including login, new_account, save, load)
 >    show         Show the return value of certain functions
 >                 or the error message, if any (0)
 >    force_lower  Force possibly upper-case database fields
