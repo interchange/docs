@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ic_ecommerce.sdf,v 1.6 2001-11-02 00:07:53 edl Exp $
+# $Id: ic_ecommerce.sdf,v 1.7 2001-11-02 19:27:23 edl Exp $
 
 !define DOC_NAME "Interchange Ecommerce Functions"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_ecommerce"
-!define DOC_VERSION substr('$Revision: 1.6 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.7 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ic_ecommerce.html"
@@ -381,53 +381,57 @@ Order profile to be used if the form action is F<submit>
 
 =head2 Multiple Shopping Carts
 
-You can maintain multiple shopping carts with Interchange (2.02 and above).
+Interchange allows you to define and maintain multiple shopping carts.
 One shopping cart -- main, by name -- is defined when the user session
 starts. If the user orders item M1212 with the following tag:
 
->    [order M1212 layaway] Order this item! [/order]
+>    [order code=M1212 cart=layaway] Order this item! [/order]
 
 the order will be placed in the cart named I<layaway>. However, by default
-you won't see what you want!  That is because the default shopping basket
-page won't display the cart you are thinking it will -- it will show
-the main cart. So copy the default cart (pages/ord/basket.html in the demos)
-to a new file, insert a C<[cart layaway]> tag, and submit it as an Interchange
-page name addendum to the cart name:
+you won't see the just-ordered item on the basket page.  That is because 
+the default shopping basket displays the contents of the 'main' cart only. 
+So copy the default basket page (pages/ord/basket.html in the demo)
+to a new file, insert a C<[cart layaway]> tag, and specify it as the target
+page in your C<[order]> tag:
 
->    [order M1212 layaway/lay_basket] Order this item! [/order]
+>    [order code=M1212 cart=layaway page=ord/lay_basket] Order this item! [/order]
 
-Now the contents of the I<layaway> cart will be displayed. If you need
-to display a different price, you will have to emulate the C<[subtotal]>,
-C<[item-price]>, C<[item-subtotal]>, etc. fields with C<[item-list]>, C<[calc]>, 
-and C<[currency]> tags. This snippet emulates the item-price tag for
-a different price field I<layaway-price>:
+Now the contents of the I<layaway> cart will be displayed. Most of the ITL
+tags that are fundamental to cart display accept a 'cartname' option, 
+allowing you to specify which cart to be used:
 
->    [currency] [item-field layaway-price] [/currency]
+=over 4
 
-An item subtotal:
+=item [cart cartname]
 
->    [currency]
->        [calc]
->            [item-field layaway-price] * [item-quantity]
->        [/calc]
->    [/currency]
+A 'sticky' setting of the default cart name to use for all subsequent
+cart-related tags.  Convenient, but you must remember to use C<[cart main]>
+to get back to the primary cart!  As an alternative, you can specify the
+desired cart as a parameter of the other tags.  These are not sticky, 
+referencing the specified cart only for the instance in which they are called:
 
-A cart subtotal, using the item-list tag:
+=item [item-list cartname]...[/item-list]
 
->    [currency]
->        [calc]
->            [item-list layaway]
->            ([item-field layaway-price] * [item-quantity]) +
->            [/item-list]
->            0
->        [/calc]
->    [/currency]
+Iterates over the items in the specified cart - tags like C<[item-quantity]>
+ and C<[item-price]> will be evaluated accordingly;
 
-The zero is needed because of the trailing plus sign left by the
-iterative C<[item-list]> tag.
+=item [nitems cartname]
 
-Shipping and the C<[nitems]> tag will still work properly with a
-different price.
+Returns the total number of items in the specified cart;
+
+=item [subtotal cartname]
+
+Returns the monetary subtotal for the contents of specified cart;
+
+=item [shipping cartname], [handling cartname], [salestax cartname], [total-cost cartname]
+
+You get the idea. It is worth noting that tags which summarize
+cart contents do not need to be in used concert, or in conjunction with
+an C<[item-list]>. For instance, you can display just the grand
+total for a cart on the sidebar or bottom of each page, using 
+C<[total-cost]> by itself, if you wish.
+
+=back
 
 You can also order items from a form, using the C<mv_order_item>,
 C<mv_cartname>, and optional C<mv_order_quantity> variables.
@@ -440,6 +444,10 @@ C<mv_cartname>, and optional C<mv_order_quantity> variables.
 > <input type=submit name="mv_junk" value="Place on Layaway Now!">
 > </FORM>
 
+
+If you need to utilize an alternative item price in conjunction with 
+the use of a custom cart, see the section on I<PRODUCT PRICING> for 
+pricing methods and strategies.
 
 =head1 PRODUCT PRICING
 
