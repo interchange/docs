@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.74 2002-01-31 12:58:55 kwalsh Exp $
+# $Id: ictags.sdf,v 1.75 2002-02-12 18:21:19 jon Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.74 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.75 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -14269,7 +14269,7 @@ Parameters|Description|Default
 
 !block table; colvaligns="TT"
 Attributes|Default
-{{CMD[jump="#value_extended_ATT1"]ATT1}}|I<none>
+{{CMD[jump="#value_extended_umask"]umask}}|I<none>
 {{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
 !endblock
 
@@ -14308,6 +14308,7 @@ or similarly with positional parameters,
 # END +++++++++++++++ value_extended End Summary Tables ++++++++++++++++++++
 
 
+
 H3: Description
 
 
@@ -14316,6 +14317,7 @@ Named call example:
 >   [value-extended 
 >            name=formfield
 >            outfile=filename*
+>            umask=octal*
 >            ascii=1*
 >            yes="Yes"*
 >            no="No"*
@@ -14323,7 +14325,8 @@ Named call example:
 >            test="isfile|length|defined"*
 >            index="N|N..N|*"
 >            file_contents=1*
->            elements=1*]
+>            elements=1*
+>   ]
 
 Expands into the current value of the customer/form input field named
 by field. If there are multiple elements of that variable, it will return
@@ -14374,6 +14377,12 @@ accept an absolute file name; the name must be relative to the catalog
 directory. If you wish to write images or other files that would go to
 HTML space, you must use the HTTP server's C<Alias> facilities or 
 make a symbolic link.
+
+H4: {{CMD[id="tree_outfile"]umask}}
+
+Permission mask (in octal) to apply to the uploaded file's permission bits.
+You may want to set this to make a file world-readable, or to keep it from
+being group-readable. See the UNIX chmod(1) manpage for details.
 
 H4: {{CMD[id="tree_ascii"]ascii}}
 
