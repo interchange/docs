@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: ictemplates.sdf,v 1.51 2003-11-26 04:56:53 mheins Exp $
+# $Id: ictemplates.sdf,v 1.52 2004-04-11 18:08:45 mheins Exp $
 
 !define DOC_NAME "Template Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "ictemplates"
-!define DOC_VERSION substr('$Revision: 1.51 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.52 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ictemplates.html"
@@ -1095,6 +1095,22 @@ LI1: %Db
 .The available methods are:
 
 !block example; listitem=2
+
+	# Key for a normal table with one primary key
+	$key = 'foo';
+
+	# Array reference key for a COMPOSITE_KEY table
+	$composite_ary_key = ['foo','bar','buz'];
+
+	# Alternate hash reference key for a COMPOSITE_KEY table
+	$composite_hash_key = { key1 => 'foo', key2 => 'bar', key3 => 'buz'};
+
+	# Alternate null-separated key for a COMPOSITE_KEY table
+	$composite_nullsep_key = join "\0", 'foo','bar','buz'; 
+
+	### Any of the composite key types may be substitued
+	### when COMPOSITE_KEY table
+
     # access an element of the table
     $field = $db->field($key, $column);
 
@@ -1109,7 +1125,7 @@ LI1: %Db
 
     # Return some fields from a row
     my @fields = qw/sku price description/;
-    $array_ref = $db->get_slice($key, \@fields);
+    @values = $db->get_slice($key, \@fields);
 
     # Set some fields in a row (slice)
     my $key = 'os28004';
