@@ -52,11 +52,292 @@ In no particular order
 
 * The templates and components explained
 
+- Themes
+
+What is a theme in Interchange? How is a theme defined?
+
 The STYLE directive in products/variable.txt indicates the template
-style to be used for the catalog; the appropriate templates are found
-in templates/__STYLE__/.
+style to be used as the theme for the catalog; the appropriate
+templates are found in templates/__STYLE__/. The theme is defined in
+catalog.cfg as follows:
+
+	# Here we set up the catalog theme.
+	
+	ParseVariables Yes
+	
+	ifndef STYLE
+	Variable STYLE default
+	endif
+	include templates/__STYLE__/theme.cfg
+
+Variables that make up the look and feel of the STYLE (theme) are
+defined in the file templates/theme.cfg [or is it
+templates/foundation/theme.cfg?].
+
+- Template Definition Files
+
+The template definition files store the name and description of the
+template as well as components and options for that template.
+
+	templates/cart
+	templates/fullwidth
+	templates/leftonly
+	templates/leftright
+	
+	templates/foundation/cart
+	templates/foundation/fullwidth
+	templates/foundation/leftonly
+	templates/foundation/leftright
+	templates/foundation/simple
+
+- Template Definition Files: leftonly
+
+Walkthrough of the 'leftonly' template definition file.
+
+This document is best read while viewing the file
+CATROOT/templates/leftonly and the 'Edit Page' page within the Content
+Editor of Interchange's admin interface.
+
+Looking at the example template definition file, all lines located
+between the [comment] and [/comment] tags (lines 1 and 53) control what is
+available in the Edit Page screen of the admin interface.
+
+Lines 2-5: Template specification
+
+	2  ui_template: Yes
+	3  ui_template_name: leftonly
+	4  ui_template_layout: LEFTONLY_TOP, UI_CONTENT, LEFTONLY_BOTTOM
+	5  ui_template_description: Page with top/left areas.
+
+Line 2 indicates that this file is a template for the user interface
+[CORRECT?]. Line 3 names the template, while Line 4 indicates the
+template regions that comprise the template and will make up the new
+page that is created from the template. Line 5 provides a description
+that identifies the template that appears in a select (pull-down) menu
+on the Edit Page. This description can, of course, be changed to
+better describe a new template that is created from the stock
+templates provided with Interchange.
+
+Lines 7-8: Break
+
+	7  break:
+	8          widget: break
+
+This code creates a separation line in the Edit Page between sets of
+options. In the default Interchange installation, the line is grey,
+but the color can be changed in the file _________. (NOTE: Changing
+this color will apply to any catalogs served by Interchange.)
+
+Lines 10-11: Page Title
+
+	10 page_title:
+	11         description: Page title
+
+This code tells Interchange to display a text field on the Edit Page
+for entering the page's title ('Title of New Page' in this
+example). The value entered is assigned to the scratch variable
+page_title and is set as a default value at the bottom of the template
+definition file using the following ITL:
+
+	54 [set page_title][set]
+
+which, in turn, sets the scratch variable on the new page using the
+tag
+	
+	[set page_title]Title of New Page[set]
+
+The scratch variable page_title is parsed by the following code in the
+region template specified in the template definition file and called
+in the new page:
+
+       <title>[scratch page_title]</title>
+
+Lines 13-15: Page Banner
+
+	13 page_banner:
+	14         description: Page banner
+	15         help: Defaults to page title
+
+Assigns a textual title for the page to the scratch variable
+page_banner, which is assigned by the following ITL:
+
+	55 [set page_banner][set]
+
+The scratch variable page_banner is set on the new page using the tag
+
+	[set page_banner]Banner of New Page[set]
+
+The scratch variable can be parsed in the region template by this
+code:
+
+	[either]
+		[scratch page_banner]
+	[or]
+		[scratch page_title]
+	[/either]
+
+This results in the page banner being displayed if defined. Otherwise,
+the page title is used.
+
+Lines 17-20: Members Only
+
+	17 members_only:
+	18         options: 1=Yes,0=No*
+	19         widget: radio
+	20         description: Members only
+
+Creates a radio-button form element on the Edit Page with which the
+user can specify whether the page can be accessed if a visitor is
+logged in (Yes) or not (No). The default is indicated by an asterisk.
+
+The scratch variable members_only is assigned by the ITL code
+
+	56 [set members_only][set]
+
+and set on the new page using the tag
+
+	[set members_only]0[/set]
+
+if the page can be accessed without logging in or
+
+        [set members_only]1[/set]
+
+if not.
+
+The members_only function is handled by the following code within each
+region template file:
+	
+	[if scratch members_only]
+	  [set members_only][/set]
+	  [if !session logged_in]
+	    [set mv_successpage]@@MV_PAGE@@[/set]
+	    [bounce page=login]
+	  [/if]
+	[/if]
+	
+This code says if members only is set to yes and the visitor is logged
+in, display the page. Otherwise, redirect the visitor to the login
+page.
+
+Lines 22-23: Break
+
+	22 break1:
+	23         widget: break
+
+Another separation line.
+
+Lines 25-28: Horizontal Before Component
+
+	25 component_before:
+	26         options: =none, best_horizontal=Best Sellers, cross_horizontal=Cross sell, promo_horizontal=Promotion, random_horizontal=Random items, upsell_horizontal=Upsell
+	27         widget: select
+	28         description: Component before content
+
+This allows the inclusion of a defined component (included in the
+CATROOT/templates/components directory) to be displayed before, or
+above, the page's content. It provides a pull-down menu on the Edit
+Page displaying the available components. The components, identified
+here on line 26, can be assigned a name via the value=name convention.
+
+The scratch variable component_before is assigned in the template
+definition file by the ITL code
+
+	57 [set component_before][set]
+
+It is called with the following code within the LEFTRIGHT_TOP,
+LEFTONLY_TOP, and NOLEFT_TOP region templates:
+	
+	[if scratch component_before]
+	  [include file="templates/components/[scratch component_before]"]
+	[/if]
+
+Lines 30-33: Horizontal After Component
+
+	30 component_after:
+	31         options: =none, best_horizontal=Best Sellers, cross_horizontal=Cross sell, promo_horizontal=Promotion, random_horizontal=Random items, upsell_horizontal=Upsell
+	32         widget: select
+	33         description: Component after content
+
+Similar to component_before, this allows the inclusion of a defined
+component after, or below, the page's content.
+
+The scratch variable component_before is assigned in the template
+definition file by the ITL code
+
+	58 [set component_after][set]
+
+It is called with the following code within the LEFTRIGHT_BOTTOM and
+LEFTONLY_BOTTOM region templates:
+	
+	[if scratch component_after]
+	  [include file="templates/components/[scratch component_after]"]
+	[/if]
+
+Lines 35-38: Horizontal Item Width
+
+	35 component_hsize:
+	36         options: 1,2,3*
+	37         widget: select
+	38         description: Component items horizontal
+
+This setting allows you to choose how many items the horizontal
+components display. For example, the horizontal best sellers component
+("best_horizontal") uses this setting to randomly select the best
+sellers. Notice the default to 3 if nothing is defined. It is called
+by the following code in the promo_horizontal and random_horizontal
+components in the Foundation demo.
+	
+	random="[either][scratch component_hsize][or]2[/either]"
+
+Lines 40-45: Before/After Banner
+
+	40 hbanner:
+	41         options: =--custom--, Also see..., Best Sellers, New items, Some of our fine products, Specials, You might also like
+	42         widget: move_combo
+	43         width: 40
+	44         description: Before/after Banner
+	45         help: Banner for Before/after component
+
+Allows a title for the horizontal components to be defined to be
+displayed in a header above the component's items. It is called with
+the [scratch hbanner] tag and used in the Foundation demo in the
+random_horizontal component.
+
+Lines 47-51: Special Tag
+
+	47 hpromo_type:
+	48         options: specials=Specials, new=New items
+	49         widget: select
+	50         description: Special tag
+	51         help: Only for a horizontal Promotion
+
+This setting is only viable when a promotion is used for a horizontal
+component. It tells the promotional component which rows to evaluate
+in the merchandising table for display within the component. This
+setting, used in the promo_horizontal component, normally corelates to
+the featured column of the merchandising table as follows:
+	
+	[query arrayref=main
+		   sql="
+			SELECT sku,timed_promotion,start_date,finish_date
+			FROM merchandising
+			WHERE featured = '[scratch hpromo_type]'
+			"]
+	[/query]
 
 - Region Templates
+
+Interchange regions are portions of HTML and ITL that are included in
+pages within a catalog. Using regions allows you to control the look
+and feel of specific parts of each catalog page. The default
+Foundation region set includes the following:
+
+LEFTONLY_BOTTOM
+LEFTONLY_TOP
+LEFTRIGHT_BOTTOM
+LEFTRIGHT_TOP
+NOLEFT_BOTTOM
+NOLEFT_TOP
 
 /home/ic/catalogs/ft/templates/regions:
 
@@ -266,6 +547,34 @@ violation.html
 
 - Components
 
+Interchange components are portions of HTML and ITL that are included
+in pages within a catalog depending on options set in the Admin
+UI. The default component set includes the following:
+
+affiliate_receptor
+best_horizontal
+best_vertical
+cart
+cart_display
+cart_tiny
+category_vertical
+cross_horizontal
+cross_vertical
+modular_buy
+modular_update
+none
+promo
+promo_horizontal
+promo_vertical
+random
+random_horizontal
+random_vertical
+saved_carts_list_small
+search_box_small
+upsell
+upsell_horizontal
+upsell_vertical
+
 /home/ic/catalogs/ft/templates/components:
 
 affiliate_receptor
@@ -402,6 +711,10 @@ modular_update
 The modular_update component is used in the following pages:
 
 pages/modular_modify.html
+
+none
+
+?? What's this ??
 
 promo
 
