@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.107 2003-01-03 05:03:05 jon Exp $
+# $Id: ictags.sdf,v 1.108 2003-02-05 15:57:59 mheins Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.107 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.108 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ictags.html"
@@ -406,8 +406,8 @@ like E<lbracket>{{CMD[jump="#loop"]loop}}], E<lbracket>{{CMD[jump="#item-list"]i
 . C<[if-PREFIX-modifier]> (hash list only)
 . C<[if-PREFIX-param]>
 . C<[if-PREFIX-pos]>
-. E<lbracket>{{CMD[jump="#modifier-name"]modifier-name}}]
-. E<lbracket>{{CMD[jump="#quantity-name"]quantity-name}}]
+. E<lbracket>{{CMD[jump="#PREFIX-modifier-name"]modifier-name}}]
+. E<lbracket>{{CMD[jump="#PREFIX-quantity-name"]quantity-name}}]
 
 PREFIX represents the prefix that is used in that looping tag.
 They are only interpreted within their container and only accept
@@ -863,10 +863,10 @@ Same as E<lbracket>{{C[jump="#if-PREFIX-data"]if-PREFIX-data}} ...]
 except uses the same data rules as
 E<lbracket>{{C[jump="#PREFIX-field"]PREFIX-field}}].
 
-# H2: {{CMD[id="modifier-name"]modifier-name}}
-H2: modifier-name
+# H2: {{CMD[id="PREFIX-modifier-name"]PREFIX-modifier-name}}
+H2: PREFIX-modifier-name
 
-E:   E<lbracket>modifier-name attribute]
+E:   E<lbracket>PREFIX-modifier-name attribute]
 
 Outputs a variable name which will set an appropriate variable name for setting
 the attribute in a form (usually a shopping cart). Outputs for successive items
@@ -878,14 +878,14 @@ in the list:
 
 etc.
 
-C<[modifier-name] quantity>
+C<[PREFIX-modifier-name quantity]>
 would be the same as
-E<lbracket>{{C[jump="#quantity-name"]quantity-name}}].
+E<lbracket>{{C[jump="#PREFIX-quantity-name"]PREFIX-quantity-name}}].
 
-# H2: {{CMD[id="quantity-name"]quantity-name}}
-H2: quantity-name
+# H2: {{CMD[id="quantity-name"]PREFIX-quantity-name}}
+H2: PREFIX-quantity-name
 
-E:   E<lbracket>quantity-name]
+E:   E<lbracket>item-quantity-name]
 
 Outputs for successive items in the list:
 
@@ -895,8 +895,8 @@ Outputs for successive items in the list:
 
 etc.
 
-E<lbracket>{{C[jump="#modifier-name"]modifier-name}}C< quantity>]
-would be the same as C<[quantity-name]>.
+E<lbracket>{{C[jump="#PREFIX-modifier-name"]PREFIX-modifier-name}}C< quantity>]
+would be the same as C<[PREFIX-quantity-name]>.
 
 
 H1: Tags
@@ -1055,7 +1055,7 @@ scratch setting for C<mv_separate_items> has the same effect.
 The modifier value is accessed in the E<lbracket>{{C[jump="#item-list"]item-list}}] loop with the
 E<lbracket>{{C[jump="#PREFIX-param"]item-param}}C< attribute>]
 tag, and form input fields are placed with the
-E<lbracket>{{C[jump="#modifier-name"]modifier-name}}C< attribute>]
+E<lbracket>{{C[jump="#PREFIX-modifier-name"]modifier-name}}C< attribute>]
 tag. This is similar to the way that quantity
 is handled.
 
@@ -1063,7 +1063,7 @@ is handled.
 You must be sure that no fields in your forms have digits appended to
 their names if the variable is the same name as the attribute name you
 select, as the
-E<lbracket>{{C[jump="#modifier-name"]modifier-name}}C< size>]
+E<lbracket>{{C[jump="#PREFIX-modifier-name"]PREFIX-modifier-name}}C< size>]
 variables will be placed in the
 user session as the form variables size0, size1, size2, etc.
 !endblock
@@ -1149,8 +1149,8 @@ example would normally be contained within the
 E<lbracket>{{C[jump="#item-list"]item-list}}]C<[/item-list]> pair.)
 
 !block example
-    <SELECT NAME="[modifier-name size]">
-    [loop option="[modifier-name size]" list="S, M, L, XL"]
+    <SELECT NAME="[loop-modifier-name size]">
+    [loop option="[loop-modifier-name size]" list="S, M, L, XL"]
     <OPTION> [loop-code] -- [price code="[item-code]" size="[loop-code]"]
     [/loop]
     </SELECT>
@@ -7859,7 +7859,7 @@ Evaluates to the price for quantity C<n> (from the products file)
 of the current item, with currency formatting. If the optional "noformat"
 is set, then currency formatting will not be applied.
 
-H4: E<lbracket>discount-price n* noformat*]
+H4: E<lbracket>item-discount-price n* noformat*]
 
 Evaluates to the discount price for quantity C<n> (from the products file)
 of the current item, with currency formatting. If the optional "noformat"
@@ -7883,7 +7883,7 @@ H4: E<lbracket>item-subtotal]
 Evaluates to the subtotal (quantity * price) for the current item.
 Quantity price breaks are taken into account.
 
-H4: E<lbracket>modifier-name attribute]
+H4: E<lbracket>item-modifier-name attribute]
 
 Evaluates to the name to give an input box in which the
 customer can specify the modifier to the ordered item.
@@ -11592,10 +11592,10 @@ color selection:
 
 Here is the same thing, but for a shopping-basket color selection:
 
->    <SELECT NAME="[modifier-name color]">
->    <OPTION [selected [modifier-name color] blue]> Blue
->    <OPTION [selected [modifier-name color] green]> Green
->    <OPTION [selected [modifier-name color] red]> Red
+>    <SELECT NAME="[item-modifier-name color]">
+>    <OPTION [selected [item-modifier-name color] blue]> Blue
+>    <OPTION [selected [item-modifier-name color] green]> Green
+>    <OPTION [selected [item-modifier-name color] red]> Red
 >    </SELECT>
 
 By default, the Values space (i.e. [value foo]) is checkedE<nbspace>E<emdash> if you

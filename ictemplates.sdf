@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: ictemplates.sdf,v 1.47 2002-10-30 17:24:00 mheins Exp $
+# $Id: ictemplates.sdf,v 1.48 2003-02-05 15:58:00 mheins Exp $
 
 !define DOC_NAME "Template Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "ictemplates"
-!define DOC_VERSION substr('$Revision: 1.47 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.48 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ictemplates.html"
@@ -2227,7 +2227,7 @@ LI1: [item-price n* noformat*]
 
 .Evaluates to the price for quantity C<n> (from the products file) of the current item, with currency formatting. If the optional "noformat" is set, currency formatting will not be applied.
 
-LI1: [discount-price n* noformat*]
+LI1: [item-discount-price n* noformat*]
 
 .Evaluates to the discount price for quantity C<n> (from the products file) of the current item, with currency formatting. If the optional "noformat" is set, currency formatting will not be applied. Returns regular price if not discounted.
 
@@ -2243,7 +2243,7 @@ LI1: [item-subtotal]
 
 .Evaluates to the subtotal (quantity * price) for the current item. Quantity price breaks are taken into account.
 
-LI1: [modifier-name attribute]
+LI1: [item-modifier-name attribute]
 
 .Evaluates to the name to give an input box in which the customer can specify the modifier to the ordered item.
 
