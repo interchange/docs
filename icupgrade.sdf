@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icupgrade.sdf,v 1.10 2001-03-27 19:27:58 jon Exp $
+# $Id: icupgrade.sdf,v 1.11 2001-03-29 22:37:54 bill Exp $
 
 !define DOC_NAME "Interchange Upgrade Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "icupgrade"
-!define DOC_VERSION substr('$Revision: 1.10 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.11 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/icupgrade.html"
@@ -160,14 +160,14 @@ password
 Remove these catalog.cfg lines:
 
 !block example
-		Variable            MINIMATE_META   mv_metadata
-		Variable            MINIMATE_TABLE  minimate
-		Database            minimate        minimate.asc      TAB
+        Variable            MINIMATE_META   mv_metadata
+        Variable            MINIMATE_TABLE  minimate
+        Database            minimate        minimate.asc      TAB
 !endblock
 
 Add this one:
 !block example
-		Database            affiliate    affiliate.txt     TAB
+        Database            affiliate    affiliate.txt     TAB
 !endblock
 
 Authentication for admin users is now done from a separate table than customers, and passwords are encrypted.
@@ -182,21 +182,21 @@ Some things that are needed for the order manager:
 
 *Add these fields to transactions:
 !block example
-	affiliate  approx. char(32)
-	archived   char(1)
-	campaign   approx. char(32)
-	comments   blob/text
-	complete   char(1)
-	deleted    char(1)
-	order_wday char(10)
-	order_ymd  char(8)
-	po_number  approx. char(32)
+    affiliate  approx. char(32)
+    archived   char(1)
+    campaign   approx. char(32)
+    comments   blob/text
+    complete   char(1)
+    deleted    char(1)
+    order_wday char(10)
+    order_ymd  char(8)
+    po_number  approx. char(32)
 !endblock
 
 *Add these fields to transactions:
 !block example
-	affiliate  approx. char(32)
-	campaign   approx. char(32)
+    affiliate  approx. char(32)
+    campaign   approx. char(32)
 !endblock
 
 *Remove this field from userdb:
@@ -216,15 +216,15 @@ dealer       char(3)
 *Add the etc/log_entry file.
 *Add this to catalog.cfg:
 !block example
-	## Don't want people setting their credit_limit directly
-	UserDB default scratch "credit_limit dealer"
+    ## Don't want people setting their credit_limit directly
+    UserDB default scratch "credit_limit dealer"
 !endblock
 
 H2:Affiliates
 
-Add an affiliate table:
+Add a tab-delimited affiliate table:
 
-E:affiliate	name	campaigns	join_date	url	timeout	active	password
+E:affiliate name    campaigns   join_date   url timeout active  password
 
 You can find a recommended database configuration in foundation/dbconf/*/affiliate.*.
 
@@ -260,9 +260,9 @@ Index the fields with char(*) types. You can find the recommended database confi
 
 H2:Preferences Editor (KNAR)
 
-Create the file variable.txt with these fields:
+Create the tab-delimited file variable.txt with these fields:
 
-E:code	Variable  pref_group
+E:code  Variable  pref_group
 
 Add this as the *first* line of catalog.cfg:
 
@@ -273,26 +273,26 @@ H2:Route Editor
 Create the file route.txt with these fields:
 
 !block example
-		code
-		report
-		receipt
-		encrypt_program
-		encrypt
-		pgp_key
-		pgp_cc_key
-		cyber_mode
-		credit_card
-		profile
-		inline_profile
-		email
-		attach
-		counter
-		increment
-		continue
-		partial
-		supplant
-		track
-		errors_to
+        code
+        report
+        receipt
+        encrypt_program
+        encrypt
+        pgp_key
+        pgp_cc_key
+        cyber_mode
+        credit_card
+        profile
+        inline_profile
+        email
+        attach
+        counter
+        increment
+        continue
+        partial
+        supplant
+        track
+        errors_to
 !endblock
 
 Add this line in catalog.cfg:
@@ -461,17 +461,17 @@ E:find pages -type f | xargs grep -l '\[search.list'
 That will yield a set of files that need to be updated. You should surround all parts of the search area, i.e.:
 
 !block example
-	[search-region]
+    [search-region]
 
-	[search-list]
-		your search iteration stuff, [item-code], etc.
-	[/search-list]
+    [search-list]
+        your search iteration stuff, [item-code], etc.
+    [/search-list]
 
-	[more-list]
-		[more]
-	[/more-list]
+    [more-list]
+        [more]
+    [/more-list]
 
-	[/search-region]
+    [/search-region]
 !endblock
 
 H2:Search conditionals
@@ -485,23 +485,23 @@ Added Scratch variable mv_data_enable to gate the update_data function. You must
 A quick fix like this will allow the update on a single page:
 
 !block example
-	[set update_database]
-	[set mv_data_enable]1[/set]
-	[/set]
-	<INPUT TYPE=hidden NAME=mv_click VALUE=update_database>
+    [set update_database]
+    [set mv_data_enable]1[/set]
+    [/set]
+    <INPUT TYPE=hidden NAME=mv_click VALUE=update_database>
 !endblock
 
 It will ensure at least that the user loads one form from you for each update. For best security, gate with a userdb entry like this:
 
 !block example
-	[set update_database]
-	[if type=data term="userdb::trusted::[data session username]"]
-		[set mv_data_enable]1[/set]
-	[else]
-		[set mv_data_enable]0[/set]
-	[/else]
-	[/if]
-	[/set]
+    [set update_database]
+    [if type=data term="userdb::trusted::[data session username]"]
+        [set mv_data_enable]1[/set]
+    [else]
+        [set mv_data_enable]0[/set]
+    [/else]
+    [/if]
+    [/set]
 !endblock
 
 
@@ -517,10 +517,10 @@ H2:[if-field] etc.
 The least-compatible things in the tag area are [if-field] (needs to be [if-PREFIX-field], where prefix might be item|loop by default depending on the tag. Likewise:
 
 !block example
-	[if-data table col]  --> [if-PREFIX-data table col]
-	[on-change mark]     --> [PREFIX-change mark]
-	[if-param param]     --> [if-PREFIX-param param]
-	[PREFIX-param N]     --> [PREFIX-pos N] (where N is a digit)
+    [if-data table col]  --> [if-PREFIX-data table col]
+    [on-change mark]     --> [PREFIX-change mark]
+    [if-param param]     --> [if-PREFIX-param param]
+    [PREFIX-param N]     --> [PREFIX-pos N] (where N is a digit)
 !endblock
 
 H2:[search-list]
@@ -530,12 +530,12 @@ You must always surround [search-list] with [search-region] [/search-region].
 Embedded Perl changes quite a bit. While there are the $Safe{values} and other variable settings, they are automatically shared (no arg="values") and move to:
 
 !block example
-	$Safe{values}   -->  $Values
-	$Safe{cgi}      -->  $CGI
-	$Safe{carts}    -->  $Carts
-	$Safe{items}    -->  $Items
-	$Safe{config}   -->  $Config
-	$Safe{scratch}  -->  $Scratch
+    $Safe{values}   -->  $Values
+    $Safe{cgi}      -->  $CGI
+    $Safe{carts}    -->  $Carts
+    $Safe{items}    -->  $Items
+    $Safe{config}   -->  $Config
+    $Safe{scratch}  -->  $Scratch
 !endblock
 
 There are a number of other objects, see the docs.
@@ -580,6 +580,8 @@ A2:body
 UserTag body PosNumber 2
 UserTag body Order type extra
 UserTag body Routine <<EOR
+!endblock
+!block example; lang="Perl"
 use vars qw($C);
 sub parse_color {
     my ($var, $value) = @_;
@@ -598,7 +600,7 @@ sub {
 
     my %color = qw( mv_bgcolor BGCOLOR mv_textcolor TEXT
                     mv_linkcolor LINK mv_vlinkcolor VLINK
-                     mv_alinkcolor ALINK mv_background BACKGROUND );
+                    mv_alinkcolor ALINK mv_background BACKGROUND );
     if (defined $::Values->{mv_resetcolors}
             and $::Values->{mv_resetcolors}) {
         delete $::Values->{mv_customcolors};
@@ -621,6 +623,8 @@ sub {
     $r .= " $extra" if defined $extra;
     $r .= '>';
 }
+!endblock
+!block example
 EOR
 
 AddDirective Mv_Background   color
@@ -640,42 +644,45 @@ UserTag buttonbar Order type
 UserTag buttonbar PosNumber 1
 UserTag buttonbar Interpolate 1
 UserTag buttonbar Routine <<EOR
-
+!endblock
+!block example; lang="Perl"
 sub get_files {
-	my($dir, @files) = @_;
-	my(@out);
-	my($file, $contents);
-	foreach $file (@files) {
-		config_error(
-		  "No leading ../.. allowed if NoAbsolute set. Contact administrator.\n")
-		if $file =~ m#^\.\./.*\.\.# and $Global::NoAbsolute;
-		push(@out,"\n") unless
-			push(@out,readfile("$dir/$file.html"));
-	}
-	
-	@out;
+    my($dir, @files) = @_;
+    my(@out);
+    my($file, $contents);
+    foreach $file (@files) {
+        config_error(
+          "No leading ../.. allowed if NoAbsolute set. Contact administrator.\n")
+        if $file =~ m#^\.\./.*\.\.# and $Global::NoAbsolute;
+        push(@out,"\n") unless
+            push(@out,readfile("$dir/$file.html"));
+    }
+    
+    @out;
 }
 
 sub parse_buttonbar {
-	my ($var, $value) = @_;
-	return [] unless $value;
-	my @c;
-	my @vals = grep /\S/, split /\s+/, $value;
-	for(@vals) {
-		push @c, Vend::Util::readfile("pages/$_.html");
-	}
-	return \@c;
+    my ($var, $value) = @_;
+    return [] unless $value;
+    my @c;
+    my @vals = grep /\S/, split /\s+/, $value;
+    for(@vals) {
+        push @c, Vend::Util::readfile("pages/$_.html");
+    }
+    return \@c;
 }
 
 sub {
-	my($buttonbar) = @_;
+    my($buttonbar) = @_;
     if (defined $Vend::Cfg->{'ButtonBars'}->[$buttonbar]) {
-		return $Vend::Cfg->{'ButtonBars'}->[$buttonbar];
-	}
-	else {
-		return '';
-	}
+        return $Vend::Cfg->{'ButtonBars'}->[$buttonbar];
+    }
+    else {
+        return '';
+    }
 }
+!endblock
+!block example
 EOR
 
 AddDirective ButtonBars  buttonbar
@@ -686,6 +693,8 @@ A2:form_mail.cfg
 
 !block example
 GlobalSub <<EndOfSub
+!endblock
+!block example; lang="Perl"
 sub form_mail {
     my($to, $subject, $reply, $body) = @_;
     my($ok);
@@ -699,11 +708,11 @@ sub form_mail {
     SEND: {
         open(Vend::MAIL,"|$Vend::Cfg->{'SendMailProgram'} -t") or last SEND;
         print Vend::MAIL
-			"To: $to\n",
-			$reply,
-			"Subject: $subject\n",
-			"Errors-To: $Vend::Cfg->{MailOrderTo}\n\n",
-			$body
+            "To: $to\n",
+            $reply,
+            "Subject: $subject\n",
+            "Errors-To: $Vend::Cfg->{MailOrderTo}\n\n",
+            $body
             or last SEND;
         close Vend::MAIL or last SEND;
         $ok = ($? == 0);
@@ -718,6 +727,8 @@ sub form_mail {
     }
     $ok;
 }
+!endblock
+!block example
 EndOfSub
 !endblock
 
@@ -728,51 +739,54 @@ A2:help
 UserTag help PosNumber 1
 UserTag help Order name
 UserTag help Routine <<EOR
+!endblock
+!block example; lang="Perl"
 sub parse_help {
-	my ($var, $value) = @_;
-	my (@files);
-	my (@items);
-	my ($c, $chunk, $item, $help, $key);
-	unless (defined $value && $value) {
-		$c = {};
-		return $c;
-	}
-	$c = $C->{'Help'};
-	$var = lc $var;
-	$C->{'Source'}->{'Help'} = $value;
-	@files = get_files($C->{'PageDir'}, split /\s+/, $value);
-	foreach $chunk (@files) {
-		@items = split /\r?\n\r?\n/, $chunk;
-		foreach $item (@items) {
-			($key,$help) = split /\s*\n/, $item, 2;
-			if(defined $c->{$key}) {
-				$c->{$key} .= $help;
-			}
-			else {
-				$c->{$key} = $help;
-			}
-				
-		}
-	}
-	return $c;
+    my ($var, $value) = @_;
+    my (@files);
+    my (@items);
+    my ($c, $chunk, $item, $help, $key);
+    unless (defined $value && $value) {
+        $c = {};
+        return $c;
+    }
+    $c = $C->{'Help'};
+    $var = lc $var;
+    $C->{'Source'}->{'Help'} = $value;
+    @files = get_files($C->{'PageDir'}, split /\s+/, $value);
+    foreach $chunk (@files) {
+        @items = split /\r?\n\r?\n/, $chunk;
+        foreach $item (@items) {
+            ($key,$help) = split /\s*\n/, $item, 2;
+            if(defined $c->{$key}) {
+                $c->{$key} .= $help;
+            }
+            else {
+                $c->{$key} = $help;
+            }
+                
+        }
+    }
+    return $c;
 }
 
 sub {
-	my($help) = shift;
-	# Move this to control section?
-	if ($::Values->{mv_helpon}) {
-		delete $::Values->{mv_helpoff};
-		undef $::Values->{mv_helpon};
-	}
-	return '' if defined $::Values->{'mv_helpoff'};
+    my($help) = shift;
+    # Move this to control section?
+    if ($::Values->{mv_helpon}) {
+        delete $::Values->{mv_helpoff};
+        undef $::Values->{mv_helpon};
+    }
+    return '' if defined $::Values->{'mv_helpoff'};
     if (defined $Vend::Cfg->{'Help'}{$help}) {
-		return $Vend::Cfg->{'Help'}{$help};
-	}
-	else {
-		return '';
-	}
+        return $Vend::Cfg->{'Help'}{$help};
+    }
+    else {
+        return '';
+    }
 }
-
+!endblock
+!block example
 EOR
 
 AddDirective Help help
@@ -785,60 +799,68 @@ A2:random_rotate
 UserTag random PosNumber 0
 UserTag random Interpolate 1
 UserTag random Routine <<EOR
+!endblock
+!block example; lang="Perl"
 package Vend::Config;
 sub parse_random {
     my ($var, $value) = @_;
     return '' unless (defined $value && $value);
     my $c = [];
     $var = lc $var;
-	my @files = grep /\S/, split /\s+/, $value;
-	local ($Vend::Cfg) = $C;
-	for (@files) { push @$c, Vend::Util::readin($_) }
-	return $c;
+    my @files = grep /\S/, split /\s+/, $value;
+    local ($Vend::Cfg) = $C;
+    for (@files) { push @$c, Vend::Util::readin($_) }
+    return $c;
 }
 
 package Vend::Interpolate;
 sub {
-	my $random = int rand(scalar(@{$Vend::Cfg->{'Random'}}));
+    my $random = int rand(scalar(@{$Vend::Cfg->{'Random'}}));
     if (defined $Vend::Cfg->{'Random'}->[$random]) {
-		return $Vend::Cfg->{'Random'}->[$random];
-	}
-	else {
-		return '';
-	}
+        return $Vend::Cfg->{'Random'}->[$random];
+    }
+    else {
+        return '';
+    }
 }
+!endblock
+!block example
 EOR
 
 UserTag rotate PosNumber 2
 UserTag rotate Order ceiling floor
 UserTag rotate Interpolate 1
 UserTag rotate Routine <<EOR
+!endblock
+!block example; lang="Perl"
 sub {
-	return '' unless $Vend::Cfg->{Rotate};
-	my $ceiling = $_[0] || @{$Vend::Cfg->{'Rotate'}} || return '';
-	my $floor   = $_[1] || 1;
+    return '' unless $Vend::Cfg->{Rotate};
+    my $ceiling = $_[0] || @{$Vend::Cfg->{'Rotate'}} || return '';
+    my $floor   = $_[1] || 1;
 
-	$ceiling--;
-	$floor--;
+    $ceiling--;
+    $floor--;
 
-	my $marker = "rotate$floor$ceiling";
+    my $marker = "rotate$floor$ceiling";
 
-	if($ceiling < 0 or $floor < 0) {
-		$floor = 0;
-		$ceiling = scalar  @{$Vend::Cfg->{'Rotate'}} - 1;
-		logError "Bad ceiling or floor for rotate";
-	}
+    if($ceiling < 0 or $floor < 0) {
+        $floor = 0;
+        $ceiling = scalar  @{$Vend::Cfg->{'Rotate'}} - 1;
+        logError "Bad ceiling or floor for rotate";
+    }
 
     my $rotate;
-	$rotate = $Vend::Session->{$marker} || $floor;
+    $rotate = $Vend::Session->{$marker} || $floor;
 
-	if($rotate > $ceiling or $rotate < $floor ) {
-		$rotate = $floor;
-	}
+    if($rotate > $ceiling or $rotate < $floor ) {
+        $rotate = $floor;
+    }
 
-	$Vend::Session->{$marker} = $rotate + 1;
-	return $Vend::Cfg->{'Rotate'}->[$rotate];
+    $Vend::Session->{$marker} = $rotate + 1;
+    return $Vend::Cfg->{'Rotate'}->[$rotate];
 }
+!endblock
+!block example
 EOR
 
 AddDirective Random random
@@ -850,37 +872,41 @@ A2:AsciiBackend
 
 !block example
 GlobalSub <<EOS
+!endblock
+!block example; lang="Perl"
 sub AsciiBackend {
-	package Vend::Order;
-	$Vend::Order::override_track_order = \&track_order;
-	sub track_order_backend {
-		my ($order_no,$order_report) = @_;
-		my ($c,$i);
-		my (@backend);
-		
-		@backend = split /\s*,\s*/, $Vend::Cfg->{BackendOrder};
-		
-		if(@backend and $Vend::Cfg->{AsciiBackend}) {
-			my(@ary);
-			push @ary, $order_no;
-			for(@backend) {
-				push @ary, $::Values->{$_};
-			}
-			foreach $i (0 .. $#$Vend::Items) {
-				push @ary, $Vend::Items->[$i]{'code'};
-				push @ary, $Vend::Items->[$i]{'quantity'};
-				if ($Vend::Cfg->{UseModifier}) {
-					foreach $j (@{$Vend::Cfg->{UseModifier}}) {
-						push @ary, $Vend::Items->[$i]->{$j}
-					}
-				}
-			}
-			logData ($Vend::Cfg->{AsciiBackend}, @ary);
-		}
-		$Vend::Order::override_track_order->($order_no, $order_report);
-	}
-	*track_order = \&Vend::Order::override_track_order;
+    package Vend::Order;
+    $Vend::Order::override_track_order = \&track_order;
+    sub track_order_backend {
+        my ($order_no,$order_report) = @_;
+        my ($c,$i);
+        my (@backend);
+        
+        @backend = split /\s*,\s*/, $Vend::Cfg->{BackendOrder};
+        
+        if(@backend and $Vend::Cfg->{AsciiBackend}) {
+            my(@ary);
+            push @ary, $order_no;
+            for(@backend) {
+                push @ary, $::Values->{$_};
+            }
+            foreach $i (0 .. $#$Vend::Items) {
+                push @ary, $Vend::Items->[$i]{'code'};
+                push @ary, $Vend::Items->[$i]{'quantity'};
+                if ($Vend::Cfg->{UseModifier}) {
+                    foreach $j (@{$Vend::Cfg->{UseModifier}}) {
+                        push @ary, $Vend::Items->[$i]->{$j}
+                    }
+                }
+            }
+            logData ($Vend::Cfg->{AsciiBackend}, @ary);
+        }
+        $Vend::Order::override_track_order->($order_no, $order_report);
+    }
+    *track_order = \&Vend::Order::override_track_order;
 }
+!endblock
+!block example
 EOS
 
 AddDirective BackendOrder

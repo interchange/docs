@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.14 2001-03-29 04:02:01 bill Exp $
+# $Id: ictags.sdf,v 1.15 2001-03-29 22:37:54 bill Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.14 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.15 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -69,7 +69,7 @@ attributes in C<[square brackets]>.  If the tag has an end tag, the tag and
 its end tag will delimit contained body text:
 
 !block example
-  [B<tagname> I<parameters> I<attributes>]Contained Body Text[/tagname]
+  E<lbracket>B<tagname> I<parameters> I<attributes>]Contained Body Text[/tagname]
 !endblock
 
 !block note; label="CaveatE<nbspace>E<emdash> macros: "
@@ -4840,56 +4840,140 @@ H3: Description
 B<NO Description>
 
 
-
-
 H2: mvasp
+
+Executes the ASP-style perl code contained by the tag.  The code will run under
+the restrictions of the 
+{{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}}
+module. This is very similar to the
+E<lbracket>{{C[jump="#perl"]perl}}] tag, except that the standard '<%'
+and '%>' ASP delimiters allow you to mix HTML and perl code.
 
 
 H3: Summary
 
-\Parameters: B<tables>
+!block example;
+    [B<mvasp> tables I<other_named_attributes>]
+    [B<mvasp> tables="db1 db2 ..." I<other_named_attributes>]
+!endblock
 
-Positional parameters in same order.
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+tables|<<
+Database tables to be made available to ASP Perl code
+>>|I<none>
+!endblock
 
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#mvasp_failure"]failure}}|I<none>
+{{CMD[jump="#mvasp_no_return"]no_return}}|I<No>
+{{CMD[jump="#mvasp_subs"]subs}}|I<No>
+{{CMD[jump="#mvasp_global"]global}}|I<No>
+{{CMD[jump="#mvasp_file"]file}}|I<none>
+{{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
+{{CMD[jump="#attr_reparse"]reparse}}|I<No>
+!endblock
 
-B<The attribute hash reference is passed> after the parameters but before
-the container text argument.
-B<This may mean that there are parameters not shown here.>
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<Yes>
+Has Subtags|I<No>
+Container tag|I<Yes>
+Nests|I<No>
+!endblock
 
-Must pass named parameter interpolate=1 to cause interpolation.
+B<Tag expansion example:>
 
-This is a container tag, i.e. [mvasp] FOO [/mvasp].
-\Nesting: NO
-
-Invalidates cache: B<YES>
-
-Called Routine: 
+!block example
+   [mvasp tables="db1 db2 ..."]
+---
+   Return value of Perl code
+!endblock
 
 B<ASP-like Perl call:>
 
->    $Tag->mvasp(
->        {
->         tables => VALUE,
->        },
->        BODY
->    )
->
-> OR
->
->    $Tag->mvasp($tables, $ATTRHASH, $BODY);
+!block example; lang='Perl'
+    $Tag->mvasp(  { tables   => join,
+                    ATT1 => , },
+                    $ASP_text_to_interpret  );
+!endblock
 
-Attribute aliases
+or similarly with positional parameters,
 
->            table ==> tables
+!block example; lang='Perl'
+    $Tag->mvasp($tables, $attribute_hash_reference);
+!endblock
 
+H4: See Also
 
- 
+{{CMD[jump="#perl"]perl}}
+
 
 H3: Description
 
-B<NO Description>
+Executes the ASP-style perl code contained by the tag.  The code will run under
+the restrictions of the 
+{{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}}
+module. This is very similar to the
+E<lbracket>{{C[jump="#perl"]perl}}] tag, except that the standard '<%'
+and '%>' ASP delimiters allow you to mix HTML and perl code.
+
+See the {{C[jump="#perl"]perl}} tag for a detailed description.
+
+H4: {{CMD[id="mvasp_tables"]tables}}
+
+Whitespace-separated list of database tables to make available within
+the ASP-Perl code.  See {{C[jump="#perl_tables"]perl}} tag.
+
+H4: {{CMD[id="mvasp_failure"]failure}}
+
+The value the tag should return in case the perl code fails the
+eval. See {{C[jump="#perl_failure"]perl}} tag.
+
+H4: {{CMD[id="mvasp_no_return"]no_return}}
+
+Suppress return value in page (available in session hash via
+E<lbracket>{{C[jump="#data"]data}}E<nbspace>sessionE<nbspace>mv_perl_result]).
+See {{C[jump="#perl_no_return"]perl}} tag.
+
+H4: {{CMD[id="mvasp_subs"]subs}}
+
+Enable GlobalSub routines (requires catalog directive
+{{C[jump="icconfig.html#AllowGlobal"]AllowGlobal}}).  See {{C[jump="#perl_subs"]perl}} tag.
+
+H4: {{CMD[id="mvasp_global"]global}}
+
+Turn off 'Safe' protection (requires catalog directive
+{{C[jump="icconfig.html#AllowGlobal"]AllowGlobal}}). See
+{{C[jump="#perl_global"]perl}} tag.
+
+H4: {{CMD[id="mvasp_file"]file}}
+
+Prepend the contents of the specified file or FileDatabase entry to
+the perl code before C<eval>'ing it. See {{C[jump="#perl_file"]perl}} tag.
 
 
+
+
+H4: Examples
+
+Tag expansion example:
+
+!block example
+   [mvasp tables="db1 db2 ..."] return "Return value of Perl code"; E<lbracket>/mvasp]
+---
+   Return value of Perl code
+!endblock
+
+Positional call example:
+
+>    [mvasp ] return "Return value of Perl code"; E<lbracket>/mvasp]
+
+Named call example:
+
+>    [mvasp tables="db1 db2 ..."] return "Return value of Perl code"; E<lbracket>/mvasp]
 
 
 H2: nitems
@@ -5521,10 +5605,18 @@ This is not an actual end tag, but simply a macro that expands to
 
 H2: perl
 
+Executes the perl code contained by the tag.  The code will run under
+the restrictions of the 
+{{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}}
+module.  The tag expands to the value returned by the enclosed code
+(i.e., printing to STDOUT or STDERR is useless).
 
 H3: Summary
 
 \Parameters: B<tables>
+
+
+
 
 Positional parameters in same order.
 
