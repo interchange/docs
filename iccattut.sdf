@@ -1,15 +1,14 @@
-# $Id: iccattut.sdf,v 1.3 2001-01-11 23:44:32 jon Exp $
-
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
+# $Id: iccattut.sdf,v 1.4 2001-01-12 19:40:51 jon Exp $
 
 !define DOC_NAME "Catalog-Building Tutorial"
 !define DOC_TYPE ""
 !define DOC_CODE "ICCATTUT"
-!define DOC_VERSION substr('$Revision: 1.3 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.4 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
-!define DOC_URL "http://help.akopia.com/interchange/doc/iccattut.html"
-
+!define DOC_URL "http://developer.akopia.com/ic/dev/iccattut.html"
+!define DOC_OWNER "1996-2001 Akopia, Inc. E<lt>{{EMAIL:info@akopia.com}}E<gt>"
 !build_title
 
 H1:Purpose
@@ -145,7 +144,7 @@ H2:Go to the tutorial catalog directory
 
 N:Change to the catalog directory with the 'cd' command now. {{B:From here on out, all file locations will be given relative to the tutorial catalog directory.}} For example, {{FILE:pages/ord/basket.html}} would actually be {{FILE:/var/lib/interchange/tutorial/pages/ord/basket.html}} or the equivalent on your system. The only exception is {{FILE:interchange.cfg}}, which is in the Interchange software directory and is described below.
 
-N:Note that to improve clarity, we will append a trailing slash to directory names, to more clearly distinguish them from file names. (This is similar to the output of the {{FILE::ls}} command with the {{EX:-F}} option.)
+N:Note that to improve clarity, we will append a trailing slash to directory names, to more clearly distinguish them from file names. (This is similar to the output of the {{FILE:ls}} command with the {{EX:-F}} option.)
 
 H2:Create the session directory
 
@@ -400,7 +399,7 @@ H2:pages/flypage.html
 
 N:Now let's go ahead and create an individual page for each item. All we have to do is to create a special generic page called {{FILE:pages/flypage.html}}. When a page is requested that does not exist in the {{FILE:pages/}} directory, Interchange will check and see if the requested page has the same name as a product ID from the product database table (in this case a SKU). If it does, it will show the flypage for that product. If there's no product with that ID, the special error page {{FILE:special_pages/missing.html}} (described in the next section) will be displayed.
 
-N:For example, if we request {{FILE:0198.html}}, Interchange will first check for a page with that name. When it doesn't find one, it will search the products database table and see there is a product with that ID. Then it will create a product page "on the fly" using {{FILE::pages/flypage.html}}. When constructing the flypage, the entire product record for the requested product is available via the [item-field] tag (much like the [loop-field] tag). So, let's create {{FILE:pages/flypage.html}} like so:
+N:For example, if we request {{FILE:0198.html}}, Interchange will first check for a page with that name. When it doesn't find one, it will search the products database table and see there is a product with that ID. Then it will create a product page "on the fly" using {{FILE:pages/flypage.html}}. When constructing the flypage, the entire product record for the requested product is available via the [item-field] tag (much like the [loop-field] tag). So, let's create {{FILE:pages/flypage.html}} like so:
 
 !block example;
 [include top]
@@ -512,7 +511,7 @@ N:The Interchange demo store has a full-featured shopping basket available for y
 
 N:The basket items can be accessed one at a time by using the [item-list] tag. So we will create a table by iterating through the basket items. The text within the [item-list] [/item-list] tags is created for each item in the list.
 
-*[item-quantity] will show the quantity of this item ordered. Our current order process will only show quantity one per line item. If the same item is ordered multiple times, they will show up as multiple line items, each with quantity one. The order process can be configured so that multiple orders of the same item will instead increase the quantity in one line, but this requires more logic behind the order process than we are putting in.
+*[item-quantity] will show the quantity of this item ordered. If the same item is ordered multiple times, this quantity will increase.
 
 *[item-field description] shows the {{1:description}} from the product database table. Any field which is not special to Interchange can be accessed from the shopping cart this way.
 
@@ -553,7 +552,7 @@ N:Let's create {{FILE:pages/checkout.html}} and then we can discuss it step by s
 <form method=post action="[process]">
 <input type=hidden name=mv_todo value=submit>
 <input type=hidden name=mv_order_profile value=order_profile>
-<input type=hidden name=mv_cyber_charge value=minivend_test>
+<input type=hidden name=mv_cyber_mode value=minivend_test>
 
 <table cellpadding=3>
 
@@ -637,7 +636,7 @@ N:First we begin an HTML form with a method of 'post' (which sends the form data
 
 N:We will submit some hidden form values which will tell Interchange how to process this form. The first value {{2:mv_todo}} has the value of {{1:submit}}; this causes the form to be submitted for validation. The second value sets {{2:mv_order_profile}} to {{1:order_profile}}. The order profile determines the validation process for the form. We'll go into this in the next section.
 
-N:Lastly we set {{2:mv_cyber_charge}} to be {{1:minivend_test}}. The {{2:mv_cyber_charge}} value determines which method will be used to charge a credit card. The value of {{1:minivend_test}} tells it to use the internal test method which calculates a simple checksum against the card to determine whether it is a valid number.
+N:Lastly we set {{2:mv_cyber_mode}} to be {{1:minivend_test}}. The {{2:mv_cyber_mode}} value determines which method will be used to charge a credit card. The value of {{1:minivend_test}} tells it to use the internal test method which calculates a simple checksum against the card to determine whether it is a valid number.
 
 N:When preparing an order for processing, Interchange looks for certain named fields in the form values for name, address, and credit card info. We are using all of the expected field names in this form so that no translation has to take place.
 
@@ -764,7 +763,7 @@ N:Now that we have a working catalog, we can go back and add little improvements
 
 H2:Price pictures
 
-N:It's probably really been annoying you that the product prices aren't formatted as prices usually are. You may have even added a dollar sign ($) before the [loop-field price] tag in your {{FILE:pages/index.html}} file to help out. But that still didn't make the thirty-seven dollar price of the "Ubiquitous diff eq final" test show up as "$37.00" -- instead it was simply "$37". (Assuming you didn't change the price from our sample data.) The way to deal with this is an Interchange feature called {{1:price pictures}}.
+N:It's probably really been annoying you that the product prices aren't formatted as prices usually are. You may have even added a dollar sign ($) before the [loop-field price] tag in your {{FILE:pages/index.html}} file to help out. But that still didn't make the thirty-seven dollar price of the "Ubiquitous diff eq final" test show up as "$37.00" -- instead it was simply "$37". (Assuming you didn't change the price from our sample data and your system locale is the same as ours.) The way to deal with this is an Interchange feature called {{1:price pictures}}.
 
 N:There are several properties of price pictures: the currency symbol, the thousands separator, the decimal point, the number of digits to show behind the decimal, and so on. Many Unix systems will have U.S. currency and English as the default locale, which we call {{EX:en_US}}. The only thing we need to do on such a system is specify the currency symbol, the dollar sign. To do this, add the following line to your {{FILE:catalog.cfg}} file:
 
@@ -841,7 +840,7 @@ N:Let's add another variable to our catalog. This time it will contain an Interc
 
 E:Variable DISPLAYDATE [tag time]%A, %B %d, %Y[/tag]
 
-N:The [tag] tag is documented in the Interchange Tag Reference. We won't discuss it here.
+N:The [tag] tag is documented in the Interchange Tag Reference. The format strings inside [tag time] are documented in your system strftime(3) manual page. We won't discuss them further here.
 
 N:Now add the variable to the boring {{FILE:left}} template piece:
 
@@ -1003,7 +1002,7 @@ N:Our search box will now appear on all our catalog pages, but we still need to 
     </table>
   [/on-match]
   [no-match]
-    Sorry, no matches were found for '[cgi mv_searchspec]'.
+    <p>Sorry, no matches were found for '[cgi mv_searchspec]'.</p>
   [/no-match]
 [/search-region]
 <hr>
@@ -1113,4 +1112,8 @@ A1:Document history
 
 N:October 2000. Conceived and written by Sonny Cook.
 N:December 2000. Edited and expanded by Jon Jensen.
-N:January 2001. Proofread and new clarifications given by Alison Smith and David Adams.
+N:January 2001. Proofread and clarified by Alison Smith and David Adams.
+N:12 January 2001. First public release.
+
+Line:
+N:Copyright 2001 Akopia, Inc. Freely redistributable under terms of the GNU General Public License.
