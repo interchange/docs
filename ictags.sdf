@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.116 2004-02-05 18:02:38 edl Exp $
+# $Id: ictags.sdf,v 1.117 2004-04-15 01:58:11 pvinci Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.116 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.117 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ictags.html"
@@ -13268,7 +13268,7 @@ H3: Description
 Formats the current time according to POSIX strftime arguments.
 The following is the string for Monday, January 1, 2001.
 
->    [time]%A, %B %d, %Y[/tag]
+>    [time]%A, %B %d, %Y[/time]
 
 See the C<strftime> man page for information on the arguments (which are
 the same as modern UNIX date commands).
