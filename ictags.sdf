@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.53 2001-06-28 00:12:27 heins Exp $
+# $Id: ictags.sdf,v 1.54 2001-06-30 21:06:07 heins Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.53 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.54 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -2592,13 +2592,13 @@ H3: Summary
     .
     .
     [B<catch> label=I<my_label> I<other_named_attributes>]
-        [I<Error message 1>]
+        [/I<Pattern matching error message 1>/]
             Return this if error 1 occurs
-        [I</Error message 1>]
+        [/I<Pattern matching error message 1>/]
 
-        [I<Error message 2>]
+        [/I<Pattern matching error message 2>/]
             Return this if error 2 occurs, I<etc.>
-        [I</Error message 2>]
+        [/I<Pattern matching error message 2>/]
 
         I<Default body text to process if try block caused an error>
     [B</catch>]
@@ -2613,7 +2613,6 @@ The label shared by the paired {{C[jump="#try"]try}} and C<catch> blocks
 
 !block table; colvaligns="TT"
 Attributes|Default
-{{CMD[jump="#catch_exact"]exact}}|I<No>
 {{CMD[jump="#attr_interpolate"]interpolate}}|I<Yes>
 {{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
 !endblock
@@ -2640,12 +2639,12 @@ Ignoring whitespace, the following would return division result if successful, 0
       [perl] eval(1 / [scratch divisor]) [/perl]
    [/try]
    [catch div]
-      [Illegal division by zero]
+      [/Illegal division by zero/]
          0
-      [/Illegal division by zero]
-      [eval "string" trapped by operation mask]
+      [/Illegal division by zero/]
+      [/eval "string" trapped by operation mask/]
          Perl {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}} error
-      [/eval "string" trapped by operation mask]
+      [/eval "string" trapped by operation mask/]
       Other division error
    [/catch]
 ---
@@ -2677,25 +2676,12 @@ The page content contained within the E<lbracket>C<catch> I<label>]E<lbracket>C<
 You can also return a result based on the error message caught in the try block with paired subtags, like N<this:>
 
 !block example
-   [I<error message>]special catch block for the error[/I<error message>]
+   [/I<error message>/]special catch block for the error[/I<error message>/]
 !endblock
 
-The C<catch> tag interpolates by default because the aforementioned feature excises I<all> tag/endtag pairs before they are returned for reparsing. This includes Interchange container tags inside the C<catch> block.  For example, if you have a conditional like N<this:>
-
-!block example
-   [catch I<my_label>]
-      [if scratch condition]
-         Do this
-      [else]
-         Do that
-      [/else]
-      [/if]
-   [/catch]
-!endblock
-
-you probably will not get what you expect if you set 'C<interpolate=0>' in the E<lbracket>C<catch>...] tag.
-
-The error message to use in the special block will generally be part of the entry the error generates in your error log.  For example, a division by zero error generates something like the following in the error log:
+The error message to use in the special block will generally be part of the
+entry the error generates in your error log.  For example, a division by zero
+error generates something like the following in the error log:
 
 !block example
    127.0.0.1 4cU3Pgsh:127.0.0.1 - [24/May/2001:14:45:07 -0400]\
@@ -2705,17 +2691,9 @@ The error message to use in the special block will generally be part of the entr
 
 (note that trailing backslashes in the example indicate a continued line).
 
-Ignore the caller stamp (the part before the colon ': '). Unless you have set 'exact=1', you can also leave out the ' at (eval I<nnn>)...', so the above error message would match error subtags containing 'IllegalE<nbspace>divisionE<nbspace>byE<nbspace>zero' (as in the example in the Summary section above).
-
-
 H4: {{CMD[id="catch_label"]label}}
 
 This is the label specifying the corresponding E<lbracket>{{C[jump="#try"]try}} block. Defaults to 'default'.
-
-
-H4: {{CMD[id="catch_exact"]exact}}
-
-If set (exact=1), your tag/endtag pair must match the line numbers also.  In other words, it needs to include the 'at (eval I<nnn>) line I<n>I<newline>' text. You probably do not need to use this.
 
 
 H2: cgi
