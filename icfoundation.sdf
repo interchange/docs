@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icfoundation.sdf,v 1.2 2001-04-10 23:01:33 jon Exp $
+# $Id: icfoundation.sdf,v 1.3 2001-05-09 23:40:46 bill Exp $
 
 !define DOC_NAME "Foundation Store"
 !define DOC_TYPE ""
 !define DOC_CODE "icfoundation"
-!define DOC_VERSION substr('$Revision: 1.2 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.3 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/doc/icfoundation.html"
@@ -186,99 +186,652 @@ Shipping table
 
 H2:access.asc
 
-Admin access table
 
-!block example
-    username
-    password
-    name
-    last_login
-    super
-    yes_tables
-    no_tables
-    upload
-    acl
-    export
-    edit
-    pages
-    files
-    config
-    reconfig
-    groups
-    meta
+Administrative access table.  This table is used by the administrative interface.
 
-    no_functions
-        Used From: none
 
-    yes_functions
-        Used From: dist/lib/UI/pages/admin/access_permissions.html
+B<Fields>
 
-    table_control
-        Used From: dist/lib/UI/Primitive.pm
-                   dist/lib/UI/pages/admin/special/key_violation.html
-                   dist/lib/UI/usertag/if_mm
+!block table; colvaligns="TT"
+Field|Description
+{{CMD[jump="#access_username"]username}}|<<
+Login name or group name (group names begin with ':')
+>>
+{{CMD[jump="#access_password"]password}}|<<
+Hashed password
+>>
+{{CMD[jump="#access_name"]name}}|<<
+Administrator's name
+>>
+{{CMD[jump="#access_last_login"]last_login}}|<<
+Last login time
+>>
+{{CMD[jump="#access_super"]super}}|<<
+Set to 1 if superuser
+>>
+{{CMD[jump="#access_yes_tables"]yes_tables}}|<<
+Tables the user may edit
+>>
+{{CMD[jump="#access_no_tables"]no_tables}}|<<
+Tables the user may not edit
+>>
+{{CMD[jump="#access_upload"]upload}}|<<
 
-    personal_css
-        Used From: dist/lib/UI/pages/admin/preferences.html
-        Used in the admin screens to make personal changes to the admin
-        presentation, by creating your own personal CSS, appears to be used
-        currently only in the preferences screen.
+>>
+{{CMD[jump="#access_acl"]acl}}|<<
+
+>>
+{{CMD[jump="#access_export"]export}}|<<
+
+>>
+{{CMD[jump="#access_edit"]edit}}|<<
+
+>>
+{{CMD[jump="#access_pages"]pages}}|<<
+
+>>
+{{CMD[jump="#access_files"]files}}|<<
+
+>>
+{{CMD[jump="#access_config"]config}}|<<
+
+>>
+{{CMD[jump="#access_reconfig"]reconfig}}|<<
+
+>>
+{{CMD[jump="#access_groups"]groups}}|<<
+
+>>
+{{CMD[jump="#access_meta"]meta}}|<<
+
+>>
+{{CMD[jump="#access_no_functions"]no_functions}}|<<
+
+>>
+{{CMD[jump="#access_yes_functions"]yes_functions}}|<<
+
+>>
+{{CMD[jump="#access_table_control"]table_control}}|<<
+
+>>
+{{CMD[jump="#access_personal_css"]personal_css}}|<<
+
+>>
 !endblock
 
+H3: {{CMD[id="access_username"]username}}
 
-H2:affiliate.txt
-
-!block example
-    affiliate
-    name
-        Affiliate Name
-    campaigns
-    coupon_amount
-    join_date
-        Join date
-    url
-        URL (Default URL to redirect to)
-    timeout
-        Timeout delay (in seconds, 0 to disable)
-    active
-    password
-    image
-!endblock
-
-
-H2:area.txt
-
-A table designed to implement a dynamic navigation bar. 
+Example Data
 
 !block example
-    code
-    sel
-    name
-		A display label to replace C<code> or C<selector>.
-    which_page
-    sort
-		The sort order if an alphanumeric sort on C<name> is not desired.
-    display_type
-    image
-    image_prop
-    banner_image
-    banner_text
-		Text to display in a banner or heading.
-    link_type
-		none = No link
-		external = External link (http://...)
-		internal = Interchange page
-		simple = Simple search
-		complex = Complex search
-    url
-		A URL to link to instead of the default search in the products database.
-    tab
-    page
-    search
-    selector
-		The selector that is used to scan the C<products> table for products in the category.
-    link_template
+   :ausers
+   :busers
+   BigUser
+   goody
+   ic
 !endblock
+
+Either a login name for an administrator or a group name. Group names are prefixed with a colon (':').
+
+
+H3: {{CMD[id="access_password"]password}}
+
+Example Data
+
+!block example
+   Ksjs65bMNLjPQ
+!endblock
+
+Hashed password.
+
+
+H3: {{CMD[id="access_name"]name}}
+
+Example Data
+
+!block example
+   Administrative Users
+   Business Users
+   Goody Twoshoes
+   Mr. Bigger
+   Super User
+!endblock
+
+Descriptive name for the administrator or group.
+
+
+H3: {{CMD[id="access_last_login"]last_login}}
+
+Example Data
+
+!block example
+   989424489
+!endblock
+
+Last login time (in unix time() format).
+
+
+H3: {{CMD[id="access_super"]super}}
+
+Boolean value.  If true (1), the administrator has superuser privilege.
+
+
+H3: {{CMD[id="access_yes_tables"]yes_tables}}
+
+Example Data
+
+!block example
+   affiliate=vcx component=v gift_certs=v inventory=vx ...
+   NONE
+!endblock
+
+Tables this administrator or group may access.  This will be a space-delimited list of 'table_name=permission_flags' entries.
+
+
+H3: {{CMD[id="access_no_tables"]no_tables}}
+
+Example Data
+
+!block example
+   access mv_metadata variable
+!endblock
+
+Tables this administrator may not use.  This will be a space-delimited list of tables names.
+
+
+H3: {{CMD[id="access_upload"]upload}}
+
+No Description
+
+
+H3: {{CMD[id="access_acl"]acl}}
+
+No Description
+
+
+H3: {{CMD[id="access_export"]export}}
+
+No Description
+
+
+H3: {{CMD[id="access_edit"]edit}}
+
+No Description
+
+
+H3: {{CMD[id="access_pages"]pages}}
+
+No Description
+
+
+H3: {{CMD[id="access_files"]files}}
+
+No Description
+
+
+H3: {{CMD[id="access_config"]config}}
+
+
+No Description
+
+Example Data
+
+!block example
+!endblock
+
+Allowed Values
+
+###config.access.DESC###
+
+
+H3: {{CMD[id="access_reconfig"]reconfig}}
+
+No Description
+
+
+H3: {{CMD[id="access_groups"]groups}}
+
+Example Data
+
+!block example
+   ausers
+   busers
+!endblock
+
+Allowed Values
+
+Groups the administrator belongs to. You can set permissions for groups.
+
+
+H3: {{CMD[id="access_meta"]meta}}
+
+No Description
+
+
+H3: {{CMD[id="access_no_functions"]no_functions}}
+
+!block example
+   orderstats trafficstats
+!endblock
+
+Space-delimited list of functions explicitly disallowed for the administrator.
+
+
+H3: {{CMD[id="access_yes_functions"]yes_functions}}
+
+Example Data
+
+!block example
+   item=lvecd itemtype=lvc order=lvca orderstats trafficstats ...
+   NONE
+!endblock
+
+Functions the administrator may perform. This will be a space-delimited list of functions, with permission flags if appropriate.
+
+Usage examples
+* dist/lib/UI/pages/admin/access_permissions.html
+
+
+H3: {{CMD[id="access_table_control"]table_control}}
+
+No Description
+
+Usage examples
+* dist/lib/UI/Primitive.pm
+* dist/lib/UI/pages/admin/special/key_violation.html
+* dist/lib/UI/usertag/if_mm
+
+
+H3: {{CMD[id="access_personal_css"]personal_css}}
+
+Used in the admin screens to make personal changes to the admin presentation, by creating your own personal CSS.
+
+Usage examples
+* dist/lib/UI/pages/admin/preferences.html
+
+
+H2: affiliate.txt
+
+This table contains data related to your affiliate programs.  See also the {{CMD[jump="#component_affiliate_receptor"]affiliate_receptor}} component.
+
+
+B<Fields>
+
+!block table; colvaligns="TT"
+Field|Description
+{{CMD[jump="#affiliate_affiliate"]affiliate}}|<<
+Affiliate ID
+>>
+{{CMD[jump="#affiliate_name"]name}}|<<
+Name of affiliate organization
+>>
+{{CMD[jump="#affiliate_campaigns"]campaigns}}|<<
+Campaigns this affiliate participates in
+>>
+{{CMD[jump="#affiliate_coupon_amount"]coupon_amount}}|<<
+Discount for customers from affiliate participating in coupon campaign
+>>
+{{CMD[jump="#affiliate_join_date"]join_date}}|<<
+When the affiliate signed with you
+>>
+{{CMD[jump="#affiliate_url"]url}}|<<
+Your default URL to use for customers coming from the affiliate site (not the affiliate's home page)
+>>
+{{CMD[jump="#affiliate_timeout"]timeout}}|<<
+Timeout in seconds after which purchases are no longer credited to the affiliate
+>>
+{{CMD[jump="#affiliate_active"]active}}|<<
+Boolean, set to 1 for active affiliates
+>>
+{{CMD[jump="#affiliate_password"]password}}|<<
+Affiliate login password
+>>
+{{CMD[jump="#affiliate_image"]image}}|<<
+Affiliate's logo
+>>
+!endblock
+
+H3: {{CMD[id="affiliate_affiliate"]affiliate}}
+
+Example Data
+
+!block example
+   consolidated
+   hardhat
+!endblock
+
+This field contains the unique Affiliate ID.
+
+
+H3: {{CMD[id="affiliate_name"]name}}
+
+Example Data
+
+!block example
+   Consolidated Diversified
+   Hardhat Construction
+!endblock
+
+This is the descriptive name of the affiliate.
+
+
+H3: {{CMD[id="affiliate_campaigns"]campaigns}}
+
+Example Data
+
+!block example
+   coupon
+!endblock
+
+This field lists the campaigns in which the affiliate participates and is used to enable campaign features and track traffic from advertising campaigns. The foundation catalog implements a coupon campaign in the affiliate_receptor component.  If you wish to add campaigns, you will also need to develop the appropriate logic within the affiliate_receptor component and pages that use it.
+
+
+H3: {{CMD[id="affiliate_coupon_amount"]coupon_amount}}
+
+Example Data
+
+!block example
+   5
+!endblock
+
+This is the discount offered customers from the affiliate participating in the coupon campaign.
+
+Note --  This is implemented in the affiliate_receptor component as a flat discount amount. If you wanted a percentage discount instead, you would modify the E<lbracket>{{C[jump="ictags.html#discount"]discount}}] tag in catalog_root/templates/components/affiliate_receptor (see the E<lbracket>{{C[jump="ictags.html#discount"]discount}}] tag for more detail).
+
+
+H3: {{CMD[id="affiliate_join_date"]join_date}}
+
+Example Data
+
+!block example
+   20000827
+   20000910
+!endblock
+
+This is the date when the affiliate signed with you.
+
+
+H3: {{CMD[id="affiliate_url"]url}}
+
+Example Data
+
+!block example
+   http://demo.akopia.com/~hardhat
+   http://www.minivend.com/consolidated/
+!endblock
+
+The value in this field is used to direct visitors coming from the Affiliate to your home page or a page you have designed specifically for visitors from that Affiliate's site. Note that this should I<not> be the URL of the Affiliate's home site.
+
+
+H3: {{CMD[id="affiliate_timeout"]timeout}}
+
+Example Data
+
+!block example
+   0
+   3600
+!endblock
+
+The value in this field is used to specify the amount of time a customer has to place an order and still give the Affiliate credit for it. If the customer goes over this amount of time, the Affiliate doesn't get credit for the customer visit. The timeout delay is measured in seconds, with the value of 0 (zero) disabling it. It is recommended that you use a value in the thousands to be sure the customer has enough time to shop.
+
+
+H3: {{CMD[id="affiliate_active"]active}}
+
+This is a boolean value indicating whether the affiliate is active.
+
+
+H3: {{CMD[id="affiliate_password"]password}}
+
+Example Data
+
+!block example
+   akopia
+!endblock
+
+Password for affiliate login (see catalog_root//pages/affiliate/login.html). Note that the password is stored in plaintext by default.
+
+
+H3: {{CMD[id="affiliate_image"]image}}
+
+Example Data
+
+!block example
+   http://demo.akopia.com/~hardhat/images/logo.gif
+   http://www.minivend.com/consolidated/conslogo.gif
+!endblock
+
+Affiliate's logo image.
+
+
+H2: area
+
+This table is used to implement dynamic navigation bars, for example in the category_horizontal and category_vertical components. It is also used for the administrative interface.
+
+When building a navigation bar, it is the  B<bar_link> subroutine in the /dist/catalog_before.cfg configuration file that actually reads and processes the values from the table.
+
+See also the following catalog and administrative templates:
+* cat_root/templates/components/category_horizontal
+* cat_root/templates/components/category_vertical
+* dist/lib/UI/pages/admin/layout.html
+* dist/lib/UI/pages/admin/layout_auto.html
+* dist/lib/UI/pages/admin/wizard/do_launch.html
+* dist/lib/UI/pages/admin/wizard/do_save.html
+
+
+B<Fields>
+
+!block table; colvaligns="TT"
+Field|Description
+{{CMD[jump="#area_code"]code}}|<<
+Unique key
+>>
+{{CMD[jump="#area_sel"]sel}}|<<
+Page area for the navigation bar entry
+>>
+{{CMD[jump="#area_name"]name}}|<<
+A display label to replace C<code> or C<selector>
+>>
+{{CMD[jump="#area_which_page"]which_page}}|<<
+Page class in which the navigation bar may appear
+>>
+{{CMD[jump="#area_sort"]sort}}|<<
+Sorting prefix for entry (preempts standard alphanumeric sort)
+>>
+{{CMD[jump="#area_display_type"]display_type}}|<<
+How to label the navbar (for example, name, icon, url or image)
+>>
+{{CMD[jump="#area_image"]image}}|<<
+Image (if appropriate)
+>>
+{{CMD[jump="#area_image_prop"]image_prop}}|<<
+HTML attributes for output <img> tag (if appropriate)
+>>
+{{CMD[jump="#area_banner_image"]banner_image}}|<<
+See below
+>>
+{{CMD[jump="#area_banner_text"]banner_text}}|<<
+See below
+>>
+{{CMD[jump="#area_link_type"]link_type}}|<<
+See below
+>>
+{{CMD[jump="#area_url"]url}}|<<
+Target for internal or external link_type
+>>
+{{CMD[jump="#area_tab"]tab}}|<<
+Database table file to use with 'simple' B<link_type>
+>>
+{{CMD[jump="#area_page"]page}}|<<
+Results page to use with 'simple' B<link_type>
+>>
+{{CMD[jump="#area_search"]search}}|<<
+Search spec used with 'complex' B<link_type>
+>>
+{{CMD[jump="#area_selector"]selector}}|<<
+See below
+>>
+{{CMD[jump="#area_link_template"]link_template}}|<<
+Overrides template used for building navbar links.
+>>
+!endblock
+
+H3: {{CMD[id="area_code"]code}}
+
+Example Data
+
+!block example
+   1
+   2
+   3
+!endblock
+
+Unique key
+
+
+H3: {{CMD[id="area_sel"]sel}}
+
+Example Data
+
+!block example
+   left
+!endblock
+
+Page area for the navigation bar entry.
+
+
+H3: {{CMD[id="area_name"]name}}
+
+Example Data
+
+!block example
+   Hand Tools
+   Hardware
+   Ladders
+   Measuring Tools
+   Painting Supplies
+   Safety Equipment
+   Specials
+   Tool Storage
+!endblock
+
+A display label to replace C<code> or C<selector>.
+
+
+H3: {{CMD[id="area_which_page"]which_page}}
+
+Example Data
+
+!block example
+   all
+!endblock
+
+Page class in which the navigation bar may appear.
+
+
+H3: {{CMD[id="area_sort"]sort}}
+
+Example Data
+
+!block example
+   00
+   03
+   04
+   05
+   06
+!endblock
+
+Lexographic (alphanumeric) sorting prefix.  Note use of '03' rather than '3', which would sort after '13'. This controls the order of the categories in your navigation bar.
+
+If not set, your navbar entries will sort in alphabetical order.
+
+
+H3: {{CMD[id="area_display_type"]display_type}}
+
+Example Data
+
+!block example
+   name
+   icon
+   url
+   image
+!endblock
+
+What to use for the labels in the navigation bar (for example, name, icon, url or image). The navigation bars in the foundation catalog are set up with 'name' display_type.
+
+
+H3: {{CMD[id="area_image"]image}}
+
+Image to display for image or icon B<display_type>.
+
+
+H3: {{CMD[id="area_image_prop"]image_prop}}
+
+For image or icon B<display_type>, this contains the HTML attributes for the HTML that will appear in the navbar, for N<example:>
+E:  E<lt>img src="B<image>" alt="B<name>" B<image_prop>E<gt>B<name>
+
+
+H3: {{CMD[id="area_banner_image"]banner_image}}
+
+Sets 'va=banner_image=B<banner_image>' in 'simple' and 'complex' B<link_type>. The foundation catalog navigation bars are not set up with link types that use the B<banner_image> field.
+
+
+H3: {{CMD[id="area_banner_text"]banner_text}}
+
+Sets 'va=banner_text=B<banner_text>' in 'simple' and 'complex' B<link_type>. The foundation catalog navigation bars are not set up with link types that use the B<banner_text> field.
+
+
+H3: {{CMD[id="area_link_type"]link_type}}
+
+Example Data
+
+!block example
+   none
+   external
+   internal
+   simple
+   complex
+!endblock
+
+Link type to create in the navigation bar. The navigation bars in foundation catalog are set up to use 'none' as the link_type.
+
+Link types
+* external
+** External link. The HTML specified in B<url> will go directly into the navigation bar.
+
+* internal
+** Internal link. This will be highlit if it is the current page. If you specify both a page and a form for the link, the B<url> field should contain "I<page> I<form>".  See the Search Engine documentation for more detail on search forms.
+
+* simple or complex
+** See the B<bar_link> subroutine in the /dist/catalog_before.cfg configuration file for more detail if you need to use these (for example, to implement banners in the bar).
+
+
+H3: {{CMD[id="area_url"]url}}
+
+Target URL (external link or internal page/search specification). See B<link_types> above. The foundation catalog navigation bars are not set up with link types that use the B<url> field.
+
+
+H3: {{CMD[id="area_tab"]tab}}
+
+Database table file to use with 'simple' B<link_type> (searchspec fi=B<tab>). The foundation catalog navigation bars are not set up with link types that use the B<tab> field.
+
+H3: {{CMD[id="area_page"]page}}
+
+Results page to use with 'simple' B<link_type> (searchspec sp=B<page>). The foundation catalog navigation bars are not set up with link types that use the B<page> field.
+
+
+H3: {{CMD[id="area_search"]search}}
+
+Search spec used with 'complex' B<link_type>. See the Search Engine documentation for more detail on search forms. The foundation catalog navigation bars are not set up with link types that use the B<search> field.
+
+
+H3: {{CMD[id="area_selector"]selector}}
+
+The selector that is used to scan the C<products> table for products in the category. Used with 'simple' B<link_type>. The foundation catalog navigation bars are not set up with link types that use the B<selector> field.
+
+
+H3: {{CMD[id="area_link_template"]link_template}}
+
+Overrides the usual HTML link template for navbar entries. The foundation catalog navigation bars are not set up with link types that use the B<link_template> field.
 
 
 H2:cat.txt
