@@ -15,7 +15,15 @@ To set up your SDF environment do the following:
 (3) create PERLSITELIB/sdf/home/look/akopia and add the files from the akopia
     directory
 
-(4) if you'll be making the dev_html target (if you're generating the
+(4) modify PERLSITELIB/sdf/tohtml.pl so it doesn't mangle LI2 lists with
+    improper style settings:
+
+108c108
+<     'bold',     'font-weight: bold',
+---
+> #    'bold',     'font-weight: bold',
+
+(5) if you'll be making the dev_html target (if you're generating the
     Akopia Developer Resource documentation pages), make this patch to
     PERLSITELIB/sdf/tohtml.pl:
 
