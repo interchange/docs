@@ -1,12 +1,12 @@
 Summary: Interchange documentation
 Name: interchange-doc
-Version: 4.8.5
+Version: 4.8.6
 Release: 1
-Vendor: Red Hat, Inc.
+Vendor: Interchange Development Group
 License: GPL
-URL: http://interchange.redhat.com/
-Packager: Interchange Development Team <interchange@redhat.com>
-Source: http://interchange.redhat.com/pub/interchange/%{name}-%{version}.tar.gz
+URL: http://www.icdevgroup.org/
+Packager: Jon Jensen <jon@redhat.com>
+Source: http://www.icdevgroup.org/pub/interchange/%{name}-%{version}.tar.gz
 Group: Applications/Internet
 BuildRoot: %{_tmppath}/%{name}-%version
 
