@@ -1,4 +1,4 @@
-# $Id: html.sdn,v 1.3 2000-10-17 18:03:31 zarko Exp $
+# $Id: html.sdn,v 1.4 2000-10-17 18:46:09 zarko Exp $
 #
 # >>Title::     HTML Tuning
 #
@@ -132,10 +132,8 @@ sub ::_HtmlFinalise {
         base=docnote
         list=1
         sql=|
-                SELECT * FROM   docnote
-                WHERE document = '[data table=documentation col=document key="[value link_overview]" filter=sql]'
-                AND   section  = '[data table=documentation col=section key="[value link_overview]" filter=sql]'
-                AND   title  = '[data table=documentation col=title key="[value link_overview]" filter=sql]'
+                SELECT * FROM annotation
+                WHERE code = '$document'
         |][sql-change 1][condition]1[/condition]
 <TR>
         <TD BGCOLOR="__BARBG__" COLSPAN=2 ALIGN=center>
@@ -163,12 +161,9 @@ sub ::_HtmlFinalise {
 <tr>
 <td colspan=2 valign=center><br>
 <A HREF="[area
-                        href=add_doc_note
+                        href=add_annotation
                         form=|
-        code=[data table=documentation col=code row="[value link_overview]"]
-        section=[data table=documentation col=section row="[value link_overview]"]
-        title=[data table=documentation col=title row="[value link_overview]"]
-        document=[data table=documentation col=document row="[value link_overview]"]
+        code=$document
                         |
 ]"><IMG SRC="admin/icon_pages.gif" border=0 align=textmiddle> Add note</A>
 </td>
