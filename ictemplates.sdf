@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ictemplates.sdf,v 1.14 2001-04-10 21:02:40 jon Exp $
+# $Id: ictemplates.sdf,v 1.15 2001-04-10 21:30:24 jon Exp $
 
 !define DOC_NAME "Interchange Templates"
 !define DOC_TYPE ""
 !define DOC_CODE "ictemplates"
-!define DOC_VERSION substr('$Revision: 1.14 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.15 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/ictemplates.html"
@@ -858,56 +858,692 @@ LI1: [/if]
 
 .Terminates an if conditional.
 
+
 H1: Programming
 
-Interchange has a powerful paradigm for extending and enhancing its functionality.  It uses two mechanisms, C<user-defined tags> and C<user subroutines> on two different security levels, global and catalog. In addition, C<Embedded Perl Code> may be used to build functionality into a site's page.
+Interchange has a powerful paradigm for extending and enhancing its functionality. It uses two mechanisms, user-defined tags and user subroutines on two different security levels, global and catalog. In addition, C<Embedded Perl Code> may be used to build functionality into pages.
 
-C<User-defined tags> are defined with the UserTag directive in either C<minivend.cfg> or C<catalog.cfg>. The ones in C<minivend.cfg> are global, i.e., they are not constrained by the C<Safe> Perl module as to which opcodes and  routines they may use. Normally, the user-defined tags in  C<catalog.cfg> are constrained by C<Safe>, but if the C<AllowGlobal> global directive is set for the particular catalog in use, its C<UserTag> and C<Sub> definitions will have global capability.
+User-defined tags are defined with the UserTag directive in either C<interchange.cfg> or C<catalog.cfg>. The tags in C<interchange.cfg> are global, i.e., they are not constrained by the C<Safe> Perl module as to which opcodes and routines they may use. Normally, the user-defined tags in C<catalog.cfg> are constrained by C<Safe>, but if the C<AllowGlobal> global directive is set for the particular catalog in use, its UserTag and C<Sub> definitions will have global capability.
 
 Many of the internal Interchange routines can be accessed by the savvy programmer who reads the source and finds the entry points. Also, many internal Interchange routines can be overridden:
 
 !block example
-    GlobalSub <<EOS
-    sub just_for_overriding {
-        package Vend::Module;
-        use MyModule;
-        sub to_override {
-            &MyModule::do_something_funky($Values->{my_variable});
-        }
-    }
-    EOS
+   GlobalSub <<EOS
+   sub just_for_overriding {
+       package Vend::Module;
+       use MyModule;
+       sub to_override {
+           &MyModule::do_something_funky($Values->{my_variable});
+       }
+   }
+   EOS
 !endblock
 
-The effect of the above is to override the C<to_override> routine in the module C<Vend::Module>. This is preferable to hacking on the code if the functionality change is expected to last long. Then, the Interchange code can be updated, in most cases, while still keeping your hack.
+The effect of the above is to override the C<to_override> routine in the module C<Vend::Module>. This is preferable to hacking the code for functionality changes that are not expected to change frequently. In most cases, updating the Interchange code will not affect the hacked code. Note that internal entry points are not guaranteed to exist in future versions of Interchange.
 
 H2: Embedded Perl Code
 
 Perl code can be directly embedded in Interchange pages. The code is specified as:
 
 !block example
-    [perl]
-        $name    = $Values->{name};
-        $browser = $Session->{browser};
-        return "Hi, $name! How do you like your $browser?";
-    [/perl]
+   [perl]
+       $name    = $Values->{name};
+       $browser = $Session->{browser};
+       return "Hi, $name! How do you like your $browser?";
+   [/perl]
 !endblock
 
 ASP syntax can be used with:
 
 !block example
-    [mvasp]
-        <%
-        $name    = $Values->{name};
-        $browser = $Session->{browser};
-        %>
-        Hi, <%= $name %>!
-        <%
-            HTML "How do you like your $browser?";
-        %>
-    [/mvasp]
+   [mvasp]
+       <%
+       $name    = $Values->{name};
+       $browser = $Session->{browser};
+       %>
+       Hi, <%= $name %>!
+       <%
+           HTML "How do you like your $browser?";
+       %>
+   [/mvasp]
 !endblock
 
-The two snippets above are essentially equivalent.
+The two snippets above are essentially equivalent.  Please see the {{C[jump="ictags.html#perl"]perl}} and  {{C[jump="ictags.html#mvasp"]mvasp}} tags for usage details.
+
+The C<[{{CMD[jump="ictags.html#perl"]perl}}]> tag enforces {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe.pm}} checking, and many standard Perl operators are not available. This prevents user access to all files and programs on the system without the Interchange daemon's permissions. See {{C[jump="#GlobalSub *global*"]GlobalSub}} and {{C[jump="ictags.html#User-defined Tags"]User-defined Tags}} for ways to make external files and programs available to Interchange.
+
+.Named parameters:
+
+.See the {{C[jump="ictags.html#perl"]perl}} tag for description of the tag parameters and attributes.  These N<include:>
+
+!block example
+       [perl tables="tables-to-open"*
+               subs=1*
+             global=1*
+          no_return=1*
+            failure="Return value in case of compile or runtime error"*
+               file="include_file"*]
+!endblock
+
+.Required parameters: none
+
+
+Any Interchange tag (except ones using SQL) can be accessed via the C<$Tag> object. If using SQL queries inside a Perl element, C<AllowGlobal> permissions are required and and the C<global=1> parameter must be set. Installing the module C<Safe::Hole> along with sharing the database table with <tables=tablename> will enable SQL use.
+
+.Examples:
+
+!block example; listitem=2
+   # If the item might contain a single quote
+   [perl]
+   $comments = $Values->{comments};
+   [/perl]
+!endblock
+
+Note[label='Important Note: '] Global subroutines are not subject to the stringent security checking of the C<Safe> module, so almost anything goes there. The subroutine will be able to modify any variable in Interchange, and will be able to write to read and write any file that the Interchange daemon has permission to write. Though this gives greater power, it should be used with caution. They are defined in the main C<interchange.cfg> file, so should be safe from individual users in a multi-catalog system.
+
+Global subroutines are defined in C<interchange.cfg> with the C<GlobalSub> directive, or in user catalogs which have been enabled via C<AllowGlobal>. Catalog subroutines are defined in C<catalog.cfg>, with the C<Sub> directive. They are subject to the stringent Safe.pm security restrictions that are controlled by the global directive C<SafeUntrap>.
+
+The code can be as complex as desired, but cannot use any operators that modify the file system or use "unsafe" operations like "system," "exec," or backticks. These constraints are enforced with the default permissions of the standard Perl module Safe. Operations may be untrapped on a system-wide basis with the C<SafeUntrap> directive.
+
+The result of this tag will be the result of the last expression evaluated, just as in a subroutine. If there is a syntax error or other problem with the code, there will be no output.
+
+Here is a simple one which does the equivalent of the classic hello.pl program:
+
+!block example
+   [perl] my $tmp = "Hello, world!"; $tmp; [/perl]
+!endblock
+
+Of course, there is no need to set the variable. It is there just to show the capability.
+
+To echo the user's browser, but within some HTML tags:
+
+!block example
+   [perl]
+   my $html = '<H5>';
+   $html .= $Session->{browser};
+   $html .= '</H5>';
+   $html;
+   [/perl]
+!endblock
+
+To show the user their name and the current time:
+
+!block example
+   [perl arg=values]
+
+   my $string = "Hi, " . $Values->{name} ". The time is now ";
+   $string .= $Tag->time();
+   $string;
+
+   [/perl]
+!endblock
+
+
+H2: ASP-Like Perl
+
+Interchange supports an ASP-like syntax using the E<lbracket>{{C[jump="ictags.html#mvasp"]mvasp}}] tag.
+
+!block example
+   [mvasp]
+   <HTML><BODY>
+       This is HTML.<BR>
+
+   <% HTML "This is code<BR>"; %>
+       More HTML.<BR>
+   <% $Document->write("Code again.<BR>") %>
+   [/mvasp]
+!endblock
+
+If no closing C<[/mvasp]> tag is present, the remainder of the page will be seen as ASP.
+
+ASP is simple. Anything between <% and %> is code, and the string %> is not allowed anywhere inside. Anything not between those anchors is plain HTML that will be placed unchanged on the page. Interchange variables and [L][/L] and [LC][/LC] areas will still be inserted, but any Interchange tags will not.
+
+There is a shorthand <% = $foo %>, which is exactly equivalent to <% $Document->write($foo); %> or <% HTML $foo; %>
+
+!block example
+   [mvasp]
+   <HTML><BODY>
+       This is HTML.<BR>
+       [value name] will show up as &#91;value name].<BR>
+
+       &#95_VARIABLE__ value is equal to: __VARIABLE__
+
+   <% = "This is code<BR>" %>
+!endblock
+
+The C<__VARIABLE__> will be replaced by the value of C<Variable VARIABLE>, but [value name] will be shown unchanged.
+
+!block note; label="Important Note: "
+If using the C<SQL::Statement> module, the catalog must be set to C<AllowGlobal> in C<interchange.cfg>. It will not work in "Safe" mode due to limitations of object creation in Safe. Also, the C<Safe::Hole> module must be installed to have SQL databases work in Safe mode.
+!endblock
+
+
+H2: Error Reporting
+
+If your Perl code fails with a compile or runtime error, Interchange writes the error message from the Perl interpreter into the catalog's error log. This is typically 'I<catalog_root>/error.log'. Note that error messages do not appear on your web page as the return value of the Perl tag or routine.
+
+You will not have direct access to the 'C<strict>' and 'C<warnings>' pragmas wherever Interchange runs your perl code under C<Safe> (for example, within a [perl] or [mvasp] tag).  
+
+H1: Interchange Perl Objects
+
+Interchange gives ready access to all objects associated with the catalog and the user settings, with opcode restrictions based on the standard Perl module {{C[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe.pm}}. There are some unique things to know about programming with Interchange.
+
+Under C<Safe>, certain things cannot be used. For instance, this is not legal when running Safe:
+
+!block example
+   $variable = `cat file/contents`;
+!endblock
+
+The backtick operator violates a number of the default Safe opcode restrictions. Direct file opens are not allowed, either:
+
+!block example
+   open(SOMETHING, "something.txt")
+       or die;
+!endblock
+
+This will also cause a trap, and the code will fail to compile. However, Interchange equivalent routines can be used:
+
+!block example
+   # This will work if your administrator doesn't have NoAbsolute set
+   $users = $Tag->file('/home/you/list');
+
+   # This will always work, file names are based in the catalog directory
+   $users = $Tag->file('userlist');
+!endblock
+
+The standard objects are:
+
+LI1: $CGI
+
+.This is a hash reference to C<%CGI::values>, the value of user variables as submitted in the current page/form. To get the value of a variable submitted as
+
+!block example; listitem=2
+    <INPUT TYPE=hidden NAME=foo VALUE=bar>
+!endblock
+
+.use
+
+!block example; listitem=2
+    <% $Document->write("Value of foo is $CGI->{foo}"); %>
+!endblock
+
+.Remember, multiple settings of the same variable are separated by a NULL character. To get the array value, use $CGI_array.
+
+LI1: $CGI_array
+
+.This is a hash reference to C<%CGI::values_array>, arrays containing the value or values of user variables as submitted in the current page/form. To get the value of a variable submitted as
+
+!block example; listitem=2
+    <INPUT TYPE=hidden NAME=foo VALUE='bar'>
+    <INPUT TYPE=hidden NAME=foo VALUE='baz'>
+!endblock
+
+.use
+
+!block example; listitem=2
+    <% = "The values of foo are", join (' and ', @{$CGI_array->{'foo'}}) %>
+!endblock
+
+.Remember, multiple settings of the same variable are separated by a NULL character. To get the array value, use $CGI_array.
+
+LI1: $Carts
+
+.A reference to the shopping cart hash $Vend::Session->{carts}. The normal default cart is "main". An alias is $Items in the normal course of events.
+
+.Shopping carts are an array of hash references. Here is an example of a session cart array containing a C<main> and a C<layaway> cart.
+
+!block example; listitem=2
+    {
+        'main' => [
+                    {
+                        'code' => '00-0011',
+                        'mv_ib' => 'products',
+                        'quantity' => 1,
+                        'size' => undef,
+                        'color' => undef
+                    },
+                    {
+                        'code' => '99-102',
+                        'mv_ib' => 'products',
+                        'quantity' => 2,
+                        'size' => 'L',
+                        'color' => 'BLUE'
+                    }
+                ],
+        'layaway' => [
+                    {
+                        'code' => '00-341',
+                        'mv_ib' => 'products',
+                        'quantity' => 1,
+                        'size' => undef,
+                        'color' => undef
+                    }
+                ]
+    }
+!endblock
+
+.In this cart array, $Carts->{main}[1]{code} is equal to C<99-102>. In the normal course of events, it would be equivalent to $Items->[1]{code}.
+
+LI1: $Config
+
+.A reference to the $Vend::Cfg array. Normally use this with a liberal dose of the Interchange source code, but for simple things use something like:
+
+!block example; listitem=2
+    # Turn off CyberCash for this user
+    $Config->{CyberCash} = 0;
+!endblock
+
+.Changes are not persistent except when running in the foreground (Debug mode).
+
+LI1: %Db
+
+.A hash of databases shared with the C<[mvasp tables="foo"]> parameter to the tag call. Once the database is shared, it is opened and can be accessed by any of its methods. Again, this will not work with SQL unless AllowGlobal is set for the catalog.
+
+.To get a reference to a particular table, specify its hash element:
+
+!block example; listitem=2
+    $ref = $Db{products};
+!endblock
+
+.The methods available:
+
+!block example; listitem=2
+    # access an element of the table
+    $field = $ref->field($key, $column);
+
+    # set an element of the table
+    $ref->set_field($key, $column_name, $value);
+
+    # atomic increment of an element of the table
+    $ref->inc_field($key, $column_name, 1);
+
+    # see if element of the table is numeric
+    $is_numeric = $ref->numeric($column_name);
+
+    # Quote for SQL query purposes
+    $quoted = $ref->quote($value, $column_name);
+
+    # Check configuration of the database
+    $delimiter = $ref->config('DELIMITER');
+
+    # Find the names of the columns (not including the key)
+    @columns = $ref->columns();
+    # Insert the key column name
+    unshift @columns, $ref->config('KEY');
+
+    # See if a column is in the table
+    $is_a_column = defined $ref->test_column($column_name);
+
+    # See if a row is in the table
+    $is_present = $ref->record_exists($key);
+
+    # Create a subroutine to return a single column from the table
+    $sub = $ref->field_accessor($column);
+    for (@keys) {
+        push @values, $sub->($key);
+    }
+
+    # Create a subroutine to set a single column in the database
+    $sub = $ref->field_settor($column);
+    for (@keys) {
+        $sub->($key, $value);
+    }
+
+    # Create a subroutine to set a slice of the database
+    $sub = $ref->row_settor(@columns);
+    for (@keys) {
+        $sub->($key, @values);
+    }
+
+    # Retrurn a complete array of the database (minus the key)
+    @values = $ref->row($key);
+
+    # Retrurn a complete hash of the database row (minus the key)
+    $hashref = $ref->row_hash($key);
+
+    # Delete a record/row from the table
+    $ref->delete_record($key);
+!endblock
+
+LI1: %Sql
+
+.A hash of SQL databases that you shared with the C<[mvasp tables="foo"]> parameter to the tag call. It returns the DBI database handle, so things like the following can be done:
+
+!block example; listitem=2
+  <%
+    my $dbh = $Sql{products}
+        or return HTML "Database not shared.";
+    my $sth = $dbh->prepare('select * from products')
+        or return HTML "Couldn't open database.";
+    $sth->execute();
+    my @record;
+    while(@record = $sth->fetchrow()) {
+        foo();
+    }
+    $sth = $dbh->prepare('select * from othertable')
+        or return HTML "Couldn't open database.";
+    $sth->execute();
+    while(@record = $sth->fetchrow()) {
+        bar();
+    }
+  %>
+!endblock
+
+.Again, this will not work with unless AllowGlobal is set for your catalog.
+
+LI1: $DbSearch
+
+.A search object which will search a database without using the text file. It is the same as Interchange's C<db> searchtype. Options are specified in a hash and passed to the object. All multiple-field options should be passed as array references. Before using the $DbSearch object, it must be told which table to search. For example, to use the table C<foo>, it must have been shared with C<[mvasp foo]>.
+
+.There are three search methods: C<array>, C<hash>, and C<list>.
+
+!block example; listitem=2
+    array    Returns a reference to an array of arrays (best)
+    hash     Returns a reference to an array of hashes (slower)
+    list     Returns a reference to an array of tab-delimited lines
+!endblock
+
+.\Example:
+
+!block example; listitem=2
+    $DbSearch->{table} = $Db{foo};
+
+    $search = {
+
+            mv_searchspec => 'Mona Lisa',
+            mv_search_field => [ 'title', 'artist', 'price' ],
+            mv_return_fields    => [ 'title' ]
+
+        };
+
+    my $ary = $DbSearch->array($search);
+
+    if(! scalar @$ary) {
+        return HTML "No match.\n";
+    }
+
+    for(@$ary) {
+!endblock
+
+LI1: $Document
+
+.This is an object that has several routines associated with it.
+
+!block example; listitem=2
+ HTML $foo;                     # Append $foo to the write buffer array
+ $Document->write($foo);        # object call to append $foo to the write
+                                # buffer array
+ $Document->insert($foo);       # Insert $foo to front of write buffer array
+ $Document->header($foo, $opt); # Append $foo to page header
+ $Document->send();             # Send write buffer array to output, done
+                                # automatically upon end of ASP, clears buffer
+                                # and invalidates $Document->header()
+ $Document->hot(1);             # Cause writes to send immediately
+ $Document->hot(0);             # Stop immediate send
+ @ary = $Document->review();    # Place contents of write buffer in @ary
+ $Document->replace(@ary)       # Replace contents of write buffer with @ary
+ $ary_ref = $Document->ref();   # Return ref to output buffer
+!endblock
+
+LI1: $Document->write($foo)
+
+.Write $foo to the page in a buffered fashion. The buffer is an array containing the results of all previous C<$Document->>C<write()> operations. If $Document->hot(1) has been set, the output immediately goes to the user.
+
+LI1: $Document->insert($foo)
+
+.Insert $foo to the page buffer.
+
+!block example; listitem=2
+    $Document->write("23");
+    $Document->insert("1");
+    $Document->send();
+!endblock
+
+.will output "123", while
+
+!block example; listitem=2
+    $Document->write("23");
+    $Document->write("1");
+    $Document->send();
+!endblock
+
+.will output "231".
+
+LI1: $Document->header($foo, $opt)
+
+.Add the header line $foo to the HTTP header. Use this to change the page content type, cache options, or other attributes. The code below changes the content type (MIME type) to text/plain:
+
+!block example; listitem=2
+    $Document->header("Content-type: text/plain");
+!endblock
+
+.There is an optional hash that can be sent, with the only valid value being "replace." The below code scrubs all previous header lines:
+
+!block example; listitem=2
+    $Document->header("Content-type: text/plain", { replace => 1 } );
+!endblock
+
+.Once output has been sent with $Document->send(), this can no longer be done.
+
+LI1: $Document->hot($foo)
+
+.If the value of $foo is true (in a Perl sense), then all $Document->write() operations will be immediately sent until a $Document->hot(0) is executed.
+
+LI1: $Document->send()
+
+.Causes the document write buffer to be sent to the browser and empties the buffer. Any further $Document->header() calls will be ignored. Can be used to implement non-parsed-header operation.
+
+LI1: $Document->review()
+
+.Returns the value of the write buffer.
+
+!block example; listitem=2
+    @ary = $Document->review();
+!endblock
+
+LI1: $Document->replace(@new)
+
+.Completely replaces the write buffer with the arguments.
+
+LI1: $Document->ref()
+
+.Returns a reference to the write buffer.
+
+!block example; listitem=2
+    # Remove the first item in the write buffer
+    my $ary_ref = $Document->ref();
+    shift @$ary_ref;
+!endblock
+
+LI1: HTML
+
+.Writes a string (or list of strings) to the write buffer array. The call
+
+!block example; listitem=2
+    HTML $foo, $bar;
+!endblock
+
+.is exactly equivalent to
+
+!block example; listitem=2
+    $Document->write($foo, $bar);
+!endblock
+
+.Honors the $Document->hot() setting.
+
+LI1: $Items
+
+.A reference to the current shopping cart. Unless an Interchange C<[cart ...]> tag is used, it is normally the same as $Carts->{main}.
+
+LI1: $Scratch
+
+.A reference to the scratch values ala C<[scratch foo]>.
+
+!block example; listitem=2
+   <% $Scratch->{foo} = 'bar'; %>
+!endblock
+
+.is equivalent to:
+
+!block example; listitem=2
+    [set foo]bar[/set]
+!endblock
+
+LI1: $Session
+
+.A reference to the session values ala C<[data session username]>.
+
+!block example; listitem=2
+    <%
+        my $out = $Session->{browser};
+        $Document->write($out);
+    %>
+!endblock
+
+.is equivalent to:
+
+!block example; listitem=2
+    [data session browser]
+!endblock
+
+.Values can also be set. If the value of C<[data session source]> needed to be changed, for example, set:
+
+!block example; listitem=2
+    <%
+        $Session->{source} = 'New_partner';
+    %>
+!endblock
+
+LI1: $Tag
+
+.Using the $Tag object, any Interchange tag including user-defined tags can be accessed.
+
+Note[label='IMPORTANT NOTE: '] If the tag will access a database that has not been previously opened, the table name must be passed in the ASP call. For example:
+
+.HTML style:
+!block example; listitem=2
+    <HTML MV="mvasp" MV.TABLES="products pricing">
+!endblock
+
+.or
+
+.Named parameters:
+!block example; listitem=2
+    [mvasp tables="products pricing"]
+!endblock
+
+.or
+
+.Positional parameters:
+!block example; listitem=2
+    [mvasp products pricing]
+!endblock
+
+.Any tag can be called.
+
+!block example; listitem=2
+    <%
+        my $user = $Session->{username};
+        my $name_from_db = $Tag->data('userdb', 'name', $user );
+        $Document->write($name_from_db);
+    %>
+!endblock
+
+.is the same as:
+
+!block example; listitem=2
+    [data table=userdb column=name key="[data session username]"]
+!endblock
+
+.If the tag has a dash (C<->) in it, use an underscore instead:
+
+!block example; listitem=2
+    # WRONG!!!
+    $Tag->shipping-desc('upsg');
+    # Right
+    $Tag->shipping_desc('upsg');
+!endblock
+
+.There are two ways of specifying parameters. Either use the positional parameters as documented (for an authoritative look at the parameters, inspect the %Routine value in Vend::Parse), or specify it all with an option hash parameter names as in any named parameters as specified in an Interchange tag. The calls
+
+!block example; listitem=2
+    $Tag->data('products', 'title', '00-0011');
+!endblock
+
+.and
+
+!block example; listitem=2
+    my $opt = {
+                    table   => 'products',
+                    column  => 'title',
+                    key     => '00-0011',
+                };
+
+    $Tag->data( $opt );
+!endblock
+
+.are equivalent for the C<data> tag.
+
+.If using the option hash method, and the tag has container text, either specify it in the hash parameter C<body> or add it as the next argument. The two calls:
+
+!block example; listitem=2
+    $Tag->item_list( {
+                        'body' => "[item-code] [item-field title]",
+                    });
+!endblock
+
+.and
+
+!block example; listitem=2
+    $Tag->item_list( { }, "[item-code] [item-field title]")
+!endblock
+
+.are equivalent.
+
+.Parameter names are ALWAYS lower case.
+
+LI1: $Values
+
+.A reference to the user form values ala C<[value foo]>.
+
+!block example; listitem=2
+    <% $Document->write($Values->{foo}); %>
+!endblock
+
+.is equivalent to:
+
+!block example; listitem=2
+    [value foo]
+!endblock
+
+LI1: &Log
+
+.Send a message to the error log (same as ::logError in GlobalSub or global UserTag).
+
+!block example; listitem=2
+    <%
+        Log("error log entry");
+    %>
+!endblock
+
+.It prepends the normal timestamp with user and page information. To supress that information, begin the message with a backslash (C<\>).
+
+!block example; listitem=2
+    <%
+        Log("\\error log entry without timestamp");
+        Log('\another error log entry without timestamp');
+        Log("error log entry with timestamp");
+    %>
+!endblock
+
+H1: Debugging
+
+No debug output is provided by default. The source files contain commented-out '::logDebug(SOMETHING)' statements which can be edited to activate them. Set the value of C<DebugFile> to a file that will be written to:
+
+!block example
+   DebugFile /tmp/mvdebug
+!endblock
+
 
 H2: Export
 
@@ -2376,7 +3012,7 @@ The Interchange action set causes the update. Here are a pair of example forms. 
 
 The variables in the form do not update the user's session values, so they can correspond to database field names without fear of corrupting the user session.
 
-A2: Can I use Interchange with my existing static catalog pages?
+H3: Can I use Interchange with my existing static catalog pages?
 
 Yes, but you probably won't want to in the long run. Interchange is designed to build pages based on templates from a database. If all you want is a shopping cart, you can mix standard static pages with Interchange, but it is not as convenient and doesn't take advantage of the many dynamic features Interchange offers.
 
@@ -2387,3 +3023,359 @@ That being said, all you usually have to do to place an order link on a page is:
 !endblock
 
 Replace C</cgi-bin/construct> with the path to your Interchange link.
+
+
+H1: Internationalization
+
+Interchange has a rich set of internationalization (I18N) features to allow conditional message display, differing price formats, different currency definitions, price factoring, sorting, and other settings. The definitions are maintained in the catalog.cfg file through the use of built-in POSIX support and Interchange's C<Locale> directive. All settings are independent for each catalog and each user of that catalog. Customers can access the same catalog in an unlimited number of languages and currencies.
+
+H2: Setting the Locale
+
+The locale could be set to C<fr_FR> (French for France) in one of two ways:
+
+LI1: [setlocale locale=locale* currency=locale* persist=1*]
+
+.This tag is for new-style tags only and will not work for C<[old]>.
+
+.Immediately sets the locale to C<locale>, and will cause it to persist in future user pages if the C<persist> is set to a non-zero, non-blank value. If the C<currency> attribute is set, the pricing and currency-specific locale keys and Interchange configuration directives are modified to that locale. If there are no arguments, it sets it back to the user's default locale as defined in the scratch variables C<mv_locale> and C<mv_currency>.
+
+.This allows:
+
+!block example; listitem=2
+    Dollar Pricing:
+
+    [setlocale en_US]
+    [item-list]
+    [item-code]: [item-price]<BR>
+    [/item-list]
+
+    Franc Pricing:
+
+    [setlocale fr_FR]
+    [item-list]
+    [item-code]: [item-price]<BR>
+    [/item-list]
+
+    [comment] Return to the user's default locale [/comment]
+    [setlocale]
+!endblock
+
+LI1: [page process/locale/fr_FR/page/catalog]
+
+.This is the same as C<[page catalog]>, except when the link is followed it will set the locale to C<fr_FR> before displaying the page. This is persistent.
+
+LI1: [page process/locale/fr_FR/currency/en_US/page/catalog]
+
+.This is the same as C<[page catalog]>, except when the link is followed it will set the locale to C<fr_FR> and the pricing/number display to the locale C<en_US> before displaying the page. This is persistent.
+
+Once the locale is persistently set for a user, it is in effect for the duration of their session.
+
+H2: Interchange Locale Settings
+
+The C<Locale> directive has many possible settings allowing complete internationalization of page sets and currencies. The C<Locale> directive is defined in a series of key/value pairs with a key (which contains word characters only) followed by a value. The value should be surrounded by double quotes if it contains whitespace. In this example, the key is C<Value setting>.
+
+!block example
+   Locale fr_FR "Value setting" "Configuration de valeur"
+   Locale de_DE "Value setting" Werteinstellung
+!endblock
+
+When accessed via the special tag C<[L]Value setting[/L]>, the value C<Configuration de valeur> will be displayed B<only> if the locale is set to C<fr_FR>. If the locale is set to C<de_DE>, the string C<Werteinstellung> will be displayed. If it is neither, the default value of C<Value setting> will be displayed.
+
+The C<[L]> and C<[/L]> must be capitalized. This is done for speed of processing as well as easy differentiation in text.
+
+Another, perhaps better, way to do this is right in the page. The
+C<[LC]> ... C<[/LC]> pragma pair permits specification of locale-dependent text.
+
+!block example
+ [LC]
+           This is the default text.
+   [fr_FR] Text for the fr_FR locale. [/fr_FR]
+   [de_DE] Text for the de_DE locale. [/de_DE]
+ [/LC]
+!endblock
+
+Or place an entire new page in place of the default one if the locale key is defined. When locale is in force, and a key named C<HTMLsuffix> is set to the locale, Interchange first looks for a page with a suffix corresponding to the locale. For example:
+
+<A HREF="[area index]">Catalog home page</A>
+
+If a page index.html exists, it will be the default. If the current locale is C<fr_FR>, a page "index.fr_FR" exists, and C<Locale> looks like this:
+
+!block example
+   Locale fr_FR HTMLsuffix  fr_FR
+!endblock
+
+Then, the C<.fr_FR> page will be used instead of the C<.html> page. For longer series of strings, the configuration file recognizes:
+
+!block example
+   Locale fr_FR <<EOF
+   {
+       "Value setting",
+       "Configuration de valeur",
+
+       "Search",
+       "Recherche"
+   }
+   EOF
+!endblock
+
+The above sets two string substitutions. As long as this is valid Perl syntax describing a series of settings, the text will be matched. It can contain any arbitrary set of characters that don't contain C<[L]> and C<[/L]>.
+If using double quotes, string literals like \n and \t are recognized.
+
+A database can also be used to set locale information. It can be added to any database in the C<catalog.cfg> file, and values in it will overwrite previous settings. See I<LocaleDatabase>. The C<[L]default text[/L]> is set before any other page processing. It is equivalent to the characters "default text" or the appropriate C<Locale> translation for all intents and purposes. Interchange tags and Variable values can be embedded.
+
+Since the C<[L] message [/L]> substitution is done before any tag processing,
+the command C<[L][item-data table field][/L]> will fail. There is an add-on C<[loc] message [/loc]> I<UserTag> supplied with the distribution beginning at V3.09. It does the same thing as C<[L] [/L]> except after all tag substitution is done. See <interchange.cfg.dist> for the definition.
+
+Care is required when editing pages with localization information. Changing even one character of the message will change the key value and invalidate the message for other languages. To prevent this, use:
+
+!block example
+   [L key]The default.[/L]
+!endblock
+
+The key C<msg_key> will then be used to index the message. This may be preferable for many applications.
+
+A C<localize> script is included with Interchange. It will parse files included on the command line and produce output that can be easily edited to produce localized information. Given an existing file, it will merge new information where appropriate.
+
+H2: Special Locale Keys for Price Representation
+
+Interchange honors the standard POSIX keys:
+
+!block example
+   mon_decimal_point decimal_point
+   mon_thousands_sep thousands_sep
+   currency_symbol   int_currency_symbol
+   frac_digits       p_cs_precedes
+!endblock
+
+See the POSIX setlocale(3) man page for more information. These will be used for formatting prices and will approximate the number format used in most countries. To set the price format to a custom format, use these special keys:
+
+LI1: price_picture
+
+.Interchange will format a currency number based on a "picture" given to it. The basic form is:
+
+!block example; listitem=2
+    Locale en_US price_picture "$ ###,###,###.##"
+!endblock
+
+.This is locale C<en_US>, the United States, and it would display C<4452.3> as C<$ 4,452.30>. The same display can be achieved with:
+
+!block example; listitem=2
+     Locale en_US mon_thousands_sep ,
+     Locale en_US mon_decimal_point .
+     Locale en_US p_cs_precedes     1
+     Locale en_US currency_symbol   $
+!endblock
+
+.A common price_picture for European countries would be C<###.###.###,##>, which would display the same number as C<4.452,30>. To add a franc notation at the end for the locale C<fr_FR>, use the setting:
+
+!block example; listitem=2
+    Locale fr_FR price_picture "##.###,## fr"
+!endblock
+
+Note[label='IMPORTANT NOTE: '] The decimal point in use, set by C<mon_decimal_point>, and the thousands separator, set by C<mon_thousands_sep> must match the settings in the picture. The C<frac_digits> setting is not used in this case. It is derived from the location of the decimal (if any).
+
+.The same setting for C<fr_FR> above can be achieved with:
+
+!block example; listitem=2
+     Locale fr_FR mon_thousands_sep .
+     Locale fr_FR mon_decimal_point ,
+     Locale fr_FR p_cs_precedes     0
+     Locale fr_FR currency_symbol   fr
+!endblock
+
+.If the number of digits is greater than the # locations in the picture, the digits will be changed to asterisks. An overflow number above would show as C<**.***,** fr>.
+
+LI1: picture
+
+.Same as C<price_picture>, but sets the value returned if the C<[currency]> tag is not used. If the number of digits is greater than the # locations in the picture, the digits will be changed to asterisks, displaying something like C<**,***.**>.
+
+H2: Dynamic Locale Directive Changes
+
+If Locale keys are set to correspond to some Interchange C<catalog.cfg> directives, those values will be set when setting the locale.
+
+LI1: PageDir
+
+.To use a different page directory for different locales, set the C<PageDir> key. To have two separate language page sets, French and English, set:
+
+!block example; listitem=2
+    # Establish the default at startup
+    PageDir   english
+    Locale fr_FR  PageDir  francais
+    Locale en_US  PageDir  english
+!endblock
+
+LI1: ImageDir
+
+.To use a different image directory for different locales, set the C<ImageDir> key. To have two separate language button sets, French and English, set:
+
+!block example; listitem=2
+    # Establish the default at startup
+    ImageDir   /images/english/
+    Locale fr_FR  ImageDir   /images/francais/
+    Locale en_US  ImageDir   /images/english/
+!endblock
+
+LI1: ImageDirSecure
+
+.Same as ImageDir.
+
+LI1: PriceField
+
+.To use a different field in the products database for pricing based on locale, set the C<PriceField> locale setting.
+
+!block example; listitem=2
+    # Establish the default at startup
+    PriceField    price
+    Locale fr_FR  PriceField  prix
+!endblock
+
+.The default will always be C<price>, but if the locale C<fr_FR> is set, the C<PriceField> directive will change to C<prix> to give prices in francs instead of dollars.
+
+.If C<PriceBreaks> is enabled, the field C<prix> from the C<pricing> database will be used to develop the quantity pricing. NOTE: If no C<Locale> settings are present, it will always be C<price>, regardless of the C<PriceField> setting. Otherwise, it will always match C<PriceField>.
+
+LI1: PriceDivide
+
+.Normally used to enable penny pricing with a setting of 100, this can be used to do an automatic conversion factor based on locale.
+
+!block example; listitem=2
+    # Default at startup is 1 if not set
+    # Franc is strong these days!
+    Locale fr_FR  PriceDivide  .20
+!endblock
+
+.The price will now be divided by C<.20>, yielding franc prices five times that of the dollar.
+
+LI1: PriceCommas
+
+.This controls whether the C<mon_thousands_sep> will be used for standard currency formatting. Ignored if using C<price_picture>. Set to 1 or 0, to enable and disable respectively. DO NOT USE Yes and No.
+
+!block example; listitem=2
+    # Default at startup is Yes if not set
+    PriceCommas  Yes
+    Locale fr_FR  PriceCommas  0
+    Locale en_US  PriceCommas  1
+!endblock
+
+LI1: UseModifier
+
+.Changes the fields from the set shopping cart options.
+
+!block example; listitem=2
+    # Default at startup is 1 if not set
+    # Franc is strong these days!
+    UseModifier format
+    Locale fr_FR  UseModifier formats
+!endblock
+
+.If a previous setting was made for an item based on another locale, it will be maintained.
+
+LI1: PriceAdjustment
+
+.Changes the fields from C<UseModifier> that will be used to adjust pricing to an automatic conversion factor based on locale.
+
+!block example; listitem=2
+    # Default at startup
+    PriceAdjustment  format
+    Locale fr_FR  PriceAdjustment  formats
+!endblock
+
+LI1: TaxShipping,SalesTax
+
+.Same as the standard directives.
+
+LI1: DescriptionField
+
+.This changes the field accessed by default with the C<[item-description]> and C<[description code]> tags.
+
+!block example; listitem=2
+    # Establish the default at startup
+    DescriptionField    description
+    Locale fr_FR  DescriptionField desc_fr
+!endblock
+
+LI1: The [locale] tag
+
+.Standard error messages can be set based on Locale settings. Make sure not to use any of the predefined keys. It is safer to begin a key with msg_ or such. The default message is set between the C<[locale key]> and C<[/locale]> tags. See the example above.
+
+H2: Sorting Based on Locale
+
+The Interchange C<[sort database:field]> keys will use the LC_COLLATE setting for a locale provided that:
+
+*The operating system and C compiler support locales for POSIX, and have the locale definitions set.
+
+*The locale setting matches any configured locales.
+
+It is beyond the scope of this document to discuss these issues. Contact your system administrator or local wizard for help setting up locales on your system.
+
+If this arbitrary database named C<letters>:
+
+!block example
+   code        letter
+   00-0011     f
+   99-102      é
+   19-202      a
+!endblock
+
+and this loop:
+
+!block example
+   [loop 19-202 00-0011 99-102]
+   [sort letters:letter]
+   [loop-data letters letter]   [loop-code]
+   [/loop]
+!endblock
+
+used the default C setting for LC_COLLATE, it would display:
+
+!block example
+   a  19-202
+   f  00-0011
+   é  99-102
+!endblock
+
+If the proper LC_COLLATE settings for locale C<fr_FR> were in effect,
+then it would become:
+
+!block example
+   a  19-202
+   é  99-102
+   f  00-0011
+!endblock
+
+H2: Placing Locale Information in a Database
+
+Interchange has the capability to read its locale information from a database, named with the C<LocaleDatabase> directive. The database can be of any valid Interchange type. The locales are in columns, and the keys are in rows. For example, to set up price information:
+
+!block example
+   key                 en_US   fr_FR   de_DE
+   PriceDivide         1       .1590   .58
+   mon_decimal_point   .       ,       ,
+   mon_thousands_sep   ,       .
+   currency_symbol     $        frs    DM
+   ps_cs_precedes      1       0       0
+!endblock
+
+This would translate I<exactly> into:
+
+!block example
+   Locale en_US PriceDivide         1
+   Locale en_US mon_decimal_point   .
+   Locale en_US mon_thousands_sep   ,
+   Locale en_US currency_symbol     $
+   Locale en_US ps_cs_precedes      1
+
+   Locale fr_FR PriceDivide         .1590
+   Locale fr_FR mon_decimal_point   ,
+   Locale fr_FR mon_thousands_sep   .
+   Locale fr_FR currency_symbol     " frs"
+   Locale fr_FR ps_cs_precedes      0
+
+   Locale de_DE PriceDivide         .58
+   Locale de_DE mon_decimal_point   ,
+   Locale de_DE mon_thousands_sep   " "
+   Locale de_DE currency_symbol     "DM "
+   Locale de_DE ps_cs_precedes      1
+!endblock
+
+These settings append and overwrite any that are set in the catalog configuration files, including any include files. Important note: This information is only read during catalog configuration. It is not reasonable to access a database for translation or currency conversion in the normal course of events.
+
