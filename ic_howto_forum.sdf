@@ -1,0 +1,322 @@
+!init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
+# $Id: ic_howto_forum.sdf,v 1.1 2002-10-06 02:49:03 mheins Exp $
+
+!define DOC_NAME "Interchange + Forum/Blog HOWTO"
+!define DOC_TYPE ""
+!define DOC_CODE "ic_howto_forum"
+!define DOC_VERSION substr('$Revision: 1.1 $', 11, -2)
+!define DOC_STATUS "Draft"
+!define DOC_PROJECT "Interchange"
+!define DOC_URL "http://www.icdevgroup.org/doc-4.9/ic_howto_forum.html"
+!define DOC_OWNER "2002 Mike Heins E<lt>{{EMAIL:mike.heins@perusion.net}}E<gt>"
+!build_title
+
+H1:Introduction
+
+H2:Preamble
+
+N:Copyright 2002 Mike Heins <mike.heins@perusion.net>.  This document is
+freely redistributable under terms of the GNU General Public License. 
+
+H2:Purpose
+
+N:The purpose of this document is to expose how to use Interchange 5.0's
+forum and blog capability, enabled with the [forum ...] tag and a few
+ancilliary files.
+
+H2:Audience
+
+N:Anyone who is using an Interchange catalog. This is not rocket science.
+
+H2:Contact the author
+
+N:If you find any spelling errors, technical slip-ups, mistakes, subliminal 
+messages, or if you wish to send feedback, critique, remarks, comments, or if
+you wish to contribute examples, instructions for alternative platforms, 
+chapters, or other material, please do so.       
+
+N:The preferred method of submitting changes is in the form of a context
+diff against the SDF source file (ic_howto_forum.sdf). Please address
+your correspondence to:
+
+N:Mike Heins {{EMAIL:mike.heins@perusion.net}}
+
+H2:What it does
+
+N:Interchange forums allow your customers to comment on your products,
+or allow you to sponsor discussion threads on an interchange catalog.
+They maintain their content in a single database table named C<forum>.
+
+H1: Component files of the forums
+
+N:There are two directories to add to your foundation catalog -- C<include/forum>
+and C<pages/forum>. You must add a database table definition, as well as a
+database source file. You should add Variable support to the C<variable.txt>
+database, and supporting metadata with help. Finally, you need to add
+the C<forum.tag> file which contains the forum code.
+
+If you build a C<foundation> catalog from the latest Interchange source,
+all of these will be done already.
+
+The files that are needed in the catalog directory:
+
+!block example
+	dbconf/default_db/forum.dbm
+	dbconf/mysql/forum.mysql
+	dbconf/pgsql/forum.pgsql
+	include/forum/reply_form
+	include/forum/submit_form
+	pages/forum/reply.html
+	pages/forum/display.html
+	pages/forum/submit.html
+	products/forum.txt
+!endblock
+
+The files that are needed in the Interchange software directory:
+
+!block example
+	code/UserTag/forum.tag
+!endblock
+
+Add the following lines to C<products/variable.txt> (change | to TAB):
+
+!block example
+FORUM_ANON_NAME|Anonymous Coward|Forums
+FORUM_PRODUCTS|1|Forums
+FORUM_EMAIL_NOTIFY|sales@yourcompany.com|Forums
+!endblock
+
+Add the following lines to C<products/mv_metadata.asc> (change | to TAB):
+
+!block example
+variable::Variable::FORUM_EMAIL_NOTIFY|text|50||||||||Forum notify email|An email address to send copies of user comments on products.||||||||||
+variable::Variable::FORUM_ANON_NAME|text|20||||||||Forum Anonymous Name|Name to use when a user posts anonymously to a forum||||||||||
+variable::Variable::FORUM_PRODUCTS|yesno|||||||||Enable Product Forums|This enables user comments on products in the flypage. Only enabled by default if using MySQL or Postgres, as it will not work well on DBM and is not tested on Oracle.||||||||||
+!endblock
+
+Add the following block to pages/flypage.html:
+
+!block example
+	[if variable FORUM_PRODUCTS]
+	  <tr>
+		<td>
+			[forum top="[item-code]" display_page="forum/display" /]
+			<p>
+			[page href="forum/reply"
+					form="
+						product=1
+						mv_arg=[item-code]
+					"
+			]Comment on this product.</A>
+			</p>
+		</td>
+	  </tr>
+	[/if]
+!endblock
+
+This would normally go at the end of the table displaying the product,
+but you can place and edit to suit.
+
+Again, all of this is provided if you have installed from the latest
+Interchange 4.9.4 or higher.
+
+H1: The [forum] ITL Tag
+
+The C<[forum]> tag is what provides the capability. It uses the forum
+table and follows tree-like threads in that table.
+
+It has one required parameter, C<top>. That gives the id of the 
+message that is the top of the thread to display.
+
+This is a complete forum display for a product:
+
+!block example
+	[forum top="[item-code]" /]
+!endblock
+
+You will see something like that in the snip from C<pages/flypage.html>
+above.
+
+You can pass many more parameters to the C<[forum]> tag. Some of them
+are:
+
+LI1: display-page
+
+By default, the [forum ...] tag uses the current page to link to
+to re-display the forum at another level. Normally this works fine,
+but on a product flypage it will not work. You must pass in a different
+page.
+
+!block example
+	[forum top="[item-code]" display-page="forum/display" /]
+!endblock
+
+LI1: show-level
+
+By default, C<[forum]> only displays the text of top-level replies to
+the current thread. If you want to display more levels, set 
+the C<show-level> parameter to 1 or higher:
+
+!block example
+	[forum top="[data session arg]" show-level=3 /]
+!endblock
+
+The above will show the first four levels of replies, with links to any
+further down the tree.
+
+LI1: scrub-score
+
+If you want to moderate certain comments so that their text won't be shown,
+you can set the scrub-score parameter to -1 and then set the C<score>
+field in the message's database record to -1. By default, it is linked
+to with a message:
+
+!block example
+  <A HREF="{DISPLAY_URL}">One message beneath your threshold</A>
+!endblock
+
+If you want to totally disable the appearance of the link and message,
+set the C<scrub-template> to something:
+
+!block example
+	[forum top=THREAD scrub-score="-1" scrub-template="<!-- killed! -->" /]
+!endblock
+
+LI1: show-score
+
+By default, if a message has a score of two or higher, it's text will
+be shown no matter what level of display it is on. You can set that
+threshold with this paramter.
+
+LI1: template
+
+You can set the template that displays replies
+with this parameter. You can also pass this as the container text
+for the C<[forum]> tag, i.e.:
+
+!block example
+	[forum top="[data session arg]"]
+	<table cellspacing=0 cellpadding=2 width="65%">
+		  <tr>
+			<td class=contentbar1>
+				<A HREF="{DISPLAY_URL}"><b>{SUBJECT}</b></A>
+				by <b>{USERINFO}</b>
+				on {DATE}
+			</td>
+			<td class=contentbar1 align=right>
+				&#91;
+					<A HREF="{REPLY_URL}"><b>Reply</b></A>
+				&#93;
+			</td>
+		  </tr>
+		  <tr>
+			<td colspan=2>
+			{COMMENT}
+			</td>
+		  </tr>
+		</table>
+	[/forum]
+!endblock
+
+See C<pages/forum/display.html> for an example.
+
+LI1: header-template
+
+You can set the header template that displays the top-level message
+with this parameter. See C<pages/forum/display.html> for an example.
+
+LI1: link-template
+
+You can set the template that displays the links to messages that are
+not shown with this parameter. See C<pages/forum/display.html> for an example.
+
+LI1: scrub-template
+
+The template for a message that has a score lower than C<scrub-score>.
+See C<pages/forum/display.html> for an example.
+
+LI1: threshold-message
+
+The message displayed in the default C<scrub-template> when a message
+is scrubbed. If you set the C<scrub-template> yourself, it is ignored.
+
+LI1: display-page
+
+The page linked to with {DISPLAY_URL}. Default is the current
+page. See B<Templating> below.
+
+LI1: reply-page
+
+The page linked to with {REPLY_URL}.  Default is C<forum/reply.html>.
+See B<Templating> below.
+
+LI1: submit-page
+
+The page linked to with {SUBMIT_URL}. Default is C<forum/submit.html>.
+See B<Templating> below.
+
+LI1: date-format
+
+The format for the date provided with {DATE}. Default is C<%B %e, %Y @%H:%M>,
+which provides a date like C<October 5, 2002 @21:19>. 
+
+H1: Templating
+
+All of the C<[forum]> display mechanisms are templated. You can pass
+four templates -- C<template>, C<header-template>, C<link-template>, 
+and C<scrub-template>.
+
+They use the substitution style found in Interchange's C<attr-list> ITL tag.
+
+The following values are available for templating:
+
+!block example
+   ADDITIONAL    Additional text normally only used at the top level
+   COMMENT       Text of the message
+   CREATED       Created date in ISO format
+   DATE          Date the comment was made
+   DISPLAY_URL   URL to display the forum with a new starting point
+   FORUM_APPEND  End indent </UL> tags for item (automatic, don't use)
+   FORUM_PREPEND Begin indent <UL> tags for item (automatic, don't use)
+   MOD_TIME      Modified date in ISO format
+   PARENT_URL    URL to call the parent of the comment
+   REASON        Text indicating reason for scoring
+   REPLY_URL     URL to reply to the commetn
+   SCORE         Score of the article
+   SUBJECT       Subject of the message
+   SUBMIT_URL    URL to submit a new top-level thread
+   TOP_URL       URL to call the top level of the thread (if not at top)
+   USERINFO      User information based on login status and anonymity
+!endblock
+
+You can see how the templates are used by examining the
+file C<pages/forum/display.html> and playing around with those templates.
+
+H2: Templating rules
+
+H4: E<lbrace>KEY}
+
+Inserts the value of the KEY for the reference. In a database query, this
+is the column name.
+
+H4: E<lbrace>KEY|fallback string}
+
+Displays the value of {KEY} or if it is zero or blank, the fallback string (i.e., default).
+
+H4: E<lbrace>KEY true string}
+
+Displays C<true string> if the value of {KEY} is non-blank, non-zero,
+or displays nothing if the key is false.
+
+H4: E<lbrace>KEY?} true text {/KEY?}
+
+Displays C<true text> if the value of {KEY} is non-blank, non-zero, and nothing
+otherwise.
+
+H4: E<lbrace>KEY:} false text {/KEY:}
+
+Displays C<false text> if the value of {KEY} is blank or zero, and nothing
+otherwise.
+
+N:Copyright 2002 Mike Heins <mike.heins@perusion.net>.  Freely
+redistributable under terms of the GNU General Public License. 

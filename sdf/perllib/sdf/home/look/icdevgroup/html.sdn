@@ -1,4 +1,4 @@
-# $Id: html.sdn,v 1.1 2002-09-28 02:08:54 mheins Exp $
+# $Id: html.sdn,v 1.2 2002-10-06 02:49:03 mheins Exp $
 #
 # >>Title::     HTML Tuning
 #
@@ -177,6 +177,6 @@ sub _html_mdnav {
 !default HTML_BG_COLOR COLOR_WHITE
 !default HTML_LINK_COLOR '993333'
 !default HTML_URL_CATALOG $var{SDF_ROOT} . 'index.html'
-!default DOC_HTML_LOGO 'rh-ic-logo.gif'
+!default DOC_HTML_LOGO 'iclogo.gif'
 !default DOC_OWNER "2002 ICDEVGROUP E<lt>{{EMAIL:interchange@icdevgroup.org}}E<gt>"
 !default DOC_ID_SEP "-"
