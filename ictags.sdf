@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.115 2003-12-08 18:11:16 kwalsh Exp $
+# $Id: ictags.sdf,v 1.116 2004-02-05 18:02:38 edl Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.115 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.116 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ictags.html"
@@ -12986,6 +12986,7 @@ Alias for arg
 Attributes|Default
 {{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
 {{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
+{{CMD[jump="#attr_attachonly"]attach_only}}|I<No>
 !endblock
 
 !block table; headings=1; colvaligns="TT"
@@ -13100,8 +13101,9 @@ will return
 
 When used in concert with [tag mime boundary], [tag mime header], and
 \[tag mime id], allows MIME attachments to be includedE<nbspace>E<emdash> typically with
-PGP-encrypted credit card numbers. See the demo page ord/report.html
-for an example.
+PGP-encrypted credit card numbers. See the demo page etc/report
+for an example. Adding the attribute attach_only=1 to the tag call will set the content
+disposition to "attachment" (vs. inline).
 
 H4: {{CMD[id="tag_mime_boundary"]mime boundary}}
 
