@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.111 2003-07-08 19:12:59 mheins Exp $
+# $Id: ictags.sdf,v 1.112 2003-08-04 05:20:25 mheins Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.111 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.112 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ictags.html"
@@ -3621,9 +3621,9 @@ H2: counter
 
 H3: Summary
 
-\Parameters: B<file>
+\Parameters: B<file start date sql>
 
-Positional parameters in same order.
+\Positional parameters: B<file>
 
 Invalidates cache: B<YES>
 
@@ -3636,6 +3636,7 @@ B<ASP-like Perl call:>
 >         file => VALUE,
 >         sql => VALUE,
 >         start => VALUE,
+>         date => 'local' || 'gmt',
 >        }
 >    )
 >
@@ -3658,6 +3659,12 @@ Parameters|Description|Default
 >>|DEFAULT_VALUE
 {{CMD[jump="#counter_file"]name}}|<<
 Alias for file
+>>|DEFAULT_VALUE
+{{CMD[jump="#counter_file"]sql}}|<<
+Asserts a SQL-based counter
+>>|DEFAULT_VALUE
+{{CMD[jump="#counter_file"]date}}|<<
+Asserts a date-based counter
 >>|DEFAULT_VALUE
 !endblock
 
@@ -3706,13 +3713,16 @@ Manipulates a persistent counter, by default incrementing it and returning the n
 
 The counter value is stored in the specified file. If the file name begins with a "/" then it is an absolute path. Otherwise, it is relative to VendRoot. The default file is C<etc/counter>. If the file does not exist, it is created and initialized to the value of the C<start> parameter.
 
-The counter is implemented using Perl's C<File::Counter> module, which protects the file against simultaneous access by multiple processes.
-
 If the optional C<sql> attribute is used, a SQL sequence will be used. Currently
 MySQL and Postgres are supported. The sequence must already exist. If no C<bypass>
 parameter is sent, the table in the sequence callout (explained below) will be used
 and must be an Interchange table (i.e. set up with Database setting). If C<bypass>
 is set, then the DSN for the sequence will be passed in the C<dsn> parameter.
+
+If the optional C<date> attribute is used, a date-based counter will be made.
+It takes the form of the date in YYYYMMDD followed by the C<start> value, by
+default C<0001>. When the date changes, the counter will flip over to the
+next day and the beginning C<start> value.
 
 \WARNING: This tag may not work under {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}}, i.e. in embedded Perl.
 
@@ -3745,6 +3755,14 @@ nextval('sequence_name')".
 If the type of database is MySQL, an AUTO_INCREMENT key column is
 assumed and an insert of C<0> followed by "select last_insert_id()" will
 increment then access the counter.
+
+H4: {{CMD[id="counter_date"]date="local"}}
+
+Specifies the counter will be date-based with local time.
+
+H4: {{CMD[id="counter_date"]date="gmt"}}
+
+Specifies the counter will be date-based with GMT.
 
 # BEGIN ########### counter Subsections ##############
 H4: {{CMD[id="counter_file"]file}}
