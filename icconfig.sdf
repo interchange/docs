@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.26 2001-02-24 17:18:57 heins Exp $
+# $Id: icconfig.sdf,v 1.27 2001-03-01 21:44:06 heins Exp $
 
 !define DOC_NAME "Interchange Configuration"
 !define DOC_TYPE ""
 !define DOC_CODE "ICCONFIG_D2_100800"
-!define DOC_VERSION substr('$Revision: 1.26 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.27 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
@@ -4426,7 +4426,7 @@ EncryptProgram  /usr/bin/pgp -fat -r sales@your.com 2>/dev/null
 .For GNU Privacy Guard, GPG, you would use something like:
 
 !block example; listitem=2
-EncryptProgram /usr/local/bin/gpg -fa --always-trust -r sales@your.com
+EncryptProgram /usr/local/bin/gpg -ea --always-trust -r sales@your.com
 !endblock
 
 .On Windows or other operating systems, the only fix is to sign the key or otherwise prevent the error from occurring.
