@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.46 2001-08-06 23:23:05 jon Exp $
+# $Id: icconfig.sdf,v 1.47 2001-09-17 17:16:32 mheins Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.46 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.47 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
@@ -908,7 +908,7 @@ There is also a catalog-specific version of this setting.
 
 H1: catalog.cfg
 
-Each catalog must have a C<catalog.cfg> file located in its base catalog directory. It contains most of the configurable parameters for Interchange. Each is independent from catalog to catalog.
+Each catalog must have a {{C:catalog.cfg}} file located in its base catalog directory. It contains most of the configurable parameters for Interchange. Each is independent from catalog to catalog.
 
 Additional configuration techniques are available in the C<catalog.cfg> file. First, set a C<Variable> and use its results in a subsequent configuration setting if C<ParseVariables> is on:
 
@@ -1849,11 +1849,33 @@ Sets up order routes. See C<Custom Order Routing>. There are examples in the dem
 
 H2: SalesTax
 
-If non-blank, enables automatic addition of sales tax based on the order form. The value is a comma-separated list of the field names (as placed in order.html) in priority order, which should be used to look up sales tax percentage in the C<salestax.asc> database. This database is not supplied with Interchange. It is typically received from a third party by quarterly or monthly subscription.
+If non-blank, enables automatic addition of sales tax based on the order form.
+The value is one of three types of values:
+
+=over 4
+
+=item multi
+
+The special value "multi" enables table-based lookup of taxing rates based
+on the value of user form values, by default C<country> and C<state>.
+
+=item [itl-tags]
+
+If the value has a left square bracket, it is interpolated for ITL tags
+and the result used as the amount of the salestax.
+
+=item var1, var2
+
+A comma-separated list of the field names (as placed in the checkout page, for
+example ord/checkout.html) in priority order. These are be used to look up
+sales tax percentage in the C<salestax.asc> ASCII table. (This table is not
+supplied with Interchange.)
 
 !block example
    SalesTax            zip state
 !endblock
+
+=back
 
 H2: SalesTaxFunction
 
