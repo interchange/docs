@@ -1,10 +1,10 @@
-!init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.105 2002-10-30 09:39:55 kwalsh Exp $
+!init OPT_LOOK="icdevgroup"; OPT_STYLE="manual" 
+# $Id: ictags.sdf,v 1.106 2002-10-30 17:24:00 mheins Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.105 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.106 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ictags.html"
@@ -16899,4 +16899,6 @@ va|mv_value
 
 Line:
 
-N:Copyright 2001-2002 Red Hat, Inc., and others. Freely redistributable under terms of the GNU General Public License.
+N:Copyright 2001-2002 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.
+
+N:Copyright 2002 ICDEVGROUP. Freely redistributable under terms of the GNU General Public License.

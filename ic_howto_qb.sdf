@@ -1,13 +1,13 @@
-!init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ic_howto_qb.sdf,v 1.1 2002-07-20 23:52:45 danb Exp $
+!init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
+# $Id: ic_howto_qb.sdf,v 1.2 2002-10-30 17:24:00 mheins Exp $
 
 !define DOC_NAME "Interchange + QuickBooks HOWTO"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_howto_qb"
-!define DOC_VERSION substr('$Revision: 1.1 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.2 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
-!define DOC_URL "http://www.icdevgroup.org/doc-4.8/ic_howto_qb.html"
+!define DOC_URL "http://www.icdevgroup.org/doc/ic_howto_qb.html"
 !define DOC_OWNER "2001,2002 Mike Heins E<lt>{{EMAIL:mike@perusion.com}}E<gt>, minor additions by Dan Browning E<lt>{{EMAIL:dan.browning@kavod.com}}E<gt>"
 !build_title
 
@@ -374,3 +374,5 @@ A2:Documentation
 
 	* What are the IIF File Headers? {{URL:http://www.quickbooks.com/support/faqs/qbw2000/121756.html}}
 	* See the Quickbooks Help item, "Reference guide to import files"
+
+N:Copyright 2002 ICDEVGROUP. Freely redistributable under terms of the GNU General Public License.

@@ -1,13 +1,13 @@
-!init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ic_howto_cvs.sdf,v 1.11 2002-10-30 01:45:17 jon Exp $
+!init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
+# $Id: ic_howto_cvs.sdf,v 1.12 2002-10-30 17:23:59 mheins Exp $
 
 !define DOC_NAME "Interchange + CVS HOWTO"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_howto_cvs"
-!define DOC_VERSION substr('$Revision: 1.11 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.12 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
-!define DOC_URL "http://www.icdevgroup.org/doc-4.8/ic_howto_cvs.html"
+!define DOC_URL "http://www.icdevgroup.org/doc/ic_howto_cvs.html"
 !define DOC_OWNER "2001 Dan Browning E<lt>{{EMAIL:dan.browning@kavod.com}}E<gt>"
 !build_title
 
@@ -1197,3 +1197,6 @@ Line:
 
 N:Copyright 2001,2002 Dan Browning <dan.browning@kavod.com>.  Freely
 redistributable under terms of the GNU General Public License. 
+
+N:Copyright 2002 ICDEVGROUP. Freely redistributable under terms of the GNU General Public License.
+

@@ -1,10 +1,10 @@
-!init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.52 2002-10-30 01:45:17 jon Exp $
+!init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
+# $Id: icdatabase.sdf,v 1.53 2002-10-30 17:24:00 mheins Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.52 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.53 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/icdatabase.html"
@@ -3944,4 +3944,6 @@ Here is a quick procedure that might get you started:
 
 Line:
 
-N:Copyright 2001-2002 Red Hat, Inc., and others. Freely redistributable under terms of the GNU General Public License.
+N:Copyright 2001-2002 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.
+
+N:Copyright 2002 ICDEVGROUP. Freely redistributable under terms of the GNU General Public License.

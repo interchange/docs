@@ -1,10 +1,10 @@
-!init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: icprogrammer.sdf,v 1.7 2002-10-30 01:45:18 jon Exp $
+!init OPT_LOOK="icdevgroup"; OPT_STYLE="manual" 
+# $Id: icprogrammer.sdf,v 1.8 2002-10-30 17:24:00 mheins Exp $
 
 !define DOC_NAME "Interchange Programmer Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icprogrammer"
-!define DOC_VERSION substr('$Revision: 1.7 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.8 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/icvars.html"
@@ -795,3 +795,5 @@ shown here, but most will not.
 H1: Variable listing
 
 H2: Standard global (interchange.cfg) Variable values
+
+N:Copyright 2002 ICDEVGROUP. Freely redistributable under terms of the GNU General Public License.

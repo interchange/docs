@@ -1,13 +1,13 @@
-!init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ic_i18n.sdf,v 1.2 2002-10-30 01:45:17 jon Exp $
+!init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
+# $Id: ic_i18n.sdf,v 1.3 2002-10-30 17:24:00 mheins Exp $
 
 !define DOC_NAME "Interchange I18N Features"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_i18n"
-!define DOC_VERSION substr('$Revision: 1.2 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.3 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
-!define DOC_URL "http://www.icdevgroup.org/doc/ictemplates.html"
+!define DOC_URL "http://www.icdevgroup.org/doc/ic_i18n.html"
 !build_title
 
 
@@ -376,4 +376,6 @@ Important note: This information is only read during catalog configuration. It i
 
 Line:
 
-N:Copyright 2001-2002 Red Hat, Inc., and others. Freely redistributable under terms of the GNU General Public License.
+N:Copyright 2001-2002 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.
+
+N:Copyright 2002 ICDEVGROUP. Freely redistributable under terms of the GNU General Public License.

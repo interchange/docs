@@ -1,10 +1,10 @@
-!init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icupgrade.sdf,v 1.20 2002-10-30 01:45:18 jon Exp $
+!init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
+# $Id: icupgrade.sdf,v 1.21 2002-10-30 17:24:00 mheins Exp $
 
 !define DOC_NAME "Interchange Upgrade Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "icupgrade"
-!define DOC_VERSION substr('$Revision: 1.20 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.21 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/icupgrade.html"
@@ -949,4 +949,6 @@ In mid-2002, Red Hat decided to stop supporting Interchange development, and a g
 
 Line:
 
-N:Copyright 2001-2002 Red Hat, Inc., and others Freely redistributable under terms of the GNU General Public License.
+N:Copyright 2001-2002 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.
+
+N:Copyright 2002 ICDEVGROUP. Freely redistributable under terms of the GNU General Public License.

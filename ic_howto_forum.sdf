@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: ic_howto_forum.sdf,v 1.2 2002-10-06 03:18:33 mheins Exp $
+# $Id: ic_howto_forum.sdf,v 1.3 2002-10-30 17:24:00 mheins Exp $
 
 !define DOC_NAME "Interchange + Forum/Blog HOWTO"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_howto_forum"
-!define DOC_VERSION substr('$Revision: 1.2 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.3 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc-4.9/ic_howto_forum.html"
@@ -297,26 +297,26 @@ provided templates.
 
 H2: Templating rules
 
-H4: E<lbrace>KEY}
+H3: E<lbrace>KEY}
 
 Inserts the value of the KEY for the reference. In a database query, this
 is the column name.
 
-H4: E<lbrace>KEY|fallback string}
+H3: E<lbrace>KEY|fallback string}
 
 Displays the value of {KEY} or if it is zero or blank, the fallback string (i.e., default).
 
-H4: E<lbrace>KEY true string}
+H3: E<lbrace>KEY true string}
 
 Displays C<true string> if the value of {KEY} is non-blank, non-zero,
 or displays nothing if the key is false.
 
-H4: E<lbrace>KEY?} true text {/KEY?}
+H3: E<lbrace>KEY?} true text {/KEY?}
 
 Displays C<true text> if the value of {KEY} is non-blank, non-zero, and nothing
 otherwise.
 
-H4: E<lbrace>KEY:} false text {/KEY:}
+H3: E<lbrace>KEY:} false text {/KEY:}
 
 Displays C<false text> if the value of {KEY} is blank or zero, and nothing
 otherwise.

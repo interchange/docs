@@ -1,10 +1,10 @@
-!init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ic_ecommerce.sdf,v 1.19 2002-10-30 01:45:17 jon Exp $
+!init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
+# $Id: ic_ecommerce.sdf,v 1.20 2002-10-30 17:23:59 mheins Exp $
 
 !define DOC_NAME "Interchange Ecommerce Functions"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_ecommerce"
-!define DOC_VERSION substr('$Revision: 1.19 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.20 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ic_ecommerce.html"
@@ -466,16 +466,10 @@ the C<products> database. If you put that price in a field named
 C<price>, you don't need to do more. If you want to change pricing
 based on quantity, size, color or other factors read on.
 
-=head2 Price Maintenance with CommonAdjust
+H2: Price Maintenance with CommonAdjust
 
 A flexible chained pricing scheme is available
 when the I<CommonAdjust> directive is set.
-
-\NOTE: For compatibility with older carts, if both PriceAdjustment
-and CommonAdjust are set, and CommonAdjust contains a valid database
-identifier, the CommonAdjust value is used to set pricing adjustments
-based on item attributes. This is not discussed further in this
-section; all items below assume I<PriceAdjustment> is not in use.
 
 We talk below about a I<CommonAdjust string>; it will be defined
 in due time.
@@ -483,36 +477,29 @@ in due time.
 A few rules about CommonAdjust, all assuming the I<PriceField> directive
 is set to C<price>:
 
-=over 4
-
-=item 1
+LI1: 1
 
 If C<CommonAdjust> is set to any value, a valid I<CommonAdjust string> or
 not, extended price adjustments are enabled. It may also hold the
 default pricing scheme.
 
-=item 2
+LI1: 2
 
 The C<price> field may also hold a I<CommonAdjust string>. It takes
 precedence over the default.
 
-=item 3
+LI1: 3
 
 If the value of the C<CommonAdjust> directive is set to a CommonAdjust
 string, and the C<price> field is empty or specifically I<0>, then it
 will be used to set the price of the items.
 
-=item 4
-
-If PriceBreaks is in use, its price will take precedence over the
-value of C<CommonAdjust>, though it may also contain a CommonAdjust string.
-
-=item 5
+LI1: 4
 
 If no CommonAdjust strings are found, then the price will be 0, subject
 to any later application of discounts.
 
-=item 6
+LI1: 5
 
 If another CommonAdjust string is found as the result of an operation,
 it will be re-parsed and the result applied. Chaining is retained; a
@@ -538,8 +525,9 @@ can then yield another CommonAdjust string.
 
 It is quite possible to create endless loops, so the maximum
 number of initial CommonAdjust strings is set to 16, and there
-may be only 20 iterations before the price will return zero on
-an error.
+may be only 32 iterations by default before the price will return zero on
+an error. (The maximum iterations is specified with
+the {{CMD[jump="icconfig.html#Limit"]Limit}} directive.)
 
 B<NOTE>:  Common needs are easily shown but not so easily explained;
 skip to the examples if the reference below if your vision starts to
@@ -551,8 +539,6 @@ defaults to the active C<products> database table.  The optional B<key>
 defaults to the item code except in a special case for the attribute-based
 lookup. The B<field> name is not optional except in the case of an
 attribute lookup.
-
-=over 4
 
 =item N.NN or -N.NN
 
@@ -1687,10 +1673,5 @@ you should set it large enough to be comfortable for the customer.
 
 Line:
 
-N:Copyright 2001-2002 Red Hat, Inc., and others. Freely redistributable under terms of the GNU General Public License.
-
-
-
-
-
-
+N:Copyright 2001-2002 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.
+N:Copyright 2002 ICDEVGROUP. Freely redistributable under terms of the GNU General Public License.

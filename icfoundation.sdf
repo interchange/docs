@@ -1,10 +1,10 @@
-!init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icfoundation.sdf,v 1.26 2002-10-30 01:45:18 jon Exp $
+!init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
+# $Id: icfoundation.sdf,v 1.27 2002-10-30 17:24:00 mheins Exp $
 
 !define DOC_NAME "Foundation Store"
 !define DOC_TYPE ""
 !define DOC_CODE "icfoundation"
-!define DOC_VERSION substr('$Revision: 1.26 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.27 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/icfoundation.html"
@@ -12,7 +12,12 @@
 
 H1: The Foundation Store
 
-The Foundation store is distributed with Interchange to give you a starting point with which to build your e-business. While the Foundation store is designed to be relatively easy to start with, it is still a full-featured demonstration of a number of Interchange capabilities. Once you understand the Foundation store and how it works you are well on your way to understanding the Interchange software.
+The Foundation store is distributed with Interchange to give you a
+starting point with which to build your e-business. While the Foundation
+store is designed to be relatively easy to start with, it is still a
+full-featured demonstration of a number of Interchange capabilities.
+Once you understand the Foundation store and how it works you are well
+on your way to understanding the Interchange software.
 
 The following is a list of some popular features:
 
@@ -31,6 +36,22 @@ LI1: Related Items
 LI1: Reviews/Testimonials
 
 .You can key the placement of a review or testimonial on the existence of a file being in a certain directory. This is reasonable to do when a user is viewing a single product.
+
+H2: Customizing Foundation
+
+The foundation store has been customized to add just about every ecommerce
+and content management feature under the sun. If you are asking the question
+"can I do ...." the answer is almost assuredly "Yes".
+
+Note that customizing the foundation store will take some experience
+in web design and database operations. Perl experience is also helpful.
+Most of all it will take persistence and empowering yourself to make
+changes and watch what happens.
+
+It is usually helpful to make a test store, perhaps just an unmodified
+copy of foundation, to test out your additions before you make them on
+your own store. That way you can try anything you want without the chance
+of causing problems on your own store. 
 
 H1: Tree design
 
@@ -106,43 +127,43 @@ with the name of your catalog, here called CATROOT.
          |----cart
          |----components/
               |----affiliate_receptor
-    	      |----best_horizontal
-    	      |----best_vertical
-    	      |----cart
-    	      |----cart_display
-    	      |----cart_tiny
-    	      |----category_vertical
-    	      |----cross_horizontal
-    	      |----cross_vertical
-    	      |----modular_buy
-    	      |----modular_update
-    	      |----none
-    	      |----promo
-    	      |----promo_horizontal
-    	      |----promo_vertical
-    	      |----random
-    	      |----random_horizontal
-    	      |----random_vertical
-    	      |----saved_carts_list_small
-    	      |----search_box_small
-    	      |----upsell
-    	      |----upsell_horizontal
-    	      |----upsell_vertical
+              |----best_horizontal
+              |----best_vertical
+              |----cart
+              |----cart_display
+              |----cart_tiny
+              |----category_vertical
+              |----cross_horizontal
+              |----cross_vertical
+              |----modular_buy
+              |----modular_update
+              |----none
+              |----promo
+              |----promo_horizontal
+              |----promo_vertical
+              |----random
+              |----random_horizontal
+              |----random_vertical
+              |----saved_carts_list_small
+              |----search_box_small
+              |----upsell
+              |----upsell_horizontal
+              |----upsell_vertical
          |----default --> foundation
          |----foundation/
               |----cart
-    	      |----fullwidth
-    	      |----leftonly
-    	      |----leftright
-    	      |----regions/
- 		   |----LEFTONLY_BOTTOM
- 		   |----LEFTONLY_TOP
- 		   |----LEFTRIGHT_BOTTOM
- 		   |----LEFTRIGHT_TOP
- 		   |----NOLEFT_BOTTOM
- 		   |----NOLEFT_TOP
-    	      |----simple
-    	      |----theme.cfg
+              |----fullwidth
+              |----leftonly
+              |----leftright
+              |----regions/
+                   |----LEFTONLY_BOTTOM
+                   |----LEFTONLY_TOP
+                   |----LEFTRIGHT_BOTTOM
+                   |----LEFTRIGHT_TOP
+                   |----NOLEFT_BOTTOM
+                   |----NOLEFT_TOP
+              |----simple
+              |----theme.cfg
          |----fullwidth
          |----leftonly
          |----leftright
@@ -825,74 +846,74 @@ The LEFTONLY_TOP template region is used in the following N<templates:>
 H4: Region Template Walkthrough -- LEFTONLY_TOP
 
 !block example
-     1	<!-- BEGIN LEFTONLY_TOP -->
-     2	[if scratch members_only]
-     3	    [set members_only][/set]
-     4	    [if !session logged_in]
-     5	    [set mv_successpage]@@MV_PAGE@@[/set]
-     6	    [bounce page=login]
-     7	    [/if]
-     8	[/if]
-     9	
-    10	<html>
-    11	<head>
-    12	  <title>[scratch page_title]</title>
-    13	  __THEME_CSS__
-    14	</head>
-    15	
-    16	<body marginheight="0" marginwidth="0">
-    17	
-    18	<!--- top left and right logo --->
-    19	<table width="100%" border="0" cellspacing="0" cellpadding="0">
-    20	<tr>
-    21	  <td align="left" valign="middle" class="maincontent">
-    22	    &nbsp;<img src="__THEME_IMG_DIR____LOGO__">
-    23	  </td>        	
-    24	  <td align="right" valign="middle" class="maincontent">
-    25	    <img width="174" height="60" src="__THEME_IMG_DIR__logo2.gif">&nbsp;
-    26	  </td>
-    27	</tr>
-    28	</table>
-    29	
-    30	<!--- menu bar along the top --->
-    31	<table width="100%" border="0" cellspacing="0" cellpadding="0">
-    32	<tr>
-    33	  <td width="100%" class="menubar">
-    34	    <a href="[area index]"><img name="Home" border="0" src="__THEME_IMG_DIR__home.gif"></a>
-    35	      <img src="__THEME_IMG_DIR__sep.gif">
-    36	    <a href="[area login]">
-    37	    [if session logged_in]
-    38	      <img alt="Log Out" border="0" src="__THEME_IMG_DIR__logout.gif"></a>
-    39	    [else]
-    40	      <img alt="Log In" border="0" src="__THEME_IMG_DIR__login.gif"></a>
-    41	    [/else]
-    42	    [/if]
-    43	      <img src="__THEME_IMG_DIR__sep.gif">
-    44	    <a href="[area ord/basket]"><img alt="Your Cart" border="0" src="__THEME_IMG_DIR__cart.gif"></a>
-    45	      <img src="__THEME_IMG_DIR__sep.gif">
-    46	    <a href="[area ord/checkout]"><img alt="Check Out" border="0" src="__THEME_IMG_DIR__checkout.gif"></a>
-    47	      <img src="__THEME_IMG_DIR__sep.gif">
-    48	    <a href="[area customerservice]"><img alt="Customer Service" border="0" src="__THEME_IMG_DIR__service.gif"></a>
-    49	      <img src="__THEME_IMG_DIR__sep.gif">
-    50	    <a href="[area aboutus]"><img alt="About Us" border="0" src="__THEME_IMG_DIR__about.gif"></a>
-    51	  </td>
-    52	</tr>
-    53	</table>
-    54	
-    55	<!--- left category column, main content column, and right special column --->
-    56	<table width="100%" border="0" cellspacing="0" cellpadding="0">
-    57	<tr> 
-    58	  <td width="20%" valign="top" align="left" class="categorybar"> 
-    59	    <!--Left Sidebar-->
-    60	    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-    61	      [include file="templates/components/[control component none]"][control]
-    62	      [include file="templates/components/[control component none]"][control]
-    63	      [include file="templates/components/[control component none]"][control]
-    64	    </table>				  
-    65	  </td>
-    66	  <td width="80%" valign="top" align="center" class="maincontent"> 
-    67	    [include file="templates/components/[control component none]"][control]
-    68	
+     1  <!-- BEGIN LEFTONLY_TOP -->
+     2  [if scratch members_only]
+     3      [set members_only][/set]
+     4      [if !session logged_in]
+     5      [set mv_successpage]@@MV_PAGE@@[/set]
+     6      [bounce page=login]
+     7      [/if]
+     8  [/if]
+     9  
+    10  <html>
+    11  <head>
+    12    <title>[scratch page_title]</title>
+    13    __THEME_CSS__
+    14  </head>
+    15  
+    16  <body marginheight="0" marginwidth="0">
+    17  
+    18  <!--- top left and right logo --->
+    19  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    20  <tr>
+    21    <td align="left" valign="middle" class="maincontent">
+    22      &nbsp;<img src="__THEME_IMG_DIR____LOGO__">
+    23    </td>         
+    24    <td align="right" valign="middle" class="maincontent">
+    25      <img width="174" height="60" src="__THEME_IMG_DIR__logo2.gif">&nbsp;
+    26    </td>
+    27  </tr>
+    28  </table>
+    29  
+    30  <!--- menu bar along the top --->
+    31  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    32  <tr>
+    33    <td width="100%" class="menubar">
+    34      <a href="[area index]"><img name="Home" border="0" src="__THEME_IMG_DIR__home.gif"></a>
+    35        <img src="__THEME_IMG_DIR__sep.gif">
+    36      <a href="[area login]">
+    37      [if session logged_in]
+    38        <img alt="Log Out" border="0" src="__THEME_IMG_DIR__logout.gif"></a>
+    39      [else]
+    40        <img alt="Log In" border="0" src="__THEME_IMG_DIR__login.gif"></a>
+    41      [/else]
+    42      [/if]
+    43        <img src="__THEME_IMG_DIR__sep.gif">
+    44      <a href="[area ord/basket]"><img alt="Your Cart" border="0" src="__THEME_IMG_DIR__cart.gif"></a>
+    45        <img src="__THEME_IMG_DIR__sep.gif">
+    46      <a href="[area ord/checkout]"><img alt="Check Out" border="0" src="__THEME_IMG_DIR__checkout.gif"></a>
+    47        <img src="__THEME_IMG_DIR__sep.gif">
+    48      <a href="[area customerservice]"><img alt="Customer Service" border="0" src="__THEME_IMG_DIR__service.gif"></a>
+    49        <img src="__THEME_IMG_DIR__sep.gif">
+    50      <a href="[area aboutus]"><img alt="About Us" border="0" src="__THEME_IMG_DIR__about.gif"></a>
+    51    </td>
+    52  </tr>
+    53  </table>
+    54  
+    55  <!--- left category column, main content column, and right special column --->
+    56  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    57  <tr> 
+    58    <td width="20%" valign="top" align="left" class="categorybar"> 
+    59      <!--Left Sidebar-->
+    60      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    61        [include file="templates/components/[control component none]"][control]
+    62        [include file="templates/components/[control component none]"][control]
+    63        [include file="templates/components/[control component none]"][control]
+    64      </table>                              
+    65    </td>
+    66    <td width="80%" valign="top" align="center" class="maincontent"> 
+    67      [include file="templates/components/[control component none]"][control]
+    68  
 !endblock
 
 H3: LEFTONLY_BOTTOM
@@ -1201,12 +1222,12 @@ CATROOT/templates/components/cart_display in a text editor.
 B<Lines 1-6:> Component Specification
 
 !block example
-     1	[comment]
-     2	ui_component: cart_display
-     3	ui_component_group: info
-     4	ui_component_label: Smaller cart for display in content area
-     5	
-     6	[/comment]
+     1  [comment]
+     2  ui_component: cart_display
+     3  ui_component_group: info
+     4  ui_component_label: Smaller cart for display in content area
+     5  
+     6  [/comment]
      7
 !endblock
 
@@ -1214,7 +1235,7 @@ These lines control what is shown in the Edit page screen of the
 admin interface.
 
 !block example
-     8	<!-- BEGIN COMPONENT [control component cart_display] -->
+     8  <!-- BEGIN COMPONENT [control component cart_display] -->
 !endblock
 
 Line 8 is an HTML comment noting the start of the code for the
@@ -1223,7 +1244,7 @@ help you locate the component in the resulting HTML generated by
 Interchange when you view the source of a page loaded in the browser.)
 
 !block example
-     9	[if items]
+     9  [if items]
 !endblock
 
 Line 9 checks to see if there are items in the shopping
@@ -1260,8 +1281,8 @@ header row in the shopping cart consisting of the header titles
 Action, SKU, Description, Quantity, Price, and Extension.
 
 !block example
-    30	    <TBODY>
-    31	[item-list]
+    30      <TBODY>
+    31  [item-list]
     32
 !endblock
 
@@ -1271,7 +1292,7 @@ the closing tag (E<lbracket>/item-list] on line 59 for each item the customer
 has ordered so far.
 
 !block example
-    33	    <tr class="[item-alternate 2]maincontent[else]contentbar1[/else][/item-alternate]">
+    33      <tr class="[item-alternate 2]maincontent[else]contentbar1[/else][/item-alternate]">
     34        <td align=center valign=top>
     35          [page ord/basket]edit</A>
     36        </TD>
@@ -1295,9 +1316,9 @@ E<lbracket>item-description] tag providing the content of the E<lbracket>page] t
 the item's name to be displayed as the link to the product display
 page.
 
-!block example	
-    41	[if-item-modifier gift_cert]
-    42	      <TD ALIGN=CENTER><small>Amount of gift:</small></TD>
+!block example  
+    41  [if-item-modifier gift_cert]
+    42        <TD ALIGN=CENTER><small>Amount of gift:</small></TD>
     43        <TD ALIGN=CENTER>[item-quantity]</TD>
     44        <TD ALIGN=right>
     45          [item-subtotal]
@@ -1418,39 +1439,39 @@ CATROOT/templates/components/cart_display in a text editor.
 B<Lines 1-6:> Component Specification
 
 !block example
-     1	[comment]
-     2	ui_component: category_vertical
-     3	ui_component_group: Navigation
-     4	ui_component_label: Vertical category list
-     5	
-     6	page_class:
-     7		label: Page class
-     8		widget: select
-     9		lookup: which_page
-    10		db: area
-    11		help: Defines which sets of items should be displayed
-    12		advanced: 1
-    13	
-    14	set_selector:
-    15		label: Page area selector
-    16		widget: select
-    17		db: area
-    18		lookup: sel
-    19		help: Defines which sets of items should be displayed
-    20		advanced: 1
-    21	[/comment]
-    22	
+     1  [comment]
+     2  ui_component: category_vertical
+     3  ui_component_group: Navigation
+     4  ui_component_label: Vertical category list
+     5  
+     6  page_class:
+     7          label: Page class
+     8          widget: select
+     9          lookup: which_page
+    10          db: area
+    11          help: Defines which sets of items should be displayed
+    12          advanced: 1
+    13  
+    14  set_selector:
+    15          label: Page area selector
+    16          widget: select
+    17          db: area
+    18          lookup: sel
+    19          help: Defines which sets of items should be displayed
+    20          advanced: 1
+    21  [/comment]
+    22  
 !endblock
 
 These lines control what is shown in the Edit page screen of the
 Administration Tool.
 
 !block example
-    23	<tr><td align="center" class="categorybar">
-    24	  <br>
-    25	  <table>
-    26	
-    27	<!-- BEGIN COMPONENT [control component category_vertical] -->
+    23  <tr><td align="center" class="categorybar">
+    24    <br>
+    25    <table>
+    26  
+    27  <!-- BEGIN COMPONENT [control component category_vertical] -->
 !endblock
 
 Lines 23-25 set up the row and table within that row that will hold
@@ -1458,63 +1479,63 @@ the vertical category list. Line 27 identifies the start of the code
 for the list.
 
 !block example
-    28	[loop
-    29		prefix=box
-    30		search="
-    31			fi=area
-    32			st=db
-    33			tf=sort
-    34			ac=0
-    35			ac=0
-    36			co=yes
-    37			
-    38			sf=sel
-    39			op=eq
-    40			se=[control set_selector left]
-    41	
-    42			sf=which_page
-    43			op=rm
-    44			se=[control page_class all|@@MV_PAGE@@]
-    45	"]
-    46	
+    28  [loop
+    29          prefix=box
+    30          search="
+    31                  fi=area
+    32                  st=db
+    33                  tf=sort
+    34                  ac=0
+    35                  ac=0
+    36                  co=yes
+    37                  
+    38                  sf=sel
+    39                  op=eq
+    40                  se=[control set_selector left]
+    41  
+    42                  sf=which_page
+    43                  op=rm
+    44                  se=[control page_class all|@@MV_PAGE@@]
+    45  "]
+    46  
 !endblock
 
 Lines 28-45 build a list of product categories obtained through a
 search of the area table.
 
 !block example
-    47	  <tr> 
-    48	    <td valign="top" class="categorybar">
-    49	      <b>[box-exec bar_link]area[/box-exec]</b>
-    50	    </td>
-    51	  </tr>
-    52	  <tr> 
-    53	    <td valign="top" class="categorybar">
-    54	
-    55	[set found_cat][/set]
-    56	[loop prefix=cat
-    57		search="
-    58			fi=cat
-    59			st=db
-    60			tf=sort
-    61			tf=name
-    62			rf=code,name
-    63			sf=sel
-    64			se=[box-code]
-    65		"
-    66		]
-    67	      &nbsp;&nbsp;[cat-exec bar_link]cat[/cat-exec]<BR>
-    68	[/loop]
-    69	
-    70	    </td>
-    71	  </tr>
-    72	[/loop]
-    73	  
-    74	  </table>
-    75	  <br>
-    76	</td></tr>
-    77	
-    78	<!-- END COMPONENT [control component category_vertical] -->
+    47    <tr> 
+    48      <td valign="top" class="categorybar">
+    49        <b>[box-exec bar_link]area[/box-exec]</b>
+    50      </td>
+    51    </tr>
+    52    <tr> 
+    53      <td valign="top" class="categorybar">
+    54  
+    55  [set found_cat][/set]
+    56  [loop prefix=cat
+    57          search="
+    58                  fi=cat
+    59                  st=db
+    60                  tf=sort
+    61                  tf=name
+    62                  rf=code,name
+    63                  sf=sel
+    64                  se=[box-code]
+    65          "
+    66          ]
+    67        &nbsp;&nbsp;[cat-exec bar_link]cat[/cat-exec]<BR>
+    68  [/loop]
+    69  
+    70      </td>
+    71    </tr>
+    72  [/loop]
+    73    
+    74    </table>
+    75    <br>
+    76  </td></tr>
+    77  
+    78  <!-- END COMPONENT [control component category_vertical] -->
 !endblock
 
 Lines 47-78 generate a list of links based on the products and product
@@ -2868,15 +2889,19 @@ Overrides the usual HTML link template for navbar entries.  See the B<bar_link> 
 
 H2: country
 
-A list of countries used to build select boxes and shipping mode choices based on countries.
+A list of countries used to build select boxes, calculate tax, and set
+shipping mode choices based on the user's country.
 
 !block example
-    code
-    sorder
-    region
-    selector
-    shipmodes
-    name
+    code          Country code
+    sorder        Used to determine sort order
+    region        An enumerator to group based on region
+    selector      The code that should be used (same as code)
+    shipmodes     Shipping modes to be presented for that country
+    name          Textual name of the country
+    iso           ISO three letter code for the country
+    isonum        ISO numeric code for the country
+    tax           Tax information (may redirect to a state table)
 !endblock
 
 
@@ -2889,7 +2914,6 @@ For reference, see the implementation in the following files:
 * catalog_root/pages/deliver.html
 * catalog_root/etc/receipt.html
 * catalog_root/pages/query/order_detail.html
-
 
 B<Fields>
 
@@ -2956,47 +2980,26 @@ Example Data from 'reports' catalog
 MIME type of downloadable content.
 
 
-H2:files.txt
+H2:files
 
 A database where files (pages, etc.) can be kept instead of in the Unix filesystem.
-
-
-H2:gift_certs.txt
-
-!block example
-    code
-    username
-    order_date
-    original_amount
-    redeemed_amount
-    available_amount
-    passcode
-    active
-    redeemed
-    update_date
-!endblock
-
+Not normally used in foundation.
 
 H2:inventory.txt
 
 !block example
-    sku
-        Quantity info
-    quantity
-		Gets decremented after each sale.
-    stock_message
-		The usual shipping time of the product.
-        Out of stock message:
-            In stock
-            Ships in 3-5 days
-            Ships in 4-6 weeks
-            Special order
-    account
-        Accounting info
-        Sales account
-    cogs_account
-!endblock
+    sku            Quantity info
+    quantity       Gets decremented after each sale.
+    stock_message  The usual shipping time of the product. Example choices:
 
+                                      In stock
+                                      Ships in 3-5 days
+                                      Ships in 4-6 weeks
+                                      Special order
+
+    account        Sales account for accounting links
+    cogs_account   Inventory account for accounting links
+!endblock
 
 H2:locale.txt
 
@@ -3007,6 +3010,8 @@ H2:locale.txt
     fr_FR
 !endblock
 
+Used to develop localization. Can be used in conjunction with other
+types of locale information. See {{CMD[jump="ictemplates.html#Internationalization"]Internationalization}}.
 
 H2:merchandising.txt
 
@@ -4211,4 +4216,6 @@ In general, it's a good idea to leave fields empty if you don't want to use them
 
 Line:
 
-N:Copyright 2001-2002 Red Hat, Inc., and others. Freely redistributable under terms of the GNU General Public License.
+N:Copyright 2001-2002 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.
+
+N:Copyright 2002 ICDEVGROUP. Freely redistributable under terms of the GNU General Public License.

@@ -1,9 +1,9 @@
-!init OPT_LOOK="akopia"
-# $Id: index.sdf,v 1.7 2001-04-25 16:35:58 jon Exp $
+!init OPT_LOOK="icdevgroup"
+# $Id: index.sdf,v 1.8 2002-10-30 17:24:00 mheins Exp $
 
 !define DOC_NAME "Interchange Documentation"
 !define DOC_CODE "index"
-!define DOC_VERSION substr('$Revision: 1.7 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.8 $',11, -2)
 !define DOC_TOC  0
 !define HTML_URL_CATALOG ''
 !build_title

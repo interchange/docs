@@ -1,0 +1,189 @@
+!init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
+# $Id: iccontent.sdf,v 1.1 2002-10-30 17:24:00 mheins Exp $
+
+!define DOC_NAME "Content Editor Reference"
+!define DOC_TYPE ""
+!define DOC_CODE "iccontent"
+!define DOC_VERSION substr('$Revision: 1.1 $',11, -2)
+!define DOC_STATUS "Draft"
+!define DOC_PROJECT "Interchange"
+!define DOC_URL "http://www.icdevgroup.org/doc/iccontent.html"
+!build_title
+
+H1: Interchange UI -- Content Editor
+
+Interchange is a web presentation framework which has powerful database and
+content manipulation features. The Interchange Content Editor provides a
+framework for manipulating pages and components within pages.
+
+H2: Content management concept
+
+Interchange assumes that the I<page> is the basic level of content. Each
+page is typically a file on the filesystem, though it is possible to maintain
+them in a database instead.
+
+Each page is assumed to be based on a C<template>, which is the layout
+for that page. Each template can contain I<slots> for I<components>.
+
+Components are interchangeable items that can be inserted in template
+slots so that pages based on a common template can vary without having
+to create a separate template.
+
+A I<page> may actually be a metacontent template in effect. Examples
+of this are the {{CMD[jump="icconfig.html#On-the-fly Catalog Pages"]flypage}} 
+for building a product page, and the results page that displays search lists.
+
+H2: A typical page
+
+Here is how the file for a page looks:
+
+!block example
+	[comment]
+	ui_name: typical.html
+	ui_page_template: leftonly
+	[/comment]
+
+	[set page_title] A typical page [/set]
+	[set members_only]0[/set]
+
+	[control reset=1]
+	[control-set]
+		[parameter1]setting1[/parameter1]
+		[parameter2]setting2[/parameter2]
+	[/control-set]
+	[control-set]
+		[parameter1]setting1[/parameter1]
+		[parameter2]setting2[/parameter2]
+	[/control-set]
+	[control reset=1]
+
+	@_LEFTONLY_TOP__@
+
+	<!-- BEGIN CONTENT -->
+
+		The content of a typical page.
+
+	<!-- END CONTENT -->
+
+	@_LEFTONLY_BOTTOM__@
+!endblock
+
+You can see other examples in the standard
+Interchange {{CMD[jump="icfoundation.html"]foundation}} demo.
+
+We will tour the page, adding the PREAMBLE and POSTAMBLE sections.
+
+LI1: Editor information
+
+The comment at the top of the page is only used by the editor to derive
+things it may need to know. If it were to be removed, the page would
+display the same; it just may not read and publish the same when edited.
+
+!block example
+	[comment]
+	ui_template_name: leftonly
+	ui_static: 0
+	[/comment]
+!endblock
+
+In the case above, the template is specified with C<ui_template_name> 
+and the page will not be published statically (i.e. C<ui_static>: 0).
+
+LI1: PREAMBLE
+
+The PREAMBLE is a section which allows page initialization prior to
+the header portion of the template, and prior to the setting of
+the page controls.
+
+!block example
+	<!-- BEGIN PREAMBLE -->
+		[perl]
+			&custom_init();
+		[/perl]
+	<!-- END PREAMBLE -->
+!endblock
+
+LI1: Page controls
+
+Page controls are specified in the template definition, and the
+user can set them from the I<page control> menu when editing the page.
+
+!block example
+	[set page_title] A typical page [/set]
+	[set members_only]0[/set]
+!endblock
+
+The above sets two page controls, one used in the header to set the
+HTML title for the page, and the other used to determine if the 
+customer must be logged in (a member) to access the page.
+
+LI1: Component controls
+
+As was said before, a page template can contain multiple components.
+Each component can have an unlimited number of settings which can be
+used to specify its behavior. These settings are manipulated in the
+I<component control> sections of the content editor, one for each
+component slot.
+
+!block example
+	[control reset=1]
+	[control-set]
+		[parameter1]setting1[/parameter1]
+		[parameter2]setting2[/parameter2]
+	[/control-set]
+	[control-set]
+		[parameter1]setting1[/parameter1]
+		[parameter2]setting2[/parameter2]
+	[/control-set]
+	[control reset=1]
+!endblock
+
+LI1: Template header section
+
+This is the {{CMD[jump="icconfig.html#Variable"]Variable}} used to contain the top portion of the template,
+which may use various I<page control> settings and have multiple
+slots for components.
+
+!block example
+	@_LEFTONLY_TOP__@
+!endblock
+
+LI1: CONTENT section
+
+This is the actual content of the page. It can be edited in a TEXTAREA
+in the content editor.
+
+!block example
+	<!-- BEGIN CONTENT -->
+
+		The content of a typical page.
+
+	<!-- END CONTENT -->
+!endblock
+
+LI1: Template footer section
+
+This is the {{CMD[jump="icconfig.html#Variable"]Variable}} used to contain the
+bottom portion of the template, which may use various I<page control>
+settings and have multiple slots for components.
+
+!block example
+	@_LEFTONLY_BOTTOM__@
+!endblock
+
+LI1: POSTAMBLE
+
+The POSTAMBLE section can contain cleanup code for the page. It will rarely
+be used.
+
+!block example
+	<!-- BEGIN POSTAMBLE -->
+		[perl]
+			&custom_cleanup();
+		[/perl]
+	<!-- END POSTAMBLE -->
+!endblock
+
+N:Copyright 2001-2002 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.
+
+N:Copyright 2002 ICDEVGROUP. Freely redistributable under terms of the GNU General Public License.

@@ -1,5 +1,5 @@
 VERSION=4.8.6
-TARGETS=icadvanced iccattut icconfig icfoundation ictemplates icdatabase ic_ecommerce ictags icfaq icupgrade ic_howto_cvs ic_i18n
+TARGETS=ic_ecommerce ic_howto_cvs ic_howto_forum ic_howto_qb icadvanced iccattut icconfig iccontent icdatabase icfaq icfoundation ic_i18n icmeta icprogrammer ictable_editor ictags ictemplates icupgrade
 SUFFIXES=txt html pdf pod 8
 MAXSUFFIXES=mif
 SDFBIN=sdf/bin/sdf
