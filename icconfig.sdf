@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.65 2002-07-12 17:19:01 kwalsh Exp $
+# $Id: icconfig.sdf,v 1.66 2002-07-26 02:52:27 mheins Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.65 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.66 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icconfig.html"
@@ -790,6 +790,47 @@ A custom wrapper can be created around it to get it to behave as desired. For in
      
     exit;
 !endblock
+
+H2: TagDir *global*
+
+Defines the directory or directories that Interchange will scan
+for tag, filter, widget, and other code declarations.
+
+!block example
+   TagDir  code etc/other_code
+!endblock
+
+Relative to the Interchange software root. Default is C<code>.
+
+H2: TagGroup *global*
+
+Defines a group of tags for possible inclusion or exclusion in the set
+of ITL tags Interchange will compile and use.
+
+!block example
+TagGroup :file "counter file include log value_extended"
+EOF
+!endblock
+
+Default is defined in lib/Vend/Config.pm, and is too lengthy
+to show here. Above is the default :file group.
+
+H2: TagInclude *global*
+
+Includes or excludes a set of IC tags for compilation and
+use. The {{CMD[jump="#CodeDir"]TagDir}} is scanned for files,
+and when found they are checked against tag names and the groups
+defined in .{{CMD[jump="icconfig.html#TagGroup"]TagGroup}}.
+
+!block example
+TagInclude ALL !:crufty !get_url
+!endblock
+
+The above will include all tags by default, but not the group C<:crufty>
+nor the tag C<get_url>.
+
+Default is ALL.
+
 
 H2: TcpHost *global*
 
