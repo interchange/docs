@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ictemplates.sdf,v 1.20 2001-06-08 18:08:47 alison Exp $
+# $Id: ictemplates.sdf,v 1.21 2001-06-08 18:23:41 alison Exp $
 
 !define DOC_NAME "Template Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "ictemplates"
-!define DOC_VERSION substr('$Revision: 1.20 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.21 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Red Hat Interchange 4.8"
 !define DOC_URL "http://help.akopia.com/interchange/doc/ictemplates.html"
@@ -14,7 +14,7 @@ H1: Introduction
 
 Interchange is designed to build its pages based on templates from a database. This document describes how to build templates using the Interchange Tag Language (ITL) and explains the different options you can use in a template.
 
-H1: ITL
+H2: Overview
 
 The search builder can be used to generate very complex reports on the database, or to help in the construction of ITL templates. Select a "Base table" that will be the foundation for the report. Specify the maximum number of rows to be returned at one time, and whether to show only unique entries.
 
@@ -38,7 +38,7 @@ C<@@VARIABLENAME@@> is replaced by the global variable called VARIABLENAME.
 
 C<@_VARIABLENAME_@> is replaced by the catalog variable VARIABLENAME if it exists; otherwise, it is replaced by the global variable VARIABLENAME.
 
-For more information on how to use the C<Variable> configuration file directive to set global variables in C<interchange.cfg> and catalog variables in C<catalog.cfg>, see the {{1:Red Hat Interchange 4.8: Development Configuration Guide}}.
+For more information on how to use the C<Variable> configuration file directive to set global variables in C<interchange.cfg> and catalog variables in C<catalog.cfg>, see the {{1:Red Hat Interchange 4.8: Development Guide}}.
 
 H1: Using Interchange Template Tags
 
