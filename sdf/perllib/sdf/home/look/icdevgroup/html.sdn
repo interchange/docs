@@ -1,9 +1,9 @@
-# $Id: html.sdn,v 1.2 2002-10-06 02:49:03 mheins Exp $
+# $Id: html.sdn,v 1.3 2004-05-05 16:20:52 jon Exp $
 #
 # >>Title::     HTML Tuning
 #
 # >>Copyright::
-# Copyright (c) 2002, ICDEVGROUP
+# Copyright (c) 2002-2004 Interchange Development Group.
 # You may distribute under the terms specified in the LICENSE file.
 #
 # >>History::
@@ -178,5 +178,5 @@ sub _html_mdnav {
 !default HTML_LINK_COLOR '993333'
 !default HTML_URL_CATALOG $var{SDF_ROOT} . 'index.html'
 !default DOC_HTML_LOGO 'iclogo.gif'
-!default DOC_OWNER "2002 ICDEVGROUP E<lt>{{EMAIL:interchange@icdevgroup.org}}E<gt>"
+!default DOC_OWNER "2002-2004 Interchange Development Group"
 !default DOC_ID_SEP "-"
