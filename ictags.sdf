@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.80 2002-05-13 03:50:29 kwalsh Exp $
+# $Id: ictags.sdf,v 1.81 2002-05-31 04:52:15 kwalsh Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.80 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.81 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -37,7 +37,7 @@ the user session. There nearly 100 standard predefined tags, and the
 C<UserTag> facility allows you to create tags that perform your own
 functions and can be just as powerful as the built-in tags.
 
-This document covers Interchange versions 4.7-4.8.
+This document covers Interchange versions 4.7 through 4.9.
 
 H1:Tag Syntax
 
@@ -2728,7 +2728,7 @@ Nests|I<No>
 
 B<ASP-like Perl call:>
 
-There is never a reason to call this tag from within perl or ASP code.
+There is never a reason to call this tag from within Perl or ASP code.
 Simply do the calculation directly.
  
 
@@ -2747,14 +2747,58 @@ will expand to:
 
 >    4
 
-The [calc] tag is really the same as the [perl] tag, except
-that it doesn't accept arguments, interpolates surrounded Interchange
-tags by default, and is slightly more efficient to parse.
+The [calc] tag is really the same as the E<lbracket>{{C[jump="#perl"]perl}}]
+tag, except that it doesn't accept arguments, interpolates surrounded
+Interchange tags by default, and is slightly more efficient to parse.
 
 \Tip: The [calc] tag will remember variable values inside one page, so
 you can do the equivalent of a memory store and memory recall for a loop.
 
-ASP Note: There is never a reason to use this tag in a [perl] or ASP section.
+ASP Note: There is never a reason to call this tag from within Perl or ASP code.
+
+
+# END ++++++++++++ calc Subsections +++++++++++++
+
+H2: calc_no
+
+Calculates the value of the enclosed arithmetic expression.
+
+
+H3: Summary
+
+!block example;
+    [B<calc_no>] I<Expression> [/calc_no]
+!endblock
+
+B<No parameters>
+
+B<No attributes>
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Characteristics|
+Invalidates cache|I<No>
+Has Subtags|I<No>
+Container tag|I<Yes>
+Nests|I<No>
+!endblock
+
+B<ASP-like Perl call:>
+
+There is never a reason to call this tag from within Perl or ASP code.
+Simply do the calculation directly.
+ 
+
+H3: Description
+
+Equivalent to the E<lbracket>{{C[jump="#calc"]calc}}] tag, except that
+it does not {{CMD[jump="#attr_interpolate"]interpolate}} by default.
+
+\NOTE: This tag was introduced in Interchange 4.9 and is therefore not
+available in earlier versions.
+
+
+# END ++++++++++++ calc_no Subsections +++++++++++++
 
 
 H2: cart
@@ -3643,7 +3687,7 @@ Positional parameters in same order.
 
 Pass attribute hash as last to subroutine: B<no>
 
-Interpolates B<container text> by default>.
+Interpolates B<container text> by default.
 
 This is a container tag, i.e. [currency] FOO [/currency].
 \Nesting: NO
@@ -4751,7 +4795,7 @@ B<ASP-like Perl call:>
 
 # BEGIN ############### error Summary Tables ####################
 !block example;
-    [B<error> nameI<other_named_attributes>]
+    [B<error> name I<other_named_attributes>]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -6995,7 +7039,7 @@ B<The attribute hash reference is passed> after the parameters but before
 the container text argument.
 B<This may mean that there are parameters not shown here.>
 
-Interpolates B<container text> by default>.
+Interpolates B<container text> by default.
 
 This is a container tag, i.e. [import] FOO [/import].
 \Nesting: NO
@@ -7438,7 +7482,7 @@ Attribute aliases
 
 # BEGIN ############### item_list Summary Tables ####################
 !block example;
-    [B<item_list> nameI<other_named_attributes>]
+    [B<item_list> name I<other_named_attributes>]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -10697,7 +10741,7 @@ Positional parameters in same order.
 
 Pass attribute hash as last to subroutine: B<no>
 
-Interpolates B<container text> by default>.
+Interpolates B<container text> by default.
 
 This is a container tag, i.e. [row] FOO [/row].
 \Nesting: NO
@@ -11435,15 +11479,6 @@ Nests|I<No>
 !endblock
 
 
-B<Tag expansion example:>
-
-!block example
-   [set name]
----
-   TODO: (tag result)
-!endblock
-
-
 B<ASP-like Perl call:>
 
 !block example; lang="Perl"
@@ -11642,7 +11677,7 @@ Positional parameters in same order.
 
 Pass attribute hash as last to subroutine: B<no>
 
-Interpolates B<container text> by default>.
+Interpolates B<container text> by default.
 
 This is a container tag, i.e. [seti] FOO [/seti].
 \Nesting: NO
@@ -11690,15 +11725,6 @@ Invalidates cache|I<YES>
 Container tag|I<Yes>
 Has Subtags|I<No>
 Nests|I<No>
-!endblock
-
-
-B<Tag expansion example:>
-
-!block example
-   [seti name]
----
-   TODO: (tag result)
 !endblock
 
 
@@ -12875,7 +12901,7 @@ B<ASP-like Perl call:>
 
 # BEGIN ############### timed_build Summary Tables ####################
 !block example;
-    [B<timed_build> fileI<other_named_attributes>]
+    [B<timed_build> file I<other_named_attributes>]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -13036,7 +13062,7 @@ Positional parameters in same order.
 
 Pass attribute hash as last to subroutine: B<no>
 
-Interpolates B<container text> by default>.
+Interpolates B<container text> by default.
 
 This is a container tag, i.e. [tmp] FOO [/tmp].
 \Nesting: NO
@@ -13087,15 +13113,6 @@ Nests|I<No>
 !endblock
 
 
-B<Tag expansion example:>
-
-!block example
-   [tmp name]
----
-   TODO: (tag result)
-!endblock
-
-
 B<ASP-like Perl call:>
 
 !block example; lang="Perl"
@@ -13136,6 +13153,103 @@ H4: {{CMD[id="tmp_name"]name}}
 
 
 # END ++++++++++++ tmp Subsections +++++++++++++
+
+H2: tmp_no
+
+
+H3: Summary
+
+\Parameters: B<name>
+
+Positional parameters in same order.
+
+
+Pass attribute hash as last to subroutine: B<no>
+
+Must pass named parameter interpolate=1 to cause interpolation.
+
+This is a container tag, i.e. [tmp_no] FOO [/tmp_no].
+\Nesting: NO
+
+Invalidates cache: B<YES>
+
+Called Routine: 
+
+B<ASP-like Perl call:>
+
+>    $Tag->tmp_no(
+>        {
+>         name => VALUE,
+>        },
+>        BODY
+>    )
+>
+> OR
+>
+>    $Tag->tmp_no($name, $BODY);
+
+ 
+
+# BEGIN ############### tmp_no Summary Tables ####################
+!block example;
+    [B<tmp_no> name]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#tmp_no_name"]name}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
+{{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Characteristics|
+Invalidates cache|I<YES>
+Container tag|I<Yes>
+Has Subtags|I<No>
+Nests|I<No>
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->tmp_no(  { name => VALUE_name
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->tmp_no(name, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ tmp_no End Summary Tables ++++++++++++++++++++
+
+
+H3: Description
+
+
+Equivalent to the E<lbracket>{{C[jump="#tmp"]tmp}}] tag, except that
+it does not {{CMD[jump="#attr_interpolate"]interpolate}} by default.
+
+\NOTE: This tag was introduced in Interchange 4.9 and is therefore not
+available in earlier versions.
+
+
+# BEGIN ########### tmp Subsections ##############
+H4: {{CMD[id="tmp_name"]name}}
+
+
+
+# END ++++++++++++ tmp_no Subsections +++++++++++++
+
 
 H2: total_cost
 
@@ -14210,7 +14324,7 @@ B<ASP-like Perl call:>
 
 # BEGIN ############### value_extended Summary Tables ####################
 !block example;
-    [B<value_extended> nameI<other_named_attributes>]
+    [B<value_extended> name I<other_named_attributes>]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
