@@ -31,6 +31,9 @@ FULLDOCNAME=icfull
 
 all :: $(SUFFIXES)
 
+docdb :: pod
+	perl scripts/makedocdb.pl
+
 tardist :: all dev_html
 	@rm -f $(TARNAME)
 	@echo packing files into $(TARNAME)
@@ -114,6 +117,8 @@ clean:
 		rm -f $${i}_*.html ; \
 	done
 	@rm -f index.html
+	@rm -f documentation.txt
+	@rm -rf icdocdb
 	@for i in $(FULLSUFFIXES) ; do \
 		rm -f $(FULLDOCNAME).$$i ; \
 	done
