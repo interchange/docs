@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.6 2001-03-22 16:55:26 jon Exp $
+# $Id: ictags.sdf,v 1.7 2001-03-23 00:57:29 bill Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.6 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.7 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -19,104 +19,254 @@
 !define EXAMPLE_PRODUCT "Framing Hammer"
 !build_title
 
-H1:Interchange Tags Reference
+H1:Interchange Tag Reference
 
-ITL stands for Interchange Tag Language. ITL is a superset of MML, or
-Minivend Markup Language. Minivend was the predecessor to
+Interchange functions are accessed via ITL, the Interchange Tag Language.
+The pages in a catalog may be mostly HTML, but they will use ITL tags
+to provide access to Interchange's functions. ITL is a superset of
+MML, or Minivend Markup Language. Minivend was the predecessor to
 Interchange.
 
-There are dozens of ITL pre-defined tag functions. If you don't see
-just what you need, you can create user-defined tags to just as
-powerful as the pre-defined ones.
+These tags perform various display and modification operations for
+the user session. There nearly 100 standard predefined tags, and
+the C<UserTag> facility allows you to create tags fully as powerful
+that perform your own functions.
 
-There are two styles of supplying parameters to a tagE<nbspace>E<emdash> named and
-positional. In addition, you can usually embed Interchange tags within
-HTML tags.
+
+H2: Tag Syntax
+
+ITL tags are similar to HTML in syntax, in that they accept
+parameters or attributes and that there are both I<standalone> and
+I<container> tags.
+
+We will call an attribute a I<parameter> if it may be called
+positionally or if it must be included (see the
+{{CMD[jump="#parameters"]parameter}} and
+{{CMD[jump="#attributes"]attribute}} sections below).
+
+A standalone tag has no ending element, e.g.:
+
+E:    E<lbracket>{{C[jump="#value"]value name}}]
+
+This tag will insert the user's name, providing they have given it
+to you in a form. A container tag has both a beginning and an ending
+element, as in:
+
+!block example
+    E<lbracket>{{C[jump="#if"]if}} value name]
+    You have a name.  It is [C<value> name].
+    E<lbracket>/if]
+!endblock
+
+We will usually call the ITL tags B<Interchange tags> or just B<tags>. 
+
+H3: Standard Syntax
+
+The most common syntax is to enclose the tag with its parameters and
+attributes in C<[square brackets]>.  If the tag has an end tag, the tag and
+its end tag will delimit contained body text:
+
+!block example
+  [B<tagname> I<parameters> I<attributes>]Contained Body Text[/tagname]
+!endblock
+
+!block note; label="Caveats -- macros: "
+Some macros look like tags or end tags. For example,
+E<lbracket>{{C[jump="#page"]/page}}E<rbracket> is a macro for
+E<lt>/AE<gt>). This allows you to conveniently write
+E<lbracket>{{C[jump="#page"]page}}E<nbspace>I<href>]Target[C</page>],
+but 'Target' is not treated as contained body text.
+!endblock
+
+When using the [C<tagname> ...] syntax, there must be no whitespace
+between the left bracket ('[') and the tagname.
+
+If a tag name includes an underscore or dash, as in
+{{CMD[jump="#item_list"]item_list}}, a dash is just as appropriate
+(i.e. C<item-list>). The two forms are interchangeable, except that an
+ending tag must match the tag (i.e., don't use
+C<E<lbracket>item-list]E<nbspace>listE<nbspace>[/item_list]>).
+
+H3: HTML-Embedded
+
+As an alternative syntax, you can usually embed an Interchange tag as
+an attribute within an HTML tag.  This allows some HTML editors to
+work more easily with Interchange templates.  The following is a basic
+example:
+
+!block example
+  <C<HTMLtag> MV="B<tagname> I<positional parameters>" C<other HTML attributes>>
+!endblock
+
+The following examples will each loop over any items in the shopping cart, displaying
+their part number, description, and price, but only IF there are items
+in the cart.
+
+. HTML syntax:
+!block example
+    <TABLE MV="if items">
+    <TR MV="{{CMD[jump="#item_list"]item-list}}">
+    <TD> E<lbracket>item-code] </TD>
+    <TD> E<lbracket>item-description] </TD>
+    <TD> E<lbracket>item-price] </TD>
+    </TR></TABLE>
+!endblock
+
+. Standard syntax:
+!block example
+    E<lbracket>if items]
+    <TABLE>
+    E<lbracket>{{CMD[jump="#item_list"]item-list}}]
+    <TR>
+    <TD> E<lbracket>item-code] </TD>
+    <TD> E<lbracket>item-description] </TD>
+    <TD> E<lbracket>item-price] </TD>
+    </TR>
+    E<lbracket>/item-list]</TABLE>
+    [/if]
+!endblock
+
+!block note; label="Note -- Disabling HTML-embedded tags for performance: "
+
+The foundation catalog included with interchange disables parsing of
+the HTML-embedded syntax.  This is for better performance, since it
+saves the server from checking every HTML tag for interchange tag
+calls.  This is done in the catalog by setting the pragma
+{{C[jump="icconfig.html#Pragma"]no_html_parse}} in C<catalog.cfg>.
+!endblock
+
+
+H3: {{CMD[id="parameters"]Named vs. Positional Parameters}}
+
+There are two styles of supplying parameters to a
+tagE<nbspace>E<emdash> named and positional.
 
 In the named style you supply a parameter/value pair just as most HTML
 tags use:
 
->    [value name="foo"]
+E:    E<lbracket>{{CMD[jump="#value"]value}} name="foo"]
 
-The same thing can be accomplished for the C<[value]> tag with
+The same thing can be accomplished for the C<E<lbracket>{{CMD[jump="#value"]value}}]> tag with
 
->    [value foo]
+E:    E<lbracket>value foo]
 
-The parameter C<name> is the first positional parameter for the C<[value]>
-tag. Some people find positional usage simpler for common tags, and Interchange
-interprets them somewhat faster. If you wish to avoid ambiguity you can
-always use named calling.
+The parameter C<name> is the first positional parameter for the
+C<E<lbracket>{{CMD[jump="#value"]value}}]> tag. Some people find
+positional usage simpler for common tags, and Interchange interprets
+them somewhat faster. If you wish to avoid ambiguity you can always
+use named calling. 
 
 In most cases, tags specified in the positional fashion will work
 the same as named parameters. The only time you will need to modify them
 is when there is some ambiguity as to which parameter is which (usually
 due to whitespace), or when you need to use the output of a tag as the
-attribute parameter for another tag.
+parameter or attribute for another tag.
 
-B<TIP:> This will not work:
+H4: Interpolating parameters
 
->    [page scan se=[scratch somevar]]
+If you wish to use the value of a tag within a parameter of another
+tag, you cannot use a positional call.  You must also double-quote the
+argument containing the tag you wish to have expanded.  For example,
+this will not work:
+
+E:    E<lbracket>{{C[jump="#page"]page}} scan se=[{{C[jump="#scratch"]scratch}} somevarE<2]>
 
 To get the output of the C<[scratch somevar]> interpreted, you must
 place it within a named and quoted attribute:
 
->    [page href=scan arg="se=[scratch somevar]"]
+E:    E<lbracket>{{C[jump="#page"]page}} href=scan arg="se=[{{C[jump="#scratch"]scratch}} somevar]"]
+
+Note that the argument to B<href> ('scan') did not need to be quoted;
+only the argument to B<arg>, which contained a tag, needed the quotes.
+
+H3: {{CMD[id="attributes"]Tag Attributes}}
+
+H4: Universal Attributes
+
+Universal attributes apply to all tags, though each tag specifies
+its own default for the attribute.  The code implementing universal
+attributes is external to the core routines that implement specific
+tags.
+
+H5: {{CMD[id="interpolate_attr"]interpolate}}
+
+This attribute behaves differently depending on whether the tag has an
+end tag.  (Note: The mixing of 'interpolate' and 'reparse' logic occurred
+because 'interpolate' already worked this way when 'reparse' was added
+to interchange.  This may be fixed in a later release...)
+
+. I<For tags with an end tag enclosing body text>
+. If true ("interpolate=1"), the interchange server will first process
+any tags within the body text before passing it to the enclosing tag.
+. If false ("interpolate=0"), the enclosing tag will receive the raw
+body text.
+. {{}}
+. I<For tags with no end tag (reparse)>
+. If true, the server will process the I<output> of the tag.  This is
+identical to the behavior of the B<reparse> attribute (see below for
+explanation and examples).
+
+H5: {{CMD[id="reparse_attr"]reparse}}
+
+If true ("reparse=1"), the server will process any tags in the text
+output by the reparsed tag.
+
+H5: {{CMD[id="send_attr"]send}}
+
+If true, the server will immediately send the browser the contents of the
+buffer, including the tag's output.  
+
+H5: {{CMD[id="truefalse_attr"]truefalse}}
+
+Depreciated
+
+H5: {{CMD[id="undef_attr"]undef}}
+
+Depreciated
 
 
-Interchange tags can be specified within HTML to make it easier to
-interface to some HTML editors. Consider:
+H4: Tag-specific Attributes
 
->    <TABLE MV="if items">
->    <TR MV="item-list">
->    <TD> [item-code] </TD>
->    <TD> [item-description] </TD>
->    <TD> [item-price] </TD>
->    </TR></TABLE>
 
-The above will loop over any items in the shopping cart, displaying
-their part number, description, and price, but only IF there are items
-in the cart.
+!block note; label="Tip: "
+This will not work:
 
-The same thing can be achieved with:
+E:    E<lbracket>page scan se=E<lbracket>{{CMD[jump="#scratch"]scratch}} somevar]]
 
->    [if items]
->    <TABLE>
->    [item-list]
->    <TR>
->    <TD> [item-code] </TD>
->    <TD> [item-description] </TD>
->    <TD> [item-price] </TD>
->    </TR>
->    [/item-list]</TABLE>
->    [/if]
+To get the output of the C<E<lbracket>{{CMD[jump="#scratch"]scratch}} somevar]> interpreted, you must
+place it within a named and quoted attribute:
+
+E:    E<lbracket>page href=scan arg="se=E<lbracket>{{CMD[jump="#scratch"]scratch}} somevar]"]
+!endblock
 
 What is done with the results of the tag depends on whether it is a
 I<container> or I<standalone> tag. A container tag is one which has
 an end tag, i.e. C<[tag] stuff [/tag]>. A standalone tag has no end
-tag, as in [area href=somepage].  (Note that [page ...] and [order ..]
-are B<not> container tags.)
+tag, as in E<lbracket>{{CMD[jump="#area"]area}} href=somepage].  (Note
+that E<lbracket>{{CMD[jump="#page"]page}} ...] and
+E<lbracket>{{CMD[jump="#order"]order}} ..] are B<not> container tags.)
 
 A container tag will have its output re-parsed for more Interchange tags
 by default. If you wish to inhibit this behavior, you must explicitly
 set the attribute B<reparse> to 0.  Note that you will almost always
 wish the default action. The only container ITL tag that doesn't have
-reparse set by default is C<[mvasp]>.
+reparse set by default is C<E<lbracket>{{CMD[jump="#mvasp"]mvasp}}]>.
 
-With some exceptions ([include] is among them) among them) the
-output of a standalone tag will not be re-interpreted for Interchange tag
-constructs. All tags accept the INTERPOLATE=1 tag modifier, which causes
-the interpretation to take place. It is frequent that you will B<not>
-want to interpret the contents of a [set variable] TAGS [/set] pair,
-as that might contain tags which should only be upon evaluating an
-order profile, search profile, or I<mv_click> operation. If you wish
-to perform the evaluation at the time a variable is set, you would use
-\[set name=variable interpolate=1] TAGS [/set].
+With some exceptions (E<lbracket>{{CMD[jump="#include"]include}}] is among them) the output of a
+standalone tag will not be re-interpreted for Interchange tag
+constructs. All tags accept the INTERPOLATE=1 tag modifier, which
+causes the interpretation to take place. It is frequent that you will
+B<not> want to interpret the contents of a E<lbracket>{{CMD[jump="#set"]set}} variable] TAGS [/set]
+pair, as that might contain tags which should only be upon evaluating
+an order profile, search profile, or I<mv_click> operation. If you
+wish to perform the evaluation at the time a variable is set, you
+would use \E<lbracket>{{CMD[jump="#set"]set}} name=variable interpolate=1] TAGS [/set].
 
 H2: Looping tags and Sub-tags
 
 Certain tags are not standalone; these are the
 ones that are interpreted as part of a surrounding looping tag
-like C<[loop]>, C<[item-list]>, C<[query]>, or C<[region]>.
+like C<E<lbracket>{{CMD[jump="#loop"]loop}}]>, C<E<lbracket>{{CMD[jump="#item_list"]item-list}}]>, C<E<lbracket>{{CMD[jump="#query"]query}}]>, or C<E<lbracket>{{CMD[jump="#region"]region}}]>.
 
 >    [PREFIX-accessories]
 >    [PREFIX-alternate]
@@ -146,13 +296,13 @@ PREFIX represents the prefix that is used in that looping tag.
 They are only interpreted within their container and only accept
 positional parameters. The default prefixes:
 
->    Tag           Prefix     Examples
->    -----        --------   ----------
->    [loop]        loop       [loop-code], [loop-field price], [loop-increment]
->    [item-list]   item       [item-code], [item-field price], [item-increment]
->    [search-list] item       [item-code], [item-field price], [item-increment]
->    [query]       sql        [sql-code], [sql-field price], [sql-increment]
-
+!block table
+Tag|Prefix|Examples
+E<lbracket>{{CMD[jump="#loop"]loop}}]|loop|E<lbracket>loop-code], [loop-field price], [loop-increment]
+E<lbracket>{{CMD[jump="#item_list"]item-list}}]|item|E<lbracket>item-code], [item-field price], [item-increment]
+E<lbracket>{{CMD[jump="#search_list"]search-list}}]|item|E<lbracket>item-code], [item-field price], [item-increment]
+E<lbracket>{{CMD[jump="#query"]query}}]|sql|E<lbracket>sql-code], [sql-field price], [sql-increment]
+!endblock
 Sub-tag behavior is consistent among the looping tags. 
 
 There are two types of looping lists; ARRAY and HASH.
@@ -217,7 +367,7 @@ Now the data structure will look like:
 >        { foo => 'fooN', bar => 'barN' },
 >    ]
 
-=over 4
+#=over 4
 
 =item [PREFIX-accessories arglist]
 
@@ -460,7 +610,7 @@ Outputs for successive items in the list:
 
 etc. C<[modifier-name quantity]> would be the same as C<[quantity-name]>.
 
-=back
+#=back
 
 H1: Tags
 
@@ -471,7 +621,7 @@ sub-tags are described in C<Sub-tags>.
 
 H2: accessories
 
-=over 4
+#=over 4
 
 Short Description here
 
@@ -836,13 +986,13 @@ contained the value C<S, M, L, XL>, but contains the adjusted price.
 #=back
 
 
-=back
+#=back
 
 
 
 H2: and
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -886,7 +1036,7 @@ Attribute aliases
 
  
 
-=item DESCRIPTION
+H3: Description
 
 The [and ...] tag is only used in conjunction with [if ...]. Example:
 
@@ -901,7 +1051,7 @@ The [and ...] tag is only used in conjunction with [if ...]. Example:
 See C<[if ...]>.
 
 
-=back
+#=back
 
 
 H2: area
@@ -915,9 +1065,9 @@ equivalent:
 >    [page href=dir/page arg=mv_arg]TargetName[/page]
 >    <A HREF="[area href=dir/page arg=mv_arg]">TargetName</A>
 
-=over 4
+#=over 4
 
-=item SUMMARY
+H3: Summary
 
 !block example;
     [B<area> href arg I<other named attributes>]
@@ -982,7 +1132,7 @@ or similarly with positional parameters,
 {{CMD[jump="#page"]page}}
 
 
-=item DESCRIPTION
+H3: Description
 
 
 The C<area> tag is very similar to the {{CMD[jump="#page"]page}}
@@ -1056,12 +1206,12 @@ HTML example (requires catalog directive
 
 >    <A MV="area dir/page" HREF="dir/page.html">
 
-=back
+#=back
 
 
 H2: attr_list
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -1096,7 +1246,7 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 Tags an attribute list with values from a hash. Designed for use in
 embedded Perl.
@@ -1122,7 +1272,7 @@ embedded Perl.
 
 Tags according to the following rules:
 
-=over 4
+#=over 4
 
 =item {key}
 
@@ -1148,16 +1298,16 @@ otherwise.
 Displays C<false text> if the value of {key} is blank or zero, and nothing
 otherwise.
 
-=back
+#=back
 
 
-=back
+#=back
 
 
 
 H2: banner
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -1190,20 +1340,20 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 The [banner ...] tag is designed to implement random or rotating
 banner displays in your Interchange pages. See the main Interchange documentation,
 section I<Banner/Ad rotation>.
 
 
-=back
+#=back
 
 
 
 H2: bounce
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -1235,7 +1385,7 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 The [bounce ...] tag is designed to send an HTTP redirect (302 status code)
 to the browser and redirect it to another (possibly Interchange-parsed) page.
@@ -1272,13 +1422,13 @@ do:
 >        [/if]
 
 
-=back
+#=back
 
 
 
 H2: calc
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -1309,7 +1459,7 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 syntax: [calc] EXPRESSION [/calc]
@@ -1333,13 +1483,13 @@ you can do the equivalent of a memory store and memory recall for a loop.
 ASP NOTE: There is never a reason to use this tag in a [perl] or ASP section.
 
 
-=back
+#=back
 
 
 
 H2: cart
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -1370,20 +1520,20 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 Sets the name of the current shopping cart for display of shipping, price,
 total, subtotal, shipping, and nitems tags. 
 
 
-=back
+#=back
 
 
 
 H2: catch
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -1420,17 +1570,17 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: cgi
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -1461,7 +1611,7 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 Displays the value of a CGI variable B<submitted to the current page>. This
 is similar to C<[value ...]>, except it displays the transitory values that
@@ -1476,13 +1626,13 @@ C<bar> will be substituted for C<[cgi foo]>.
 This is the same as $CGI->{foo} in embedded Perl.
 
 
-=back
+#=back
 
 
 
 H2: checked
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -1516,7 +1666,7 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 You can provide a "memory" for drop-down menus, radio buttons, and
@@ -1545,13 +1695,13 @@ want to use the volatile CGI space (i.e. [cgi foo]) use the option
 C<cgi=1>.
 
 
-=back
+#=back
 
 
 
 H2: control
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -1585,17 +1735,17 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: control_set
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -1632,17 +1782,17 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: counter
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -1670,7 +1820,7 @@ Attribute aliases
 
 >            name ==> file
 
-=item DESCRIPTION
+H3: Description
 
 Manipulates a persistent counter, by default incrementing it and returning the new value.
 
@@ -1682,7 +1832,7 @@ The counter is implemented using Perl's C<File::Counter> module, which protects 
 
 Additional parameters:
 
-=over 4
+#=over 4
 
 =item decrement=1
 
@@ -1696,16 +1846,16 @@ Causes a new counter to be created and to start from 50 (for example) if it did 
 
 Shows the value of the counter without incrementing or decrementing it.
 
-=back
+#=back
 
 
-=back
+#=back
 
 
 
 H2: currency
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -1741,7 +1891,7 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 When passed a value of a single number, formats it according to the
@@ -1764,13 +1914,13 @@ is 0.167, the following sequence
 will cause the number 8.982,04 to be displayed.
 
 
-=back
+#=back
 
 
 
 H2: data
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -1816,7 +1966,7 @@ Attribute aliases
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 \Syntax:
@@ -1871,13 +2021,13 @@ sensitive, so in a pinch you could call the database "Session", but it
 would be better not to use that name at all.
 
 
-=back
+#=back
 
 
 
 H2: default
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -1911,7 +2061,7 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 Returns the value of the user form variable C<variable> if it is non-empty.
@@ -1919,13 +2069,13 @@ Otherwise returns C<default>, which is the string "default" if there is no
 default supplied. Got that? This tag is DEPRECATED anyway.
 
 
-=back
+#=back
 
 
 
 H2: description
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -1957,7 +2107,7 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 Expands into the description of the product identified by code as found in the
@@ -1971,13 +2121,13 @@ directive can be set for each locale and point to a different database field;
 for example C<desc_en> for English, C<desc_fr> for French, etc.
 
 
-=back
+#=back
 
 
 
 H2: discount
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -2012,7 +2162,7 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 Product discounts can be set upon display of any page. The discounts
@@ -2105,23 +2255,23 @@ then subsequent pieces will be discarded without interpolation.
 Always strips leading and trailing whitespace.
 
 
-=back
+#=back
 
 
 H2: discount_subtotal
 
-=over 4
+#=over 4
 
-=item DESCRIPTION
+H3: Description
 
 Inserts the discounted subtotal of the ordered items.
 
-=back
+#=back
 
 
 H2: dump
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -2148,17 +2298,17 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: ecml
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -2192,17 +2342,17 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: either
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -2233,15 +2383,17 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: error
+
+#=over 4
 
 =item CALL INFORMATION
 
@@ -2274,7 +2426,7 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 >    [error var options]
@@ -2307,6 +2459,8 @@ To check errors without clearing them, you can use the idiom:
 >    [/if]
 
 The options are:
+
+#=over 4
 
 =item all=1
 
@@ -2374,12 +2528,15 @@ In the std_label format, it means the field will be bolded.
 If you specify your own label string, it will insert HTML anywhere
 you have {REQUIRED: HTML}, but only when the field is required.
 
+#=back
+
+#=back
 
 
 
 H2: export
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -2418,17 +2575,17 @@ Attribute aliases
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: field
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -2469,7 +2626,7 @@ Attribute aliases
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 HTML example: <PARAM MV=field MV.COL=column MV.ROW=key>
@@ -2484,13 +2641,13 @@ Note that if you only have one ProductFile C<products>, which is the default,
 C<[field column key]> is the same as C<[data products column key]>.
 
 
-=back
+#=back
 
 
 
 H2: file
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -2522,7 +2679,7 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 Inserts the contents of the named file. The file should normally
@@ -2534,13 +2691,13 @@ The optional C<type> parameter will do an appropriate ASCII translation
 on the file before it is sent.
 
 
-=back
+#=back
 
 
 
 H2: filter
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -2575,7 +2732,7 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 Applies any of Interchange's standard filters to an arbitrary value, or 
@@ -2601,7 +2758,7 @@ Another way to do this would be:
 
 Filters available include:
 
-=over 4
+#=over 4
 
 =item cgi
 
@@ -2836,16 +2993,16 @@ the value of the user variable C<foo> is C<bar>, the call
 C<[value name=foo filter="lookup.products.price.extra"]> will send
 ('bar', 'foo', 'products', 'price', 'extra').
 
-=back
+#=back
 
 
-=back
+#=back
 
 
 
 H2: flag
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -2884,17 +3041,17 @@ Attribute aliases
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: fly_list
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -2930,7 +3087,7 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 \Syntax: [fly-list prefix=tag_prefix* code=code*]
@@ -2958,13 +3115,13 @@ But if you use the prefix, i.e. C<[fly-list prefix=fly]>, then it will
 be [fly-code]; C<prefix=foo> would cause C<[foo-code]>, etc.
 
 
-=back
+#=back
 
 
 
 H2: fly_tax
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -2995,17 +3152,17 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 Builds a tax rate from C<taxarea>, C<taxrate>, C<taxshipping>, variable values, and the C<SalesTax> directive value.
 
-=back
+#=back
 
 
 
 H2: goto
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -3037,17 +3194,17 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: handling
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -3088,17 +3245,17 @@ Attribute aliases
 
  
 
-=item DESCRIPTION
+H3: Description
 
 Calculates and inserts handling costs. Accepts the same noformat and convert arguments as the shipping tag.
 
-=back
+#=back
 
 
 
 H2: harness
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -3131,11 +3288,11 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 H2: href
@@ -3145,7 +3302,7 @@ Alias for [{{CMD[jump="#area"]area}}] tag.
 
 H2: html_table
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -3178,17 +3335,17 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: if
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -3237,7 +3394,7 @@ Attribute aliases
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 Named call example: [if type="type" term="field" op="op" compare="compare"]
@@ -3330,7 +3487,7 @@ testing and parsing of values.
 
 There are many test targets available:
 
-=over 4
+#=over 4
 
 =item config Directive
 
@@ -3477,7 +3634,7 @@ control, or order forms. variables beginning with c<mv_>
 are interchange special values, and should be tested/used
 with caution.
 
-=back
+#=back
 
 The I<field> term is the specifier for that area. For example, [if session
 logged_in] would return true if the C<logged_in> session parameter was set.
@@ -3519,7 +3676,7 @@ as in Perl:
 Any simple perl test can be used, including some limited regex matching.
 More complex tests are best done with C<[if explicit]>.
 
-=over 4
+#=over 4
 
 =item [then] text [/then]
 
@@ -3546,16 +3703,16 @@ B<in Perl> to be placed inside, with its return value interpreted as
 the result of the test. If arguments are added to [if explicit args],
 those will be passed as arguments are in the I<[perl]> construct.
 
-=back
+#=back
 
 
-=back
+#=back
 
 
 
 H2: import
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -3599,7 +3756,7 @@ Attribute aliases
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 Named attributes:
@@ -3642,13 +3799,13 @@ If using C<NOTES> mode, you must use a separator, which by default is
 a form-feed character (^L).
 
 
-=back
+#=back
 
 
 
 H2: include
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -3680,20 +3837,20 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 Same as C<[file name]> except interpolates for all Interchange tags
 and variables. Does NOT do locale translations.
 
 
-=back
+#=back
 
 
 
 H2: index
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -3732,17 +3889,17 @@ Attribute aliases
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: input_filter
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -3786,17 +3943,17 @@ Attribute aliases
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: item_list
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -3838,7 +3995,7 @@ Attribute aliases
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 Within any page, the [item_list cart*] element shows a list of all the
@@ -3855,7 +4012,7 @@ though they will be interpreted I<after> all of the list-specific tags.
 Between the item_list markers the following elements will return
 information for the current item:
 
-=over 4
+#=over 4
 
 =item [if-data table column]
 
@@ -4002,16 +4159,16 @@ customer can specify the modifier to the ordered item.
 Evaluates to the name to give an input box in which the
 customer can enter the quantity to order.
 
-=back
+#=back
 
 
-=back
+#=back
 
 
 
 H2: label
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -4042,17 +4199,17 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: log
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -4094,17 +4251,17 @@ Attribute aliases
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: loop
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -4147,7 +4304,7 @@ Attribute aliases
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 HTML example: 
@@ -4181,7 +4338,7 @@ as in a one-click search:
 The above will show all items with a category containing the whole world
 "Americana", and will work the same in both old and new syntax.
 
-=over 4
+#=over 4
 
 =item [if-loop-data table column] IF [else] ELSE [/else][/if-loop-field]
 
@@ -4307,16 +4464,16 @@ Evaluates to the price for optional quantity n (from the products file)
 of the current item, with currency formatting. If the optional "noformat"
 is set, then currency formatting will not be applied.
 
-=back
+#=back
 
 
-=back
+#=back
 
 
 
 H2: mail
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -4353,17 +4510,17 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: mvasp
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -4405,17 +4562,17 @@ Attribute aliases
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: nitems
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -4448,20 +4605,20 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 Expands into the total number of items ordered so far. Takes an
 optional cart name as a parameter.
 
 
-=back
+#=back
 
 
 
 H2: onfly
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -4495,17 +4652,17 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: options
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -4538,17 +4695,17 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: or
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -4592,17 +4749,17 @@ Attribute aliases
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: order
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -4634,7 +4791,7 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 Expands into a hypertext link which will include the specified
@@ -4653,7 +4810,7 @@ defined as products files will be searched in sequence for the item.
 \Note: [/order] simply expands to </A>.
 
 
-=back
+#=back
 
 
 
@@ -4670,9 +4827,9 @@ equivalent:
 >    [page href=dir/page arg=mv_arg]TargetName[/page]
 >    <A HREF="[area href=dir/page arg=mv_arg]">TargetName</A>
 
-=over 4
+#=over 4
 
-=item SUMMARY
+H3: Summary
 
 !block example;
     [B<page> href arg I<other named attributes>]
@@ -4696,8 +4853,6 @@ I<base>|alias for B<arg>|I<none>
 Attributes|Default
 {{CMD[jump="#page_extra"]extra}}|I<none>
 {{CMD[jump="#page_form"]form}}|I<none>
-{{CMD[jump="#page_alias"]alias}}|I<none> (requires B<form>)
-{{CMD[jump="#page_once"]once}}|I<none> (requires B<form> and B<alias>)
 {{CMD[jump="#page_search"]search}}|I<No>
 {{CMD[jump="#page_secure"]secure}}|I<No>
 {{CMD[jump="#interpolate_attr"]interpolate (reparse)}}|I<No>
@@ -4739,7 +4894,7 @@ or similarly with positional parameters,
 {{CMD[jump="#area"]area}}
  
 
-=item DESCRIPTION
+H3: Description
 
 
 The C<page> tag inserts a hyperlink to the specified Interchange page
@@ -4809,29 +4964,11 @@ mv_pc, and any arguments supplied with the C<arg> attribute:
               form="cgi_1=ONE
                     cgi_2=TWO"
                arg="interchange argument"]External link</A>
-!endblock
-expands to
-!block example
+
        <A HREF="http://www.elsewhere.net/cgi/script?\
         mv_session_id=[[EXAMPLE_SESSION]]&mv_pc=1&mv_arg=interchange%20argument&\
         cgi_1=ONE&cgi_2=TWO">External link</A>
 !endblock
-
-
-. {{}}
-. {{B[id="page_alias"]alias}}
-. Usage: [page ... form="..." alias="[[EXAMPLE_SECURE_DOMAIN]]/[[EXAMPLE_CATALOG]]"]
-. You may also use the C<alias> attribute specify a URL alias for the
-form. This allows the calling path to be different while still calling
-the same catalog. This useful when calling an SSL server or a
-members-only executable that requires a username/password via HTTP
-Basic authorization.
-
-. {{}}
-. {{B[id="page_once"]once}}
-. Usage: [page ... form="..." alias="..." once=1]
-. Branched links will normally be called using the aliased URL.  If
-you set C<once>, branched links will refer back to the original URL.
 
 . {{}}
 . {{B[id="page_search"]search}}
@@ -4945,7 +5082,7 @@ page name.  The second two use the "argument" parameter to the C<[page ...]> or
 C<[area ...]> tags to specify the search (an argument to a scan is never valid
 anyway).
 
-=over 4
+#=over 4
 
 =item Original
 
@@ -4990,7 +5127,7 @@ You can specify parameters one to a line, as well.
 Any "unsafe" characters will be escaped. You may not search for trailing
 spaces in this method; it is allowed in the other notations.
 
-=back
+#=back
 
 New syntax and old syntax handle the tags the same, though if by some
 odd chance you wanted to be able to search for a C<]> (right square bracket)
@@ -5009,13 +5146,13 @@ This is not an actual end tag, but simply a macro that expands to
 tag.
 
 
-=back
+#=back
 
 
 
 H2: perl
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -5057,7 +5194,7 @@ Attribute aliases
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 >    [perl]
@@ -5115,13 +5252,13 @@ If you do not do this, your code will fail with a runtime Safe
 error.
 
 
-=back
+#=back
 
 
 
 H2: price
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -5159,7 +5296,7 @@ Attribute aliases
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 \Arguments:
@@ -5256,13 +5393,13 @@ add the discount=1 parameter.
 See I<Product Discounts>.
 
 
-=back
+#=back
 
 
 
 H2: process
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -5300,17 +5437,17 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: profile
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -5343,17 +5480,17 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: query
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -5395,17 +5532,17 @@ Attribute aliases
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: read_cookie
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -5436,17 +5573,17 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: record
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -5482,17 +5619,17 @@ Attribute aliases
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: region
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -5532,17 +5669,17 @@ Attribute aliases
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: row
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -5577,14 +5714,14 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 Formats text in tables. Intended for use in emailed reports or <PRE></PRE> HTML
 areas. The parameter I<nn> gives the number of columns to use. Inside the
 row tag, [col param=value ...] tags may be used. 
 
-=over 4
+#=over 4
 
 =item [col width=nn wrap=yes|no gutter=n align=left|right|input spacing=n]
 
@@ -5617,16 +5754,16 @@ The parameters are:
 
 Terminates the column field.
 
-=back
+#=back
 
 
-=back
+#=back
 
 
 
 H2: salestax
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -5663,7 +5800,7 @@ Attribute aliases
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 Expands into the sales tax on the subtotal of all the items ordered so
@@ -5673,13 +5810,13 @@ derive the proper percentage, such as state or zip code, it is set to
 currency formatting will be given.
 
 
-=back
+#=back
 
 
 
 H2: scratch
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -5710,20 +5847,20 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 Returns the contents of a scratch variable to the page. (A scratch
 variable is set with a [set] value [/set] container pair.)
 
 
-=back
+#=back
 
 
 
 H2: scratchd
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -5754,17 +5891,17 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: search_region
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -5808,17 +5945,17 @@ Attribute aliases
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: selected
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -5852,7 +5989,7 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 You can provide a "memory" for drop-down menus, radio buttons, and
@@ -5886,13 +6023,13 @@ want to use the volatile CGI space (i.e. [cgi foo]) use the option
 C<cgi=1>.
 
 
-=back
+#=back
 
 
 
 H2: set
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -5927,7 +6064,7 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 Sets a scratch variable to I<value>.
@@ -5956,13 +6093,13 @@ Any of these profile values can be set in the OrderProfile files
 as well.
 
 
-=back
+#=back
 
 
 
 H2: set_cookie
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -5995,17 +6132,17 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: seti
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -6040,17 +6177,17 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: setlocale
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -6084,17 +6221,17 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: shipping
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -6135,7 +6272,7 @@ Attribute aliases
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 The shipping cost of the items in the basket via C<mode> -- the default
@@ -6143,13 +6280,13 @@ mode is the shipping mode currently selected in the C<mv_shipmode>
 variable. See I<SHIPPING>.
 
 
-=back
+#=back
 
 
 
 H2: shipping_desc
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -6184,17 +6321,17 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: soap
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -6229,17 +6366,17 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: sql
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -6277,17 +6414,17 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: strip
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -6318,17 +6455,17 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: subtotal
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -6365,7 +6502,7 @@ Attribute aliases
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 \Positional: [subtotal cart* noformat*]
@@ -6380,13 +6517,13 @@ tag is present and non-zero, the raw number with no currency formatting
 will be given.
 
 
-=back
+#=back
 
 
 
 H2: tag
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -6429,13 +6566,13 @@ Attribute aliases
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 Performs any of a number of operations, based on the presence of C<arg>.
 The arguments that may be given are:
 
-=over 4
+#=over 4
 
 =item export database file* type*
 
@@ -6547,16 +6684,16 @@ on the page.
 
 >    [tag touch products][/tag]
 
-=back
+#=back
 
 
-=back
+#=back
 
 
 
 H2: time
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -6593,7 +6730,7 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 Formats the current time according to POSIX strftime arguments.
 The following is the string for Monday, January 1, 2001.
@@ -6605,7 +6742,7 @@ the same as modern UNIX date commands).
 
 Accepts the following options:
 
-=over 4
+#=over 4
 
 =item adjust
 
@@ -6687,16 +6824,16 @@ savings time, the digit is the number of hours displacement from GMT, and
 the second alphabetical string is the zone name when in daylight savings
 time. NOTE: This may not work on all operating systems.
 
-=back
+#=back
 
 
-=back
+#=back
 
 
 
 H2: timed_build
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -6733,7 +6870,7 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 Allows you to build CPU-intensive regions of ITL tags on a timed basis.
@@ -6752,7 +6889,7 @@ then it will not be rebuilt until the output file is removed.
 
 Accepts the following parameters:
 
-=over 4
+#=over 4
 
 =item file
 
@@ -6796,7 +6933,7 @@ This is really the same as C<minutes=240>. Useful for passing seconds:
 The region will be rebuilt every 5 seconds. PERFORMANCE TIP: use minutes
 of .08 instead; avoids having to parse the period string.
 
-=back
+#=back
 
 If you have the StaticDir catalog.cfg parameter set to a writable path,
 you can build a cached static version of your catalog over time. Simply
@@ -6806,13 +6943,13 @@ StaticDBM database will be updated to mark the page as static and the
 next time a link is made for that page the static version will be presented.
 
 
-=back
+#=back
 
 
 
 H2: tmp
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -6847,7 +6984,7 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 Sets a scratch variable to I<value>, but at the end of the user session the
@@ -6861,13 +6998,13 @@ order profiles or C<mv_click> actions. If you want to avoid that, use
 a profile stored via the catalog.cfg directive C<OrderProfile>.
 
 
-=back
+#=back
 
 
 
 H2: total_cost
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -6904,20 +7041,20 @@ Attribute aliases
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 Expands into the total cost of all the items in the current shopping cart,
 including sales tax (if any).
 
 
-=back
+#=back
 
 
 
 H2: tree
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -6962,7 +7099,7 @@ Attribute aliases
 
  
 
-=item DESCRIPTION
+H3: Description
 
 Provides iterative list capability for binary trees.  It produces
 hash-based rows use the same tags as C<[item-list]>; sets some additional
@@ -6988,7 +7125,7 @@ Works on a data set with the structure:
 Sets several keys which assist in walking and displaying the
 tree.
 
-=over 4
+#=over 4
 
 =item mv_level
 
@@ -7055,7 +7192,7 @@ from the tag call:
 
 Accepts the following paremeters:
 
-=over 4
+#=over 4
 
 =item table
 
@@ -7179,20 +7316,20 @@ When set to a true value, and an endless tree is detected (i.e. the
 child branch contains a parent) then the error will be returned in the
 page.  Errors are NOT shown by default.
 
-=back
+#=back
 
 In addition to the above values, all valid options for a list tag are
 in force. For example, you can set a "SELECTED" value on an option list
 with C<option=1>, set the tag prefix with C<prefix>, etc.
 
 
-=back
+#=back
 
 
 
 H2: try
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -7229,17 +7366,17 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: update
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -7272,17 +7409,17 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 B<NO DESCRIPTION>
 
-=back
+#=back
 
 
 
 H2: userdb
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -7321,7 +7458,7 @@ Attribute aliases
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 Interchange provides a C<[userdb ...]> tag to access the UserDB functions.
@@ -7383,13 +7520,13 @@ call to C<userdb>. The global parameters (default in parens):
 >    db_acl       Set field for database access control storage (db_acl)
 
 
-=back
+#=back
 
 
 
 H2: value
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -7422,7 +7559,7 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 HTML examples:
@@ -7444,13 +7581,13 @@ or set other form variable values to defaults. B<NOTE:> This is only
 available in new-style tags, for safety reasons.
 
 
-=back
+#=back
 
 
 
 H2: value_extended
 
-=over 4
+#=over 4
 
 =item CALL INFORMATION
 
@@ -7483,7 +7620,7 @@ ASP/perl tag calls:
 
  
 
-=item DESCRIPTION
+H3: Description
 
 
 Named call example:
@@ -7508,7 +7645,7 @@ If the variable is a file variable coming from a multipart/form-data
 file upload, then the contents of that upload can be returned to the 
 page or optionally written to the C<outfile>.
 
-=over 4
+#=over 4
 
 =item name
 
@@ -7568,10 +7705,10 @@ string for uploads.
 The value that will be returned if a test is false or a file write
 fails. Defaults to the empty string.
 
-=back
+#=back
 
 
-=back
+#=back
 
 
 H1: User-defined Tags
@@ -7651,7 +7788,7 @@ Called with:
 
 The properties for UserTag are are:
 
-=over 4
+#=over 4
 
 =item Alias
 
@@ -7866,114 +8003,103 @@ The usual I<here documents> caveats apply.
 Parameters defined with the I<Order> property will be sent to the routine
 first, followed by any encapsulated text (I<HasEndTag> is set).
 
-=back
+#=back
 
 Note that the UserTag facility, combined with AllowGlobal, allows the
 user to define tags just as powerful as the standard Interchange tags.
 This is not recommended for the novice, thoughE<nbspace>E<emdash> keep it simple. 8-)
 
 
-H1: Tag Attributes
 
-
-
-=over 4
-
-=item UNIVERSAL ATTRIBUTES
-
-Universal attributes apply to all tags, though each tag specifies
-whether the attribute is active by default.
-
-The following are universal attributes:
-
-!block table; style="plain"; colvaligns="TT"; colaligns="LL"
-Attribute|Description
-{{B[id="interpolate_attr"]interpolate}}|<<
-This attribute behaves differently depending on whether the tag has an
-end tag.  (Note: The mixing of 'interpolate' and 'reparse' logic occurred
-because 'interpolate' already worked this way when 'reparse' was added
-to interchange.  This may be fixed in a later release...)
-. I<For tags with an end tag enclosing body text>
-. If true ("interpolate=1"), the interchange server will first process
-any tags within the body text before passing it to the enclosing tag.
-. If false ("interpolate=0"), the enclosing tag will receive the raw
-body text.
-. {{}}
-. I<For tags with no end tag (reparse)>
-. If true, the server will process the I<output> of the tag.  This is
-identical to the behavior of the B<reparse> attribute (see below for
-explanation and examples).
->>
-{{B[id="reparse_attr"]reparse}}|<<
-. If true ("reparse=1"), the server will process any tags in the text
-output by the reparsed tag.
->>
-{{B[id="send_attr"]send}}|<<
-. If true, the server will immediately send the browser the contents of the
-buffer, including the tag's output.  
->>
-{{B[id="truefalse_attr"]truefalse}}|<<
-Path to Interchange page or action
-. I<Special arguments>
-.. 'scan' treats B<arg> as a search argument
->>
-{{B[id="undef_attr"]undef}}|<<
-Path to Interchange page or action
-. I<Special arguments>
-.. 'scan' treats B<arg> as a search argument
->>
-!endblock
-
-
-=item TAG-SPECIFIC ATTRIBUTES
-
-
-=back
+#=back
 
 A1: Tag Entry Format
 
-H2[notoc] dummy_area
+H2[notoc] dummy
 
-N:Alias:  B<area>, B<href>
-N:     [B<dummy_area> ...] and [B<area> ...] are equivalent tags
-
-Expands to the URL for the specified catalog page or action,
-including the Interchange session ID and supplied arguments.
-
-=over 4
-
-=item SUMMARY
-
-!block example;
-    [B<href> href arg named_tag_attributes]
-    [B<area> href=dir/page arg=page_arguments named_tag_attributes]
+N:Alias: B<pedagogy>, B<dummy_alias>
+!block note;
+E<lbracket>B<dummy>E<nbspace>...], [B<pedagogy>E<nbspace>...] and [B<dummy-alias>E<nbspace>...] are equivalent.
 !endblock
 
+A short description of the tag goes here.  This example (B<dummy>) is
+not an actual tag.
 
-!include "area.args.tbl"; table; style="plain"
+#=over 4
 
-!include "area.attr.tbl"; table; style="plain"
+H3: Summary
 
-!include "area.other.tbl"; table; style="plain";headings=1
+!block example;
+    [B<dummy> first second I<other named attributes>][/dummy]
+    [B<dummy> first=first_args second=second_args I<other named attributes>][/dummy]
+!endblock
 
+!block note; label="Positional parameters"
+The first line shows the usage with positional parameters (given in
+order). The second line shows usage with named parameters.
+!endblock
+
+!block table; style="plain"; colvaligns="TTT"
+Parameters|Description|Default
+first|<<
+The first positional parameter
+. I<Special arguments>
+** '{{CMD[jump="#dummy_special_value"]special_value}}'E<nbspace>E<emdash>
+any special arguments to the parameter that cause the tag to behave
+differently are listed here and described in detail in the
+B<Description> section below.
+
+>>|default value if the parameter is not given
+second|Another example parameter|I<none>
+I<alias1>|<<
+alias for B<first>E<nbspace>E<emdash> some parameters have
+aliasesE<nbspace>E<emdash> [dummyE<nbspace>alias1="X"] is equivalent
+to [dummyE<nbspace>first="X"]
+>>|Same default as B<first>, of course
+!endblock
+
+!block table; style="plain"; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#dummy_more"]more}}|I<none>
+{{CMD[jump="#dummy_still_more"]still-more}}|I<none> (requires B<more>)
+{{CMD[jump="#dummy_other"]other}}|I<none>
+{{CMD[jump="#interpolate_attr"]interpolate (body)}}|I<Yes>
+{{CMD[jump="#reparse_attr"]reparse}}|I<No>
+{{CMD[jump="#send_attr"]send}}|I<No>
+!endblock
+
+!block table; style="plain";headings=1
+A|B
+Other_Charactreristics|
+Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
+{{CMD[jump="#macro_tags"]Macro}}|I<No>
+Has end tag|[/dummy]
+!endblock
 
 Tag expansion example:
 
->   <A HREF="[area href=page.html arg="arg1=1 arg2="]" >Target Name</A>
->
->   <A HREF=http://mycat.com/cgi-bin/page.html?\
+!block example
+   [dummy first=special_argument second="arg1=1
+                                         arg2="]\
+   Body text acted on by the tag goes here.[/dummy]
+   ---
+   <A HREF=http://mycat.com/cgi-bin/page.html?\
 E:  id=I<CurrentSessionID>&mv_arg=arg1%3dARG1%20arg2%3dARG2 >\
 >   Target Name</A>
-
-
-!block note
-When a line from an example is broken because it is too wide for the
-page, a trailing backslash indicates the continuation.
-Such a trailing backslash is *not* part of the tag syntax or
-expansion.
 !endblock
 
-Call within {{CMD[jump="#perl"]perl}} tag
+!block note; label="Reading the tag expansion example"
+
+. B<format:> The tag is listed first.  A blank line separates it from
+the expanded return value.
+
+. B<long lines:> When this document must break a line from an example
+because it is too wide for the page, a trailing backslash indicates
+the continuation. Note that such a trailing backslash is *not* part of
+the actual tag syntax or expansion.
+!endblock
+
+ASP-like Perl call
 
 !block example; lang='Perl'
     $Tag->area(  { href => URI_base,
@@ -7987,8 +8113,33 @@ or similarly,
 !endblock
 
 
-=item DESCRIPTION
+H3: Description
 
 More detailed tag description
 
-=back
+H4: first
+
+Section describing the first parameter
+
+H5: {{CMD[id="dummy_special_value"]special_value}}
+
+Description of treatment of the special argument.  For example, giving
+the {{CMD[jump="#page"]page}} tag an B<href> of 'scan' causes it to
+link to a search specification rather than a page.
+
+H4: {{CMD[id="dummy_more"]more}}
+
+C<more> is a named attribute that applies to this tag.
+
+H4: {{CMD[id="dummy_still_more"]still-more}}
+
+C<still-more> is a named attribute that applies to this tag only when
+the C<more> attribute has been given.  It would be an error to use the
+C<still-more> attribute without specifying a value for C<more>
+
+H4: {{CMD[id="dummy_other"]other}}
+
+'other' is another named attribute that applies to this tag.
+
+
+#=back
