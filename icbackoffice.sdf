@@ -1,16 +1,16 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icbackoffice.sdf,v 1.11 2000-10-19 22:55:52 alison Exp $
+# $Id: icbackoffice.sdf,v 1.12 2000-11-22 21:53:06 jon Exp $
 
 !define DOC_NAME "Interchange Back-Office"
 !define DOC_TYPE ""
 !define DOC_CODE "ICBACKOFFICE_D2_100700"
-!define DOC_VERSION substr('$Revision: 1.11 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.12 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
 !build_title
 
-H1: AKOPIA INTERCHANGE TM BACK-OFFICE
+H1: AKOPIA INTERCHANGE(TM) BACK-OFFICE
 
 Akopia Interchange is the industry's most widely distributed and implemented open source e-commerce platform. This document describes how to administer a commerce site with Interchange's back-office functionality, and discusses site management and security.
 
@@ -27,7 +27,7 @@ If the file name string begins with a pipe "|," a program will be run and the ou
 
 H2: Database Tracking
 
-Once the order report is processed, the order is complete. Therefore, it is the ideal place to put Interchange TM tags that make order entries in database tables.
+Once the order report is processed, the order is complete. Therefore, it is the ideal place to put Interchange tags that make order entries in database tables.
 
 A good model is to place a single record in a database summarizing the order and a series of lines that correspond to each line item in the order. This can be in the same database table. If the order number itself is the key for the summary, a line number can be appended to the order number to show each line of the order.
 
@@ -42,32 +42,32 @@ The following would summarize a sample order number S00001 for part number 00-00
 
 Fields can be added where needed, perhaps with order status, shipping tracking number, address, customer number, or other information.
 
-The above is accomplished with Interchange's C<E<lbracket>import ....]> tag using the convenient C<NOTES> format:
+The above is accomplished with Interchange's C<[import ....]> tag using the convenient C<NOTES> format:
 
 !block example
-   E<lbracket>set import_status]
-   E<lbracket>import table=orders type=LINE continue=NOTES]
+   [set import_status]
+   [import table=orders type=LINE continue=NOTES]
 
-   code: E<lbracket>value mv_order_number]
-   order_number: E<lbracket>value mv_order_number]
-   quantity: E<lbracket>nitems]
-   price: E<lbracket>subtotal noformat=1]
-   shipping: E<lbracket>shipping noformat=1]
-   tax: E<lbracket>salestax noformat=1]
+   code: [value mv_order_number]
+   order_number: [value mv_order_number]
+   quantity: [nitems]
+   price: [subtotal noformat=1]
+   shipping: [shipping noformat=1]
+   tax: [salestax noformat=1]
 
-   E<lbracket>/import]
+   [/import]
 
-   E<lbracket>item-list]
-   E<lbracket>import table=orders type=LINE continue=NOTES]
+   [item-list]
+   [import table=orders type=LINE continue=NOTES]
 
-   code: E<lbracket>value mv_order_number]-E<lbracket>item-increment]
-   order_number: E<lbracket>value mv_order_number]
-   quantity: E<lbracket>item-quantity]
-   price: E<lbracket>item-price noformat=1]
-   shipping: E<lbracket>shipping-description]
-   tax: E<lbracket>if-item-field nontaxable]NoE<lbracket>else]YesE<lbracket>/else]E<lbracket>/if]
+   code: [value mv_order_number]-[item-increment]
+   order_number: [value mv_order_number]
+   quantity: [item-quantity]
+   price: [item-price noformat=1]
+   shipping: [shipping-description]
+   tax: [if-item-field nontaxable]No[else]Yes[/else][/if]
 
-   E<lbracket>/import]E<lbracket>/item-list]
+   [/import][/item-list]
 !endblock
 
 H2: Custom Order Routing
@@ -164,7 +164,7 @@ LI1: track
 LI1: track_mode
 .A number representing the mode to change either C<track> or C<individual_track> files.
 
-An individual item routing causes all items labeled with that route to be placed in a special sub-cart that will be used for the order report. This means that the C<E<lbracket>item-list] LIST E<lbracket>/item-list]> will only contain those items, allowing operations to be performed on subsets of the complete order.
+An individual item routing causes all items labeled with that route to be placed in a special sub-cart that will be used for the order report. This means that the C<[item-list] LIST [/item-list]> will only contain those items, allowing operations to be performed on subsets of the complete order.
 
 Here is an example of an order routing:
 
@@ -190,7 +190,7 @@ Here is an example of an order routing:
    Route  main  encrypt_program  "/usr/bin/pgpe -fat -q -r %s"
    Route  main  report           etc/report_all
 !endblock
- 
+
 To tell Interchange that order routing is in effect, the variable
 C<mv_order_route> is set on the final order submission form:
 
@@ -201,10 +201,10 @@ C<mv_order_route> is set on the final order submission form:
 To set the order routing for individual items, some method of determining their status must be made and the C<mv_order_route> attribute must be set. This could be set at the time of the item being placed in the basket, or have a database field called C<goods_type> set to the appropriate value. The following example uses a Perl routine on the final order form:
 
 !block example
-E<lbracket>perl arg=carts interpolate=1]
+[perl arg=carts interpolate=1]
    my $string = <<'EOF';
-E<lbracket>item-list]E<lbracket>item-code]  E<lbracket>item-field goods_type]
-E<lbracket>/item-list]
+[item-list][item-code]  [item-field goods_type]
+[/item-list]
 EOF
    my @items;
    my %route;
@@ -219,7 +219,7 @@ EOF
        $item->{mv_order_route} = $route{$item->{'code'}} || undef;
    }
    return '';
-E<lbracket>/perl]
+[/perl]
 !endblock
 
 Now the individual items are labeled with a C<mv_order_route> value which causes their inclusion in the appropriate order routing.
@@ -286,7 +286,7 @@ To re-start the server:
 
 C<-r> is the same as C<-restart>.
 
-This is typically done to force Interchange to re-read its configuration. A message will be displayed stating that a C<TERM> signal has been sent to the process ID the server is running under. This information is also sent to /usr/local/interchange/error.log. Check the error.log file for confirmation that the server has restarted properly. 
+This is typically done to force Interchange to re-read its configuration. A message will be displayed stating that a C<TERM> signal has been sent to the process ID the server is running under. This information is also sent to /usr/local/interchange/error.log. Check the error.log file for confirmation that the server has restarted properly.
 
 To stop the server:
 
@@ -322,7 +322,7 @@ If only running a site with one method of communication, use the C<->i and C<->u
 
 H2: User Reconfiguration
 
-The individual catalogs can be reconfigured by the user by running the C<E<lbracket>reconfig]> support tag. This should be protected by one of the several forms of Interchange authentication, preferably by HTTP basic authorization. See C<RemoteUser>.
+The individual catalogs can be reconfigured by the user by running the C<[reconfig]> support tag. This should be protected by one of the several forms of Interchange authentication, preferably by HTTP basic authorization. See C<RemoteUser>.
 
 Use reconfigure from the command line (as the Interchange user) with:
 
@@ -337,7 +337,7 @@ H2: Making the Product Database
 The DBM product databases can be built off-line with the C<offline> command. The directory to be used for output is specified either on the command line with the C<-d> option, or is taken from the C<catalog.cfg> directive OfflineDir; C<offline> in the catalog directory by default. The directory must exist. The source ASCII files should be present in that directory, and the DBM files are created there. Existing files will be overwritten.
 
 !block example
-   offline -c catalog E<lbracket>-d offline_dir]
+   offline -c catalog [-d offline_dir]
 !endblock
 
 Do a C<perldoc VENDROOT/bin/offline> for full documentation.
@@ -428,35 +428,35 @@ This script can be adjusted or refined as needed. Refinements might include read
 
 H2: Administrator Permissions
 
-Select which operations each administrator can perform in the back office. Each section of the back office can be restricted with fine-grained control. An administrator can be given access to view the list of all orders, for instance, but not allowed to view details. Access to the rows of Interchange's internal tables can also be restricted on a per-table basis for each administrator. 
+Select which operations each administrator can perform in the back office. Each section of the back office can be restricted with fine-grained control. An administrator can be given access to view the list of all orders, for instance, but not allowed to view details. Access to the rows of Interchange's internal tables can also be restricted on a per-table basis for each administrator.
 
 H2: Administrators
 
-The Access Manager allows an administrator to create user accounts or groups of users and restrict the use of certain features. This feature is especially useful if a company has employees that need the ability to check orders, but not change Web content. Note that, by default, users in the back office are stored and managed separately from customer login accounts. Users can have permissions granted on an individual basis, or by group. If a user is a "super-user," all other permissions settings will be ignored and the user will be allowed to do anything. 
+The Access Manager allows an administrator to create user accounts or groups of users and restrict the use of certain features. This feature is especially useful if a company has employees that need the ability to check orders, but not change Web content. Note that, by default, users in the back office are stored and managed separately from customer login accounts. Users can have permissions granted on an individual basis, or by group. If a user is a "super-user," all other permissions settings will be ignored and the user will be allowed to do anything.
 
 H2: Administrators: Edit Affiliates
 
-Affiliates have the following attributes: 
+Affiliates have the following attributes:
 
-"Affiliate ID" is displayed in the order and traffic statistics along with the orders and traffic they produce. 
+"Affiliate ID" is displayed in the order and traffic statistics along with the orders and traffic they produce.
 
-"Affiliate Name" is the name of the affiliate. 
+"Affiliate Name" is the name of the affiliate.
 
-"Campaigns" can be used to track traffic from advertising campaigns. 
+"Campaigns" can be used to track traffic from advertising campaigns.
 
-"Join_date" can be used to keep track of when the affiliate signed up. 
+"Join_date" can be used to keep track of when the affiliate signed up.
 
-"URL" is used, if present, to redirect visitors coming from this affiliate to a special home page just for visitors from that affiliate's site. This should not be the URL of the Affiliate's home site. 
+"URL" is used, if present, to redirect visitors coming from this affiliate to a special home page just for visitors from that affiliate's site. This should not be the URL of the Affiliate's home site.
 
-"Timeout delay" can be used to specify that orders attributed to this affiliate must happen within a certain amount of time from the time they were referred to the site by the affiliate. Measured in seconds. 
+"Timeout delay" can be used to specify that orders attributed to this affiliate must happen within a certain amount of time from the time they were referred to the site by the affiliate. Measured in seconds.
 
 H2: Direct Table Edit
 
-Edit any of Interchange's internal tables. Select a table to edit, or search a table for selected rows to edit. 
+Edit any of Interchange's internal tables. Select a table to edit, or search a table for selected rows to edit.
 
 H2: Direct Table Edit: Select for Table Edit
 
-Having selected a table to edit, a new row can be added, an existing row edited, all rows edited spreadsheet-style, or a row deleted. 
+Having selected a table to edit, a new row can be added, an existing row edited, all rows edited spreadsheet-style, or a row deleted.
 
 H2: File Transfer
 
@@ -464,33 +464,33 @@ Transfer pages, templates, and configuration files to and from the Interchange i
 
 H2: Import/Export
 
-Akopia Interchange makes it easy to import and export data to and from a commerce Web site. 
+Akopia Interchange makes it easy to import and export data to and from a commerce Web site.
 
-Use C<Database Upload> to import a tab delimited database of all product information to Interchange to make set-up faster and easier. C<Database Download> does just the opposite, allowing data to be downloaded from Interchange. 
+Use C<Database Upload> to import a tab delimited database of all product information to Interchange to make set-up faster and easier. C<Database Download> does just the opposite, allowing data to be downloaded from Interchange.
 
-Use C<Layout Upload> to upload a site's layout information. Use C>Layout Download> to download a site's layout information. 
+Use C<Layout Upload> to upload a site's layout information. Use C>Layout Download> to download a site's layout information.
 
 H2: Logout
 
-This feature will only be useful if there are multiple users in the Access Manager. When C<logout> is clicked, a user will be asked to log in again. If C<logout> is pressed in error, the user must log in again. 
+This feature will only be useful if there are multiple users in the Access Manager. When C<logout> is clicked, a user will be asked to log in again. If C<logout> is pressed in error, the user must log in again.
 
 H2: Meta Field Information
 
-Akopia Interchange can store meta information for selected columns of tables in a site's database. This meta information is used when the user interacts with the database. For example, the meta informaton for a C<Hide Item> field might specify that a checkbox be displayed when the user edits that field, since the only reasonable values are C<on> and C<off>. Or, the meta information might specify a filter on data entered for a C<Filename> field which makes sure that the characters entered are safe for use in a filename. 
+Akopia Interchange can store meta information for selected columns of tables in a site's database. This meta information is used when the user interacts with the database. For example, the meta informaton for a C<Hide Item> field might specify that a checkbox be displayed when the user edits that field, since the only reasonable values are C<on> and C<off>. Or, the meta information might specify a filter on data entered for a C<Filename> field which makes sure that the characters entered are safe for use in a filename.
 
-C<Widget type> specifies the C<HTML INPUT> tag type to use when displaying the field in, say, the item editor. 
+C<Widget type> specifies the C<HTML INPUT> tag type to use when displaying the field in, say, the item editor.
 
-C<Width> and C<Height> only apply to some of the C<Widget type> options, for instance the C<Textarea> widget. 
+C<Width> and C<Height> only apply to some of the C<Widget type> options, for instance the C<Textarea> widget.
 
-C<Label> is displayed instead of the internal column name. For example, the C<category> column of the C<products> table might have a label of C<Product Category>. 
+C<Label> is displayed instead of the internal column name. For example, the C<category> column of the C<products> table might have a label of C<Product Category>.
 
-C<Help> is displayed below the column label, and helps describe the purpose of the field to the user. 
+C<Help> is displayed below the column label, and helps describe the purpose of the field to the user.
 
-C<Help url> can be used to link to a page giving more information on the field. 
+C<Help url> can be used to link to a page giving more information on the field.
 
-C<Lookup> can be used when a field is acting like a foreign key into another table. In that case, use some sort of select box as the widget type, and if referencing multiple rows in the destination table, use a multi select box, with C<colons_to_null> as the C<pre_filter>, and C<::> as the C<lookup_exclude>. 
+C<Lookup> can be used when a field is acting like a foreign key into another table. In that case, use some sort of select box as the widget type, and if referencing multiple rows in the destination table, use a multi select box, with C<colons_to_null> as the C<pre_filter>, and C<::> as the C<lookup_exclude>.
 
-C<Filter> and C<pre_filter> can be used to filter data destined for that field or data read from that field, respectively. 
+C<Filter> and C<pre_filter> can be used to filter data destined for that field or data read from that field, respectively.
 
 H1: INTERCHANGE SECURITY
 
@@ -500,7 +500,7 @@ Akopia Interchange has several features that enable secure ordering via SSL (Sec
 
 Note[label='IMPORTANT NOTE: '] Interchange attempts to perform operations securely, but no guarantees or warranties of any kind are made! Since Interchange comes with Perl source, it is possible to modify the program to create security problems. One way to minimize this possibility is to record digital signatures, using MD5 or PGP, of C<interchange>, C<interchange.cfg>, and all modules included in Interchange. Check them on a regular basis to ensure they have not been changed.
 
-Interchange uses the C<SecureURL> directive to set the base URL for secure transactions, and the C<VendURL> directive for normal non-secure transactions. Secure URLs can be enabled for forms through a form action of C<E<lbracket>process-target secure=1]>. An individual page can be displayed via SSL with C<E<lbracket>page href=mvstyle_pagename secure=1]>. A certain page can be set to be always secure with the C<AlwaysSecure> catalog.cfg directive.
+Interchange uses the C<SecureURL> directive to set the base URL for secure transactions, and the C<VendURL> directive for normal non-secure transactions. Secure URLs can be enabled for forms through a form action of C<[process-target secure=1]>. An individual page can be displayed via SSL with C<[page href=mvstyle_pagename secure=1]>. A certain page can be set to be always secure with the C<AlwaysSecure> catalog.cfg directive.
 
 Interchange incorporates additional security for credit card numbers. The field C<mv_credit_card_number> will not ever be written to disk.
 
@@ -546,15 +546,15 @@ If the directory containing the page has a file C<.access> and that file's size 
 .The contents of C<.access_gate>:
 
 !block example
-   foo.html: E<lbracket>if session username eq 'flycat']
+   foo.html: [if session username eq 'flycat']
                Yes
-             E<lbracket>/if]
-   bar:      E<lbracket>if session username eq 'flycat']
-             E<lbracket>or scratch allow_bar]
+             [/if]
+   bar:      [if session username eq 'flycat']
+             [or scratch allow_bar]
                Yes
-             E<lbracket>/if]
+             [/if]
    baz:      yes
-   *:        E<lbracket>data session logged_in]
+   *:        [data session logged_in]
 !endblock
 
 .The page C<controlled/foo> is only allowed for the logged-in user B<flycat>.
@@ -571,7 +571,7 @@ If the directory containing the page has a file C<.access> and that file's size 
 
 H1: USERTAG REFERENCE
 
-H2: email 
+H2: email
 
 !block example
    UserTag email Order to subject reply from extra
@@ -621,7 +621,7 @@ H2: email
    EOR
 !endblock
 
-H2: email_raw 
+H2: email_raw
 
 !block example
    UserTag email_raw Documentation <<EOD
@@ -629,13 +629,13 @@ H2: email_raw
    This tag takes a raw email message, *including headers*, and
    users the SendmailProgram with -t option. Example:
 
-   E<lbracket>email-raw]
+   [email-raw]
    From: foo@bar.com
    To: bar@foo.com
    Subject: baz
 
    The text of the message.
-   E<lbracket>/email-raw]
+   [/email-raw]
 
    The headers must be at the beginning of the line, and the header
    must have a valid To: or it will not be delivered.
@@ -652,7 +652,7 @@ H2: email_raw
 
        SEND: {
            open(Vend::MAIL,"|$Vend::Cfg->{SendMailProgram} -t") or last SEND;
-           print Vend::MAIL $body 
+           print Vend::MAIL $body
                or last SEND;
            close Vend::MAIL
                or last SEND;
@@ -671,9 +671,9 @@ H2: email_raw
 H2: loc
 
 !block example
-   # E<lbracket>loc locale*] message E<lbracket>/loc]
+   # [loc locale*] message [/loc]
    #
-   # This tag is the equivalent of E<lbracket>L] ... E<lbracket>/L] localization, except
+   # This tag is the equivalent of [L] ... [/L] localization, except
    # it works with contained tags
    #
    UserTag loc hasEndTag   1

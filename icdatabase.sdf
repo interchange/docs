@@ -1,26 +1,26 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.12 2000-10-19 23:01:11 zarko Exp $
+# $Id: icdatabase.sdf,v 1.13 2000-11-22 21:53:06 jon Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "ICDATABASE_D2a_100800"
-!define DOC_VERSION substr('$Revision: 1.12 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.13 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
 !build_title
 
-H1: AKOPIA INTERCHANGE TM DATABASES
+H1: AKOPIA INTERCHANGE(TM) DATABASES
 
-Akopia Interchange is the industry's most widely distributed and implemented open source e-commerce platform. This document discusses databases, SQL support, the Interchange TM search engine, frequently asked questions, and usertags.
+Akopia Interchange is the industry's most widely distributed and implemented open source e-commerce platform. This document discusses databases, SQL support, the Interchange search engine, frequently asked questions, and usertags.
 
 H2: A Typical User Session
 
-The customer discovers a merchant site using the Interchange catalog with a search engine, a link from another page, or a click-through from a banner ad. He or she clicks the link, which is a URL pointing to the Interchange CGI link program (generically called VLINK or TLINK). The link calls the Interchange server through a socket. The Interchange server detects the path information from the link, and loads the corresponding page. 
+The customer discovers a merchant site using the Interchange catalog with a search engine, a link from another page, or a click-through from a banner ad. He or she clicks the link, which is a URL pointing to the Interchange CGI link program (generically called VLINK or TLINK). The link calls the Interchange server through a socket. The Interchange server detects the path information from the link, and loads the corresponding page.
 
 The displayed page contains links to either locate or order items from the merchant's catalog. When the customer clicks a link to purchase an item, Interchange searches the product database, finds the item, and places it in the customer's shopping cart. (Each user has a separate shopping cart, which is attached to their session.)
 
-Once the customer decides to purchase the items in their shopping cart, he or she checks out by completing a form with their name, address, payment information, shipping information, and any other information that may be required. Interchange has the capacity to compute sales taxes and shipping cost. The order is then submitted. The customer's payment can be taken online by real-time electronic payment, or their order information may be transmitted using encrypted email or FAX to a processing center. 
+Once the customer decides to purchase the items in their shopping cart, he or she checks out by completing a form with their name, address, payment information, shipping information, and any other information that may be required. Interchange has the capacity to compute sales taxes and shipping cost. The order is then submitted. The customer's payment can be taken online by real-time electronic payment, or their order information may be transmitted using encrypted email or FAX to a processing center.
 
 The customer's order is saved to a file or to a database table as backup. In the case of fully automated systems, it can be sent directly to an order entry program or database link.
 
@@ -28,15 +28,15 @@ All of these operations are fully configurable. The Interchange demo program inc
 
 H1: DATABASES
 
-As with most powerful shopping cart programs, Interchange is all about databases. Interchange can use GDBM, DB_File, SQL, DAP, or in-memory database formats. In most cases, these different database formats should operate the same when called by Interchange's access methods. 
+As with most powerful shopping cart programs, Interchange is all about databases. Interchange can use GDBM, DB_File, SQL, LDAP, or in-memory database formats. In most cases, these different database formats should operate the same when called by Interchange's access methods.
 
-Note: No other database besides Interchange's internal one is required. 
+Note: No other database besides Interchange's internal one is required.
 
 Keeping a database in an SQL manager makes it easier to integrate Interchange with other tools. Interchange can be used to maintain a spreadsheet containing product information by only modifying the file C<products.txt> as needed. References to SQL, DBI, and DBD can be ignored.
 
 H2: Text Source Files
 
-Interchange reads delimited text files to obtain data. However, the text files are not the database. They are the source information for the database tables. 
+Interchange reads delimited text files to obtain data. However, the text files are not the database. They are the source information for the database tables.
 
 Note the following configuration directive:
 
@@ -107,7 +107,7 @@ LI1: key, code
 
 LI1: field, column
 
-.This is a column of the database. One of the columns is always the key; Interchange prefers that the key be the first column. 
+.This is a column of the database. One of the columns is always the key; Interchange prefers that the key be the first column.
 
 LI1: table, database
 
@@ -161,7 +161,7 @@ LI2: shipping.asc
 
 LI2: salestax.asc
 
-..The database of sales tax information if the C<E<lbracket>salestax]> tag is to be used. A default is supplied. NOTE: Caution, these things change! This is a fixed-format database, and must be created as specified. See Sales Tax.
+..The database of sales tax information if the C<[salestax]> tag is to be used. A default is supplied. NOTE: Caution, these things change! This is a fixed-format database, and must be created as specified. See Sales Tax.
 
 .These are never stored in SQL or DBM.
 
@@ -169,7 +169,7 @@ H2: The Product Database
 
 Each product being sold should be given a product code, usually referred to as SKU, a short code that identifies the product on the ordering page and in the catalog. The products.txt file is a ASCII-delimited list of all the product codes, along with an arbitrary number of fields which must contain at least the fields C<description> and C<price> (or however the C<PriceField> and C<DescriptionField> directives have been set). Any additional information needed in the catalog can be placed in any arbitrary field. See Interchange Database Capability for details on the format.
 
-Field names can be case-sensitive depending on the underlying database type. Unless there are fields with the names "description" and "price" field, set the C<PriceField> and C<DescriptionField> directives to use the C<E<lbracket>item-price]> and C<E<lbracket>item-description]> tags.
+Field names can be case-sensitive depending on the underlying database type. Unless there are fields with the names "description" and "price" field, set the C<PriceField> and C<DescriptionField> directives to use the C<[item-price]> and C<[item-description]> tags.
 
 The product code, or SKU, must be the first field in the line, and must be unique. Product codes can contain the characters B<A-Za-z0-9>, along with hyphen (C<->), underscore (C<_>), pound sign/hash mark (C<#>), slash (C</>), and period (C<.>). Note that slash (/) will interfere with on-the-fly page references. Avoid if at all possible.
 
@@ -177,9 +177,9 @@ The words should be separated by one of the approved delimiting schemes (TAB, PI
 
 Note: CSV is not recommended as the scheme for the products database. It is much slower than TAB- or PIPE-delimited, and dramatically reduces search engine functionality. No field-specific searches are possible. Using CSV for any small database that will not be searched is fine.
 
-Note[label='IMPORTANT NOTE: ']The field names must be on the first line of the C<products.txt> file. These field names must match exactly the field names of the C<E<lbracket>item-field]> tags in the catalog pages, or the Interchange server will not access them properly. Field names can contain the characters A-Za-z0-9 and underscore (C<_>).
+Note[label='IMPORTANT NOTE: ']The field names must be on the first line of the C<products.txt> file. These field names must match exactly the field names of the C<[item-field]> tags in the catalog pages, or the Interchange server will not access them properly. Field names can contain the characters A-Za-z0-9 and underscore (C<_>).
 
-More than one database may be used as a products database. If the catalog directive, ProductFiles, is set to a space-separated list of valid Interchange database identifiers, those databases will be searched (in the order specified) for any items that are ordered, or for product information (as in the C<E<lbracket>price code]> and C<E<lbracket>field code]> tags).
+More than one database may be used as a products database. If the catalog directive, ProductFiles, is set to a space-separated list of valid Interchange database identifiers, those databases will be searched (in the order specified) for any items that are ordered, or for product information (as in the C<[price code]> and C<[field code]> tags).
 
 When the database table source file (i.e., products.txt) changes after import or edit, a DBM database is re-built upon the next user access. No restart of the server is necessary.
 
@@ -216,7 +216,7 @@ The databases are specified in C<Database> directives, as:
 This specifies a Type 4 database, the ASCII version of which is located in the
 file C<arbitrary.csv>, and the identifier it will be accessed under in Interchange is "arbitrary." The DBM file, if any, will be created in the same directory if the ASCII file is newer, or if the DBM file does not exist. The files will be created as C<arbitrary.db> or C<arbitrary.gdbm>, depending on DBM type.
 
-The C<identifier> is case sensitive, and can only contain characters in the class E<lbracket>A-Za-z0-9_]. Fields are accessed with the E<lbracket>item_data C<identifier> field] or E<lbracket>data C<identifier> field key] elements. NOTE: Use of lower-case letters is strongly recommended.
+The C<identifier> is case sensitive, and can only contain characters in the class [A-Za-z0-9_]. Fields are accessed with the [item_data C<identifier> field] or [data C<identifier> field key] elements. NOTE: Use of lower-case letters is strongly recommended.
 
 If one of the first six types is specified, the database will automatically be built in the default Interchange DB style. The type can be specified with DB_FILE, GDBM, or MEMORY, if the type varies from that default. They will coexist with an unlimited number of DBI databases of different types.
 
@@ -264,7 +264,7 @@ LI1: DB_File (Berkeley DB)
 
 LI1: In-memory
 
-.This uses Perl hashes to store the data directly in memory. Every time the Interchange server is restarted, it will re-import all in-memory databases for every catalog. 
+.This uses Perl hashes to store the data directly in memory. Every time the Interchange server is restarted, it will re-import all in-memory databases for every catalog.
 
 .If this is used, despite the presence of C<GDBM_File> or C<DB_File>, set the environment variable MINIVEND_NODBM as above or specify the memory type in the Database directive:
 
@@ -289,7 +289,7 @@ To review, database identifiers, field names, and product codes (database keys) 
 
 Some SQL databases have reserved words which cannot be used as field names; Interchange databases do not have this restriction.
 
-For easy HTML compatibility, it is not recommended that a / be used in a part number if using the flypage capability. It can still be called E<lbracket>page href=flypage arg="S/KU"].
+For easy HTML compatibility, it is not recommended that a / be used in a part number if using the flypage capability. It can still be called [page href=flypage arg="S/KU"].
 
 H2: Database Attributes
 
@@ -355,7 +355,7 @@ Note: Fields are separated by tabs, formatted for reading convenience.
 
 .Records are separated by a settable delimiting character which goes on a line by itself, much like a "here document." By default, it is a form feed (^L) character. The final field begins at the first blank line and continues to the end of the record. This final field is named C<notes_field>, unless set as mentioned below.
 
-.Interchange reads the field names from the first paragraph of the file. The key field should be first, followed by other fields in any order. If one (and only one) field name has whitespace, then its name is used for the C<notes_field>. Any characters after a space or TAB are used as the record delimiter. 
+.Interchange reads the field names from the first paragraph of the file. The key field should be first, followed by other fields in any order. If one (and only one) field name has whitespace, then its name is used for the C<notes_field>. Any characters after a space or TAB are used as the record delimiter.
 
 .If there are none, then the delimiter returns to the default form feed (^L) and the field name reverts to C<notes_field>. The field in question will be discarded, but a second field with whitespace will cause an import error. Following records are then read by name, and only fields with data in them need be set. Only the C<notes_field> may contain a new line. It is always the last field in the record, and begins at the B<first> blank line.
 
@@ -460,7 +460,7 @@ The MEMORY modifier forces IMPORT_ONCE.
 
 H2:  IMPORT_ONCE
 
-The IMPORT_ONCE modifier tells Interchange not to re-import the database from the ASCII file every time it changes. Normally, Interchange does a comparison of the database file modification time with the ASCII source every time it is accessed, and if the ASCII source is newer it will re-import the file. 
+The IMPORT_ONCE modifier tells Interchange not to re-import the database from the ASCII file every time it changes. Normally, Interchange does a comparison of the database file modification time with the ASCII source every time it is accessed, and if the ASCII source is newer it will re-import the file.
 
 IMPORT_ONCE tells it only to import on a server restart or catalog reconfiguration:
 
@@ -475,14 +475,14 @@ IMPORT_ONCE is always in effect for MEMORY databases. A catalog reconfiguration 
 
 H2: Importing in a Page
 
-To add a data record to a database as a result of an order or other operation, use Interchange's C<E<lbracket>import ...]> tag.
+To add a data record to a database as a result of an order or other operation, use Interchange's C<[import ...]> tag.
 
-LI1: E<lbracket>import table type*] RECORD E<lbracket>/import]
+LI1: [import table type*] RECORD [/import]
 
 .Named parameters:
 
 !block example; listitem=2
- E<lbracket>import table=table_name
+ [import table=table_name
          file=filename*
          type=(TAB|PIPE|CSV|%%|LINE)*
          continue=(NOTES|UNIX|DITTO)*
@@ -497,33 +497,33 @@ The C<type> of C<LINE> and C<continue> setting of C<NOTES> is particularly
 useful, for it allows fields to be named and not have to be in any particular order of appearance in the database. The following two imports are identical in effect:
 
 !block example
-   E<lbracket>import table=orders]
-            code: E<lbracket>value mv_order_number]
-   shipping_mode: E<lbracket>shipping-description]
+   [import table=orders]
+            code: [value mv_order_number]
+   shipping_mode: [shipping-description]
           status: pending
-   E<lbracket>/import]
+   [/import]
 
-   E<lbracket>import table=orders]
-   shipping_mode: E<lbracket>shipping-description]
+   [import table=orders]
+   shipping_mode: [shipping-description]
    status:        pending
-   code:          E<lbracket>value mv_order_number]
-   E<lbracket>/import]
+   code:          [value mv_order_number]
+   [/import]
 !endblock
 
 The C<code> or key must always be present, and is always named C<code>. If C<NOTES> mode is not used, the fields must be imported in the same order as they appear in the ASCII source file.
 
 The C<file> option overrides the container text and imports directly from a named file based in the catalog directory. To import from C<products.txt>, specify C<file="products/products.txt">. If the NoAbsolute directive is set to C<Yes> in minivend.cfg, only relative path names will be allowed.
 
-The C<E<lbracket>import ....] TEXT E<lbracket>/import]> region may contain multiple records. If using C<NOTES> mode, a separator must be used, which, by default, is a form-feed character (^L). See Import Attributes for more information.
+The C<[import ....] TEXT [/import]> region may contain multiple records. If using C<NOTES> mode, a separator must be used, which, by default, is a form-feed character (^L). See Import Attributes for more information.
 
 H2: Exporting from a Database
 
-To export an existing database to a file suitable for searching by Interchange, create an AdminPage (or any page, for that matter) that contains a C<E<lbracket>tag export ...]E<lbracket>/tag]> element. Perhaps a better method is to define the same sort of tags in an OrderProfile, and use forms and buttons to access the profile.
+To export an existing database to a file suitable for searching by Interchange, create an AdminPage (or any page, for that matter) that contains a C<[tag export ...][/tag]> element. Perhaps a better method is to define the same sort of tags in an OrderProfile, and use forms and buttons to access the profile.
 
 H2: Write Control
 
 Interchange databases can be written in the normal course of events, either
-using the C<E<lbracket>import ...]> tag or with a tag like C<E<lbracket>data table=table column=field key=code value=new-value]>. To control writing of a global database, or to a certain catalog within a series of subcatalogs, or make one read only, see the following:
+using the C<[import ...]> tag or with a tag like C<[data table=table column=field key=code value=new-value]>. To control writing of a global database, or to a certain catalog within a series of subcatalogs, or make one read only, see the following:
 
 To enable write control:
 
@@ -531,13 +531,13 @@ To enable write control:
    Database   products  WRITE_CONTROL  1
 !endblock
 
-Once this is done, to make a database read only, which won't allow writing even if C<E<lbracket>tag flag write]productsE<lbracket>/tag]> is specified:
+Once this is done, to make a database read only, which won't allow writing even if C<[tag flag write]products[/tag]> is specified:
 
 !block example
    Database   products  READ_ONLY  1
 !endblock
 
-To have control with C<E<lbracket>tag flag write]productsE<lbracket>/tag]>:
+To have control with C<[tag flag write]products[/tag]>:
 
 !block example
    Database   products  WRITE_TAGGED  1
@@ -549,7 +549,7 @@ To limit write to certain catalogs, set:
    Database   products  WRITE_CATALOG  simple=0, sample=1
 !endblock
 
-The "simple" catalog will not be able to write, while "sample" will if C<E<lbracket>tag flag write]productsE<lbracket>/tag]> is enabled. If a database is to always be writable, without having to specify C<E<lbracket>tag flag write] ... E<lbracket>/tag]>, then define:
+The "simple" catalog will not be able to write, while "sample" will if C<[tag flag write]products[/tag]> is enabled. If a database is to always be writable, without having to specify C<[tag flag write] ... [/tag]>, then define:
 
 !block example
    Database   products  WRITE_ALWAYS  1
@@ -627,7 +627,7 @@ LI1: NUMERIC
 
 LI1: UPPERCASE
 
-.Tells Interchange to force field names to UPPER case for row accesses using the C<E<lbracket>item-data ...]>, C<E<lbracket>loop-data ...]>, C<E<lbracket>item-field ...>, etc. Typically used for Oracle and some other SQL implementations.
+.Tells Interchange to force field names to UPPER case for row accesses using the C<[item-data ...]>, C<[loop-data ...]>, C<[item-field ...>, etc. Typically used for Oracle and some other SQL implementations.
 
 LI1: DELIMITER
 
@@ -692,7 +692,7 @@ The DSN setting is specific to a ODBC setup. The C<ChopBlanks> setting takes car
 H2: SQL Access Methods
 
 An Interchange SQL database can be accessed with the same tags as any of
-the other databases can. Arbitrary SQL queries can be passed with the C<E<lbracket>query sql="SQL STATEMENT"]> MML tag.
+the other databases can. Arbitrary SQL queries can be passed with the C<[query sql="SQL STATEMENT"]> MML tag.
 
 H2: Importing from an ASCII File
 
@@ -702,7 +702,7 @@ When importing a file for SQL, Interchange by default uses the first column of t
  Database  products  COLUMN_DEF  price=char(20), nontaxable=char(3)
 !endblock
 
-This can be set as many times as desired, if it will not fit on the line. 
+This can be set as many times as desired, if it will not fit on the line.
 
 !block example
  Database  products  COLUMN_DEF  price=char(20), nontaxable=char(3)
@@ -742,7 +742,7 @@ H1: THE SEARCH ENGINE
 
 Interchange implements a search engine which will search the product database (or any other file) for items based on customer input. It uses either forms or link-based searches that are called with the special page name C<scan>. The search engine uses many special Interchange tags and variables.
 
-If the search is implemented in a link or a form, it will always display formatted results on the results page, an Interchange page that uses some combination of the C<E<lbracket>search-region]>, C<E<lbracket>search-list]>, C<E<lbracket>more-list]>, C<E<lbracket>more]>, and other Interchange tags to format and display the results. The search results are usually a series of product codes/SKUs or other database keys, which are then iterated over similar to the C<E<lbracket>item-list]>.
+If the search is implemented in a link or a form, it will always display formatted results on the results page, an Interchange page that uses some combination of the C<[search-region]>, C<[search-list]>, C<[more-list]>, C<[more]>, and other Interchange tags to format and display the results. The search results are usually a series of product codes/SKUs or other database keys, which are then iterated over similar to the C<[item-list]>.
 
 Note: Examples of search forms and result pages are included in the demos.
 
@@ -750,7 +750,7 @@ Two search engine interfaces are provided, and five types of searching are avail
 
 The default, a text based search, sequentially scans the lines in the target file. By default it returns the first field (delineated by the delimiter for that database, for every line matching the search specification. This corresponds to the product code, which is then used to key specific accesses to the database.
 
-The text-based search is capable of sophisticated field-specific searches with fully-independent case-sensitivity, substring, and negated matching. 
+The text-based search is capable of sophisticated field-specific searches with fully-independent case-sensitivity, substring, and negated matching.
 
 H2: The Search Form
 
@@ -759,7 +759,7 @@ A number of variables can be set on search forms to determine which search will 
 Here is a simple search form:
 
 !block example
- <FORM ACTION="E<lbracket>area search]" METHOD=POST>
+ <FORM ACTION="[area search]" METHOD=POST>
  <INPUT TYPE="text" SIZE="30" NAME="mv_searchspec">
  <INPUT TYPE="submit" VALUE="Search">
  </FORM>
@@ -770,7 +770,7 @@ When the "Search" submit button is pressed (or <ENTER> is pressed), Interchange 
 The same search for a fixed string, say "shirt," could be performed with the use of a hot link, using the special scan URL:
 
 !block example
- E<lbracket>page search="se=shirt"]See our shirt collection!E<lbracket>/page]
+ [page search="se=shirt"]See our shirt collection![/page]
 !endblock
 
 The default is to search every field on the line. To match on the string "shirt" in the product database field "description," modify the search:
@@ -782,10 +782,10 @@ The default is to search every field on the line. To match on the string "shirt"
 In the hot-linked URL search:
 
 !block example
- E<lbracket>page search="
+ [page search="
                se=shirt
                sf=category
-           "]See our shirt collection!E<lbracket>/page]
+           "]See our shirt collection![/page]
 !endblock
 
 To let the user decide on the search parameters, use checkboxes or radiobox fields to set the fields:
@@ -853,7 +853,7 @@ Note: The ASCII source file must be "touched" to rebuild the index and the datab
 Now, specify in a form:
 
 !block example
-   <FORM ACTION="E<lbracket>process href=search]" METHOD=POST>
+   <FORM ACTION="[process href=search]" METHOD=POST>
    <INPUT TYPE=hidden NAME=mv_dict_limit VALUE=title>
    <INPUT NAME=mv_dict_look>
    </FORM>
@@ -862,7 +862,7 @@ Now, specify in a form:
 or in a URL:
 
 !block example
-   E<lbracket>page search="dl=Van Gogh/di=title"]
+   [page search="dl=Van Gogh/di=title"]
 !endblock
 
 This search is case-sensitive. To do the same thing case-insensitively:
@@ -870,18 +870,18 @@ This search is case-sensitive. To do the same thing case-insensitively:
 !block example
    Database   products   INDEX    title:f
 
-   <FORM ACTION="E<lbracket>process href=search]" METHOD=POST>
+   <FORM ACTION="[process href=search]" METHOD=POST>
    <INPUT TYPE=hidden NAME=mv_dict_limit VALUE=title>
    <INPUT TYPE=hidden NAME=mv_dict_fold  VALUE=1>
    <INPUT NAME=mv_dict_look>
    </FORM>
 
-   E<lbracket>page search="dl=Van Gogh/di=title/df=1"]
+   [page search="dl=Van Gogh/di=title/df=1"]
 !endblock
 
 H2: Coordinated and Joined Searching
 
-Interchange will do a complete range of tests on individual columns in the database. To use this function, set C<mv_coordinate> to Yes (co=yes in the one-click syntax). In order to use coordinated searching, the number of search fields must equal the number of search strings. 
+Interchange will do a complete range of tests on individual columns in the database. To use this function, set C<mv_coordinate> to Yes (co=yes in the one-click syntax). In order to use coordinated searching, the number of search fields must equal the number of search strings.
 
 To make sure that is the case, use the C<mv_search_map> variable. It allows variables to be mapped to others in the search specification. For example:
 
@@ -910,13 +910,13 @@ Individual field operations can then be specified with the C<mv_column_op>
 
 !block example
    operation            string     numeric   equivalent
-   ---------           
+   ---------
    equal to               eq         ==           =
    not equal              ne         !=           <>
-   greater than           gt         > 
-   less than              lt         < 
-   less than/equal to     le         <= 
-   greater than/equal to  ge         >= 
+   greater than           gt         >
+   less than              lt         <
+   less than/equal to     le         <=
+   greater than/equal to  ge         >=
    regular expression     rm                       =~ , LIKE
    regular expression NOT rn                       !~
    exact match            em
@@ -925,16 +925,16 @@ Individual field operations can then be specified with the C<mv_column_op>
 An example:
 
 !block example
-   E<lbracket>page scan
+   [page scan
            co=yes
            sf=title
            se=Sunflowers
            op=em
            sf=artist
            se=Van Gogh
-           op=rm          ] Sunflowers, Van Gogh E<lbracket>/page]
+           op=rm          ] Sunflowers, Van Gogh [/page]
 
-   E<lbracket>page search="
+   [page search="
            co=yes
 
            sf=title
@@ -944,20 +944,20 @@ An example:
 
            sf=artist
            se=Van Gogh
-           op=rm    
+           op=rm
            nu=0
 
            sf=inventory:qty
            se=1
            op=>=
-           nu=1 
-       "] Any in stock except Sunflowers, Van Gogh E<lbracket>/page]
+           nu=1
+       "] Any in stock except Sunflowers, Van Gogh [/page]
 !endblock
 
 Note that in the second example, nu=0 must be specified even though that is the default. This is to set the proper correspondence. To avoid having to do this, use Interchange's option array feature:
 
 !block example
-   E<lbracket>page search.0="
+   [page search.0="
                    sf=title
                    se=Sunflowers
                    op=!~
@@ -970,9 +970,9 @@ Note that in the second example, nu=0 must be specified even though that is the 
                    sf=inventory:qty
                    se=1
                    op=>=
-                   nu=1 
+                   nu=1
                "
-       ] Any in stock except Sunflowers, Van Gogh E<lbracket>/page]
+       ] Any in stock except Sunflowers, Van Gogh [/page]
 !endblock
 
 The C<co=yes> is assumed when specifying a multiple search.
@@ -994,44 +994,44 @@ This syntax allows this form setup:
            VALUE="
                SELECT code FROM products
                WHERE artist LIKE artist
-               AND    title LIKE title">                             
+               AND    title LIKE title">
 !endblock
 
 If the right hand side of an expression looks like a column, i.e., is not
-quoted, the appropriate form variable is substituted. (If used in a one-click, the corresponding scratch variable is used instead.) The assumption is reversed for the left-hand side. If it is a quoted string, the column name is read from the passed values. Otherwise, the column name is literal.                     
+quoted, the appropriate form variable is substituted. (If used in a one-click, the corresponding scratch variable is used instead.) The assumption is reversed for the left-hand side. If it is a quoted string, the column name is read from the passed values. Otherwise, the column name is literal.
 
 !block example
-   Search for: <INPUT NAME="searchstring"><BR>                
+   Search for: <INPUT NAME="searchstring"><BR>
    Search in   <INPUT TYPE="radio" NAME="column" VALUE="title"> title
        <INPUT TYPE="radio" NAME="column" VALUE="artist"> artist
-       <INPUT TYPE=hidden NAME="mv_sql_query"                            
+       <INPUT TYPE=hidden NAME="mv_sql_query"
          VALUE="SELECT code FROM products WHERE 'column' LIKE searchstring">
 !endblock
 
 Once again, this does not conduct a search on an SQL database, but formats a corresponding text-based search. Parentheses will have no effect, and an OR condition will cause all conditions to be OR. The searches above would be similar to:
 
 !block example
-   E<lbracket>page search="
+   [page search="
                co=yes
                sf=artist
                op=rm
-               se=E<lbracket>value artist]
+               se=[value artist]
                sf=title
                op=rm
-               se=E<lbracket>value title]
+               se=[value title]
            "  ]
-       Search for E<lbracket>value artist], E<lbracket>value title]
-   E<lbracket>/page]
+       Search for [value artist], [value title]
+   [/page]
 
-   E<lbracket>page search="
+   [page search="
                co=yes
-               sf=E<lbracket>value column]
+               sf=[value column]
                op=rm
-               se=E<lbracket>value searchstring]
-           "  ] 
-   Search for E<lbracket>value searchstring]
-          in  E<lbracket>value column]
-   E<lbracket>/page]
+               se=[value searchstring]
+           "  ]
+   Search for [value searchstring]
+          in  [value column]
+   [/page]
 !endblock
 
 H2: Range Searching
@@ -1070,20 +1070,20 @@ H2: One-Click Searches
 Interchange allows a search to be passed in a URL, as shown above. Just specify the search with the special page parameter search or special page C<scan>. Here is an example:
 
 !block example
-    E<lbracket>page search="
+    [page search="
                se=Impressionists
                sf=category
            "]
        Impressionist Paintings
-    E<lbracket>/page]
+    [/page]
 !endblock
 
 This is the same:
 
 !block example
-    E<lbracket>page scan se=Impressionists/sf=category]
+    [page scan se=Impressionists/sf=category]
        Impressionist Paintings
-    E<lbracket>/page]
+    [/page]
 !endblock
 
 Here is the same thing from a home page (assuming /cgi-bin/vlink is the CGI path for Interchange's vlink):
@@ -1166,15 +1166,15 @@ The two-letter abbreviations are mapped with these letters:
 These can be treated just the same as form variables on the page, except that
 they can't contain a new line. If using the multi-line method of specification, the characters will automatically be escaped for a URL.
 
-IMPORTANT NOTE: An incompatibility in earlier Interchange catalogs is specifying C<E<lbracket>page scan/se=searchstring]>. This is interpreted by the parser as C<E<lbracket>page scan/se="searchstring"]> and will cause a bad URL. Change this to C<E<lbracket>page scan se=searchstring]>, or perhaps better yet:
+IMPORTANT NOTE: An incompatibility in earlier Interchange catalogs is specifying C<[page scan/se=searchstring]>. This is interpreted by the parser as C<[page scan/se="searchstring"]> and will cause a bad URL. Change this to C<[page scan se=searchstring]>, or perhaps better yet:
 
 !block example
-   E<lbracket>page search="
+   [page search="
                    se=searchstring
            "]
 !endblock
-          
-cause a bad URL. Change this to C<E<lbracket>page scan se=searchstring]>.
+
+cause a bad URL. Change this to C<[page scan se=searchstring]>.
 
 A one-click search may be specified in three different ways.
 
@@ -1183,26 +1183,26 @@ LI1: Original
 .To do an OR search on the fields category and artist for the strings "Surreal" and "Gogh," while matching substrings, do:
 
 !block example; listitem=2
- E<lbracket>page scan se=Surreal/se=Gogh/os=yes/su=yes/sf=artist/sf=category]
+ [page scan se=Surreal/se=Gogh/os=yes/su=yes/sf=artist/sf=category]
     Van Gogh -- compare to surrealists
- E<lbracket>/page]
+ [/page]
 !endblock
 
 .In this method of specification, to replace a / (slash) in a file name (for the sp, bd, or fi parameter), the shorthand of :: must be used, i.e., sp=results::standard. (This may not work for some browsers, so put the page in the main pages directory or define the page in a search profile.)
 
 LI1: Multi-Line
 
-.Specify parameters one to a line, as well. 
+.Specify parameters one to a line, as well.
 
 !block example; listitem=2
-    E<lbracket>page scan
+    [page scan
         se="Van Gogh"
         sp=lists/surreal
         os=yes
         su=yes
         sf=artist
         sf=category
-    ] Van Gogh -- compare to surrealists E<lbracket>/page]
+    ] Van Gogh -- compare to surrealists [/page]
 !endblock
 
 .Any "unsafe" characters will be escaped. To search for trailing spaces (unlikely), quote.
@@ -1212,69 +1212,69 @@ LI1: Ampersand
 .Substitute & for / in the specification and be able to use / and quotes and spaces in the specification.
 
 !block example; listitem=2
- E<lbracket>page href=scan se="Van Gogh"&sp=lists/surreal&os=yes&su=yes&sf=artist&sf=category]
+ [page href=scan se="Van Gogh"&sp=lists/surreal&os=yes&su=yes&sf=artist&sf=category]
     Van Gogh -- compare to surrealists
- E<lbracket>/page]
+ [/page]
 !endblock
 
-.Any "unsafe" characters will be escaped. 
+.Any "unsafe" characters will be escaped.
 
 H2: Setting Display Options with mv_value
 
 A value can be specified that will be set in the link with the C<mv_value> parameter. It takes an argument of C<var=value>, just as setting a normal variable in an Interchange profile. Actually C<mv_value> is a misnomer, it will almost never be used in a form where variable values can be set. Always specify it in a one-click search with C<va=var=value>. Example:
 
 !block example
-   E<lbracket>page href=scan
+   [page href=scan
          arg="se=Renaissance
               se=Impressionists
               va=category_name=Renaissance and Impressionist Paintings
-              os=yes"]Renaissance and Impressionist PaintingsE<lbracket>/page]
+              os=yes"]Renaissance and Impressionist Paintings[/page]
 !endblock
 
-Display the appropriate category on the search results page with C<E<lbracket>value category_name]>.
+Display the appropriate category on the search results page with C<[value category_name]>.
 
 H2: In-Page Searches
 
-To specify a search inside a page with the C<E<lbracket>search-region parameters*]> tag. The parameters are the same as the one-click search, and the output is always a newline-separated list of the return objects, by default, a series of item codes.
+To specify a search inside a page with the C<[search-region parameters*]> tag. The parameters are the same as the one-click search, and the output is always a newline-separated list of the return objects, by default, a series of item codes.
 
-The C<E<lbracket>loop ...]> tag directly accepts a search parameter. To search for
+The C<[loop ...]> tag directly accepts a search parameter. To search for
 all products in the categories "Americana" and "Contemporary," do:
 
 !block example
-   E<lbracket>loop search="
+   [loop search="
        se=Americana
        se=Contemporary
        os=yes
        sf=category9
        "]
-   Artist: E<lbracket>loop-field artist]<BR>
-   Title: E<lbracket>loop-field title]<P>
-   E<lbracket>/loop]
+   Artist: [loop-field artist]<BR>
+   Title: [loop-field title]<P>
+   [/loop]
 !endblock
 
 The advantage of the in-page search is that searches can be embedded within
 searches, and there can be straight unchanging links from static HTML pages.
 
 To place an in-page search with the full range of display in a normal
-results page, use the C<E<lbracket>search-region]> tag the same as above, except 
-that C<E<lbracket>search-list]>, C<E<lbracket>more-list]>, and C<E<lbracket>more]> tags can be placed within it. Use them to display and format the results, including paging. For example:
+results page, use the C<[search-region]> tag the same as above, except
+that C<[search-list]>, C<[more-list]>, and C<[more]> tags can be placed within it. Use them to display and format the results, including paging. For example:
 
 !block example
-   E<lbracket>search-region  more=1
+   [search-region  more=1
                    search="
                         se=Americana
                         sf=category
                         ml=2
                    "]
-   E<lbracket>more-list]E<lbracket>more]E<lbracket>/more-list]
-   E<lbracket>search-list]
-   <A MV="page E<lbracket>item-code]" HREF="flypage.html">
-       E<lbracket>item-field title]<A>, by E<lbracket>item-field artist]
-   E<lbracket>/search-list]
-   E<lbracket>no-match]
-       Sorry, no matches for E<lbracket>value mv_searchspec].
-   E<lbracket>/no-match]
-   E<lbracket>/search-region]
+   [more-list][more][/more-list]
+   [search-list]
+   <A MV="page [item-code]" HREF="flypage.html">
+       [item-field title]<A>, by [item-field artist]
+   [/search-list]
+   [no-match]
+       Sorry, no matches for [value mv_searchspec].
+   [/no-match]
+   [/search-region]
 !endblock
 
 To use the same page for search paging, make sure to set the C<sp=page> parameter.
@@ -1292,21 +1292,21 @@ mv_orsearch=yes
 These correspond to the Interchange search variables that can be set on a form. Set it right on the page that contains the search.
 
 !block example
-E<lbracket>set artist_profile]
+[set artist_profile]
 mv_search_field=artist
 mv_search_field=category
 mv_orsearch=yes
-E<lbracket>/set]
+[/set]
 !endblock
 
 This is the same:
 
 !block example
-E<lbracket>set artist_profile]
+[set artist_profile]
 sf=artist
 sf=category
 os=yes
-E<lbracket>/set]
+[/set]
 !endblock
 
 Then, in the search form, set a variable with the name of the profile:
@@ -1318,7 +1318,7 @@ Then, in the search form, set a variable with the name of the profile:
 In a one-click search, use the C<mp> modifier:
 
 !block example
-E<lbracket>page scan se=Leonardo/mp=artist_profile]A left-handed artistE<lbracket>/page]
+[page scan se=Leonardo/mp=artist_profile]A left-handed artist[/page]
 !endblock
 
 They can also be placed in a file. Define the file name in the C<SearchProfile> directive. The catalog must be reconfigured for Interchange to read it. The profile is named by placing a name following a __NAME__ pragma:
@@ -1355,7 +1355,7 @@ LI1: ProductFiles
 
 .If the file to be searched is left empty in the search form or definition (it is set with C<mv_search_file (fi)>), the text files associated with the products databases will be searched, and field names are already available as named in the first line of the file(s). This is defined to be C<products.txt> in the Interchange demonstrations.
 
-.Be Careful if using SQL! If the database is change and not exporte with C<E<lbracket>tag export products]E<lbracket>/tag]>, searches will not be successful.
+.Be Careful if using SQL! If the database is change and not exporte with C<[tag export products][/tag]>, searches will not be successful.
 
 LI1: Other database files
 
@@ -1369,7 +1369,7 @@ Fields can also always be specified by an integer column number, with 0 as the f
 
 LI1: mv_all_chars
 
-.Scan abbreviation: ac=E<lbracket>1|0]. Set this if searching is anticipated for lots of punctuation characters that might be special characters for Perl. The characters ()E<lbracket>]\$^ are included.
+.Scan abbreviation: ac=[1|0]. Set this if searching is anticipated for lots of punctuation characters that might be special characters for Perl. The characters ()[]\$^ are included.
 
 LI1: mv_base_directory
 
@@ -1379,7 +1379,7 @@ LI1: mv_base_directory
 .If an absolute path directory is used, for security enable it in the users session with:
 
 !block example; listitem=2
-    E<lbracket>set /directory/name]1E<lbracket>/set]
+    [set /directory/name]1[/set]
 !endblock
 
 .This prevents users from setting an arbitrary value and viewing arbitrary files.
@@ -1425,7 +1425,7 @@ LI1: mv_dict_limit
 
 Note: The order of this and the C<mv_dict_end> variable is significant. Each will overwrite the other.
 
-.If this is set to a non-numeric value, an automatic mode is entered which looks for a dictionary-indexed file that corresponds to the file name plus C<.field>, where C<field> is whatever C<mv_dict_limit> is set to. The actual value of mv_dict_limit is set to C<-1>. If the file does not exist, the original file is silently used. Also, the value of C<mv_return_fields> is set to C<1> to correspond to the location of the key in the auto-indexed file.  
+.If this is set to a non-numeric value, an automatic mode is entered which looks for a dictionary-indexed file that corresponds to the file name plus C<.field>, where C<field> is whatever C<mv_dict_limit> is set to. The actual value of mv_dict_limit is set to C<-1>. If the file does not exist, the original file is silently used. Also, the value of C<mv_return_fields> is set to C<1> to correspond to the location of the key in the auto-indexed file.
 
 .To illustrate:
 
@@ -1476,7 +1476,7 @@ LI1: mv_field_names
 
 .Deprecated in favor of in-list sorting. Defines the field names for the file being searched. This guarantees that they will be available, and prevents a disk access if using named fields on a search file (that is not the product database ASCII source, where field names are already known). This must be exactly correct, or it will result in anomalous search operation. Usually passed in a hidden field or search profile as a comma-separated list.
 
-Note: Use this on the product database only if planning on both pre-sorting with C<mv_sort_field> and then post-sorting C<with E<lbracket>sort]field:optE<lbracket>/sort]>.
+Note: Use this on the product database only if planning on both pre-sorting with C<mv_sort_field> and then post-sorting C<with [sort]field:opt[/sort]>.
 
 LI1: mv_first_match
 
@@ -1492,7 +1492,7 @@ LI1: mv_index_delim
 
 LI1: mv_matchlimit
 
-.The page size for matches that are returned. If more matches than mv_matchlimit are found, the search paging mechanism will be employed if the proper C<E<lbracket>more-list]> is present. Can be implemented as a scrolling list (INPUT TYPE=SELECT) or radiobox (INPUT TYPE=RADIO) field.
+.The page size for matches that are returned. If more matches than mv_matchlimit are found, the search paging mechanism will be employed if the proper C<[more-list]> is present. Can be implemented as a scrolling list (INPUT TYPE=SELECT) or radiobox (INPUT TYPE=RADIO) field.
 
 LI1: mv_max_matches
 
@@ -1522,7 +1522,7 @@ LI1: mv_range_alpha
 
 LI1: mv_range_look
 
-.This sets a field to scan for a range of numbers. It must be accompanied with corresponding C<mv_range_min> and C<mv_range_max> variables. It can be specified with either a field name or a column number. 
+.This sets a field to scan for a range of numbers. It must be accompanied with corresponding C<mv_range_min> and C<mv_range_max> variables. It can be specified with either a field name or a column number.
 
 LI1: mv_range_max
 
@@ -1624,147 +1624,147 @@ H2: The Results Page
 
 Once a search has been completed, there needs to be a way of presenting the output. By default, the C<SpecialPage> search is used. It is set to C<results> in the distribution demo, but any number of search pages can be specified by passing the value in the search form specified in the variable C<mv_search_page>.
 
-On the search page, some special Interchange tags are used to format the otherwise standard HTML. Each of the iterative tags is applied to every code returned from the search. This is normally the product code, but could be a key to any of the arbitrary databases. The value placed by the C<E<lbracket>item-code]> tag is set to the first field returned from the search.
+On the search page, some special Interchange tags are used to format the otherwise standard HTML. Each of the iterative tags is applied to every code returned from the search. This is normally the product code, but could be a key to any of the arbitrary databases. The value placed by the C<[item-code]> tag is set to the first field returned from the search.
 
 The basic structure looks like this:
 
 !block example
-E<lbracket>search-region]
-E<lbracket>search-list]
+[search-region]
+[search-list]
     your iterating code, once for each match
-E<lbracket>/search-list]
-E<lbracket>no-match] 
+[/search-list]
+[no-match]
     Text / tags to be output if no matches found (optional but recommended)
-E<lbracket>/no-match]
-E<lbracket>more-list]
+[/no-match]
+[more-list]
     More / paging area (optional)
-E<lbracket>/more-list]
-E<lbracket>/search-region]
+[/more-list]
+[/search-region]
 !endblock
 
-TIP FOR MV3 PORTS: A C<E<lbracket>search-list]E<lbracket>/search-list]> must always be surrounded by a C<E<lbracket>search-region]E<lbracket>/search-region]> pair. This is a change from Interchange 3.
+TIP FOR MV3 PORTS: A C<[search-list][/search-list]> must always be surrounded by a C<[search-region][/search-region]> pair. This is a change from Interchange 3.
 
-LI1: E<lbracket>search-list]
+LI1: [search-list]
 
-.Starts the representation of a search list. Interchange tags can be embedded in the search list, yielding a table or formatted list of items with part number, description, price, and hyperlinks to order or go to its catalog page. 
+.Starts the representation of a search list. Interchange tags can be embedded in the search list, yielding a table or formatted list of items with part number, description, price, and hyperlinks to order or go to its catalog page.
 
-.The example tags shown have an C<item-> prefix, which is the default. Set any prefix desired with the C<prefix> parameter to C<E<lbracket>search-region]>:
+.The example tags shown have an C<item-> prefix, which is the default. Set any prefix desired with the C<prefix> parameter to C<[search-region]>:
 
 !block example; listitem=2
-    E<lbracket>search-region prefix=my]
-    E<lbracket>search-list]
-        SKU:   E<lbracket>my-code]
-        Title: E<lbracket>my-data products title]
-    E<lbracket>/search-list]
-    E<lbracket>/search-region]
+    [search-region prefix=my]
+    [search-list]
+        SKU:   [my-code]
+        Title: [my-data products title]
+    [/search-list]
+    [/search-region]
 !endblock
-        
+
 .The standard set of Interchange iterative ITL tags are available. They are interpolated in this order:
 
 !block example; listitem=2
-        E<lbracket>item-alternate N] true E<lbracket>else] false E<lbracket>/else] E<lbracket>/item-alternate]
-        E<lbracket>if-item-param named_field] true E<lbracket>else] false E<lbracket>/else] E<lbracket>/if-item-param]
-        E<lbracket>item-param named_field]
-        E<lbracket>if-item-pos N] true E<lbracket>else] false E<lbracket>/else] E<lbracket>/if-item-pos]
-        E<lbracket>item-pos N]
-        E<lbracket>if-item-field products_field] true E<lbracket>else] false E<lbracket>/else] E<lbracket>/if-item-field]
-        E<lbracket>item-field products_column]
-        E<lbracket>item-increment]
-        E<lbracket>item-accessories]
-        E<lbracket>item-code]
-        E<lbracket>item-description]
-        E<lbracket>if-item-data table column] true E<lbracket>else] false E<lbracket>/else] E<lbracket>/if-item-data]
-        E<lbracket>item-data table column]
-        E<lbracket>item-price N* noformat=1*]
-        E<lbracket>item-calc] E<lbracket>/item-calc]
-        E<lbracket>item-change marker]
-            E<lbracket>condition]variable textE<lbracket>/condition]
+        [item-alternate N] true [else] false [/else] [/item-alternate]
+        [if-item-param named_field] true [else] false [/else] [/if-item-param]
+        [item-param named_field]
+        [if-item-pos N] true [else] false [/else] [/if-item-pos]
+        [item-pos N]
+        [if-item-field products_field] true [else] false [/else] [/if-item-field]
+        [item-field products_column]
+        [item-increment]
+        [item-accessories]
+        [item-code]
+        [item-description]
+        [if-item-data table column] true [else] false [/else] [/if-item-data]
+        [item-data table column]
+        [item-price N* noformat=1*]
+        [item-calc] [/item-calc]
+        [item-change marker]
+            [condition]variable text[/condition]
             true
-            E<lbracket>else] false E<lbracket>/else]
-        E<lbracket>/item-change marker]
-        E<lbracket>item-last] condition E<lbracket>/item-last]
-        E<lbracket>item-next] condition E<lbracket>/item-next]
+            [else] false [/else]
+        [/item-change marker]
+        [item-last] condition [/item-last]
+        [item-next] condition [/item-next]
 !endblock
 
-Note: those that reference the shopping cart do not apply, i.e., E<lbracket>item-quantity], E<lbracket>item-modifier ...] and friends.
+Note: those that reference the shopping cart do not apply, i.e., [item-quantity], [item-modifier ...] and friends.
 
-LI1: E<lbracket>/search-list]
+LI1: [/search-list]
 
-.Ends the search list. 
+.Ends the search list.
 
-LI1: E<lbracket>no-match]
+LI1: [no-match]
 
 .Starts the region of the search results page that should be returned if there is no match (and no error) for the search. If this is not on the page, the special page nomatch will be displayed instead.
 
-LI1: E<lbracket>/no-match]
+LI1: [/no-match]
 
 .Ends the no match region.
 
-LI1: E<lbracket>sort database:field:option* database:field:option*]
+LI1: [sort database:field:option* database:field:option*]
 
 .Sorts the search list return based on database fields. If no options are supplied, sorts according to the return code. See SORTING.
 
 .This is slow, and it is far better to pre-sort the return in the search specification.
 
-LI1: E<lbracket>item-change marker]
+LI1: [item-change marker]
 
-.Active only within C<E<lbracket>search-list]E<lbracket>/search-list]>.
+.Active only within C<[search-list][/search-list]>.
 
-.Along with the companion C<E<lbracket>/item-change marker]>, surrounds a region which should only be output when a field (or other repeating value) changes its value. This allows indented lists similar to database reports to be easily formatted. The repeating value must be a tag interpolated in the search process, such as C<E<lbracket>item-field field]> or C<E<lbracket>item-data database field]>.
+.Along with the companion C<[/item-change marker]>, surrounds a region which should only be output when a field (or other repeating value) changes its value. This allows indented lists similar to database reports to be easily formatted. The repeating value must be a tag interpolated in the search process, such as C<[item-field field]> or C<[item-data database field]>.
 
 .Of course, this will only work as expected when the search results are properly sorted.
 
-.The C<marker> field is mandatory, and is also arbitrary, meaning that any marker can be selected as long as it matches the marker associated with C<E<lbracket>/item-change marker]>. The value to be tested is contained within a C<E<lbracket>condition]valueE<lbracket>/condition]> tag pair. The C<E<lbracket>item-change marker]> tag also processes an C<E<lbracket>else] E<lbracket>/else]> pair for output when the value does not change. The tags may be nested as long as the markers are different.
+.The C<marker> field is mandatory, and is also arbitrary, meaning that any marker can be selected as long as it matches the marker associated with C<[/item-change marker]>. The value to be tested is contained within a C<[condition]value[/condition]> tag pair. The C<[item-change marker]> tag also processes an C<[else] [/else]> pair for output when the value does not change. The tags may be nested as long as the markers are different.
 
 .The following is a simple example for a search list that has a field C<category> and C<subcategory> associated with each item:
 
 !block example; listitem=2
  <TABLE>
  <TR><TH>Category</TH><TH>Subcategory</TH><TH>Product</TH></TR>
- E<lbracket>search-list]
+ [search-list]
  <TR>
     <TD>
-         E<lbracket>item-change cat]
+         [item-change cat]
 
-         E<lbracket>condition]E<lbracket>item-field category]E<lbracket>/condition]
+         [condition][item-field category][/condition]
 
-                 E<lbracket>item-field category]
-         E<lbracket>else]
+                 [item-field category]
+         [else]
                  &nbsp;
-         E<lbracket>/else]
-         E<lbracket>/item-change cat]
+         [/else]
+         [/item-change cat]
     </TD>
     <TD>
-         E<lbracket>item-change subcat]
+         [item-change subcat]
 
-         E<lbracket>condition]E<lbracket>item-field subcategory]E<lbracket>/condition]
+         [condition][item-field subcategory][/condition]
 
-                 E<lbracket>item-field subcategory]
-         E<lbracket>else]
+                 [item-field subcategory]
+         [else]
                  &nbsp;
-         E<lbracket>/else]
-         E<lbracket>/item-change subcat]
+         [/else]
+         [/item-change subcat]
     </TD>
-    <TD> E<lbracket>item-field name] </TD>
- E<lbracket>/search-list]
+    <TD> [item-field name] </TD>
+ [/search-list]
  </TABLE>
 !endblock
 
 .The above should output a table that only shows the category and subcategory once, while showing the name for every product. (The C<&nbsp;> will prevent blanked table cells if using a border.)
 
-LI1: E<lbracket>/item-change marker]
+LI1: [/item-change marker]
 
-.Companion to C<E<lbracket>item-change marker]>.
+.Companion to C<[item-change marker]>.
 
-LI1: E<lbracket>matches]
+LI1: [matches]
 
-.Replaced with the range of match numbers displayed by the search page. Looks something like "1-50". Make sure to insert this item between a C<E<lbracket>more-list]> and C<E<lbracket>/more-list]> element pair.
+.Replaced with the range of match numbers displayed by the search page. Looks something like "1-50". Make sure to insert this item between a C<[more-list]> and C<[/more-list]> element pair.
 
-LI1: E<lbracket>more-list next_img* prev_img* page_img* border* border_current*]
+LI1: [more-list next_img* prev_img* page_img* border* border_current*]
 
-.Starts the section of the search page which is only displayed if there are more matches than specified in C<mv_matchlimit>. If there are less matches than the number in mv_matchlimit, all text/html between the C<E<lbracket>more_list]> and C<E<lbracket>/more_list]> elements is stripped.
+.Starts the section of the search page which is only displayed if there are more matches than specified in C<mv_matchlimit>. If there are less matches than the number in mv_matchlimit, all text/html between the C<[more_list]> and C<[/more_list]> elements is stripped.
 
-.Use in conjunction with the C<E<lbracket>more]> element to place pointers to additional pages of matches.
+.Use in conjunction with the C<[more]> element to place pointers to additional pages of matches.
 
 .If the optional arguments C<next_img>, C<prev_img>, and/or C<page_img> are present, they represent image files that will be inserted instead of the standard 'Next,' 'Previous,' and page number. If C<prev_img> is C<none>, then no previous link will be output. If C<page_img> is C<none>, then no links to pages of matches will be output. These are URLs, are substituted for with I<ImageDir> and friends, and will be encased in IMG tags. Lastly, C<border> is the border number to put.
 
@@ -1772,7 +1772,7 @@ LI1: E<lbracket>more-list next_img* prev_img* page_img* border* border_current*]
 
 .\Examples:
 
-.C<E<lbracket>more-list next.gif prev.gif page_num.cgi 3]> causes anchors of:
+.C<[more-list next.gif prev.gif page_num.cgi 3]> causes anchors of:
 
 !block example; listitem=2
      Previous   <IMG SRC="prev.gif" Border=3>
@@ -1781,7 +1781,7 @@ LI1: E<lbracket>more-list next_img* prev_img* page_img* border* border_current*]
      Next       <IMG SRC="next.gif" Border=3>
 !endblock
 
-.C<E<lbracket>more-list next.gif prev.gif page_num.cgi]> causes anchors of:
+.C<[more-list next.gif prev.gif page_num.cgi]> causes anchors of:
 
 !block example; listitem=2
      Previous   <IMG SRC="prev.gif">
@@ -1790,7 +1790,7 @@ LI1: E<lbracket>more-list next_img* prev_img* page_img* border* border_current*]
      Next       <IMG SRC="next.gif">
 !endblock
 
-.C<E<lbracket>more-list next.gif prev.gif 0 0]> causes anchors of:
+.C<[more-list next.gif prev.gif 0 0]> causes anchors of:
 
 !block example; listitem=2
      Previous   <IMG SRC="prev.gif" Border=0>
@@ -1799,34 +1799,34 @@ LI1: E<lbracket>more-list next_img* prev_img* page_img* border* border_current*]
      Next       <IMG SRC="next.gif" Border=0>
 !endblock
 
-.To set custom text for the "Previous" and "Next" usually used, define the C<next_img>, C<prev_img>, and C<page_img> with C<E<lbracket>next-anchor]E<lbracket>/next-anchor]>, C<E<lbracket>prev-anchor]E<lbracket>/prev-anchor]> and C<E<lbracket>page-anchor]E<lbracket>/page-anchor]>. The string $PAGE$ will be replaced with the page number in the latter. The same example:
+.To set custom text for the "Previous" and "Next" usually used, define the C<next_img>, C<prev_img>, and C<page_img> with C<[next-anchor][/next-anchor]>, C<[prev-anchor][/prev-anchor]> and C<[page-anchor][/page-anchor]>. The string $PAGE$ will be replaced with the page number in the latter. The same example:
 
 !block example; listitem=2
-    E<lbracket>more-list 0 0 0]
-    E<lbracket>next-anchor] Forward E<lbracket>/next-anchor]
-    E<lbracket>prev-anchor] Back E<lbracket>/prev-anchor]
-    E<lbracket>page-anchor] Page $PAGE$ E<lbracket>/page-anchor]
-    E<lbracket>more]
-    E<lbracket>/more-list]
+    [more-list 0 0 0]
+    [next-anchor] Forward [/next-anchor]
+    [prev-anchor] Back [/prev-anchor]
+    [page-anchor] Page $PAGE$ [/page-anchor]
+    [more]
+    [/more-list]
 !endblock
 
 .will display C<Forward Page 1 Page 2 Back> for 2 pages.
 
 .As shown, pass a 0 for the arguments of each to tell Interchange to look for the assignments.
 
-.If have many pages of matches and don't wish to have all displayed at once, set C<E<lbracket>decade-next]E<lbracket>/decade-next]> and C<E<lbracket>decade-prev]E<lbracket>/decade-prev]>. If set them empty, a search with 31 pages will display pages 21-30 like:
+.If have many pages of matches and don't wish to have all displayed at once, set C<[decade-next][/decade-next]> and C<[decade-prev][/decade-prev]>. If set them empty, a search with 31 pages will display pages 21-30 like:
 
 !block example; listitem=2
-  Previous 1 2 3 4 5 6 7 8 9 10 E<lbracket>more>>] Next
+  Previous 1 2 3 4 5 6 7 8 9 10 [more>>] Next
 !endblock
 
 .and pages 11-20 like:
 
 !block example; listitem=2
-  Previous E<lbracket><<more] 11 12 13 14 15 16 17 18 19 20 E<lbracket>more>>] Next
+  Previous [<<more] 11 12 13 14 15 16 17 18 19 20 [more>>] Next
 !endblock
 
-.If set to C<E<lbracket>decade-next](higher)E<lbracket>/decade-next]> and C<E<lbracket>decade-prev](lower)E<lbracket>/decade-prev]>, the following will be displayed:
+.If set to C<[decade-next](higher)[/decade-next]> and C<[decade-prev](lower)[/decade-prev]>, the following will be displayed:
 
 !block example; listitem=2
   Previous (lower) 11 12 13 14 15 16 17 18 19 20 (higher) Next
@@ -1834,11 +1834,11 @@ LI1: E<lbracket>more-list next_img* prev_img* page_img* border* border_current*]
 
 .Of course, image-based anchors can be used as well.
 
-LI1: E<lbracket>/more-list]
+LI1: [/more-list]
 
-.Companion to C<E<lbracket>more-list]>. 
+.Companion to C<[more-list]>.
 
-LI1: E<lbracket>more]
+LI1: [more]
 
 .Inserts a series of hyperlinks that will call up the next matches in a series. They look like this:
 
@@ -1848,13 +1848,13 @@ LI1: E<lbracket>more]
 
 .The current page will not be a hyperlink. Every time the new link is pressed, the list is re-built to correspond to the current page. If there is no C<Next> or C<Previous> page, that link will not be shown.
 
-.See the C<fr_resul.html> or C<search.html> files for examples. Make sure to insert this item between a C<E<lbracket>more-list]> and C<E<lbracket>/more-list]> element pair.
+.See the C<fr_resul.html> or C<search.html> files for examples. Make sure to insert this item between a C<[more-list]> and C<[/more-list]> element pair.
 
-LI1: E<lbracket>process-search]
+LI1: [process-search]
 
 .Calls the search with the proper URL, including Interchange session tags. Used as the ACTION value for the search form.
 
-LI1: E<lbracket>process-target frame]
+LI1: [process-target frame]
 
 .Calls the search with the proper URL, including Interchange session tags. Used as the ACTION value for the search form if the results are to be targeted to a different window than the one set by SearchFrame (which is "_self" by default).
 
@@ -1863,31 +1863,31 @@ H1: SORTING
 Interchange has standard sorting options for sorting the search lists, loop lists, and item lists based on the contents of database fields. In addition, it adds list slices for limiting the displayed entries based on a start value and chunk size (or start and end value, from which a chunk size is determined). All accept a standard format sort tag which must be directly after the list call:
 
 !block example
-   E<lbracket>loop 4 3 2 1]
-   E<lbracket>sort -2 +2]
-       E<lbracket>loop-code]
-   E<lbracket>/loop]
+   [loop 4 3 2 1]
+   [sort -2 +2]
+       [loop-code]
+   [/loop]
 
-   E<lbracket>search-list]
-   E<lbracket>sort products:category:f]
-       E<lbracket>item-price] E<lbracket>item-description]<BR>
-   E<lbracket>/search-list]
+   [search-list]
+   [sort products:category:f]
+       [item-price] [item-description]<BR>
+   [/search-list]
 
-   E<lbracket>item-list]
-   E<lbracket>sort products:price:rn]
-       E<lbracket>item-price] E<lbracket>item-code]<BR>
-   E<lbracket>/item-list]
+   [item-list]
+   [sort products:price:rn]
+       [item-price] [item-code]<BR>
+   [/item-list]
 
-   E<lbracket>loop search="ra=yes"]
-   E<lbracket>sort products:category products:title]
-   E<lbracket>loop-field category] E<lbracket>loop-field title] <BR>
-   E<lbracket>/loop]
+   [loop search="ra=yes"]
+   [sort products:category products:title]
+   [loop-field category] [loop-field title] <BR>
+   [/loop]
 !endblock
 
-All sort situations, C<E<lbracket>search list]>, C<E<lbracket>loop list]>, C<E<lbracket>tag each table]>, and C<E<lbracket>item-list]>, take options of the form:
+All sort situations, C<[search list]>, C<[loop list]>, C<[tag each table]>, and C<[item-list]>, take options of the form:
 
 !block example
- E<lbracket>sort database:field:option* -n +n =n-n ... ]
+ [sort database:field:option* -n +n =n-n ... ]
 !endblock
 
 LI1: database
@@ -1931,12 +1931,12 @@ Examples, all based on the C<simple> demo:
 LI1: Loop list
 
 !block example; listitem=2
-    E<lbracket>loop 00-0011 19-202 34-101 99-102]
-    E<lbracket>sort products:title]
-        E<lbracket>loop-code] E<lbracket>loop-field title]<BR>
-    E<lbracket>/loop]
+    [loop 00-0011 19-202 34-101 99-102]
+    [sort products:title]
+        [loop-code] [loop-field title]<BR>
+    [/loop]
 !endblock
- 
+
 .Will display:
 
 !block example; listitem=2
@@ -1949,12 +1949,12 @@ LI1: Loop list
 .\Alternatively:
 
 !block example; listitem=2
-    E<lbracket>loop 00-0011 19-202 34-101 99-102]
-    E<lbracket>sort products:title -3 +2]
-        E<lbracket>loop-code] E<lbracket>loop-field title]<BR>
-    E<lbracket>/loop]
+    [loop 00-0011 19-202 34-101 99-102]
+    [sort products:title -3 +2]
+        [loop-code] [loop-field title]<BR>
+    [/loop]
 !endblock
- 
+
 .\Displays:
 
 !block example; listitem=2
@@ -1962,19 +1962,19 @@ LI1: Loop list
     99-102 The Art Store T-Shirt
 !endblock
 
-.The tag C<E<lbracket>sort products:title =3-4]> is equivalent to the above.
+.The tag C<[sort products:title =3-4]> is equivalent to the above.
 
 LI1: Search list
 
 .A search of all products (i.e., http://yoursystem.com/cgi-bin/simple/scan/ra=yes):
 
 !block example; listitem=2
-    E<lbracket>search-list]
-    E<lbracket>sort products:artist products:title:rf]
-        E<lbracket>item-field artist] E<lbracket>item-field title]<BR>
-    E<lbracket>/search-list]
+    [search-list]
+    [sort products:artist products:title:rf]
+        [item-field artist] [item-field title]<BR>
+    [/search-list]
 !endblock
- 
+
 .will display:
 
 !block example; listitem=2
@@ -1994,12 +1994,12 @@ LI1: Search list
 .Adding a slice option:
 
 !block example; listitem=2
-    E<lbracket>search-list]
-    E<lbracket>sort products:artist products:title:rf =6-10]
-        E<lbracket>item-field artist] E<lbracket>item-field title]<BR>
-    E<lbracket>/search-list]
+    [search-list]
+    [sort products:artist products:title:rf =6-10]
+        [item-field artist] [item-field title]<BR>
+    [/search-list]
 !endblock
- 
+
 .will display:
 
 !block example; listitem=2
@@ -2014,26 +2014,26 @@ LI1: Search list
 LI1: Shopping cart
 
 !block example; listitem=2
-    E<lbracket>item-list]
-    E<lbracket>sort products:price:rn]
-        E<lbracket>item-price] E<lbracket>item-code]<BR>
-    E<lbracket>/item-list]
+    [item-list]
+    [sort products:price:rn]
+        [item-price] [item-code]<BR>
+    [/item-list]
 !endblock
- 
+
 .will display the items in the shopping cart sorted on their price, with the most expensive shown first. NOTE: This is based on the database field and doesn't take quantity price breaks or discounts into effect. Modifier values or quantities cannot be sorted.
 
 LI1: Complete database contents
 
 !block example; listitem=2
-    E<lbracket>tag each products]
-    E<lbracket>sort products:category products:title]
-    E<lbracket>loop-field category] E<lbracket>loop-field title] <BR>
-    E<lbracket>/tag]
+    [tag each products]
+    [sort products:category products:title]
+    [loop-field category] [loop-field title] <BR>
+    [/tag]
 !endblock
 
 .A two level sort that will sort products based first on their category, then on their title within the category.
 
-Note that large lists may take some time to sort. If a product database contains many thousands of items, using the C<E<lbracket>tag each products]> sort is not recommended unless planning on caching or statically building pages.
+Note that large lists may take some time to sort. If a product database contains many thousands of items, using the C<[tag each products]> sort is not recommended unless planning on caching or statically building pages.
 
 H1: SHIPPING
 
@@ -2057,7 +2057,7 @@ There are two styles of setting which can be mixed in the same file. The first i
 default No shipping weight  0   99999999    0
 
 upsg    UPS Ground  weight  0   0   e Nothing to ship!
-upsg    UPS Ground  weight  0   150 u Ground E<lbracket>default zip 98366] 3.00
+upsg    UPS Ground  weight  0   150 u Ground [default zip 98366] 3.00
 upsg    UPS Ground  weight  150 999999  e @@TOTAL@@ lbs too heavy for UPS
 
 The second is a freeform method with a C<mode: Description text> introducing
@@ -2088,15 +2088,15 @@ The second format has several advantages. Multiple lines can be spanned with the
 !block example
    upsg: UPS Ground
        criteria    <<EOF
-   E<lbracket>perl]
+   [perl]
        return 'weight' if $Values->{country} eq 'US';
        return 'weight' if ! $Values->{country};
        # Return blank, don't want UPS
        return '';
-   E<lbracket>/perl]
+   [/perl]
    EOF
 !endblock
-    
+
 The definable fields are, in order, for the tab-separated format:
 
 LI1: MODE
@@ -2105,7 +2105,7 @@ LI1: MODE
 
 LI1: DESCRIPTION
 
-.Text to describe the method (can be accessed on a page with the C<E<lbracket>shipping-description]> element).
+.Text to describe the method (can be accessed on a page with the C<[shipping-description]> element).
 
 LI1: CRITERIA
 
@@ -2128,7 +2128,7 @@ LI1: COST
 !block example; listitem=2
    f       Formula (MML tags OK, evaluated as Perl)
    x       Multiplied by a number
-   E<lbracket>uA-Z]  UPS-style lookup
+   [uA-Z]  UPS-style lookup
    m       Interchange chained cost lookup (all items summed together)
    i       Interchange chained cost lookup (items summed individually)
 !endblock
@@ -2177,7 +2177,7 @@ LI1: o <field name> or <table>::<field name>
 
 LI1: o n.nn
 
-.Where B<n.nn> is any number, it will be directly used as the accumulated criteria. This can be effectively returned from a Perl subroutine or Interchange C<E<lbracket>calc]E<lbracket>item-list] ... E<lbracket>/item-list]E<lbracket>/calc]> to create custom shipping routines.
+.Where B<n.nn> is any number, it will be directly used as the accumulated criteria. This can be effectively returned from a Perl subroutine or Interchange C<[calc][item-list] ... [/item-list][/calc]> to create custom shipping routines.
 
 Note[label='IMPORTANT NOTE: '] The above only applies to the first field that matches the shipping mode exactly. Following criteria fields contain qualifier matching strings.
 
@@ -2191,7 +2191,7 @@ LI1: N.NN (digits)
 
 LI1: e
 
-.If the first character is an C<e>, a cost of zero is returned and an error message is placed in the session value C<ship_message> (i.e., C<E<lbracket>data session ship_message]> or $Session->{ship_message}).
+.If the first character is an C<e>, a cost of zero is returned and an error message is placed in the session value C<ship_message> (i.e., C<[data session ship_message]> or $Session->{ship_message}).
 
 LI1: f
 
@@ -2221,7 +2221,7 @@ H2: How Shipping is Calculated
 
 ^The base code is selected by reading the value of C<mv_shipmode> in the user session. If it has not been explicitly set, either by means of the DefaultShipping directive or by setting the variable on a form (or in an order profile), it will be C<default>.
 
-.The mv_shipmode must be in the character class E<lbracket>A-Za-z0-9_]. If there are spaces, commas, or nulls in the value, they will be read as multiple shipping modes.
+.The mv_shipmode must be in the character class [A-Za-z0-9_]. If there are spaces, commas, or nulls in the value, they will be read as multiple shipping modes.
 
 +The modes are selected from the d
 
@@ -2243,36 +2243,36 @@ Note: The same mode name may be used for all lines in the same group, but the fi
 
 +If the cost field begins with C<s>, a Perl subroutine call is made.
 
-+If the cost field begins with C<e>, zero cost is returned and an error placed in the session B<ship_message> field, available as C<E<lbracket>data session ship_message]>. 
++If the cost field begins with C<e>, zero cost is returned and an error placed in the session B<ship_message> field, available as C<[data session ship_message]>.
 
 Here is an example shipping file using all of the methods of determining shipping cost.
 
 Note: The columns are lined up for reading convenience. The actual entries should have ONE tab between fields.
 
 global Option   n/a               0   0      g PriceDivide
- 
+
 rpsg   RPS      quantity          0   0      R RPS products/rps.csv
 rpsg   RPS      quantity          0   5      7.00
 rpsg   RPS      quantity          6   10     10.00
 rpsg   RPS      quantity          11  150    x .95
- 
+
 usps   US Post  price             0   0      0
 usps   US Post  price             0   50     f 7 + (1 * @@TOTAL@@ / 10)
 usps   US Post  price             50  100    f 12 + (.90 * @@TOTAL@@ / 10)
 usps   US Post  price             100 99999  f @@TOTAL@@ * .05
- 
-upsg   UPS      weight E<lbracket>value       0      e Nothing to ship 
+
+upsg   UPS      weight [value       0      e Nothing to ship
 state]0.
-upsg   UPS      AK HI             0   150    u upsg E<lbracket>default zip 980] 12.00 round
-upsg   UPS                        0   150    u Ground E<lbracket>default zip 980] 2.00 round
+upsg   UPS      AK HI             0   150    u upsg [default zip 980] 12.00 round
+upsg   UPS                        0   150    u Ground [default zip 980] 2.00 round
 upsg   UPS                        150 9999   e @@TOTAL@@ lb too heavy for UPS
 
 upsca  UPS/CA   weight            0   0      c C UPS_Canada products/can.csv
 upsca  UPS/CA   weight            -1   -1    o PriceDivide=0
-upsca  UPS/CA   weight            0   150    C upsca E<lbracket>default zip A7G] 5.00
+upsca  UPS/CA   weight            0   150    C upsca [default zip A7G] 5.00
 upsca  UPS/CA   weight            150 99999  e @@TOTAL@@ lb too heavy for UPS
- 
-fedex  FedEx    quantity          1   9999   s fedex_cost ;E<lbracket>value country]
+
+fedex  FedEx    quantity          1   9999   s fedex_cost ;[value country]
 
 LI1: global
 
@@ -2284,14 +2284,14 @@ LI1: rpsg
 
 LI1: usps
 
-.The next mode, C<usps>, is a more complicated formula using price as the criteria. If the total price of all items in the shopping cart (same as C<E<lbracket>subtotal]> without quantity price breaks in place) is from 1 to 50, the cost will be 7.00 plus 10 percent of the order. If the total is from 50.01 to 100, the cost will be 12.00 plus 9 percent of the order total. If the cost is 100.01 or greater, 5 percent of the order total will be used as the shipping cost.
+.The next mode, C<usps>, is a more complicated formula using price as the criteria. If the total price of all items in the shopping cart (same as C<[subtotal]> without quantity price breaks in place) is from 1 to 50, the cost will be 7.00 plus 10 percent of the order. If the total is from 50.01 to 100, the cost will be 12.00 plus 9 percent of the order total. If the cost is 100.01 or greater, 5 percent of the order total will be used as the shipping cost.
 
 LI1: upsg
 
 .The next, C<upsg>, is a special case. It specifies a UPS lookup based on the store's UPS zone and two required values (and two optional arguments):
 
 !block example; listitem=2
-    1. Weight 
+    1. Weight
     2. The zip/postal code of the recipient of which only
        the first three digits are used.
     3. A fixed amount to add to the cost found in the UPS
@@ -2300,9 +2300,9 @@ LI1: upsg
        integer monetary unit.
 !endblock
 
-.If the cost returned is zero, the reason will be placed as an error message in the session variable ship_message (available as C<E<lbracket>data session ship_message]>).
+.If the cost returned is zero, the reason will be placed as an error message in the session variable ship_message (available as C<[data session ship_message]>).
 
-.UPS weights are always rounded up if any fraction is present. 
+.UPS weights are always rounded up if any fraction is present.
 
 .The routines use standard UPS lookup tables. First, the UPS Zone file must be present. That is a standard UPS document specific to the retailer's area that must be obtained from UPS. It is entered into and made available to Interchange in TAB-delimited format. (As of March 1997, use the standard .csv file distributed by UPS on their Web site at C<www.ups.com>.) Specify it with the UpsZoneFile directive. It is usually named something like C<NNN.csv>, where NNN is the first three digits of the originating zip code. If placed in the products directory, the directive would look like:
 
@@ -2318,7 +2318,7 @@ LI1: upsg
     Database  Ground  Ground.csv  CSV
 !endblock
 
-.A simple shipping cost qualification can be appended to a UPS lookup. If any additional parameters are present after the five usual ones used for UPS lookup, they will be interpreted as a Perl subroutine call. The syntax is the same as if it was encased in the tag C<E<lbracket>perl sub] E<lbracket>/perl]>, but the following substitutions are made prior to the call:
+.A simple shipping cost qualification can be appended to a UPS lookup. If any additional parameters are present after the five usual ones used for UPS lookup, they will be interpreted as a Perl subroutine call. The syntax is the same as if it was encased in the tag C<[perl sub] [/perl]>, but the following substitutions are made prior to the call:
 
 !block example; listitem=2
     @@COST@@  is replaced with whatever the UPS lookup returned
@@ -2376,31 +2376,31 @@ Note: The text above appears indented, but in the C<catalog.cfg> file it must be
 
 .It will simply return a cost of 20 if the country the user has entered is US or USA. Otherwise, it will return a cost of 50. Obviously, much more complicated routines can be defined. Read the following only if familiar with Perl.
 
-.Named subroutines can be called with any of the methods defined with C<E<lbracket>set name] your_perl_code_here E<lbracket>/set]>, Sub, or GlobalSub.
+.Named subroutines can be called with any of the methods defined with C<[set name] your_perl_code_here [/set]>, Sub, or GlobalSub.
 
 .If parameters are specified, separated by commas, they will be taken as either fixed values or as database fields to be sent to the subroutine in an anonymous hash keyed on the item code (for each item in the *current* shopping cart).
 
 .If a database other than the products database is to be used, the database name should be prepended with a colon (C<:>) separator. If a key other than the item code is to be used, it should be appended with a semi-colon separator.
 
-.To send fixed value to the subroutine (appended to the call reference as an array of fixed scalar parameters), begin the parameter with a semicolon. They will be appended globally after the hash reference. 
+.To send fixed value to the subroutine (appended to the call reference as an array of fixed scalar parameters), begin the parameter with a semicolon. They will be appended globally after the hash reference.
 
 .\Examples:
 
 !block example; listitem=2
   # Sends the weight of each item from the products database
 
-  weight 
+  weight
 
   # Sends the value of the handling field from the
   # special database for each item
 
-  special:handling 
+  special:handling
 
   # Sends the value of the 'adder' field from the special
   # database, for the value the user has entered for 'country'
   # The spaces around the separators are OK
 
-  special : adder ; E<lbracket>value country] 
+  special : adder ; [value country]
 
   # Sends a fixed parameter of 20 to the subroutine
 
@@ -2410,7 +2410,7 @@ Note: The text above appears indented, but in the C<catalog.cfg> file it must be
 .The parameters are interpreted for Interchange tags before being parsed. Here is a complete example:
 
 !block example; listitem=2
-   s item_cost weight,modes:E<lbracket>value mv_shipmode];E<lbracket>value country], ;20, ;25
+   s item_cost weight,modes:[value mv_shipmode];[value country], ;20, ;25
 
   items in the shopping cart:  00-0011 19=202
 
@@ -2423,19 +2423,19 @@ Note: The text above appears indented, but in the C<catalog.cfg> file it must be
     ------- modes database  ----
 
   code    upsg  upsb  upsr  postal_air postal_surface
-  UK        0    0     0       1            1 
+  UK        0    0     0       1            1
 !endblock
 
 .This will call the subroutine C<item_cost> and will send the weight of each item, along with the value of the modes database column corresponding to the shipping mode the user has selected, keyed with the value of C<country> on their order form. If the user has selected C<mode postal_air> and is in the country coded as C<UK>, the subroutine will be called as if it was:
 
 !block example; listitem=2
       item_cost( {
-                    '00-0011' => {postal_air => '1', weight => '8'}, 
+                    '00-0011' => {postal_air => '1', weight => '8'},
                     '19-202' => {postal_air => '1', weight => '12'},
                  }, 20, 25 )
 !endblock
 
-.If the undefined value is returned by the routine, the next shipping mode will be tried. If a non-numeric string value is returned, its value will be placed as an error message in the session variable ship_message (available as C<E<lbracket>data session ship_message]>) and a zero cost will be returned. If any number or the empty string is returned, it will be used as the shipping cost (even 0).
+.If the undefined value is returned by the routine, the next shipping mode will be tried. If a non-numeric string value is returned, its value will be placed as an error message in the session variable ship_message (available as C<[data session ship_message]>) and a zero cost will be returned. If any number or the empty string is returned, it will be used as the shipping cost (even 0).
 
 H2: More On UPS-Style Lookup
 
@@ -2449,7 +2449,7 @@ It has a format similar to:
    low - high, zone,zone,zone,zone
 !endblock
 
-The C<low> entry is the low bound of the geographic location; C<high> is the high bound. (By geographic location, the zip code is meant.) If the first digits of the zip code, compared alphanumerically, fall between the low and high values, that zone is used as the column name for a lookup in the rate database. The weight is used as the row key. 
+The C<low> entry is the low bound of the geographic location; C<high> is the high bound. (By geographic location, the zip code is meant.) If the first digits of the zip code, compared alphanumerically, fall between the low and high values, that zone is used as the column name for a lookup in the rate database. The weight is used as the row key.
 
 The first operative row of the zone file (one without leading quotes) is used to determine the zone column name. In the US, it looks something like:
 
@@ -2462,7 +2462,7 @@ DestZIP,Ground,3DaySelect,2ndDayAir,2ndDayAirAM,NextDayAirSaver,NextDayAir
 Therefore, the zone column (shipping type) that would be used for UPS ground would be "Ground," and that is what the database should be named. To support the above, use a C<shipping.asc> line that reads:
 
 !block example
-   upsg  UPS Ground  weight  0  150  u Ground E<lbracket>default zip 983]
+   upsg  UPS Ground  weight  0  150  u Ground [default zip 983]
 !endblock
 
 and a C<catalog.cfg> database callout of:
@@ -2494,8 +2494,8 @@ To adapt other shipper zone files to Interchange's lookup, they will need to fit
    G0T  G0W      54
 !endblock
 
-It will need to be changed to: 
- 
+It will need to be changed to:
+
 !block example
    Destination,canstnd
    A0A-A9Z, 54
@@ -2536,9 +2536,9 @@ H2:  Geographic Qualification
 If the return value in the main criterion includes whitespace, the remaining information in the field is used as a qualifier for the subsidiary shipping modes. This can be used to create geographic qualifications for shipping, as in:
 
 !block example
-upsg   UPS Ground   weight E<lbracket>value state]   0     0     e No items selected
-upsg   UPS Ground   AK HI                  0     150   u Ground E<lbracket>value zip] 12.00
-upsg   UPS Ground                          0     150   u Ground E<lbracket>value zip] 3.00
+upsg   UPS Ground   weight [value state]   0     0     e No items selected
+upsg   UPS Ground   AK HI                  0     150   u Ground [value zip] 12.00
+upsg   UPS Ground                          0     150   u Ground [value zip] 3.00
 !endblock
 
 If C<upsg> is the mode selected, the value of the user session variable C<state> is examined to see if it matches the geographic qualification on a whole-word boundary. If it is C<AK> or C<HI>, UPS Ground with an adder of 12 will be selected. If it "falls through," UPS Ground with an adder of 3 will be selected.
@@ -2546,22 +2546,22 @@ If C<upsg> is the mode selected, the value of the user session variable C<state>
 H2:  Handling Charges
 
 Additional handling charges can be defined in the shipping file by setting the form variable C<mv_handling> to a space, comma, or null-separated set of valid shipping modes. The lookup and charges are created in the same fashion, and the additional charges are added to the order. (The user is responsible for
-displaying the charge on the order report or receipt with a C<E<lbracket>shipping handling]>
+displaying the charge on the order report or receipt with a C<[shipping handling]>
 tag, or the like.) All of the shipping modes found in mv_handling will be
-applied. If multiple instances are found on a form, the accordingly null-separated 
+applied. If multiple instances are found on a form, the accordingly null-separated
 values will all be applied. NOTE: This should not be done in an item-list unless the multiple setting of the variables is accounted for.
 
 To only process a handling charge once, do the following:
 
 !block example
-   E<lbracket>item-list]
-   E<lbracket>if-item-field very_heavy]
-   E<lbracket>perl values]
+   [item-list]
+   [if-item-field very_heavy]
+   [perl values]
        return '' if $Values->{mv_handling} =~ /very_heavy/;
        return "<INPUT TYPE=hidden NAME=mv_handling VALUE=very_heavy>";
-   E<lbracket>/perl]
-   E<lbracket>/if-item-field]
-   E<lbracket>/item-list]
+   [/perl]
+   [/if-item-field]
+   [/item-list]
 !endblock
 
 A non-blank/non-zero value in the database field will trigger Perl code which will only set C<mv_handling> once.
@@ -2577,7 +2577,7 @@ If a default shipping mode other than C<default> is desired, enter it into the C
 This will make the entry on the order form checked by default when the user starts the order process, if it is put in the form:
 
 !block example
- <INPUT TYPE=RADIO NAME=mv_shipmode VALUE=upsg E<lbracket>checked mv_shipmode upsg]> 
+ <INPUT TYPE=RADIO NAME=mv_shipmode VALUE=upsg [checked mv_shipmode upsg]>
 !endblock
 
 To force a choice by the user, make C<mv_shipmode> a required form variable (with RequiredFields or in an order profile) and set C<DefaultShipping> to zero.
@@ -2586,9 +2586,9 @@ H1: USER DATABASE
 
 Interchange has a user database function which allows customers to save any pertinent values from their session. It also allows the setting of database or file access control lists for use in controlling access to pages and databases on a user-by-user basis.
 
-The database field names in the user database correspond with the form variable names in the user session. If there is a column named C<address>, when the user logs in the contents of that field will be placed in the form variable C<address>, and will be availabe for display with C<E<lbracket>value address]>. Similarly, the database value is available with C<E<lbracket>data table=userdb column=address key=username]>.
+The database field names in the user database correspond with the form variable names in the user session. If there is a column named C<address>, when the user logs in the contents of that field will be placed in the form variable C<address>, and will be availabe for display with C<[value address]>. Similarly, the database value is available with C<[data table=userdb column=address key=username]>.
 
-The ASCII file for the database will not reflect changes unless the file is exported with C<E<lbracket>tag export userdb]E<lbracket>/tag]>. It is not advisable to edit the ASCII file, as it will overwrite the real data that is in the DBM table. User logins and changes would be lost. NOTE: This would not happen with SQL, but editing the ASCII file would have no effect. It is recommended that the NoImport configuration directive be set accordingly.
+The ASCII file for the database will not reflect changes unless the file is exported with C<[tag export userdb][/tag]>. It is not advisable to edit the ASCII file, as it will overwrite the real data that is in the DBM table. User logins and changes would be lost. NOTE: This would not happen with SQL, but editing the ASCII file would have no effect. It is recommended that the NoImport configuration directive be set accordingly.
 
 The field names to be used are not set in concrete. They may be changed with options. Fields may be added or subtracted at any time. Most users will choose to keep the default demo fields for simplicity sake, as they cover most common needs. As distributed in the demo, the fields are:
 
@@ -2635,7 +2635,7 @@ The field names to be used are not set in concrete. They may be changed with opt
 
 A few of those fields are special in naming, though all can be changed via an option. A couple of the fields are reserved for Interchange's use.
 
-Note[label='IMPORTANT NOTE: '] If not running with PGP or other encryption for credit card numbers, which is never recommended, it is important that the mv_credit_card_info field be removed from the database. 
+Note[label='IMPORTANT NOTE: '] If not running with PGP or other encryption for credit card numbers, which is never recommended, it is important that the mv_credit_card_info field be removed from the database.
 
 The special database fields are:
 
@@ -2665,12 +2665,12 @@ Reserved fields include:
    time        Last time of login
 !endblock
 
-H2: The E<lbracket>userdb ...] Tag
+H2: The [userdb ...] Tag
 
-Interchange provides a C<E<lbracket>userdb ...]> tag to access the UserDB functions.
+Interchange provides a C<[userdb ...]> tag to access the UserDB functions.
 
 !block example
-E<lbracket>userdb
+[userdb
        function=function_name
        username="username"*
        assign_username=1
@@ -2695,13 +2695,13 @@ E<lbracket>userdb
 It is normally called in an C<mv_click> or C<mv_check> setting, as in:
 
 !block example
-   E<lbracket>set Login]
+   [set Login]
    mv_todo=return
    mv_nextpage=welcome
-   E<lbracket>userdb function=login]
-   E<lbracket>/set]
+   [userdb function=login]
+   [/set]
 
-   <FORM ACTION="E<lbracket>process-target]" METHOD=POST>
+   <FORM ACTION="[process-target]" METHOD=POST>
    <INPUT TYPE=hidden NAME=mv_click VALUE=Login>
    Username <INPUT NAME=mv_username SIZE=10>
    Password <INPUT NAME=mv_password SIZE=10>
@@ -2750,9 +2750,9 @@ instead of the form variable C<tickets>, set:
    UserDB   default   scratch  tickets
 !endblock
 
-That makes every call to C<E<lbracket>userdb function=login]> equivalent to C<E<lbracket>userdb function=login scratch=tickets]>.
+That makes every call to C<[userdb function=login]> equivalent to C<[userdb function=login scratch=tickets]>.
 
-To override that default for one call only, use C<E<lbracket>userdb function=login scratch="passes"]>.
+To override that default for one call only, use C<[userdb function=login scratch="passes"]>.
 
 To log failed access authorizations, set the C<UserDB> profile parameter C<log_failed> true:
 
@@ -2793,7 +2793,7 @@ The last one to be set becomes the default.
 The option C<profile> selects the set to use. For usernames and passwords to be case sensitive with no encryption, pass this call:
 
 !block example
-   E<lbracket>userdb function=new_account profile=case_crypt]
+   [userdb function=new_account profile=case_crypt]
 !endblock
 
 The username and password will be stored as typed in, and the password will be encrypted in the database.
@@ -2806,7 +2806,7 @@ LI1: login
 
 .Active parameters: username, password, crypt, pass_field, ignore_case
 
-.Log in to Interchange. By default, the username is contained in the form variable C<mv_username> and the password in C<mv_password>. If the login is successful, the session value C<username> (C<E<lbracket>data session username]>) will be set to the user name.
+.Log in to Interchange. By default, the username is contained in the form variable C<mv_username> and the password in C<mv_password>. If the login is successful, the session value C<username> (C<[data session username]>) will be set to the user name.
 
 .This will recall the values of all non-special fields in the user database and place them in their corresponding user form variables.
 
@@ -2829,8 +2829,8 @@ LI1: new_account
 .If C<username_mask> is set to a valid Perl regular expression (without the surrounding / /), then any username containing a matching string will not be allowed for use. For example, to screen out order numbers from being used by a random user:
 
 !block example; listitem=2
-    E<lbracket>userdb function=new_account
-            username_mask="^E<lbracket>A-Z]*E<lbracket>0-9]"
+    [userdb function=new_account
+            username_mask="^[A-Z]*[0-9]"
             ]
 !endblock
 
@@ -2839,10 +2839,10 @@ LI1: new_account
 .To automatically create an account for every order, set the following in the C<OrderReport> file:
 
 !block example; listitem=2
-    E<lbracket>userdb function=new_account
-            username="E<lbracket>value mv_order_number]"
-            password="E<lbracket>value zip]"
-            verify="E<lbracket>value zip]"
+    [userdb function=new_account
+            username="[value mv_order_number]"
+            password="[value zip]"
+            verify="[value zip]"
             database="orders"
             ]
 !endblock
@@ -2862,7 +2862,7 @@ LI1: set_shipping
 .Place an entry in the shipping Address book. For example:
 
 !block example; listitem=2
-    E<lbracket>userdb function=set_shipping nickname=Dad]
+    [userdb function=set_shipping nickname=Dad]
 !endblock
 
 .See Address Book below.
@@ -2874,7 +2874,7 @@ LI1: get_shipping
 .Recall an entry from the shipping Address book. For example:
 
 !block example; listitem=2
-    E<lbracket>userdb function=get_shipping nickname=Dad]
+    [userdb function=get_shipping nickname=Dad]
 !endblock
 
 .See Address Book below.
@@ -2886,10 +2886,10 @@ LI1: get_shipping_names
 .Gets the names of shipping address book entries and places them in the variable C<address_book>. By default, it does not return the values. To have the values returned, set the parameter C<show> to 1, as in:
 
 !block example; listitem=2
-    E<lbracket>set name=shipping_nicknames
+    [set name=shipping_nicknames
          interpolate=1]
-      E<lbracket>userdb function=get_shipping_names show=1]
-    E<lbracket>/set]
+      [userdb function=get_shipping_names show=1]
+    [/set]
 !endblock
 
 LI1: set_billing
@@ -2899,7 +2899,7 @@ LI1: set_billing
 .Place an entry in the billing accounts book. For example:
 
 !block example; listitem=2
-    E<lbracket>userdb function=set_billing nickname=discover]
+    [userdb function=set_billing nickname=discover]
 !endblock
 
 .See Accounts Book below.
@@ -2911,7 +2911,7 @@ LI1: get_billing
 .Recall an entry from the billing accounts book. For example:
 
 !block example; listitem=2
-    E<lbracket>userdb function=get_billing nickname=visa]
+    [userdb function=get_billing nickname=visa]
 !endblock
 
 .See Accounts Book below.
@@ -2925,7 +2925,7 @@ LI1: set_cart
 .Save the contents of a shopping cart.
 
 !block example; listitem=2
-    E<lbracket>userdb function=set_cart nickname=christmas]
+    [userdb function=set_cart nickname=christmas]
 !endblock
 
 .See Carts below.
@@ -2934,10 +2934,10 @@ LI1: get_cart
 
 .Active parameters: nickname, carts_field, target
 
-.Recall a saved shopping cart. 
+.Recall a saved shopping cart.
 
 !block example; listitem=2
-    E<lbracket>userdb function=get_cart nickname=mom_birthday]
+    [userdb function=get_cart nickname=mom_birthday]
 !endblock
 
 .Setting C<target> saves to a different shopping cart than the default main cart. The C<carts_field> controls the database field used for storage.
@@ -2949,7 +2949,7 @@ LI1: set_acl
 .Set a simple acl. For example:
 
 !block example; listitem=2
-    E<lbracket>userdb function=set_acl location=cartcfg/editcart]
+    [userdb function=set_acl location=cartcfg/editcart]
 !endblock
 
 .This allows the current user to access the page "cartcfg/editcart" if it is access-protected.
@@ -2957,13 +2957,13 @@ LI1: set_acl
 .To delete access, do:
 
 !block example; listitem=2
-    E<lbracket>userdb function=set_acl location=cartcfg/editcart delete=1]
+    [userdb function=set_acl location=cartcfg/editcart delete=1]
 !endblock
 
 .To display the setting at the same time as setting, use the C<show> attribute:
 
 !block example; listitem=2
-    E<lbracket>userdb function=set_acl location=cartcf/editcart show=1]
+    [userdb function=set_acl location=cartcf/editcart show=1]
 !endblock
 
 LI1: check_acl
@@ -2973,13 +2973,13 @@ LI1: check_acl
 .Checks the simple access control listing for a location, returning 1 if allowed and the empty string if not allowed.
 
 !block example; listitem=2
-    E<lbracket>if type=explicit
-        compare="E<lbracket>userdb
+    [if type=explicit
+        compare="[userdb
                     function=check_acl
                     location=cartcfg/editcart]"
     ]
-    E<lbracket>page cartcfg/editcart]Edit your cart configurationE<lbracket>/page]
-    E<lbracket>/if]
+    [page cartcfg/editcart]Edit your cart configuration[/page]
+    [/if]
 !endblock
 
 LI1: set_file_acl, set_db_acl
@@ -2989,7 +2989,7 @@ LI1: set_file_acl, set_db_acl
 .Sets a complex access control value. Takes the form:
 
 !block example; listitem=2
-    E<lbracket>userdb function=set_file_acl
+    [userdb function=set_file_acl
             mode=rw
             location=products/inventory.txt]
 !endblock
@@ -3003,7 +3003,7 @@ LI1: check_file_acl, check_db_acl
 .Checks a complex access control value and returns a true/false (1/0) value. Takes the form:
 
 !block example; listitem=2
-    E<lbracket>userdb function=check_db_acl
+    [userdb function=check_db_acl
             mode=w
             location=inventory]
 !endblock
@@ -3011,18 +3011,18 @@ LI1: check_file_acl, check_db_acl
 .where mode is any value to be checked with C<check_file_acl>. It will return true, if the mode string is contained within the entry for that location. For example:
 
 !block example; listitem=2
-    E<lbracket>if type=explicit
-        compare="E<lbracket>userdb
+    [if type=explicit
+        compare="[userdb
                     function=check_db_acl
                     mode=w
                     location=inventory]"
     ]
-    E<lbracket>userdb function=set_acl location=cartcfg/edit_inventory]
-    E<lbracket>page cartcfg/edit_inventory]You may edit the inventory databaseE<lbracket>/page]
-    E<lbracket>else]
-    E<lbracket>userdb function=set_acl location=cartcfg/edit_inventory delete=1]
+    [userdb function=set_acl location=cartcfg/edit_inventory]
+    [page cartcfg/edit_inventory]You may edit the inventory database[/page]
+    [else]
+    [userdb function=set_acl location=cartcfg/edit_inventory delete=1]
     Sorry, you can't edit inventory.
-    E<lbracket>/if]
+    [/if]
 !endblock
 
 H2: Address Book
@@ -3046,24 +3046,24 @@ Address_book is a shipping address book. The shipping address book saves informa
   mv_shipmode
 !endblock
 
-The first field is always the name of the form variable that contains the key for the entry. The values are saved with the C<E<lbracket>userdb function=set_shipping]> tag call, and are recalled with C<E<lbracket>userdb function=get_shipping]>. A list of the keys
+The first field is always the name of the form variable that contains the key for the entry. The values are saved with the C<[userdb function=set_shipping]> tag call, and are recalled with C<[userdb function=get_shipping]>. A list of the keys
 available is kept in the form value C<address_book>, suitable for iteration in
 an HTML select box or in a set of links.
 
 To get the names of the addresses, use the C<get_shipping_names> function:
 
 !block example
-   E<lbracket>userdb function=get_shipping_names]
+   [userdb function=get_shipping_names]
 !endblock
 
 By default, they are placed in the variable C<address_book>. Here is a little snippet that builds a select box:
 
 !block example
-   <FORM ACTION="E<lbracket>process-target]" METHOD=POST>
-   E<lbracket>userdb function=get_shipping_names]
-   E<lbracket>if value address_book]
+   <FORM ACTION="[process-target]" METHOD=POST>
+   [userdb function=get_shipping_names]
+   [if value address_book]
    <SELECT NAME="s_nickname">
-   E<lbracket>loop arg="E<lbracket>value address_book]"] <OPTION> E<lbracket>loop-code] E<lbracket>/loop]
+   [loop arg="[value address_book]"] <OPTION> [loop-code] [/loop]
    </SELECT>
    <INPUT TYPE=submit NAME=mv_check VALUE="Recall Shipping">
    </FORM>
@@ -3074,11 +3074,11 @@ The same principle works with accounts, carts, and preferences.
 To restore a cart based on the above, put in an C<mv_check> routine:
 
 !block example
-   E<lbracket>set Recall Shipping]
+   [set Recall Shipping]
    mv_todo=return
    mv_nextpage=ord/basket
-   E<lbracket>userdb function=get_shipping nickname="E<lbracket>value s_nickname]"]
-   E<lbracket>/set]
+   [userdb function=get_shipping nickname="[value s_nickname]"]
+   [/set]
 !endblock
 
 When the C<mv_check> variable is encountered, the contents of the scratch variable C<Recall Shipping> are processed and the shipping address information inserted into the user form values. This is destructive of any current values of those user session variables, of course.
@@ -3086,7 +3086,7 @@ When the C<mv_check> variable is encountered, the contents of the scratch variab
 To change the fields that are recalled or saved, use the C<shipping> parameter:
 
 !block example
-   E<lbracket>userdb function=get_shipping
+   [userdb function=get_shipping
            nickname=city_and_state
            shipping="city state"]
 !endblock
@@ -3118,7 +3118,7 @@ The accounts book saves information relevant to billing the order. By default th
   mv_credit_card_info
 !endblock
 
-The values are saved with the C<E<lbracket>userdb function=set_billing]> tag call, and are recalled with C<E<lbracket>userdb function=get_billing]>. A list of the keys available is kept in the form value C<accounts>, suitable for iteration in an HTML select box or in a set of links.
+The values are saved with the C<[userdb function=set_billing]> tag call, and are recalled with C<[userdb function=get_billing]>. A list of the keys available is kept in the form value C<accounts>, suitable for iteration in an HTML select box or in a set of links.
 
 H2: Preferences
 
@@ -3134,9 +3134,9 @@ Preferences are miscellaneous session information. They include, by default, the
 
 The field C<p_nickname> acts as a key to select the preference set. To change
 the values that are included with the C<preferences> parameter:
-    
+
 !block example
-   E<lbracket>userdb function=set_preferences
+   [userdb function=set_preferences
            preferences="email_copy email fax_order fax"]
 !endblock
 
@@ -3148,7 +3148,7 @@ or in catalog.cfg:
 
 H2: Carts
 
-The contents of shopping carts may be saved or recalled in much the same fashion. 
+The contents of shopping carts may be saved or recalled in much the same fashion.
 See the Simple demo application C<ord/basket.html> page for an example.
 
 H2: Controlling Page Access With UserDB
@@ -3169,7 +3169,7 @@ The database entry should contain the complete Interchange-style page name of th
 For example, if the user C<flycat> followed this link:
 
 !block example
-   <A HREF="E<lbracket>area cartcfg/master_edit]">Edit</A>
+   <A HREF="[area cartcfg/master_edit]">Edit</A>
 !endblock
 
 Access would be allowed if the contents of the userdb were:
@@ -3189,13 +3189,13 @@ and disallowed if it were:
 Access can be enabled with:
 
 !block example
-   E<lbracket>userdb function=set_acl location="cartcfg/master_edit"]
+   [userdb function=set_acl location="cartcfg/master_edit"]
 !endblock
 
 Access can be disallowed with:
 
 !block example
-   E<lbracket>userdb function=set_acl
+   [userdb function=set_acl
            delete=1
            location="cartcfg/master_edit"]
 !endblock
@@ -3285,7 +3285,7 @@ LI1: Why do I even need an ASCII file?
     Database products products.txt dbi:mysql:test_minivend
 !endblock
 
-.Then create a file C<products/products.sql>. 
+.Then create a file C<products/products.sql>.
 
 .\For:
 
@@ -3366,19 +3366,19 @@ H1: INTERCHANGE DATABASE USERTAGS
 
 H2: Data
 
-.Named Parameters: E<lbracket>data table=db_table column=column_name key=key filter=``uc|lc|name|namecase|no_white|etc.''* append=1* value=``value to set to''* increment=1* ] 
+.Named Parameters: [data table=db_table column=column_name key=key filter=``uc|lc|name|namecase|no_white|etc.''* append=1* value=``value to set to''* increment=1* ]
 
-.Positional parameters: E<lbracket>data db_table column key] 
+.Positional parameters: [data db_table column key]
 
-.The attribute hash reference is passed to the subroutine after the parameters as the last argument. This may mean that there are parameters not shown here. 
+.The attribute hash reference is passed to the subroutine after the parameters as the last argument. This may mean that there are parameters not shown here.
 
-.Must pass named parameter interpolate=1 to cause interpolation. 
+.Must pass named parameter interpolate=1 to cause interpolation.
 
-.Invalidates cache: no 
+.Invalidates cache: no
 
-.Called Routine: 
+.Called Routine:
 
-.ASP/perl tag calls: 
+.ASP/perl tag calls:
 
 !block example; listitem=2
    $Tag->data(
@@ -3407,16 +3407,16 @@ H2: Data
            name ==> field
            row ==> key
 !endblock
- 
-.Returns the value of the field in a database table, or (DEPRECATED) from the session namespace. If the optional value is supplied, the entry will be changed to that value. If the option increment* is present, the field will be  automatically incremented with the value in value. Use negative numbers in value to decrement. The append attribute causes the value to be appended. The filter attribute is a set of Interchange filters that are applied to the data 1) after it is read; or 2) before it is placed in the table. 
 
-.If a DBM-based database is to be modified, it must be flagged writable on the page calling the write tag. Use E<lbracket>tag flag write]productsE<lbracket>/tag] to mark the products database writable, for example. This must be done before ANY access to that table. 
+.Returns the value of the field in a database table, or (DEPRECATED) from the session namespace. If the optional value is supplied, the entry will be changed to that value. If the option increment* is present, the field will be  automatically incremented with the value in value. Use negative numbers in value to decrement. The append attribute causes the value to be appended. The filter attribute is a set of Interchange filters that are applied to the data 1) after it is read; or 2) before it is placed in the table.
 
-.DEPRECATED BEHAVIOR: (replace with session tag). In addition, the E<lbracket>data ...]  tag can access a number of elements in the Interchange session database: 
+.If a DBM-based database is to be modified, it must be flagged writable on the page calling the write tag. Use [tag flag write]products[/tag] to mark the products database writable, for example. This must be done before ANY access to that table.
+
+.DEPRECATED BEHAVIOR: (replace with session tag). In addition, the [data ...]  tag can access a number of elements in the Interchange session database:
 
 !block example; listitem=2
     accesses           Accesses within the last 30 seconds
-    arg                The argument passed in a E<lbracket>page ...] or E<lbracket>area ...] tag
+    arg                The argument passed in a [page ...] or [area ...] tag
     browser            The user browser string
     cybercash_error    Error from last CyberCash operation
     cybercash_result   Hash of results from CyberCash (access with usertag)
@@ -3434,12 +3434,12 @@ H2: Data
     username           User name logged in as (UserDB feature)
 !endblock
 
-Note: Databases will hide session values, so don't name a database `session''. or you won't be able to use the E<lbracket>data ...] tag to read them. Case is sensitive, so in a pinch you could call the database ``Session'', but it would be better not to use that name at all. 
+Note: Databases will hide session values, so don't name a database `session''. or you won't be able to use the [data ...] tag to read them. Case is sensitive, so in a pinch you could call the database ``Session'', but it would be better not to use that name at all.
 
-H2: db_date 
+H2: db_date
 
 !block example; listitem=1
-   # E<lbracket>db-date table format]
+   # [db-date table format]
    #
    # This tag returns the last-modified time of a database table,
    # 'products' by default. Accepts a POSIX strftime value for
@@ -3457,11 +3457,11 @@ H2: db_date
        $format = '%A %d %b %Y' unless $format;
 
        # build database file name
-       $dbfile = $Vend::Cfg->{ProductDir} . '/' 
+       $dbfile = $Vend::Cfg->{ProductDir} . '/'
                . $Vend::Cfg->{Database}{$db}{'file'};
 
        # get last modified time
-       $mtime = (stat ($dbfile))E<lbracket>9];
+       $mtime = (stat ($dbfile))[9];
 
        if (defined ($mtime)) {
                return POSIX::strftime($format, localtime($mtime));
@@ -3474,21 +3474,21 @@ H2: db_date
 
 H2: Search_region
 
-.Named Parameters: E<lbracket>search_region arg="arg"]
+.Named Parameters: [search_region arg="arg"]
 
-.Positional Parameters: E<lbracket>search_region arg]
+.Positional Parameters: [search_region arg]
 
-.The attribute hash reference is passed after the parameters but before the container text argument. This may mean that there are parameters not shown here. 
+.The attribute hash reference is passed after the parameters but before the container text argument. This may mean that there are parameters not shown here.
 
-.Must pass named parameter interpolate=1 to cause interpolation. 
+.Must pass named parameter interpolate=1 to cause interpolation.
 
-.This is a container tag, i.e. E<lbracket>search_region] FOO E<lbracket>/search_region]. Nesting: NO
+.This is a container tag, i.e. [search_region] FOO [/search_region]. Nesting: NO
 
-.Invalidates cache: no 
+.Invalidates cache: no
 
-.Called Routine: 
+.Called Routine:
 
-.ASP/perl tag calls: 
+.ASP/perl tag calls:
 
 !block example; listitem=2
     $Tag->search_region(

@@ -1,18 +1,18 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icinstall.sdf,v 1.11 2000-10-26 22:43:48 zarko Exp $
+# $Id: icinstall.sdf,v 1.12 2000-11-22 21:53:07 jon Exp $
 
 !define DOC_NAME "Interchange Installation"
 !define DOC_TYPE ""
 !define DOC_CODE "ICINSTALL_D2a_100800"
-!define DOC_VERSION substr('$Revision: 1.11 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.12 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
 !build_title
 
-H1: INSTALLATION OF AKOPIA INTERCHANGE TM
+H1: INSTALLATION OF AKOPIA INTERCHANGE(TM)
 
-Akopia Interchange is the industry's most widely distributed and implemented open source e-commerce platform. This document provides detailed installation instructions for Interchange TM and the demonstration store included with the program. 
+Akopia Interchange is the industry's most widely distributed and implemented open source e-commerce platform. This document provides detailed installation instructions for Interchange and the demonstration store included with the program.
 
 H1: GETTING READY -- BEFORE INSTALLING INTERCHANGE
 
@@ -160,7 +160,7 @@ precopy_commands  -- commands passed to the system prior to catalog copy
 postcopy_commands -- commands passed to the system after catalog copy
 !endblock
 
-All files are paragraph-based. In other words, a blank line (with no spaces) terminates the individual setting. 
+All files are paragraph-based. In other words, a blank line (with no spaces) terminates the individual setting.
 
 The additional_fields file contains:
 
@@ -173,7 +173,7 @@ The default value of PARAM
 This would cause a question during makecat:
 
 !block example
-The prompt. Set PARAM to?.....E<lbracket>The default value of PARAM]
+The prompt. Set PARAM to?.....[The default value of PARAM]
 !endblock
 
 If the additional_help file is present, additional instructions for PARAM may be provided.
@@ -181,7 +181,7 @@ If the additional_help file is present, additional instructions for PARAM may be
 !block example
 PARAM
 
-These are additional instructions for PARAM, and they 
+These are additional instructions for PARAM, and they
 may span multiple lines up to the first blank line.
 !endblock
 
@@ -191,7 +191,7 @@ The prompt would now be:
 These are additional instructions for PARAM, and they
 may span multiple lines up to the first blank line.
 
-The prompt. Set PARAM to?.....E<lbracket>The default value of PARAM]
+The prompt. Set PARAM to?.....[The default value of PARAM]
 !endblock
 
 If the file config/precopy_commands exists, it will be read as a command followed by the prompt/help value.
@@ -207,7 +207,7 @@ This will cause the prompt:
 !block example
 We need to create an SQL database for your Interchange
 database tables.
-     
+
 Run command "mysqladmin create simple"?
 !endblock
 
@@ -251,7 +251,7 @@ A CGI-bin directory in which to put the vlink or tlink program is also needed.
 
 H1: DEMO STORE INSTALLATION PROCESS
 
-This detailed process describes the entire installation and setup process of the demo store. The text seen during this process will be displayed with <-- next to it. The text marked with --> identifies the required response. 
+This detailed process describes the entire installation and setup process of the demo store. The text seen during this process will be displayed with <-- next to it. The text marked with --> identifies the required response.
 
 In order to begin, the following permissions on the server are needed:
 
@@ -274,7 +274,7 @@ bin/makecat
 .A series of questions will be asked at this point.
 .{{I:Note: The answers can be changed later by editing the configuration scripts.}}
 
-+ 
++
 !block example; listitem=2
 <--Select a short, mnemonic name for the catalog. This will be
 <--used to set the defaults for naming the catalog, executable,
@@ -308,7 +308,7 @@ store catalog fields.
 <--#                                  www.company.com:8000
 <--#                                  www.company.com/~yourname
 <--#
-<--Server name? E<lbracket>localhost]
+<--Server name? [localhost]
 
 -->localhost
 !endblock
@@ -330,16 +330,16 @@ Interchange will also be running on this server.
 <--#
 <--# If you are new to Interchange and not a sophisticated web designer,
 <--# use "barry" to start with.
-<--DemoType? E<lbracket>basic]
+<--DemoType? [basic]
 
 -->barry
 !endblock
 
 .There are currently three types of demo's. "Basic" is a basic site
-implementation of "The Art Store." "Simple" is a simple         
-implementation of "The Art Store." "Barry" is the newest demo.  
-It has the same feature set as Simple, but with the "Barry's Bikes, 
-Books, and Birkenstocks" formerly of Tallyman fame. This is the one 
+implementation of "The Art Store." "Simple" is a simple
+implementation of "The Art Store." "Barry" is the newest demo.
+It has the same feature set as Simple, but with the "Barry's Bikes,
+Books, and Birkenstocks" formerly of Tallyman fame. This is the one
 being used in this walkthrough.
 
 +
@@ -348,7 +348,7 @@ being used in this walkthrough.
 <--# To have a secure catalog, either this should be a local user name and
 <--# not go over the Internet -- or use the PGP option.
 <--#
-<--MailOrderTo? E<lbracket>orders@barry.com]
+<--MailOrderTo? [orders@barry.com]
 
 -->user@localhost.com
 !endblock
@@ -364,7 +364,7 @@ completed, to the person responsible for handling orders.
 <--# works well. Remember, you will want a test catalog and an online
 <--# catalog.
 <--#
-<--CatRoot? E<lbracket>/home/user/catalogs/example]
+<--CatRoot? [/home/user/catalogs/example]
 
 -->/home/user/catalogs/example
 !endblock
@@ -380,7 +380,7 @@ default location is a good place for this.
 <--# If all of your CGI programs must end in .cgi, this is
 <--# should be the same as your HTML directory.
 <--#
-<--CgiDir? E<lbracket>/usr/local/httpd/cgi-bin]
+<--CgiDir? [/usr/local/httpd/cgi-bin]
 
 -->/usr/local/httpd/cgi-bin
 !endblock
@@ -391,16 +391,16 @@ server and the Interchange server.
 
 +
 !block example; listitem=2
-<--# The URL location of the CGI program, without the 
+<--# The URL location of the CGI program, without the
 <--# or server name.
 <--#
-<--# 
+<--#
 <--#                  ^^^^^^^^^^^^^
 <--#
-<--# 
+<--#
 <--#                  ^^^^^^^^^^^^
 <--#
-<--CgiUrl? E<lbracket>/cgi-bin/example]
+<--CgiUrl? [/cgi-bin/example]
 
 -->/cgi-bin/example
 !endblock
@@ -417,13 +417,13 @@ up for your cgi-bin.
 <--# perhaps because your secure server is not the same name as the
 <--# non-secure one.
 <--#
-<--# 
+<--#
 <--#                    ^^^^^^^^^^^^^^^^
 <--#
 <--# We set it to the name of the catalog by default to enable the
 <--# internal HTTTP server.
 <--#
-<--Aliases? E<lbracket>/example]
+<--Aliases? [/example]
 
 -->/example
 !endblock
@@ -439,7 +439,7 @@ documentation for minivend.cfg.
 <--# This is a directory path name, not a URL -- it is your HTML
 <--# directory.
 <--#
-<--DocumentRoot? E<lbracket>/usr/local/httpd/htdocs]
+<--DocumentRoot? [/usr/local/httpd/htdocs]
 
 -->/usr/local/httpd/htdocs
 !endblock
@@ -453,7 +453,7 @@ static elements of the catalog will be stored here.
 <--# installed. There is a difference.  Usually a subdirectory of
 <--# your HTML directory.
 <--#
-<--SampleHtml? E<lbracket>/usr/local/httpd/htdocs/example]
+<--SampleHtml? [/usr/local/httpd/htdocs/example]
 
 -->/usr/local/httpd/htdocs/example
 !endblock
@@ -466,7 +466,7 @@ order to store the static HTML pages for the demo catalog.
 <--# Where the image files should be copied. A directory path
 <--# name, not a URL.
 <--#
-<--ImageDir? E<lbracket>/home/sonny/public_html/example/images]
+<--ImageDir? [/home/sonny/public_html/example/images]
 
 -->/home/sonny/public_html/example/images
 !endblock
@@ -479,10 +479,10 @@ order to store the static HTML pages for the demo catalog.
 <--# directive in the catalog configuration file. This is a URL
 <--# fragment, not a directory or file name.
 <--#
-<--#         
+<--#
 <--#                   ^^^^^^^^^^^^^^
 <--#
-<--ImageUrl? E<lbracket>/example/images]
+<--ImageUrl? [/example/images]
 !endblock
 
 .This is the URL for the images stored in the directory created
@@ -495,7 +495,7 @@ above. Interchange needs this in order to create tags for the     catalogs dynam
 <--If you already have a program there, or use a common program
 <--and the FullURL directive, select NONE. You will then need
 <--to copy the program by hand or otherwise ensure its presence.
-<--INET or UNIX mode? E<lbracket>UNIX]
+<--INET or UNIX mode? [UNIX]
 
 -->UNIX
 !endblock
@@ -505,7 +505,7 @@ will work just fine.
 
 +
 !block example; listitem=2
-<--Do you use CGIWRAP or SUEXEC? E<lbracket>n]
+<--Do you use CGIWRAP or SUEXEC? [n]
 
 -->n
 !endblock
@@ -525,12 +525,12 @@ will work just fine.
 
 +
 !block example; listitem=2
-<--Your company name: .....................E<lbracket>Barry's Books]
-<--Your company address: ..................E<lbracket>123 Any St.]
-<--Your company city/state/zip: ...........E<lbracket>Anytown, USA 00000]
-<--Your company phone: ....................E<lbracket>(555) 555-5555]
-<--Your company fax number: ...............E<lbracket>(555) 555-5556]
-<--Your company tollfree number (if any):..E<lbracket>(888) 555-5555]
+<--Your company name: .....................[Barry's Books]
+<--Your company address: ..................[123 Any St.]
+<--Your company city/state/zip: ...........[Anytown, USA 00000]
+<--Your company phone: ....................[(555) 555-5555]
+<--Your company fax number: ...............[(555) 555-5556]
+<--Your company tollfree number (if any):..[(888) 555-5555]
 !endblock
 
 .Here are several questions concerning the store's information.
@@ -558,7 +558,7 @@ groups this together on a single page.
 <--
 <--  brown1  blue1  yellow1
 <--
-<--Select color scheme: ...................E<lbracket>green1]
+<--Select color scheme: ...................[green1]
 
 -->blue1
 !endblock
@@ -571,7 +571,7 @@ are designed around the demo catalog.
 <--For the US, this is usually the state(s) your business is
 <--located in. Non-US users will probably have to set this
 <--differently depending on their tax laws.
-<--Area(s) to tax in: .....................E<lbracket>VA UT]
+<--Area(s) to tax in: .....................[VA UT]
 
 -->VA UT
 !endblock
@@ -584,7 +584,7 @@ are designed around the demo catalog.
 <--is in percent. The default below taxes Ohio at 6% and
 <--Illinois at 7.25 percent. More states can be added or
 <--you can have only one. Should correspond to TAXAREA.
-<--Percentage rate(s) for tax in different areas: ..E<lbracket>VA=7.5, UT=7.25]
+<--Percentage rate(s) for tax in different areas: ..[VA=7.5, UT=7.25]
 
 -->VA=4.5 UT=6.35
 !endblock
@@ -595,7 +595,7 @@ are designed around the demo catalog.
 !block example; listitem=2
 <--For the UPS lookup, the standard UPS tables are normally
 <--used. If you want to add a handling charge, do it here.
-<--Amount to add on to standard UPS costs: ..E<lbracket>3.00]
+<--Amount to add on to standard UPS costs: ..[3.00]
 
 -->3.00
 !endblock
@@ -605,14 +605,14 @@ the UPS shipping methods.
 
 +
 !block example; listitem=2
-<--Origin zip code for UPS lookups: .......E<lbracket>00000]
+<--Origin zip code for UPS lookups: .......[00000]
 
 -->83617
 !endblock
 
-.UPS calculates shipping from one zip code to another zip code. 
+.UPS calculates shipping from one zip code to another zip code.
 This zip code is the origin of all shipments. If shipping
-from multiple locations, consult the documentation or contact 
+from multiple locations, consult the documentation or contact
 Akopia support.
 
 +
@@ -625,7 +625,7 @@ Akopia support.
 -->0
 !endblock
 
-.For the purposes of this procedure, use the Interchange internal 
+.For the purposes of this procedure, use the Interchange internal
 database. Consult the documentation for information about using the
 SQL database of choice.
 
@@ -636,7 +636,7 @@ SQL database of choice.
 <--the database, reconfiguration of the catalog, and much more.
 <--To enable MiniMate, you will need a "super-user" account
 <--name that has full access.
-<--Account name that will control this catalog: ..E<lbracket>sonny]
+<--Account name that will control this catalog: ..[sonny]
 
 -->user
 !endblock
@@ -644,10 +644,10 @@ SQL database of choice.
 .In this and all future versions, Minimate has been replaced with
 the Interchange administrative interface. Tallyman users should
 find it very familiar since it's based on Tallyman's interface.
-(See the Interchange Back-Office document.) This gives the user with      
+(See the Interchange Back-Office document.) This gives the user with
 full administrative permissions complete control of the catalog.
 
-.The administrative password for E<lbracket>user] above is "pass." This is a
+.The administrative password for [user] above is "pass." This is a
 very weak password. It should be changed with the
 Administrators->Change password function in the UI.
 
@@ -657,7 +657,7 @@ Administrators->Change password function in the UI.
 !endblock
 
 .This prompt may occur if MySQL or Postgress was selected. Otherwise,
-it will be silent (and do nothing). If Mysql or Postgres were 
+it will be silent (and do nothing). If Mysql or Postgres were
 selected, and this doesn't work, the catalog will probably
 not work.
 
@@ -673,7 +673,7 @@ Processing.
 
 +
 !block example; listitem=2
-<--Add catalog to minivend.cfg? E<lbracket>y]
+<--Add catalog to minivend.cfg? [y]
 
 -->y
 !endblock
@@ -686,11 +686,11 @@ when it starts up.
 <--Done with installation. If my reading of your input is correct, you
 <--should be able to access the demo catalog with the following URL:
 <--
-<--        
+<--
 <--
 <--In any case, you should get direct access at:
 <--
-<--        
+<--
 <--
 <--That is, after you START or RESTART the Interchange server.  8-)
 <--It is best done with:
@@ -705,7 +705,7 @@ when it starts up.
 <--It will prevent the session databases from getting too large.
 !endblock
 
-.Installation is complete. 
+.Installation is complete.
 
 +Lastly, start the Interchange server: /home/user/mvend/bin/minivend -r
 
@@ -740,21 +740,21 @@ Check the README file, the FAQ, and mail list archive at the official Interchang
 
 Double check the following items:
 
-^Using UNIX sockets? 
+^Using UNIX sockets?
 
 -Check that the C<vlink> program is SUID, or the appropriate changes have been made in the SocketPerms directive. Unless the files are world-writable, the vlink program and the Interchange server must run as the same user ID! If running CGI-WRAP or SUEXEC, the C<vlink> program must not be SUID.
 
--If having trouble with the vlink program (named C<construct> in the demo configuration), try re-running C<makecat> and using INET mode instead. (Or copy the C<tlink> INET mode link program over C<vlink>). This should work unchanged for many systems. 
+-If having trouble with the vlink program (named C<construct> in the demo configuration), try re-running C<makecat> and using INET mode instead. (Or copy the C<tlink> INET mode link program over C<vlink>). This should work unchanged for many systems.
 
 -If using an ISP or have a non-standard network configuration, some changes to interchange.cfg are necessary. For C<tlink> to work, the proper host name(s) must be configured into the TcpHost directive in interchange.cfg. The program selects port 7786 by default (the ASCII codes for "M" and "V"). If another port is used, it must be set to the same number in both the tlink program (by running C<compile_link>) and the C<minivend.cfg> file. The C<tlink> program does not need to be SUID.
 
-+Proper file permissions? 
++Proper file permissions?
 
--The Interchange server should not run as the user C<nobody>! The program files can be owned by anyone, but any databases, ASCII database source files, error logs, and the directory that holds them must be writable by the proper user ID, that is the one that is executing the MiniVend program. 
+-The Interchange server should not run as the user C<nobody>! The program files can be owned by anyone, but any databases, ASCII database source files, error logs, and the directory that holds them must be writable by the proper user ID, that is the one that is executing the MiniVend program.
 
 -The best way to operate in multi-user, multiple catalog setups is to create a special C<interch> user, then put that user in the group that contains each catalog user. If a group is defined for each individual user, this provides the best security. All associated files can be in 660 or 770 mode. There should be no problems with permissions and no problems with security.
 
-+Is the C<vlink> program being executed on a machine that has the socket file C<etc/socket> on a directly attached disk? 
++Is the C<vlink> program being executed on a machine that has the socket file C<etc/socket> on a directly attached disk?
 
 -UNIX-domain sockets will not work on NFS-mounted file systems! This means that the server C<minivend> and the CGI program C<vlink> must be executing on the same machine.
 
@@ -786,7 +786,7 @@ will become this:
        <IMG SRC="/simple/images/ordernow.gif">
 !endblock
 
-This tag: 
+This tag:
 
 !block example
        <IMG SRC="items/00-0011.jpg">

@@ -1,33 +1,33 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.19 2000-11-15 15:18:06 heins Exp $
+# $Id: icconfig.sdf,v 1.20 2000-11-22 21:53:06 jon Exp $
 
 !define DOC_NAME "Interchange Configuration"
 !define DOC_TYPE ""
 !define DOC_CODE "ICCONFIG_D2_100800"
-!define DOC_VERSION substr('$Revision: 1.19 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.20 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
 !build_title
 
-H1: CONFIGURATION OF AKOPIA INTERCHANGE TM
+H1: CONFIGURATION OF AKOPIA INTERCHANGE(TM)
 
-Akopia Interchange is the industry's most widely distributed and implemented open source e-commerce platform. This document provides detailed configuration instructions for Interchange and the Construct Something demo store demo included with the program, and answers a variety of frequently asked questions. The Interchange TM program must be installed before continuing. For more information on the Installation process, see the Installation (ICINSTALL.SDF) manual.
+Akopia Interchange is the industry's most widely distributed and implemented open source e-commerce platform. This document provides detailed configuration instructions for Interchange and the Construct Something demo store demo included with the program, and answers a variety of frequently asked questions. The Interchange program must be installed before continuing. For more information on the Installation process, see the Installation (icinstall) manual.
 
 H1: CREATING A CATALOG
 
-Interchange uses unique tags to implement catalog functions. The tags are similar to HTML, but the code is in C<E<lbracket>square brackets]>. The Interchange tags will be referred to as either tags or elements in this document.
+Interchange uses unique tags to implement catalog functions. The tags are similar to HTML, but the code is in C<[square brackets]>. The Interchange tags will be referred to as either tags or elements in this document.
 
-There are multiple steps required to set up a custom Interchange catalog. Refer to the Reference Tags (ICTAGS.SDF) manual for more information about Interchange tags and how they are used during initial set up a catalog. The demo catalogs provide examples of these tags and how they are used.
+There are multiple steps required to set up a custom Interchange catalog. Refer to the Reference Tags (ictags) manual for more information about Interchange tags and how they are used during initial set up a catalog. The demo catalogs provide examples of these tags and how they are used.
 
-H2:  Create a Database
+H2: Create a Database
 
 The first step is to develop a product database. This can contain all of the information used to display product pages, or simply the product code (SKU), a short description, and the price. At the minimum, the product code, description, and price fields are required.
 
 The following is a list of other elements that can be included:
 
 LI1: Image
-.A database field listing the name of an image file that displays the product. Specify a name here, or omit this field from the database and store images in files that are named for the product code. If using images, they will be displayed by using the C<E<lbracket>if file file.gif] TAG E<lbracket>/if]> construct).
+.A database field listing the name of an image file that displays the product. Specify a name here, or omit this field from the database and store images in files that are named for the product code. If using images, they will be displayed by using the C<[if file file.gif] TAG [/if]> construct).
 
 LI1: Nontaxable
 
@@ -52,15 +52,15 @@ LI1: Category
 .Used to select one-click category searches to build product directories.
 
 LI1: Related
-.Elements related to the item in the record. Using the Interchange C<E<lbracket>loop item]> tag, product subclasses and accessory sets can be built.
+.Elements related to the item in the record. Using the Interchange C<[loop item]> tag, product subclasses and accessory sets can be built.
 
-.By default all database source files are located in the C<products> subdirectory of the catalog directory. The main products database is in the file C<products/products.txt> in the supplied demo catalogs. 
+.By default all database source files are located in the C<products> subdirectory of the catalog directory. The main products database is in the file C<products/products.txt> in the supplied demo catalogs.
 
 .If using one of the internal database methods, any changes made to the ASCII source file will be reflected in the database in the next user session. If the product database contains less than a thousand records, updates will be instantaneous. If the product database is substantially larger, updates will take longer. Use the C<NoImport> reference tag to stop auto updating.
 
 H2:  Features to Use
 
-The Interchange demo catalog shows many features of Interchange, such as list and category building, controlled search or query, random selection of feature items, and templating with active elements. However, each feature has its cost in complexity and performance. Expect reduced performance if the computer has to do more for every page it displays. 
+The Interchange demo catalog shows many features of Interchange, such as list and category building, controlled search or query, random selection of feature items, and templating with active elements. However, each feature has its cost in complexity and performance. Expect reduced performance if the computer has to do more for every page it displays.
 
 The following is a list of some popular features:
 
@@ -74,7 +74,7 @@ LI1: Images
 
 LI1: Related Items
 
-.On a product's individual display page, embed searches of similar products with the C<E<lbracket>query ...]> or C<E<lbracket>loop ...]> tags. Or, if customer data is developed, search a past order database and display products that would be of interest to that customer. 
+.On a product's individual display page, embed searches of similar products with the C<[query ...]> or C<[loop ...]> tags. Or, if customer data is developed, search a past order database and display products that would be of interest to that customer.
 
 LI1: Reviews/Testimonials
 
@@ -167,7 +167,7 @@ In HTML, the C<__RIGHTSIDE__> is simply defined to be empty, closing the table r
 
 The variables are defined in C<catalog.cfg>, and come from files in the config directory. There are conditional templates with different color schemes.
 
-Once familiar with this method, it can be quite convenient. But other methods may be chosen, such as using an HTML editor. Interchange can coexist with editors that use the <NOTOUCH> </NOTOUCH> or <NOEDIT> </NOEDIT> pairs to delimit information that should not be altered or interpreted by the editor. Bear in mind that this templating method and the database layout of the simple catalog is only a suggestion on how a catalog might be organized. Many users decide to create their own database structure for product display. 
+Once familiar with this method, it can be quite convenient. But other methods may be chosen, such as using an HTML editor. Interchange can coexist with editors that use the <NOTOUCH> </NOTOUCH> or <NOEDIT> </NOEDIT> pairs to delimit information that should not be altered or interpreted by the editor. Bear in mind that this templating method and the database layout of the simple catalog is only a suggestion on how a catalog might be organized. Many users decide to create their own database structure for product display.
 
 Yet, most users stick with the userdb and checkout strategies employed in this catalog. This is because these strategies have been developed and proven successful over a period of years. Still, they can be customized to operate like Amazon.com or another site.
 
@@ -247,7 +247,7 @@ LI2: artist
 
 LI2: comment
 
-..A long description of the product. If using the Interchange internal database, the field size is unlimited; if using another type of database, the length will be dependent on the field type selected. 
+..A long description of the product. If using the Interchange internal database, the field size is unlimited; if using another type of database, the length will be dependent on the field type selected.
 
 LI2: display
 
@@ -287,7 +287,7 @@ LI2: related
 
 LI2: featured
 
-..As used in this demo, the only meaningful value is C<front>. If this is contained in the field, this product may be featured on the front page via random selection. See the C<index.html> page for how it integrates with C<E<lbracket>loop search=something random=3]>.
+..As used in this demo, the only meaningful value is C<front>. If this is contained in the field, this product may be featured on the front page via random selection. See the C<index.html> page for how it integrates with C<[loop search=something random=3]>.
 
 LI1: orderline
 
@@ -301,21 +301,20 @@ LI1: userdb
 
 .The user database used for maintaining customer address information, account information, preferences, and more. See C<UserDB>.
 
-H2: IML - Interchange Markup Language
+H2: ITL - Interchange Tag Language
 
-Interchange functions are accessed via IML, the Interchange Markup Language.
-The pages in the catalog are in HTML, but use IML tags to provide access to Interchange's functions. IML tags use C<E<lbracket>square brackets]> instead of angular brackets. They are usually called Interchange tags or just tags. They are similar to HTML in syntax. There are both <I>standalone</I> and <I>container</I> tags. A standalone tag has no ending element. For example: 
+Interchange functions are accessed via ITL, the Interchange Tag Language. The pages in the catalog are in HTML, but use ITL to provide access to Interchange's functions. ITL tags are delimited by C<[square brackets]> instead of angle brackets. They are usually called Interchange tags or just tags. They are similar to HTML in syntax in that there are both <I>standalone</I> and <I>container</I> tags. A standalone tag has no ending element. For example:
 
 !block example
-   E<lbracket>value name]
+   [value name]
 !endblock
 
 This tag inserts the user's name, providing it has been provided in a form. A container tag has both a beginning and an ending element. For example:
 
 !block example
-   E<lbracket>if value name]
+   [if value name]
    You have a name.
-   E<lbracket>/if]
+   [/if]
 !endblock
 
 These tags perform various display and data modification operations for the user session. There are over 80 standard predefined tags; the C<UserTag> facility permits the creation of new tags to perform user-defined functions. The user tags can be every bit as powerful as the standard tags.
@@ -323,59 +322,59 @@ These tags perform various display and data modification operations for the user
 As an introduction, a few of the tag names and their general function follow:
 
 !block example
-E<lbracket>accessories]     Access product accessory functions
-E<lbracket>area]            Insert a re-written Interchange URL
-E<lbracket>catch]
-  E<lbracket>/catch]
-E<lbracket>checked]         Conditionally check an HTML check/radio box
-E<lbracket>currency]        Formats a number as currency for current locale
-  E<lbracket>/currency]    
-E<lbracket>data]            Access a database or user session element
-E<lbracket>error]           Check/display form processing errors
-E<lbracket>file]            Insert the contents of a file
-E<lbracket>flag]            Set an Interchange flag
-E<lbracket>fly-list]        Show an item "on-the-fly" in an arbitrary page
-E<lbracket> E<lbracket>/fly-list]      
-E<lbracket>fly-tax]		  Builds a tax rate
-E<lbracket>html_table]      Create an HTML table from a query or list
-E<lbracket>include]         Include a file with complete Interchange interpretation
-E<lbracket>item-list]       Iterate over a shopping cart
-  E<lbracket>/item-list]  
-E<lbracket>label]           Set a label for goto
-E<lbracket>loop]            Iterate over an arbitrary list
-  E<lbracket>/loop]       
-E<lbracket>mvasp]           ASP-style Perl programming area
-E<lbracket>no-match]        Define area of region results displayed when no match
-  E<lbracket>/no-match]   
-E<lbracket>nitems]          Show number of items for a shopping cart
-E<lbracket>order]           Create HTML link to order an item
-E<lbracket>page]            Create A HREF with re-written URL to call Interchange page
-E<lbracket>perl]            Embed output of arbitrary Perl in the page
-  E<lbracket>/perl]       
-E<lbracket>price]           Show price of an item
-E<lbracket>process]         Create URL for Interchange form processing
-E<lbracket>query]           Perform any of several types of SQL query
-  E<lbracket>/query]       
-E<lbracket>record]          Set a database record
-E<lbracket>region]          Define an area of the page as a search list/query
-E<lbracket>row]             Used with [col] -- rudimentary text tables for order reports
-  E<lbracket>/row]        
-E<lbracket>salestax]        Show amount of salestax for shopping cart
-E<lbracket>scratch]         Access a scratch variable
-E<lbracket>search-list]     Display output of an Interchange search
-  E<lbracket>/search-list] 
-E<lbracket>selected]        Conditional selection of drop-down <SELECT ...>
-E<lbracket>set]             Set a scratch variable
-  E<lbracket>/set]        
-E<lbracket>sort]            Set sort order for iterating lists
-  E<lbracket>/sort]       
-E<lbracket>subtotal]        Calculate subtotal without tax or shipping
-E<lbracket>total-cost]      Calculate order total with tax, handling, and shipping
-E<lbracket>try]		  
-  E<lbracket>/try]
-E<lbracket>userdb]          Access user database functions
-E<lbracket>value]           Display form value
-E<lbracket>value_extended]  Display form array values or do file upload functions
+[accessories]     Access product accessory functions
+[area]            Insert a re-written Interchange URL
+[catch]
+  [/catch]
+[checked]         Conditionally check an HTML check/radio box
+[currency]        Formats a number as currency for current locale
+  [/currency]
+[data]            Access a database or user session element
+[error]           Check/display form processing errors
+[file]            Insert the contents of a file
+[flag]            Set an Interchange flag
+[fly-list]        Show an item "on-the-fly" in an arbitrary page
+  [/fly-list]
+[fly-tax]		  Builds a tax rate
+[html_table]      Create an HTML table from a query or list
+[include]         Include a file with complete Interchange interpretation
+[item-list]       Iterate over a shopping cart
+  [/item-list]
+[label]           Set a label for goto
+[loop]            Iterate over an arbitrary list
+  [/loop]
+[mvasp]           ASP-style Perl programming area
+[no-match]        Define area of region results displayed when no match
+  [/no-match]
+[nitems]          Show number of items for a shopping cart
+[order]           Create HTML link to order an item
+[page]            Create A HREF with re-written URL to call Interchange page
+[perl]            Embed output of arbitrary Perl in the page
+  [/perl]
+[price]           Show price of an item
+[process]         Create URL for Interchange form processing
+[query]           Perform any of several types of SQL query
+  [/query]
+[record]          Set a database record
+[region]          Define an area of the page as a search list/query
+[row]             Used with [col] -- rudimentary text tables for order reports
+  [/row]
+[salestax]        Show amount of salestax for shopping cart
+[scratch]         Access a scratch variable
+[search-list]     Display output of an Interchange search
+  [/search-list]
+[selected]        Conditional selection of drop-down <SELECT ...>
+[set]             Set a scratch variable
+  [/set]
+[sort]            Set sort order for iterating lists
+  [/sort]
+[subtotal]        Calculate subtotal without tax or shipping
+[total-cost]      Calculate order total with tax, handling, and shipping
+[try]		
+  [/try]
+[userdb]          Access user database functions
+[value]           Display form value
+[value_extended]  Display form array values or do file upload functions
 !endblock
 
 A complete list of tags and all tag syntax is available in ICTAGS.POD.
@@ -393,7 +392,7 @@ Instead of:
 \Use:
 
 !block example
-   <A HREF="E<lbracket>area shirts]">Shirts</A>
+   <A HREF="[area shirts]">Shirts</A>
 !endblock
 
 H2: Images
@@ -409,18 +408,18 @@ If planning to use more than one host name within the same domain for naming pur
 
 H2: Basic Interchange Tags
 
-Note: In the descriptions that follow, parameters marked with an asterisk (*) are optional. When a tag is separated by an underscore, as in C<item_list>, a dash is just as appropriate (i.e., C<item-list>). They are interchangeable, except that the ending tag and beginning tag should match (don't use C<E<lbracket>item-list] list E<lbracket>/item_list]>). B<*> I<indicates an optional argument>
+Note: In the descriptions that follow, parameters marked with an asterisk (*) are optional. When a tag is separated by an underscore, as in C<item_list>, a dash is just as appropriate (i.e., C<item-list>). They are interchangeable, except that the ending tag and beginning tag should match (don't use C<[item-list] list [/item_list]>). B<*> I<indicates an optional argument>
 
 H2: Inserting Hyperlinks
 
-.Named parameters: E<lbracket>area href="dir/page" secure=1* arg="argument"* form="form string"*]
+.Named parameters: [area href="dir/page" secure=1* arg="argument"* form="form string"*]
 
-.Positional parameters: E<lbracket>area pg arg*]
+.Positional parameters: [area pg arg*]
 
 .Produces the URL to call an Interchange page, without the surrounding C<A HREF> notation. This can be used to get control of HREF items, perhaps to place an ALT string or a JavaScript construct. It was originally named C<area> because it also can be used in a client-side image map.
 
 !block example; listitem=2
-       <A HREF="E<lbracket>area catalog]" ALT="Main catalog page">
+       <A HREF="[area catalog]" ALT="Main catalog page">
 !endblock
 
 .The optional arg is used just as in the page tag.
@@ -428,7 +427,7 @@ H2: Inserting Hyperlinks
 .The optional C<form> argument is used to encode a form in the link.
 
 !block example; listitem=2
-       <A HREF="E<lbracket>area form="
+       <A HREF="[area form="
                mv_order_item=99-102
                mv_order_size=L
                mv_order_quantity=1
@@ -439,30 +438,30 @@ H2: Inserting Hyperlinks
 
 .See above for more information.
 
-LI1: E<lbracket>/page], E<lbracket>/order]
+LI1: [/page], [/order]
 
 .Expands into </a>. Used with the page element, such as:
 
 !block example; listitem=2
-    E<lbracket>page shirts]Our shirt collectionE<lbracket>/page].
+    [page shirts]Our shirt collection[/page].
 !endblock
 
 Note[label='TIP: '] A small efficiency boost in large pages is to just use the </A> tag.
 
-LI1: E<lbracket>page ...]
+LI1: [page ...]
 
-.Named parameters: {{EX:E<lbracket>page href="dir/page" arg="argument" secure=1* form="form string"]}}
+.Named parameters: {{EX:[page href="dir/page" arg="argument" secure=1* form="form string"]}}
 
-.Positional parameters: {{EX:E<lbracket>page dir/page arg*] (only two positional parameters)}}
+.Positional parameters: {{EX:[page dir/page arg*] (only two positional parameters)}}
 
-.Insert a hyperlink to the specified catalog page pg. For example, E<lbracket>page shirts] will expand into <a href="http://machine.company.com/cgi-bin/vlink/shirts?id=WehUkATn&pc=33">. The catalog page displayed will come from "shirts.html" in the pages directory.
+.Insert a hyperlink to the specified catalog page pg. For example, [page shirts] will expand into <a href="http://machine.company.com/cgi-bin/vlink/shirts?id=WehUkATn&pc=33">. The catalog page displayed will come from "shirts.html" in the pages directory.
 
 .If the user has sent a cookie to Interchange (meaning the second page they access), and the scratch value C<mv_no_session_id> is set in their session, the session ID will not be appended to the URL. If the scratch value C<mv_no_count> is set, then the page count will not be appended. This is not dependent on cookies. So, if placed in the initial page:
 
 !block example; listitem=2
-    E<lbracket>set mv_no_session_id]1E<lbracket>/set]
-    E<lbracket>set mv_no_count]1E<lbracket>/set]
-    E<lbracket>set mv_add_dot_html]1E<lbracket>/set]
+    [set mv_no_session_id]1[/set]
+    [set mv_no_count]1[/set]
+    [set mv_add_dot_html]1[/set]
 !endblock
 
 .or put in C<catalog.cfg>:
@@ -475,14 +474,14 @@ LI1: E<lbracket>page ...]
 
 .No session ID or count will be shown. That makes the URL shown above to be http://machine.company.com/cgi-bin/vlink/shirts.html. Once again, this is on the second page the user accesses, if they are taking and sending cookies. If the user has a pre-existing C<MV_SESSION_ID> or C<MV_USERNAME> cookie from a prior session, the effect will be immediate.
 
-.The C<argument> will be passed to Interchange and placed in the C<mv_arg> session parameter. This allows programming of a conditional page display based on where the link came from. The argument is then available with the tag E<lbracket>data session arg], or the embedded Perl session variable $Session->{arg}. If the catalog configuration option NewEscape is set, which is the default, then spaces and some other characters will be escaped with the %NN HTTP-style notation and unescaped when the argument is read back into the session.
+.The C<argument> will be passed to Interchange and placed in the C<mv_arg> session parameter. This allows programming of a conditional page display based on where the link came from. The argument is then available with the tag [data session arg], or the embedded Perl session variable $Session->{arg}. If the catalog configuration option NewEscape is set, which is the default, then spaces and some other characters will be escaped with the %NN HTTP-style notation and unescaped when the argument is read back into the session.
 
 .A bit of magic occurs if Interchange has built a static plain HTML page for the target page. Instead of generating a normal Interchange-parsed page reference, a static page reference will be inserted if the user has accepted and sent back a cookie with the session ID.
 
 .The optional C<form> argument allows for encoding a form in the link.
 
 !block example; listitem=2
-        E<lbracket>page form="
+        [page form="
                 mv_order_item=99-102
                 mv_order_size=L
                 mv_order_quantity=1
@@ -493,29 +492,29 @@ LI1: E<lbracket>page ...]
 .The two form values C<mv_session_id> and C<mv_arg> are automatically added
 when appropriate. (mv_arg is the C<arg> parameter for the tag.)
 
-.If the parameter C<href> is not supplied, process is used, causing normal Interchange form processing. If the C<href> points to an http://link no Interchange URL processing will be done, but the C<mv_session_id>. This would generate a form that ordered item number 99-102 on a separate line (C<mv_separate_items> being set), with size C<L>, in quantity 2. Since the page is not set, the user will go to the default shopping cart page. 
+.If the parameter C<href> is not supplied, process is used, causing normal Interchange form processing. If the C<href> points to an http://link no Interchange URL processing will be done, but the C<mv_session_id>. This would generate a form that ordered item number 99-102 on a separate line (C<mv_separate_items> being set), with size C<L>, in quantity 2. Since the page is not set, the user will go to the default shopping cart page.
 
 .At the same time, C<mv_orderpage=yourpage> could be set to go to C<yourpage>.  Theoretically, any form can be submitted with this, though none of the included values can have newlines or trailing whitespace. To do so requires the writing of a UserTag. Foreign forms can also be submitted, but they will not touch the href if it begins with http:, ftp:, or the like.
 
-LI1: E<lbracket>/page], E<lbracket>/order]
+LI1: [/page], [/order]
 
 .Expands into </a>. Used with the page element, such as:
 
 !block example; listitem=2
-  E<lbracket>page shirts]Our shirt collectionE<lbracket>/page].
+  [page shirts]Our shirt collection[/page].
 !endblock
 
 .\TIP: A small efficiency boost in large pages is to just use the </A> tag.
 
 H2: How to Order an Item
 
-Interchange can either use a form-based order or a link-based order to place an item in the shopping cart. The link-based order uses the special C<E<lbracket>order item-code]> tag:
+Interchange can either use a form-based order or a link-based order to place an item in the shopping cart. The link-based order uses the special C<[order item-code]> tag:
 
-LI1: E<lbracket>order code]
+LI1: [order code]
 .Named parameters:
 
 !block example; listitem=2
-        C<E<lbracket>order code="sku" href="page" cart="cartname"* base="table"]>
+        C<[order code="sku" href="page" cart="cartname"* base="table"]>
 !endblock
 
 .Expands into a hypertext link which will include the specified code in the list of products to order and display the order page. C<Code> should be a product SKU listed in one of the "products" tables. The optional argument C<cart/page> selects the shopping cart where the item will be placed (begin with / to use the default cart C<main>) and the order page that will display the order. The optional argument base constrains the order to a particular products file. If not specified, all tables defined as products files will be searched in sequence for the item.
@@ -523,34 +522,34 @@ LI1: E<lbracket>order code]
 .Example:
 
 !block example; listitem=2
-Order a E<lbracket>order TK112]ToasterE<lbracket>/order] today.
+Order a [order TK112]Toaster[/order] today.
 !endblock
 
 .Note that this is the same as:
 
 !block example; listitem=2
-Order a E<lbracket>page order TK112]Toaster</A> today.
+Order a [page order TK112]Toaster</A> today.
 !endblock
 
 .You can change frames for the order with:
 
 !block example; listitem=2
-Order a <A HREF="E<lbracket>area order TK112]" TARGET=newframe>Toaster</A> today.
+Order a <A HREF="[area order TK112]" TARGET=newframe>Toaster</A> today.
 !endblock
 
-LI1: E<lbracket>/order]
+LI1: [/order]
 
-.Expands into </a>. Used with the order element, such as: Buy a C<E<lbracket>order TK112]>ToasterC<E<lbracket>/order]> today.
+.Expands into </a>. Used with the order element, such as: Buy a C<[order TK112]>ToasterC<[/order]> today.
 
 To order with a form, you set the form variable C<mv_order_item> to the item-code/SKU and use the C<refresh> action:
 
 !block example; listitem=2
-<FORM ACTION="E<lbracket>process-target]" METHOD=POST>
+<FORM ACTION="[process-target]" METHOD=POST>
 <INPUT TYPE=hidden  NAME="mv_todo"        VALUE="refresh">
 <INPUT TYPE=hidden  NAME="mv_order_item"  VALUE="TK112">
- 
+
 Order <INPUT NAME="mv_order_quantity" SIZE=3 VALUE=1> toaster
- 
+
 <INPUT TYPE=submit VALUE="Order!">
 </FORM>
 !endblock
@@ -558,7 +557,7 @@ Order <INPUT NAME="mv_order_quantity" SIZE=3 VALUE=1> toaster
 Groups of items may be batched:
 
 !block example; listitem=2
-<FORM ACTION="E<lbracket>process-target]" METHOD=POST>
+<FORM ACTION="[process-target]" METHOD=POST>
 <INPUT TYPE=hidden  NAME="mv_todo"        VALUE="refresh">
 
 <INPUT TYPE=hidden  NAME="mv_order_item"  VALUE="TK112">
@@ -566,7 +565,7 @@ Groups of items may be batched:
 
 <INPUT TYPE=hidden  NAME="mv_order_item"  VALUE="TK200">
 <INPUT NAME="mv_order_quantity" SIZE=3> Super Toaster
-  
+
 <INPUT TYPE=submit VALUE="Order!">
 </FORM>
 !endblock
@@ -580,28 +579,28 @@ H2: Accessing Form Values
 When a form is sent to Interchange, the program reads the values and places them in the user session. The following form:
 
 !block example; listitem=2
-<FORM ACTION="E<lbracket>area index]" METHOD=POST>
+<FORM ACTION="[area index]" METHOD=POST>
 <INPUT TYPE=hidden NAME=mv_action VALUE=return>
 <INPUT TYPE=hidden NAME=foo VALUE=bar>
 <INPUT TYPE=submit NAME="Make foo=bar">
 </FORM>
 !endblock
 
-will make the C<E<lbracket>value foo]> tag equal to C<bar> on the next page, then, send you to the page C<index>(.html). Same for this link:
+will make the C<[value foo]> tag equal to C<bar> on the next page, then, send you to the page C<index>(.html). Same for this link:
 
 !block example; listitem=2
-<A HREF="E<lbracket>area  href=index
+<A HREF="[area  href=index
                     form='
                       foo=bar
                       mv_action=return
                     ']">Make foo=bar</A>
 !endblock
 
-LI1: E<lbracket>value name=field set="new value" filter="filter" hide=1]
+LI1: [value name=field set="new value" filter="filter" hide=1]
 
-.\Positional:  C<E<lbracket>value varname]>
+.\Positional:  C<[value varname]>
 
-.The C<E<lbracket>value ...]> ITL tag expands into the current value of the customer/form input field named by field. If the C<set> value is present, the form variable value will be set to it and the new value returned. Use this to "uncheck" a checkbox or set other form variable values to defaults. If C<HIDE> is set, the value will be set but not returned to the page.
+.The C<[value ...]> ITL tag expands into the current value of the customer/form input field named by field. If the C<set> value is present, the form variable value will be set to it and the new value returned. Use this to "uncheck" a checkbox or set other form variable values to defaults. If C<HIDE> is set, the value will be set but not returned to the page.
 
 .The C<filter="filter1 filter1"> parameter applies any of the standard Interchange filter types to the value. See C<Filters>. When the value is returned, any Interchange tags present in the value will be escaped. This prevents users from entering Interchange tags in form values, which could be a serious security risk.
 
@@ -633,7 +632,7 @@ LI1: etc
 
 LI1: pages
 
-.Directory that contains the pages of the catalog. This can be considered to be the "document root" of the catalog. Pages contained therein are called with the path information after the script name. For example: 
+.Directory that contains the pages of the catalog. This can be considered to be the "document root" of the catalog. Pages contained therein are called with the path information after the script name. For example:
 
 !block example; listitem=2
 C</cgi-bin/simple/products/gold> will call the page in the file
@@ -664,17 +663,17 @@ Catalog simple /home/catalogs/simple /cgi-bin/simple /secure-bin/simple
 
 LI1: simple
 
-.The catalog identifier, used as the name of the catalog on command lines. In the supplied demo configuration this would be C<simple>. The identifier can contain characters from the set E<lbracket>B<A-Za-z0-9_>].
+.The catalog identifier, used as the name of the catalog on command lines. In the supplied demo configuration this would be C<simple>. The identifier can contain characters from the set [B<A-Za-z0-9_>].
 
 LI1: /home/catalogs/simple
 
 .The directory where the catalog.cfg file may be found, and usually the directory where pages and databases are kept.
 
 LI1: /cgi-bin/simple  /secure-bin/simple
-.The script names which, when containing an Interchange link program, will cause that catalog to be called. At least one must be supplied, and the same name may not be used for more than one catalog unless the C<FullURL> directive is specified. In this case, the parameter may be specified as: 
+.The script names which, when containing an Interchange link program, will cause that catalog to be called. At least one must be supplied, and the same name may not be used for more than one catalog unless the C<FullURL> directive is specified. In this case, the parameter may be specified as:
 
 !block example; listitem=2
-www.yourcompany.com/cgi-bin/simple; 
+www.yourcompany.com/cgi-bin/simple;
 www.theirs.com/cgi-bin/simple may call a different catalog.
 !endblock
 
@@ -686,9 +685,9 @@ H2: Setting the Locale
 
 The locale could be set to C<fr_FR> (French for France) in one of two ways:
 
-LI1: E<lbracket>setlocale locale=locale* currency=locale* persist=1*]
+LI1: [setlocale locale=locale* currency=locale* persist=1*]
 
-.This tag is for new-style tags only and will not work for C<E<lbracket>old]>.
+.This tag is for new-style tags only and will not work for C<[old]>.
 
 .Immediately sets the locale to C<locale>, and will cause it to persist in future user pages if the C<persist> is set to a non-zero, non-blank value. If the C<currency> attribute is set, the pricing and currency-specific locale keys and Interchange configuration directives are modified to that locale. If there are no arguments, it sets it back to the user's default locale as defined in the scratch variables C<mv_locale> and C<mv_currency>.
 
@@ -697,31 +696,31 @@ LI1: E<lbracket>setlocale locale=locale* currency=locale* persist=1*]
 !block example; listitem=2
     Dollar Pricing:
 
-    E<lbracket>setlocale en_US]
-    E<lbracket>item-list]
-    E<lbracket>item-code]: E<lbracket>item-price]<BR>
-    E<lbracket>/item-list]
+    [setlocale en_US]
+    [item-list]
+    [item-code]: [item-price]<BR>
+    [/item-list]
 
     Franc Pricing:
 
-    E<lbracket>setlocale fr_FR]
-    E<lbracket>item-list]
-    E<lbracket>item-code]: E<lbracket>item-price]<BR>
-    E<lbracket>/item-list]
+    [setlocale fr_FR]
+    [item-list]
+    [item-code]: [item-price]<BR>
+    [/item-list]
 
-    E<lbracket>comment] Return to the user's default locale E<lbracket>/comment]
-    E<lbracket>setlocale]
+    [comment] Return to the user's default locale [/comment]
+    [setlocale]
 !endblock
 
-.This tag is only available in new mode ("NewTags Yes" or C<E<lbracket>new]>).
+.This tag is only available in new mode ("NewTags Yes" or C<[new]>).
 
-LI1: E<lbracket>page process/locale/fr_FR/page/catalog]
+LI1: [page process/locale/fr_FR/page/catalog]
 
-.This is the same as C<E<lbracket>page catalog]>, except when the link is followed it will set the locale to C<fr_FR> before displaying the page. This is persistent.
+.This is the same as C<[page catalog]>, except when the link is followed it will set the locale to C<fr_FR> before displaying the page. This is persistent.
 
-LI1: E<lbracket>page process/locale/fr_FR/currency/en_US/page/catalog]
+LI1: [page process/locale/fr_FR/currency/en_US/page/catalog]
 
-.This is the same as C<E<lbracket>page catalog]>, except when the link is followed it will set the locale to C<fr_FR> and the pricing/number display to the locale C<en_US> before displaying the page. This is persistent.
+.This is the same as C<[page catalog]>, except when the link is followed it will set the locale to C<fr_FR> and the pricing/number display to the locale C<en_US> before displaying the page. This is persistent.
 
 Once the locale is persistently set for a user, it is in effect for the duration of their session.
 
@@ -734,24 +733,24 @@ The C<Locale> directive has many possible settings allowing complete internation
    Locale de_DE "Value setting" Werteinstellung
 !endblock
 
-When accessed via the special tag C<E<lbracket>L]Value settingE<lbracket>/L]>, the value C<Configuration de valeur> will be displayed B<only> if the locale is set to C<fr_FR>. If the locale is set to C<de_DE>, the string C<Werteinstellung> will be displayed. If it is neither, the default value of C<Value setting> will be displayed.
+When accessed via the special tag C<[L]Value setting[/L]>, the value C<Configuration de valeur> will be displayed B<only> if the locale is set to C<fr_FR>. If the locale is set to C<de_DE>, the string C<Werteinstellung> will be displayed. If it is neither, the default value of C<Value setting> will be displayed.
 
-The C<E<lbracket>L]> and C<E<lbracket>/L]> must be capitalized. This is done for speed of processing as well as easy differentiation in text.
+The C<[L]> and C<[/L]> must be capitalized. This is done for speed of processing as well as easy differentiation in text.
 
 Another, perhaps better, way to do this is right in the page. The
-C<E<lbracket>LC]> ... C<E<lbracket>/LC]> pragma pair permits specification of locale-dependent text.
+C<[LC]> ... C<[/LC]> pragma pair permits specification of locale-dependent text.
 
 !block example
- E<lbracket>LC]
+ [LC]
            This is the default text.
-   E<lbracket>fr_FR] Text for the fr_FR locale. E<lbracket>/fr_FR]
-   E<lbracket>de_DE] Text for the de_DE locale. E<lbracket>/de_DE]
- E<lbracket>/LC]
+   [fr_FR] Text for the fr_FR locale. [/fr_FR]
+   [de_DE] Text for the de_DE locale. [/de_DE]
+ [/LC]
 !endblock
 
 Or place an entire new page in place of the default one if the locale key is defined. When locale is in force, and a key named C<HTMLsuffix> is set to the locale, Interchange first looks for a page with a suffix corresponding to the locale. For example:
 
-<A HREF="E<lbracket>area index]">Catalog home page</A>
+<A HREF="[area index]">Catalog home page</A>
 
 If a page index.html exists, it will be the default. If the current locale is C<fr_FR>, a page "index.fr_FR" exists, and C<Locale> looks like this:
 
@@ -773,18 +772,18 @@ Then, the C<.fr_FR> page will be used instead of the C<.html> page. For longer s
    EOF
 !endblock
 
-The above sets two string substitutions. As long as this is valid Perl syntax describing a series of settings, the text will be matched. It can contain any arbitrary set of characters that don't contain C<E<lbracket>L]> and C<E<lbracket>/L]>.
+The above sets two string substitutions. As long as this is valid Perl syntax describing a series of settings, the text will be matched. It can contain any arbitrary set of characters that don't contain C<[L]> and C<[/L]>.
 If using double quotes, string literals like \n and \t are recognized.
 
-A database can also be used to set locale information. It can be added to any database in the C<catalog.cfg> file, and values in it will overwrite previous settings. See I<LocaleDatabase>. The C<E<lbracket>L]default textE<lbracket>/L]> is set before any other page processing. It is equivalent to the characters "default text" or the appropriate C<Locale> translation for all intents and purposes. Interchange tags and Variable values can be embedded.
+A database can also be used to set locale information. It can be added to any database in the C<catalog.cfg> file, and values in it will overwrite previous settings. See I<LocaleDatabase>. The C<[L]default text[/L]> is set before any other page processing. It is equivalent to the characters "default text" or the appropriate C<Locale> translation for all intents and purposes. Interchange tags and Variable values can be embedded.
 
-Since the C<E<lbracket>L] message E<lbracket>/L]> substitution is done before any tag processing,
-the command C<E<lbracket>L]E<lbracket>item-data table field]E<lbracket>/L]> will fail. There is an add-on C<E<lbracket>loc] message E<lbracket>/loc]> I<UserTag> supplied with the distribution beginning at V3.09. It does the same thing as C<E<lbracket>L] E<lbracket>/L]> except after all tag substitution is done. See <interchange.cfg.dist> for the definition.
+Since the C<[L] message [/L]> substitution is done before any tag processing,
+the command C<[L][item-data table field][/L]> will fail. There is an add-on C<[loc] message [/loc]> I<UserTag> supplied with the distribution beginning at V3.09. It does the same thing as C<[L] [/L]> except after all tag substitution is done. See <interchange.cfg.dist> for the definition.
 
 Care is required when editing pages with localization information. Changing even one character of the message will change the key value and invalidate the message for other languages. To prevent this, use:
 
 !block example
-   E<lbracket>L key]The default.E<lbracket>/L]
+   [L key]The default.[/L]
 !endblock
 
 The key C<msg_key> will then be used to index the message. This may be preferable for many applications.
@@ -796,8 +795,8 @@ H2: Special Locale Keys for Price Representation
 Interchange honors the standard POSIX keys:
 
 !block example
-   mon_decimal_point decimal_point 
-   mon_thousands_sep thousands_sep 
+   mon_decimal_point decimal_point
+   mon_thousands_sep thousands_sep
    currency_symbol   int_currency_symbol
    frac_digits       p_cs_precedes
 !endblock
@@ -827,7 +826,7 @@ LI1: price_picture
     Locale fr_FR price_picture "##.###,## fr"
 !endblock
 
-Note[label='IMPORTANT NOTE: '] The decimal point in use, set by C<mon_decimal_point>, and the thousands separator, set by C<mon_thousands_sep> must match the settings in the picture. The C<frac_digits> setting is not used in this case. It is derived from the location of the decimal (if any). 
+Note[label='IMPORTANT NOTE: '] The decimal point in use, set by C<mon_decimal_point>, and the thousands separator, set by C<mon_thousands_sep> must match the settings in the picture. The C<frac_digits> setting is not used in this case. It is derived from the location of the decimal (if any).
 
 .The same setting for C<fr_FR> above can be achieved with:
 
@@ -842,7 +841,7 @@ Note[label='IMPORTANT NOTE: '] The decimal point in use, set by C<mon_decimal_po
 
 LI1: picture
 
-.Same as C<price_picture>, but sets the value returned if the C<E<lbracket>currency]> tag is not used. If the number of digits is greater than the # locations in the picture, the digits will be changed to asterisks, displaying something like C<**,***.**>.
+.Same as C<price_picture>, but sets the value returned if the C<[currency]> tag is not used. If the number of digits is greater than the # locations in the picture, the digits will be changed to asterisks, displaying something like C<**,***.**>.
 
 H2: Dynamic Locale Directive Changes
 
@@ -940,7 +939,7 @@ LI1: TaxShipping,SalesTax
 
 LI1: DescriptionField
 
-.This changes the field accessed by default with the C<E<lbracket>item-description]> and C<E<lbracket>description code]> tags.
+.This changes the field accessed by default with the C<[item-description]> and C<[description code]> tags.
 
 !block example; listitem=2
     # Establish the default at startup
@@ -948,13 +947,13 @@ LI1: DescriptionField
     Locale fr_FR  DescriptionField desc_fr
 !endblock
 
-LI1: The E<lbracket>locale] tag
+LI1: The [locale] tag
 
-.Standard error messages can be set based on Locale settings. Make sure not to use any of the predefined keys. It is safer to begin a key with msg_ or such. The default message is set between the C<E<lbracket>locale key]> and C<E<lbracket>/locale]> tags. See the example above.
+.Standard error messages can be set based on Locale settings. Make sure not to use any of the predefined keys. It is safer to begin a key with msg_ or such. The default message is set between the C<[locale key]> and C<[/locale]> tags. See the example above.
 
 H2: Sorting Based on Locale
 
-The Interchange C<E<lbracket>sort database:field]> keys will use the LC_COLLATE setting for a locale provided that:
+The Interchange C<[sort database:field]> keys will use the LC_COLLATE setting for a locale provided that:
 
 *The operating system and C compiler support locales for POSIX, and have the locale definitions set.
 
@@ -974,10 +973,10 @@ If this arbitrary database named C<letters>:
 and this loop:
 
 !block example
-   E<lbracket>loop 19-202 00-0011 99-102]
-   E<lbracket>sort letters:letter]
-   E<lbracket>loop-data letters letter]   E<lbracket>loop-code]
-   E<lbracket>/loop]
+   [loop 19-202 00-0011 99-102]
+   [sort letters:letter]
+   [loop-data letters letter]   [loop-code]
+   [/loop]
 !endblock
 
 used the default C setting for LC_COLLATE, it would display:
@@ -1005,9 +1004,9 @@ Interchange has the capability to read its locale information from a database, n
    key                 en_US   fr_FR   de_DE
    PriceDivide         1       .1590   .58
    mon_decimal_point   .       ,       ,
-   mon_thousands_sep   ,       .        
-   currency_symbol     $        frs    DM 
-   ps_cs_precedes      1       0       0   
+   mon_thousands_sep   ,       .
+   currency_symbol     $        frs    DM
+   ps_cs_precedes      1       0       0
 !endblock
 
 This would translate I<exactly> into:
@@ -1029,7 +1028,7 @@ This would translate I<exactly> into:
    Locale de_DE mon_decimal_point   ,
    Locale de_DE mon_thousands_sep   " "
    Locale de_DE currency_symbol     "DM "
-   Locale de_DE ps_cs_precedes      1           
+   Locale de_DE ps_cs_precedes      1
 !endblock
 
 These settings append and overwrite any that are set in the catalog configuration files, including any #include files. IMPORTANT NOTE: This information is only read during catalog configuration. It is not reasonable to access a database for translation or currency conversion in the normal course of events.
@@ -1061,17 +1060,17 @@ H2: Embedded Perl Code
 Perl code can be directly embedded in Interchange pages. The code is specified as:
 
 !block example
-   E<lbracket>perl]
+   [perl]
        $name    = $Values->{name};
        $browser = $Session->{browser};
        return "Hi, $name! How do you like your $browser?";
-   E<lbracket>/perl]
+   [/perl]
 !endblock
 
 ASP syntax can be used with:
 
 !block example
-   E<lbracket>mvasp]
+   [mvasp]
        <%
        $name    = $Values->{name};
        $browser = $Session->{browser};
@@ -1080,17 +1079,17 @@ ASP syntax can be used with:
        <%
            HTML "How do you like your $browser?";
        %>
-   E<lbracket>/mvasp]
+   [/mvasp]
 !endblock
 
 The two snippets above are essentially equivalent.
 
-The C<E<lbracket>perl]> tag enforces C<Safe.pm> checking, and many standard Perl operators are not available. This prevents user access to all files and programs on the system without the Interchange daemon's permissions. See C<GlobalSub> and C<UserTag> for ways to make external files and programs available to Interchange.
+The C<[perl]> tag enforces C<Safe.pm> checking, and many standard Perl operators are not available. This prevents user access to all files and programs on the system without the Interchange daemon's permissions. See C<GlobalSub> and C<UserTag> for ways to make external files and programs available to Interchange.
 
 .Named parameters:
 
 !block example
-   E<lbracket>perl tables="tables-to-open"* subs=1 global=1* no_return=1*]
+   [perl tables="tables-to-open"* subs=1 global=1* no_return=1*]
 !endblock
 
 .Required parameters: none
@@ -1109,18 +1108,18 @@ LI2: subs
 
 LI2: tables
 
-..Opens specified Interchange database tables, preparing them for access inside the Perl code. 
+..Opens specified Interchange database tables, preparing them for access inside the Perl code.
 
 ..When running under C<Safe>, some database operations are restricted due to the inability to create objects in this mode. For SQL, most operations can be performed if the C<Safe::Hole> module is installed. Otherwise, use C<global> to use data from SQL tables. Interchange databases can be accessed as long as they are pre-opened by using an item first.
 
 .Example:
 
 !block example; listitem=2
-    E<lbracket>perl tables="products pricing"]
+    [perl tables="products pricing"]
         $key = $Values->{sku};
         $title = $Tag->data('products', 'title', $key):
         return "You looked up the title $title";
-    E<lbracket>/perl]
+    [/perl]
 !endblock
 
 .If the tables=products> was not specified, there would be a syntax error trap from C<Safe.pm>.
@@ -1131,14 +1130,14 @@ Any Interchange tag (except ones using SQL) can be accessed via the C<$Tag> obje
 
 !block example; listitem=2
    # If the item might contain a single quote
-   E<lbracket>perl]
+   [perl]
    $comments = $Values->{comments};
-   E<lbracket>/perl]
+   [/perl]
 !endblock
 
 Note[label='IMPORTANT NOTE: '] Global subroutines are not subject to the stringent security checking of the C<Safe> module, so almost anything goes there. The subroutine will be able to modify any variable in Interchange, and will be able to write to read and write any file that the Interchange daemon has permission to write. Though this gives greater power, it should be used with caution. They are defined in the main C<interchange.cfg> file, so should be safe from individual users in a multi-catalog system.
 
-Global subroutines are defined in C<interchange.cfg> with the C<GlobalSub> directive, or in user catalogs which have been enabled via C<AllowGlobal>. Catalog subroutines are defined in C<catalog.cfg>, with the C<Sub> directive. They are subject to the stringent Safe.pm security restrictions that are controlled by the global directive C<SafeUntrap>. 
+Global subroutines are defined in C<interchange.cfg> with the C<GlobalSub> directive, or in user catalogs which have been enabled via C<AllowGlobal>. Catalog subroutines are defined in C<catalog.cfg>, with the C<Sub> directive. They are subject to the stringent Safe.pm security restrictions that are controlled by the global directive C<SafeUntrap>.
 
 The code can be as complex as desired, but cannot use any operators that modify the file system or use "unsafe" operations like "system," "exec," or backticks. These constraints are enforced with the default permissions of the standard Perl module Safe. Operations may be untrapped on a system-wide basis with the C<SafeUntrap> directive.
 
@@ -1147,7 +1146,7 @@ The result of this tag will be the result of the last expression evaluated, just
 Here is a simple one which does the equivalent of the classic hello.pl program:
 
 !block example
-   E<lbracket>perl] my $tmp = "Hello, world!"; $tmp; E<lbracket>/perl]
+   [perl] my $tmp = "Hello, world!"; $tmp; [/perl]
 !endblock
 
 Of course, there is no need to set the variable. It is there just to show the capability.
@@ -1155,24 +1154,24 @@ Of course, there is no need to set the variable. It is there just to show the ca
 To echo the user's browser, but within some HTML tags:
 
 !block example
-   E<lbracket>perl]
+   [perl]
    my $html = '<H5>';
    $html .= $Session->{browser};
    $html .= '</H5>';
    $html;
-   E<lbracket>/perl]
+   [/perl]
 !endblock
 
 To show the user their name and the current time:
 
 !block example
-   E<lbracket>perl arg=values]
+   [perl arg=values]
 
    my $string = "Hi, " . $Values->{name} ". The time is now ";
    $string .= $Tag->time();
    $string;
 
-   E<lbracket>/perl]
+   [/perl]
 !endblock
 
 H2: ASP-Like Perl
@@ -1180,41 +1179,40 @@ H2: ASP-Like Perl
 Interchange supports an ASP-like syntax using the C<mvasp> tag.
 
 !block example
-   E<lbracket>mvasp]
-   <HTML><BODY> 
+   [mvasp]
+   <HTML><BODY>
        This is HTML.<BR>
 
    <% HTML "This is code<BR>"; %>
        More HTML.<BR>
    <% $Document->write("Code again.<BR>") %>
-   E<lbracket>/mvasp]
+   [/mvasp]
 !endblock
 
-If no closing C<E<lbracket>/mvasp]> tag is present, the remainder of the page will be seen as ASP.
+If no closing C<[/mvasp]> tag is present, the remainder of the page will be seen as ASP.
 
-ASP is simple. Anything between <% and %> is code, and the string %> is not allowed anywhere inside. Anything not between those anchors is plain HTML that will be placed unchanged on the page. Interchange variables and E<lbracket>L]E<lbracket>/L] and E<lbracket>LC]E<lbracket>/LC] areas will still be inserted, but any Interchange tags will not.
+ASP is simple. Anything between <% and %> is code, and the string %> is not allowed anywhere inside. Anything not between those anchors is plain HTML that will be placed unchanged on the page. Interchange variables and [L][/L] and [LC][/LC] areas will still be inserted, but any Interchange tags will not.
 
 There is a shorthand <% = $foo %>, which is exactly equivalent to <% $Document->write($foo); %> or <% HTML $foo; %>
 
 !block example
-   E<lbracket>mvasp]
-   <HTML><BODY> 
+   [mvasp]
+   <HTML><BODY>
        This is HTML.<BR>
-       E<lbracket>value name] will show up as &#91;value name].<BR>
+       [value name] will show up as &#91;value name].<BR>
 
        &#95_VARIABLE__ value is equal to: __VARIABLE__
 
    <% = "This is code<BR>" %>
 !endblock
 
-The C<__VARIABLE__> will be replaced by the value of C<Variable VARIABLE>, but
-E<lbracket>value name] will be shown unchanged.
+The C<__VARIABLE__> will be replaced by the value of C<Variable VARIABLE>, but [value name] will be shown unchanged.
 
 IMPORTANT NOTE: If using the C<SQL::Statement> module, the catalog must be set to C<AllowGlobal> in C<interchange.cfg>. It will not work in "Safe" mode due to limitations of object creation in Safe. Also, the C<Safe::Hole> module must be installed to have SQL databases work in Safe mode.
 
 H1: INTERCHANGE PERL OBJECTS
 
-Interchange gives ready access to all objects associated with the catalog and the user settings, with opcode restrictions based on the standard Perl module C<Safe.pm>. There are some unique things to know about programming with Interchange. 
+Interchange gives ready access to all objects associated with the catalog and the user settings, with opcode restrictions based on the standard Perl module C<Safe.pm>. There are some unique things to know about programming with Interchange.
 
 Under C<Safe>, certain things cannot be used. For instance, this is not legal when running Safe:
 
@@ -1225,7 +1223,7 @@ Under C<Safe>, certain things cannot be used. For instance, this is not legal wh
 The backtick operator violates a number of the default Safe opcode restrictions. Direct file opens are not allowed, either:
 
 !block example
-   open(SOMETHING, "something.txt") 
+   open(SOMETHING, "something.txt")
        or die;
 !endblock
 
@@ -1236,7 +1234,7 @@ This will also cause a trap, and the code will fail to compile. However, Interch
    # set
    $users = $Tag->file('/home/you/list');
 
-   # This will always work, file names are based in the 
+   # This will always work, file names are based in the
    # catalog directory
    $users = $Tag->file('userlist');
 !endblock
@@ -1251,7 +1249,7 @@ LI1: $CGI
     <INPUT TYPE=hidden NAME=foo VALUE=bar>
 !endblock
 
-.use 
+.use
 
 !block example; listitem=2
     <% $Document->write("Value of foo is $CGI->{foo}"); %>
@@ -1268,7 +1266,7 @@ LI1: $CGI_array
     <INPUT TYPE=hidden NAME=foo VALUE='baz'>
 !endblock
 
-.use 
+.use
 
 !block example; listitem=2
     <% = "The values of foo are", join (' and ', @{$CGI_array->{'foo'}}) %>
@@ -1284,7 +1282,7 @@ LI1: $Carts
 
 !block example; listitem=2
     {
-        'main' => E<lbracket> 
+        'main' => [
                     {
                         'code' => '00-0011',
                         'mv_ib' => 'products',
@@ -1300,7 +1298,7 @@ LI1: $Carts
                         'color' => 'BLUE'
                     }
                 ],
-        'layaway' => E<lbracket> 
+        'layaway' => [
                     {
                         'code' => '00-341',
                         'mv_ib' => 'products',
@@ -1312,7 +1310,7 @@ LI1: $Carts
     }
 !endblock
 
-.In this cart array, $Carts->{main}E<lbracket>1]{code} is equal to C<99-102>. In the normal course of events, it would be equivalent to $Items->E<lbracket>1]{code}.
+.In this cart array, $Carts->{main}[1]{code} is equal to C<99-102>. In the normal course of events, it would be equivalent to $Items->[1]{code}.
 
 LI1: $Config
 
@@ -1327,7 +1325,7 @@ LI1: $Config
 
 LI1: %Db
 
-.A hash of databases shared with the C<E<lbracket>mvasp tables="foo"]> parameter to the tag call. Once the database is shared, it is opened and can be accessed by any of its methods. Again, this will not work with SQL unless AllowGlobal is set for the catalog.
+.A hash of databases shared with the C<[mvasp tables="foo"]> parameter to the tag call. Once the database is shared, it is opened and can be accessed by any of its methods. Again, this will not work with SQL unless AllowGlobal is set for the catalog.
 
 .To get a reference to a particular table, specify its hash element:
 
@@ -1397,7 +1395,7 @@ LI1: %Db
 
 LI1: %Sql
 
-.A hash of SQL databases that you shared with the C<E<lbracket>mvasp tables="foo"]> parameter to the tag call. It returns the DBI database handle, so things like the following can be done:
+.A hash of SQL databases that you shared with the C<[mvasp tables="foo"]> parameter to the tag call. It returns the DBI database handle, so things like the following can be done:
 
 !block example; listitem=2
   <%
@@ -1423,7 +1421,7 @@ LI1: %Sql
 
 LI1: $DbSearch
 
-.A search object which will search a database without using the text file. It is the same as Interchange's C<db> searchtype. Options are specified in a hash and passed to the object. All multiple-field options should be passed as array references. Before using the $DbSearch object, it must be told which table to search. For example, to use the table C<foo>, it must have been shared with C<E<lbracket>mvasp foo]>.
+.A search object which will search a database without using the text file. It is the same as Interchange's C<db> searchtype. Options are specified in a hash and passed to the object. All multiple-field options should be passed as array references. Before using the $DbSearch object, it must be told which table to search. For example, to use the table C<foo>, it must have been shared with C<[mvasp foo]>.
 
 .There are three search methods: C<array>, C<hash>, and C<list>.
 
@@ -1441,10 +1439,10 @@ LI1: $DbSearch
     $search = {
 
             mv_searchspec => 'Mona Lisa',
-            mv_search_field => E<lbracket> 'title', 'artist', 'price' ],
-            mv_return_fields    => E<lbracket> 'title' ]
+            mv_search_field => [ 'title', 'artist', 'price' ],
+            mv_return_fields    => [ 'title' ]
 
-        }; 
+        };
 
     my $ary = $DbSearch->array($search);
 
@@ -1477,7 +1475,7 @@ LI1: $Document
 
 LI1: $Document->write($foo)
 
-.Write $foo to the page in a buffered fashion. The buffer is an array containing the results of all previous C<$Document->>C<write()> operations. If $Document->hot(1) has been set, the output immediately goes to the user. 
+.Write $foo to the page in a buffered fashion. The buffer is an array containing the results of all previous C<$Document->>C<write()> operations. If $Document->hot(1) has been set, the output immediately goes to the user.
 
 LI1: $Document->insert($foo)
 
@@ -1563,11 +1561,11 @@ LI1: HTML
 
 LI1: $Items
 
-.A reference to the current shopping cart. Unless an Interchange C<E<lbracket>cart ...]> tag is used, it is normally the same as $Carts->{main}.
+.A reference to the current shopping cart. Unless an Interchange C<[cart ...]> tag is used, it is normally the same as $Carts->{main}.
 
 LI1: $Scratch
 
-.A reference to the scratch values ala C<E<lbracket>scratch foo]>.
+.A reference to the scratch values ala C<[scratch foo]>.
 
 !block example; listitem=2
    <% $Scratch->{foo} = 'bar'; %>
@@ -1576,12 +1574,12 @@ LI1: $Scratch
 .is equivalent to:
 
 !block example; listitem=2
-    E<lbracket>set foo]barE<lbracket>/set]
+    [set foo]bar[/set]
 !endblock
 
 LI1: $Session
 
-.A reference to the session values ala C<E<lbracket>data session username]>.
+.A reference to the session values ala C<[data session username]>.
 
 !block example; listitem=2
     <%
@@ -1593,10 +1591,10 @@ LI1: $Session
 .is equivalent to:
 
 !block example; listitem=2
-    E<lbracket>data session browser]
+    [data session browser]
 !endblock
 
-.Values can also be set. If the value of C<E<lbracket>data session source]> needed to be changed, for example, set:
+.Values can also be set. If the value of C<[data session source]> needed to be changed, for example, set:
 
 !block example; listitem=2
     <%
@@ -1608,7 +1606,7 @@ LI1: $Tag
 
 .Using the $Tag object, any Interchange tag including user-defined tags can be accessed.
 
-Note[label='IMPORTANT NOTE: '] If the tag will access a database that has not been previously opened, the table name must be passed in the ASP call. For example: 
+Note[label='IMPORTANT NOTE: '] If the tag will access a database that has not been previously opened, the table name must be passed in the ASP call. For example:
 
 .HTML style:
 !block example; listitem=2
@@ -1619,14 +1617,14 @@ Note[label='IMPORTANT NOTE: '] If the tag will access a database that has not be
 
 .Named parameters:
 !block example; listitem=2
-    E<lbracket>mvasp tables="products pricing"] 
+    [mvasp tables="products pricing"]
 !endblock
 
 .or
 
 .Positional parameters:
 !block example; listitem=2
-    E<lbracket>mvasp products pricing] 
+    [mvasp products pricing]
 !endblock
 
 .Any tag can be called.
@@ -1642,7 +1640,7 @@ Note[label='IMPORTANT NOTE: '] If the tag will access a database that has not be
 .is the same as:
 
 !block example; listitem=2
-    E<lbracket>data table=userdb column=name key="E<lbracket>data session username]"]
+    [data table=userdb column=name key="[data session username]"]
 !endblock
 
 .If the tag has a dash (C<->) in it, use an underscore instead:
@@ -1663,7 +1661,7 @@ Note[label='IMPORTANT NOTE: '] If the tag will access a database that has not be
 .and
 
 !block example; listitem=2
-    my $opt = {     
+    my $opt = {
                     table   => 'products',
                     column  => 'title',
                     key     => '00-0011',
@@ -1677,15 +1675,15 @@ Note[label='IMPORTANT NOTE: '] If the tag will access a database that has not be
 .If using the option hash method, and the tag has container text, either specify it in the hash parameter C<body> or add it as the next argument. The two calls:
 
 !block example; listitem=2
-    $Tag->item_list( { 
-                        'body' => "E<lbracket>item-code] E<lbracket>item-field title]",
+    $Tag->item_list( {
+                        'body' => "[item-code] [item-field title]",
                     });
 !endblock
 
-.and 
+.and
 
 !block example; listitem=2
-    $Tag->item_list( { }, "E<lbracket>item-code] E<lbracket>item-field title]")
+    $Tag->item_list( { }, "[item-code] [item-field title]")
 !endblock
 
 .are equivalent.
@@ -1694,7 +1692,7 @@ Note[label='IMPORTANT NOTE: '] If the tag will access a database that has not be
 
 LI1: $Values
 
-.A reference to the user form values ala C<E<lbracket>value foo]>.
+.A reference to the user form values ala C<[value foo]>.
 
 !block example; listitem=2
     <% $Document->write($Values->{foo}); %>
@@ -1703,7 +1701,7 @@ LI1: $Values
 .is equivalent to:
 
 !block example; listitem=2
-    E<lbracket>value foo]
+    [value foo]
 !endblock
 
 LI1: &Log
@@ -1711,7 +1709,7 @@ LI1: &Log
 .Send a message to the error log (same as ::logError in GlobalSub or global UserTag).
 
 !block example; listitem=2
-    <% 
+    <%
         Log("error log entry");
     %>
 !endblock
@@ -1719,7 +1717,7 @@ LI1: &Log
 .It prepends the normal timestamp with user and page information. To supress that information, begin the message with a backslash (C<\>).
 
 !block example; listitem=2
-    <% 
+    <%
         Log("\\error log entry without timestamp");
         Log('\another error log entry without timestamp');
         Log("error log entry with timestamp");
@@ -1764,7 +1762,7 @@ Marks a global subroutine for use only by catalogs that are set to C<AllowGlobal
 
 H2: AllowGlobal *global*
 
-Specifies catalog identifiers that may define subroutines and UserTag entries that can operate with the full permissions of the server. DON'T USE THIS UNLESS THE CATALOG USER IS TRUSTED IMPLICITLY.> Default is blank.
+Specifies catalog identifiers that may define subroutines and UserTag entries that can operate with the full permissions of the server. DON'T USE THIS UNLESS THE CATALOG USER IS TRUSTED IMPLICITLY. Default is blank.
 
 !block example
    AllowGlobal  simple
@@ -1806,7 +1804,7 @@ H2: Catch
 
 H2: CheckHTML *global*
 
-Set to the name of an external program that will check the users HTML when they set C<E<lbracket>flag checkhtml]> or C<E<lbracket>tag flag checkhtml]E<lbracket>/tag]> in their page.
+Set to the name of an external program that will check the users HTML when they set C<[flag checkhtml]> or C<[tag flag checkhtml][/tag]> in their page.
 
 !block example
    CheckHTML  /usr/local/bin/weblint
@@ -1896,9 +1894,9 @@ H2: Filter
 
 Applies any of Interchange's standard filters to an arbitray value, or custom filters may be defined. The filters are also available as parameters to the C<cgi>, C<data>, and C<value> tags. Filters can be applied in sequence and as many as needed can be applied. Here is an example. If author or artist names are stored in the database ``LAST, First'' so that they sort properly, they may be displayed normally as ``First Last''. This call
 >    [filter op="name namecase"]WOOD, Grant[/filter]
-will display as 
+will display as
 >    Grant Wood
-Another way to do this would be: 
+Another way to do this would be:
 >    [data table=products column=artist key=99-102 filter="name namecase"]
 
 H2: Fly-Tax
@@ -1936,7 +1934,7 @@ If it is set in this fashion, C<all> catalogs must be defined in this fashion. N
 
 H2: GlobalSub *global*
 
-Defines a C<global> subroutine for use by the C<E<lbracket>perl sub] subname arg /perl]>
+Defines a C<global> subroutine for use by the C<[perl sub] subname arg /perl]>
 construct. Use the "here document" capability of Interchange configuration
 files to make it easy to define:
 
@@ -1953,7 +1951,7 @@ files to make it easy to define:
 
 As with Perl "here documents," the EOF (or other end marker) must be the ONLY thing on the line, with no leading or trailing white space. Do not append a semicolon to the marker. (The above marker appears indented. It should not be that way in the file!)
 
-IMPORTANT NOTE: These global subroutines are not subject to security checks. They can do most anything! For most purposes, scratch subroutines or catalog subroutines (also Sub) are better. 
+IMPORTANT NOTE: These global subroutines are not subject to security checks. They can do most anything! For most purposes, scratch subroutines or catalog subroutines (also Sub) are better.
 
 C<GlobalSub> routines are subject to full Perl use strict checking, so errors are possible if lexical variables or complete package qualifications are not used for the variables.
 
@@ -2044,7 +2042,7 @@ Default is 10.
 
 H2: NoAbsolute *global*
 
-Whether Interchange C<E<lbracket>file ...]> and other tags can read any file on the system (that is readable by the user id running the Interchange daemon). The default is No, which allows any file to be read. This should be changed in a multi-user environment to minimize security problems.
+Whether Interchange C<[file ...]> and other tags can read any file on the system (that is readable by the user id running the Interchange daemon). The default is No, which allows any file to be read. This should be changed in a multi-user environment to minimize security problems.
 
 !block example
    NoAbsolute     Yes
@@ -2145,11 +2143,11 @@ This would cause global errors to be logged with the command:
 and cause system log entries something like:
 
 !block example
-   Oct 26 17:30:11 bill int1: Config 'co' at server startup 
-   Oct 26 17:30:11 bill int1: Config 'homefn' at server startup 
-   Oct 26 17:30:11 bill int1: Config 'simple' at server startup 
-   Oct 26 17:30:11 bill int1: Config 'test' at server startup 
-   Oct 26 17:30:13 bill int1: START server (2345) (INET and UNIX) 
+   Oct 26 17:30:11 bill int1: Config 'co' at server startup
+   Oct 26 17:30:11 bill int1: Config 'homefn' at server startup
+   Oct 26 17:30:11 bill int1: Config 'simple' at server startup
+   Oct 26 17:30:11 bill int1: Config 'test' at server startup
+   Oct 26 17:30:13 bill int1: START server (2345) (INET and UNIX)
 !endblock
 
 A custom wrapper can be created around it to get it to behave as desired.
@@ -2240,7 +2238,7 @@ There are several standard variables which should not be used:
 
 LI1: MV_FILE
 
-.Name of the last file read in, as in C<E<lbracket>file ...]> or an externally located perl routine.
+.Name of the last file read in, as in C<[file ...]> or an externally located perl routine.
 
 
 LI1: MV_NO_CRYPT
@@ -2458,12 +2456,12 @@ These are the standard supplied actions for Interchange. They can be overwritten
 When the leading part of the incoming path is equal to C<order>, it will trigger an action. The page name will be shifted up, and the C<order> stripped from the page name. So this custom C<order> action would essentially perform a no-op, and a URL like:
 
 !block example
-   <A HREF="E<lbracket>area order/nextpage]"> Go to the next page </A>
+   <A HREF="[area order/nextpage]"> Go to the next page </A>
 !endblock
 
-would be the equivalent of "E<lbracket>area nextpage]." If the action does not return a true (non-zero, non-blank) status, no page will be displayed by Interchange, not even the special C<missing> page. A response may also be generated via Perl or MVASP.
+would be the equivalent of "[area nextpage]." If the action does not return a true (non-zero, non-blank) status, no page will be displayed by Interchange, not even the special C<missing> page. A response may also be generated via Perl or MVASP.
 
-The standard C<process> action has a number of associated C<FormAction> settings. Besides using Perl, IML tags may be used in an action, though they are not nearly as efficient.
+The standard C<process> action has a number of associated C<FormAction> settings. Besides using Perl, Interchange tags may be used in an action, though they are not nearly as efficient.
 
 H2: AlwaysSecure
 
@@ -2492,7 +2490,7 @@ Sets an attribute in a shopping cart entry to the field of the same name in the 
 !endblock
 
 When an item is added to the shopping cart using Interchange's routines, the
-C<heavy> attribute will be set to the value of the C<heavy> field in the products database. In the default demo that would be C<products>. Any changes to C<ProductFiles> would affect that, of course. 
+C<heavy> attribute will be set to the value of the C<heavy> field in the products database. In the default demo that would be C<products>. Any changes to C<ProductFiles> would affect that, of course.
 
 Some values are used by Interchange and are not legal:
 
@@ -2501,7 +2499,7 @@ Some values are used by Interchange and are not legal:
        mv_si
        mv_ib
        group
-       code 
+       code
        quantity
        item
 !endblock
@@ -2513,7 +2511,7 @@ Sets an action that is automatically performed for every access. It is performed
 As an example, to remap any C<mv_nextpage> accesses to the C<private> subdirectory of pages, set:
 
 !block example
-   Autoload   E<lbracket>perl] $CGI->{mv_nextpage} =~ s:^private/:public/:; E<lbracket>/perl]
+   Autoload   [perl] $CGI->{mv_nextpage} =~ s:^private/:public/:; [/perl]
 !endblock
 
 H2: CommonAdjust
@@ -2546,7 +2544,7 @@ This can be changed several times in the C<catalog.cfg> file to pick up values f
    ConfigDir config
 !endblock
 
-This will pick the C<templates/blue> template. If TEMPLATE is set to 
+This will pick the C<templates/blue> template. If TEMPLATE is set to
 C<red>, it would read the variables from C<templates/red>.
 
 H2: CookieDomain
@@ -2557,7 +2555,7 @@ Allows a domain to be set so that multiple servers can handle traffic. For examp
    CookieDomain    .yourdomain.com
 !endblock
 
-More than one domain can be set. It must have at least two periods or browsers will ignore it. 
+More than one domain can be set. It must have at least two periods or browsers will ignore it.
 
 H2: CookieLogin
 
@@ -2591,23 +2589,23 @@ If set to Yes, enables the automatic encryption and saving of credit card inform
 LI1: C<mv_credit_card_number>
 
 .The actual credit card number, which will be wiped from memory after checking to see if it is a valid Amex, Visa, MC, or Discover card number. This variable will never be carried forward in the user session.
- 
+
 LI1: C<mv_credit_card_exp_all>
 
 .The expiration date, as a text field in the form MM/YY (will take a four-digit year as well). If it is not present, the fields C<mv_credit_card_exp_month> and C<mv_credit_card_exp_year> are looked at. It is set by Interchange when the card validation returns, if not previously set.
- 
+
 LI1: C<mv_credit_card_exp_month>
 
 .The expiration date month, used if the C<mv_credit_card_exp_all> field is not present. It is set by Interchange when the card validation returns, if not previously set.
- 
+
 LI1: C<mv_credit_card_exp_year>
 
 .The expiration date year, used if the C<mv_credit_card_exp_all> field is not present. It is set by Interchange when the card validation returns, if not previously set.
- 
+
 LI1: C<mv_credit_card_error>
 
 .Set by Interchange to indicate the error if the card does not validate properly. The error message is not too enlightening if validation is the problem.
- 
+
 LI1: C<mv_credit_card_force>
 
 .Set this value to 1 to force Interchange to encrypt the card despite its idea of validity. Will still set the flag for validity to 0 if the number/date does not validate. Still won't accept badly formatted expiration dates.
@@ -2650,7 +2648,7 @@ A Yes/No directive, default is No. Enables CyberCash payment protocols. See Usin
 
 H2: Database
 
-Definition of an arbitrary database, in the form "Database database file type," where "file" is the name of an ASCII file in the same format as the products database. The file is relative to VendRoot, and is put in C<DataDir> if no path is provided. Records can be accessed with the C<E<lbracket>data database field key]> tag. Database names are restricted to the alphanumeric characters (including the underscore), and it is recommended that they be either all lower or all upper case. See C<DATABASES>.
+Definition of an arbitrary database, in the form "Database database file type," where "file" is the name of an ASCII file in the same format as the products database. The file is relative to VendRoot, and is put in C<DataDir> if no path is provided. Records can be accessed with the C<[data database field key]> tag. Database names are restricted to the alphanumeric characters (including the underscore), and it is recommended that they be either all lower or all upper case. See C<DATABASES>.
 
 !block example
    Database      reviews  reviews.txt  CSV
@@ -2672,7 +2670,7 @@ Somewhat deprecated, the same thing can be achieved with:
 
 H2: DescriptionField
 
-The field that will be accessed with the C<E<lbracket>item-description]> element.
+The field that will be accessed with the C<[item-description]> element.
 
 !block example
    DescriptionField    description
@@ -2697,7 +2695,7 @@ items from the specified database(s) will not be cached or built statically. Thi
    DynamicData         inventory
 !endblock
 
-Overridden by C<E<lbracket>tag flag build]E<lbracket>/tag]>, depending on context.
+Overridden by C<[tag flag build][/tag]>, depending on context.
 
 H2: EncryptProgram
 
@@ -2767,7 +2765,7 @@ The pathname for the C<glimpse> command, used if C<glimpse> searches are to be e
 
 H2: HTMLsuffix
 
-The file extension that will be seen as a page in the C<pages> directory. Default is C<.html>. 
+The file extension that will be seen as a page in the C<pages> directory. Default is C<.html>.
 
 !block example
    HTMLsuffix .htm
@@ -2889,11 +2887,11 @@ Enables on-the-fly item additions to the shopping cart. If set to the name of a 
    $item = Vend::Parse::do_tag($Vend::Cfg->{OnFly},
                                    $code,
                                    $quantity,
-                                   $flyE<lbracket>$j],
+                                   $fly[$j],
                                );
 !endblock
 
-$flyE<lbracket>$j] is the value of C<mv_order_fly> for that item. An C<onfly> tag is provided by Interchange. See <On-the-fly> ordering.
+$fly[$j] is the value of C<mv_order_fly> for that item. An C<onfly> tag is provided by Interchange. See <On-the-fly> ordering.
 
 H2: OrderCounter
 
@@ -2905,7 +2903,7 @@ The name of the file (relative to catalog root if no leading /) that maintains t
 
 Bear in mind that Interchange provides the order number as a convenience for display, and that no internal functions depend on it. Custom order number routines may be defined and used without fear of consequences.
 
-If a C<Route> is set up to C<supplant> and the C<counter> attribute is set there, this is ignored. 
+If a C<Route> is set up to C<supplant> and the C<counter> attribute is set there, this is ignored.
 
 H2: OrderLineLimit
 
@@ -2937,7 +2935,7 @@ The C<__NAME__> must begin the line, and be followed by whitespace and the name.
 
 H2: OrderReport
 
-The location of the simple order report file. Defaults to etc/report. 
+The location of the simple order report file. Defaults to etc/report.
 
 !block example
    OrderReport          /data/order-form
@@ -2992,33 +2990,33 @@ If credit card information is to be accepted, and the e-mailed order will go ove
 
 If this directive is non-null, the PGP command string as specified will be used to encrypt the entire order in addition to any encryption done as a result if C<CreditCardAuto>. If, for some reason, an error comes from PGP, the customer will be given the special page C<failed>.
 
-If a C<Route> is set up to C<supplant>, this is ignored. 
+If a C<Route> is set up to C<supplant>, this is ignored.
 
 H2: Pragma
 
-Sets the default value of an Interchange pragma. The only one to date is: 
+Sets the default value of an Interchange pragma. The only one to date is:
 
 LI1: no_html_parse
 
-.Disallows HTML tag parsing. This is a BIG parser performance gain and is enabled in the demo catalog. 
+.Disallows HTML tag parsing. This is a BIG parser performance gain and is enabled in the demo catalog.
 
 To enable a pragma for only a particular page, set it anywhere in the page:
 
 !block example
-   E<lbracket>pragma no_html_parse]
+   [pragma no_html_parse]
 !endblock
 
 To disable a pragma for a particular page, set it anywhere in the page:
 
 !block example
-   E<lbracket>pragma no_html_parse 0]
+   [pragma no_html_parse 0]
 !endblock
 
 Note: This is a good place to place a DTD.
 
 H2: PriceCommas
 
-If no commas are desired in price numbers (for the C<E<lbracket>item-price]> tag), set this to C<No>. The default is to use commas (or whatever is the thousands separator for a locale).
+If no commas are desired in price numbers (for the C<[item-price]> tag), set this to C<No>. The default is to use commas (or whatever is the thousands separator for a locale).
 
 !block example
    PriceCommas         no
@@ -3038,7 +3036,7 @@ Can be set in the C<Locale> settings to allow a price adjustment factor for diff
 
 H2: PriceField
 
-The field in the product database that will be accessed with the C<E<lbracket>item-price]> element. Default is "price."
+The field in the product database that will be accessed with the C<[item-price]> element. Default is "price."
 
 !block example
    PriceField          ProductPrice
@@ -3064,9 +3062,9 @@ Database tables that should be seen as the "products" database.
    ProductFiles    vendor_a vendor_b
 !endblock
 
-The key thing about this is that each will be searched in sequence for a product code to order or an C<E<lbracket>item-field ....]> or C<E<lbracket>loop-field ...]>
-to insert. The main difference between C<E<lbracket>item-field ....]> and 
-C<E<lbracket>item-data table ...]> is this fall-through behavior.
+The key thing about this is that each will be searched in sequence for a product code to order or an C<[item-field ....]> or C<[loop-field ...]>
+to insert. The main difference between C<[item-field ....]> and
+C<[item-data table ...]> is this fall-through behavior.
 
 Default is C<products>.
 
@@ -3202,10 +3200,10 @@ As an added measure of control, the specification is evaluated with the special 
  __NAME__ dict_search
  mv_search_file=dict.product
  mv_return_fields=1
- E<lbracket>if value fast_search]
+ [if value fast_search]
    mv_dict_limit=-1
    mv_last=1
- E<lbracket>/if]
+ [/if]
  __END__
 !endblock
 
@@ -3218,7 +3216,7 @@ The C<__NAME__> is the value to be specified in the C<mv_profile> variable on th
 or with mp=profile in the one-click search.
 
 !block example
- E<lbracket>page scan se=Renaissance/mp=dict_search]Renaissance ArtE<lbracket>/page]
+ [page scan se=Renaissance/mp=dict_search]Renaissance Art[/page]
 !endblock
 
 Multiple profiles can reside in the same file, if separated by C<__END__> tokens. C<__NAME__> tokens should be left-aligned, and C<__END__> must be on a line by itself with no leading or trailing whitespace.
@@ -3263,7 +3261,7 @@ When storing sessions, specify the name of the directory or DBM file to use. The
 
 Can be an absolute path name, if desired.
 
-It is possible for multiple catalogs to share the same session file, as well as for multiple Interchange servers to serve the same catalogs. If serving a extremely busy store, multiple parallel Interchange servers can share the same NFS-based file system and serve users in a "ping-pong" fashion using the file-based sessions. On huge systems, the level of directory hashing may be changed. By default, only 48 * 48 hashing is done. See the source for C<SessionFile.pm>. 
+It is possible for multiple catalogs to share the same session file, as well as for multiple Interchange servers to serve the same catalogs. If serving a extremely busy store, multiple parallel Interchange servers can share the same NFS-based file system and serve users in a "ping-pong" fashion using the file-based sessions. On huge systems, the level of directory hashing may be changed. By default, only 48 * 48 hashing is done. See the source for C<SessionFile.pm>.
 
 H2: SessionDB
 
@@ -3343,7 +3341,7 @@ A Yes/No directive. Enables static page building and display features. Default i
 
 H2: StaticAll
 
-A Yes/No directive. Tells Interchange to try and build all pages in the catalog statically when called with the static page build option. This is subject to the settings of C<StaticFly>, C<StaticPath>, and C<NoCache>. Default is No. Pages that have dynamic elements will not be built statically, though that may be overridden with C<E<lbracket>tag flag build]E<lbracket>/tag]> on the page in question.
+A Yes/No directive. Tells Interchange to try and build all pages in the catalog statically when called with the static page build option. This is subject to the settings of C<StaticFly>, C<StaticPath>, and C<NoCache>. Default is No. Pages that have dynamic elements will not be built statically, though that may be overridden with C<[tag flag build][/tag]> on the page in question.
 
 !block example
     StaticAll   Yes
@@ -3412,7 +3410,7 @@ extension.
 H2: Sub
 
 
-Defines a catalog subroutine for use by the C<E<lbracket>perl]E<lbracket>/perl]> or E<lbracket>mvasp] embedded perl languages. Use the "here document" capability of Interchange
+Defines a catalog subroutine for use by the C<[perl][/perl]> or [mvasp] embedded perl languages. Use the "here document" capability of Interchange
 configuration files to make it easy to define:
 
 !block example
@@ -3442,38 +3440,38 @@ As with Perl "here documents," the EOF (or other end marker) must be the ONLY th
 
 
 !block example
-   E<lbracket>perl]
+   [perl]
        my $cart = $Carts->{main};
        return sort_cart($cart);
-   E<lbracket>/perl]
+   [/perl]
 !endblock
 
-and will display an HTML table of the items in the current shopping cart, sorted by the quantity. Syntax errors will be reported at catalog startup time. 
+and will display an HTML table of the items in the current shopping cart, sorted by the quantity. Syntax errors will be reported at catalog startup time.
 
 Catalog subroutines may not perform unsafe operations. The Safe.pm
-module enforces this unless global operations are allowed for the 
+module enforces this unless global operations are allowed for the
 catalog. See C<AllowGlobal>.
 
 H2: TableRestrict
 
 Used to provide "views" in database-based searches. Does not affect the text searches. Affects the table being searched.
 
-Takes the form of C<field=session_param>, where C<field> is a column in the table being iterated over, and C<session_param> is a C<$Session> key (i.e., E<lbracket>data session username]).
+Takes the form of C<field=session_param>, where C<field> is a column in the table being iterated over, and C<session_param> is a C<$Session> key (i.e., [data session username]).
 
 !block example
    TableRestrict  products  owner=username
 !endblock
 
-The above would prevent the database search from returning any records except those where the column C<owner> contains the current value of C<E<lbracket>data session username]>.
+The above would prevent the database search from returning any records except those where the column C<owner> contains the current value of C<[data session username]>.
 
-Probably most usefully set by embedded Perl code in certain situations. For example: 
+Probably most usefully set by embedded Perl code in certain situations. For example:
 
 !block example
-   E<lbracket>calc]
+   [calc]
        # Restrict edit to owned fields
        $Config->{TableRestrict}{products} = 'owner=username';
        return;
-   E<lbracket>/calc]
+   [/calc]
 !endblock
 
 When using SQL-based databases, in effect it turns the base search query
@@ -3482,10 +3480,10 @@ When using SQL-based databases, in effect it turns the base search query
    select * from products
 !endblock
 
-into 
+into
 
 !block example
-   select * from products where owner = 'E<lbracket>data session username]'
+   select * from products where owner = '[data session username]'
 !endblock
 
 Interchange databases are similarly affected, though the methodology is different. Also may be useful in "mall" situations, where user is allowed to only see products from the current store ID.
@@ -3523,21 +3521,21 @@ Some values are used by Interchange and are not legal:
        mv_si
        mv_ib
        group
-       code 
+       code
        quantity
        item
 !endblock
 
 H2: ValuesDefault
 
-Sets the initial state of the user values, i.e., E<lbracket>value key] or $Values->{key}.
+Sets the initial state of the user values, i.e., [value key] or $Values->{key}.
 
 !block example
    ValuesDefault   fname  New
    ValuesDefault   lname  User
 !endblock
 
-When the user session starts, C<E<lbracket>value fname] E<lbracket>value lname]> will be "New User."
+When the user session starts, C<[value fname] [value lname]> will be "New User."
 
 H2: Variable
 
@@ -3563,7 +3561,7 @@ and containing
    HELLO   Hi!
 !endblock
 
-would cause C<__HELLO__> to appear as C<Hi!>. 
+would cause C<__HELLO__> to appear as C<Hi!>.
 
 The field name is case-sensitive, and C<variable> would not work.
 
@@ -3683,7 +3681,7 @@ If only running with one method of communication, use the C<->i and C<->u flags.
 
 H2: User Reconfiguration
 
-The individual catalogs can be reconfigured by the user by running the E<lbracket>reconfig] support tag. This should be protected by one of the several forms of Interchange authentication, preferably by HTTP basic authorization. See C<RemoteUser>.
+The individual catalogs can be reconfigured by the user by running the [reconfig] support tag. This should be protected by one of the several forms of Interchange authentication, preferably by HTTP basic authorization. See C<RemoteUser>.
 
 The command line can be reconfigured (as the Interchange user) with:
 
@@ -3698,7 +3696,7 @@ H2: Making the Product Database
 The DBM product databases can be built offline with the C<offline> command. The directory to be used for output is specified either on the command line with the C<-d> option, or is taken from the C<catalog.cfg> directive C<OfflineDir> -- C<offline> in the catalog directory by default. The directory must exist. The source ASCII files should be present in that directory, and the DBM files are created there. Existing files will be overwritten.
 
 !block example
-   offline -c catalog E<lbracket>-d offline_dir]
+   offline -c catalog [-d offline_dir]
 !endblock
 
 Do a C<perldoc VENDROOT/bin/offline> for full documentation.
@@ -3849,7 +3847,7 @@ LI1: LINK_TIMEOUT
 H2: Compiling VLINK and TLINK
 
 There is a C<compile_link> program which will assist with this. Do:
-    
+
 !block example
    perldoc VENDROOT/bin/compile_link
 !endblock
@@ -4079,7 +4077,7 @@ Your Perl is not properly installed. Someone has put a Perl up on your system, t
 
 H2: Can I run Interchange on my Macintosh?
 
-Interchange will not run on a Macintosh running System 7 or other "Finder" operating system. 
+Interchange will not run on a Macintosh running System 7 or other "Finder" operating system.
 
 After some manual effort to install the proper Perl modules, Interchange has been run on the Macintosh OS/X server (DP 3). Given the degree of effort involved this is not considered a tested configuration.
 
@@ -4123,7 +4121,7 @@ H1: ISP PROBLEMS
 
 Great strides have been made since Interchange's early days. The great majority of ISPs provide some CGI service, and more and more run systems that are compatible with Interchange. The new catalog configurator for Interchange makes setup much easier. A word of warning: if you chose your ISP mostly on price, you can expect problems. The low-cost providers typically have heavily-loaded machines and many domains. The more domains and the more load the unhappier you will be with Interchange. Interchange works best on a fast machine with plenty of memory.
 
-A few Internet Service Provider (ISP) systems still have difficulty with one or the other aspect of running Interchange. A few cannot (or will not) run Interchange at all. On top of that, many times ISP personnel are too busy to help, won't help, or don't know enough to help. Some are secretive about details of the setup of their systems. 
+A few Internet Service Provider (ISP) systems still have difficulty with one or the other aspect of running Interchange. A few cannot (or will not) run Interchange at all. On top of that, many times ISP personnel are too busy to help, won't help, or don't know enough to help. Some are secretive about details of the setup of their systems.
 
 All in all, you can have a fair amount of confidence that your ISP can run Interchange. Or, you can get one who will.
 
@@ -4222,7 +4220,7 @@ If you cannot answer those questions and visualize how to build a mall, you prob
 
 H2: Can I attach a size or color to a product?
 
-Interchange has product modifiers, or attributes, which can be carried around with the product. The E<lbracket>item-accessories attribute] tag will automatically place a suitable select widget on an HTML form, and "remember" what should
+Interchange has product modifiers, or attributes, which can be carried around with the product. The [item-accessories attribute] tag will automatically place a suitable select widget on an HTML form, and "remember" what should
 be selected. See the Interchange documentation for Item Attributes.
 
 You can use the SeparateItems directive or set the mv_separate_items
@@ -4232,7 +4230,7 @@ lines in the shopping basket. (This is the default in the demo catalogs.) This m
 The attribute information is placed on the form with form fields, like:
 
 !block example
- <INPUT TYPE=XXXXX NAME="E<lbracket>modifier-name size]" VALUE="E<lbracket>item-modifier size]">
+ <INPUT TYPE=XXXXX NAME="[modifier-name size]" VALUE="[item-modifier size]">
 !endblock
 
 The embedded Perl capability of Interchange means that you can discover the
@@ -4244,7 +4242,7 @@ H2: PGP encryption -- Server Error
 As always, check the error log. The most common problem is something like:
 
 !block example
-   akopia.com 3Ex5lvta:akopia.com - E<lbracket>01/Sep/1997:09:08:43] simple /cgi-bin/simple
+   akopia.com 3Ex5lvta:akopia.com - [01/Sep/1997:09:08:43] simple /cgi-bin/simple
    > Encryption error:
    >
 !endblock
@@ -4268,43 +4266,43 @@ EncryptProgram  /usr/bin/pgp -fat -r sales@your.com 2>/dev/null
 !block example; listitem=2
 EncryptProgram /usr/local/bin/gpg -fa --always-trust -r sales@your.com
 !endblock
-    
+
 .On Windows or other operating systems, the only fix is to sign the key or otherwise prevent the error from occurring.
 
 H2: PGP encryption -- What do I do now that it is working?
 
 This depends on what you do with orders once you receive them by email.
-Some PC mail agents (notably Eudora) will decrypt the PGP message embedded within the message text. In that case, you can simply embed the C<E<lbracket>value mv_credit_card_info]> call right in the message and be done with it.
+Some PC mail agents (notably Eudora) will decrypt the PGP message embedded within the message text. In that case, you can simply embed the C<[value mv_credit_card_info]> call right in the message and be done with it.
 
 If your mailer will not decrypt on the fly, the best way to read the credit card number is to set up MIME encoding of the order email. To do this, find the order report you are using. In the standard demos it is C<pages/ord/report.html> or C<etc/report>.
 
 Set up two MIME regions in that file. First, at the top of the file:
 
 !block example
-   E<lbracket>tag mime type TEXT/PLAIN; CHARSET=US-ASCII]E<lbracket>/tag]
-   E<lbracket>tag mime Order Text]
+   [tag mime type TEXT/PLAIN; CHARSET=US-ASCII][/tag]
+   [tag mime Order Text]
 
-   ORDER DATE: E<lbracket>calc]localtimeE<lbracket>/calc]
-   ORDER NUMBER: E<lbracket>value mv_order_number]
+   ORDER DATE: [calc]localtime[/calc]
+   ORDER NUMBER: [value mv_order_number]
 
-   Name: E<lbracket>value name]
-   Company: E<lbracket>value company]
+   Name: [value name]
+   Company: [value company]
 
    (Rest of order text, including item list)
-   E<lbracket>/tag]
+   [/tag]
 !endblock
 
 Then, at the bottom of the report.html file, put the credit card info:
 
 !block example
-   E<lbracket>if value mv_credit_card_info]
-   E<lbracket>tag mime type application/pgp-encrypted]E<lbracket>/tag]
-   E<lbracket>tag mime Credit Card Information]
+   [if value mv_credit_card_info]
+   [tag mime type application/pgp-encrypted][/tag]
+   [tag mime Credit Card Information]
 
-   E<lbracket>value mv_credit_card_info]
+   [value mv_credit_card_info]
 
-   E<lbracket>/tag]
-   E<lbracket>/if]
+   [/tag]
+   [/if]
 !endblock
 
 Once this is done, you can read mail using your PGP client as a helper application to decode the MIME attachment. This does not require a fancy setup -- you can use the standard MIT PGP 2.6.2 if desired. If you are using UNIX, set up as the helper for the MIME type B<application/pgp-encrypted>:
@@ -4323,7 +4321,7 @@ More automated or user-friendly setups are left as an exercise for the user.
 
 H2: How do I get the number of items in a shopping cart?
 
-If it is simply the total number, extended according to quantity, you can use the E<lbracket>nitems] tag. If you need this number for use in an embedded Perl script, you can use:
+If it is simply the total number, extended according to quantity, you can use the [nitems] tag. If you need this number for use in an embedded Perl script, you can use:
 
 !block example
    $number = $Tag->nitems();
@@ -4332,9 +4330,9 @@ If it is simply the total number, extended according to quantity, you can use th
 If it is the number of line items you need, then you can use a Perl script:
 
 !block example
-   E<lbracket>perl]
+   [perl]
        return scalar @{$Carts->{main}};
-   E<lbracket>/perl]
+   [/perl]
 !endblock
 
 (The 'main' refers to the main shopping cart.)
@@ -4342,7 +4340,7 @@ If it is the number of line items you need, then you can use a Perl script:
 If you have SeparateItems in effect, and need the number of unique items, you could use:
 
 !block example
-   E<lbracket>perl]
+   [perl]
        my $cart = $Carts->{main};
        foreach my $item (@$cart) {
    @items = split /\|/, $items;
@@ -4351,7 +4349,7 @@ If you have SeparateItems in effect, and need the number of unique items, you co
    $count++ unless $seen{$_}++;
    }
    $count;
-   E<lbracket>/perl]
+   [/perl]
 !endblock
 
 H2: The demo doesn't do...(pick one)
@@ -4374,7 +4372,7 @@ There are many possible causes for this error. The main ones are:
 Interchange also allows you to have forms with METHOD=GET.  To use, set the session ID in your form:
 
 !block example
-   <INPUT TYPE=hidden NAME=mv_session_id VALUE="E<lbracket>data session id]">
+   <INPUT TYPE=hidden NAME=mv_session_id VALUE="[data session id]">
 !endblock
 
 You might then try METHOD=GET on forms that have problems. This may prevent errors due to one of the causes above.
@@ -4397,7 +4395,7 @@ This URL:
        Special offer!&lt;/A>
 !endblock
 
-will yield C<Source1> from the Interchange tag E<lbracket>data session source].
+will yield C<Source1> from the Interchange tag [data session source].
 
 The Interchange 3 idiom C<?;;Source1> continues to be supported, so existing partner sites should work without change.
 
@@ -4406,7 +4404,7 @@ H2: How can I send an email copy of the receipt to a user?
 There are several ways, but this is a more complex question than it may seem like it is. You will have to deal with bad email addresses, deciding which
 information to send, showing delivery times, etc. You also have to be very careful with credit card information. If you have not taken the proper security measures (by enabling PGP credit card encryption or using CyberCash), you might just mail them their own unencrypted credit card number!
 
-This is supported in Interchange via a UserTag, E<lbracket>email ...]. See the "simple" and "basic" demos.
+This is supported in Interchange via a UserTag, [email ...]. See the "simple" and "basic" demos.
 
 H2: Configuring catalog whatever...Use of uninitialized value at Config.pm line 1614, <CONFIG> chunk 322.
 
@@ -4430,8 +4428,8 @@ This is a fault in the order profile, and can be due to any of the following:
 
 H2: Sorting doesn't work across multiple pages.
 
-If you are using the E<lbracket>sort table:field] idiom, it cannot. It sorts data
-present in the list only. 
+If you are using the [sort table:field] idiom, it cannot. It sorts data
+present in the list only.
 
 H2: I am searching for a string and it is not found. I know it is there!
 
@@ -4439,7 +4437,7 @@ Set C<mv_substring_match> to C<yes> (C<su=yes> in one-clicks). This most commonl
 
 Also, if you are searching for non-alpha characters, they will also not be interpreted as word characters and the boundary problems will still exist.
 
-H2: How do I display Euro pricing?                                                
+H2: How do I display Euro pricing?
 
 You can use Interchange's II8N facilty via the Locale directive. In catalog.cfg:
 
@@ -4460,13 +4458,13 @@ Locale de_DE p_sep_by_space 2
 
 Note: Be sure to use the latest exchange rates when you establish your catalog.
 
-On your pages (this is from a search results page, the E<lbracket>item-.... ...] notation may be different depending on your context):
+On your pages (this is from a search results page, the [item-.... ...] notation may be different depending on your context):
 
 !block example
-E<lbracket>item-price]<br><!-- german is default -->
-E<lbracket>setlocale eur_EUR]
-  E<lbracket>currency convert=1]E<lbracket>item-field price]E<lbracket>/currency]<br><!-- the euro -->
-E<lbracket>setlocale]
+[item-price]<br><!-- german is default -->
+[setlocale eur_EUR]
+  [currency convert=1][item-field price][/currency]<br><!-- the euro -->
+[setlocale]
 !endblock
 
 Any questions? Read the docs about "Internationalization."
@@ -4522,13 +4520,13 @@ Interchange can return VERY fast SQL search results. But you need to at least
 give it something to work with. The proper method for fast selection is:
 
 !block example
-E<lbracket>query sql="select code,category,title,price from products" ]
+[query sql="select code,category,title,price from products" ]
 
-Category: E<lbracket>sql-param category]<BR>
-Title:    <A HREF="E<lbracket>area E<lbracket>sql-code]]"> E<lbracket>sql-param title] </A><BR>
-Price:    <A HREF="E<lbracket>area order E<lbracket>sql-param 0]]"> E<lbracket>sql-param price] </A><BR>
+Category: [sql-param category]<BR>
+Title:    <A HREF="[area [sql-code]]"> [sql-param title] </A><BR>
+Price:    <A HREF="[area order [sql-param 0]]"> [sql-param price] </A><BR>
 
-E<lbracket>/sql]
+[/sql]
 !endblock
 
 This is especially powerful when you consider a joined query like:
@@ -4539,7 +4537,7 @@ This is especially powerful when you consider a joined query like:
        WHERE  products.category = 'Renaissance'
 !endblock
 
-Note that the extended.desc field will be accessed as E<lbracket>sql-param desc]. Don't forget that you must index your fields if you want fast searching with them as a criteria.
+Note that the extended.desc field will be accessed as [sql-param desc]. Don't forget that you must index your fields if you want fast searching with them as a criteria.
 
 H2: My session files change to owner root every day!
 
@@ -4579,13 +4577,13 @@ To install the demo, go to the directory where Interchange is installed (default
    bin/makecat barry
 !endblock
 
-or 
+or
 
 !block example
    bin/makecat simple
 !endblock
 
-or 
+or
 
 !block example
    bin/makecat any_id_you_pick
