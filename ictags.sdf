@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.12 2001-03-26 06:06:56 bill Exp $
+# $Id: ictags.sdf,v 1.13 2001-03-29 02:40:35 bill Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.12 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.13 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -344,6 +344,73 @@ tag.  Please see the entry for the tag in question for details about
 tag-specific attributes.
 
 
+H3: {{CMD[id="attr_array_hash"]Attribute Arrays and Hashes}}
+
+Some tags allow you to pass an array or hash as the value of an
+attribute.  For an ordinary tag, the syntax is as follows:
+
+!block example
+    attribute.I<n>=value
+
+    attribute.hashkey=value
+!endblock
+
+where I<n> is an integer array index.  Note that you cannot use both an
+array and a hash with the same attributeE<nbspace>E<emdash> if you use
+B<attribute.I<n>>, you cannot also use B<attribute.key> for the same
+attribute.
+
+Here is an example of an attribute array:
+
+!block example
+    search.0="se=hammer
+              fi=products
+              sf=description"
+    search.1="se=plutonium
+              fi=products
+              sf=comment"
+!endblock
+
+The E<lbracket>{{C[jump="#page"]page}}] tag, for example, treats a search
+specification array as a joined search, automatically adding the other
+relevant search fields, including the 'co=yes' to indicate a combined
+search ({{CMD[jump="icdatabase.html#Coordinated and Joined Searching"]joined searches}}
+are described in the Interchange database documentation).
+
+Note that it is up to the tag to handle an array or hash value
+properly.  See the documentation for the specific tag before passing
+it an attribute array or hash value.
+
+H4: Perl calls
+
+Before passing attributes to a tag, the interchange parser would
+convert the above example to an anonymous array reference.  It would
+use the resulting arrayref as the value for the 'search' attribute in
+this example.
+
+If you were passing the above example directly to a tag routine
+within a E<lbracket>{{C[jump="#perl"]perl}}] block or a
+{{C[jump="#User-defined Tags"]usertag}}, you must actually pass an
+anonymous array as the value of the attribute as N<follows:>
+
+!block example
+    my $arrayref = [ "se=hammer/fi=products/sf=description",
+                     "se=plutonium/fi=products/sf=description", ];
+
+    $Tag->I<routine>( { search => $arrayref, } );
+!endblock
+
+Similarly to use a hash reference for the 'entry' attribute:
+
+!block example
+    my $hashref = { name   => "required",
+                    date   => 'default="%B %d, %Y"', };
+
+    $Tag->I<routine>( { entry => $hashref } );
+!endblock
+
+
+
 H2: Looping tags and Sub-tags
 
 {{CMD[id="subtags"]}}
@@ -454,7 +521,6 @@ Now the data structure will look like:
 >        { foo => 'fooN', bar => 'barN' },
 >    ]
 
-# was 'over' 4
 
 H3: E<lbracket>{{CMD[id="sub_PREFIX-accessories"]PREFIX-accessories}} arglist]
 
@@ -697,7 +763,6 @@ Outputs for successive items in the list:
 
 etc. C<[modifier-name quantity]> would be the same as C<[quantity-name]>.
 
-# was 'back'
 
 H1: Tags
 
@@ -731,7 +796,9 @@ Value of the master key in the product (or specified other) table
 >>|I<none>
 {{CMD[jump="#accessories_arg"]arg}}|<<
 Positionally interpreted comma-delimited list of values for the
-following attributes "attribute, type, column, table, name, outboard, passed"
+following N<attributes:>
+. "attribute, type, column, table, name, outboard, passed"
+. {{}}
 * These may also be set individually as separate named attributes
 * See {{CMD[jump="#Item_Attributes"]Item Attributes}} for detail
 >>|I<none>
@@ -784,7 +851,7 @@ Has Subtags|I<No>
 Container tag|I<No>
 !endblock
 
-Tag expansion example:
+B<Tag expansion example:>
 
 E:    E<lbracket>accessories [[EXAMPLE_SKU]] color]
 
@@ -802,7 +869,7 @@ a select box like this will be built:
 !endblock
 
 
-ASP-like Perl call:
+B<ASP-like Perl call:>
 
 !block example; lang='Perl'
     $Tag->accessories(  { code   => '[[EXAMPLE_SKU]]',
@@ -1013,7 +1080,7 @@ H4: {{CMD[id="accessories_new"]new}} (C<type> = combo or reverse_combo)
 
 H4: Examples
 
-Tag expansion example:
+B<Tag expansion example:>
 
 !block example
    [accessories code=[[EXAMPLE_SKU]] arg=color]
@@ -1031,7 +1098,6 @@ Named call example:
 
 
 
-# was 'over' 4
 
 H4: code
 
@@ -1219,7 +1285,6 @@ This will generate:
 If you want the empty "--select--" option to show up, pass an
 empty=1 parameter.
 
-# was 'back'
 
 When called with an attribute, the database is consulted and looks for
 a comma-separated list of attribute options. They take the form:
@@ -1285,7 +1350,6 @@ a select box like this will be built:
 In combination with the I<mv_order_item> and I<mv_order_quantity> variables
 this can be used to allow entry of an attribute at time of order.
 
-# was 'over' 4
 
 H4: Emulating with a loop
 
@@ -1305,16 +1369,13 @@ The above is essentially the same as would be output with the
 \[item-accessories size] tag if the product database field C<size>
 contained the value C<S, M, L, XL>, but contains the adjusted price.
 
-# was 'back'
 
 
-# was 'back'
 
 
 
 H2: and
 
-# was 'over' 4
 
 H3: Summary
 
@@ -1334,7 +1395,7 @@ Called Routine:
 
 Called Routine for positonal: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->and(
 >        {
@@ -1373,7 +1434,6 @@ The [and ...] tag is only used in conjunction with [if ...]. Example:
 See C<[if ...]>.
 
 
-# was 'back'
 
 
 H2: area
@@ -1387,7 +1447,6 @@ equivalent:
 >    [page href=dir/page arg=mv_arg]TargetName[/page]
 >    <A HREF="[area href=dir/page arg=mv_arg]">TargetName</A>
 
-# was over 4
 
 H3: Summary
 
@@ -1427,7 +1486,7 @@ Macro|I<No>
 Has end tag|I<No>
 !endblock
 
-Tag expansion example:
+B<Tag expansion example:>
 
 !block example
    [area href=dir/page.html arg="arg1=AA/arg2=BB"]
@@ -1436,7 +1495,7 @@ Tag expansion example:
    mv_pc=1&mv_arg=arg1%3dAA/arg2%3dBB
 !endblock
 
-ASP-like Perl call:
+B<ASP-like Perl call:>
 
 !block example; lang='Perl'
     $Tag->area(  { href => "dir/page",
@@ -1535,7 +1594,7 @@ detail.
 
 H4: Examples
 
-Tag expansion example:
+B<Tag expansion example:>
 
 !block example
    [area href=dir/page.html arg="arg1=AA/arg2=BB"]
@@ -1560,7 +1619,6 @@ HTML-embedded example (disabled if no_html_parse {{CMD[jump="#Pragma"]Pragma}} a
 
 H2: attr_list
 
-# was 'over' 4
 
 H3: Summary
 
@@ -1580,7 +1638,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->attr_list(
 >        {
@@ -1621,7 +1679,6 @@ embedded Perl.
 
 Tags according to the following rules:
 
-# was 'over' 4
 
 H4: E<lbrace>key}
 
@@ -1647,16 +1704,13 @@ H4: E<lbrace>key:} false text {/key:}
 Displays C<false text> if the value of {key} is blank or zero, and nothing
 otherwise.
 
-# was 'back'
 
 
-# was 'back'
 
 
 
 H2: banner
 
-# was 'over' 4
 
 H3: Summary
 
@@ -1675,7 +1729,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->banner(
 >        {
@@ -1696,13 +1750,11 @@ banner displays in your Interchange pages. See the main Interchange documentatio
 section I<Banner/Ad rotation>.
 
 
-# was 'back'
 
 
 
 H2: bounce
 
-# was 'over' 4
 
 H3: Summary
 
@@ -1719,7 +1771,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->bounce(
 >        {
@@ -1771,13 +1823,11 @@ do:
 >        [/if]
 
 
-# was 'back'
 
 
 
 H2: calc
 
-# was 'over' 4
 
 H3: Summary
 
@@ -1794,7 +1844,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->calc(
 >        {
@@ -1826,19 +1876,17 @@ The [calc] tag is really the same as the [perl] tag, except
 that it doesn't accept arguments, interpolates surrounded Interchange
 tags by default, and is slightly more efficient to parse.
 
-\TIP: The [calc] tag will remember variable values inside one page, so
+\Tip: The [calc] tag will remember variable values inside one page, so
 you can do the equivalent of a memory store and memory recall for a loop.
 
-ASP NOTE: There is never a reason to use this tag in a [perl] or ASP section.
+ASP Note: There is never a reason to use this tag in a [perl] or ASP section.
 
 
-# was 'back'
 
 
 
 H2: cart
 
-# was 'over' 4
 
 H3: Summary
 
@@ -1855,7 +1903,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->cart(
 >        {
@@ -1876,13 +1924,11 @@ Sets the name of the current shopping cart for display of shipping, price,
 total, subtotal, shipping, and nitems tags. 
 
 
-# was 'back'
 
 
 
 H2: catch
 
-# was 'over' 4
 
 H3: Summary
 
@@ -1904,7 +1950,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->catch(
 >        {
@@ -1923,13 +1969,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: cgi
 
-# was 'over' 4
 
 H3: Summary
 
@@ -1946,7 +1990,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->cgi(
 >        {
@@ -1975,13 +2019,11 @@ C<bar> will be substituted for C<[cgi foo]>.
 This is the same as $CGI->{foo} in embedded Perl.
 
 
-# was 'back'
 
 
 
 H2: checked
 
-# was 'over' 4
 
 H3: Summary
 
@@ -2000,7 +2042,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->checked(
 >        {
@@ -2044,13 +2086,11 @@ want to use the volatile CGI space (i.e. [cgi foo]) use the option
 C<cgi=1>.
 
 
-# was 'back'
 
 
 
 H2: control
 
-# was 'over' 4
 
 H3: Summary
 
@@ -2069,7 +2109,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->control(
 >        {
@@ -2088,13 +2128,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: control_set
 
-# was 'over' 4
 
 H3: Summary
 
@@ -2116,7 +2154,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->control_set(
 >        {
@@ -2135,13 +2173,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: counter
 
-# was 'over' 4
 
 H3: Summary
 
@@ -2153,7 +2189,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->counter(
 >        {
@@ -2181,7 +2217,6 @@ The counter is implemented using Perl's C<File::Counter> module, which protects 
 
 Additional parameters:
 
-# was 'over' 4
 
 H4: decrement=1
 
@@ -2195,16 +2230,13 @@ H4: value=1
 
 Shows the value of the counter without incrementing or decrementing it.
 
-# was 'back'
 
 
-# was 'back'
 
 
 
 H2: currency
 
-# was 'over' 4
 
 H3: Summary
 
@@ -2224,7 +2256,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->currency(
 >        {
@@ -2263,13 +2295,11 @@ is 0.167, the following sequence
 will cause the number 8.982,04 to be displayed.
 
 
-# was 'back'
 
 
 
 H2: data
 
-# was 'over' 4
 
 H3: Summary
 
@@ -2288,7 +2318,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->data(
 >        {
@@ -2342,7 +2372,7 @@ on the page calling the write tag. Use [tag flag write]products[/tag]
 to mark the C<products> database writable, for example.
 B<This must be done before ANY access to that table.>
 
-DEPRECATED BEHAVIOR: (replace with C<session> tag).
+N: Deprecated Behavior: (replace with C<session> tag).
 In addition, the C<[data ...]> tag can access a number of elements in
 the Interchange session database:
 
@@ -2370,13 +2400,11 @@ sensitive, so in a pinch you could call the database "Session", but it
 would be better not to use that name at all.
 
 
-# was 'back'
 
 
 
 H2: default
 
-# was 'over' 4
 
 H3: Summary
 
@@ -2395,7 +2423,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->default(
 >        {
@@ -2418,13 +2446,11 @@ Otherwise returns C<default>, which is the string "default" if there is no
 default supplied. Got that? This tag is DEPRECATED anyway.
 
 
-# was 'back'
 
 
 
 H2: description
 
-# was 'over' 4
 
 H3: Summary
 
@@ -2441,7 +2467,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->description(
 >        {
@@ -2470,13 +2496,11 @@ directive can be set for each locale and point to a different database field;
 for example C<desc_en> for English, C<desc_fr> for French, etc.
 
 
-# was 'back'
 
 
 
 H2: discount
 
-# was 'over' 4
 
 H3: Summary
 
@@ -2496,7 +2520,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->discount(
 >        {
@@ -2604,23 +2628,19 @@ then subsequent pieces will be discarded without interpolation.
 Always strips leading and trailing whitespace.
 
 
-# was 'back'
 
 
 H2: discount_subtotal
 
-# was 'over' 4
 
 H3: Description
 
 Inserts the discounted subtotal of the ordered items.
 
-# was 'back'
 
 
 H2: dump
 
-# was 'over' 4
 
 H3: Summary
 
@@ -2634,7 +2654,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->dump(
 >        {
@@ -2651,13 +2671,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: ecml
 
-# was 'over' 4
 
 H3: Summary
 
@@ -2676,7 +2694,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->ecml(
 >        {
@@ -2695,13 +2713,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: either
 
-# was 'over' 4
 
 H3: Summary
 
@@ -2718,7 +2734,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->either(
 >        {
@@ -2736,13 +2752,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: error
 
-# was 'over' 4
 
 H3: Summary
 
@@ -2761,7 +2775,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->error(
 >        {
@@ -2809,7 +2823,6 @@ To check errors without clearing them, you can use the idiom:
 
 The options are:
 
-# was 'over' 4
 
 H4: all=1
 
@@ -2877,15 +2890,12 @@ In the std_label format, it means the field will be bolded.
 If you specify your own label string, it will insert HTML anywhere
 you have {REQUIRED: HTML}, but only when the field is required.
 
-# was 'back'
 
-# was 'back'
 
 
 
 H2: export
 
-# was 'over' 4
 
 H3: Summary
 
@@ -2904,7 +2914,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->export(
 >        {
@@ -2928,13 +2938,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: field
 
-# was 'over' 4
 
 H3: Summary
 
@@ -2951,7 +2959,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->field(
 >        {
@@ -2990,13 +2998,11 @@ Note that if you only have one ProductFile C<products>, which is the default,
 C<[field column key]> is the same as C<[data products column key]>.
 
 
-# was 'back'
 
 
 
 H2: file
 
-# was 'over' 4
 
 H3: Summary
 
@@ -3013,7 +3019,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->file(
 >        {
@@ -3040,13 +3046,11 @@ The optional C<type> parameter will do an appropriate ASCII translation
 on the file before it is sent.
 
 
-# was 'back'
 
 
 
 H2: filter
 
-# was 'over' 4
 
 H3: Summary
 
@@ -3066,7 +3070,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->filter(
 >        {
@@ -3107,7 +3111,6 @@ Another way to do this would be:
 
 Filters available include:
 
-# was 'over' 4
 
 H4: cgi
 
@@ -3342,16 +3345,13 @@ the value of the user variable C<foo> is C<bar>, the call
 C<[value name=foo filter="lookup.products.price.extra"]> will send
 ('bar', 'foo', 'products', 'price', 'extra').
 
-# was 'back'
 
 
-# was 'back'
 
 
 
 H2: flag
 
-# was 'over' 4
 
 H3: Summary
 
@@ -3370,7 +3370,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->flag(
 >        {
@@ -3394,13 +3394,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: fly_list
 
-# was 'over' 4
 
 H3: Summary
 
@@ -3420,7 +3418,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->fly_list(
 >        {
@@ -3464,13 +3462,11 @@ But if you use the prefix, i.e. C<[fly-list prefix=fly]>, then it will
 be [fly-code]; C<prefix=foo> would cause C<[foo-code]>, etc.
 
 
-# was 'back'
 
 
 
 H2: fly_tax
 
-# was 'over' 4
 
 H3: Summary
 
@@ -3487,7 +3483,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->fly_tax(
 >        {
@@ -3505,13 +3501,11 @@ H3: Description
 
 Builds a tax rate from C<taxarea>, C<taxrate>, C<taxshipping>, variable values, and the C<SalesTax> directive value.
 
-# was 'back'
 
 
 
 H2: goto
 
-# was 'over' 4
 
 H3: Summary
 
@@ -3528,7 +3522,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->goto(
 >        {
@@ -3547,13 +3541,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: handling
 
-# was 'over' 4
 
 H3: Summary
 
@@ -3572,7 +3564,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->handling(
 >        {
@@ -3598,13 +3590,11 @@ H3: Description
 
 Calculates and inserts handling costs. Accepts the same noformat and convert arguments as the shipping tag.
 
-# was 'back'
 
 
 
 H2: harness
 
-# was 'over' 4
 
 H3: Summary
 
@@ -3623,7 +3613,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->harness(
 >        {
@@ -3641,7 +3631,6 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 H2: href
@@ -3651,7 +3640,6 @@ Alias for [{{CMD[jump="#area"]area}}] tag.
 
 H2: html_table
 
-# was 'over' 4
 
 H3: Summary
 
@@ -3670,7 +3658,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->html_table(
 >        {
@@ -3688,13 +3676,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: if
 
-# was 'over' 4
 
 H3: Summary
 
@@ -3717,7 +3703,7 @@ Called Routine:
 
 Called Routine for positonal: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->if(
 >        {
@@ -3836,7 +3822,6 @@ testing and parsing of values.
 
 There are many test targets available:
 
-# was 'over' 4
 
 H4: config Directive
 
@@ -3983,7 +3968,6 @@ control, or order forms. variables beginning with c<mv_>
 are interchange special values, and should be tested/used
 with caution.
 
-# was 'back'
 
 The I<field> term is the specifier for that area. For example, [if session
 logged_in] would return true if the C<logged_in> session parameter was set.
@@ -4025,7 +4009,6 @@ as in Perl:
 Any simple perl test can be used, including some limited regex matching.
 More complex tests are best done with C<[if explicit]>.
 
-# was 'over' 4
 
 H4: [then] text [/then]
 
@@ -4052,16 +4035,13 @@ B<in Perl> to be placed inside, with its return value interpreted as
 the result of the test. If arguments are added to [if explicit args],
 those will be passed as arguments are in the I<[perl]> construct.
 
-# was 'back'
 
 
-# was 'back'
 
 
 
 H2: import
 
-# was 'over' 4
 
 H3: Summary
 
@@ -4083,7 +4063,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->import(
 >        {
@@ -4148,13 +4128,11 @@ If using C<NOTES> mode, you must use a separator, which by default is
 a form-feed character (^L).
 
 
-# was 'back'
 
 
 
 H2: include
 
-# was 'over' 4
 
 H3: Summary
 
@@ -4171,7 +4149,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->include(
 >        {
@@ -4193,13 +4171,11 @@ Same as C<[file name]> except interpolates for all Interchange tags
 and variables. Does NOT do locale translations.
 
 
-# was 'back'
 
 
 
 H2: index
 
-# was 'over' 4
 
 H3: Summary
 
@@ -4218,7 +4194,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->index(
 >        {
@@ -4242,13 +4218,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: input_filter
 
-# was 'over' 4
 
 H3: Summary
 
@@ -4270,7 +4244,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->input_filter(
 >        {
@@ -4296,13 +4270,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: item_list
 
-# was 'over' 4
 
 H3: Summary
 
@@ -4324,7 +4296,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->item_list(
 >        {
@@ -4361,7 +4333,6 @@ though they will be interpreted I<after> all of the list-specific tags.
 Between the item_list markers the following elements will return
 information for the current item:
 
-# was 'over' 4
 
 H4: E<lbracket>if-data table column]
 
@@ -4511,16 +4482,13 @@ H4: E<lbracket>quantity-name]
 Evaluates to the name to give an input box in which the
 customer can enter the quantity to order.
 
-# was 'back'
 
 
-# was 'back'
 
 
 
 H2: label
 
-# was 'over' 4
 
 H3: Summary
 
@@ -4537,7 +4505,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->label(
 >        {
@@ -4555,13 +4523,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: log
 
-# was 'over' 4
 
 H3: Summary
 
@@ -4583,7 +4549,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->log(
 >        {
@@ -4607,13 +4573,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: loop
 
-# was 'over' 4
 
 H3: Summary
 
@@ -4635,7 +4599,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->loop(
 >        {
@@ -4690,7 +4654,6 @@ as in a one-click search:
 The above will show all items with a category containing the whole world
 "Americana", and will work the same in both old and new syntax.
 
-# was 'over' 4
 
 H4: E<lbracket>if-loop-data table column] IF [else] ELSE [/else][/if-loop-field]
 
@@ -4816,16 +4779,13 @@ Evaluates to the price for optional quantity n (from the products file)
 of the current item, with currency formatting. If the optional "noformat"
 is set, then currency formatting will not be applied.
 
-# was 'back'
 
 
-# was 'back'
 
 
 
 H2: mail
 
-# was 'over' 4
 
 H3: Summary
 
@@ -4847,7 +4807,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->mail(
 >        {
@@ -4866,13 +4826,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: mvasp
 
-# was 'over' 4
 
 H3: Summary
 
@@ -4894,7 +4852,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->mvasp(
 >        {
@@ -4918,13 +4876,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: nitems
 
-# was 'over' 4
 
 H3: Summary
 
@@ -4943,7 +4899,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->nitems(
 >        {
@@ -4964,13 +4920,11 @@ Expands into the total number of items ordered so far. Takes an
 optional cart name as a parameter.
 
 
-# was 'back'
 
 
 
 H2: onfly
 
-# was 'over' 4
 
 H3: Summary
 
@@ -4989,7 +4943,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->onfly(
 >        {
@@ -5008,13 +4962,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: options
 
-# was 'over' 4
 
 H3: Summary
 
@@ -5033,7 +4985,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->options(
 >        {
@@ -5051,13 +5003,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: or
 
-# was 'over' 4
 
 H3: Summary
 
@@ -5077,7 +5027,7 @@ Called Routine:
 
 Called Routine for positonal: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->or(
 >        {
@@ -5105,13 +5055,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: order
 
-# was 'over' 4
 
 H3: Summary
 
@@ -5128,7 +5076,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->order(
 >        {
@@ -5162,7 +5110,6 @@ defined as products files will be searched in sequence for the item.
 \Note: [/order] simply expands to </A>.
 
 
-# was 'back'
 
 
 
@@ -5179,7 +5126,6 @@ equivalent:
 >    [page href=dir/page arg=mv_arg]TargetName[/page]
 >    <A HREF="[area href=dir/page arg=mv_arg]">TargetName</A>
 
-# was 'over' 4
 
 H3: Summary
 
@@ -5221,7 +5167,7 @@ Macro|I<No>
 Has end tag|I<No> (C<[/page]> is a macro for C<E<lt>/AE<gt>>)
 !endblock
 
-Tag expansion example:
+B<Tag expansion example:>
 
 !block example
    [page href=dir/page.html arg="arg1=AA/arg2=BB"]
@@ -5230,7 +5176,7 @@ Tag expansion example:
    mv_pc=1&mv_arg=arg1%3dAA/arg2%3dBB">
 !endblock
 
-ASP-like Perl call:
+B<ASP-like Perl call:>
 
 !block example; lang='Perl'
     $Tag->page(  { href => "dir/page",
@@ -5242,6 +5188,17 @@ or similarly with positional parameters,
 !block example; lang='Perl'
     $Tag->page($href, $arg, $attribute_hash_reference);
 !endblock
+
+Using arrayref for joined search (see also {{CMD[jump="#attr_array_hash"]Attribute Arrays and Hashes}})
+
+!block example
+    my $searchref = [ "se=hammer/fi=products/sf=description",
+                      "se=plutonium/fi=products/sf=description", ];
+
+    $Tag->page( { href   => 'scan',
+                  search => $searchref, } );
+!endblock
+
 
 H4: See Also
 
@@ -5468,7 +5425,6 @@ E<lbracket>{{C[jump="#area"]area}} ...]> tags to specify the search
 (an argument to a scan is never valid anyway).
 
 
-# was 'over' 4
 
 H4: Original syntax
 
@@ -5514,25 +5470,44 @@ Any "unsafe" characters will be escaped. You may not search for trailing
 spaces in this method; it is allowed in the other notations.
 
 
-# was 'back'
+
+H4: Joined searches
+
+You can also specify a joined search using an attribute array (see
+N<{{CMD[jump="#attr_array_hash"]Attribute Arrays and Hashes}}):>
+
+!block example
+    E<lbracket>page href=scan
+      search.0="se=fragrant
+                fi=products
+                sf=smell"
+      search.1="se=purple
+                sf=color"
+      search.2="se=perennial
+                sf=type"]
+!endblock
+
+The search routine called by the page tag automatically adds the other
+relevant search specification elements, including the 'co=yes' to
+indicate a combined search
+({{CMD[jump="icdatabase.html#Coordinated and Joined Searching"]joinedE<nbspace>searches}}
+are described in the Interchange database documentation).
 
 
 H4: E<lbracket>/page]
 
 This is not an actual end tag, but simply a macro that expands to
-</A>. Use it with the page element as follows:
+</A>. The following two lines are equivalent:
 
->  [page shirts]Our shirt collection[/page]. 
+>  [page shirts]Our shirt collection[/page]
+>  [page shirts]Our shirt collection</A>
 
-\TIP: A small efficiency boost in large pages is to just use the </A>
-tag.
+\Tip: In large pages, just use the </A> tag for a small performance improvement.
 
-# was 'back'
 
 
 H2: perl
 
-# was 'over' 4
 
 H3: Summary
 
@@ -5554,7 +5529,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->perl(
 >        {
@@ -5632,13 +5607,11 @@ If you do not do this, your code will fail with a runtime Safe
 error.
 
 
-# was 'back'
 
 
 
 H2: price
 
-# was 'over' 4
 
 H3: Summary
 
@@ -5657,7 +5630,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->price(
 >        {
@@ -5773,13 +5746,11 @@ add the discount=1 parameter.
 See I<Product Discounts>.
 
 
-# was 'back'
 
 
 
 H2: process
 
-# was 'over' 4
 
 H3: Summary
 
@@ -5802,7 +5773,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->process(
 >        {
@@ -5821,13 +5792,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: profile
 
-# was 'over' 4
 
 H3: Summary
 
@@ -5846,7 +5815,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->profile(
 >        {
@@ -5864,13 +5833,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: query
 
-# was 'over' 4
 
 H3: Summary
 
@@ -5892,7 +5859,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->query(
 >        {
@@ -5916,13 +5883,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: read_cookie
 
-# was 'over' 4
 
 H3: Summary
 
@@ -5939,7 +5904,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->read_cookie(
 >        {
@@ -5957,13 +5922,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: record
 
-# was 'over' 4
 
 H3: Summary
 
@@ -5979,7 +5942,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->record(
 >        {
@@ -6003,13 +5966,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: region
 
-# was 'over' 4
 
 H3: Summary
 
@@ -6028,7 +5989,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->region(
 >        {
@@ -6053,13 +6014,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: row
 
-# was 'over' 4
 
 H3: Summary
 
@@ -6079,7 +6038,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->row(
 >        {
@@ -6101,7 +6060,6 @@ Formats text in tables. Intended for use in emailed reports or <PRE></PRE> HTML
 areas. The parameter I<nn> gives the number of columns to use. Inside the
 row tag, [col param=value ...] tags may be used. 
 
-# was 'over' 4
 
 H4: E<lbracket>col width=nn wrap=yes|no gutter=n align=left|right|input spacing=n]
 
@@ -6134,16 +6092,13 @@ H4: E<lbracket>/col]
 
 Terminates the column field.
 
-# was 'back'
 
 
-# was 'back'
 
 
 
 H2: salestax
 
-# was 'over' 4
 
 H3: Summary
 
@@ -6160,7 +6115,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->salestax(
 >        {
@@ -6190,13 +6145,11 @@ derive the proper percentage, such as state or zip code, it is set to
 currency formatting will be given.
 
 
-# was 'back'
 
 
 
 H2: scratch
 
-# was 'over' 4
 
 H3: Summary
 
@@ -6213,7 +6166,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->scratch(
 >        {
@@ -6234,13 +6187,11 @@ Returns the contents of a scratch variable to the page. (A scratch
 variable is set with a [set] value [/set] container pair.)
 
 
-# was 'back'
 
 
 
 H2: scratchd
 
-# was 'over' 4
 
 H3: Summary
 
@@ -6257,7 +6208,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->scratchd(
 >        {
@@ -6275,7 +6226,6 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
@@ -6287,7 +6237,6 @@ Formats results returned by a search.  Must be enclosed within a
 
 H2: search_region
 
-# was 'over' 4
 
 H3: Summary
 
@@ -6309,7 +6258,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->search_region(
 >        {
@@ -6335,13 +6284,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: selected
 
-# was 'over' 4
 
 H3: Summary
 
@@ -6360,7 +6307,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->selected(
 >        {
@@ -6409,13 +6356,11 @@ want to use the volatile CGI space (i.e. [cgi foo]) use the option
 C<cgi=1>.
 
 
-# was 'back'
 
 
 
 H2: set
 
-# was 'over' 4
 
 H3: Summary
 
@@ -6435,7 +6380,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->set(
 >        {
@@ -6479,13 +6424,11 @@ Any of these profile values can be set in the OrderProfile files
 as well.
 
 
-# was 'back'
 
 
 
 H2: set_cookie
 
-# was 'over' 4
 
 H3: Summary
 
@@ -6502,7 +6445,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->set_cookie(
 >        {
@@ -6522,13 +6465,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: seti
 
-# was 'over' 4
 
 H3: Summary
 
@@ -6548,7 +6489,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->seti(
 >        {
@@ -6567,13 +6508,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: setlocale
 
-# was 'over' 4
 
 H3: Summary
 
@@ -6592,7 +6531,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->setlocale(
 >        {
@@ -6611,13 +6550,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: shipping
 
-# was 'over' 4
 
 H3: Summary
 
@@ -6636,7 +6573,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->shipping(
 >        {
@@ -6666,13 +6603,11 @@ mode is the shipping mode currently selected in the C<mv_shipmode>
 variable. See I<SHIPPING>.
 
 
-# was 'back'
 
 
 
 H2: shipping_desc
 
-# was 'over' 4
 
 H3: Summary
 
@@ -6693,7 +6628,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->shipping_desc(
 >        {
@@ -6711,13 +6646,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: soap
 
-# was 'over' 4
 
 H3: Summary
 
@@ -6736,7 +6669,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->soap(
 >        {
@@ -6756,13 +6689,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: sql
 
-# was 'over' 4
 
 H3: Summary
 
@@ -6784,7 +6715,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->sql(
 >        {
@@ -6804,13 +6735,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: strip
 
-# was 'over' 4
 
 H3: Summary
 
@@ -6827,7 +6756,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->strip(
 >        {
@@ -6845,13 +6774,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: subtotal
 
-# was 'over' 4
 
 H3: Summary
 
@@ -6868,7 +6795,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->subtotal(
 >        {
@@ -6903,13 +6830,11 @@ tag is present and non-zero, the raw number with no currency formatting
 will be given.
 
 
-# was 'back'
 
 
 
 H2: tag
 
-# was 'over' 4
 
 H3: Summary
 
@@ -6931,7 +6856,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->tag(
 >        {
@@ -6958,7 +6883,6 @@ H3: Description
 Performs any of a number of operations, based on the presence of C<arg>.
 The arguments that may be given are:
 
-# was 'over' 4
 
 H4: export database file* type*
 
@@ -7070,16 +6994,13 @@ on the page.
 
 >    [tag touch products][/tag]
 
-# was 'back'
 
 
-# was 'back'
 
 
 
 H2: time
 
-# was 'over' 4
 
 H3: Summary
 
@@ -7101,7 +7022,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->time(
 >        {
@@ -7128,7 +7049,6 @@ the same as modern UNIX date commands).
 
 Accepts the following options:
 
-# was 'over' 4
 
 H4: adjust
 
@@ -7210,16 +7130,13 @@ savings time, the digit is the number of hours displacement from GMT, and
 the second alphabetical string is the zone name when in daylight savings
 time. NOTE: This may not work on all operating systems.
 
-# was 'back'
 
 
-# was 'back'
 
 
 
 H2: timed_build
 
-# was 'over' 4
 
 H3: Summary
 
@@ -7241,7 +7158,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->timed_build(
 >        {
@@ -7275,7 +7192,6 @@ then it will not be rebuilt until the output file is removed.
 
 Accepts the following parameters:
 
-# was 'over' 4
 
 H4: file
 
@@ -7316,10 +7232,11 @@ This is really the same as C<minutes=240>. Useful for passing seconds:
 >        ITL tags....
 >        [/timed-build]
 
-The region will be rebuilt every 5 seconds. PERFORMANCE TIP: use minutes
+The region will be rebuilt every 5 seconds.
+
+Performance N<Tip:> use minutes
 of .08 instead; avoids having to parse the period string.
 
-# was 'back'
 
 If you have the StaticDir catalog.cfg parameter set to a writable path,
 you can build a cached static version of your catalog over time. Simply
@@ -7329,13 +7246,11 @@ StaticDBM database will be updated to mark the page as static and the
 next time a link is made for that page the static version will be presented.
 
 
-# was 'back'
 
 
 
 H2: tmp
 
-# was 'over' 4
 
 H3: Summary
 
@@ -7355,7 +7270,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->tmp(
 >        {
@@ -7384,13 +7299,11 @@ order profiles or C<mv_click> actions. If you want to avoid that, use
 a profile stored via the catalog.cfg directive C<OrderProfile>.
 
 
-# was 'back'
 
 
 
 H2: total_cost
 
-# was 'over' 4
 
 H3: Summary
 
@@ -7407,7 +7320,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->total_cost(
 >        {
@@ -7434,13 +7347,11 @@ Expands into the total cost of all the items in the current shopping cart,
 including sales tax (if any).
 
 
-# was 'back'
 
 
 
 H2: tree
 
-# was 'over' 4
 
 H3: Summary
 
@@ -7462,7 +7373,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->tree(
 >        {
@@ -7511,7 +7422,6 @@ Works on a data set with the structure:
 Sets several keys which assist in walking and displaying the
 tree.
 
-# was 'over' 4
 
 H4: mv_level
 
@@ -7578,7 +7488,6 @@ from the tag call:
 
 Accepts the following paremeters:
 
-# was 'over' 4
 
 H4: table
 
@@ -7702,20 +7611,17 @@ When set to a true value, and an endless tree is detected (i.e. the
 child branch contains a parent) then the error will be returned in the
 page.  Errors are NOT shown by default.
 
-# was 'back'
 
 In addition to the above values, all valid options for a list tag are
 in force. For example, you can set a "SELECTED" value on an option list
 with C<option=1>, set the tag prefix with C<prefix>, etc.
 
 
-# was 'back'
 
 
 
 H2: try
 
-# was 'over' 4
 
 H3: Summary
 
@@ -7737,7 +7643,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->try(
 >        {
@@ -7756,13 +7662,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: update
 
-# was 'over' 4
 
 H3: Summary
 
@@ -7781,7 +7685,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->update(
 >        {
@@ -7799,13 +7703,11 @@ H3: Description
 
 B<NO Description>
 
-# was 'back'
 
 
 
 H2: userdb
 
-# was 'over' 4
 
 H3: Summary
 
@@ -7824,7 +7726,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->userdb(
 >        {
@@ -7906,13 +7808,11 @@ call to C<userdb>. The global parameters (default in parens):
 >    db_acl       Set field for database access control storage (db_acl)
 
 
-# was 'back'
 
 
 
 H2: value
 
-# was 'over' 4
 
 H3: Summary
 
@@ -7931,7 +7831,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->value(
 >        {
@@ -7967,13 +7867,11 @@ or set other form variable values to defaults. B<NOTE:> This is only
 available in new-style tags, for safety reasons.
 
 
-# was 'back'
 
 
 
 H2: value_extended
 
-# was 'over' 4
 
 H3: Summary
 
@@ -7992,7 +7890,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-ASP/perl tag calls:
+B<ASP-like Perl call:>
 
 >    $Tag->value_extended(
 >        {
@@ -8031,7 +7929,6 @@ If the variable is a file variable coming from a multipart/form-data
 file upload, then the contents of that upload can be returned to the 
 page or optionally written to the C<outfile>.
 
-# was 'over' 4
 
 H4: name
 
@@ -8091,10 +7988,8 @@ H4: no
 The value that will be returned if a test is false or a file write
 fails. Defaults to the empty string.
 
-# was 'back'
 
 
-# was 'back'
 
 
 H1: User-defined Tags
@@ -8174,7 +8069,6 @@ Called with:
 
 The properties for UserTag are are:
 
-# was 'over' 4
 
 H2: Alias
 
@@ -8389,13 +8283,11 @@ The usual I<here documents> caveats apply.
 Parameters defined with the I<Order> property will be sent to the routine
 first, followed by any encapsulated text (I<HasEndTag> is set).
 
-# was 'back'
 
 Note that the UserTag facility, combined with AllowGlobal, allows the
 user to define tags just as powerful as the standard Interchange tags.
 This is not recommended for the novice, thoughE<nbspace>E<emdash> keep it simple. 8-)
 
-# was 'back'
 
 H1: Standard Usertags
 
@@ -8490,7 +8382,6 @@ E<lbracket>B<dummy>E<nbspace>...], [B<pedagogy>E<nbspace>...] and [B<dummy-alias
 A short description of the tag goes here.  This example (B<dummy>) is
 not an actual tag.
 
-# was 'over' 4
 
 A3: Summary
 
@@ -8545,7 +8436,7 @@ Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
 Has end tag|[/dummy]
 !endblock
 
-Tag expansion example:
+B<Tag expansion example:>
 
 !block example
    [dummy first=pig_latin second="Capitalize"]\
@@ -8608,8 +8499,6 @@ A4: {{CMD[id="dummy_other"]other}}
 
 'other' is another named attribute that applies to this tag.
 
-
-# was 'back'
 
 A1: Template Parsing Order
 
