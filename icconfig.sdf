@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.34 2001-03-16 09:06:36 jon Exp $
+# $Id: icconfig.sdf,v 1.35 2001-03-22 16:54:22 jon Exp $
 
 !define DOC_NAME "Interchange Configuration"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.34 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.35 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icconfig.html"
@@ -2046,6 +2046,18 @@ A script can be written which modifies an appropriate access control file, such 
    LockoutCommand   lockout %s
 !endblock
 
+H2: LockType *global*
+
+Allows selection of file locking method used throughout Interchange. Options are 'flock', 'fcntl', and 'none'. Added in 4.7.0.
+
+Default is flock. See the flock(2) manpage for details.
+
+The fcntl setting is needed for NFS filesystems; for NFS-based locking to work, the NFS lock daemon (lockd) must be enabled and running on both the NFS client and server. Locking with fcntl works on Linux and should work on Solaris, but is not guaranteed to work on all OSes.
+
+The none setting turns off file locking entirely, but that is never recommended. It might be useful to check if locking is causing hangs on the system.
+
+If you are only accessing sessions on an NFS-mounted directory but the rest of Interchange is on the local filesystem, you can instead set the SessionType catalog directive to 'NFS', which enables fcntl locking for sessions only on a per-catalog basis.
+
 H2: Mall *global*
 
 Set to C<Yes> to issue cookies only for the current catalog's script. By
@@ -3487,8 +3499,10 @@ The default is file-based sessions, which provides the best performance and reli
 If you are planning on running Interchange servers with an NFS-mounted filesystem as the session target, you must set SessionType to "NFS". The other requisites are usually:
 
 	1. fcntl() supported in Perl
-	2. lock daemon running on server system
-	3. lock daemon running on interchange server
+	2. lock daemon running on NFS server system
+	3. lock daemon running on Interchange server
+
+See also the global directive LockType.
 
 H2: SpecialPage
 
