@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.77 2002-04-12 22:53:18 jon Exp $
+# $Id: ictags.sdf,v 1.78 2002-04-15 16:13:20 jon Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.77 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.78 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -785,7 +785,7 @@ something like:
 >        [prefix-code]  [prefix-param foo]  [prefix-param bar]
 >    [/query]
 
-In this case, [prefix-code] and [prefix-param foo] are synonymns, for
+In this case, [prefix-code] and [prefix-param foo] are synonyms, for
 C<foo> is the first returned parameter and becomes the code for this row.
 Another synonym is [prefix-pos 0]; and [prefix-pos 1] is the same
 as [prefix-param bar].
@@ -962,7 +962,7 @@ move_combo, reverse_combo, show, options, labels, checkbox, radio, links
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<No>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -1242,7 +1242,7 @@ several N<sizes:>
 . Sm=10oz, Med=15oz*, Lg=20oz
 >>
 options|<<
-This shows the attribute options as a newline delimimited list:
+This shows the attribute options as a newline delimited list:
 . E<lbracket>accessories os28044 size,options]
 . -----------------------------------------
 . Sm
@@ -1863,7 +1863,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<no>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -1979,7 +1979,7 @@ Attributes|Default
 #!block table; style="plain"; headings=1; colvaligns="TT"
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<No>
 Macro|I<No>
 Has end tag|I<No>
@@ -2158,7 +2158,7 @@ Assigns an override value for E<lbracket>{{C[jump="#subtotal"]subtotal}}] tags
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<No>
 Container tag|I<No>
 !endblock
@@ -2300,7 +2300,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<no>
 Container tag|I<NA> (Though the template is technically body text)
 Has Subtags|I<No>
@@ -2426,7 +2426,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<No>
 Container tag|I<No>
 !endblock
@@ -2615,7 +2615,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<no>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -2628,7 +2628,7 @@ B<Tag expansion example:>
 !block example
    [bounce href if]
 ---
-   TAGRESULT
+   TAG RESULT
 !endblock
 
 
@@ -2719,7 +2719,7 @@ B<No attributes> (though you can break it if you set
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<No>
 Has Subtags|I<No>
 Container tag|I<Yes>
@@ -2807,7 +2807,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<YES>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -2820,7 +2820,7 @@ B<Tag expansion example:>
 !block example
    [cart name]
 ---
-   TAGRESULT
+   TAG RESULT
 !endblock
 
 
@@ -2910,7 +2910,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<No>
 Container tag|Yes
 Has Subtags|<<
@@ -2972,7 +2972,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<No>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -2985,7 +2985,7 @@ B<Tag expansion example:>
 !block example
    [catch ]
 ---
-   TAGRESULT
+   TAG RESULT
 !endblock
 
 
@@ -3083,7 +3083,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<YES>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -3096,7 +3096,7 @@ B<Tag expansion example:>
 !block example
    [cgi name]
 ---
-   TAGRESULT
+   TAG RESULT
 !endblock
 
 
@@ -3198,7 +3198,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<YES>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -3211,7 +3211,7 @@ B<Tag expansion example:>
 !block example
    [checked name value]
 ---
-   TAGRESULT
+   TAG RESULT
 !endblock
 
 
@@ -3312,7 +3312,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<no>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -3325,7 +3325,7 @@ B<Tag expansion example:>
 !block example
    [control name default]
 ---
-   TAGRESULT
+   TAG RESULT
 !endblock
 
 
@@ -3442,7 +3442,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<no>
 Container tag|I<Yes>
 Has Subtags|I<No>
@@ -3455,7 +3455,7 @@ B<Tag expansion example:>
 !block example
    [control_set index]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -3538,7 +3538,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<YES>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -3551,7 +3551,7 @@ B<Tag expansion example:>
 !block example
    [counter file]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -3665,7 +3665,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<no>
 Container tag|I<Yes>
 Has Subtags|I<No>
@@ -3678,7 +3678,7 @@ B<Tag expansion example:>
 !block example
    [currency convert noformat]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -3830,7 +3830,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<no>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -3843,7 +3843,7 @@ B<Tag expansion example:>
 !block example
    [data table field key]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -4016,7 +4016,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<YES>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -4029,7 +4029,7 @@ B<Tag expansion example:>
 !block example
    [default name default]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -4126,7 +4126,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<no>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -4139,7 +4139,7 @@ B<Tag expansion example:>
 !block example
    [description code base]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -4244,7 +4244,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<YES>
 Container tag|I<Yes>
 Has Subtags|I<No>
@@ -4257,7 +4257,7 @@ B<Tag expansion example:>
 !block example
    [discount code]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -4400,7 +4400,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<no>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -4413,7 +4413,7 @@ B<Tag expansion example:>
 !block example
    [dump ]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -4469,7 +4469,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<no>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -4482,7 +4482,7 @@ B<Tag expansion example:>
 !block example
    [ecml name function]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -4650,7 +4650,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<no>
 Container tag|I<Yes>
 Has Subtags|I<No>
@@ -4663,7 +4663,7 @@ B<Tag expansion example:>
 !block example
    [either ]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -4744,7 +4744,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<no>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -4757,7 +4757,7 @@ B<Tag expansion example:>
 !block example
    [error name]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -4815,7 +4815,7 @@ The options are:
 H4: {{CMD[id="error_all"]all=1}}
 
 Display all error messages, not just the one
-refered to by <var>. The default is only display
+referred to by <var>. The default is only display
 the error message assigned to <var>.
 
 text=<optional string to embed the error message(s) in>
@@ -4961,7 +4961,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<YES>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -4974,7 +4974,7 @@ B<Tag expansion example:>
 !block example
    [export table]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -5132,7 +5132,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<no>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -5145,7 +5145,7 @@ B<Tag expansion example:>
 !block example
    [field name code]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -5247,7 +5247,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<no>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -5260,7 +5260,7 @@ B<Tag expansion example:>
 !block example
    [file name type]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -5363,7 +5363,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<no>
 Container tag|I<Yes>
 Has Subtags|I<No>
@@ -5376,7 +5376,7 @@ B<Tag expansion example:>
 !block example
    [filter op]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -5727,7 +5727,7 @@ database within {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.htm
 The boolean value of the flag
 >>|DEFAULT_VALUE
 {{CMD[jump="#flag_write"]write}}|<<
-Flags the table writeable by default (or read-only if you also set
+Flags the table writable by default (or read-only if you also set
 the C<value>=0 attribute)
 >>|DEFAULT_VALUE
 !endblock
@@ -5739,7 +5739,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<YES>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -5752,7 +5752,7 @@ B<Tag expansion example:>
 !block example
    [flag type]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -5850,7 +5850,7 @@ The boolean value of the flag
 
 H4: {{CMD[id="flag_write"]write}}
 
-Flags the table writeable by default (or read-only if you also set
+Flags the table writable by default (or read-only if you also set
 the C<value>=0 attribute)
 
 
@@ -5914,7 +5914,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<no>
 Container tag|I<Yes>
 Has Subtags|I<No>
@@ -5927,7 +5927,7 @@ B<Tag expansion example:>
 !block example
    [fly_list code base]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -6041,7 +6041,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<no>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -6054,7 +6054,7 @@ B<Tag expansion example:>
 !block example
    [fly_tax area]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -6120,7 +6120,7 @@ Condition for C<goto>. Should evaluate to truth value before tag is parsed.
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Container tag|<<
 I<No>, but you use it like N<this:>
 . E<lbracket>goto name=I<label_name> if=I<condition>]
@@ -6238,7 +6238,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<YES>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -6251,7 +6251,7 @@ B<Tag expansion example:>
 !block example
    [handling mode]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -6317,7 +6317,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<no>
 Container tag|I<Yes>
 Has Subtags|I<No>
@@ -6330,7 +6330,7 @@ B<Tag expansion example:>
 !block example
    [harness ]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -6421,7 +6421,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<no>
 Container tag|I<Yes>
 Has Subtags|I<No>
@@ -6434,7 +6434,7 @@ B<Tag expansion example:>
 !block example
    [html_table ]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -6524,7 +6524,7 @@ Invalidates cache: B<YES>
 
 Called Routine: 
 
-Called Routine for positonal: 
+Called Routine for positional: 
 
 B<ASP-like Perl call:>
 
@@ -6578,7 +6578,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<YES>
 Container tag|I<Yes>
 Has Subtags|I<No>
@@ -6591,7 +6591,7 @@ B<Tag expansion example:>
 !block example
    [if type term op compare]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -6854,7 +6854,7 @@ H4: {{CMD[id="if_validcc"]validcc}}
 a special case, takes the form [if validcc no type exp_date].
 evaluates to true if the supplied credit card number, type
 of card, and expiration date pass a validity test. does
-a luhn-10 calculation to weed out typos or phony 
+a Luhn-10 calculation to weed out typos or phony 
 card numbers. Uses the standard C<CreditCardAuto> variables
 for targets if nothing else is passed.
 
@@ -7030,7 +7030,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<YES>
 Container tag|I<Yes>
 Has Subtags|I<No>
@@ -7043,7 +7043,7 @@ B<Tag expansion example:>
 !block example
    [import table type]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -7165,7 +7165,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<no>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -7178,7 +7178,7 @@ B<Tag expansion example:>
 !block example
    [include file locale]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -7237,7 +7237,7 @@ Parameters|Description|Default
 Alias for table
 >>|DEFAULT_VALUE
 {{CMD[jump="#index_basefile"]basefile}}|<<
-Database filename. Exports the table to this filename if old or missing before indexing. See also the {{C[jump="#export"]export}} tag for additional relevent attributes such as delimiter type, etc.
+Database filename. Exports the table to this filename if old or missing before indexing. See also the {{C[jump="#export"]export}} tag for additional relevant attributes such as delimiter type, etc.
 >>|DEFAULT_VALUE
 {{CMD[jump="#index_col"]col}}|<<
 alias for fields
@@ -7278,7 +7278,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<YES>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -7291,7 +7291,7 @@ B<Tag expansion example:>
 !block example
    [index table]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -7318,7 +7318,7 @@ Creates an index for the specified table.
 # BEGIN ############ index Subsections ##############
 H4: {{CMD[id="index_basefile"]basefile}}
 
-Database filename. Exports the table to this filename if old or missing before indexing. See also the {{C[jump="#export"]export}} tag for additional relevent attributes such as delimiter type, etc.
+Database filename. Exports the table to this filename if old or missing before indexing. See also the {{C[jump="#export"]export}} tag for additional relevant attributes such as delimiter type, etc.
 
 
 H4: {{CMD[id="index_col"]col}}
@@ -7435,7 +7435,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<YES>
 Container tag|I<Yes>
 Has Subtags|I<No>
@@ -7448,7 +7448,7 @@ B<Tag expansion example:>
 !block example
    [item_list name]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -7678,7 +7678,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<No>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -7691,7 +7691,7 @@ B<Tag expansion example:>
 !block example
    [label ]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -7766,7 +7766,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<no>
 Container tag|I<Yes>
 Has Subtags|I<No>
@@ -7779,7 +7779,7 @@ B<Tag expansion example:>
 !block example
    [log file]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -7919,7 +7919,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<no>
 Container tag|I<Yes>
 Has Subtags|I<No>
@@ -7932,7 +7932,7 @@ B<Tag expansion example:>
 !block example
    [loop list]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -8125,7 +8125,7 @@ passed list with the lr=1 parameter).
 Parameters are numbered from ordinal 0, with [loop-pos 0] being the
 equivalent of [loop-code].
 
-Outputs the B<IF> if the returned positional parmeter C<N> is
+Outputs the B<IF> if the returned positional parameter C<N> is
 non-empty, and the B<ELSE> (if any) otherwise.
 
 See E<lbracket>{{CMD[jump="#if-PREFIX-pos"]if-I<prefix>-pos}}E<rbracket>.
@@ -8266,7 +8266,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<YES>
 Container tag|I<Yes>
 Has Subtags|I<No>
@@ -8279,7 +8279,7 @@ B<Tag expansion example:>
 !block example
    [mail to]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -8374,7 +8374,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<Yes>
 Has Subtags|E<lt>% I<and> %>
 Container tag|I<Yes>
@@ -8500,7 +8500,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<YES>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -8513,7 +8513,7 @@ B<Tag expansion example:>
 !block example
    [nitems name]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -8674,7 +8674,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<no>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -8687,7 +8687,7 @@ B<Tag expansion example:>
 !block example
    [options code]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -8817,7 +8817,7 @@ Invalidates cache: B<no>
 
 Called Routine: 
 
-Called Routine for positonal: 
+Called Routine for positional: 
 
 B<ASP-like Perl call:>
 
@@ -8876,7 +8876,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<no>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -8889,7 +8889,7 @@ B<Tag expansion example:>
 !block example
    [or type term op compare]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -8965,7 +8965,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<No>
 Container tag|I<No>
 Has end tag|I<No> (C<[/order]> is a macro for C<E<lt>/AE<gt>>)
@@ -9098,7 +9098,7 @@ Attributes|Default
 #!block table; style="plain";headings=1; colvaligns="TT"
 !block table;headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<No>
 Macro|I<No>
 Has end tag|I<No> (C<[/page]> is a macro for C<E<lt>/AE<gt>>)
@@ -9426,7 +9426,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<Yes>
 Has Subtags|I<No>
 Container tag|I<Yes>
@@ -9521,7 +9521,7 @@ For full descriptions of these objects, see
 
 H4: {{CMD[id="perl_tables"]tables}}
 
-This should ba a whitespace-separated list of database tables you want
+This should be a whitespace-separated list of database tables you want
 to make available within the Perl code.
 
 If you wish to use database values in your Perl code, the tag must
@@ -9785,7 +9785,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<no>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -9798,7 +9798,7 @@ B<Tag expansion example:>
 !block example
    [price code]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -9970,7 +9970,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<No>
 Container tag|I<No>
 !endblock
@@ -10007,7 +10007,7 @@ H2: query
 
 Passes SQL statements through to SQL databases, or allows SQL queries
 via Interchange's database abstraction into non-SQL databases and text
-files. The latter use may require Jochen Wiedmann's
+files. The latter requires the Perl
 {{CMD[jump="http://search.cpan.org/doc/JWIED/SQL-Statement-0.1017/lib/SQL/Statement.pm"]SQL Statement}}
 module (included with Bundle::Interchange from CPAN).
 
@@ -10023,7 +10023,7 @@ Parameters|Description|Default
 {{CMD[jump="#query_sql"]sql}}|<<
 The SQL statement.
 * Passed directly through to an SQL database.
-* For a non-SQL table, the tag interprets your SQL first. See Jochen Wiedmann's
+* For a non-SQL table, the tag interprets your SQL first. See the
 {{CMD[jump="http://search.cpan.org/doc/JWIED/SQL-Statement-0.1017/lib/SQL/Statement.pm"]SQL Statement}}
 module for limitations and detail.
 >>|I<none>
@@ -10052,7 +10052,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<No>
 Container tag|I<Yes>
 Has {{CMD[jump="#query_subtags"]subtags}}|I<Yes>
@@ -10116,7 +10116,7 @@ the database and return the result.
 
 If your table is not in an SQL database (for example, GDBM, text,
 LDAP, and in-memory tables), Interchange will internally convert it to
-an Interchange search specification with Jochen Wiedmann's
+an Interchange search specification with the Perl
 {{CMD[jump="http://search.cpan.org/doc/JWIED/SQL-Statement-0.1017/lib/SQL/Statement.pm"]SQL Statement}}
 module (included with Bundle::Interchange from CPAN). This means that
 you can use simple SQL queries regardless of the underlying database
@@ -10293,7 +10293,7 @@ had set 'arrayref=""'.
 H4: {{CMD[id="query_arrayref"]arrayref and hashref}}
 
 If you set 'C<arrayref>=I<keyname>' or 'C<hashref>=I<keyname>', the
-query will not ruturn results to the page. Instead, it will place the
+query will not return results to the page. Instead, it will place the
 results of your query in the $Vend::Interpolate::Tmp hash. Using
 'C<arrayref>=my_query' sets $Vend::Interpolate::Tmp->{my_query} to
 refer to an array of array references, while 'C<hashref>=my_query'
@@ -10311,7 +10311,7 @@ somewhere more persistent such as the $Session N<hash:>
 
 E:   $Session->{my_query} = $Vend::Interpolate::Tmp->{my_query};
 
-Beware the impact on perfomance if you do this with large result
+Beware the impact on performance if you do this with large result
 sets.
 
 Technical noteE<nbspace>E<emdash> the string returned by the 'C<textref>'
@@ -10526,7 +10526,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<Yes>
 Container tag|I<No>
 !endblock
@@ -10612,7 +10612,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<Yes>
 Container tag|I<No>
 !endblock
@@ -10716,7 +10716,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<no>
 Container tag|I<Yes>
 Has Subtags|I<No>
@@ -10729,7 +10729,7 @@ B<Tag expansion example:>
 !block example
    [row width]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -10862,7 +10862,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<YES>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -10875,7 +10875,7 @@ B<Tag expansion example:>
 !block example
    [salestax name noformat]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -10971,7 +10971,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<YES>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -10984,7 +10984,7 @@ B<Tag expansion example:>
 !block example
    [scratch name]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -11053,7 +11053,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<Yes>
 Container tag|I<No>
 !endblock
@@ -11161,7 +11161,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<no>
 Container tag|I<Yes>
 Has Subtags|I<No>
@@ -11174,7 +11174,7 @@ B<Tag expansion example:>
 !block example
    [search_region arg]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -11265,7 +11265,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<YES>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -11278,7 +11278,7 @@ B<Tag expansion example:>
 !block example
    [selected name value]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -11403,7 +11403,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<YES>
 Container tag|I<Yes>
 Has Subtags|I<No>
@@ -11416,7 +11416,7 @@ B<Tag expansion example:>
 !block example
    [set name]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -11510,7 +11510,7 @@ legal URL paths for the cookie
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<Yes>
 Container tag|I<No>
 !endblock
@@ -11661,7 +11661,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<YES>
 Container tag|I<Yes>
 Has Subtags|I<No>
@@ -11674,7 +11674,7 @@ B<Tag expansion example:>
 !block example
    [seti name]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -11741,7 +11741,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<no>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -11754,7 +11754,7 @@ B<Tag expansion example:>
 !block example
    [setlocale ]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -11900,7 +11900,7 @@ Clears list of modes in $Vend::Cfg->{Shipping_line}
 >>|DEFAULT_VALUE
 {{CMD[jump="#shipping_table"]table}}|<<
 * N<Alias:> B<tables>
-Whitespace-delimited list of tables containing shipping data required for perl or query calculations (I<e.g.>, in the 'PERL' field of your shipping databaseE<nbspace>E<emdash> see {{CMD[jump="icdatabase.html#Shipping"]Shipping}}). You must specify the tables to get past the Perl '{{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe.pm}}' proctection. For example, you will get '{{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}}' errors if you refer to an SQL table without specifying it here.
+Whitespace-delimited list of tables containing shipping data required for perl or query calculations (I<e.g.>, in the 'PERL' field of your shipping databaseE<nbspace>E<emdash> see {{CMD[jump="icdatabase.html#Shipping"]Shipping}}). You must specify the tables to get past the Perl '{{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe.pm}}' protection. For example, you will get '{{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}}' errors if you refer to an SQL table without specifying it here.
 * N<Default:> None
 >>|DEFAULT_VALUE
 {{CMD[jump="#shipping_table"]tables}}|<<
@@ -11915,7 +11915,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<YES>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -11928,7 +11928,7 @@ B<Tag expansion example:>
 !block example
    [shipping mode]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -12047,7 +12047,7 @@ Clears list of modes in $Vend::Cfg->{Shipping_line}
 H4: {{CMD[id="shipping_table"]table}}
 
 * N<Alias:> B<tables>
-Whitespace-delimited list of tables containing shipping data required for perl or query calculations (I<e.g.>, in the 'PERL' field of your shipping databaseE<nbspace>E<emdash> see {{CMD[jump="icdatabase.html#Shipping"]Shipping}}). You must specify the tables to get past the Perl '{{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe.pm}}' proctection. For example, you will get '{{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}}' errors if you refer to an SQL table without specifying it here.
+Whitespace-delimited list of tables containing shipping data required for perl or query calculations (I<e.g.>, in the 'PERL' field of your shipping databaseE<nbspace>E<emdash> see {{CMD[jump="icdatabase.html#Shipping"]Shipping}}). You must specify the tables to get past the Perl '{{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe.pm}}' protection. For example, you will get '{{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}}' errors if you refer to an SQL table without specifying it here.
 * N<Default:> None
 
 
@@ -12081,7 +12081,7 @@ Shipping mode. This is a key into the shipping.asc database. See {{CMD[jump="icd
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|Yes, but only if no B<mode> given
 Container tag|I<No>
 !endblock
@@ -12161,7 +12161,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<YES>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -12174,7 +12174,7 @@ B<Tag expansion example:>
 !block example
    [soap call uri proxy]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -12234,7 +12234,7 @@ No parameters.
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<No>
 Container tag|I<Yes>
 Has Subtags|I<No>
@@ -12314,7 +12314,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<YES>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -12327,7 +12327,7 @@ B<Tag expansion example:>
 !block example
    [subtotal name noformat]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -12445,7 +12445,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<no>
 Container tag|I<Yes>
 Has Subtags|I<No>
@@ -12458,7 +12458,7 @@ B<Tag expansion example:>
 !block example
    [tag op arg]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -12671,7 +12671,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<no>
 Container tag|I<Yes>
 Has Subtags|I<No>
@@ -12684,7 +12684,7 @@ B<Tag expansion example:>
 !block example
    [time locale]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -12869,7 +12869,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<no>
 Container tag|I<Yes>
 Has Subtags|I<No>
@@ -12882,7 +12882,7 @@ B<Tag expansion example:>
 !block example
    [timed_build file]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -12943,7 +12943,7 @@ The directory must exist.
 
 H4: {{CMD[id="timed_build_if"]if}}
 
-Allows you to to only display the cached region when the C<if> paremeter
+Allows you to to only display the cached region when the C<if> parameter
 is true. For example, you can do:
 
 >        [timed-build if="[value timed]"]
@@ -13055,7 +13055,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<YES>
 Container tag|I<Yes>
 Has Subtags|I<No>
@@ -13068,7 +13068,7 @@ B<Tag expansion example:>
 !block example
    [tmp name]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -13174,7 +13174,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<YES>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -13187,7 +13187,7 @@ B<Tag expansion example:>
 !block example
    [total_cost name noformat]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -13303,7 +13303,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<no>
 Container tag|I<Yes>
 Has Subtags|I<No>
@@ -13316,7 +13316,7 @@ B<Tag expansion example:>
 !block example
    [tree table master subordinate start]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -13430,7 +13430,7 @@ from the tag call:
 >        [/tree]
 >        </table>
 
-Accepts the following paremeters:
+Accepts the following parameters:
 
 
 H4: {{CMD[id="tree_table"]table}}
@@ -13625,7 +13625,7 @@ See {{CMD[jump="#attr_reparse"]Interpolating Parameters}}
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<No>
 Container tag|I<Yes>
 !endblock
@@ -13726,7 +13726,7 @@ H3: Summary
 Parameters|Description|Default
 {{CMD[jump="#update_function"]function}}|<<
 * cart
-** Upates current or named cart (see C<name> attribute)
+** Updates current or named cart (see C<name> attribute)
 
 * process
 ** Updates an order or a search page
@@ -13759,7 +13759,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<YES>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -13772,7 +13772,7 @@ B<Tag expansion example:>
 !block example
    [update function]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -13803,7 +13803,7 @@ Forces an update of the specified interchange function. Function may be one of t
 H4: {{CMD[id="update_function"]function}}
 
 * cart
-** Upates current or named cart (see C<name> attribute)
+** Updates current or named cart (see C<name> attribute)
 
 * process
 ** Updates an order or a search page
@@ -13897,7 +13897,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<YES>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -13910,7 +13910,7 @@ B<Tag expansion example:>
 !block example
    [userdb function]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -13970,7 +13970,7 @@ There are several global parameters that apply to any use of
 the C<userdb> functions. Most importantly, by default the database
 table is set to be I<userdb>. If you must use another table name,
 then you should include a C<database=table> parameter with any
-call to C<userdb>. The global parameters (default in parens):
+call to C<userdb>. The global parameters (default in parentheses):
 
 >    database     Sets user database table (userdb)
 >    show         Show the return value of certain functions
@@ -14036,7 +14036,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<Yes>
 !endblock
 
@@ -14197,7 +14197,7 @@ Attributes|Default
 
 !block table; headings=1; colvaligns="TT"
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates cache|I<YES>
 Container tag|I<No>
 Has Subtags|I<No>
@@ -14210,7 +14210,7 @@ B<Tag expansion example:>
 !block example
    [value_extended name]
 ---
-   TAGRESULT
+   TODO: (tag result)
 !endblock
 
 
@@ -14574,7 +14574,7 @@ Parameters|Description|Default
 
 !block table;headings=1
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
 {{CMD[jump="#macro_tags"]Macro}}|I<No>
 Has end tag|[/bar-button]
@@ -14635,7 +14635,7 @@ H3: Description
 
 Displays content based on current page. The content between the
 E<lbracket>selected][/selected] tags will be displayed only if the name
-of the curent page matches the name that was passed to the page parameter
+of the current page matches the name that was passed to the page parameter
 (page=page-name). The default content will be displayed when there is
 no match.
 
@@ -14683,7 +14683,7 @@ fmt - Alias for format|I<none>
 
 !block table;headings=1
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
 {{CMD[jump="#macro_tags"]Macro}}|I<No>
 Has end tag|[/convert_date]
@@ -14780,7 +14780,7 @@ Parameters|Description|Default
 
 !block table;headings=1
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
 {{CMD[jump="#macro_tags"]Macro}}|I<No>
 Has end tag|I<No>
@@ -14848,7 +14848,7 @@ Parameters|Description|Default
 
 !block table;headings=1
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
 {{CMD[jump="#macro_tags"]Macro}}|I<No>
 Has end tag|I<No>
@@ -14883,7 +14883,7 @@ pages/saved_carts.html for more examples.
 H3: Description
 
 Deletes a cart with name nickname from the user database. Basically 
-the same as E<lbracket>userdb function=delete_cart nickname=mcart].
+the same as E<lbracket>userdb function=delete_cart nickname=mycart].
 
 H4: {{CMD[id="delete_cart_nickname"]nickname}}
 
@@ -14919,7 +14919,7 @@ extra|Additional headers to be included|I<none>
 
 !block table;headings=1
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
 {{CMD[jump="#macro_tags"]Macro}}|I<No>
 Has end tag|[/email]
@@ -14999,12 +14999,12 @@ uses the SendmailProgram with -t option.
 H3: Summary
 
 !block example;
-    [B<email_raw>]Your message incuding headers[/email_raw]
+    [B<email_raw>]Your message including headers[/email_raw]
 !endblock
 
 !block table;headings=1
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
 {{CMD[jump="#macro_tags"]Macro}}|I<No>
 Has end tag|[/email_raw]
@@ -15091,7 +15091,7 @@ Attributes|Default
 
 !block table;headings=1
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
 {{CMD[jump="#macro_tags"]Macro}}|I<No>
 Has end tag|I<No>
@@ -15165,7 +15165,7 @@ Must be an existing nickname.
 
 !block table;headings=1
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
 {{CMD[jump="#macro_tags"]Macro}}|I<No>
 Has end tag|I<No>
@@ -15244,12 +15244,12 @@ order). The second line shows usage with named parameters.
 !block table; colvaligns="TTT"; format="262"
 Parameters|Description|Default
 {{CMD[jump="#save_cart_nickname"]nickname}}|Label for the cart.|I<none>
-{{CMD[jump="#save_cart_recurring"]recurring}}|Set to true if recurring. Set to false, or ommit if cart.|I<none>
+{{CMD[jump="#save_cart_recurring"]recurring}}|Set to true if recurring. Set to false, or omit if cart.|I<none>
 !endblock
 
 !block table;headings=1
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
 {{CMD[jump="#macro_tags"]Macro}}|I<No>
 Has end tag|I<No>
@@ -15295,7 +15295,7 @@ with the same nickname.
 
 H4: {{CMD[id="save_cart_recurring"]recurring}}
 
-Set to true if recurring. Set to false, or simply ommit it, if it 
+Set to true if recurring. Set to false, or simply omit it, if it 
 is a cart.
 
 
@@ -15332,7 +15332,7 @@ Attributes|Default
 
 !block table;headings=1
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
 {{CMD[jump="#macro_tags"]Macro}}|I<No>
 Has end tag|I<No>
@@ -15376,13 +15376,13 @@ H3: Description
 
 The summary tag provides you with an easy way to calculate and 
 display totals. The display of the amounts is fully customizable. 
-You can hide diplay, or you can show the amounts with the proper 
+You can hide display, or you can show the amounts with the proper 
 currency formatting according to the locale, or you can define 
 your own formatting. Any number of summaries can be kept on a page.
 
 H4: {{CMD[id="summary_currency"]currency}}
 
-The amount or total will be diplayed according to the currency 
+The amount or total will be displayed according to the currency 
 formatting of the current locale if this attribute is set to 
 true (non blank or zero).
 
@@ -15407,7 +15407,7 @@ H4: {{CMD[id="summary_reset"]reset}}
 
 Will erase the total(s) if set to true. Be careful tough.
 It will reset ALL totals when you have no name attribute supplied.
-If you have provided a label for the name atribute then it will 
+If you have provided a label for the name attribute then it will 
 only reset the total for that particular label. All others won't be 
 touched.
 
@@ -15460,7 +15460,7 @@ Attributes|Default
 
 !block table;headings=1
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
 {{CMD[jump="#macro_tags"]Macro}}|I<No>
 Has end tag|[/table-organize]
@@ -15669,7 +15669,7 @@ Background color the bar.
 
 !block table;headings=1
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
 {{CMD[jump="#macro_tags"]Macro}}|I<No>
 Has end tag|[/title-bar]
@@ -15715,7 +15715,7 @@ Sets the background color of the bar. You can set the color as 'red',
 
 H4: {{CMD[id="title_bar_size"]size}}
 
-Determines the size of the text. Parameter shoud be set to a value accepted 
+Determines the size of the text. Parameter should be set to a value accepted 
 by the HTML <font> tag size attribute.
 
 H4: {{CMD[id="title_bar_width"]width}}
@@ -15775,7 +15775,7 @@ Attributes|Default
 
 !block table;headings=1
 A|B
-Other_Charactreristics|
+Other_Characteristics|
 Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
 {{CMD[jump="#macro_tags"]Macro}}|I<No>
 Has end tag|[/xml-generator]
@@ -15931,8 +15931,8 @@ H4: {{CMD[id="xml_generator_dbdump"]dbdump}}
 
 Will dump all tables in the catalog when this attribute is set 
 true. Used attributes are "toplevel_tag", "record_tag", 
-"field_tag", and "skip_empty" or default values (resp. 'table', 
-'record', 'field').
+"field_tag", and "skip_empty" or default values ('table', 
+'record', 'field' respectively).
 
 !block example
 Output format:
@@ -16275,7 +16275,7 @@ context created by the containing tag (see
 
 * All subtags at an earlier precedence level are treated before any in
 the next level.
-* Within the same level, tags are proccessed in the order the appear on
+* Within the same level, tags are processed in the order the appear on
 the page.
 * Any standard tags are processed during 'interpolate' (before) or
 'reparse' (after) phases of processing the containing tag.

@@ -1,13 +1,13 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.39 2002-04-12 22:53:18 jon Exp $
+# $Id: icdatabase.sdf,v 1.40 2002-04-15 16:13:20 jon Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.39 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.40 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
-!define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
+!define DOC_URL "http://interchange.redhat.com/doc/icdatabase.html"
 !build_title
 
 H1: Databases and Interchange
@@ -262,7 +262,7 @@ LI1: In-memory
     Database arbitrary  MEMORY  1
 !endblock
 
-Note: The use of memory databases is not recommendeded.
+Note: The use of memory databases is not recommended.
 
 H2: Character Usage Restrictions
 
@@ -388,7 +388,7 @@ Note: Fields are separated by tabs, formatted for reading convenience.
 
 LI1: EXCEL
 
-.Microsoft Excel is a widely-used tool to maintain Interchange databases, but has several problems with its standard TAB-delimited export, like encasing fields containing commas in quotes, generating extra carriage returns embedded in records, and not including trailing blank fields. To avoid problems, use a text-qualifier of none.
+.Microsoft Excel is a widely-used tool to maintain Interchange databases, but has several problems with its standard TAB-delimited export, like enclosing fields containing commas in quotes, generating extra carriage returns embedded in records, and not including trailing blank fields. To avoid problems, use a text-qualifier of none.
 
 .Set the EXCEL attribute to 1 to fix these problems on import:
 
@@ -515,7 +515,7 @@ useful, for it allows fields to be named and not have to be in any particular or
 
 The C<code> or key must always be present, and is always named C<code>. If C<NOTES> mode is not used, the fields must be imported in the same order as they appear in the ASCII source file.
 
-The C<file> option overrides the container text and imports directly from a named file based in the catalog directory. To import from C<products.txt>, specify C<file="products/products.txt">. If the NoAbsolute directive is set to C<Yes> in minivend.cfg, only relative path names will be allowed.
+The C<file> option overrides the container text and imports directly from a named file based in the catalog directory. To import from C<products.txt>, specify C<file="products/products.txt">. If the NoAbsolute directive is set to C<Yes> in interchange.cfg, only relative path names will be allowed.
 
 The C<[import ....] TEXT [/import]> region may contain multiple records. If using C<NOTES> mode, a separator must be used, which, by default, is a form-feed character (^L). See Import Attributes for more information.
 
@@ -558,7 +558,7 @@ The "simple" catalog will not be able to write, while "sample" will if C<[tag fl
    Database   products  WRITE_ALWAYS  1
 !endblock
 
-The default behavior of SQL datbases is equivalent to WRITE_ALWAYS, while the default for GDBM_File, DB_File, and Memory databases is equivalent to:
+The default behavior of SQL databases is equivalent to WRITE_ALWAYS, while the default for GDBM_File, DB_File, and Memory databases is equivalent to:
 
 !block example
    Database   products  WRITE_CONTROL 1
@@ -567,7 +567,7 @@ The default behavior of SQL datbases is equivalent to WRITE_ALWAYS, while the de
 
 H2: Global Databases
 
-If a database is to be available to all catalogs on the Interchange server, it may be defined in C<minivend.cfg>. Any catalog running under that server will be able to use it. It is writable by any catalog unless WRITE_CONTROL is used.
+If a database is to be available to all catalogs on the Interchange server, it may be defined in C<interchange.cfg>. Any catalog running under that server will be able to use it. It is writable by any catalog unless WRITE_CONTROL is used.
 
 H1: SQL Support
 
@@ -671,7 +671,7 @@ Here is an example of a completely set up DBI database on MySQL, using a comma-s
  # Only applies if Interchange is importing from ASCII file
  # If you set a field to a numeric type, you must set the
  # NUMERIC attribute
- Database   products  COLUMN_DEF    "code=char(20) NOT NUL primary key"
+ Database   products  COLUMN_DEF    "code=char(20) NOT NULL primary key"
  Database   products  COLUMN_DEF    price=float, discount=float
  Database   products  COLUMN_DEF    author=char(40), title=char(64)
  Database   products  COLUMN_DEF    nontaxable=char(3)
@@ -693,7 +693,7 @@ The DSN setting is specific to a ODBC setup. The C<ChopBlanks> setting takes car
 H2: SQL Access Methods
 
 An Interchange SQL database can be accessed with the same tags as any of
-the other databases can. Arbitrary SQL queries can be passed with the C<[query sql="SQL STATEMENT"]> MML tag.
+the other databases can. Arbitrary SQL queries can be passed with the C<[query sql="SQL STATEMENT"]> ITL tag.
 
 H2: Importing from an ASCII File
 
@@ -842,10 +842,10 @@ Fields can be stacked. If more than one is checked, all checked fields will be s
 
 H2: Glimpse
 
-To use the Glimpse search, the Glimpse index must be built based on files in the ProductDir, or wherever the files to be searched will be located. If Interchange was installed in the default C</usr/local/lib/minivend>, the command line to build the index for the products file would be:
+To use the Glimpse search, the Glimpse index must be built based on files in the ProductDir, or wherever the files to be searched will be located. If the catalog is in C</var/lib/interchange/foundation>, the command line to build the index for the products file would be:
 
 !block example
-   chdir products
+   chdir /var/lib/interchange/foundation/products
    glimpseindex -b -H . products.txt
 !endblock
 
@@ -853,7 +853,7 @@ There are several ways to improve search speed for large catalogs. One method th
 
 !block example
    split -100 products.txt index.txt.
-   glimpseindex -H /usr/local/lib/minivend/products index.txt.*
+   glimpseindex -H /var/lib/interchange/foundation/products index.txt.*
 !endblock
 
 This will dramatically increase search speeds for large catalogs, at least if the search term is relatively unique. If it is a common string, in a category search, for example, it is better to use the text-based search.
@@ -966,14 +966,15 @@ Individual field operations can then be specified with the C<mv_column_op>
 An example:
 
 !block example
-   [page scan
+   [page search="
            co=yes
            sf=title
            se=Sunflowers
            op=em
            sf=artist
            se=Van Gogh
-           op=rm          ] Sunflowers, Van Gogh [/page]
+           op=rm
+   "] Sunflowers, Van Gogh </a>
 
    [page search="
            co=yes
@@ -992,7 +993,7 @@ An example:
            se=1
            op=>=
            nu=1
-       "] Any in stock except Sunflowers, Van Gogh [/page]
+   "] Any in stock except Sunflowers, Van Gogh </a>
 !endblock
 
 Note that in the second example, nu=0 must be specified even though that is the default. This is to set the proper correspondence. To avoid having to do this, use Interchange's option array feature:
@@ -1013,7 +1014,7 @@ Note that in the second example, nu=0 must be specified even though that is the 
                    op=>=
                    nu=1
                "
-       ] Any in stock except Sunflowers, Van Gogh [/page]
+       ] Any in stock except Sunflowers, Van Gogh </a>
 !endblock
 
 The C<co=yes> is assumed when specifying a multiple search.
@@ -1022,9 +1023,9 @@ The second search will check the stock status of the painting provided there is 
 
 It always helps to have an C<rm> type included in the search. This is used to pre-screen records so that database accesses only need be made for already-matching entries. If accesses must be made for every record, large searches can get quite slow.
 
-H2: Specifying a Text-Based Search with SQL-Like Syntax
+H2: Specifying a Text-Based Search with SQL Syntax
 
-If Jochen Wiedmann's C<SQL::Statement> module is installed, a SQL syntax can be specified for the text-based search. (This is not the same as the SQL search, treated below separately. It would work on an SQL table, but only on the ASCII text source file, not on the actual database.)
+If the Perl C<SQL::Statement> module is installed, SQL syntax can be specified for the text-based search. This is not the same as the external SQL database search, treated below separately. This works on the ASCII text source file, not on the actual database.
 
 This syntax allows this form setup:
 
@@ -1398,9 +1399,9 @@ The field names can be specified in several ways.
 
 LI1: ProductFiles
 
-.If the file to be searched is left empty in the search form or definition (it is set with C<mv_search_file (fi)>), the text files associated with the products databases will be searched, and field names are already available as named in the first line of the file(s). This is defined to be C<products.txt> in the Interchange demonstrations.
+.If the file to be searched is left empty in the search form or definition (it is set with C<mv_search_file (fi)>), the text files associated with the products databases will be searched, and field names are already available as named in the first line of the file(s). This is defined to be C<products.txt> in the Interchange demo catalogs.
 
-.Be Careful if using SQL! If the database is change and not exporte with C<[tag export products][/tag]>, searches will not be successful.
+.Be careful if using SQL! If the database is changed and not exported with C<[tag export products][/tag]>, searches will not be successful.
 
 LI1: Other database files
 
@@ -1917,7 +1918,7 @@ LI1: [more]
 
 .The current page will not be a hyperlink. Every time the new link is pressed, the list is re-built to correspond to the current page. If there is no C<Next> or C<Previous> page, that link will not be shown.
 
-.See the C<fr_resul.html> or C<search.html> files for examples. Make sure to insert this item between a C<[more-list]> and C<[/more-list]> element pair.
+.See the C<search.html> file for examples. Make sure to insert this item between a C<[more-list]> and C<[/more-list]> element pair.
 
 LI1: [process-search]
 
@@ -2193,7 +2194,7 @@ LI1: COST
 .The method of developing cost. It can be a number which will be used directly as the shipping cost, or a function, determined by a single character at the beginning of the field:
 
 !block example; listitem=2
-   f       Formula (MML tags OK, evaluated as Perl)
+   f       Formula (ITL tags OK, evaluated as Perl)
    x       Multiplied by a number
    [uA-Z]  UPS-style lookup
    m       Interchange chained cost lookup (all items summed together)
@@ -2567,7 +2568,7 @@ H1: User Database
 
 Interchange has a user database function which allows customers to save any pertinent values from their session. It also allows the setting of database or file access control lists for use in controlling access to pages and databases on a user-by-user basis.
 
-The database field names in the user database correspond with the form variable names in the user session. If there is a column named C<address>, when the user logs in the contents of that field will be placed in the form variable C<address>, and will be availabe for display with C<[value address]>. Similarly, the database value is available with C<[data table=userdb column=address key=username]>.
+The database field names in the user database correspond with the form variable names in the user session. If there is a column named C<address>, when the user logs in the contents of that field will be placed in the form variable C<address>, and will be available for display with C<[value address]>. Similarly, the database value is available with C<[data table=userdb column=address key=username]>.
 
 The ASCII file for the database will not reflect changes unless the file is exported with C<[tag export userdb][/tag]>. It is not advisable to edit the ASCII file, as it will overwrite the real data that is in the DBM table. User logins and changes would be lost. Note: This would not happen with SQL, but editing the ASCII file would have no effect. It is recommended that the NoImport configuration directive be set accordingly.
 
@@ -2689,7 +2690,7 @@ It is normally called in an C<mv_click> or C<mv_check> setting, as in:
    </FORM>
 !endblock
 
-There are several global parameters that apply to any use of the C<userdb> functions. Most importantly, by default, the database table is set to be userdb. If another table name must be used, include a C<database=table> parameter with any call to C<userdb>. The global parameters (default in parens):
+There are several global parameters that apply to any use of the C<userdb> functions. Most importantly, by default, the database table is set to be userdb. If another table name must be used, include a C<database=table> parameter with any call to C<userdb>. The global parameters (default in parentheses):
 
 !block example
  database          Sets user database table (userdb)
@@ -3394,7 +3395,7 @@ If C<credit_card> is set, the credit card will first be encrypted, then the
 entire order encrypted.
 
 LI1: encrypt_program
-.The encryption program incantaton which should be used. Set identically to the
+.The encryption program incantation which should be used. Set identically to the
 C<EncryptProgram> directive, except that %s will be replaced with the
 C<pgp_key>. Default is empty.
 
@@ -3666,7 +3667,7 @@ LI1: No DBD.
     perl -MCPAN -e 'install DBD::XXXXX'
 !endblock
 
-.where XXXX is the name of your module. Some of them are:
+.where XXXXX is the name of your module. Some of them are:
 
 !block example; listitem=2
     Adabas

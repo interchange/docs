@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ictemplates.sdf,v 1.33 2002-04-12 22:53:18 jon Exp $
+# $Id: ictemplates.sdf,v 1.34 2002-04-15 16:13:20 jon Exp $
 
 !define DOC_NAME "Template Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "ictemplates"
-!define DOC_VERSION substr('$Revision: 1.33 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.34 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictemplates.html"
@@ -30,7 +30,7 @@ Perl can also be embedded within the page and, if given the proper permission by
 
 H1: About Variable Replacement
 
-Variable substitution is a simple and often used feature of Interchange templates. It allows you to set a variable to a particular value in the {{FILE:catalog.cfg}} directory. Then, by placing that variable name on a page, you envoke that value to be used. Before anything else is done on a template, all variable tokens are replaced by variable values. There are three types of variable tokens:
+Variable substitution is a simple and often used feature of Interchange templates. It allows you to set a variable to a particular value in the {{FILE:catalog.cfg}} directory. Then, by placing that variable name on a page, you invoke that value to be used. Before anything else is done on a template, all variable tokens are replaced by variable values. There are three types of variable tokens:
 
 C<__VARIABLENAME__> is replaced by the catalog variable called VARIABLENAME.
 
@@ -68,7 +68,7 @@ a parameter="parameter value" can be passed.
 Most tags can accept some positional parameters. This makes parsing faster and
 is, in most cases, simpler to write.
 
-The follwoing is an example tag:
+The following is an example tag:
 
 !block example
    [value name=city]
@@ -434,7 +434,7 @@ session and database values. The general form is:
                                 The [then] [/then] is optional in most
                                 cases. If ! is prepended to the type
                                 setting, the sense is reversed and
-                                this textwill be output for a false condition.
+                                this text will be output for a false condition.
     [/then]
     [elsif type term op compare]
                                 Optional, tested when if fails.
@@ -1071,10 +1071,10 @@ LI1: %Db
         $sub->($key, @values);
     }
 
-    # Retrurn a complete array of the database (minus the key)
+    # Return a complete array of the database (minus the key)
     @values = $ref->row($key);
 
-    # Retrurn a complete hash of the database row (minus the key)
+    # Return a complete hash of the database row (minus the key)
     $hashref = $ref->row_hash($key);
 
     # Delete a record/row from the table
@@ -1395,7 +1395,7 @@ LI1: &Log
     %>
 !endblock
 
-.It prepends the normal timestamp with user and page information. To supress that information, begin the message with a backslash (C<\>).
+.It prepends the normal timestamp with user and page information. To suppress that information, begin the message with a backslash (C<\>).
 
 !block example; listitem=2
     <%
@@ -1410,7 +1410,7 @@ H1: Debugging
 No debug output is provided by default. The source files contain commented-out '::logDebug(SOMETHING)' statements which can be edited to activate them. Set the value of C<DebugFile> to a file that will be written to:
 
 !block example
-   DebugFile /tmp/mvdebug
+   DebugFile /tmp/icdebug
 !endblock
 
 
@@ -2251,7 +2251,7 @@ LI1: noproduct (special_pages/noproduct.html)
 
 .This page is displayed if the URL from the browser specifies the ordering of a product code which is not in the products file.
 
-LI1: order (ord/backet.htm)
+LI1: order (ord/basket.html)
 
 .This page is displayed when the customer orders an item. It can contain any or all of the customer-entered values, but is commonly used as a status display (or "shopping basket").
 
@@ -2269,7 +2269,7 @@ LI1: violation (special pages/violation.html)
 
 H2: Checking Page HTML
 
-Interchange allows debugging of page HTML with an external page checking program.  Because leaving this enabled on a production system is potentially a very bad performance degradation, the program is set in a the global configuration file with the CheckHTML directive. To check a page for validity, set the global directive CheckHTML to the name of the program (don't do any output redirection). A good choice is the freely available program Weblint. It would be set in minivend.cfg with:
+Interchange allows debugging of page HTML with an external page checking program.  Because leaving this enabled on a production system is potentially a very bad performance degradation, the program is set in a the global configuration file with the CheckHTML directive. To check a page for validity, set the global directive CheckHTML to the name of the program (don't do any output redirection). A good choice is the freely available program Weblint. It would be set in interchange.cfg with:
 
 !block example
    CheckHTML  /usr/local/bin/weblint -s -
@@ -2399,7 +2399,6 @@ predefined actions at the first level are:
    search        form-based search
    scan          path-based search
    order         order an item
-   minimate      get access to a database via MiniMate
 !endblock
 
 Any action can be defined with C<ActionMap>.

@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icupgrade.sdf,v 1.17 2002-04-12 22:53:18 jon Exp $
+# $Id: icupgrade.sdf,v 1.18 2002-04-15 16:13:20 jon Exp $
 
 !define DOC_NAME "Interchange Upgrade Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "icupgrade"
-!define DOC_VERSION substr('$Revision: 1.17 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.18 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icupgrade.html"
@@ -58,7 +58,7 @@ interchange.PL 854,855
 
 =item ROUTINES and LANG
 
-intechange.PL 1552,1579
+interchange.PL 1552,1579
 
 >        ROUTINES: {
 >                last ROUTINES unless index($Vend::FinalPath, '/process/') == 0;
@@ -354,7 +354,7 @@ Variable FOOTER    <pages/footer
 Variable COPYRIGHT <pages/copyright
 !endblock
 
-Then replace all occurences of [buttonbar 0] with __HEADER__, [buttonbar 1] with __FOOTER__, etc.
+Then replace all occurrences of [buttonbar 0] with __HEADER__, [buttonbar 1] with __FOOTER__, etc.
 
 Note that the old header.html, footer.html, etc. contained html code, but were not actually html pages with <html><body> etc, tags. Thus the current practice is to use filenames with no extension or perhaps '.txt' to differentiate them from pages.
 
@@ -362,7 +362,7 @@ H3:random
 
 Replace with [ad random=1] or custom code. See the [ad] tag docs. Random and rotate were used to place random or rotating regions on pages, such as banner ads.
 
-The Random durective in catalog.cfg defines the numbered HTML snippet files, similar to buttonbars above.
+The Random directive in catalog.cfg defines the numbered HTML snippet files, similar to buttonbars above.
 
 H3:rotate
 
