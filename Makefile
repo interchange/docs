@@ -34,11 +34,23 @@ html:
 pod:
 	sdf -2pod *.sdf
 
+man: pod
+	@for target in *.pod ; do \
+		echo "Manifying $$target" ; \
+		base=`basename $$target .pod` ; \
+		pod2man --section=8 \
+			--release='Interchange 4.5.6' \
+			--center='Akopia Interchange' \
+			--lax \
+			$$target \
+			$$base.8 ; \
+	done
+
 txt:
 	sdf -2txt *.sdf
 
 clean:
-	rm -f *.html *.pod *.txt
+	rm -f *.html *.pod *.txt *.8
 	@for target in *.sdf ; do \
 		base=`basename $$target .sdf`; \
 		echo rm -rf $$base; \
