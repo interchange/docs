@@ -3,7 +3,7 @@ TARGETS=icadvanced iccattut icconfig icfoundation ictemplates icdatabase ictags 
 SUFFIXES=txt mif html pdf pod 8
 SDFBIN=sdf/bin/sdf
 FRAMESDIR=frames
-FRAMESPARENT=../
+FRAMESPARENT=..
 DEVDIR=dev
 DOCDBNAME=documentation.txt
 TARNAME=icdocs.tar.gz
@@ -13,7 +13,7 @@ FULLDOCNAME=icfull
 .SUFFIXES: .sdf $(addprefix .,$(SUFFIXES))
 
 .sdf.html:
-	$(SDFBIN) -2html $<
+	$(SDFBIN) -2html -DFRAMES_DIR=$(FRAMESDIR)/ $<
 
 .sdf.pod:
 	$(SDFBIN) -2pod $<
@@ -67,7 +67,7 @@ dev_html:
 %_toc.html: %.sdf
 	@echo making $@
 	@mkdir -p $(FRAMESDIR)
-	@$(SDFBIN) -2html_topics -n2 -DHTML_FRAMES=1 -DSDF_ROOT=$(FRAMESPARENT) -O$(FRAMESDIR) $<
+	@$(SDFBIN) -2html_topics -n2 -DHTML_FRAMES=1 -DFRAMES_DIR=$(FRAMESDIR)/ -DSDF_ROOT=$(FRAMESPARENT)/ -O$(FRAMESDIR) $<
 	@( cd $(FRAMESDIR) ; mv $(basename $<).html $@ )
 
 %_frames.html: %.sdf

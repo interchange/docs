@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"
-# $Id: index.sdf,v 1.6 2001-01-12 19:52:07 jon Exp $
+# $Id: index.sdf,v 1.7 2001-04-25 16:35:58 jon Exp $
 
 !define DOC_NAME "Interchange Documentation"
 !define DOC_CODE "index"
-!define DOC_VERSION substr('$Revision: 1.6 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.7 $',11, -2)
 !define DOC_TOC  0
 !define HTML_URL_CATALOG ''
 !build_title
@@ -12,20 +12,20 @@
 !include "manuals.reg"; references; data
 
 #!subsections "Getting started,Manuals,Tutorials,Other documents"; "noprefix"
-!subsections "Manuals"; "noprefix"
+#!subsections "Manuals"; "noprefix"
 
-This page lists the supporting documentation supplied with Interchange.
+This is the supporting documentation for Interchange.
 
 !if $var{'OPT_TARGET'} eq 'html'
     !on phrase 'TOC' ;; \
         my $jump = &Value("references", $text, "Jump", undef); \
         $style = '__inline'; \
-        $text = qq{(<A HREF="${jump}_frames.html">frames</A>) (<A HREF="$jump.html">no frames</A>)};
+        $text = qq{(<A HREF="$var{FRAMES_DIR}${jump}_frames.html">frames</A>) (<A HREF="$jump.html">no frames</A>)};
     # normal mode
 #    !on phrase 'FRTOC'  ;; $attr{'jump'} = $var{'SDF_ROOT'} . "ref/re_sdf.html#$text Format"
 !endif
 
-P1: Manuals
+#P1: Manuals
 
 !if $var{'OPT_LOOK'} eq 'developer_site'
 #    !catalog references ''; columns="DOC:Document,CONCISE:Date"
