@@ -16,19 +16,19 @@ Akopia Interchange is the industry's most widely distributed and implemented ope
 
 H1: TRACKING AND BACKEND ORDER ENTRY
 
-Interchange allows the entry of orders into a system via one of several methods. The AsciiBackend capability allows submission of parameters to an external order entry script. Support for SQL allows entry of orders directly into an SQL database. Orders can be written to an ASCII file. They can be formatted precisely for email-based systems. The orders can be placed in a DBM file. Finally, embedded Perl allows completely flexible order entry, including real-time credit-card verification and settlement.
+Interchange allows the entry of orders into a system through one of several methods. The AsciiBackend capability allows submission of parameters to an external order entry script. Support for SQL allows the entry of orders directly into an SQL database. Orders can be written to an ASCII file. They can be formatted precisely for email-based systems. The orders can be placed in a DBM file. Finally, embedded Perl allows completely flexible order entry, including real-time credit-card verification and settlement.
 
 H2: ASCII Backup Order Tracking
 
-If AsciiTrack is set to a legal file name (based in VendRoot unless it has a leading "/"), a copy of the order will be saved there as well as being emailed.
+If AsciiTrack is set to a legal file name (based in VendRoot unless it has a leading "/"). A copy of the order is saved and sent in an email.
 
-If the file name string begins with a pipe "|", a program will be run and the output "piped" to that program. This allows easy backend entry of orders with an external program.
+If the file name string begins with a pipe "|," a program will be run and the output "piped" to that program. This allows easy backend entry of orders with an external program.
 
 H2: Database Tracking
 
-Once the order report is processed, the order is complete. Therefore, it is the perfect place to put Interchange tags that make order entries in database tables.
+Once the order report is processed, the order is complete. Therefore, it is the ideal place to put Interchange tags that make order entries in database tables.
 
-A good model is to place a single record in a database summarizing the order, and a series of lines that correspond to each line item in the order. This can be in the same database table; if the order number itself is the key for the summary, a line number can be appended to the order number to show each line of the order.
+A good model is to place a single record in a database summarizing the order and a series of lines that correspond to each line item in the order. This can be in the same database table. If the order number itself is the key for the summary, a line number can be appended to the order number to show each line of the order.
 
 The following would summarize a sample order number S00001 for part number 00-0011 and 99-102:
 
@@ -37,9 +37,9 @@ The following would summarize a sample order number S00001 for part number 00-00
 >    S00001-1 S00001       00-0011      2          1000     UPS       yes
 >    S00001-2 S00001       99-102       1          10       UPS       yes
 
-Fields can be added as appropriate, perhaps with order status, shipping tracking number, address, customer number, or other information.
+Fields can be added where needed, perhaps with order status, shipping tracking number, address, customer number, or other information.
 
-The above can be easily done with Interchange's C<[import ....]> tag using the convenient C<NOTES> format:
+The above is accomplished with Interchange's C<[import ....]> tag using the convenient C<NOTES> format:
 
 >    [set import_status]
 >    [import table=orders type=LINE continue=NOTES]
@@ -67,7 +67,7 @@ The above can be easily done with Interchange's C<[import ....]> tag using the c
 
 H2: Custom Order Routing
 
-Interchange can send order emails and perform custom credit card charges and/or logging for each individual item. The Route directive is used to control this behavior, along with the C<mv_order_route> item attribute and C<mv_order_route> form variable.
+Interchange can send order emails and perform custom credit card charges and/or logging for each item. The Route directive is used to control this behavior, along with the C<mv_order_route> item attribute and C<mv_order_route> form variable.
 
 Routes are established with the Route directive, which is similar to the Locale directive. Each route is like a locale, so that key-value pairs can be set. Here is an example setting:
 
@@ -132,28 +132,28 @@ Must contain a period (C<.>) if that is desired.
 .The PGP key selector that is used to determine which public key is used for encryption. If C<pgp_cc_key> is set, that key will be used for credit card encryption instead of C<pgp_key>. With PGP 5 and 6, see appropriate values by using the command C<pgpk -l>.
 
 *{{N[bold]profile}}
-.The custom order profile which should be performed to check the order. If it fails, then the route will not be performed. See OrderProfile and mv_order_profile.
+.The custom order profile which should be performed to check the order. If it fails, the route will not be performed. See OrderProfile and mv_order_profile.
 
 *{{N[bold]receipt}}
-.The receipt page that should be used for this routing. This only makes sense if supplant is set for the route.
+.The receipt page that should be used for this routing. This only applies if supplant is set for the route.
 
 *{{N[bold]report}}
-.The report page that should be used for this routing. If C<attach> is defined, then the contents of the report will be placed in a MIME attachment in the main order report.
+.The report page that should be used for this routing. If C<attach> is defined, the contents of the report will be placed in a MIME attachment in the main order report.
 
 *{{N[bold]reply}}
 .The C<Reply-To> header that should be set. Default is the same as C<email>.
-.If there are only word characters (A-Za-z0-9 and underscore), then it describes an Interchange variable name where the address can be found.
+.If there are only word characters (A-Za-z0-9 and underscore), it describes an Interchange variable name where the address can be found.
 
 *{{N[bold]supplant}}
 .Whether this route should supplant the main order report. If set, the AsciiTrack operation will use this route and the normal Interchange order email sequence will not be performed.
 
 *{{N[bold]track}}
-.The name of a file which should be used for tracking. If the C<supplant> attribute is set, then the normal order tracking will be used as well.
+.The name of a file which should be used for tracking. If the C<supplant> attribute is set, the normal order tracking will be used as well.
 
 *{{N[bold]track_mode}}
 .A number representing the mode to change either C<track> or C<individual_track> files.
 
-An individual item routing causes all items labeled with that route to be placed in a special sub-cart which will be used for the order report. This means that the C<[item-list] LIST [/item-list]> will only contain those items, allowing operations to be performed on subsets of the complete order.
+An individual item routing causes all items labeled with that route to be placed in a special sub-cart that will be used for the order report. This means that the C<[item-list] LIST [/item-list]> will only contain those items, allowing operations to be performed on subsets of the complete order.
 
 Here is an example of an order routing:
 
@@ -205,11 +205,11 @@ To set the order routing for individual items, some method of determining their 
 >    return '';
 > [/perl]
 
-Now the individual items are labeled with a C<mv_order_route> value which will cause their inclusion in the appropriate order routing.
+Now the individual items are labeled with a C<mv_order_route> value which causes their inclusion in the appropriate order routing.
 
-Upon submission of the order form, any item labeled C<HARD> will be accumulated and sent to the email address C<hardgoods@akopia.com>, where presumably the item will be pulled from inventory and shipped.
+Upon submission of the order form, any item labeled C<HARD> will be accumulated and sent to the email address C<hardgoods@akopia.com>, where the item will be pulled from inventory and shipped.
 
-Any item labeled C<SOFT> will be passed to the order profile C<create_download_link>, which will place it in a staging area for customer download. (This would be supported by a link on the receipt, perhaps by reading a value set in the profile).
+Any item labeled C<SOFT> will be passed to the order profile C<create_download_link>, which will place it in a staging area for customer download. (This would be supported by a link on the receipt, possibly by reading a value set in the profile).
 
 The C<main> order routing will use CyberCash to charge the order, and will be completely encrypted for emailing.
 
@@ -227,13 +227,13 @@ Some utilities are supplied with Interchange and are located in the VendRoot/bin
 
 Some example scripts for other functions are in the C<eg/> directory of the software distribution.
 
-Some thought should be given to where the databases, error logs, and session files should be located, especially on an ISP that might have multiple users sharing an Interchange server. In particular, it is recommended that all of the session files and logs be put in a directory that is not writable by the user. The risk is that if the directory or file is corrupted, the catalog may go down.
+Some thought should be given to where the databases, error logs, and session files should be located, especially on an Internet Service Provider (ISP) that might have multiple users sharing an Interchange server. In particular, it is recommended that all of the session files and logs be put in a directory that is not writable by the user. If the directory or file is corrupted, the catalog may crash.
 
 To test the format of user catalog configuration files before restarting the server, perform the following test (from VendRoot):
 
 >    bin/interchange -test
 
-This will check all configuration files for syntax errors, which might otherwise prevent a catalog from coming up. Once a catalog configures properly, user reconfiguration will not crash it; just cause an error. But it must come up when the server is started.
+This will check all configuration files for syntax errors, which might otherwise prevent a catalog from loading. Once a catalog configures properly, user reconfiguration will not crash it; but cause an error. But it must load when the server is started.
 
 H2: Starting, Stopping, and Re-starting the Servers
 
@@ -247,7 +247,7 @@ To start the server with default settings:
 
 >    VENDROOT/bin/interchange
 
-It is usually best to issue a restart, otherwise the server will not run anew if a server is already running.
+It is recommended to issue a restart, otherwise the server will not run anew if a server is already running.
 
 >    VENDROOT/bin/interchange -restart
 
@@ -269,11 +269,11 @@ A message will be displayed stating that a TERM signal has been sent to the proc
 
 Because processes waiting for selection on some operating systems block signals, they may have to wait for HouseKeeping seconds to stop. The default is 60.
 
-To terminate the Interchange server with prejudice, in case it will not stop:
+To terminate the Interchange server with prejudice, in case it will not stop, set:
 
 >    VENDROOT/bin/interchange -kill
 
-H2: UNIX and INET modes
+H2: UNIX and INET Modes
 
 Both UNIX-domain and INET-domain sockets can be used for communication. INET domain sockets are useful when more than one web server, connected via a local-area network (LAN), is used for accessing an Interchange server.
 
@@ -307,7 +307,7 @@ Do a C<perldoc VENDROOT/bin/offline> for full documentation.
 
 H2: Updating Individual Records
 
-If a site has a very large DBM database that takes a long time to build, consider using the C<bin/update> script to change just one field in a record, or to add from a corrections list.
+If a site has a very large DBM database that takes time to build, consider using the C<bin/update> script to change just one field in a record, or to add from a corrections list.
 
 The following updates the products database C<price> field for item 19-202 with the new value 25.00
 
@@ -381,7 +381,7 @@ Select which operations each administrator can perform in the back office. Each 
 
 H2: Administrators
 
-The Access Manager allows an administrator to create user accounts or groups of users and restrict the use of certain features. This feature is especially useful if a company has employees that need the ability to check orders, but not change web content. Note that, by default, users in the back office are stored and managed separately from customer login accounts. Users can have permissions granted on an individual basis, or by group. If a user is a "Super-user," all other permissions settings will be ignored and the user will be allowed to do anything. 
+The Access Manager allows an administrator to create user accounts or groups of users and restrict the use of certain features. This feature is especially useful if a company has employees that need the ability to check orders, but not change Web content. Note that, by default, users in the back office are stored and managed separately from customer login accounts. Users can have permissions granted on an individual basis, or by group. If a user is a "Super-user," all other permissions settings will be ignored and the user will be allowed to do anything. 
 
 H2: Administrators: Edit Affiliates
 
@@ -413,7 +413,7 @@ Transfer pages, templates, and configuration files to and from the Interchange i
 
 H2: Import/Export
 
-Interchange makes it easy to import and export data to and from a commerce web site. 
+Interchange makes it easy to import and export data to and from a commerce Web site. 
 
 Use Database Upload to import a tab delimited database of all product information to Interchange to make set-up faster and easier. Database Download does just the opposite, allowing data to be downloaded from Interchange. 
 
@@ -421,7 +421,7 @@ Use Layout Upload to upload a site's layout information. Use Layout Download to 
 
 H2: Logout
 
-This feature will only be useful if there are multiple users in the Access Manager. When "logout" is clicked, a user will be asked to login again. If "logout" is pressed in error, the user must login again. 
+This feature will only be useful if there are multiple users in the Access Manager. When "logout" is clicked, a user will be asked to log in again. If "logout" is pressed in error, the user must log in again. 
 
 H2: Meta Field Information
 
@@ -431,7 +431,7 @@ Interchange can store meta information for selected columns of tables in a site'
 
 "Width" and "Height" only apply to some of the "Widget type" options, for instance the "Textarea" widget. 
 
-"Label" is displayed instead of the internal column name. For example, the "category" column of the "products" table might have a label of "Product Category". 
+"Label" is displayed instead of the internal column name. For example, the "category" column of the "products" table might have a label of "Product Category." 
 
 "Help" is displayed below the column label, and helps describe the purpose of the field to the user. 
 
@@ -443,7 +443,7 @@ Interchange can store meta information for selected columns of tables in a site'
 
 H1: INTERCHANGE SECURITY
 
-H2: SSL support
+H2: SSL Support
 
 Interchange has several features that enable secure ordering via SSL (Secure Sockets Layer). Despite their mystique, SSL servers are actually quite easy to operate. The difference between the standard HTTP server and the SSL HTTPS server, from the standpoint of the user, is only in the encryption and the specification of the URL; "https:" is used for the URL protocol specification instead of the usual http: designation.
 
@@ -475,7 +475,7 @@ If the directory containing the page has a file C<.access> and that file's size 
 >   page: condition
 >   *: condition
 
-.The C<page> is the file name of the file to be controlled (the .html extension is optional); the C<condition> is either a literal C<Yes/No> or Interchange tags which would produce a C<Yes> or C<No> (1/0 work just fine, as do true/false).
+.The C<page> is the file name of the file to be controlled (the .html extension is optional). The C<condition> is either a literal C<Yes/No> or Interchange tags which would produce a C<Yes> or C<No> (1/0 work just fine, as do true/false).
 
 .The entry for C<*> sets the default action if the page name is not found. If pages will be allowed by default, set it to C<1> or C<Yes>. If pages are to be denied by default in this directory, leave blank or set to C<No>. Here is an example, for the directory C<controlled>, having the following files:
 
@@ -508,7 +508,7 @@ If the directory containing the page has a file C<.access> and that file's size 
 
 +If the Variable C<MV_USERDB_REMOTE_USER> is set (non-zero and non-blank) then any user logged in via the UserDB feature will receive access to all pages in the directory. NOTE: If there is a C<.access_gate> file, it overrides this.
 
-+If the variables C<MV_USERDB_ACL_TABLE> is set to a valid database identifier, the UserDB module can control access with simple ACL logic. See USER DATABASE. NOTE: If there is a C<.access_gate> file, it overrides this. Also, if MV_USERDB_REMOTE_USER is set, then this capability is not available.
++If the variables C<MV_USERDB_ACL_TABLE> is set to a valid database identifier, the UserDB module can control access with simple ACL logic. See USER DATABASE. NOTE: If there is a C<.access_gate> file, it overrides this. Also, if MV_USERDB_REMOTE_USER is set, this capability is not available.
 
 H1: USERTAG REFERENCE
 

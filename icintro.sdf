@@ -11,42 +11,42 @@
 
 H1: INTRODUCTION TO INTERCHANGE
 
-Akopia Interchange is the industry's most widely distributed and implemented  open source e-commerce  platform. The software is equipped with a wide range of features that make it the most comprehensive, reliable and cost effective option available today. This introduction provides a background on Interchange, an overview of its capabilities, a description of how it works, and answers a number of frequently asked questions.
+Akopia's Interchange is the industry's most widely distributed and implemented  open source e-commerce  platform. The software is equipped with a wide range of features that make it the most comprehensive, reliable, and cost-effective option available today. This introduction provides a background on Interchange, an overview of its capabilities, a description of how it works, and answers a number of frequently asked questions.
 
 H2: Background
 
-Interchange is a descendent of Vend, originally developed by Andrew Wilcox in 1995. Over the next five years, Mike Heins expanded and enhanced Vend into a more powerful and versatile tool, MiniVend. Thousands of businesses continue to depend on MiniVend for their e-commerce sites. Despite the fact that MiniVend was feature-rich, it lacked an intuitive administrative interface. A similar product, Tallyman, was intuitive, had better content management features, but lacked some of MiniVend's transactional capabilities.
+Interchange is a descendent of Vend, an e-commerce solution originally developed by Andrew Wilcox in 1995. In the five years that followed, Mike Heins expanded and enhanced Vend, creating a more powerful and versatile tool, MiniVend. MiniVend grew to support thousands of businesses and their e-commerce sites. However, despite the fact that MiniVend was feature-rich, it lacked an intuitive administrative interface. A similar product, called Tallyman, had the features that MiniVend lacked. It was intuitive and had better content management features, but lacked some of MiniVend's transactional capabilities.
 
-During this same period of time, an experienced e-commerce development team founded Akopia with the goal of creating a sophisticated open source e-commerce platform that was both intuitive and easy to use. Akopia acquired both MiniVend and Tallyman, and integrated the two to create Interchange. 
+During the same period of time, an experienced e-commerce development team founded Akopia. Their goal was to create a sophisticated open source e-commerce platform that was both feature-rich and easy to use. Akopia acquired both MiniVend and Tallyman and integrated them to create Interchange. 
 
 H2: Overview
 
-Akopia Interchange is the industry's most widely distributed and implemented open source e-commerce platform. Through years of evolution in the open source community, Interchange offers the extensive feature set usually only associated with costly enterprise applications. 
+Based on years of evolution and experience in the open source community, Interchange offers an extensive feature set usually only associated with costly enterprise applications. 
 
-Interchange is a high-end, fully customizable software system with complete database functionality. It provides flexible page display, search, and order entry capability. Interchange can support catalogs of over a million items with excellent performance. But Interchange can also be used for many applications besides shopping carts, such as a complete database-oriented content display system. 
+Interchange is a high-end, fully customizable software system with complete database functionality. It provides flexible page display, search, and order entry capability. Interchange can support catalogs of over a million items with excellent performance. Interchange also has the capability be used for many applications besides shopping carts, such as a complete database-oriented content display system. 
 
-Interchange is able to work in conjunction with a web server that supports the Secure Sockets Layer (SSL) protocol, allowing encrypted transmission of sensitive customer data. This capability makes the entry of credit card numbers practical and secure. In addition, it supports online payment systems and encryption. 
+Interchange can work with a web server that supports Secure Sockets Layer (SSL), allowing encrypted transmission of sensitive customer data. This capability makes entering credit card numbers practical and secure. In addition, it supports online payment systems and advanced encryption. 
 
-A single Interchange server can support a large number of independent Interchange catalogs, allowing an ISP to serve many different customers from one or just a few Interchange server processes. As many as 2,000 Interchange catalogs have been run on one machine from the same server process.
+A single Interchange server can support a large number of independent Interchange catalogs, allowing an Internet Service Provider (ISP) to serve many different customers from one or just a few Interchange server processes. As many as 2,000 Interchange catalogs have been run on one machine from the same server process.
 
 H1: HOW INTERCHANGE WORKS
 
-The following section describes how Interchange works, and should be read before creating an Interchange catalog.
+This section describes how Interchange works.
 
 H2: The Vend Concept
 
-Though the original Vend implementation was much simpler than Interchange, the basic concept remains unchanged. Interchange maintains a unique set of pages, outside of regular HTML space, which contain special tags that are interpreted by the program. The tags provide access to special Interchange functions within the Interchange server.
+The basic concept of implementing Interchange remains unchanged from Vend. Interchange maintains a unique set of pages, outside of regular HTML space, which contain special tags that are interpreted by the program. The tags provide access to special Interchange functions within the Interchange server.
 
 These Interchange tags, which are in C<[square brackets]> format, have a wide variety of functions. Some examples are:
 
 B<User Form Input>
-.Interchange remembers input by a user so that it can be easily passed from form to form. The value of any form variable is "remembered" and inserted upon finding a C<[value input_field]> tag. The C<input_field> is a normal HTML form field.
+.Interchange recalls input by a user so that it can be easily passed from form to form. The value of any form variable is "remembered" and inserted upon finding a C<[value input_field]> tag. The C<input_field> is a normal HTML form field.
 
 B<Database Contents>
-.Interchange can support an unlimited number of attached databases, either in one of its own internal formats in one of a number of popular SQL databases, and in any database with an ODBC interface. The contents of a database can be referenced with tags, i.e., C<[data table=products column=name key=334-12]> or C<[query sql="select * from products where category = 'Clothing'"]>.
+.Interchange can support an unlimited number of attached databases, either in one of its own internal formats or one of a number of popular SQL databases, and in any database with an ODBC interface. The contents of a database can be referenced with tags, i.e., C<[data table=products column=name key=334-12]> or C<[query sql="select * from products where category = 'Clothing'"]>.
 
 B<Session Parameters>
-.Session parameters, as the name suggests, include information specific to the particular user and their current round of interaction with Interchange. The parameters include the location where the user originally found the catalog C<[data session referer]>), the domain they are from (C<[data session host]>), the source of the hit in a partner program (C<[data session source]>), the time of their last access (C<[data session time]>), and so forth.
+.Session parameters, as the name suggests, include information specific to the particular user and his or her current interaction with Interchange. The parameters include the location where the user originally found the catalog C<[data session referer]>), the domain they are from (C<[data session host]>), the source of the hit in a partner program (C<[data session source]>), the time of their last access (C<[data session time]>), and so on.
 
 B<Embedded Perl Versus ASP>
 .Interchange has a powerful object system that allows direct access to Perl and to external programs. An ASP-like syntax can be used, or the traditional Interchange tag approach can be employed.
@@ -57,61 +57,61 @@ B<File Contents or Program Output>
 B<Searches of Files>
 .Interchange supports a variety of search engines, including I<Glimpse>, a popular open source search engine. It can also process the output from custom SQL database queries.
 
-There are over 80 distinct Interchange tags that support hundreds of functions. In addition, Interchange allows user-defined tags to be created. User-defined tags areas powerful as the standard tags.
+There are over 80 distinct Interchange tags that support hundreds of functions. In addition, Interchange allows user-defined tags to be created. User-defined tags are as powerful as Interchange's standard tags.
 
 H2: A Typical User Session
 
-The customer discovers a site's catalog via a search engine, a link from another page, or a click-through from a banner ad. He/she clicks on the link, which is a URL pointing to the Interchange CGI link program (generically called VLINK or TLINK). The link calls the Interchange server through a socket. The Interchange server sees the path information, which is appended to the URL calling it, and brings up the corresponding page. 
+The customer discovers a merchant site using the Interchange catalog with a search engine, a link from another page, or a click-through from a banner ad. He or she clicks the link, which is a URL pointing to the Interchange CGI link program (generically called VLINK or TLINK). The link calls the Interchange server through a socket. The Interchange server detects the path information from the link, and loads the corresponding page. 
 
-The page contains a link to find or order items from the catalog. As the customer clicks to purchase each item, Interchange looks in the products database, finds the item, and places it in the user's shopping cart. (Each user has a separate shopping cart, which is attached to their session.)
+The displayed page contains links to either locate or order items from the merchant's catalog. When the customer clicks a link to purchase an item, Interchange searches the product database, finds the item, and places it in the customer's shopping cart. (Each user has a separate shopping cart, which is attached to their session.)
 
-Once the customer decides to purchase the items in their shopping cart, he/she checks out by filling out a form with their name, address, payment information, how the product should be shipped, and any other information that may be required. Interchange includes facilities to compute sales taxes and shipping costs. The order is then "submitted." Note that the customer's payment may be taken online via real-time electronic payment and a soft-goods product downloaded, or their order information may be transmitted via encrypted email or FAX to a processing center. 
+Once the customer decides to purchase the items in their shopping cart, he or she checks out by completing a form with their name, address, payment information, shipping information, and any other information that may be required. Interchange has the capacity to compute sales taxe and shipping cost. The order is then submitted. The customer's payment can be taken online by real-time electronic payment, or their order information may be transmitted using encrypted email or FAX to a processing center. 
 
 The customer's order is saved to a file or to a database table as backup. In the case of fully automated systems, it can be sent directly to an order entry program or database link.
 
-All of these operations are fully configurable. The Interchange foundation program includes a sample store, Construct Something. Some users have actually customized the text and images inside the sample catalogs, changed the database entries, and opened their store. Most users, however, have customized their catalogs with their own distinctive look and feel.
+All of these operations are fully configurable. The Interchange foundation program includes a sample store called Construct Something. Some users have actually customized the text and images inside Construct Something's sample catalogs, changed the database entries, and opened their store. Most users, however, have built their catalogs using their own distinctive look and feel.
 
 H2: How Interchange Manages Sessions
 
-Normally, each request for a World Wide Web page stands on its own. While the server will probably be able to identify the particular machine that was the source of a request, it may not know if the next request comes from the same browser or even from the same user on that machine. Interchange automatically keeps track of each user session by one of two methods:
+Normally, each request for a web page stands on its own. While the server is usually able to identify the particular machine that was the source of a request, it may not know if the next request comes from the same browser or even from the same user on that machine. Interchange automatically keeps track of each user session by one of two methods:
 
 B<Cookies>
 .Interchange can issue cookies that contain the user session ID. If the user returns the cookie, then the user can be presented pages without accompanying session information.
 
 B<URL Re-Writing>
-.If the user doesn't want to use cookies, Interchange will include an session id in the URL. This is a random-looking piece of text that is unique for each customer browsing the catalog. The text allows Interchange to properly sort out information presented to it from any number of simultaneous users.
+.If the user doesn't want to use cookies, Interchange will include a session id in the URL. This is a random-looking piece of text that is unique for each customer browsing the catalog. The text allows Interchange to sort information presented to the system from simultaneous users.
 
 H2: Page Delivery in CGI-BIN
 
 Pages in the catalog served by Interchange running as a cgi-bin program generate a special URL for every link. For example: 
 
-http://www.minivend.com/cgi-bin/simple/browse1?id=WehUkATn&pc=122&ar=99-102
+http://www.mystore.com/cgi-bin/simple/browse1?id=WehUkATn&pc=122&ar=99-102
 
-The following is an explanation of each part of the URL link:
+The following is a description of each part of the URL link:
 
-B<www.minivend.com  Why is this still Minivend??>
-.Internet address of the server hosting the Interchange catalog.
+B<www.mystore.com>
+.The Internet address of the server hosting the Interchange catalog.
 
 B<cgi-bin>
 .Informs server that the requested page will be generated by a program. This can be HTTP server-specific.
 
 B<simple>
-.Name of the program to run. This is Interchange's VLINK or TLINK. The link program is a small compiled program that connects the web server to the Interchange server. It is important to note that the Interchange server remains alive in the background, fully initialized and able to quickly process requests.
+.The name of the program to be run. This is Interchange's VLINK or TLINK. The link program is a small compiled program that connects the web server to the Interchange server. The Interchange server remains running in the background, fully initialized and able to quickly process requests.
 
 B<browse>
-.Page of the catalog to display.
+.The page of the catalog to display.
 
 B<id=WehUkATn>
 .The session ID. This is used if cookies are not enabled.
 
 B<&>
-.Separates session ID from other parameters (normal HTTP).
+.Separates the session ID from other parameters (normal HTTP).
 
 B<mv_arg=99-102>
-.An argument that can be used by Interchange to select page display options.
+.An argument usable by Interchange to select page display options.
 
 B<&>
-.Separates argument from other parameters (normal HTTP).
+.Separates an argument from other parameters (normal HTTP).
 
 B<mv_pc=122>
 .A unique integer (or source code, if it contains a letter) that prevents caching servers from caching the URL.
@@ -126,13 +126,15 @@ Pages are delivered through the following steps:
 
 ^The HTTPD server (Apache, Netscape, or NCSA are examples of HTTP servers) receives a request for an Interchange page.
 
-+The server is already running as a daemon, and the request calls a small compiled C program (source is vlink.c or tlink.c) that is I<named according to which catalog is being called.> This program communicates with the Interchange program via a UNIX- or INET-domain socket.
++The server is already running as a daemon, and the request calls a small compiled C program (source is vlink.c or tlink.c) that is I<named according to which catalog is being called.> This program communicates with the Interchange program using a UNIX- or INET-domain socket.
 
-+Interchange reads the source page from the Interchange pages directory, and interprets the Interchange tags in the file. If the page doesn't exist, and corresponds to a part number in the database, it is built "on-the-fly" using a template page. In the process, it may read or modify any number of database tables. If the user's browser doesn't accept cookies, then any links generated on the page will contain the session ID, which is needed to ensure the user's session is retained.
++Interchange reads the source page from the Interchange pages directory and interprets the Interchange tags in the file. If the page doesn't exist, and corresponds to a part number in the database, it is dynamically built using a template page. In the process, it can read or modify any number of database tables. If the user's browser doesn't accept cookies, then any links generated on the page will contain the session ID, which is needed to ensure the user's session is retained.
 
 +The page, which is now entirely in regular HTML, is delivered to the HTTP server, which returns it to the browser.
 
 H1: TECHNICAL REQUIREMENTS 
+
+This section describes the technical requirements needed to run Interchange.
 
 H2: Perl
 
@@ -145,11 +147,11 @@ In addition, on systems that do not have GDBM or DB_File installed, SQL is recom
 
 H2: Perl Modules
 
-The core functions of Interchange will run with a stock Perl, but some features of Interchange (like the administrative interface) require additional modules. If using a UNIX server, use the CPAN module and run the following command:
+The core functions of Interchange can run with a stock Perl, but some features of Interchange (like the administrative interface) require additional modules. If using a UNIX server, use the CPAN module and run the following command:
 
 >    perl -MCPAN -e 'install Bundle::Interchange'
 
-This command should install all of the modules necessary, except the DBM/DBI ones. The following modules are strongly recommended:
+This command should install all of the necessary modules, except DBM/DBI. The following modules are strongly recommended:
 
 >    Digest::MD5
 >    MIME::Base64
@@ -159,12 +161,12 @@ This command should install all of the modules necessary, except the DBM/DBI one
 >    Bundle::LWP (contains MIME::Base64 and URI::URL)
 >    GDBM or DB_File (comes with most i386 Perls)
 
-The following modules are definitely recommended:
+The following modules are required:
 
 >    Storable
 >    Business::UPS (comes with Interchange)
 
-The following modules are nice to have but are not essential:
+The following modules are not essential:
 
 >    Term::ReadLine::Perl
 >    Term::ReadKey
@@ -173,33 +175,30 @@ The DBI module is required if using SQL, along with the appropriate DBD module f
 
 H2: Operating System
 
-UNIX is highly recommended. Interchange doesn't yet run on Windows, but will run on Mac OS/X.
+The UNIX Operating System is highly recommended. Mac OS/Finder and Microsoft Windows platforms are not supported. Interchange will run on Mac OS/X.
 
-It is unknown when Interchange on Windows will be suitable for high-volume catalog serving. This is largely due to NT not fitting the UNIX fork() model which works so efficiently with Interchange.
-
-Mac OS/Finder is not supported. If the time comes that it reasonably supports normal POSIX services, an attempt to port Interchange will be made. Unfortunately, this is not likely. In the meantime, Interchange runs fine on OS/X.
 
 H2: Machine
 
-A 400MHz (This is what we have in the collateral info that Dave contributed. Pentium or equivalent computer with 128MB of RAM is recommended. This machine can serve many catalogs, if that is all it does.
+A 400MHz Pentium or equivalent computer with 128MB of RAM is recommended. This machine can serve many catalogs, if that is all it does.
 
-If a site is located on a machine with hundreds of domains, as sometimes happens with low-cost hosting operations, expect some problems. It is difficult to maintain a stable environment with that many users.
+If a site is located on a machine with hundreds of domains, as sometimes happens with low-cost hosting operations, expect some problems. It is difficult to maintain a stable environment with numerous users.
 
 H2: If Problems Occur
 
-Akopia is interested in making Interchange as reliable and trouble-free as possible and provides both free and paid support for Interchange. Forward bug reports, questions and comments to the bug reporting system, Bugzilla found at http://developer.akopia.com.
+Akopia is interested in making Interchange as reliable and trouble-free as possible and provides support for Interchange. Forward bug reports, questions and comments to the bug reporting system, Bugzilla found at http://developer.akopia.com.
 
-Interchange offers fee-based technical support through it's Technical Services Group or limited help can be found through the community of developers subscribing to the user group on the Akopia Developer Resource site.  Akopia makes full source code of the current version available on the Akopiaweb site :
+Interchange offers fee-based technical support through it's Technical Services Group. Help can also be found through the community of developers subscribing to the user group on the Akopia Developer Resource site.  Akopia makes full source code of the current version of Interchange available on the Akopia web site :
 
 >    http://www.akopia.com
 
-The latest version of the software, FAQ, and documentation are available on the Akopia web site as well. Your problem may not be unique. Check the Web site first. There is a search feature that encompasses the documentation, FAQs, and a mailing list, with an associated archives.
+Frequently Asked Questions, and documentation are also available on the Akopia web site. There is a search feature that encompasses the documentation, FAQs, and an archived mailing list.
 
 H1: FREQUENTLY ASKED QUESTIONS
 
 H2: Can you tell me more about MiniVend, Interchange's ancestor?
 
-MiniVend was originally based on Vend by Andrew Wilcox. Vend was written in the early part of 1995, and the first released (beta) version was 0.2. Vend 0.2 is the parent of MiniVend, and the first version of MiniVend (called Vend 0.2m7) was totally based on that. It added searching and DBM catalog storage. Subsequent versions took parts from Vend 0.3, especially the VLINK and Server.pm modules, which were adapted to run with MiniVend.
+MiniVend was originally based on Vend created by Andrew Wilcox. Vend was written in the early part of 1995, and the first released version was 0.2. The first version of MiniVend was based on that. It added searching and DBM catalog storage. Subsequent versions took parts from Vend 0.3, especially the VLINK and Server.pm modules, which were adapted to run with MiniVend.
 
 The first release of MiniVend (0.2m7) was on December 28, 1995.  and quickly proved to be a more powerful and versatile tool than Vend. Thousands of businesses depend on MiniVend, for their e-commerce sites.
 
@@ -209,18 +208,18 @@ Interchange is a is a comprehensive e-commerce solution that includes shopping c
 
 Interchange is recommended when a site has:
 
-^One hundred or more items in its catalog.
+^100 or more items in its catalog.
 +many different catalogs maintained by the same organization.
-+product offering that will frequently change.
++a product offering that will frequently change.
 +a need for programmable product display.
 +a need for complex ordering interaction.
-+delivery of soft goods after real-time charge of credit cards.
++soft goods delivery after real-time charge of credit cards.
 +a need for flexible searching and categorization options.
 
 Interchange may not be the right choice when a site has: 
 
 ^only a few items.
-+items that will not change frequently.
++items that do not change frequently.
 
 Consider a commercial product when a site has:
 
@@ -230,21 +229,17 @@ Consider a commercial product when a site has:
 
 
 
-H2: Is Interchange a script, an application, or what? Why is it so big?
+H2: What type of program is Interchange?
 
 Interchange is not just a script. It is a combination of many programs, Perl modules, and links to other subsystems such as SQL databases, CyberCash, PGP, and the Glimpse search engine.
 
 Interchange is a complete database access and retrieval application. It uses no more memory than a large database server. It is optimized for catalogs of more than a hundred items and catalogs that expect to change and grow over time. 
 
-H2: How many Interchange installations are there?
-
-MiniVend is known to have been downloaded at least 800,000 times. If 1 percent of downloaders each made one catalog that would make 8,000. There are, at least, a few "farms" of catalogs; some that encompass hundreds of domains.
-
-The best guess of number of active users comes from the mail list. If 20 percent of users are on the mail lists, then there would be about 7,000 users.
-
 H2: Can I use Interchange with my existing static catalog pages?
 
-Yes, but in the long run it is best to convert to the data-driven model. Interchange is designed to build pages based on templates, from a database. If used only as a shopping cart, use a simpler program. It is not difficult to convert existing static pages to Interchange, but maintaining them can be difficult. That being said, to place an order link on a page, use the following:
+Yes, but it is recommended that you convert to the data-driven model. Interchange is designed to build pages based on templates, from a database. If it is used only as a shopping cart, use a simpler program. It is not difficult to convert existing static pages to Interchange, but maintaining them can be difficult. 
+
+To place an order link on a page, use the following:
 
 <A HREF="/cgi-bin/simple/order?mv_order_item=SKU_OF_ITEM">Order!</A>
 
@@ -252,30 +247,24 @@ Replace C</cgi-bin/simple> with the path to your Interchange link.
 
 H2: Will Interchange run on an ISP?
 
-The great majority of Internet Service Providers (ISPs) provide some CGI service, and an increasing number run systems that are compatible with Interchange. The catalog configurator for Interchange is designed to figure out many ISP directory setups.
-
-Almost any ISP system should be able to run Interchange, but some cannot (or will not) run Interchange at all. In addition, ISP personnel are often too busy to help, won't help, or don't know enough to help. Some are even secretive about details of the setup of their systems.
+The majority of ISPs provide some CGI service, and an increasing number run systems that are compatible with Interchange. The catalog configurator for Interchange is designed to figure out many ISP directory setups.
 
 Interchange requires a stable platform. Many ISP servers are heavily loaded, especially low-cost ones. If Interchange is run on a server that is constantly running out of memory and file descriptors, the results will be unsatisfactory.
 
-Virtual servers that do not provide shell access are not usable for Interchange without direct support from the ISP. It can be done (with a good deal of difficulty) on some virtual servers.
-
-Iserver.com and others who use a chroot HTTP daemon for each user will require some source-code manipulation to get the paths for vlink right. The catalog configurator will not do the job. (The Interchange mail list archive has the proper information.)
-
-The fact that Interchange requires a lot of memory and runs as a daemon bothers some ISPs that find it difficult to provide power and speed without using memory. Since most ISPs can run Interchange, simply find an ISP that can.
+Virtual servers that do not provide shell access are not usable for Interchange without direct support from the ISP. It can be done on some virtual servers.
 
 H2: Why is Interchange a daemon?
 
-A daemon is a program that always is running in the background on the system, initialized and waiting for something to do. Interchange runs as a daemon in the normal course of events. Other programs that run as daemons (in most cases) are:
+A daemon is a program that always is running in the background on the system. Interchange runs as a daemon in the normal course of events. Some examples of programs that run as daemons (in most cases) are:
 
 ^HTTP server (Apache, etc.).
 +MySQL, mSQL, Oracle, and other SQL servers.
 +Sendmail.
 
 
-Interchange takes an appreciable amount of time to compile and load even on the fastest systems. It has many configuration options, and can serve hundreds of catalogs. If it were to be loaded every time a user accessed it, it would be unusable. The daemon approach allows a rich set of features to be accessed fast. The actual CGI program (VLINK or TLINK) is a small program written in C that communicates with the Interchange daemon.
+Interchange takes time to compile and load even on the fastest systems. It has many configuration options, and can serve hundreds of catalogs. If it were to be loaded every time a user accessed it, it would be unusable. The daemon approach allows a rich set of features to be accessed fast. The actual CGI program (VLINK or TLINK) is a small program written in C that communicates with the Interchange daemon.
 
-One of the side effects of this is that whenever a configuration file is modified, Interchange must be informed so that it can reload the information and reconfigure its operation as needed. This is done by either restarting the server, or better yet, using the I<reconfig> script to reconfigure an individual catalog.
+When a configuration file is modified, Interchange must be informed so that it can reload the information and reconfigure its operation as needed. This is done by either restarting the server, or using the I<reconfig> script to reconfigure an individual catalog.
 
 H2: Is Interchange secure?
 
@@ -283,19 +272,19 @@ Interchange uses the Perl Safe.pm module for user-embedded Perl subroutines and 
 
 ^Unencrypted credit card numbers stored on disk.
 
-.If Interchange's encryption capability for encrypting credit card numbers, or the real-time payment (CyberCash, etc.) interface is not used, there will be unencrypted credit card numbers present in session database files. If the system is the target of a break-in, these numbers would be available to any user ID that can read the session files. This is the reason Interchange defaults to read/write permission for the Interchange user only.
+.If Interchange's capability for encrypting credit card numbers, or the real-time payment (CyberCash, etc.) interface is not used, there will be unencrypted credit card numbers present in session database files. If the system is the target of a break-in, these numbers would be available to any user ID that can read the session files. This is the reason Interchange defaults to read/write permission for the Interchange user only.
 
 +Unencrypted credit card numbers sent via email.
 
-.The same things apply for orders sent via email. If it is not encrypted with PGP, it is at risk. The default demo also stores the orders in the file etc/tracking.asc, so check there as well if scrubbing existing credit card numbers from a disk.
+.The same things apply for orders sent from email. If it is not encrypted with PGP, it is at risk. The default demo also stores the orders in the file etc/tracking.asc, so check there as well if scrubbing existing credit card numbers from a disk.
 
 +Running in INET mode from another machine.
 
-.When using INET mode, and the transmission is going via the network to another machine (i.e. not localhost), be concerned about which wires your SSL-encrypted data is traveling over. The server should be behind a firewall, firewall router, or at least some sort of spoofing-protected filter.
+.When using INET mode, and the transmission is going from the network to another machine (i.e. not localhost), be concerned about which wires your SSL-encrypted data is traveling. The server should be behind a firewall, firewall router, or at least some sort of spoofing-protected filter.
 
 +Running SQL databases without WRITE_CONTROL or other permission blocks. 
 
-.It is possible to enter arbitrary SQL in some search definitions. Though Interchange tries to block non-select calls, this is not bulletproof. It is recommended that certain tables be read-only for Interchange, i.e., no insert or update permission. For tables that must be updated, i.e., userdb, transactions, and orderline, use the WRITE_CONTROL capability and the NoSearch directive to protect them.
+.It is possible to enter arbitrary SQL in some search definitions. Though Interchange tries to block non-select calls, this is not guaranteed. It is recommended that certain tables be read-only for Interchange, i.e., no insert or update permission. For tables that must be updated, i.e., userdb, transactions, and orderline, use the WRITE_CONTROL capability and the NoSearch directive to protect them.
 
 +Running with AllowGlobal set. 
 
@@ -346,10 +335,10 @@ B<Directory Listings>
 .Interchange may be listed in software directories, but not on mail lists, though Akopia will not maintain the listing.
 
 B<CD-ROM Distributions>
-.Interchange may be distributed unchanged on a CD-ROM. Please send Akopia a copy, but that is not strictly required.
+.Interchange may be distributed unchanged on a CD-ROM. Akopia requests that you send them a copy of the CD-ROM.
 
 B<Reselling>
-.Interchange may not be resold because it is Gnu GPL licensed; it can be given away. See the <www.gnu.org> Web site for more information.
+.Interchange is Gnu GPL licensed and may not be resold. Interchange is freely downloaded. See the <www.gnu.org> Web site for more information.
 
 B<Akopia Services>
 .While Interchange has many appealing features, the true value of the Akopia solution lies in the comprehensive support we provide throughout all stages of your e-business integration.  Regardless of the extent of service you require, Akopia's experienced staff is dedicated to ensuring the success of your e-commerce implementation.
@@ -357,7 +346,7 @@ B<Akopia Services>
 B<Akopia Professional Services>
 .Akopia Professional Services are designed to build the most successful e-business architecture possible.  Professional services encompass complete site development and integration, from needs assessment and planning to testing and deployment.
 
-.Akopia's Professional Services team is experienced and trained to maximize the power and flexibility of the Interchange( platform.  We offer professional services for projects of all sizes and scopes, from smaller  projects  to traditional full lifecycle engagements. .  
+.Akopia's Professional Services team is experienced and trained to maximize the power and flexibility of the Interchange platform.  We offer professional services for projects of all sizes and scopes, from smaller  projects  to traditional full lifecycle engagements. .  
 
 .Akopia professional services include:
 -Strategic consulting
@@ -377,7 +366,7 @@ B<Akopia Managed Services>
 -Service Level Agreements
 
 B<Akopia Technical Support Services>
-.Akopia provides access to our expert consultants via both telephone and electronic support offerings.  A variety of support packages are available to you, and can be purchased according to your specific needs for frequency and response time.
+.Akopia provides access to our expert consultants by both telephone and electronic support offerings.  A variety of support packages are available, and can be purchased according to your specific needs, such as frequency and response time.
 
 B<Akopia Training Services>
-.Akopia offers Interchange( training options for technical and business professionals.  We will customize a training program that is appropriate to your business needs.
+.Akopia offers Interchange training options for technical and business professionals.  We will customize a training program that is appropriate to your business needs.
