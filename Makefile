@@ -56,10 +56,12 @@ dev_html:
 </frameset></html>\
 ' > $@
 
-html:: $(addsuffix _frames.html,$(TARGETS))
-html:: $(addsuffix _toc.html,$(TARGETS))
+frames_html:: $(addsuffix _frames.html,$(TARGETS))
+frames_html:: $(addsuffix _toc.html,$(TARGETS))
+
+frames_html html:: index.html
+
 html:: $(addsuffix .html,$(TARGETS))
-html:: index.html
 
 pod: $(addsuffix .pod,$(TARGETS))
 
@@ -92,8 +94,9 @@ clean:
 		for j in $(SUFFIXES) ; do \
 			rm -f $$i.$$j ; \
 		done ; \
-		rm -f $$i_*.html ; \
+		rm -f $${i}_*.html ; \
 	done
+	@rm -f index.html
 	@for i in $(FULLSUFFIXES) ; do \
 		rm -f $(FULLDOCNAME).$$i ; \
 	done
