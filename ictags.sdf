@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.24 2001-05-02 05:20:04 bill Exp $
+# $Id: ictags.sdf,v 1.25 2001-05-02 07:33:00 bill Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.24 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.25 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -2829,19 +2829,17 @@ The counter is implemented using Perl's C<File::Counter> module, which protects 
 Additional parameters:
 
 
-H4: decrement=1
+H4: {{CMD[id="counter_decrement"]decrement=1}}
 
 Causes the counter to count down instead of up.
 
-H4: start=50
+H4: {{CMD[id="counter_start"]start=50}}
 
 Causes a new counter to be created and to start from 50 (for example) if it did not exist before.
 
-H4: value=1
+H4: {{CMD[id="counter_value"]value=1}}
 
 Shows the value of the counter without incrementing or decrementing it.
-
-
 
 
 
@@ -3425,7 +3423,7 @@ To check errors without clearing them, you can use the idiom:
 The options are:
 
 
-H4: all=1
+H4: {{CMD[id="error_all"]all=1}}
 
 Display all error messages, not just the one
 refered to by <var>. The default is only display
@@ -3438,22 +3436,22 @@ you want the error message placed, otherwise it's
 appended on the end. This option also implies
 show_error.
 
-H4: joiner=<char>
+H4: {{CMD[id="error_joiner"]joiner=I<char>}}
 
 Character used to join multiple error messages.
 Default is '\n', a newline.
 
-H4: keep=1
+H4: {{CMD[id="error_keep"]keep=1}}
 
 keep=1 means don't delete the error messages after
 copy; anything else deletes them.
 
-H4: show_error=1
+H4: {{CMD[id="error_show_error"]show_error=1}}
 
 show_error=1 means return the error message text;
 otherwise just the number of errors found is returned.
 
-H4: show_label=1
+H4: {{CMD[id="error_show_label"]show_label=1}}
 
 show_label=1 causes the field label set by a previous [error] tag's std_label attribute (see below) to be included as part of the error message, like this:
 
@@ -3463,13 +3461,13 @@ If no std_label was set, the variable name will be used instead. This can also b
 
 show_label was added in 4.7.0.
 
-H4: show_var=1
+H4: {{CMD[id="error_show_var"]show_var=1}}
 
 show_var=1 includes the name of the variable the error was found in as part of the error message, like this:
 
 E:email: 'bob#nothing,net' not a valid email address
 
-H4: std_label
+H4: {{CMD[id="error_std_label"]std_label}}
 
 std_label=<label string for error message>
 
@@ -3484,7 +3482,7 @@ where <label_str> is what you set std_label to and %s
 is substituted with the error message. This option
 can not be used with the text= option.
 
-H4: required=1
+H4: {{CMD[id="error_required"]required=1}}
 
 Specifies that this is a required field for formatting purposes.
 In the std_label format, it means the field will be bolded.
@@ -3496,6 +3494,9 @@ you have {REQUIRED: HTML}, but only when the field is required.
 
 
 H2: export
+
+Exports a database to a delimited text file (see also
+{{C[jump="#import"]import}}).
 
 
 H3: Summary
@@ -4422,7 +4423,7 @@ testing and parsing of values.
 There are many test targets available:
 
 
-H4: config Directive
+H4: {{CMD[id="if_config"]config Directive}}
 
 The Interchange configuration variables. These are set
 by the directives in your Interchange configuration file (or
@@ -4432,7 +4433,7 @@ the defaults).
 >    Auto credit card validation is enabled.
 >    [/if]
 
-H4: data  database::field::key
+H4: {{CMD[id="if_data"]data  database::field::key}}
 
 The Interchange databases. Retrieves a field in the database and
 returns true or false based on the value.
@@ -4451,7 +4452,7 @@ returns true or false based on the value.
 >    [/else]
 >    [/if]
 
-H4: discount
+H4: {{CMD[id="if_discount"]discount}}
 
 Checks to see if a discount is present for an item.
 
@@ -4459,7 +4460,7 @@ Checks to see if a discount is present for an item.
 >    Item is discounted.
 >    [/if]
 
-H4: explicit
+H4: {{CMD[id="if_explicit"]explicit}}
 
 A test for an explicit value. If perl code is placed between
 a [condition] [/condition] tag pair, it will be used to make
@@ -4486,7 +4487,7 @@ This will work for I<Variable> values:
 
 >    [if type=explicit compare="__MYVAR__"] .. [/if]
 
-H4: file
+H4: {{CMD[id="if_file"]file}}
 
 Tests for existence of a file. Useful for placing image
 tags only if the image is present.
@@ -4498,7 +4499,7 @@ tags only if the image is present.
 The C<file> test requires that the I<SafeUntrap> directive contains
 C<ftfile> (which is the default).
 
-H4: items
+H4: {{CMD[id="if_items"]items}}
 
 The Interchange shopping carts. If not specified, the cart
 used is the main cart. Usually used as a litmus test to
@@ -4508,7 +4509,7 @@ see if anything is in the cart, for example:
 >
 >  [if items layaway]You have items on layaway.[/if]
 
-H4: ordered
+H4: {{CMD[id="if_ordered"]ordered}}
 
 Order status of individual items in the Interchange shopping
 carts. If not specified, the cart used is the main cart.
@@ -4534,7 +4535,7 @@ The following items refer to a part number of 99-102.
 >
 >  [if ordered 99-102 main size eq 'large'] ... [/if]
 
-H4: scratch
+H4: {{CMD[id="if_scratch"]scratch}}
 
 The Interchange scratchpad variables, which can be set
 with the [set name]value[/set] element. 
@@ -4546,12 +4547,12 @@ with the [set name]value[/set] element.
 >    [/else]
 >    [/if]
 
-H4: session
+H4: {{CMD[id="if_session"]session}}
 
 the interchange session variables. of particular interest
 are i<login>, i<frames>, i<secure>, and i<browser>.
 
-H4: validcc
+H4: {{CMD[id="if_validcc"]validcc}}
 
 a special case, takes the form [if validcc no type exp_date].
 evaluates to true if the supplied credit card number, type
@@ -4560,7 +4561,7 @@ a luhn-10 calculation to weed out typos or phony
 card numbers. Uses the standard C<CreditCardAuto> variables
 for targets if nothing else is passed.
 
-H4: value
+H4: {{CMD[id="if_value"]value}}
 
 the interchange user variables, typically set in search,
 control, or order forms. variables beginning with c<mv_>
@@ -5062,6 +5063,10 @@ H4: E<lbracket>item-discount]
 
 Returns the difference between the regular price and the discounted price.
 
+H4: E<lbracket>item-discount_subtotal]
+
+Inserts the discounted subtotal of the ordered items.
+
 H4: E<lbracket>item-quantity]
 
 Evaluates to the quantity ordered for the current item.
@@ -5080,9 +5085,6 @@ H4: E<lbracket>quantity-name]
 
 Evaluates to the name to give an input box in which the
 customer can enter the quantity to order.
-
-
-
 
 
 
@@ -7284,11 +7286,11 @@ See the Netscape specification at
 {{CMD[jump="http://www.netscape.com/newsref/std/cookie_spec.html"]http://www.netscape.com/newsref/std/cookie_spec.html}}
 if you need more cookie-specific detail.
 
-H4:  {{CMD[id="read_cookie_name"]name}}
+H4: {{CMD[id="read_cookie_name"]name}}
 
 This is the name of the cookie whose value you want to retrieve.
 
-H4:  {{CMD[id="read_cookie_HTTP_COOKIE"]Parsing an HTTP_COOKIE string}}
+H4: {{CMD[id="read_cookie_HTTP_COOKIE"]Parsing an HTTP_COOKIE string}}
 
 If you pass this tag a second parameter within a Perl call, it will
 use your value as the HTTP_COOKIE string (ignoring the real one). This
@@ -7970,9 +7972,8 @@ B<ASP-like Perl call:>
 
 H3: Description
 
-B<NO Description>
-
-
+Equivalent to the E<lbracket>{{C[jump="#set"]set}}] tag, except that
+it {{CMD[jump="#attr_interpolate"]interpolates}} by default.
 
 
 H2: setlocale
@@ -8254,8 +8255,6 @@ will be given.
 
 
 
-
-
 H2: tag
 
 
@@ -8307,7 +8306,7 @@ Performs any of a number of operations, based on the presence of C<arg>.
 The arguments that may be given are:
 
 
-H4: export database file* type*
+H4: {{CMD[id="tag_export"]export database file* type*}}
 
 Exports a complete Interchange database to its text source file (or any
 specified file). The integer C<n>, if specified, will select export in
@@ -8329,7 +8328,7 @@ Same thing, except the export is done with a PIPE delimiter:
 The file is relative to the catalog directory, and only may be
 an absolute path name if I<NoAbsolute> is set to C<No>.
 
-H4: flag arg
+H4: {{CMD[id="tag_flag"]flag arg}}
 
 Sets an Interchange condition.
 
@@ -8345,7 +8344,7 @@ The [tag flag build][/tag] combination forces static build of a page, even
 if dynamic elements are contained. Similarly, the [tag flag cache][/tag]
 forces search or page caching (not usually wise).
 
-H4: log dir/file
+H4: {{CMD[id="tag_log"]log dir/file}}
 
 Logs a message to a file, fully interpolated for Interchange tags.
 The following tag will send every item code and description in the user's
@@ -8358,7 +8357,7 @@ shopping cart to the file logs/transactions.txt:
 The file is relative to the catalog directory, and only may be
 an absolute path name if I<NoAbsolute> is set to C<No>.
 
-H4: mime description_string
+H4: {{CMD[id="tag_mime_description_string"]mime description_string}}
 
 Returns a MIME-encapsulated message with the boundary as employed
 in the other mime tags, and the C<description_string> used as the 
@@ -8379,36 +8378,36 @@ When used in concert with [tag mime boundary], [tag mime header], and
 PGP-encrypted credit card numbers. See the demo page ord/report.html
 for an example.
 
-H4: mime boundary
+H4: {{CMD[id="tag_mime_boundary"]mime boundary}}
 
 Returns a MIME message boundary with unique string keyed on
 session ID, page count, and time.
 
-H4: mime header
+H4: {{CMD[id="tag_mime_header"]mime header}}
 
 Returns a MIME message header with the proper boundary for that
 session ID, page count, and time.
 
-H4: mime id
+H4: {{CMD[id="tag_mime_id"]mime id}}
 
 Returns a MIME message id with the proper boundary for that
 session ID, page count, and time.
 
-H4: show_tags
+H4: {{CMD[id="tag_show_tags"]show_tags}}
 
 The encased text will not be substituted for with Interchange tags, 
 with < and [ characters changed to C<&>#lt; and C<&>#91; respectively.
 
 >    [tag show_tags][value whatever][/tag]
 
-H4: time
+H4: {{CMD[id="tag_time"]time}}
 
 Formats the current time according to POSIX strftime arguments.
 The following is the string for Thursday, April 30, 1997.
 
 >    [tag time]%A, %B %d, %Y[/tag]
 
-H4: touch 
+H4: {{CMD[id="tag_touch"]touch }}
 
 Touches a database to allow use of the tag_data() routine in 
 user-defined subroutines.  If this is not done, the routine
@@ -8473,7 +8472,7 @@ the same as modern UNIX date commands).
 Accepts the following options:
 
 
-H4: adjust
+H4: {{CMD[id="time_adjust"]adjust}}
 
 If you wish to temporarily adjust the time for display purposes, you can
 pass an C<adjust> parameter with the number of hours (plus or minus) from
@@ -8504,7 +8503,7 @@ and then restart interchange:
 
 On most modern UNIX systems, all times will now be in the PST zone.
 
-H4: gmt
+H4: {{CMD[id="time_gmt"]gmt}}
 
 If you want to display time as GMT, use the C<gmt> parameter:
 
@@ -8519,7 +8518,7 @@ will display:
 Once again, the zone will not be set to GMT, so you should pick a format
 string which doesn't use zone, use the C<tz> parameter, or manage it yourself.
 
-H4: locale
+H4: {{CMD[id="time_locale"]locale}}
 
 Format the time according to the named C<locale>, assuming that locale is
 available on your operating system. For example, the following:
@@ -8532,7 +8531,7 @@ should display:
 >        January 01, 2001
 >        janvier 01, 2001
 
-H4: tz
+H4: {{CMD[id="time_tz"]tz}}
 
 Use the passed C<tz> to display the time. Will adjust for hours difference.
 
@@ -8616,12 +8615,12 @@ then it will not be rebuilt until the output file is removed.
 Accepts the following parameters:
 
 
-H4: file
+H4: {{CMD[id="timed_build_file"]file}}
 
 Name of the file to save the results in. Relative to catalog root.
 The directory must exist.
 
-H4: if
+H4: {{CMD[id="timed_build_if"]if}}
 
 Allows you to to only display the cached region when the C<if> paremeter
 is true. For example, you can do:
@@ -8634,13 +8633,13 @@ The cached region will only be displayed if the variable C<timed> is set
 to a non-zero, non-blank value. Otherwise, the ITL tags will be re-interpreted
 every time.
 
-H4: minutes
+H4: {{CMD[id="timed_build_minutes"]minutes}}
 
 The number of minutes after which the timed build should be repeated.
 If set to 0, it will be built once and then not rebuilt until the output
 file is removed.
 
-H4: period
+H4: {{CMD[id="timed_build_period"]period}}
 
 Alternative way of expressing time. You can pass a string describing
 the rebuild time period:
@@ -8846,22 +8845,22 @@ Sets several keys which assist in walking and displaying the
 tree.
 
 
-H4: mv_level
+H4: {{CMD[id="tree_key_mv_level"]mv_level}}
 
 Level of the item. If it is in the first level, it is 0.  Sublevels are
 infinite (except for performance).
 
-H4: mv_increment
+H4: {{CMD[id="tree_key_mv_increment"]mv_increment}}
 
 Increment label for the item. Normally goes from 1...n, but can be changed to
 A...Z or a...z in outline mode.
 
-H4: mv_children
+H4: {{CMD[id="tree_key_mv_children"]mv_children}}
 
 If in autodetect mode, set to the number of children this branch has. If a
 leaf, set to 0.
 
-H4: mv_spacing
+H4: {{CMD[id="tree_key_mv_spacing"]mv_spacing}}
 
 A multiple of level times the spacing option. Useful for setting width of
 spacer images.
@@ -8912,55 +8911,55 @@ from the tag call:
 Accepts the following paremeters:
 
 
-H4: table
+H4: {{CMD[id="tree_table"]table}}
 
 Database table which contains the tree. Must be a valid Interchange
 table identifier.
 
-H4: parent
+H4: {{CMD[id="tree_parent"]parent}}
 
 The column which is used to determine the parent of the item.
 
-H4: subordinate
+H4: {{CMD[id="tree_subordinate"]subordinate}}
 
 The child column, which determines which items are sub-items of
 the current one. Used to re-query for items with its value in
 C<parent>.
 
-H4: start_item
+H4: {{CMD[id="tree_start_item"]start_item}}
 
 The first item to be followed, i.e. the C<parent> value of all the top-level
 items.
 
-H4: autodetect
+H4: {{CMD[id="tree_autodetect"]autodetect}}
 
 Specifies that the next level should be followed to detect the number
 of child items contained. Not recursive; only follows far enough to
 determine the children of the current item.
 
-H4: full
+H4: {{CMD[id="tree_full"]full}}
 
 Specifies that all items should be followed. Essentially the same as
 specifying C<memo> and passing the C<explode> variable, but not dependent
 on them. Useful for building lists for inclusion in embedded Perl, among
 other things.
 
-H4: stop
+H4: {{CMD[id="tree_stop"]stop}}
 
 An optional C<stop> field which, when the value is true, can stop the
 following of the branch.
 
-H4: continue
+H4: {{CMD[id="tree_continue"]continue}}
 
 An optional C<continue> field which, when the value is true, can force
 the branch to be followed.
 
-H4: sort
+H4: {{CMD[id="tree_sort"]sort}}
 
 The column which should be used for ordering the itemsE<nbspace>E<emdash> determines the
 order in which they will be displayed under the current parent.
 
-H4: outline
+H4: {{CMD[id="tree_outline"]outline}}
 
 Sets outline mode, where C<mv_increment> will be displayed with
 letter values or numeral values. If set to specifically C<1>, will
@@ -8982,12 +8981,12 @@ produced outline increments like:
 >                        b
 >    2
 
-H4: memo
+H4: {{CMD[id="tree_memo"]memo}}
 
 Indicates that the collapse/explode/toggle features are to be used, and
 names a C<Scratch> variable where the values should be stored.
 
-H4: collapse
+H4: {{CMD[id="tree_collapse"]collapse}}
 
 The name of a variable in the user's session which will determine that the
 tree should be "collapsed". When collapsed, the child items will not be 
@@ -8996,7 +8995,7 @@ toggles.
 
 Requires C<memo> to be set if values are to be retained.
 
-H4: toggle
+H4: {{CMD[id="tree_toggle"]toggle}}
 
 The name of a variable in the user's session which will determine that the
 current item should be either followed or not followed. The first time the
@@ -9005,7 +9004,7 @@ be expanded. The next call will "collapse" the item.
 
 Requires C<memo> to be set if values are to be retained.
 
-H4: explode
+H4: {{CMD[id="tree_explode"]explode}}
 
 The name of a variable in the user's session which will determine that the
 tree should be "exploded". When exploded, all child items are followed and 
@@ -9013,7 +9012,7 @@ the full tree can be displayed.
 
 Requires C<memo> to be set if values are to be retained.
 
-H4: pedantic
+H4: {{CMD[id="tree_pedantic"]pedantic}}
 
 When set to a true value, and an endless tree is detected (i.e. the
 child branch contains a parent) then the error will be logged to the
@@ -9022,13 +9021,13 @@ catalog error log and the tree call will return with an error.
 If C<pedantic> is not set (the default), the current leaf will be shown
 but never followed. This allows partial display of the tree.
 
-H4: log_error
+H4: {{CMD[id="tree_log_error"]log_error}}
 
 When set to a true value, and an endless tree is detected (i.e. the
 child branch contains a parent) then the error will be logged to the
 catalog error log. No logging done by default.
 
-H4: show_error
+H4: {{CMD[id="tree_show_error"]show_error}}
 
 When set to a true value, and an endless tree is detected (i.e. the
 child branch contains a parent) then the error will be returned in the
@@ -9232,64 +9231,144 @@ call to C<userdb>. The global parameters (default in parens):
 
 
 
-
-
 H2: value
+
+Returns the the current value of the named form input field.
+HTML-escapes interchange tags in the result for security.
+
+Can also set a new value within the current page.
 
 
 H3: Summary
 
-\Parameters: B<name>
+!block example;
+    [B<value> name I<other_named_attributes>]
+    [B<value> name=I<form_var_name> I<other_named_attributes>]
+!endblock
 
-Positional parameters in same order.
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#value_name"]name}}|<<
+This is the name of the form variable whose value you want.
+>>|I<None>
+!endblock
 
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#value_set"]set}}|I<none>
+{{CMD[jump="#value_hide"]hide}}|I<No>
+{{CMD[jump="#value_filter"]filter}}|I<none>
+{{CMD[jump="#value_keep"]keep}} (with filter)|I<No>
+{{CMD[jump="#value_scratch"]scratch}}|I<No>
+{{CMD[jump="#value_default"]default}}|I<none>
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
 
-B<The attribute hash reference is passed> to the subroutine after
-the parameters as the last argument.
-B<This may mean that there are parameters not shown here.>
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<Yes>
+!endblock
 
-Must pass named parameter interpolate=1 to cause interpolation.
+B<Tag expansion example:>
 
-Invalidates cache: B<YES>
-
-Called Routine: 
+!block example
+   [value N_PARAM]
+---
+   TAGRESULT
+!endblock
 
 B<ASP-like Perl call:>
 
->    $Tag->value(
->        {
->         name => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->value($name, $ATTRHASH);
+!block example; lang="Perl"
+    $Tag->value(  { name => I<var_name>, }  );
 
- 
+    # or if you simply want the value,
+    $::Values->{I<var_name>};
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->value($name$, $attribute_hash_reference);
+!endblock
+
 
 H3: Description
-
 
 HTML examples:
 
 >   <PARAM MV="value name">
 >   <INPUT TYPE="text" NAME="name" VALUE="[value name]">
 
-Expands into the current value of the customer/form input field named
-by field. If C<flag> is present, single quotes will be escaped with a
-backslash; this allows you to contain the C<[value ...]> tag within
-single quotes. (It is somewhat better to use other quoting methods.)
-When the value is returned, any Interchange tags present in the value will
-be escaped. This prevents users from entering Interchange tags in form values,
-which would be a serious security risk.
-
-If the C<set> value is present, the form variable value will be set
-to it and the empty string returned. Use this to "uncheck" a checkbox
-or set other form variable values to defaults. B<NOTE:> This is only
-available in new-style tags, for safety reasons.
+Expands into the current value of the {{C[jump="#value_name"]named}}
+customer/form input field. When the value is returned, any Interchange
+tags present in the value will be escaped. This prevents users from
+entering Interchange tags in form values, which would be a serious
+security risk.
 
 
+H4: {{CMD[id="value_name"]name}}
+
+This is the name of the form variable whose value you want.
+
+
+H4: {{CMD[id="value_set"]set}}
+
+You can change a value with 'C<set>=I<new_value>'. The tag will return
+the value you set unless you also set the
+{{CMD[jump="#value_hide"]hide}}=1 attribute.
+
+Use this to "uncheck" a checkbox or set other form variable values to
+defaults.  If you simply want a place to store your own data, use the
+{{C[jump="#set"]set}} and {{C[jump="#scratch"]scratch}} tags
+instead.
+
+Note that this is only available in new-style tags, for
+safety reasons.
+
+
+H4: {{CMD[id="value_hide"]hide}}
+
+Setting C<hide>=1 suppresses the tag's return value, which can be
+useful with the {{C[jump="#value_set"]set}}C<set> attribute.
+
+
+H4: {{CMD[id="value_filter"]filter}}
+
+See the {{C[jump="#filter"]filter}} tag for a list of filters.
+
+Setting 'C<filter>="I<filter>"' modifies the named value with the specified
+filter.
+
+
+H4: {{CMD[id="value_keep"]keep}} (with filter)
+
+Set C<keep>=1 if you want the tag to return a filtered result but do
+not want the filter to modify the form value itself in the $::Values
+hash.
+
+
+H4: {{CMD[id="value_scratch"]scratch}}
+
+Setting 'C<scratch>=1' places a copy of the value in the $::Scratch
+hash. An illustrative N<example:>
+
+!block example
+   foo is [value name=foo scratch=1] in the Values hash
+   foo is now also [scratch foo] in the Scratch hash
+!endblock
+
+
+H4: {{CMD[id="value_default"]default}}
+
+This sets a return value in case the named value is missing or
+otherwise false.  The following will expand to N<"Using default":>
+
+!block example
+   [value name=myname set=0 hide=1]
+   [value myname default="Using default"]
+!endblock
 
 
 
@@ -9353,7 +9432,7 @@ file upload, then the contents of that upload can be returned to the
 page or optionally written to the C<outfile>.
 
 
-H4: name
+H4: {{CMD[id="tree_name"]name}}
 
 The form variable NAME. If no other parameters are present, then the 
 value of the variable will be returned. If there are multiple elements,
@@ -9363,30 +9442,30 @@ is present, then they will be joined by its value.
 In the special case of a file upload, the value returned is the name
 of the file as passed for upload.
 
-H4: joiner
+H4: {{CMD[id="tree_joiner"]joiner}}
 
 The character or string that will join the elements of the array. Will
 accept string literals such as "\n" or "\r".
 
-H4: test
+H4: {{CMD[id="tree_test"]test}}
 
 Three testsE<nbspace>E<emdash> C<isfile> returns true if the variable is a file upload.
 C<length> returns the length. C<defined> returns whether the value
 has ever been set at all on a form.
 
-H4: index
+H4: {{CMD[id="tree_index"]index}}
 
 The index of the element to return if not all are wanted. This is
 useful especially for pre-setting multiple search variables. If set
 to C<*>, will return all (joined by C<joiner>). If a range, such
 as C<0 .. 2>, will return multiple elements.
 
-H4: file_contents
+H4: {{CMD[id="tree_file_contents"]file_contents}}
 
 Returns the contents of a file upload if set to a non-blank, non-zero value.
 If the variable is not a file, returns nothing.
 
-H4: outfile
+H4: {{CMD[id="tree_outfile"]outfile}}
 
 Names a file to write the contents of a file upload to. It will not
 accept an absolute file name; the name must be relative to the catalog
@@ -9394,19 +9473,19 @@ directory. If you wish to write images or other files that would go to
 HTML space, you must use the HTTP server's C<Alias> facilities or 
 make a symbolic link.
 
-H4: ascii
+H4: {{CMD[id="tree_ascii"]ascii}}
 
 To do an auto-ASCII translation before writing the C<outfile>, set
 the C<ascii> parameter to a non-blank, non-zero value. Default is no
 translation.
 
-H4: yes
+H4: {{CMD[id="tree_yes"]yes}}
 
 The value that will be returned if a test is true or a file is
 written successfully. Defaults to C<1> for tests and the empty
 string for uploads.
 
-H4: no
+H4: {{CMD[id="tree_no"]no}}
 
 The value that will be returned if a test is false or a file write
 fails. Defaults to the empty string.
