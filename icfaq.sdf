@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icfaq.sdf,v 1.13 2002-06-30 05:43:35 danb Exp $
+# $Id: icfaq.sdf,v 1.14 2002-07-12 13:26:20 kwalsh Exp $
 
 !define DOC_NAME "Frequently Asked Questions"
 !define DOC_TYPE ""
 !define DOC_CODE "icfaq"
-!define DOC_VERSION substr('$Revision: 1.13 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.14 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icfaq.html"
@@ -693,17 +693,20 @@ of the C<main> shopping cart you would see something like:
 Each key of the hash is an attribute. There are a number of
 special attributes:
 
-	code	       The item SKU
-	sku 	       The SKU of the base item (in the case of matrix options)
-	mv_ip	       The line number of the shopping cart (minus 1)
-	mv_ib	       The database table the product was ordered from
-	quantity       The number on order
-	group          The order group for a master item or subitem
-	mv_si          Subitem indicator
-	mv_mi          Master item code
-	mv_mp          Modular item
-	mv_price       Price of the item (to directly set pricing)
-	mv_order_route Special order route for this item
+!block table; colvaligns="TT"
+Attribute|Description
+code|The item SKU
+sku|The SKU of the base item (in the case of matrix options)
+mv_ip|The line number of the shopping cart (minus 1)
+mv_ib|The database table the product was ordered from
+quantity|The number on order
+group|The order group for a master item or subitem
+mv_si|Subitem indicator
+mv_mi|Master item code
+mv_mp|Modular item
+mv_price|Price of the item (to directly set pricing)
+mv_order_route|Special order route for this item
+!endblock
 
 Any attribute besides the above is a product I<option> or I<modifier>, and can
 be displayed with C<[item-modifier attribute_name]>.
@@ -1889,7 +1892,7 @@ Now, install Interchange as normal.
 
 H1: Other / Miscellaneous Questions
 
-H2: What does the "mv_pc" variabled added to every URL mean?
+H2: What does the "mv_pc" variable added to every URL mean?
 
 Its purpose is to make each link unique so that users behind a proxy (e.g. AOL) will not have dynamic content cached. 
 
@@ -1912,15 +1915,17 @@ from the page specified in the form's mv_nextpage CGI submission.
 
 H2: What PGP / GPG encryption software is available for Windows?
 
-(Answered by Daryl Houston, Jonathan Clark, Aaron Hazelton, Mike Heins, & Michael Goldfarb)
+(Answered by Daryl Houston, Jonathan Clark, Aaron Hazelton, Mike Heins and Michael Goldfarb)
+
+=over 4
 
 =item * PGP for various platforms:
 	
-	{{URL:http://www.pgpi.org/products/pgp/versions/freeware/}}  
+{{URL:http://www.pgpi.org/products/pgp/versions/freeware/}}  
 	
 =item * WinPT (Windows Privacy Tray)
 	
-	{{URL:http://www.winpt.org}}
+{{URL:http://www.winpt.org}}
 
 A universal encrypt/decrypt program that operates 
 generally via the clipboard so would be compatable with most programs, but
@@ -1928,15 +1933,16 @@ there is also an Outlook Express plugin.  It comes with GPG (below).
 
 =item * GPG Windows version
 	
-	{{URL:http://www.gnupg.org/download.html}}	
+{{URL:http://www.gnupg.org/download.html}}	
 
 =item * MIT distribution of PGP 
 	
-	{{URL:http://web.mit.edu/network/pgp.html}}
-	
-	Only for US and Canada for non-commercial use. There may also 
-	be an international version without those restrictions.
+{{URL:http://web.mit.edu/network/pgp.html}}
 
+Only for US and Canada for non-commercial use. There may also 
+be an international version without those restrictions.
+
+=back
 
 H2:When are the results_big.html or results_either.html files called/used?
 
