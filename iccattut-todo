@@ -27,3 +27,8 @@ even missing.html won't work if pages/ dir doesn't exist! q.v. 127.0.0.1 csRgI56
 No error message is given in [error] if required form variables weren't passed at all (vs. being simply empty)
 
 No error message if profiles.order can't be found
+
+
+Discuss using images (from old mvdocs):
+
+A public Web directory for inline image graphic files is needed. Interchange does not serve the images, only the HTML tags calling them. A useful convention is to place all buttonbars, backgrounds, and icons in the /images directory, with the catalog items located in the /images/catalog directory. Regardless of the directory structure, an I<absolute path> must be used. Relative paths are unacceptable. Use the I<ImageDir> directive, which places that as the absolute path in front of all relative IMG and INPUT SRC, and BODY, TABLE, TR, TH, and TD BACKGROUND specifications.
