@@ -52,6 +52,7 @@ pdf:
 
 clean:
 	rm -f *.html *.pod *.txt *.8 *.pdf
+	rm -rf dev
 	@for target in ic*.sdf ; do \
 		base=`basename $$target .sdf`; \
 		echo rm -rf $$base; \
