@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.36 2002-01-16 02:30:25 jon Exp $
+# $Id: icdatabase.sdf,v 1.37 2002-02-18 00:41:59 mheins Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.36 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.37 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
@@ -1309,7 +1309,7 @@ that C<[search-list]>, C<[more-list]>, and C<[more]> tags can be placed within i
                    "]
    [more-list][more][/more-list]
    [search-list]
-   <A MV="page [item-code]" HREF="flypage.html">
+   [page [item-code]]
        [item-field title]<A>, by [item-field artist]
    [/search-list]
    [no-match]
@@ -1317,6 +1317,10 @@ that C<[search-list]>, C<[more-list]>, and C<[more]> tags can be placed within i
    [/no-match]
    [/search-region]
 !endblock
+
+NOTE: The [item-code] above does not need to be quoted because it is replaced
+before the [page ...] tag is interpolated. If building large lists, this is
+worth doing because unquoted tags are twice as fast to parse.
 
 To use the same page for search paging, make sure to set the C<sp=page> parameter.
 

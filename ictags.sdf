@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.75 2002-02-12 18:21:19 jon Exp $
+# $Id: ictags.sdf,v 1.76 2002-02-18 00:41:59 mheins Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.75 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.76 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -127,59 +127,6 @@ at least once somewhere on the page. (This is a small parsing speed optimization
 See the {{CMD[jump="#Template Parsing Order"]Template Parsing Order}}
 appendix if you are modifying the special administrative interface
 pages and intend to use this syntax.
-
-
-H2: HTML-Embedded
-
-As an alternative syntax, you can usually embed an Interchange tag as
-an attribute within an HTML tag. This allows some HTML editors to
-work more easily with Interchange templates (though you should
-consider the above HTML-comment-style brackets first). The following
-is a basic example of HTML-Embedded syntax:
-
-!block example
-  <C<HTMLtag> MV="B<tagname> I<positional parameters>" C<other HTML attributes>>
-!endblock
-
-The following examples will each loop over any items in the shopping cart, displaying
-their part number, description, and price, but only IF there are items
-in the cart.
-
-. HTML syntax:
-!block example
-    <TABLE MV="if items">
-    <TR MV="{{CMD[jump="#item_list"]item-list}}">
-    <TD> E<lbracket>item-code] </TD>
-    <TD> E<lbracket>item-description] </TD>
-    <TD> E<lbracket>item-price] </TD>
-    </TR></TABLE>
-!endblock
-
-. Standard syntax:
-!block example
-    E<lbracket>if items]
-    <TABLE>
-    E<lbracket>{{CMD[jump="#item_list"]item-list}}]
-    <TR>
-    <TD> E<lbracket>item-code] </TD>
-    <TD> E<lbracket>item-description] </TD>
-    <TD> E<lbracket>item-price] </TD>
-    </TR>
-    E<lbracket>/item-list]</TABLE>
-    [/if]
-!endblock
-
-!block note; label="NoteE<nbspace>E<emdash> Disabling HTML-embedded tags for performance: "
-
-Avoid the HTML-embedded usage if you can.
-
-The Foundation catalog included with Interchange disables parsing of
-the HTML-embedded syntax. This is for better performance, since it
-saves the server from checking every HTML tag for Interchange tag
-calls. This is done in the catalog by setting the pragma
-{{C[jump="icconfig.html#Pragma"]no_html_parse}} in C<catalog.cfg>.
-!endblock
-
 
 H2: {{CMD[id="parameters"]Named vs. Positional Parameters}}
 
@@ -2162,11 +2109,6 @@ Positional call example:
 Named call example:
 
 >    <A HREF="[area ord/basket]">Check basket</A>
-
-HTML-embedded example (disabled if no_html_parse {{CMD[jump="#Pragma"]Pragma}} active):
-
->    <A MV="area dir/page" HREF="dir/page.html">
-
 
 H2: assign
 
@@ -5227,8 +5169,6 @@ or similarly with positional parameters,
 H3: Description
 
 
-HTML example: <PARAM MV=field MV.COL=column MV.ROW=key>
-
 Expands into the value of the field I<name> for the product
 identified by I<code> as found by searching the products database.
 It will return the first entry found in the series of I<Product Files>.
@@ -7638,7 +7578,7 @@ will B<not> be shown. If the product's weight field is less than 1, a
 numerical 1 is output. The item will be shown, but will be the last
 item shown. (If it is an
 E<lbracket>{{C[jump="#item_list"]item-list}}], any price for
-the item will still be added to the subtotal.) NOTE: no HTML style.
+the item will still be added to the subtotal.)
 
 H4: E<lbracket>item-modifier attribute]
 
@@ -8014,10 +7954,6 @@ or similarly with positional parameters,
 
 H3: Description
 
-
-HTML example: 
-
->    <TABLE><TR MV="loop 1 2 3"><TD>[loop-code]</TD></TR></TABLE>
 
 Returns a string consisting of the LIST, repeated for every item in a
 comma-separated or space-separated list. Operates in the same fashion
@@ -9554,20 +9490,6 @@ The tag expands to the value returned by the enclosed code
 !endblock
 !block example
     [/perl]
-!endblock
-
-HTML example:
-
-!block example
-    <PRE mv=perl>
-!endblock
-!block example; lang="Perl"
-        $name    = $Values->{name};
-        $browser = $Session->{browser};
-        return "Hi, $name! How do you like your $browser?
-!endblock
-!block example
-    </PRE>
 !endblock
 
 Object references are available for most Interchange tags and 
@@ -14146,10 +14068,10 @@ or similarly with positional parameters,
 
 H3: Description
 
-HTML examples:
+example:
 
->   <PARAM MV="value name">
 >   <INPUT TYPE="text" NAME="name" VALUE="[value name]">
+>   <INPUT TYPE="text" NAME="name" VALUE="[value name=name]">
 
 Expands into the current value of the {{C[jump="#value_name"]named}}
 customer/form input field. When the value is returned, any Interchange
@@ -14556,55 +14478,6 @@ every time, you can just put:
 and E<lbracket>{{C[jump="#include"]include}} file] will be the equivalent. You can still specify
 another value with E<lbracket>{{C[jump="#include"]include}} file="/another/path/to/file"].
 
-H2: InsertHTML
-
-This attribute makes HTML tag output be inserted into the containing
-tag, in effect adding an attribute=value pair (or pairs).
-
->    UserTag tagname InsertHTML   htmltag  mvtag|mvtag2|mvtagN
-
-In Interchange's standard tags, among others, the <OPTION ...> tag has the
-\[selected ..] and [checked ...] tags included with them, so
-that you can do:
-
->   <INPUT TYPE=checkbox
->        MV="checked mvshipmode upsg" NAME=mv_shipmode> UPS Ground shipping
-
-to expand to this:
-
->   <INPUT TYPE=checkbox CHECKED NAME=mv_shipmode> UPS Ground shipping
-
-Providing, of course, that C<mv_shipmode> B<is> equal to C<upsg>.
-If you want to turn off this behavior on a per-tag basis, add the
-attribute mv.noinsert=1 to the tag on your page.
-
-H2: InsideHTML
-
-To make a container tag be placed B<after> the containing
-HTML tag, use the InsideHTML setting.
-
->    UserTag tagname InsideHTML   htmltag  mvtag|mvtag2|mvtagN
-
-In Interchange's standard tags, the only InsideHTML tag is the
-<SELECT> tag when used with I<loop>, which causes this:
-
->   <SELECT MV="loop upsg upsb upsr" NAME=mv_shipmode>
->   <OPTION VALUE="[loop-code]"> [shipping-desc [loop-code]]
->   </SELECT>
-
-to expand to this:
-
->   <SELECT NAME=mv_shipmode>
->   [loop upsg upsb upsr]
->   <OPTION VALUE="[loop-code]"> [shipping-desc [loop-code]]
->   [/loop]
->   </SELECT>
-
-Without the InsideHTML setting, the [loop ...] would have been B<outside>
-of the selectE<nbspace>E<emdash> not what you want. If you want to turn off this
-behavior on a per-tag basis, add the attribute mv.noinside=1 to the tag
-on your page.
-
 H2: Interpolate
 
 The behavior for this attribute depends on whether the tag is a container
@@ -14641,49 +14514,6 @@ Identical to the Routine argumentE<nbspace>E<emdash> a subroutine that will be c
 the new syntax is not used for the call, i.e. C<[usertag argument]> instead
 of C<[usertag ARG=argument]>. If not defined, I<Routine> is used, and Interchange
 will usually do the right thing.
-
-H2: ReplaceAttr
-
-Works in concert with InsertHTML, defining a B<single> attribute which
-will be replaced in the insertion operation..
-
->  UserTag tagname ReplaceAttr  htmltag attr
-
-An example is the standard HTML <A HREF=...> tag. If you want to use the
-Interchange tag E<lbracket>{{C[jump="#area"]area}} pagename] inside of it, then you would normally
-want to replace the HREF attribute. So the equivalent to the following
-is defined within Interchange:
-
->  UserTag  area  ReplaceAttr  a  href
-
-Causing this
-
->    <A MV="area pagename" HREF="a_test_page.html">
-
-to become
-
->    <A HREF="http://yourserver/cgi/simple/pagename?X8sl2lly;;44">
- 
-when intepreted.
-    
-H2: ReplaceHTML
-
-For HTML-style tag use only. Causes the tag containing the Interchange tag to
-be stripped and the result of the tag to be inserted, for certain tags.
-For example:
-
->  UserTag company_name Routine sub { my $l = shift; return "$l: XYZ Company" }
->  UserTag company_name HasEndTag
->  UserTag company_name ReplaceHTML  b    company_name
-
-<BR> is the HTML tag, and "company_name" is the Interchange tag.
-At that point, the usage:
-
->    <B MV="company-name"> Company </B>  --->>  Company: XYZ Company
-
-Tags not in the list will not be stripped:
-
->    <I MV="company-name"> Company </I> --->>  <I>Company: XYZ Company</I>
 
 H2: Routine
 

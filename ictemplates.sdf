@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ictemplates.sdf,v 1.31 2002-02-11 15:07:55 racke Exp $
+# $Id: ictemplates.sdf,v 1.32 2002-02-18 00:41:59 mheins Exp $
 
 !define DOC_NAME "Template Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "ictemplates"
-!define DOC_VERSION substr('$Revision: 1.31 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.32 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictemplates.html"
@@ -1295,13 +1295,6 @@ LI1: $Tag
 .Using the $Tag object, any Interchange tag including user-defined tags can be accessed.
 
 Note[label='IMPORTANT NOTE: '] If the tag will access a database that has not been previously opened, the table name must be passed in the ASP call. For example:
-
-.HTML style:
-!block example; listitem=2
-    <HTML MV="mvasp" MV.TABLES="products pricing">
-!endblock
-
-.or
 
 .Named parameters:
 !block example; listitem=2
