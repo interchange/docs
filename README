@@ -16,12 +16,16 @@ To set up your SDF environment do the following:
     directory
 
 (4) if you'll be making the dev_html target (if you're generating the
-	Developer website), make this patch to PERLSITELIB/sdf/tohtml.pl:
+    Developer website), make this patch to PERLSITELIB/sdf/tohtml.pl:
 
 37a38,41
-> # Escape '[' characters -> '&#91;' for Akopia Interchange Tags?
-> # (off by default)
+> # Escape '[' characters -> '&#91;' for Akopia Interchange Tags
+> # and __VARIABLE__ -> '&#95;_VARIABLE__'? (off by default)
 > $_ITL_ESCAPE = 0;
 >
-518a523
->       $para =~ s/\[/&#91;/g if $_ITL_ESCAPE;
+518a523,524
+>	$para =~ s/\[/&#91;/g if $_ITL_ESCAPE;
+>	$para =~ s/_(_([^_]+_?)+__)/&#95;$1/g if $_ITL_ESCAPE;
+
+    You'll need to set $_ITL_ESCAPE = 1 before building the developer site.
+    NOTE! Remember to turn it off again when you're done!
