@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ictemplates.sdf,v 1.41 2002-07-22 01:48:53 mheins Exp $
+# $Id: ictemplates.sdf,v 1.42 2002-07-31 19:54:41 kwalsh Exp $
 
 !define DOC_NAME "Template Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "ictemplates"
-!define DOC_VERSION substr('$Revision: 1.41 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.42 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictemplates.html"
@@ -16,15 +16,17 @@ Interchange is designed to build its pages based on templates from a database. T
 
 H2: Overview
 
-The search builder can be used to generate very complex reports on the database, or to help in the construction of ITL templates. Select a "Base table" that will be the foundation for the report. Specify the maximum number of rows to be returned at one time, and whether to show only unique entries.
+The search builder can be used to generate very complex reports on the database or to help in the construction of ITL templates. Select a "Base table" that will be the foundation for the report. Specify the maximum number of rows to be returned at one time, and whether to show only unique entries.
 
 The "Search filter" narrows down the list of rows returned by matching table columns based on various criteria. Up to three separate conditions can be specified. The returned rows must match all criteria.
 
-Finally, select any sorting options desired for displaying the results, and narrow down the list of columns returned if desired. Clicking "Run" will run the search immediately and display the results. "Generate definition" will display an ITL tag that can be placed in a template and that will return the results when executed.
+Finally, select any sorting options desired for displaying the results and narrow down the list of columns returned if desired. Clicking "Run" will run the search immediately and display the results. "Generate definition" will display an ITL tag that can be placed in a template and that will return the results when executed.
 
-To build complex order forms and reports, Interchange has a complete tag language with over 80 different functions called Interchange Tag Language (ITL). It allows access to and control over any of an unlimited number of database tables, multiple shopping carts, user name/address information, discount, tax, and shipping information, search of files and databases, and much more.
+To build complex order forms and reports, Interchange has a complete tag language with over 80 different functions called Interchange Tag Language (ITL). It allows access to and control over any of an unlimited number of database tables, multiple shopping carts, user name/address information, discount, tax and shipping information, search of files and databases, and much more.
 
-There is some limited conditional capability with the C<[if ...]> tag, but when doing complex operations, use of embedded Perl/ASP should be strongly considered. Most of the tests use Perl code, but Interchange uses the Safe.pm module with its default restrictions to help ensure that improper code will not crash the server or modify the wrong data.
+There is some limited conditional capability with the
+E<lbracket>{{C[jump="ictags.html#if"]if}}] tag,
+but when doing complex operations, use of embedded Perl/ASP should be strongly considered. Most of the tests use Perl code, but Interchange uses the Safe.pm module with its default restrictions to help ensure that improper code will not crash the server or modify the wrong data.
 
 Perl can also be embedded within the page and, if given the proper permission by the system administrator, call upon resources from other computers and networks.
 
@@ -53,16 +55,16 @@ a parameter="parameter value" can be passed.
 \Summary:
 
 !block example
-   [tag parameter]             Tag called with positional parameter
-   [tag parameter=value]       Tag called with named parameter
-   [tag parameter="the value"] Tag called with space in parameter
-   [tag 1 2 3]                 Tag called with multiple positional parameters
-   [tag foo=1 bar=2 baz=3]     Tag called with multiple named parameters
-   [tag foo=`2 + 2`]           Tag called with calculated parameter
-   [tag foo="[value bar]"]     Tag called with tag inside parameter
-   [tag foo="[value bar]"]
-       Container text.         Container tag.
-   [/tag]
+    [tag parameter]             Tag called with positional parameter
+    [tag parameter=value]       Tag called with named parameter
+    [tag parameter="the value"] Tag called with space in parameter
+    [tag 1 2 3]                 Tag called with multiple positional parameters
+    [tag foo=1 bar=2 baz=3]     Tag called with multiple named parameters
+    [tag foo=`2 + 2`]           Tag called with calculated parameter
+    [tag foo="[value bar]"]     Tag called with tag inside parameter
+    [tag foo="[value bar]"]
+        Container text.         Container tag.
+    [/tag]
 !endblock
 
 Most tags can accept some positional parameters. This makes parsing faster and
@@ -71,14 +73,14 @@ is, in most cases, simpler to write.
 The following is an example tag:
 
 !block example
-   [value name=city]
+    E<lbracket>{{C[jump="ictags.html#value"]value}}C< name=city>]
 !endblock
 
 This tag causes Interchange to look in the user form value array and return
 the value of the form parameter C<city>, which might have been set with:
 
 !block example
-   City: <INPUT TYPE=text NAME=city VALUE="[value city]">
+    City: <INPUT TYPE=text NAME=city VALUE="[value city]">
 !endblock
 
 Note: Keep in mind that the value was pre-set with the value of C<city> (if any).
@@ -87,52 +89,58 @@ for the [value ...] tag. Positional parameters cannot be derived from other Inte
 named parameter syntax is used, parameters can contain other tags. For example:
 
 !block example
-   [value name="[value formfield]"]
+    E<lbracket>{{C[jump="ictags.html#value"]value}}C< name="[value formfield]"]>]
 !endblock
 
-There are exceptions to the above rule when using list tags such as [item-list], [loop ...], [sql ...], and more. These tags, and their exceptions, are explained in their corresponding sections.
+There are exceptions to the above rule when using list tags such as
+E<lbracket>{{C[jump="ictags.html#item-list"]item-list}}],
+E<lbracket>{{C[jump="ictags.html#loop"]loop}}],
+E<lbracket>{{C[jump="ictags.html#query"]query}}] and others.
+These tags, and their exceptions, are explained in their corresponding sections.
 
 Many Interchange tags are container tags. For example:
 
 !block example
-   [set Checkout]
-       mv_nextpage=ord/checkout
-       mv_todo=return
-   [/set]
+    E<lbracket>{{C[jump="ictags.html#set"]set}} Checkout]
+        mv_nextpage=ord/checkout
+        mv_todo=return
+    [/set]
 !endblock
 
-Tags and parameter names are not case sensitive, so [VALUE NAME=something] and [value name=something] work the same.
+Tags and parameter names are not case sensitive, so C<[VALUE NAME=something]>
+and C<[value name=something]> work the same.
 The Interchange development convention is to type HTML tags in upper
 case and Interchange tags in lower case. This makes pages and tags easier to read.
 
-Single quotes work the same as double quotes, and can prevent confusion. For example:
+Single quotes work the same as double quotes and can prevent confusion. For example:
 
 !block example
-   [value name=b_city set='[value city]']
+    [value name=b_city set='[value city]']
 !endblock
 
 Backticks should be used with extreme caution since they cause the parameter contents to be evaluated
-as Perl code using the C<[calc]> tag. For example:
+as Perl code using the E<lbracket>{{C[jump="ictags.html#calc"]calc}}]
+tag. For example:
 
 !block example
-   [value name=row_value set=`$row_value += 1`]
+    [value name=row_value set=`$row_value += 1`]
 !endblock
 
 is the same as
 
 !block example
-   [value name=row_value set="[calc]$row_value += 1[/calc]"]
+    [value name=row_value set="E<lbracket>{{C[jump="ictags.html#calc"]calc}}]$row_value += 1[/calc]"]
 !endblock
 
 
 Vertical bars can also be used as quoting characters, but have the unique behavior of stripping leading and trailing whitespace. For example:
 
 !block example
-       [loop list="code        field    field2  field3
-       k1    A1    A2    A3
-       k2    B1    B2    B3"]
-       [loop-increment][loop-code]
-       [/loop]
+    [loop list="
+        k1    A1    A2    A3
+        k2    B1    B2    B3"]
+        [loop-increment][loop-code]
+    [/loop]
 !endblock
 
 could be better expressed as:
@@ -146,31 +154,44 @@ could be better expressed as:
     [/loop]
 !endblock
 
-How the result of the tag is displayed depends on if it is a container or a standalone tag. A container tag has a closing tag (for example, C<[tag] stuff [/tag]>). A standalone tag has no end tag (for example, C<[area href=somepage]>). Note that C<[page ...]> and C<[order ..]> are B<not> container tags. (C<[/page]> and C<[/order]> are simple macros.)
+How the result of the tag is displayed depends on if it is a container or a standalone tag. A container tag has a closing tag (for example, C<[tag] stuff [/tag]>). A standalone tag has no end tag (for example,
+E<lbracket>{{C[jump="ictags.html#area"]area}}C< href=somepage>].
+Note that
+E<lbracket>{{C[jump="ictags.html#page"]page}}] and
+E<lbracket>{{C[jump="ictags.html#order"]order}}]
+are B<not> container tags. (C<[/page]> and C<[/order]> are simple macros.)
 
-A container tag will have its output re-parsed for more Interchange tags by default. To inhibit this behavior, set the attribute reparse to 0.  However, it has been found that the default re-parsing is almost always desirable. On the other hand, the output of a standalone tag will not be re-interpreted for Interchange tag constructs (with some exceptions, like (C<[include file]>).
+A container tag will have its output re-parsed for more Interchange tags by default. To inhibit this behavior, set the attribute reparse to 0.  However, it has been found that the default re-parsing is almost always desirable. On the other hand, the output of a standalone tag will not be re-interpreted for Interchange tag constructs (with some exceptions,
+like E<lbracket>{{C[jump="ictags.html#include"]include}}C< file>].
 
-Most container tags will not have their contents interpreted (Interchange tags parsed) before being passed the container text. Exceptions include C<calc>, C<currency>, and C<seti>. All tags accept the C<interpolate=1> tag modifier, which causes the interpretation to take place.
+Most container tags will not have their contents interpreted (Interchange tags parsed) before being passed the container text. Exceptions include
+E<lbracket>{{C[jump="ictags.html#calc"]calc}}],
+E<lbracket>{{C[jump="ictags.html#currency"]currency}}] and
+E<lbracket>{{C[jump="ictags.html#seti"]seti}}].
+All tags accept the C<interpolate=1> tag modifier, which causes the interpretation to take place.
 
-H2: The DATA and FIELD Tags
+H2: data and field
 
-The C<[data ...]> and C<[field ...]> tags access elements of Interchange databases. They are the form used outside of the iterating lists, and are used to do lookups when the table, column/field, or key/row is conditional based on a previous operation.
+The E<lbracket>{{C[jump="ictags.html#data"]data}}] and
+E<lbracket>{{C[jump="ictags.html#field"]field}}]
+tags access elements of Interchange databases. They are the form used outside of the iterating lists, and are used to do lookups when the table, column/field or key/row is conditional based on a previous operation.
 
 The following are equivalent for attribute names:
 
 !block example
-   table --> base
-   col   --> field --> column
-   key   --> code  --> row
+    table --> base
+    col   --> field --> column
+    key   --> code  --> row
 !endblock
 
-The [field ...] tag looks in any tables defined as C<ProductFiles>, in that order, for the data and returns the first non-empty value. In most catalogs, where C<ProductFiles> is not defined, i.e., the demo, C<[field title 00-0011]> is equivalent to C<[data products title 00-0011]>. For example, [field col=foo key=bar] will not display something from the table "category" because "category" is not in the directive ProductFiles or there are multiple ProductFiles and an earlier one has an entry for that key.
+The E<lbracket>{{C[jump="ictags.html#field"]field}}]
+tag looks in any tables defined as C<ProductFiles>, in that order, for the data and returns the first non-empty value. In most catalogs, where C<ProductFiles> is not defined, i.e., the demo, C<[field title 00-0011]> is equivalent to C<[data products title 00-0011]>. For example, [field col=foo key=bar] will not display something from the table "category" because "category" is not in the directive ProductFiles or there are multiple ProductFiles and an earlier one has an entry for that key.
 
-LI1: [data table column key]
+LI1: E<lbracket>{{C[jump="ictags.html#data"]data}}C< table column key>]
 
 .named attributes: C<[data base="database" field="field" key="key"> C<value="value" op="increment]>
 
-.Returns the value of the field in any of the arbitrary databases, or from the variable namespaces. If the option C<increment=1> is present, the field will be automatically incremented with the value in value.
+.Returns the value of the field in any of the arbitrary databases or from the variable namespaces. If the option C<increment=1> is present, the field will be automatically incremented with the value in value.
 
 .If a DBM-based database is to be modified, it must be flagged writable on the page calling the write tag. For example, use C<[tag flag write]products[/tag]> to mark the C<products> database writable.
 
@@ -196,21 +217,26 @@ LI1: [data table column key]
 
 .Databases will hide variables, so if a database is named "session," "scratch," or any of the other reserved names it won't be able to use the C<[data ...]> tag to read them. Case is sensitive, so the database could be called "Session," but this is not recommended practice.
 
-LI1: [field name code]
+LI1: E<lbracket>{{C[jump="ictags.html#field"]field}}C< name code>]
 
 .named attributes: C<[field code="code" name="fieldname"]>
 
 .Expands into the value of the field name for the product as identified by code found by searching the products database. It will return the first entry found in the series of Product Files in the products database. If this needs to constrained to a particular table, use a C<[data table col key]> call.
 
-H2: set, seti, scratch and scratchd
+H2: set, seti, tmp, tmpn scratch and scratchd
 
-Scratch variables are maintained in the user session, which is separate from the form variable values set on HTML forms. Many things can be controlled with scratch variables, particularly search and order processing, the C<mv_click> multiple variable setting facility, and key Interchange conditions session URL display.
+Scratch variables are maintained in the user session, which is separate from the form variable values set on HTML forms. Many things can be controlled with scratch variables, particularly search and order processing, the C<mv_click> multiple variable setting facility and key Interchange conditions session URL display.
 
-There are three tags that are used to set the scratch space, C<[set name]value[/set]>, [seti name]value[/seti], [tmp name]value[/tmp], and two tags for reading scratch space.
+There are four tags that are used to set the scratch space:
+E<lbracket>{{C[jump="ictags.html#set"]set}}C< variable>] value [/set],
+E<lbracket>{{C[jump="ictags.html#seti"]seti}}C< variable>] value [/seti],
+E<lbracket>{{C[jump="ictags.html#tmp"]tmp}}C< variable>] value [/tmp],
+E<lbracket>{{C[jump="ictags.html#tmpn"]tmpn}}C< variable>] value [/tmpn] and
+and two tags for reading scratch space:
+E<lbracket>{{C[jump="ictags.html#scratch"]scratch}}C< variable>] and
+E<lbracket>{{C[jump="ictags.html#scratchd"]scratchd}}C< variable>].
 
-LI1: [set variable]value[/set]
-
-.named attributes: C<[set name="variable"] value [/set]>
+LI1: E<lbracket>{{C[jump="ictags.html#set"]set}}C< variable>] value [/set]
 
 .Sets a scratchpad variable to a value.
 
@@ -242,43 +268,55 @@ LI1: [set variable]value[/set]
     [calc]$Scratch->{foo} = 'bar'; return;[/calc]
 !endblock
 
-LI1: [seti variable][value something][/seti]
+LI1: E<lbracket>{{C[jump="ictags.html#seti"]seti}}C< variable>] value [/seti]
 
-.The same as C<[set] [/set]>, except it interpolates the container text. The above is the same as:
+.The same as E<lbracket>{{C[jump="ictags.html#set"]set}}]
+except it interpolates the container text. The above is the same as:
 
 !block example; listitem=2
-    [set name=variable interpolate=1][value something][/set]
+    E<lbracket>{{C[jump="ictags.html#set"]set}} name=variable interpolate=1] E<lbracket>{{C[jump="ictags.html#value"]value}} something] [/set]
 !endblock
 
-LI1: [tmp name]value[/tmp]
+LI1: E<lbracket>{{C[jump="ictags.html#tmp"]tmp}}C< variable>] value [/tmp]
 
-.The same as [seti] but it does not persist.
+.The same as E<lbracket>{{C[jump="ictags.html#seti"]seti}}]
+except it does not persist.
 
-LI1: [scratch name]
+LI1: E<lbracket>{{C[jump="ictags.html#tmpn"]tmpn}}C< variable>] value [/tmpn]
+
+.The same as E<lbracket>{{C[jump="ictags.html#set"]set}}]
+except it does not persist.
+
+LI1: E<lbracket>{{C[jump="ictags.html#scratch"]scratch}}C< variable>]
 
 .Returns the contents of a scratch variable to the page. C<[scratch foo]> is the same as, but faster than:
 
 !block example; listitem=2
-    [perl]$Scratch->{foo}[/perl]
+    E<lbracket>{{C[jump="ictags.html#perl"]perl}}] $Scratch->{foo} [/perl]
 !endblock
 
-LI1: [scratchd]
+LI1: E<lbracket>{{C[jump="ictags.html#scratchd"]scratchd}}C< variable>]
 
-.The same as [scratch name], except it deletes the value after returning it. Same as [scratch foo][set foo][/set].
+.The same as E<lbracket>{{C[jump="ictags.html#scratch"]scratch}}C< variable>]
+except it deletes the value after returning it. Same as C<[scratch foo] [{{C[jump="ictags.html#set"]set}} foo] [/set]>.
 
-LI1: [if scratch name op* compare*] yes [else] no [/else] [/if]
+LI1: E<lbracket>{{C[jump="ictags.html#if"]if}}C< scratch name op* compare*]> yes C<[else]> no C<[/else][/if]>
 
-.Tests a scratch variable. See the IF tag for more information.
+.Tests a scratch variable. See the E<lbracket>{{C[jump="ictags.html#if"]if}}]
+tag documentation for more information.
 
 H2: loop
 
-Loop lists can be used to construct arbitrary lists based on the contents of a database field, a search, or other value (like a fixed list). Loop accepts a C<search> parameter that will do one-click searches on a database table (or file).
+Loop lists can be used to construct arbitrary lists based on the contents of a database field, a search or other value (like a fixed list). Loop accepts a C<search> parameter that will do one-click searches on a database table (or file).
 
 To iterate over all keys in a table, use the idiom (C<[loop search="ra=yes/ml=9999"] [/loop]>. C<ra=yes> sets C<mv_return_all>, which means "match everything". C<ml=9999> limits matches to that many records. If the text file for searching an Interchange DBM database is not used, set C<st=db> (mv_searchtype).
 
-When using C<st=db>, returned keys may be affected by C<TableRestrict>. See C<catalog.cfg>. Both can be sorted with C<[sort table:field:mod -start +number]> modifiers. See C<Sorting>.
+When using C<st=db>, returned keys may be affected by C<TableRestrict>. Both can be sorted with C<[sort table:field:mod -start +number]> modifiers. See {{C[jump="icdatabase.html#Sorting"]sorting}}.
 
-LI1: [loop item item item] LIST [/loop]
+The Interchange Tags Reference has more information on the
+E<lbracket>{{C[jump="ictags.html#loop"]loop}}] tag.
+
+LI1: E<lbracket>{{C[jump="ictags.html#loop"]loop}}C< item item item]> LIST C<[/loop]>
 
 .named attributes: C<[loop prefix=label* list="item item item"* search="se=whatever"*]>
 
@@ -298,17 +336,17 @@ LI1: [loop item item item] LIST [/loop]
 .This will output:
 
 !block example; listitem=2
-                Red-Small
-                White-Small
-                Blue-Small
+    Red-Small
+    White-Small
+    Blue-Small
 
-                Red-Medium
-                White-Medium
-                Blue-Medium
+    Red-Medium
+    White-Medium
+    Blue-Medium
 
-                Red-Large
-                White-Large
-                Blue-Large
+    Red-Large
+    White-Large
+    Blue-Large
 !endblock
 
 .The search="args" parameter will return an arbitrary search, just as in a one-click search:
@@ -321,17 +359,17 @@ LI1: [loop item item item] LIST [/loop]
 
 .The above will show all items with a category containing the whole world "Americana."
 
-LI1: [if-loop-data table field] IF [else] ELSE [/else][/if-loop-field]
+LI1: E<lbracket>{{C[jump="ictags.html#if-PREFIX-data"]if-loop-data}}C< table field]> IF C<[else]> ELSE C<[/else][/if-loop-data]>
 
-.Outputs the IF if the C<field> in the C<table> is not empty, and the ELSE (if any) otherwise.
+.Outputs the IF if the C<field> in the C<table> is not empty or the ELSE (if any) otherwise.
 
-Note: This tag does not nest with other C<[if-loop-data ...]> tags.
+Note: This tag does not nest with other C<if-loop-data> tags.
 
-LI1: [if-loop-field field] IF [else] ELSE [/else][/if-loop-field]
+LI1: E<lbracket>{{C[jump="ictags.html#if-PREFIX-field"]if-loop-field}}] IF C<[else]> ELSE C<[/else][/if-loop-field]>
 
-.Outputs the IF if the C<field> in the C<products> table is not empty, and the ELSE (if any) otherwise.
+.Outputs the IF if the C<field> in the C<products> table is not empty or the ELSE (if any) otherwise.
 
-Note: This tag does not nest with other C<[if-loop-field ...]> tags.
+Note: This tag does not nest with other C<if-loop-field> tags.
 
 LI1: [loop-alternate N] DIVISIBLE [else] NOT DIVISIBLE [/else][/loop-alternate]
 
@@ -346,35 +384,37 @@ LI1: [/loop-alternate]
 
 .Terminates the alternation area.
 
-LI1: [loop-change marker]
+LI1: E<lbracket>{{C[jump="ictags.html#PREFIX-change"]loop-change}}C< marker>]
 
 .Same as C<[item-change]>, but within loop lists.
 
-LI1: [loop-code]
+LI1: E<lbracket>{{C[jump="ictags.html#PREFIX-code"]loop-code}}]
 
 .Evaluates to the first returned parameter for the current returned record.
 
-LI1: [loop-data database fieldname]
+LI1: E<lbracket>{{C[jump="ictags.html#PREFIX-data"]loop-data}}C< database fieldname>]
 
 .Evaluates to the field name fieldname in the arbitrary database table database for the current item.
 
-LI1: [loop-description]
+LI1: E<lbracket>{{C[jump="ictags.html#PREFIX-description"]loop-description}}]
 
 .Evaluates to the product description for the current item. Returns the <Description Field> from the first products database where that item exists.
 
-LI1: [loop-field fieldname]
+LI1: E<lbracket>{{C[jump="ictags.html#PREFIX-field"]loop-field}}C< fieldname>]
 
-.The [loop-field ...] tag is special in that it looks in any of the tables defined as C<ProductFiles>, in that order, for the data, and returns the value only if that key is defined. In most catalogs, where C<ProductFiles> is not defined C<[loop-field title]> is equivalent to C<[loop-data products title]>.
+.The E<lbracket>{{C[jump="ictags.html#PREFIX-field"]loop-field}}]
+.The E<lbracket>{{C[jump="ictags.html#PREFIX-field"]loop-field}}] tag is special in that it looks in any of the tables defined as C<ProductFiles>, in that order, for the data and returns the value only if that key is defined. In most catalogs, where C<ProductFiles> is not defined C<[loop-field title]> is equivalent to
+E<lbracket>{{C[jump="ictags.html#PREFIX-data"]loop-field}}C< products title>].
 
 .Evaluates to the field name fieldname in the database for the current item.
 
-LI1: [loop-increment]
+LI1: E<lbracket>{{C[jump="ictags.html#PREFIX-increment"]loop-increment}}]
 
 .Evaluates to the number of the item in the list. Used for numbering items in the list. Starts from one (1).
 
 LI1: [loop-last]tags[/loop-last]
 
-.Evaluates the output of the ITL tags encased in the [loop-last] tags. If it evaluates to a numerical non-zero number (for example, 1, 23, or -1), the loop iteration will terminate. If the evaluated number is negative, the item itself will be skipped. If the evaluated number is positive, the item itself will be shown, but will be last on the list.
+.Evaluates the output of the ITL tags encased in the [loop-last] tags. If it evaluates to a numerical non-zero number (for example, 1, 23, -10 etc.), the loop iteration will terminate. If the evaluated number is negative, the item itself will be skipped. If the evaluated number is positive, the item itself will be shown, but will be last on the list.
 
 !block example; listitem=2
       [loop-last][calc]
@@ -388,7 +428,7 @@ LI1: [loop-last]tags[/loop-last]
 
 LI1: [loop-next]tags[/loop-next]
 
-.Evaluates the output of the ITL tags encased in the [loop-next] tags. If it evaluates to a numerical non-zero number (for example, 1, 23, or -1), the loop will be skipped with no output. Example:
+.Evaluates the output of the ITL tags encased in the [loop-next] tags. If it evaluates to a numerical non-zero number (for example, 1, 23, -10 etc.), the loop will be skipped with no output. Example:
 
 !block example; listitem=2
       [loop-next][calc][loop-field weight] < 1[/calc][/loop-next]
@@ -396,27 +436,32 @@ LI1: [loop-next]tags[/loop-next]
 
 .If this is contained in your C<[loop list]> and the product's weight field is less than 1, a numerical C<1> will be output from the C<[calc][/calc]> operation. The item will not be shown.
 
-LI1: [loop-price n* noformat*]
+LI1: E<lbracket>{{C[jump="ictags.html#PREFIX-price"]loop-price}}C< n* noformat*>]
 
 .Evaluates to the price for the optional quantity n (from the products file) of the current item, with currency formatting. If the optional "noformat" is set, then currency formatting will not be applied.
 
-LI1: [loop-calc]PERL[/loop-calc]
+LI1: E<lbracket>{{C[jump="ictags.html#PREFIX-calc"]loop-calc}}] PERL C<[/loop-calc]>
 
-.Calls embedded Perl with the code in the container. All [loop-...] tags can be placed inside except for [loop-filter ...][/loop-filter], [loop-exec routine][/loop-exec], [loop-last][/loop-last], and [loop-next][/loop-next.
+.Calls embedded Perl with the code in the container. All C<[loop-*]> tags can be placed inside except for C<[loop-filter ...][/loop-filter]>, C<[loop-exec routine][/loop-exec]>, C<[loop-last][/loop-last]> and C<[loop-next][/loop-next]>.
 
 Note: All normal embedded Perl operations can be used, but be careful to pre-open any database tables with a [perl tables="tables you need"][/perl] tag prior to the opening of the [loop].
 
 LI1: [loop-exec routine]argument[/loop-exec]
 
-.Calls a subroutine predefined either in catalog.cfg with Sub, or in a [loop...] with [loop-sub routine]PERL[/loop-sub]. The container text is passed as $_[0], and the array (or hash) value of the current row is $_[1].
+.Calls a subroutine predefined either in catalog.cfg with Sub or in a
+E<lbracket>{{C[jump="ictags.html#loop"]loop}}]
+with C<[loop-sub routine]> PERL C<[/loop-sub]>. The container text is passed as C<$_[0]> and the array (or hash) value of the current row is C<$_[1]>.
 
 LI1: [loop-sub routine]PERL[/loop-sub]
 
-.Defines a subroutine that is available to the current (and subsequent) [loop-...] tags within the same page. See {{CMD[jump="icconfig.html#Programming"]Interchange Programming}}.
+.Defines a subroutine that is available to the current (and subsequent) C<[loop-*]> tags within the same page. See {{CMD[jump="#Programming"]Interchange Programming}}.
 
 H2: if
 
-LI1: [if type field op* compare*]
+LI1: E<lbracket>{{C[jump="ictags.html#if"]if}}C< type field op* compare*>]
+
+The Interchange Tags Reference has more information on the
+E<lbracket>{{C[jump="ictags.html#if"]if}}] tag.
 
 .named attributes: C<[if type="type" term="field" op="op" compare="compare"]>
 
@@ -445,15 +490,16 @@ session and database values. The general form is:
     [/if]
 !endblock
 
-The C<[if]> tag can also have some variants:
+The E<lbracket>{{C[jump="ictags.html#if"]if}}] tag can also have some variants:
 
 !block example; listitem=1
-    [if explicit][condition] CODE [/condition]
-                Displayed if valid Perl CODE returns a true value.
+    [if explicit]
+    [condition] CODE [/condition]
+                                Displayed if valid Perl CODE returns a true value.
     [/if]
 !endblock
 
-Some Perl-style regular expressions can be written, and combine conditions:
+Some Perl-style regular expressions can be written:
 
 !block example; listitem=1
     [if value name =~ /^mike/i]
@@ -557,7 +603,8 @@ LI1: discount
 
 LI1: explicit
 
-.A test for an explicit value. If Perl code is placed between a C<[condition]> C<[/condition]> tag pair, it will be used to make the comparison. Arguments can be passed to import data from user space, just as with the C<[perl]> tag.
+.A test for an explicit value. If Perl code is placed between a C<[condition]> C<[/condition]> tag pair, it will be used to make the comparison. Arguments can be passed to import data from user space, just as with the
+E<lbracket>{{C[jump="ictags.html#perl"]perl}}] tag.
 
 !block example; listitem=2
     [if explicit]
@@ -628,7 +675,7 @@ LI1: ordered
 
     [if type=ordered term="99-102" compare="size =~ /large/i"]
 
-    To make sure it is the size that is large, and not another attribute, you could use:
+    To make sure it is the size that is large and not another attribute, you could use:
 
     [if ordered 99-102 main size eq 'large'] ... [/if]
 
@@ -640,7 +687,7 @@ LI1: ordered
 
 LI1: scratch
 
-.The Interchange scratchpad variables, which can be set with the C<[set name]value[/set]> element.
+.The Interchange scratchpad variables, which can be set with the C<[set name] value [/set]> element.
 
 !block example; listitem=2
     [if scratch mv_separate_items]
@@ -653,15 +700,15 @@ LI1: scratch
 
 LI1: session
 
-.The Interchange session variables. Of particular interest are logged_in, source, browser, and username.
+.The Interchange session variables. Of particular interest are logged_in, source, browser and username.
 
 LI1: validcc
 
-.A special case, it takes the form C<[if validcc no type exp_date]>. Evaluates to true if the supplied credit card number, type of card, and expiration date pass a validity test. It performs a LUHN-10 calculation to weed out typos or phony card numbers.
+.A special case, it takes the form C<[if validcc no type exp_date]>. Evaluates to true if the supplied credit card number, type of card and expiration date pass a validity test. It performs a LUHN-10 calculation to weed out typos or phony card numbers.
 
 LI1: value
 
-.The Interchange user variables, typically set in search, control, or order forms. Variables beginning with C<mv_> are Interchange special values, and should be tested and used with caution.
+.The Interchange user variables, typically set in search, control or order forms. Variables beginning with C<mv_> are Interchange special values and should be tested and used with caution.
 
 =item variable
 
@@ -724,7 +771,8 @@ LI1: [else] text [/else]
 
 LI1: [condition] text [/condition]
 
-.Only used with the C<[if explicit]> tag. Allows an arbitrary expression B<in Perl> to be placed inside, with its return value interpreted as the result of the test. If arguments are added to C<[if explicit args]>, those will be passed as arguments in the C<[perl]> construct.
+.Only used with the C<[if explicit]> tag. Allows an arbitrary expression B<in Perl> to be placed inside, with its return value interpreted as the result of the test. If arguments are added to C<[if explicit args]>, those will be passed as arguments in the
+E<lbracket>{{C[jump="ictags.html#perl"]perl}}] construct.
 
 LI1: [/if]
 
@@ -786,7 +834,7 @@ ASP syntax can be used with:
 
 The two examples above are essentially equivalent.  See the {{C[jump="ictags.html#perl"]perl}} and  {{C[jump="ictags.html#mvasp"]mvasp}} tags for usage details.
 
-The C<[{{CMD[jump="ictags.html#perl"]perl}}]> tag enforces {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe.pm}} checking, so many standard Perl operators are not available. This prevents user access to all files and programs on the system without the Interchange daemon's permissions. See {{C[jump="#GlobalSub *global*"]GlobalSub}} and {{C[jump="ictags.html#User-defined Tags"]User-defined Tags}} for ways to make external files and programs available to Interchange.
+The C<[{{CMD[jump="ictags.html#perl"]perl}}]> tag enforces {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe.pm}} checking, so many standard Perl operators are not available. This prevents user access to all files and programs on the system without the Interchange daemon's permissions. See {{C[jump="icconfig.html#GlobalSub *global*"]GlobalSub}} and {{C[jump="ictags.html#User-defined Tags"]User-defined Tags}} for ways to make external files and programs available to Interchange.
 
 .Named parameters:
 
@@ -815,9 +863,9 @@ Any Interchange tag (except ones using SQL) can be accessed using the C<$Tag> ob
    [/perl]
 !endblock
 
-Note[label='Important Note: '] Global subroutines are not subject to the stringent security check from the C<Safe> module. This means that the subroutine will be able to modify any variable in Interchange, and will be able to write to read and write any file that the Interchange daemon has permission to write. Because of this, the subroutines should be used with caution. They are defined in the main C<interchange.cfg> file, and can't be reached by from individual users in a multi-catalog system.
+Note[label='Important Note: '] Global subroutines are not subject to the stringent security check from the C<Safe> module. This means that the subroutine will be able to modify any variable in Interchange and will be able to write to read and write any file that the Interchange daemon has permission to write. Because of this, the subroutines should be used with caution. They are defined in the main C<interchange.cfg> file and can't be reached by from individual users in a multi-catalog system.
 
-Global subroutines are defined in C<interchange.cfg> with the C<GlobalSub> directive, or in user catalogs which have been enabled through C<AllowGlobal>. Catalog subroutines are defined in C<catalog.cfg>, with the C<Sub> directive and are subject to the stringent Safe.pm security restrictions that are controlled by the global directive C<SafeUntrap>.
+Global subroutines are defined in C<interchange.cfg> with the C<GlobalSub> directive or in user catalogs which have been enabled through C<AllowGlobal>. Catalog subroutines are defined in C<catalog.cfg>, with the C<Sub> directive and are subject to the stringent Safe.pm security restrictions that are controlled by the global directive C<SafeUntrap>.
 
 The code can be as complex as you want them to be, but cannot be used by operators that modify the file system or use unsafe operations like "system," "exec," or backticks. These constraints are enforced with the default permissions of the standard Perl module {{B:Safe}}. Operations may be untrapped on a system-wide basis with the C<SafeUntrap> directive.
 
@@ -872,7 +920,7 @@ Interchange supports an ASP-like syntax using the E<lbracket>{{C[jump="ictags.ht
 
 If no closing C<[/mvasp]> tag is present, the remainder of the page will also be seen as ASP.
 
-ASP is simple. Anything between <% and %> is code, and the string %> can not occur anywhere inside. Anything not between those anchors is plain HTML that is placed unchanged on the page. Interchange variables, [L][/L], and [LC][/LC] areas will still be inserted, but any Interchange tags will not.
+ASP is simple. Anything between <% and %> is code, and the string %> can not occur anywhere inside. Anything not between those anchors is plain HTML that is placed unchanged on the page. Interchange variables, C<[L][/L]> and C<[LC][/LC]> areas will still be inserted, but any Interchange tags will not.
 
 There is a shorthand <% = $foo %>, which is equivalent to <% $Document->write($foo); %> or <% HTML $foo; %>
 
@@ -902,7 +950,7 @@ You will not have direct access to the 'C<strict>' and 'C<warnings>' pragmas whe
 
 H1: Interchange Perl Objects
 
-.Interchange gives you access to the power of Perl with the [perl], [calc], and
+.Interchange gives you access to the power of Perl with the [perl], [calc] and
 .[mvasp] tags. They all support the same set of Perl objects and variables.
 
 H2: A note about Safe
@@ -1163,7 +1211,7 @@ LI1: $DbSearch
 
 .A search object that will search a database without using the text file. It is the same as Interchange's C<db> searchtype. Options are specified in a hash and passed to the object. All multiple-field options should be passed as array references. Before using the $DbSearch object, it must be told which table to search. For example, to use the table C<foo>, it must have been shared with C<[mvasp foo]>.
 
-.There are three search methods: C<array>, C<hash>, and C<list>.
+.There are three search methods: C<array>, C<hash> and C<list>.
 
 !block example; listitem=2
     array    Returns a reference to an array of arrays (best)
@@ -1213,7 +1261,7 @@ program with:
 !endblock
 
 Note the write of 4096 spaces. Because Interchange's link program is
-parsed by default, and your web server (and the link program) have
+parsed by default and your web server (and the link program) have
 buffers, you need to fill up the buffer to cause a write. You can do it
 without the extra padding if you set the link up as a non-parsed-header
 program -- see your web server documentation on how to do that.
@@ -1262,7 +1310,7 @@ LI1: $Document->insert($foo)
 
 LI1: $Document->header($foo, $opt)
 
-.Add the header line $foo to the HTTP header. This is used to change the page content type, cache options, or other attributes. The code below changes the content type (MIME type) to text/plain:
+.Add the header line $foo to the HTTP header. This is used to change the page content type, cache options or other attributes. The code below changes the content type (MIME type) to text/plain:
 
 !block example; listitem=2
     $Document->header("Content-type: text/plain");
@@ -1407,7 +1455,7 @@ Note[label='IMPORTANT NOTE: '] If the tag will access a database that has not be
     $Tag->shipping_desc('upsg');
 !endblock
 
-.There are two ways of specifying parameters. Either use the positional parameters as documented (for an authoritative look at the parameters, see the %Routine value in Vend::Parse), or specify it all with an option hash parameter names as in any named parameters as specified in an Interchange tag. The calls
+.There are two ways of specifying parameters. Either use the positional parameters as documented (for an authoritative look at the parameters, see the %Routine value in Vend::Parse) or specify it all with an option hash parameter names as in any named parameters as specified in an Interchange tag. The calls
 
 !block example; listitem=2
     $Tag->data('products', 'title', '00-0011');
@@ -1669,7 +1717,7 @@ LI1: [price code quantity* database* noformat*]
 
 .If an named attribute corresponding to a product option is passed, and that option would cause a change in the price, the appropriate price will be displayed.
 
-.Demo example: The T-Shirt (product code 99-102), with a base price of $10.00, can vary in price depending on size and color. C<S>, the small size, is 50 cents less; C<XL>, the extra large size, is $1.00 more, and the color C<RED> is 0.75 extra. There are also quantity pricing breaks (see the demo C<pricing> database. So the following will be true:
+.Demo example: The T-Shirt (product code 99-102), with a base price of $10.00, can vary in price depending on size and color. C<S>, the small size, is 50 cents less; C<XL>, the extra large size, is $1.00 more and the color C<RED> is 0.75 extra. There are also quantity pricing breaks (see the demo C<pricing> database. So the following will be true:
 
 !block example; listitem=2
     [price  code=99-102
@@ -1755,7 +1803,7 @@ Interchange has a built-in banner rotation system designed to show ads or other 
 
 The C<[banner ...]> ITL tag is used to implement it.
 
-The weighting system pre-builds banners in the directory 'Banners,' under the temporary directory. It will build one copy of the banner for every one weight. If one banner is weighted C<7>, one C<2>, and one C<1>, then a total of 10 pre-built banners will be made. The first will be displayed 70 percent of the time, the second 20 percent, and the third 10 percent, in random fashion. If all banners need to be equal, give each a weight of 1.
+The weighting system pre-builds banners in the directory 'Banners,' under the temporary directory. It will build one copy of the banner for every one weight. If one banner is weighted C<7>, one C<2> and one C<1>, then a total of 10 pre-built banners will be made. The first will be displayed 70 percent of the time, the second 20 percent and the third 10 percent, in random fashion. If all banners need to be equal, give each a weight of 1.
 
 Each category may have separate weighting. If the above is placed in category C<tech>, then it will behave as above when placed in C<[banner category=tech]> in the page. A separate category, say C<art>, would have its own rotation and weighting.
 
@@ -1793,7 +1841,7 @@ Interchange expects the C<banner> field to contains the banner text. It can cont
 
 The special key "default" is the banner that is displayed if no banners are found. (Doesn't apply to weighted banners.)
 
-Weighted banners are built the first time they are accessed after catalog reconfiguration. They will not be rebuilt until the catalog is reconfigured, or the file tmp/Banners/total_weight and tmp/Banners/<category>/total_weight is removed.
+Weighted banners are built the first time they are accessed after catalog reconfiguration. They will not be rebuilt until the catalog is reconfigured or the file tmp/Banners/total_weight and tmp/Banners/<category>/total_weight is removed.
 
 If the option C<once> is passed (i.e., [banner once=1 weighted=1], then the banners will not be rebuilt until the C<total_weight> file is removed.
 
@@ -1918,7 +1966,7 @@ LI1: multi-level categorized
     tech:sw            0        1        Software banner 1{or}SW banner 2
 !endblock
 
-.This works the same as single-level categories, except that the category tech:hw will select that banner. The category tech:sw will select its own. But, the category tech:html would just get the "tech" banner. Otherwise, it works just as in other categorized ads. Rotation will work if set non-zero/non-blank, and it will be inactive if the rotate field is blank. Each category rotates on its own.
+.This works the same as single-level categories, except that the category tech:hw will select that banner. The category tech:sw will select its own. But, the category tech:html would just get the "tech" banner. Otherwise, it works just as in other categorized ads. Rotation will work if set non-zero/non-blank and it will be inactive if the rotate field is blank. Each category rotates on its own.
 
 LI1: Advanced
 
@@ -2027,7 +2075,7 @@ LI1: [cart name]
 
 .named attributes: C<[cart name="name"]>
 
-.Sets the name of the current shopping cart for display of shipping, price, total, subtotal, and nitems tags. If a different price is used for the cart, all of the above except C<[shipping]> will reflect the normal price field. Those operations must be emulated with embedded Perl or the C<[item-list]>, C<[calc]>, and C<[currency]> tags, or use the PriceAdjustment feature to set it.
+.Sets the name of the current shopping cart for display of C<[shipping]>, C<[price]>, C<[total]>, C<[subtotal]> and C<[nitems]> tags. If a different price is used for the cart, all of the above except C<[shipping]> will reflect the normal price field. Those operations must be emulated with embedded Perl or the C<[item-list]>, C<[calc]> and C<[currency]> tags, or use the PriceAdjustment feature to set it.
 
 LI1: [row nn]
 
@@ -2062,7 +2110,7 @@ LI1: [col width=nn wrap=yes|no gutter=n align=left|right|input spacing=n]
                     is yes.
 
     align=(L|R|I)   Determines whether text is aligned to the left (the default),
-                    the right, or in a way that might display an HTML text
+                    the right or in a way that might display an HTML text
                     input field correctly.
 !endblock
 
@@ -2074,7 +2122,7 @@ H2: Item Lists
 
 Within any page, the C<[item-list cart*]> element shows a list of all the items ordered by the customer so far. It works by repeating the source between C<[item-list]> and C<[/item-list]> once for each item ordered.
 
-Note: The special tags that reference item within the list are not normal Interchange tags, do not take named attributes, and cannot be contained in an HTML tag (other than to substitute for one of its values or provide a conditional container). They are interpreted only inside their corresponding list container. Normal Interchange tags can be interspersed, though they will be interpreted I<after> all of the list-specific tags.
+Note: The special tags that reference item within the list are not normal Interchange tags, do not take named attributes and cannot be contained in an HTML tag (other than to substitute for one of its values or provide a conditional container). They are interpreted only inside their corresponding list container. Normal Interchange tags can be interspersed, though they will be interpreted I<after> all of the list-specific tags.
 
 Between the item_list markers the following elements will return information for the current item:
 
@@ -2232,7 +2280,7 @@ Interchange has several methods for displaying pages:
 
 H2: On-the-fly Catalog Pages
 
-If an item is displayed on the search list (or order list) and there is a link to a special page keyed on the item, Interchange will attempt to build the page "on the fly." It will look for the special page flypage.html, which is used as a template for building the page. If C<[item-field fieldname]>, C<[item-price]>, and similar elements are used on the page, complex and information-packed pages can be built. The C<[if-item-field fieldname]> HTML C<[/if-item-field]> pair can be used to insert HTML only if there is a non-blank value in a particular field.
+If an item is displayed on the search list (or order list) and there is a link to a special page keyed on the item, Interchange will attempt to build the page "on the fly." It will look for the special page flypage.html, which is used as a template for building the page. If C<[item-field fieldname]>, C<[item-price]> and similar elements are used on the page, complex and information-packed pages can be built. The C<[if-item-field fieldname]> HTML C<[/if-item-field]> pair can be used to insert HTML only if there is a non-blank value in a particular field.
 
 {{B:Important note:}} Because the tags are substituted globally on the page, C<[item-*]> tags cannot be used on the default on-the-fly page. To use a [search-region] or [item-list] tag, change the default with the prefix parameter. Example:
 
@@ -2285,7 +2333,7 @@ Active tags in their order of interpolation:
 H2: Special Pages
 
 A number of HTML pages are special for Interchange operation. Typically, they
-are used to transmit error messages, status of search or order operations, and
+are used to transmit error messages, status of search or order operations and
 other out of boundary conditions.
 
 Note: The distributed demo does not use all of the default values.
@@ -2352,7 +2400,7 @@ Interchange allows debugging of page HTML with an external page checking program
 
 Of course, the server must be restarted for it to be recognized. The full path to the program should be used. If having trouble, check it from the command line (as with all external programs called by Interchange).
 
-Insert C<[flag type=checkhtml][/tag]> at the top or bottom of pages to check, and the output of the checker should be appended to the browser output as a comment, visible if the page or frame source are viewed. To do this occasionally, use a Variable setting:
+Insert C<[flag type=checkhtml][/tag]> at the top or bottom of pages to check and the output of the checker should be appended to the browser output as a comment, visible if the page or frame source are viewed. To do this occasionally, use a Variable setting:
 
 !block example
    Variable  CHECK_HTML    [flag type=checkhtml]
@@ -2362,7 +2410,7 @@ and place __CHECK_HTML__ in the pages.  Then set the Variable to the empty strin
 
 H1: Forms and Interchange
 
-Interchange uses HTML forms for many of its functions, including ordering, searching, updating account information, and maintaining databases. Order operations possibly include ordering an item, selecting item size or other attributes, and reading user information for payment and shipment. Search operations may also be triggered by a form.
+Interchange uses HTML forms for many of its functions, including ordering, searching, updating account information and maintaining databases. Order operations possibly include ordering an item, selecting item size or other attributes and reading user information for payment and shipment. Search operations may also be triggered by a form.
 
 Interchange supports file upload with the C<multipart/form-data> type. The file is placed in memory and discarded if not accessed with the C<[value-extended name=filevar file_contents=1]> tag or written with C<[value-extended name=filevar outfile=your_file_name]>. See Extended Value Access and File Upload.
 
@@ -2568,7 +2616,7 @@ LI1: submit
 
 .Submits the form for order processing. If no order profile is defined with the C<mv_order_profile> variable, the order is checked to see if the current cart contains any items and the order is submitted.
 
-.If there is an order profile defined, the form will be checked against the definition in the order profile and submitted if the pragma &final is set to yes. If &final is set to no (the default), and the check succeeds, the user will be routed to the Interchange page defined in mv_successpage, or mv_nextpage. If the check fails, the user will be routed to mv_failpage or mv_nextpage in that order.
+.If there is an order profile defined, the form will be checked against the definition in the order profile and submitted if the pragma &final is set to yes. If C<&final> is set to no (the default) and the check succeeds, the user will be routed to the Interchange page defined in mv_successpage or mv_nextpage. If the check fails, the user will be routed to mv_failpage or mv_nextpage in that order.
 
 H2: One-click Multiple Variables
 
@@ -2635,7 +2683,7 @@ It is very convenient to use C<mv_click> as a trigger for embedded Perl:
 
 H2: Checks and Selections
 
-A "memory" for drop-down menus, radio buttons, and checkboxes can be provided with the C<[checked]> and C<[selected]> tags.
+A "memory" for drop-down menus, radio buttons and checkboxes can be provided with the C<[checked]> and C<[selected]> tags.
 
 LI1: [checked var_name value]
 
@@ -2964,7 +3012,7 @@ Replace C</cgi-bin/construct> with the path to your Interchange link.
 
 H1: Internationalization
 
-Interchange has a rich set of internationalization (I18N) features that allow conditional message display, differing price formats, different currency definitions, price factoring, sorting, and other settings. The definitions are maintained in the catalog.cfg file through the use of built-in POSIX support and Interchange's C<Locale> directive. All settings are independent for each catalog and each user visiting that catalog, since customers can access the same catalog in an unlimited number of languages and currencies.
+Interchange has a rich set of internationalization (I18N) features that allow conditional message display, differing price formats, different currency definitions, price factoring, sorting and other settings. The definitions are maintained in the catalog.cfg file through the use of built-in POSIX support and Interchange's C<Locale> directive. All settings are independent for each catalog and each user visiting that catalog, since customers can access the same catalog in an unlimited number of languages and currencies.
 
 H2: Configuring the Locale
 
@@ -3042,7 +3090,7 @@ You can also place an entirely new page in place of the default one if the local
 
 <A HREF="[area index]">Catalog home page</A>
 
-If a page index.html exists, it will be the default. If the current locale is C<fr_FR>, a page "index.fr_FR" exists, and C<Locale> looks like this:
+If a page index.html exists, it will be the default. If the current locale is C<fr_FR>, a page "index.fr_FR" exists and C<Locale> looks like this:
 
 !block example
    Locale fr_FR HTMLsuffix  .fr_FR
@@ -3116,7 +3164,7 @@ LI1: price_picture
     Locale fr_FR price_picture "##.###,## fr"
 !endblock
 
-Note[label='IMPORTANT NOTE: '] The decimal point in use, set by C<mon_decimal_point>, and the thousands separator, set by C<mon_thousands_sep> must match the settings in the price_picture. The C<frac_digits> setting is not used in this case. It is derived from the location of the decimal (if any).
+Note[label='IMPORTANT NOTE: '] The decimal point in use (set by C<mon_decimal_point>) and the thousands separator (set by C<mon_thousands_sep>) must match the settings in the price_picture. The C<frac_digits> setting is not used in this case. It is derived from the location of the decimal (if any).
 
 .The same setting for C<fr_FR> above can be achieved with:
 
@@ -3288,7 +3336,7 @@ then the above would become:
 
 H2: Placing Locale Information in a Database
 
-Interchange has the capability to read its locale information from a database, named with the C<LocaleDatabase> directive. The database can be of any valid Interchange type. The locales are in columns, and the keys are in rows. For example, to set up price information:
+Interchange has the capability to read its locale information from a database, named with the C<LocaleDatabase> directive. The database can be of any valid Interchange type. The locales are in columns and the keys are in rows. For example, to set up price information:
 
 !block example
    key                 en_US   fr_FR   de_DE

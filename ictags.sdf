@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.95 2002-07-31 12:14:41 kwalsh Exp $
+# $Id: ictags.sdf,v 1.96 2002-07-31 19:54:41 kwalsh Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.95 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.96 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -613,7 +613,8 @@ Calls the column C<field> in database table C<table> for the current
 E<lbracket>{{C[jump="#PREFIX-code"]PREFIX-code}}]
 This may or may not be equivalent to
 E<lbracket>{{C[jump="#PREFIX-field"]PREFIX-field}} field]
-depending upon whether your search table is defined as one of the C<ProductFiles>.
+depending upon whether your search table is defined as one of the
+{{C[jump="icconfig.html#ProductFiles"]ProductFiles}}.
 
 H2: PREFIX-description
 
@@ -668,7 +669,9 @@ A common user error is to do this:
 
 In this case, you are searching the table C<foo> for a string
 of C<bar>. When it is found, you wish to display the value of C<foo_field>.
-Unless C<foo> is in C<ProductFiles> and the code is not present in a previous
+Unless C<foo> is in
+{{C[jump="icconfig.html#ProductFiles"]ProductFiles}}
+and the code is not present in a previous
 product file, you will get a blank or some value you don't want. What
 you really want is
 E<lbracket>{{C[jump="#PREFIX-data"]loop-data}}C< foo field>], which specifically 
@@ -965,7 +968,7 @@ move_combo, reverse_combo, show, options, labels, checkbox, radio, links
 {{CMD[jump="#accessories_width"]width}}|I<none>
 {{CMD[jump="#accessories_default"]default}}|I<none>
 {{CMD[jump="#accessories_price"]price}}|I<none>
-{{CMD[jump="#accessories_price"]price_data}}|I<none>
+{{CMD[jump="#accessories_price_data"]price_data}}|I<none>
 {{CMD[jump="#accessories_contains"]contains}} (C<type>=radio or check)|I<none>
 {{CMD[jump="#accessories_joiner"]joiner}} (C<type>=links)|I<none>
 {{CMD[jump="#accessories_href"]href}} (C<type>=links)|I<none>
@@ -1716,6 +1719,7 @@ the displayed price in the widget.
     <INPUT TYPE="checkbox" NAME="color" VALUE="green" CHECKED>&nbsp;Sea Green&nbsp;($50.00)
 !endblock
 
+H4: {{CMD[id="accessories_price_data"]price_data}}
 
 H4: {{CMD[id="accessories_contains"]contains}}
 
@@ -1767,7 +1771,7 @@ link.
 
 For example, to generate a series of linksE<nbspace>E<emdash> one
 per item attribute value passedE<nbspace>E<emdash> that set the
-variable "color" to the corresponding {{C[jump="#passed"]passed}}
+variable "color" to the corresponding {{C[jump="#accessories_passed"]passed}}
 value (blank, blue, or green), do N<this:>
 
 !block example
@@ -2123,6 +2127,8 @@ These are identical:
 
 See the description of the {{CMD[jump="#page_search"]page}} tag for more
 detail.
+
+H4: {{CMD[id="area_secure"]secure}}
 
 
 H4: Examples
@@ -6492,7 +6498,11 @@ Calculates and inserts handling costs. Accepts the same noformat and convert arg
 
 
 # BEGIN ########### handling Subsections ##############
+H4: {{CMD[id="handling_cart"]cart}}
+
 H4: {{CMD[id="handling_mode"]mode}}
+
+H4: {{CMD[id="handling_table"]table}}
 
 
 
@@ -7128,14 +7138,14 @@ fails.
 
 H4: [else] text [/else]
 
-The optional else-text for an if or if_field conditional.
+The optional else-text for an if or C<[if-field]> conditional.
 
 H4: [condition] text [/condition]
 
 Only used with the [if explicit] tag. Allows an arbitrary expression
 B<in Perl> to be placed inside, with its return value interpreted as
 the result of the test. If arguments are added to [if explicit args],
-those will be passed as arguments are in the E<lbracket>{{I[jump="#per"]per}}l] construct.
+those will be passed as arguments are in the E<lbracket>{{I[jump="#perl"]perl}}] construct.
 
 
 
@@ -7691,36 +7701,38 @@ information for the current item:
 H4: E<lbracket>if-data table column]
 
 If the database field C<column> in table I<table> is non-blank, the
-following text up to the C<[/if_data]> tag is substituted. This can be
+following text up to the C<[/if-data]> tag is substituted. This can be
 used to substitute IMG or other tags only if the corresponding source
-item is present. Also accepts a C<[else]>else textC<[/else]> pair for the
+item is present. Also accepts an C<[else]>else textC<[/else]> pair for the
 opposite condition.
 
 H4: E<lbracket>if-data ! table column]
 
-Reverses sense for [if-data].
+Reverses sense for C<[if-data]>.
 
 H4: E<lbracket>/if-data]
 
-Terminates an [if_data table column] element.
+Terminates an C<[if-data table column]> element.
 
 H4: E<lbracket>if-field fieldname]
 
 If the products database field I<fieldname> is non-blank, the following
-text up to the [/if_field] tag is substituted. If you have more than
-one products database table (see I<ProductFiles>), it will check
+text up to the C<[/if-field]> tag is substituted. If you have more than
+one products database table (see
+{{C[jump="icconfig.html#ProductFiles"]ProductFiles}}),
+it will check
 them in order until a matching key is found. This can be used to
 substitute IMG or other tags only if the corresponding source
-item is present. Also accepts a [else]else text[/else] pair
+item is present. Also accepts an C<[else]>else textC<[/else]> pair
 for the opposite condition.
 
 H4: E<lbracket>if-field ! fieldname]
 
-Reverses sense for [if-field].
+Reverses sense for C<[if-field]>.
 
 H4: E<lbracket>/if-field]
 
-Terminates an [if_field fieldname] element.
+Terminates an C<[if-field fieldname]> element.
 
 H4: E<lbracket>item-accessories attribute*, type*, field*, database*, name*]
 
@@ -7749,7 +7761,8 @@ H4: E<lbracket>item-field fieldname]
 
 Evaluates to the field name I<fieldname> in the products database,
 for the current item. If the item is not found in the first of the
-I<ProductFiles>, all will be searched in sequence.
+{{C[jump="icconfig.html#ProductFiles"]ProductFiles}},
+all will be searched in sequence.
 
 H4: E<lbracket>item-increment]
 
@@ -8303,7 +8316,8 @@ H4: E<lbracket>if-loop-field column] IF [else] ELSE [/else][/if-loop-field]
 
 Outputs the B<IF> if the C<column> in the C<products> table is non-empty,
 and the B<ELSE> (if any) otherwise. Will fall through to the first
-non-empty field if there are multiple C<ProductFiles>.
+non-empty field if there are multiple
+{{C[jump="icconfig.html#ProductFiles"]ProductFiles}}.
 
 See E<lbracket>{{CMD[jump="#if-PREFIX-field"]if-PREFIX-field}}E<rbracket>.
 
@@ -8617,7 +8631,7 @@ E<lbracket>{{C[jump="#perl"]perl}} no_return=1] tag, except that the standard '<
 and '%>' ASP delimiters allow you to mix HTML and perl code.
 
 See the {{C[jump="#perl"]perl}} tag and
-{{CMD[jump="icconfig.html#ASP-Like Perl"]ASP-Like Perl}}
+{{CMD[jump="ictemplates.html#ASP-Like Perl"]ASP-Like Perl}}
 sections for more detail.
 
 H4: {{CMD[id="mvasp_tables"]tables}}
@@ -8661,7 +8675,7 @@ the perl code before C<eval>'ing it. See {{C[jump="#perl_file"]perl}} tag.
 
 H4: Examples
 
-See the {{CMD[jump="icconfig.html#ASP-Like Perl"]ASP-Like Perl}}
+See the {{CMD[jump="ictemplates.html#ASP-Like Perl"]ASP-Like Perl}}
 section of {{CMD[jump="ictemplates.html#Programming"]Interchange Programming}}.
 
 
@@ -9201,7 +9215,8 @@ code in the list of products to order and display the order page.
 B<code> should be a product code listed in one of the "products"
 databases. The optional argument B<base> constrains the order to
 a particular products file. If not specified, all tables defined as
-ProductFiles will be searched in sequence for the item.
+{{C[jump="icconfig.html#ProductFiles"]ProductFiles}}
+will be searched in sequence for the item.
 
 The optional argument B<cart> selects the shopping cart where the item
 will be placed.
@@ -9390,6 +9405,8 @@ with the session ID. If the user did not accept the cookie,
 Interchange cannot use the cache, since the link must then include the
 I<mv_session_id> argument in order to preserve session.
 
+H4: {{CMD[id="page_extra"]extra}}
+
 H4: {{CMD[id="page_form"]form}}
 
 The optional C<form> argument allows you to encode a form in the link.
@@ -9520,6 +9537,7 @@ page name. The second two use the "argument" parameter to the C<[page ...]> or
 E<lbracket>{{C[jump="#area"]area}} ...]> tags to specify the search
 (an argument to a scan is never valid anyway).
 
+H4: {{CMD[id="page_secure"]secure}}
 
 
 H4: Original syntax
@@ -9990,7 +10008,7 @@ Attribute aliases
 
 !block table; colvaligns="TTT"; format="262"
 Parameters|Description|Default
-{{CMD[jump="#price_mv_ib"]base}}|<<
+{{CMD[jump="#price_base"]base}}|<<
 Alias for mv_ib
 >>|DEFAULT_VALUE
 {{CMD[jump="#price_code"]code}}|<<
@@ -10137,6 +10155,8 @@ See I<Product Discounts>.
 
 
 # BEGIN ########### price Subsections ##############
+H4: {{CMD[id="price_base"]base}}
+
 H4: {{CMD[id="price_code"]code}}
 
 
@@ -12082,7 +12102,7 @@ By default, returns HTML <OPTION ...> widget for shipping mode(s), including des
 * Here is an example from the foundation checkout.html page:
 >    [shipping
 >        label=1
->        mode=|E<lbracket>{{CMD[jump="#data"]data}} table=country key='[default country US]' col=shipmodes]|
+>        mode=|[data table=country key='[default country US]' col=shipmodes]|
 >    ]
 >>|DEFAULT_VALUE
 {{CMD[jump="#shipping_mode"]mode}}|<<
@@ -12225,7 +12245,7 @@ By default, returns HTML <OPTION ...> widget for shipping mode(s), including des
 * Here is an example from the foundation checkout.html page:
 >    [shipping
 >        label=1
->        mode=|E<lbracket>{{CMD[jump="#data"]data}} table=country key='[default country US]' col=shipmodes]|
+>        mode=|[data table=country key='[default country US]' col=shipmodes]|
 >    ]
 
 
@@ -13441,7 +13461,8 @@ available in earlier versions.
 
 
 # BEGIN ########### tmp Subsections ##############
-H4: {{CMD[id="tmp_name"]name}}
+
+H4: {{CMD[id="tmpn_name"]name}}
 
 
 
@@ -14319,6 +14340,10 @@ call to C<userdb>. The global parameters (default in parentheses):
 # BEGIN ########### userdb Subsections ##############
 H4: {{CMD[id="userdb_function"]function}}
 
+H4: {{CMD[id="userdb_nickname"]name}}
+
+H4: {{CMD[id="userdb_db"]table}}
+
 
 
 # END ++++++++++++ userdb Subsections +++++++++++++
@@ -14586,7 +14611,6 @@ If the variable is a file variable coming from a multipart/form-data
 file upload, then the contents of that upload can be returned to the 
 page or optionally written to the C<outfile>.
 
-
 H4: {{CMD[id="tree_name"]name}}
 
 The form variable NAME. If no other parameters are present, then the 
@@ -14654,6 +14678,8 @@ fails. Defaults to the empty string.
 
 
 # BEGIN ########### value-extended Subsections ##############
+H4: {{CMD[id="value_extended_umask"]umask}}
+
 H4: {{CMD[id="value_extended_name"]name}}
 
 
@@ -14737,7 +14763,7 @@ Called with:
 
 As is the case with E<lbracket>{{C[jump="#perl"]perl}}] tag, user tags
 run under the Perl {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe.pm}} module with warnings disabled. Unlike
-E<lbracket>{{C[jump="#per"]per}}l] tags, however, user tags use Perl's 'C<strict>' pragma.
+E<lbracket>{{C[jump="#perl"]perl}}] tags, however, user tags use Perl's 'C<strict>' pragma.
 
 
 The properties for UserTag are:
@@ -14903,8 +14929,8 @@ Parameters|Description|Default
 !block table;headings=1
 A|B
 Other_Characteristics|
-Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
-{{CMD[jump="#macro_tags"]Macro}}|I<No>
+Invalidates cache|I<No>
+Macro|I<No>
 Has end tag|[/bar-button]
 !endblock
 
@@ -15012,8 +15038,8 @@ fmt - Alias for format|I<none>
 !block table;headings=1
 A|B
 Other_Characteristics|
-Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
-{{CMD[jump="#macro_tags"]Macro}}|I<No>
+Invalidates cache|I<No>
+Macro|I<No>
 Has end tag|[/convert_date]
 !endblock
 
@@ -15109,8 +15135,8 @@ Parameters|Description|Default
 !block table;headings=1
 A|B
 Other_Characteristics|
-Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
-{{CMD[jump="#macro_tags"]Macro}}|I<No>
+Invalidates cache|I<No>
+Macro|I<No>
 Has end tag|I<No>
 !endblock
 
@@ -15177,8 +15203,8 @@ Parameters|Description|Default
 !block table;headings=1
 A|B
 Other_Characteristics|
-Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
-{{CMD[jump="#macro_tags"]Macro}}|I<No>
+Invalidates cache|I<No>
+Macro|I<No>
 Has end tag|I<No>
 !endblock
 
@@ -15247,8 +15273,8 @@ extra|Additional headers to be included|I<none>
 !block table;headings=1
 A|B
 Other_Characteristics|
-Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
-{{CMD[jump="#macro_tags"]Macro}}|I<No>
+Invalidates cache|I<No>
+Macro|I<No>
 Has end tag|[/email]
 !endblock
 
@@ -15331,8 +15357,8 @@ H3: Summary
 !block table;headings=1
 A|B
 Other_Characteristics|
-Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
-{{CMD[jump="#macro_tags"]Macro}}|I<No>
+Invalidates cache|I<No>
+Macro|I<No>
 Has end tag|[/email_raw]
 !endblock
 
@@ -15432,8 +15458,8 @@ Attributes|Default
 !block table;headings=1
 A|B
 Other_Characteristics|
-Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
-{{CMD[jump="#macro_tags"]Macro}}|I<No>
+Invalidates cache|I<No>
+Macro|I<No>
 Has end tag|I<No>
 !endblock
 
@@ -15505,8 +15531,8 @@ Must be an existing nickname.
 !block table;headings=1
 A|B
 Other_Characteristics|
-Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
-{{CMD[jump="#macro_tags"]Macro}}|I<No>
+Invalidates cache|I<No>
+Macro|I<No>
 Has end tag|I<No>
 !endblock
 
@@ -15588,8 +15614,8 @@ Parameters|Description|Default
 !block table;headings=1
 A|B
 Other_Characteristics|
-Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
-{{CMD[jump="#macro_tags"]Macro}}|I<No>
+Invalidates cache|I<No>
+Macro|I<No>
 Has end tag|I<No>
 !endblock
 
@@ -15670,8 +15696,8 @@ Attributes|Default
 !block table;headings=1
 A|B
 Other_Characteristics|
-Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
-{{CMD[jump="#macro_tags"]Macro}}|I<No>
+Invalidates cache|I<No>
+Macro|I<No>
 Has end tag|I<No>
 !endblock
 
@@ -15798,8 +15824,8 @@ Attributes|Default
 !block table;headings=1
 A|B
 Other_Characteristics|
-Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
-{{CMD[jump="#macro_tags"]Macro}}|I<No>
+Invalidates cache|I<No>
+Macro|I<No>
 Has end tag|[/table-organize]
 !endblock
 
@@ -16007,8 +16033,8 @@ Background color the bar.
 !block table;headings=1
 A|B
 Other_Characteristics|
-Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
-{{CMD[jump="#macro_tags"]Macro}}|I<No>
+Invalidates cache|I<No>
+Macro|I<No>
 Has end tag|[/title-bar]
 !endblock
 
@@ -16112,8 +16138,8 @@ Attributes|Default
 !block table;headings=1
 A|B
 Other_Characteristics|
-Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
-{{CMD[jump="#macro_tags"]Macro}}|I<No>
+Invalidates cache|I<No>
+Macro|I<No>
 Has end tag|[/xml-generator]
 !endblock
 
@@ -16436,8 +16462,8 @@ Attributes|Default
 !block table;headings=1
 A|B
 Other_Characteristics|
-Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
-{{CMD[jump="#macro_tags"]Macro}}|I<No>
+Invalidates cache|I<No>
+Macro|I<No>
 Has end tag|[/dummy]
 !endblock
 
@@ -16594,8 +16620,7 @@ not handled recursively.
 
 A2: Nonstandard parsing within the admin interface
 
-Parsing of content via the specialized
-{{C[jump="#UI_ut_regenerate"]regenerate}} usertag included
+Parsing of content via the specialized C<[regenerate]> usertag included
 with the administrative interface does not obey the above order. The
 MV_AUTOLOAD and '<!--[tagname]-->' escapes are skipped. There are
 some other more subtle differences as well; in the very unlikely event
@@ -16781,62 +16806,62 @@ The two-letter abbreviations are mapped with these letters:
 
 !block table; colvaligns="TT"; format="19"
 Abbr|Long name
-DL|{{CMD[jump="#mv_raw_dict_look"]mv_raw_dict_look}}
-MM|{{CMD[jump="#mv_more_matches"]mv_more_matches}}
-ac|{{CMD[jump="#mv_all_chars"]mv_all_chars}}
-ar|{{CMD[jump="#mv_arg"]mv_arg}}
-bd|{{CMD[jump="#mv_base_directory"]mv_base_directory}}
-bs|{{CMD[jump="#mv_begin_string"]mv_begin_string}}
-ck|{{CMD[jump="#mv_cache_key"]mv_cache_key}}
-co|{{CMD[jump="#mv_coordinate"]mv_coordinate}}
-cs|{{CMD[jump="#mv_case"]mv_case}}
-cv|{{CMD[jump="#mv_verbatim_columns"]mv_verbatim_columns}}
-de|{{CMD[jump="#mv_dict_end"]mv_dict_end}}
-df|{{CMD[jump="#mv_dict_fold"]mv_dict_fold}}
-di|{{CMD[jump="#mv_dict_limit"]mv_dict_limit}}
-dl|{{CMD[jump="#mv_dict_look"]mv_dict_look}}
-do|{{CMD[jump="#mv_dict_order"]mv_dict_order}}
-dr|{{CMD[jump="#mv_record_delim"]mv_record_delim}}
-em|{{CMD[jump="#mv_exact_match"]mv_exact_match}}
-er|{{CMD[jump="#mv_spelling_errors"]mv_spelling_errors}}
-fi|{{CMD[jump="#mv_search_file"]mv_search_file}}
-fm|{{CMD[jump="#mv_first_match"]mv_first_match}}
-fn|{{CMD[jump="#mv_field_names"]mv_field_names}}
-hs|{{CMD[jump="#mv_head_skip"]mv_head_skip}}
-id|{{CMD[jump="#mv_session_id"]mv_session_id}}
-il|{{CMD[jump="#mv_index_delim"]mv_index_delim}}
-ix|{{CMD[jump="#mv_index_delim"]mv_index_delim}}
-lb|{{CMD[jump="#mv_search_label"]mv_search_label}}
-lo|{{CMD[jump="#mv_list_only"]mv_list_only}}
-lr|{{CMD[jump="#mv_line_return"]mv_line_return}}
-lr|{{CMD[jump="#mv_search_line_return"]mv_search_line_return}}
-ml|{{CMD[jump="#mv_matchlimit"]mv_matchlimit}}
-mm|{{CMD[jump="#mv_max_matches"]mv_max_matches}}
-mp|{{CMD[jump="#mv_profile"]mv_profile}}
-ms|{{CMD[jump="#mv_min_string"]mv_min_string}}
-ne|{{CMD[jump="#mv_negate"]mv_negate}}
-np|{{CMD[jump="#mv_nextpage"]mv_nextpage}}
-nu|{{CMD[jump="#mv_numeric"]mv_numeric}}
-op|{{CMD[jump="#mv_column_op"]mv_column_op}}
-os|{{CMD[jump="#mv_orsearch"]mv_orsearch}}
-pc|{{CMD[jump="#mv_pc"]mv_pc}}
-ra|{{CMD[jump="#mv_return_all"]mv_return_all}}
-rd|{{CMD[jump="#mv_return_delim"]mv_return_delim}}
-rf|{{CMD[jump="#mv_return_fields"]mv_return_fields}}
-rn|{{CMD[jump="#mv_return_file_name"]mv_return_file_name}}
-rr|{{CMD[jump="#mv_return_reference"]mv_return_reference}}
-rs|{{CMD[jump="#mv_return_spec"]mv_return_spec}}
-se|{{CMD[jump="#mv_searchspec"]mv_searchspec}}
-sf|{{CMD[jump="#mv_search_field"]mv_search_field}}
-si|{{CMD[jump="#mv_search_immediate"]mv_search_immediate}}
-sp|{{CMD[jump="#mv_search_page"]mv_search_page}}
-sq|{{CMD[jump="#mv_sql_query"]mv_sql_query}}
-st|{{CMD[jump="#mv_searchtype"]mv_searchtype}}
-su|{{CMD[jump="#mv_substring_match"]mv_substring_match}}
-tf|{{CMD[jump="#mv_sort_field"]mv_sort_field}}
-to|{{CMD[jump="#mv_sort_option"]mv_sort_option}}
-un|{{CMD[jump="#mv_unique"]mv_unique}}
-va|{{CMD[jump="#mv_value"]mv_value}}
+DL|mv_raw_dict_look
+MM|mv_more_matches
+ac|mv_all_chars
+ar|mv_arg
+bd|mv_base_directory
+bs|mv_begin_string
+ck|mv_cache_key
+co|mv_coordinate
+cs|mv_case
+cv|mv_verbatim_columns
+de|mv_dict_end
+df|mv_dict_fold
+di|mv_dict_limit
+dl|mv_dict_look
+do|mv_dict_order
+dr|mv_record_delim
+em|mv_exact_match
+er|mv_spelling_errors
+fi|mv_search_file
+fm|mv_first_match
+fn|mv_field_names
+hs|mv_head_skip
+id|mv_session_id
+il|mv_index_delim
+ix|mv_index_delim
+lb|mv_search_label
+lo|mv_list_only
+lr|mv_line_return
+lr|mv_search_line_return
+ml|mv_matchlimit
+mm|mv_max_matches
+mp|mv_profile
+ms|mv_min_string
+ne|mv_negate
+np|mv_nextpage
+nu|mv_numeric
+op|mv_column_op
+os|mv_orsearch
+pc|mv_pc
+ra|mv_return_all
+rd|mv_return_delim
+rf|mv_return_fields
+rn|mv_return_file_name
+rr|mv_return_reference
+rs|mv_return_spec
+se|mv_searchspec
+sf|mv_search_field
+si|mv_search_immediate
+sp|mv_search_page
+sq|mv_sql_query
+st|mv_searchtype
+su|mv_substring_match
+tf|mv_sort_field
+to|mv_sort_option
+un|mv_unique
+va|mv_value
 !endblock
 
 Line:
