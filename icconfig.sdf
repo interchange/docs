@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.35 2001-03-22 16:54:22 jon Exp $
+# $Id: icconfig.sdf,v 1.36 2001-03-23 00:26:35 jon Exp $
 
 !define DOC_NAME "Interchange Configuration"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.35 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.36 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icconfig.html"
@@ -1843,6 +1843,30 @@ H2: Database *global*
 
 Defines a database which is global and available to all catalogs. Writing can
 be controlled by catalog. See C<Database>.
+
+H2: DataTrace *global*
+
+Set DBI to trace at the level specified. Valid values are:
+ 
+0 - Trace disabled.
+
+1 - Trace DBI method calls returning with results or errors.
+
+2 - Trace method entry with parameters and returning with results.
+
+3 - As above, adding some high-level information from the driver
+and some internal information from the DBI.
+
+4 - As above, adding more detailed information from the driver.
+Also includes DBI mutex information when using threaded Perl.
+
+5 and above - As above but with more and more obscure information.
+ 
+Trace level 1 is best for most Interchange debug situations. Trace will only be enabled when C<DebugFile> is specified, as that file is the target for the trace. Example:
+ 
+E:    DataTrace   1
+ 
+Default is 0. Directive added in 4.7.0.
 
 H2: DebugFile *global*
 
