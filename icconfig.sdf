@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.64 2002-07-01 14:15:19 jon Exp $
+# $Id: icconfig.sdf,v 1.65 2002-07-12 17:19:01 kwalsh Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.64 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.65 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icconfig.html"
@@ -1815,7 +1815,7 @@ If for some reason you want to have tags in your database, for example, to use [
 
 In short, safe_data is disabled by default for a reason, and you should be very careful if you decide to enable it.
 
-(Watch out for parse order with [tag pragma] or [restrict] when used with lists that retrieve data from the database, as in [prefix-*] and the flypage. Loops parse before regular tags like [tag] and [restrict], and thus aren't affected by it.)
+(Watch out for parse order with [tag pragma] or [restrict] when used with lists that retrieve data from the database, as in [PREFIX-*] and the flypage. Loops parse before regular tags like [tag] and [restrict], and thus aren't affected by it.)
 
 LI1: strip_white
 
