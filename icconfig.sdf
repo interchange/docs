@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.21 2000-11-25 04:35:44 heins Exp $
+# $Id: icconfig.sdf,v 1.22 2000-12-11 00:47:31 heins Exp $
 
 !define DOC_NAME "Interchange Configuration"
 !define DOC_TYPE ""
 !define DOC_CODE "ICCONFIG_D2_100800"
-!define DOC_VERSION substr('$Revision: 1.21 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.22 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
@@ -3166,11 +3166,14 @@ Capitalization must be exact on each directive.
 
 H2: Require
 
-Forces a global UserTag or C<GlobalSub> to be present before the catalog will configure. This is useful when transporting catalogs to make sure they will have all needed facilities.
+Forces a Perl module, global C<UserTag>, or C<GlobalSub> to be present before
+the catalog will configure. This is useful when transporting catalogs to make
+sure they will have all needed facilities.
 
 !block example
    Require usertag   email
    Require globalsub form_mail
+   Require module    Business::UPS
 !endblock
 
 H2: RobotLimit
@@ -3519,6 +3522,18 @@ and will display an HTML table of the items in the current shopping cart, sorted
 Catalog subroutines may not perform unsafe operations. The Safe.pm
 module enforces this unless global operations are allowed for the
 catalog. See C<AllowGlobal>.
+
+H2: Suggests
+
+Generates a warning message when a Perl module, global C<UserTag>, or
+C<GlobalSub> is not present at catalog configuration time. Same as the
+C<Require> directive except not fatal.
+
+!block example
+   Suggest usertag   table_editor
+   Suggest globalsub file_info
+   Suggest module    Business::UPS
+!endblock
 
 H2: TableRestrict
 
