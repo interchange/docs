@@ -1,0 +1,923 @@
+!init OPT_LOOK="icdevgroup"; OPT_STYLE="manual" 
+# $Id: icvariables.sdf,v 1.1 2004-01-07 04:48:04 pvinci Exp $
+
+!define DOC_NAME "Interchange Programmer Variables Reference"
+!define DOC_TYPE ""
+!define DOC_CODE "icvariables"
+!define DOC_VERSION substr('$Revision: 1.1 $', 11, -2)
+!define DOC_STATUS "Draft"
+!define DOC_PROJECT "Interchange"
+!define DOC_URL "http://www.icdevgroup.org/doc/icvars.html"
+!define DOC_OWNER "2002-2003 Interchange Developers Group. {{EMAIL:interchange-users@icdevgroup.org}}"
+
+!define SHOW_COMMENTS 0
+!define EXAMPLE_SESSION "6CZ2whqo"
+!define EXAMPLE_DOMAIN "www.here.com"
+!define EXAMPLE_CATALOG "mycatalog"
+!define EXAMPLE_VLINK "mycatalog"
+!define EXAMPLE_SECURE_DOMAIN "secure.here.com"
+!define EXAMPLE_SKU "os28044"
+!define EXAMPLE_PRICE 19.99
+!define EXAMPLE_SIZE "15oz"
+!define EXAMPLE_SIZE1 "10oz"
+!define EXAMPLE_SIZE2 "20oz"
+!define EXAMPLE_DESCRIPTION "Framing Hammer"
+!build_title
+
+
+H1: Interchange Special Variables
+
+Interchange defines some special variables which control behavior. They
+can be of several types, and the conventions for using them depend on
+whether you have based your catalog and server on the standard
+"foundation" distribution. 
+
+We will distinguish between these by calling intrinsic variables
+CORE variables, noting the distribution variables as DISTRIBUTION,
+and noting the foundation catalog practices as FOUNDATION.
+
+LI1: "Variable" configuration file definitions
+
+Defined in interchange.cfg or catalog.cfg with the C<Variable>
+configuration directive, these are accessed with:
+
+!block example
+  Access in ITL with           From
+  -----------------------      -------------------
+  __VARNAME__                  (catalog.cfg only)
+  @_VARNAME_@                  (catalog.cfg, falls back to interchange.cfg)
+  @@VARNAME@@                  (interchange.cfg only) 
+  E<lbracket>{{CMD[jump="ictags.html#var"]var}} VARNAME]                (catalog.cfg only) 
+  E<lbracket>{{CMD[jump="ictags.html#var"]var}} VARNAME 1]              (interchange.cfg only) 
+  E<lbracket>{{CMD[jump="ictags.html#var"]var}} VARNAME 2]              (catalog.cfg, falls back to interchange.cfg)
+                              
+  Embedded Perl                From
+  -----------------------      -------------------
+  $Variable->{VARNAME}         (catalog.cfg only)
+  $Tag->var('VARNAME')         (catalog.cfg only)
+  $Tag->var('VARNAME', 1)      (interchange.cfg only) 
+  $Tag->var('VARNAME', 2)      (catalog.cfg, falls back to interchange.cfg)
+
+  Global subs / Usertags       From
+  -----------------------      -------------------
+  $::Variable->{VARNAME}       (catalog.cfg only)
+  $Tag->var('VARNAME')         (catalog.cfg only)
+  $Tag->var('VARNAME', 1)      (interchange.cfg only)
+  $Tag->var('VARNAME', 2)      (catalog.cfg, falls back to interchange.cfg)
+  $Global::Variable->{VARNAME} (interchange.cfg only, only in Global code) 
+!endblock
+
+Variables set with {{CMD[jump="icconfig.html#variable"]Variable}} are not normally modified dynamically, though
+you can do it as a part of the {{CMD[jump="icconfig.html#autoload"]Autoload}} routine or in other code. They will
+not retain the value unless {{CMD[jump="icconfig.html#dynamicvariables"]DynamicVariables}} is in use.
+
+LI1: Scratch
+
+User scratch variables are initialized whenever a new user session is
+created. They start with whatever is defined in the C<ScratchDefault>
+directive in catalog.cfg; otherwise they are not defined.
+
+!block example
+  Access in ITL with           Attributes
+  -----------------------      -------------------
+  E<lbracket>{{CMD[jump="ictags.html#scratch"]scratch}} varname]            Displays
+  E<lbracket>{{CMD[jump="ictags.html#scratchd"]scratchd}} varname]           Displays and deletes
+                              
+  Embedded Perl                From
+  -----------------------      -------------------
+  $Scratch->{varname}          Accessor
+  $Session->{scratch}{varname} Equivalent
+
+  Global subs / Usertags       From
+  -----------------------      -------------------
+  $::Scratch->{varname}          Accessor
+  $::Session->{scratch}{varname} Equivalent
+
+!endblock
+
+They can be set in several ways:
+
+!block example
+  Set in ITL with              Attributes
+  -----------------------      -------------------
+  E<lbracket>{{CMD[jump="ictags.html#set"]set}} varname]VAL[/set]       Sets to VAL, no interpretation of ITL inside
+  E<lbracket>{{CMD[jump="ictags.html#seti"]seti}} varname]VAL[/seti]     Sets to VAL, interprets ITL inside
+  E<lbracket>{{CMD[jump="ictags.html#tmpn"]tmpn}} varname]VAL[/tmpn]     Sets to VAL, no ITL interpretation, temporary
+  E<lbracket>{{CMD[jump="ictags.html#tmp"]tmp}}  varname]VAL[/tmp]      Sets to VAL, interprets ITL inside, temporary
+                              
+  Embedded Perl                From
+  -----------------------      -------------------
+  $Scratch->{varname} = 'VAL'; Sets to VAL
+  $Tag->tmp(varname);          Set as temporary, must set value afterwards.
+
+  Global subs / Usertags       From
+  -----------------------      -------------------
+  $::Scratch->{varname}='a'    Sets to a
+
+!endblock
+
+LI1: CGI
+
+CGI variables are the raw data which comes from the user.
+
+.WARNING: It is a security risk to use these variables for display
+in the page.
+
+You can use them for testing without worry, though you should
+never set their value into a database or display on the page unless
+you have processed them first, as they can have arbitrary values.
+The most common security risk is displaying HTML code, which allows
+remote scripting exploits like cookie-stealing.
+
+!block example
+    E<lbracket>{{CMD[jump="ictags.html#calc"]calc}}]
+        ####  DO NOT DO THIS!!!!
+        my $out = $CGI->{varname};
+        return $out;
+    [/calc]
+!endblock
+
+That will transform the value. If you wish to output a safe value but
+keep the actual value intact, do:
+
+!block example
+    E<lbracket>{{CMD[jump="ictags.html#calc"]calc}}]
+        ####  This is safe, makes value safe for rest of page
+        my $out = $Tag->cgi( { name => 'varname', filter => 'entities' } );
+        ####  This is safe too, doesn't transform value
+        my $other = $Tag->filter($CGI->{varname}, 'entities');
+
+        ### Now you can return stuff to the page
+        return $out . $other;
+    [/calc]
+!endblock
+
+The access methods are:
+
+!block example
+  Access in ITL with                 Attributes
+  -----------------------            -------------------
+  E<lbracket>{{CMD[jump="ictags.html#cgi"]cgi}} varname]                      Doesn't stop ITL code, don't use!
+  E<lbracket>{{CMD[jump="ictags.html#cgi"]cgi}} name=varname filter=entities] Use this for safety
+                              
+  Embedded Perl                From
+  -----------------------      -------------------
+  $CGI->{varname}              Don't use for output values!
+!endblock
+
+They can be set as well.
+
+!block example
+  Set in ITL with                       Attributes
+  -----------------------               -------------------
+  E<lbracket>{{CMD[jump="ictags.html#cgi"]cgi}} name=varname set="VAL"]          Sets to VAL, VAL can be ITL, shows VAL
+  E<lbracket>{{CMD[jump="ictags.html#cgi"]cgi}} name=varname set="VAL" hide=1]   Sets to VAL, VAL can be ITL, no output
+                              
+  Embedded Perl                From
+  -----------------------      -------------------
+  $CGI->{varname} = 'VAL';     Sets to VAL, next access to E<lbracket>{{CMD[jump="ictags.html#cgi"]cgi}} varname]
+                               shows new value
+
+!endblock
+
+LI1: Values
+
+User form variables are initialized whenever a new user session is
+created. They start with whatever is defined in the {{CMD[jump="icconfig.html#valuesdefault"]<ValuesDefault>}}
+directive in catalog.cfg; otherwise they are not defined except as
+called out in other configuration directives, i.e. the obsolete
+DefaultShipping.
+
+!block example
+  Access in ITL with           Attributes
+  -----------------------      -------------------
+  E<lbracket>{{CMD[jump="ictags.html#value"]value}} varname]              Displays
+                              
+  Embedded Perl                From
+  -----------------------      -------------------
+  $Values->{varname}           Accessor
+!endblock
+
+They can be set as well, though the normal method of setting is from
+user input via form. If Interchange receives an action which performs
+the update of values (by default C<go> or C<return>, C<refresh>, or
+C<submit>), the value of CGI variables will be transferred to them
+subject to other considerations (FormIgnore settings, credit card
+variables, etc., discussed below).!block example
+
+!block example
+  Set in ITL with                         Attributes
+  -----------------------                 -------------------
+  E<lbracket>{{CMD[jump="ictags.html#value"]value}} name=varname set="VAL"]          Sets to VAL, VAL can be ITL, shows VAL
+  E<lbracket>{{CMD[jump="ictags.html#value"]value}} name=varname set="VAL" hide=1]   Sets to VAL, VAL can be ITL, no output
+                              
+  Embedded Perl                           Attributes
+  -----------------------                 -------------------
+  $Values->{varname} = 'VAL';             Sets to VAL, next access to
+                                          E<lbracket>{{CMD[jump="ictags.html#value"]value}} varname] shows new value
+!endblock
+
+LI1: Session variables
+
+You can also directly access the user session. Normally you don't set these
+values unless you are an experienced Interchange programmer, but there are
+several values that are frequently used.
+
+One example is C<username>, which holds the logged-in user's username.
+
+!block example
+  Access in ITL with           Attributes
+  -----------------------      -------------------
+  E<lbracket>{{CMD[jump="ictags.html#data"]data}} session username]      Displays
+                              
+  Embedded Perl                From
+  -----------------------      -------------------
+  $Session->{username}         Accessor
+!endblock
+
+They can be set as well, but if you are experienced enough to contemplate
+doing these things you will easily be able to figure it out.
+
+LI1: Values not transmitted from CGI
+
+The following variables are never copied from CGI:
+
+!block example
+        mv_todo
+        mv_todo.submit.x
+        mv_todo.submit.y
+        mv_todo.return.x
+        mv_todo.return.y
+        mv_todo.checkout.x
+        mv_todo.checkout.y
+        mv_todo.todo.x
+        mv_todo.todo.y
+        mv_todo.map
+        mv_doit
+        mv_check
+        mv_click
+        mv_nextpage
+        mv_failpage
+        mv_successpage
+        mv_more_ip
+        mv_credit_card_number
+        mv_credit_card_cvv2
+!endblock
+
+You can define more with the C<FormIgnore> catalog.cfg directive.
+
+LI1: Global program variables
+
+If you are programming a GlobalSub or global UserTag, you have access
+to all Interchange facilities including all the preset variables and
+configuration directives.
+
+The C<Global> package is used to hold variables that are set at
+program start and whose value is retained.
+
+The C<Vend> package is used for variables that might be set at some
+point during program execution, but that will always be reset to 
+undefined at the end of the transaction.
+
+One example is C<$Vend::Cookie>, which holds the raw cookie value
+sent by the user. 
+
+If you are going to set or access these variables, you should be
+getting your documentation from the source code.  
+
+H1: IC Variables
+H2: Standard global (interchange.cfg) Variable values
+
+. {{CMD[jump="#CGIWRAP_WORKAROUND"]CGIWRAP_WORKAROUND}}
+. {{CMD[jump="#IMAGE_MOGRIFY"]IMAGE_MOGRIFY}}
+
+
+LI1: CGIWRAP_WORKAROUND
+
+Used in C<Vend/Dispatch.pm>.  Implemented to Fix Cobalt/CGIwrap problem. 
+If set to 1, it removes the scriptname from the URL pathinfo.
+
+LI1: IMAGE_MOGRIFY
+
+Used in C<code/SystemTag/image.tag>. Specifies the location of 
+mogrify command.  If ImageMagick is installed, you can display an 
+arbitrary size of the image, creating it if necessary.
+
+LI1: LANG
+
+
+LI1: MV_DOLLAR_ZERO
+
+Used in C<scripts/interchange.PL.> This parameter specifies how Interchange will 
+be displayed in ps command. This may not work on BSD based Kernels.
+
+LI1: MV_FILE
+
+Used in C<lib/Vend/File.pm.> This is the filename of the most recently returned 
+contents. This Variable is not set in C<interchange.cfg>, but is set by interchange
+while interchange is runnning.
+
+LI1: MV_GETPPID_BROKEN
+
+Used in C<lib/Vend/Server.pm.>  If configured, the server uses a 
+syscall(MV_GETPPID_PROKEN) instead of the perl function getppid() to find the 
+parent PID. If C<MV_GETPPID_BROKEN> is set to 1, the system uses syscall(64).
+
+LI1: MV_MAILFROM
+
+Used in C<lib/Vend/Util.pm.> If configured, it specifies the default email user address
+if it has not been set in catalog.cfg or variables.txt.  Overrides the C<MailOrdersTo>
+directive.
+>                my $from = $::Variable->{MV_MAILFROM}
+>                                || $Global::Variable->{MV_MAILFROM}
+>                                || $Vend::Cfg->{MailOrderTo};
+
+LI1: MV_NO_CRYPT
+
+Used in C<lib/Vend/UserDB.pm and lib/Vend/Util.pm.> If configured, it disables the use 
+of crypt or md5 hashing of passwords serverwide.
+ 
+LI1: MV_PAGE
+
+Used systemwide. This is the relative path of the page being served without 
+the suffix.  This value is not set in interchange.cfg, but is set by interchange while interchange is running.
+This is often referenced as C<@@MV_PAGE@@.> 
+
+LI1: MV_PREV_PAGE
+
+Used systemwide. This is the relative path of the last (previous) page 
+that was served without the suffix.  This value is not set in C<interchange.cfg>, 
+but is set by interchange while interchange is running.
+This is often referenced as C<@@MV_PREV_PAGE@@>.
+
+LI1: MV_SESSION_READ_RETRY
+
+Used in C<lib/Vend/Session.pm.>  This variable specifies the number of times that interchange
+will attemt to read the session file before failing.  
+
+The default value is C<5>.
+ 
+LI1: UI_BASE
+
+Used systemwide.  This variable specifies the relative path to the admin interface.  
+
+The default value is C<'admin'.>
+
+LI1: UI_IMAGE_DIR
+
+Used within the admin and by C<code/SystemTag/image.tag>. This variable specifies the relative path to the admin images 
+and CSS definitions.  It is set in C<dist/lib/UI/ui.cfg>.  
+
+The default value is C<'/interchange-5/'>.
+
+LI1: UI_IMAGE_DIR_SECURE
+
+Used within the admin and by C<code/SystemTag/image.tag>. This variable specifies the relative path to the admin images
+and CSS definitions while connecting via SSL.  It is set in C<dist/lib/UI/ui.cfg>.  
+
+The default value is C<'/interchange-5/'>.
+
+LI1: UI_SECURITY_OVERRIDE
+
+Used in C<dist/lib/UI/Primitive.pm>. If configured and no UI_ACCESS_TABLE found, 
+then it will return that there is an acl set. This would allow you to test acls
+See sub C<ui_acl_enabled()> for more details.
+
+
+H2: Standard catalog (catalog.cfg) Variable values
+
+LI1: ACTIVE_SESSION_MINUTES
+
+Used in C<code/UI_Tag/dump_session.coretag>, C<lib/UI/pages/admin/genconfig.html> 
+and C<lib/UI/pages/admin/show_session.html>. This Variable overrides the 
+{{CMD[jump="icconfig.html#SessionExpire"]SessionExpire}}
+directive.
+
+LI1: ADL_COMPONENT
+
+Used in C<lib/UI/ui.cfg>. This Varaible can be overriden by ADL_COMPONENT_TEMPLATE.
+Apparently not used anythere.
+
+The default is:
+!block example
+    E<lbracket>{{CMD[jump="ictags.html#page"]page}} href="admin/content_editor" form=|
+        ui_name=E<lbracket>{{CMD[jump="ictags.html#contol"]control}} component]
+        ui_type=component
+    |]E<lbracket>{{CMD[jump="ictags.html#loc"]loc}}]edit[/loc]&nbsp;E<lbracket>{{CMD[jump="ictags.html#control"]control}} component]</A> 
+!endblock
+LI1: ADL_COMPONENT_TEMPLATE  
+
+Used in C<lib/UI/ui.cfg>. This Varaible can be used to override ADL_COMPONENT.
+Apparently not used anythere.
+
+LI1: ADL_ITEM
+
+Used in C<lib/UI/ui.cfg>. 
+The default is:
+!block example
+  <a href="E<lbracket>{{CMD[jump="ictags.html#area"]area}}
+                        href=admin/item_edit
+                        form=|
+                                item_id=E<lbracket>{{CMD[jump="ictags.html#item-code"]item-code}}]
+                                ui_return_to=index
+                        |
+                ]">E<lbracket>{{CMD[jump="ictags.html#loc"]loc}}]edit[/loc]&nbsp;E<lbracket>{{CMD[jump="ictags.html#loc"]loc}}]item[/loc]</A>
+!endblock
+
+LI1: ADL_ITEM_TEMPLATE
+
+Used in C<lib/UI/ui.cfg>. This Varaible can be used to override ADL_ITEM.
+Apparently not used anythere.
+
+LI1: ADL_MENU
+
+Used in C<foundation/templates/components/product_flyout>,
+C<foundation/templates/components/product_tree> and C<lib/UI/ui.cfg>. 
+
+The default value is:
+!block example
+        $::Variable->{ADL_MENU} = $::Variable->{ADL_MENU_TEMPLATE} || <<EOF;
+  <a class="E<lbracket>{{CMD[jump="ictags.html#control"]control}} link_class]"
+        href="E<lbracket>{{CMD[jump="ictags.html#area"]area}}
+                        href=admin/menu_editor
+                        form=|
+                                qmenu_name=E<lbracket>{{CMD[jump="ictags.html#either"]either}}]E<lbracket>{{CMD[jump="ictags.html#control"]control}} menu_name]E<lbracket>{{CMD[jump="ictags.html#or"]or}}]E<lbracket>{{CMD[jump="ictags.html#var"]var}} MV_PAGE 1][/either]
+                        |
+                ]">E<lbracket>{{CMD[jump="ictags.html#loc"]loc}}]edit[/loc]&nbsp;E<lbracket>{{CMD[jump="ictags.html#loc"]loc}}]menu[/loc]</A>
+!endblock
+
+LI1: ADL_MENU_TEMPLATE
+
+Used in C<lib/UI/ui.cfg>. This Varaible can be used to override ADL_MENU.
+Apparently not used anythere.
+
+LI1: ADL_PAGE
+Used in the foundation templates LEFTONLY_BOTTOM,LEFTRIGHT_BOTTOM,
+and NOLEFT_BOTTOM and C<lib/UI/ui.cfg>. This variable defines how the 
+admin edit page links are displayed.
+
+The default is:
+!block example
+ E<lbracket>{{CMD[jump="ictags.html#page"]page}} href="admin/content_editor" form="
+                        ui_name=E<lbracket>{{CMD[jump="ictags.html#var"]var}} MV_PAGE 1]E<lbracket>{{CMD[jump="ictags.html#var"]var}} ADL_SUFFIX]
+                        ui_type=page
+                "]E<lbracket>{{CMD[jump="ictags.html#loc"]loc}}]edit[/loc]&nbsp;E<lbracket>{{CMD[jump="ictags.html#loc"]loc}}]page[/loc]</A>
+E<lbracket>{{CMD[jump="ictags.html#page"]page}} href="E<lbracket>{{CMD[jump="ictags.html#var"]var}} MV_PAGE 1]" form="
+                        ui_mozilla_edit=1
+                "]E<lbracket>{{CMD[jump="ictags.html#loc"]loc}}]show&nbsp;tags[/loc]</A>
+!endblock
+
+LI1: ADL_MENU_TEMPLATE
+
+Used in C<lib/UI/ui.cfg>. This variable can be used to override ADL_PAGE.
+
+LI1: ADL_SUFFIX
+
+Used in C<lib/UI/ui.cfg>. It defaults to the value of the E<lbracket>{{CMD[jump="icconfig.html#HTMLsuffix"]HTMLsuffix}}] directive. It specifies 
+the page suffix for links coming from ADL_PAGE at the bottom of 
+the foundation template files. 
+
+LI1: BACKUP_DIRECTORY
+
+Used in C<code/UI_Tag/backup_database.coretag>. This variable will override 
+where the backup_database tab places the database backups.  By default, 
+the backups are placed in C<<VendRoot>/backup>. 
+
+LI1: BAR_LINK_TEMPLATE
+
+Used in the C<bar_link> subroutine found in C<catalog_before.cfg>. It defines 
+how the links are displayed in the C<foundation/templates/components/category_horizontal>,
+C<foundation/templates/components/category_vert_toggle> and 
+C<foundation/templates/components/category_vertical> 
+The default value is configured in C<variables.txt>. The default is:
+!block example
+	<A HREF="$URL$" CLASS="barlink">$ANCHOR$</A>
+!endblock
+
+LI1: CREATE_COMMAND_MYSQL
+
+Used in C<code/UI_Tag/xfer_catalog.coretag>. It allows one to override the command that is 
+used create tables under mysql. 
+The default is C<'mysqladmin create %s'>.
+ 
+LI1: CREATE_COMMAND_PG
+
+Used in C<code/UI_Tag/xfer_catalog.coretag>. It allows one to override the command that is
+used create tables under PostgresSQL.
+The default is C<'createdb %s'>.
+
+LI1: CUSTOMER_VIEW_LARGE
+
+Used in C<lib/UI/pages/admin/customer.html>. It allows one to select not to build huge 
+lists of customers every time you access the customer tab.
+The default is C<0>.
+
+LI1: CYBER_ID
+
+Used in C<eg/globalsub/authorizenet>, C<eg/globalsub/signio> and C<lib/Vend/Payment/ECHO.pm>.
+It specifies the vendor's ID for communicating with a payment gateway.
+
+LI1: CYBER_PORT
+
+Used in C<eg/globalsub/authorizenet>,  C<eg/globalsub/signio> and C<lib/Vend/Payment.pm>.
+Specifies the port over which to communicate with the gateway server.
+
+LI1: CYBER_PRECISION
+
+Used in C<eg/globalsub/authorizenet>, C<eg/globalsub/signio>, C<lib/Vend/Payment.pm> and 
+C<lib/Vend/Payment/ECHO.pm>. It defines the precision of (the number of decimal 
+points) used with the vendor gateway.
+If not defined, the default is C<2>.
+
+LI1: CYBER_SCRIPT
+
+Used in C<eg/globalsub/authorizenet>. It defines the path of the program on the 
+payment gateway. if not set, it uses the default of C<'/gateway/transact.dll'>. It 
+is overriden by MV_PAYMENT_SCRIPT
+
+LI1: CYBER_SECRET
+
+Used in C<eg/globalsub/authorizenet>, C<eg/globalsub/signio>, and C<lib/Vend/Payment/ECHO.pm>.
+It defines the password the vendor used for autorization to the payment gateway.
+
+LI1: CYBER_SERVER
+
+Used in C<eg/globalsub/authorizenet>, C<eg/globalsub/signio>, and C<lib/Vend/Payment/ECHO.pm>.
+It overrides the address of the payment gateway.
+
+LI1: DUMP_COMMAND_MYSQL
+
+Used in C<code/UI_Tag/xfer_catalog.coretag>. It allows one to override the command that is
+used create tables under mysql.
+
+The default is C<'mysqldump --add-drop-table'>.
+
+LI1: DUMP_COMMAND_PG
+
+Used in C<code/UI_Tag/xfer_catalog.coretag>. It allows one to override the command that is
+used create tables under PostgresSQL.
+The default is C<'pg_dump -c -O'>.
+
+LI1: ECHO_PAYMENT_ID
+
+Used in C<lib/Vend/Payment/ECHO.pm>. Specifies your ECHO ID.
+
+LI1: ECHO_PAYMENT_PRECISION
+
+Used in C<lib/Vend/Payment/ECHO.pm>. Specifies the number of digits of precision for the gateway.
+
+LI1: ECHO_PAYMENT_SECRET
+
+Used in C<lib/Vend/Payment/ECHO.pm>. Specifies the password used to indentify the vendor.
+
+LI1: ECHO_PAYMENT_SERVER
+
+Used in C<lib/Vend/Payment/ECHO.pm>. Specifies the address of the payment gateway.
+
+LI1: FORUM_EMAIL_NOTIFY
+
+Used in C<foundation/pages/forum/reply.html>.  It is initially set to 
+C<__MVC_EMAILSERVICE__> when the catalog is initially created.
+
+LI1: FORUM_SUBMIT_EMAIL
+
+Used in C<foundation/pages/forum/submit.html>. It specifies the email address 
+that the forum submission should be sent to.
+
+LI1: LANG
+
+Used in C<lib/Vend/Dispatch.pm> and C<lib/Vend/File.pm>.  
+
+LI1: MV_AUTOLOAD
+
+Used in C<lib/Vend/Interpolate.pm>. It specifies the value to be placed in the 
+beginning of the html if the $Vend::PageInit is defined and not 0.
+
+LI1: MV_COMPONENT_DIR
+
+Used in C<code/UserTag/component.tag>. If defined, it specifies a directory location 
+where the components will be located.  If not defined, C<code/UserTag/component.tag> looks
+in C<templates/components>.  
+
+LI1: MV_COUNTRY_FIELD
+
+Used in C<lib/Vend/Interpolate.pm>. If defined, it specifies the field to be 
+used in tax/vat calculations. If undefined, the value C<'country'> is used.
+
+LI1: MV_COUNTRY_TABLE
+
+Used in C<lib/Vend/Interpolate.pm>. If defined, it specifies the table to be used 
+in tax/vat calculations.  If undefined, the value C<'country'> is used.
+
+LI1: MV_COUNTRY_TAX_FIELD
+
+Used in C<lib/Vend/Interpolate.pm>.  If defined, it specifies the 
+field used to look up the tax. If undefined, the value C<'tax'> is used.  
+
+LI1: MV_CREDIT_CARD_INFO_TEMPLATE
+
+Used in C<sub build_cc_info()> in C</lib/Vend/Order.pm>. If not defined, 
+the following template is used: 
+!block example
+                join("\t", qw(
+                        {MV_CREDIT_CARD_TYPE}
+                        {MV_CREDIT_CARD_NUMBER}
+                        {MV_CREDIT_CARD_EXP_MONTH}/{MV_CREDIT_CARD_EXP_YEAR}
+                        {MV_CREDIT_CARD_CVV2}
+                )) . "\n";
+!endblock
+
+LI1: MV_DEFAULT_SEARCH_DB
+
+Used in C<lib/Vend/Scan.pm>. Specifies that an unspecified (default) search will 
+be a db search, not a text search. It is set to 1 in variable.txt
+
+LI1: MV_DEFAULT_SEARCH_FILE
+
+Used in C<lib/Vend/Config.pm>, C<lib/Vend/Glimpse.pm> and C<lib/Vend/TextSearch.pm>. It 
+specifies the file to be used for text searches by default.
+It is set to products in C<catalog_before.cfg> and C<foundation/catalog.cfg>.
+
+LI1: MV_DEFAULT_SEARCH_TABLE
+
+Used in C<lib/Vend/Config.pm>, C<lib/Vend/DbSearch.pm> and C<lib/Vend/RefSearch.pm>.
+It specifies the table to be used for searches by default.
+It is set to products in C<catalog_before.cfg> and C<foundation/catalog.cfg>.
+
+LI1: MV_ERROR_STD_LABEL
+
+Used in C<code/SystemTag/error.coretag>. If defined, it overrides the default 
+error imessage in the stdlabel field. If undefined, the following template is used.
+!block example
+    <FONT COLOR=RED>{LABEL} <SMALL><I>(%s)</I></SMALL></FONT>
+    E<lbracket>{{CMD[jump="ictags.html#else"]else}}]{REQUIRED <B>}{LABEL}{REQUIRED </B>}[/else]
+!endblock
+
+LI1: MV_NO_CRYPT
+
+Used in C<lib/Vend/UserDB.pm> and C<lib/Vend/Util.pm>.   If configured, it disables the use
+of crypt or md5 hashing of passwords for the individual catalog.
+
+LI1: MV_OPTION_TABLE_MAP
+
+Used in C<lib/Vend/Config.pm>, C<lib/Vend/Data.pm> and C<lib/Vend/Options/Old48.pm>.
+It is a quoted space-delimited list of fields in the form of "field1=field2"  to map options into. 
+
+LI1: MV_OPTION_TABLE
+
+Used in C<foundation/products/variable.txt>, C<lib/UI/pages/admin/item_option_phantom.html>,
+C<lib/UI/pages/admin/item_option_old.html>, C<lib/UI/ui.cfg>, C<lib/Vend/Config.pm>, C<lib/Vend/Options.pm> 
+and C<lib/Vend/Options/Simple.pm>.
+If the Interchange Variable MV_OPTION_TABLE is not set, it defaults
+to "options", which combines options for Simple, Matrix, and
+Modular into that one table. This goes along with foundation and
+construct demos up until Interchange 4.9.8.
+
+LI1: MV_PAYMENT_ID
+
+Used in C<eg/globalsub/authorizenet>, C<eg/globalsub/signio>, C</foundation/catalog.cfg>,
+C</foundation/products/variable.txt>, C<lib/Vend/Payment/AuthorizeNet.pm>, C<lib/Vend/Payment/BoA.pm>,
+C<lib/Vend/Payment/ECHO.pm>, C<lib/Vend/Payment/PSiGate.pm>, C<lib/Vend/Payment/Signio.pm>, C<lib/Vend/Payment/Skipjack.pm>,
+C<lib/Vend/Payment/TestPayment.pm>, C<lib/Vend/Payment/WellsFargo.pm>, C<lib/Vend/Payment/iTransact.pm>.
+Specifies your merchant ID for your payment gateway.
+
+LI1: MV_PAYMENT_MODE
+
+Payment Gateway Which payment processor module you wish to use.
+The default value is  not set.
+Valid values are : authorizeneti, boa, echo, mcve, psigate,signio, skipjack, trustcommerce,
+testpayment, wellsfargo, itransact and linkpoint.
+
+LI1: MV_PAYMENT_PRECISION
+
+Specifies the number of digits of precision for the gateway.
+
+LI1: MV_PAYMENT_SECRET
+
+Specifies the password used to indentify the vendor.
+
+LI1: MV_PAYMENT_SERVER
+
+Specifies the address of the payment gateway.
+
+LI1: MV_PAYMENT_TEST
+
+Used in C<eg/globalsub/authorizenet>, C<lib/Vend/Payment/AuthorizeNet.pm> and C<lib/Vend/Payment/PSiGate.pm>.
+Specifies that the gateway is in testing mode.
+
+LI1: MV_SHIP_ADDRESS_TEMPLATE
+Used in C<lib/Vend/Interpolate.pm>.  Overrides the default template used in
+C<tag_address()>. 
+
+If not set, the template used is:
+!block example
+                        $template .= "{company}\n" if $addr->{"${pre}company"};
+                        $template .= <<EOF;
+{address}
+{city}, {state} {zip}
+{country} -- {phone_day}
+!endblock
+
+LI1: MV_SHIP_MODIFIERS
+
+Used in C<shipping()> in C<lib/Vend/Ship.pm>.
+
+LI1: MV_STATE_REQUIRED
+
+Used in C<sub _multistate()> in C<lib/Vend/Order.pm>.
+
+LI1: MV_STATE_TABLE
+
+Used in C<sub tax_vat()> in C<lib/Vend/Interpolate.pm>. Specifies an alternate 
+table with tax information by state.  If undefined, the subroutine uses C<'state'>.
+
+LI1: MV_STATE_TAX_FIELD
+
+Used in C<sub tax_vat()> in C<lib/Vend/Interpolate.pm>. Specifies an alternate
+field with tax information by state.  If undefined the subroutine uses C<'tax'>.
+
+LI1: MV_TAX_CATEGORY_FIELD
+
+Used in C<sub tax_vat()> in C<lib/Vend/Interpolate.pm>. If undefined, 
+the subroutine uses C<'tax_category'>.
+
+LI1: MV_TAX_TYPE_FIELD
+
+Used in C<sub tax_vat()> in C<lib/Vend/Interpolate.pm>. Specifies an alternate
+field with tax information by state.  If undefined the subroutine uses C<'tax_name'>.
+
+LI1: MV_TREE_TABLE
+
+Used in C<lib/UI/pages/admin/menu_editor.html>, C<lib/UI/pages/admin/menu_loader.html>
+and C<lib/Vend/Menu.pm>. It allows one to specify another table other that C<'tree'>. 
+
+LI1: MV_USERDB_REMOTE_USER
+
+Used in C<sub check_security()> in C<lib/Vend/Util.pm>.  Enabling this variable 
+allows anyone logged in to override all existing ALCs.
+
+LI1: MV_VALID_PROVINCE
+
+Used in C<sub _state_province()> in C<lib/Vend/Order.pm>.  Allows you to supply 
+an alternate string to override the standard province validation.
+ 
+LI1: MV_VALID_STATE
+
+Used in C<sub _state_province()> C<lib/Vend/Order.pm>.  Allows you to supply
+an alternate string to override the standard State validation.
+
+LI1: MV_ZIP_REQUIRED
+
+Used in C<sub _multizip()> in C<lib/Vend/Order.pm>.  
+
+LI1: ORDER_VIEW_LARGE
+
+Used in C<lib/UI/pages/admin/order.html>. It allows one to select not to build huge
+lists of orders every time you access the orders tab.
+The default is C<0>.
+
+LI1: PAGE_TITLE_NAME
+
+Used in C<lib/UI/ContentEditor.pm>.  It allows you to override the page title in preview mode.
+If not configured, the page title will be C<'page_title'>.
+
+LI1: PUBLISH_NO_PAGE_ROOT
+
+Used in C<lib/UI/ui.cfg>. It allows one to prevent any publishing of pages in the admin 
+to the root of pages directory.
+
+LI1: PUBLISH_QUIT_ON_RCS_ERROR
+
+Used in C<lib/UI/ui.cfg>. It allows one to not publish new pages in the admin 
+if the page cannot be succesfully checked into RCS. 
+
+LI1: PUBLISH_TO_PREVIEWS
+
+Used in C<lib/UI/ui.cfg>. It allows one to publish new pages in the admin
+into a preview directory.
+
+LI1: RESTORE_COMMAND_MYSQL
+
+Used in C<code/UI_Tag/xfer_catalog.coretag>. It allows one to override the command that is
+used create tables under mysql.
+The default is C<'mysql'>.
+
+LI1: RESTORE_COMMAND_PG
+
+Used in C<code/UI_Tag/xfer_catalog.coretag>. It allows one to override the command that is
+used create tables under PostgresSQL.
+The default is C<'createdb %s'>.
+
+LI1: SERVER_NAME
+
+Used in C<code/UI_Tag/xfer_catalog.coretag>, C<foundation/etc/ship_notice>, 
+C<lib/UI/pages/admin/transfer_catalog.html>, C<lib/Vend/Server.pm> and C<scripts/makecat.PL>. 
+It specifies the domain name of your catalog.
+ 
+LI1: TAXCOUNTRY
+
+Used in C<sub fly_tax()> in C< foundation/include/checkout/tax_popup> and 
+C<lib/Vend/Interpolate.pm>.  Allows you to supply an alternate 
+string of valid countries to override the standard Country validation. 
+
+LI1: THEME_IMG_DIR
+
+It allows you to specify the location of the images in the foundation
+specified themes.  
+
+LI1: UI_ACCESS_KEY_LIMIT
+
+Used in C<code/UI_Tag/list_keys.coretag> and C<lib/UI/Primitive.pm>.  It allows you to 
+define the number of keys returned. By default 500 (primary) keys are returned. 
+
+LI1: UI_ACCESS_TABLE
+
+It allows you to specify the UserDB file to be used for access to the admin. 
+It is set to C<'access'> by C<catalog_before.cfg>.
+
+LI1: UI_BACKUP_TABLES
+
+Used by C<lib/UI/pages/admin/dbdownload.html>. It specifies the tables to be 
+backed up by C<lib/UI/pages/admin/dbdownload.html>
+It is set in variable.txt to: 
+C<'affiliate area cat country inventory locale merchandising options 
+order_returns orderline pricing products state survey transactions 
+tree userdb variants'>  
+
+LI1: UI_COMPONENT_DIR
+
+Used by C<lib/UI/pages/admin/content_publish.html> and C<lib/UI/ContentEditor.pm>. 
+By default, it is set to C<'templates/components'> in variable.txt
+
+LI1: UI_DBCONFIG
+
+Used in C<lib/UI/pages/admin/gentable.html>. If defined it adds the option C<'Config'>
+to gentable.html in the admin.
+
+LI1: UI_ERROR_PAGE
+
+Used in C<code/UI_Tag/flex_select.coretag>. IT allows one to override 
+the admin error page from C<'admin/error'>.
+
+LI1: UI_IMG
+
+Used in C<lib/UI/pages/admin/content_push.html>, C<lib/UI/pages/admin/customer_mailing.html>, 
+C<lib/UI/pages/admin/help.html>, C<lib/UI/pages/admin/order.html>,
+C<lib/UI/pages/include/templates/ui_type1>, C<lib/UI/pages/include/templates/ui_type2>,
+C<lib/UI/pages/include/templates/ui_type3>, C<lib/UI/pages/include/templates/ui_type5>, and
+C<lib/UI/vars/UI_STD_HEAD>.
+It specifies where the images for the admin are kept. It is set in C<lib/UI/vars/UI_STD_HEAD>. 
+ 
+LI1: UI_LARGE_TABLE
+
+Used in C<code/UI_Tag/flex_select.coretag> and C<lib/UI/pages/admin/pref_select.html>. 
+It specifies that flex-select should not use ra=all if UI_LARGE_TABLE is set. 
+
+LI1: UI_META_LINK
+
+Used in C<lib/UI/pages/admin/menu_editor.html>, C<lib/UI/pages/admin/preferences.html>, 
+and C<lib/Vend/Table/Editor.pm>.  It determines whether edit metadata links are enabled by default.
+It is set to 1 by default in variables.txt.
+
+LI1: UI_META_SELECT
+
+Used in C<code/UI_Tag/flex_select.coretag>.  
+
+LI1: UI_META_TABLE
+
+Allows you to specify an alternate table where metadata is kept. 
+
+LI1: UI_SECURE
+
+Used in C<lib/UI/pages/admin/flex_select.html>, C<code/UI_Tag/flex_select.coretag>, 
+C<lib/UI/pages/admin/menu_editor.html>, C<lib/UI/pages/admin/order.html>, 
+C<lib/UI/vars/UI_STD_HEAD>, C<lib/Vend/Table/Editor.pm>.
+If set, it determines whether or not to force UI into secure mode. 
+
+LI1: UI_TEMPLATE_DIR
+
+Used by C<lib/UI/pages/admin/content_publish.html> and C<lib/UI/ContentEditor.pm>.
+t specifies the directory where the admin templates are kept.
+It is set to C<'templates'> by default in variables.txt.  
+
+LI1: UPS_COUNTRY_REMAP
+
+Used in C<code/UserTag/ups_query.tag> and C<lib/Vend/Ship/QueryUPS.pm>.
+!block example
+        # Remap Monaco to France for UPS
+        {{CMD[jump="icconfig.html#variable"]Variable}} UPS_COUNTRY_REMAP   MC=FR
+!endblock
+
+LI1: UPS_ORIGIN
+
+Used in C<code/UserTag/fedex_query.tag>, C<lib/UI/pages/admin/ship_edit.html>, 
+C<lib/Vend/Ship/QueryUPS.pm>.
+It sets a default value for the shipping origin.
+
+LI1: UPS_QUERY_MODULO
+
+Used in C<code/UserTag/ups_query.tag> and C<lib/Vend/Ship/QueryUPS.pm>.
+If shipping aggregation is used, it allows you to override the
+weight in which aggregation occurs. If not set, aggregation occurs at 150.
+
+N:Copyright 2002 ICDEVGROUP. Freely redistributable under terms of the GNU General Public License.
