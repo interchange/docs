@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ic_ecommerce.sdf,v 1.12 2002-05-06 18:04:07 jon Exp $
+# $Id: ic_ecommerce.sdf,v 1.13 2002-06-06 02:01:51 jon Exp $
 
 !define DOC_NAME "Interchange Ecommerce Functions"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_ecommerce"
-!define DOC_VERSION substr('$Revision: 1.12 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.13 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ic_ecommerce.html"
@@ -70,7 +70,7 @@ defined as products files will be searched in sequence for the item.
 N:
 N: Example:
 
->  Order a [order TK112]Toaster[/order] today.
+>  Order a [order TK112]Toaster</a> today.
 
 Note that this is the same as:
 
@@ -82,8 +82,8 @@ You can change frames for the order with:
 
 =item [/order]
 
-Expands into </a>. Used with the order element, such as: Buy a
-C<[order TK112]>ToasterC<[/order]> today.
+Expands into </a>. May be used to give the order tag the appearance
+of being a container tag, but neither necessary nor recommended.
 
 =back
 
@@ -125,12 +125,12 @@ I<How to set up an order button>).
 
 On a product display page, use:
 
->    [order 00-0011]Order the Mona Lisa[/order]
+>    [order 00-0011]Order the Mona Lisa</a>
 
 If coming from a search results or on-the-fly page, you may use the generated
 C<[item-code]> thusly:
 
->    [order [item-code]]Order [item-field name][/order]
+>    [order [item-code]]Order [item-field name]</a>
 
 Bear in mind that if you have not reached the page via a search or
 on-the-fly operation, C<[item-code]> means nothing and will cause an error.
@@ -339,7 +339,7 @@ ways:
 
 ^ Set the SpecialPage C<order> to the page to display
   when an item is ordered.
-+ Use the C<[order code=item page=page_name] Order it! [/order]> form of
++ Use the C<[order code=item page=page_name] Order it! </aE<gt>> form of
   order tag to specify an arbitrary order page for an item.
 + If already on an order page, set the mv_orderpage,
   mv_nextpage, mv_successpage, or mv_failpage variables.
@@ -385,7 +385,7 @@ Interchange allows you to define and maintain multiple shopping carts.
 One shopping cart -- main, by name -- is defined when the user session
 starts. If the user orders item M1212 with the following tag:
 
->    [order code=M1212 cart=layaway] Order this item! [/order]
+>    [order code=M1212 cart=layaway] Order this item! </a>
 
 the order will be placed in the cart named I<layaway>. However, by default
 you won't see the just-ordered item on the basket page.  That is because 
@@ -394,7 +394,7 @@ So copy the default basket page (pages/ord/basket.html in the demo)
 to a new file, insert a C<[cart layaway]> tag, and specify it as the target
 page in your C<[order]> tag:
 
->    [order code=M1212 cart=layaway page=ord/lay_basket] Order this item! [/order]
+>    [order code=M1212 cart=layaway page=ord/lay_basket] Order this item! </a>
 
 Now the contents of the I<layaway> cart will be displayed. Most of the ITL
 tags that are fundamental to cart display accept a 'cartname' option, 

@@ -1,13 +1,13 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.62 2002-05-29 09:26:46 racke Exp $
+# $Id: icconfig.sdf,v 1.63 2002-06-06 02:01:51 jon Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.62 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.63 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
-!define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
+!define DOC_URL "http://interchange.redhat.com/doc/icconfig.html"
 !build_title
 
 H1: Interchange Configuration Files
@@ -2045,7 +2045,7 @@ The C<__NAME__> is the value to be specified in the C<mv_profile> variable on th
 or with mp=profile in the one-click search.
 
 !block example
- [page scan se=Renaissance/mp=dict_search]Renaissance Art[/page]
+ [page scan se=Renaissance/mp=dict_search]Renaissance Art</a>
 !endblock
 
 Multiple profiles can reside in the same file, if separated by C<__END__> tokens. C<__NAME__> tokens should be left-aligned, and C<__END__> must be on a line by itself with no leading or trailing whitespace.

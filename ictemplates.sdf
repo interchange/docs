@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ictemplates.sdf,v 1.37 2002-05-03 21:59:25 racke Exp $
+# $Id: ictemplates.sdf,v 1.38 2002-06-06 02:01:51 jon Exp $
 
 !define DOC_NAME "Template Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "ictemplates"
-!define DOC_VERSION substr('$Revision: 1.37 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.38 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictemplates.html"
@@ -2188,8 +2188,8 @@ LI1: [fly-list code="product_code" base="table"] ... [/fly-list]
 .If placed around the contents of the demo flypage, in a file named <flypage2.html>, it will make these two calls display identical pages:
 
 !block example; listitem=2
-    [page 00-0011] One way to display the Mona Lisa [/page]
-    [page flypage2 00-0011] Another way to display the Mona Lisa [/page]
+    [page 00-0011] One way to display the Mona Lisa </a>
+    [page flypage2 00-0011] Another way to display the Mona Lisa </a>
 !endblock
 
 If the directive PageSelectField is set to a valid product database field which contains a valid Interchange page name (relative to the catalog pages directory, without the .html suffix), it will be used to build the on-the-fly page.

@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.40 2002-04-15 16:13:20 jon Exp $
+# $Id: icdatabase.sdf,v 1.41 2002-06-06 02:01:51 jon Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.40 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.41 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icdatabase.html"
@@ -811,7 +811,7 @@ When the "Search" submit button is pressed (or <ENTER> is pressed), Interchange 
 The same search for a fixed string, say "shirt," could be performed with the use of a hot link, using the special scan URL:
 
 !block example
- [page search="se=shirt"]See our shirt collection![/page]
+ [page search="se=shirt"]See our shirt collection!</a>
 !endblock
 
 The default is to search every field on the line. To match on the string "shirt" in the product database field "description," modify the search:
@@ -826,7 +826,7 @@ In the hot-linked URL search:
  [page search="
                se=shirt
                sf=category
-           "]See our shirt collection![/page]
+           "]See our shirt collection!</a>
 !endblock
 
 To let the user decide on the search parameters, use checkboxes or radiobox fields to set the fields:
@@ -1063,7 +1063,7 @@ Once again, this does not conduct a search on an SQL database, but formats a cor
                se=[value title]
            "  ]
        Search for [value artist], [value title]
-   [/page]
+   </a>
 
    [page search="
                co=yes
@@ -1073,7 +1073,7 @@ Once again, this does not conduct a search on an SQL database, but formats a cor
            "  ]
    Search for [value searchstring]
           in  [value column]
-   [/page]
+   </a>
 !endblock
 
 H2: Range Searching
@@ -1117,7 +1117,7 @@ Interchange allows a search to be passed in a URL, as shown above. Just specify 
                sf=category
            "]
        Impressionist Paintings
-    [/page]
+    </a>
 !endblock
 
 This is the same:
@@ -1125,7 +1125,7 @@ This is the same:
 !block example
     [page scan se=Impressionists/sf=category]
        Impressionist Paintings
-    [/page]
+    </a>
 !endblock
 
 Here is the same thing from a home page (assuming /cgi-bin/vlink is the CGI path for Interchange's vlink):
@@ -1227,7 +1227,7 @@ LI1: Original
 !block example; listitem=2
  [page scan se=Surreal/se=Gogh/os=yes/su=yes/sf=artist/sf=category]
     Van Gogh -- compare to surrealists
- [/page]
+ </a>
 !endblock
 
 .In this method of specification, to replace a / (slash) in a file name (for the sp, bd, or fi parameter), the shorthand of :: must be used, i.e., sp=results::standard. (This may not work for some browsers, so put the page in the main pages directory or define the page in a search profile.)
@@ -1244,7 +1244,7 @@ LI1: Multi-Line
         su=yes
         sf=artist
         sf=category
-    ] Van Gogh -- compare to surrealists [/page]
+    ] Van Gogh -- compare to surrealists </a>
 !endblock
 
 .Any "unsafe" characters will be escaped. To search for trailing spaces (unlikely), quote.
@@ -1256,7 +1256,7 @@ LI1: Ampersand
 !block example; listitem=2
  [page href=scan se="Van Gogh"&sp=lists/surreal&os=yes&su=yes&sf=artist&sf=category]
     Van Gogh -- compare to surrealists
- [/page]
+ </a>
 !endblock
 
 .Any "unsafe" characters will be escaped.
@@ -1270,7 +1270,7 @@ A value can be specified that will be set in the link with the C<mv_value> param
          arg="se=Renaissance
               se=Impressionists
               va=category_name=Renaissance and Impressionist Paintings
-              os=yes"]Renaissance and Impressionist Paintings[/page]
+              os=yes"]Renaissance and Impressionist Paintings</a>
 !endblock
 
 Display the appropriate category on the search results page with C<[value category_name]>.
@@ -1364,7 +1364,7 @@ Then, in the search form, set a variable with the name of the profile:
 In a one-click search, use the C<mp> modifier:
 
 !block example
-[page scan se=Leonardo/mp=artist_profile]A left-handed artist[/page]
+[page scan se=Leonardo/mp=artist_profile]A left-handed artist</a>
 !endblock
 
 They can also be placed in a file. Define the file name in the C<SearchProfile> directive. The catalog must be reconfigured for Interchange to read it. The profile is named by placing a name following a __NAME__ pragma:
@@ -2962,7 +2962,7 @@ LI1: check_acl
                     function=check_acl
                     location=cartcfg/editcart]"
     ]
-    [page cartcfg/editcart]Edit your cart configuration[/page]
+    [page cartcfg/editcart]Edit your cart configuration</a>
     [/if]
 !endblock
 
@@ -3002,7 +3002,7 @@ LI1: check_file_acl, check_db_acl
                     location=inventory]"
     ]
     [userdb function=set_acl location=cartcfg/edit_inventory]
-    [page cartcfg/edit_inventory]You may edit the inventory database[/page]
+    [page cartcfg/edit_inventory]You may edit the inventory database</a>
     [else]
     [userdb function=set_acl location=cartcfg/edit_inventory delete=1]
     Sorry, you can't edit inventory.

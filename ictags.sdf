@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.82 2002-06-03 18:13:36 kwalsh Exp $
+# $Id: ictags.sdf,v 1.83 2002-06-06 02:01:51 jon Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.82 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.83 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -1943,7 +1943,7 @@ Expands to the URL for an Interchange page or action,
 including the Interchange session ID and supplied arguments. This is
 very similar to the {{CMD[jump="#page"]page}} tagE<nbspace>E<emdash> these are
 equivalent:
->    [page href=dir/page arg=mv_arg]TargetName[/page]
+>    [page href=dir/page arg=mv_arg]TargetName</A>
 >    <A HREF="[area href=dir/page arg=mv_arg]">TargetName</A>
 
 
@@ -5042,7 +5042,7 @@ B<Tag expansion example:>
 !block example
    [export table]
 ---
-   TODO: (tag result)
+   1
 !endblock
 
 
@@ -6032,8 +6032,8 @@ If you place the above around the contents of the demo flypage,
 in a file named C<flypage2.html>, it will make these two calls
 display identical pages:
 
->    [page 00-0011] One way to display the Mona Lisa [/page]
->    [page flypage2 00-0011] Another way to display the Mona Lisa [/page]
+>    [page 00-0011] One way to display the Mona Lisa </a>
+>    [page flypage2 00-0011] Another way to display the Mona Lisa </a>
 
 If you place a [fly-list] tag alone at the top of the page, it will
 cause any page to act as a flypage.
@@ -9013,7 +9013,7 @@ in the list of products to order and display the order page.
 H3: Summary
 
 !block example;
-    [B<order> code quantity]I<Link Text>E<lbracket>/order]
+    [B<order> code quantity]I<Link Text>E<lt>/A>
     [B<order> code=[[EXAMPLE_SKU]] quantity=2]I<Link Text>E<lt>/A>
 !endblock
 
@@ -9028,6 +9028,11 @@ quantity|Quantity to order|1
 
 !block table; colvaligns="TT"
 Attributes|Default
+code|I<No>
+page|I<SpecialPage order>
+cart|I<main cart>
+base|I<ProductFiles array>
+area|I<off>
 {{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
 !endblock
 
@@ -9060,8 +9065,18 @@ H3: Description
 
 
 Expands into a hypertext link which will include the specified
-code in the list of products to order and display the order page. B<code>
-should be a product code listed in one of the "products" databases.
+code in the list of products to order and display the order page.
+
+B<code> should be a product code listed in one of the "products"
+databases. The optional argument B<base> constrains the order to
+a particular products file. If not specified, all tables defined as
+ProductFiles will be searched in sequence for the item.
+
+The optional argument B<cart> selects the shopping cart where the item
+will be placed.
+
+B<page> allows you to specify a different order page than the default
+one specified by SpecialPage order.
 
 
 H3: How to Order an Item
@@ -9079,6 +9094,13 @@ need more control, for example, to change frames for the N<order:>
                         mv_order_quantity=2
                         mv_action=refresh"]"
     TARGET=newframe> Order [[EXAMPLE_DESCRIPTION]]</A>
+!endblock
+
+This can also be done more easily with the C<area> option to the C<order> tag:
+
+!block example
+    <A HREF="[order code=[[EXAMPLE_SKU]] quantity=2 area=1]"
+	 TARGET=newframe> Order [[EXAMPLE_DESCRIPTION]]</A>
 !endblock
 
 To order with a form, you set the form variable C<mv_order_item> to
@@ -9128,7 +9150,7 @@ optional [/page] is simply a macro for E<lt>/AE<gt>.
 If you do not want the E<lt>AE<nbspace>HREFE<nbspace>...E<gt>, use the
 {{CMD[jump="#area"]area}} tag insteadE<nbspace>E<emdash> these are
 equivalent:
->    [page href=dir/page arg=mv_arg]TargetName[/page]
+>    [page href=dir/page arg=mv_arg]TargetName</A>
 >    <A HREF="[area href=dir/page arg=mv_arg]">TargetName</A>
 
 
@@ -9316,7 +9338,7 @@ These are identical:
          se=Impressionists
          sf=category]
       Impressionist Paintings
-   [/page]
+   </a>
 
    [page href=scan
           arg="se=Impressionists
@@ -9327,7 +9349,7 @@ These are identical:
    [page search="se=Impressionists
                  sf=category"]
       Impressionist Paintings
-   [/page]
+   </a>
 
 !endblock
 
@@ -9378,7 +9400,7 @@ you would do:
 
 > [page scan se=Surreal/se=Gogh/os=yes/su=yes/sf=artist/sf=category]
 >    Van Gogh -- compare to surrealists
-> [/page]
+> </a>
 
 In this method of specification, to replace a / (slash) in a file name
 (for the sp, bd, or fi parameter) you must use the shorthand of ::,
@@ -9393,7 +9415,7 @@ quotes and spaces in the specification.
 
 > [page scan se="Van Gogh"&sp=lists/surreal&os=yes&su=yes&sf=artist&sf=category]
 >    Van Gogh -- compare to surrealists
-> [/page]
+> </a>
 
 Any "unsafe" characters will be escaped. 
 
@@ -9408,7 +9430,7 @@ You can specify parameters one to a line, as well.
 >        su=yes
 >        sf=artist
 >        sf=category
->    ] Van Gogh -- compare to surrealists [/page]
+>    ] Van Gogh -- compare to surrealists </a>
 
 Any "unsafe" characters will be escaped. You may not search for trailing
 spaces in this method; it is allowed in the other notations.
@@ -11703,7 +11725,7 @@ B<ASP-like Perl call:>
 
 # BEGIN ############### seti Summary Tables ####################
 !block example;
-    [B<seti> name]
+    [B<seti> name]value[/seti]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -11727,6 +11749,14 @@ Has Subtags|I<No>
 Nests|I<No>
 !endblock
 
+
+B<Tag expansion example:>
+
+!block example
+   [seti name]value[/seti]
+---
+
+!endblock
 
 B<ASP-like Perl call:>
 
@@ -13088,7 +13118,7 @@ B<ASP-like Perl call:>
 
 # BEGIN ############### tmp Summary Tables ####################
 !block example;
-    [B<tmp> name]
+    [B<tmp> name]value[/tmp]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -13113,6 +13143,18 @@ Nests|I<No>
 !endblock
 
 
+<<<<<<< ictags.sdf
+B<Tag expansion example:>
+
+!block example
+   [tmp name]value[/tmp]
+---
+
+!endblock
+
+
+=======
+>>>>>>> 1.82
 B<ASP-like Perl call:>
 
 !block example; lang="Perl"
@@ -13721,7 +13763,7 @@ H4: {{CMD[id="tree_table"]table}}
 
 H2: try
 
-Allows you to trap errors. Interchange processes the body text of the E<lbracket>C<try>]E<lbracket>C</try>] block and returns it normally if it does not generate an error. If it does generate an error, interchange executes the E<lbracket>C<catch>]E<lbracket>C</catch>] block.
+Allows you to trap errors. Interchange processes the body text of the E<lbracket>C<try>]E<lbracket>C</try>] block and returns it normally if it does not generate an error. If it does generate an error, Interchange executes the E<lbracket>C<catch>]E<lbracket>C</catch>] block.
 
 See also '{{C[jump="#catch"]catch}}'.
 
@@ -15191,9 +15233,6 @@ H3: Description
 Will send the content between the E<lbracket>email_raw][/email_raw] 
 tags as a raw email message to the recipient specified in the supplied 
 headers using the SendmailProgram with -t option.
-
-
-H2: fcounter
 
 
 H2: fedex_query

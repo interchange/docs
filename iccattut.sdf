@@ -1,13 +1,13 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: iccattut.sdf,v 1.14 2002-04-12 22:53:18 jon Exp $
+# $Id: iccattut.sdf,v 1.15 2002-06-06 02:01:51 jon Exp $
 
 !define DOC_NAME "Catalog-Building Tutorial"
 !define DOC_TYPE ""
 !define DOC_CODE "iccattut"
-!define DOC_VERSION substr('$Revision: 1.14 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.15 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
-!define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
+!define DOC_URL "http://interchange.redhat.com/doc/iccattut.html"
 !define DOC_OWNER "2000-2002 Red Hat, Inc. E<lt>{{EMAIL:interchange@redhat.com}}E<gt>"
 !build_title
 
@@ -436,14 +436,14 @@ H1:The shopping basket
 
 H2:A link for ordering
 
-N:Now that you have your products available, let's add a shopping cart so customers can purchase them. This is created using the [order] [/order] tags. These tags create an HTML link that causes the specified item to be ordered and transfers the shopper to the basket page. This is a built-in shortcut to the complete order process which uses an HTML form submission process. The parameter for the [order] tag is the product ID. To add these tags to the catalog, make the following change to {{FILE:pages/index.html}}:
+N:Now that you have your products available, let's add a shopping cart so customers can purchase them. This is created using the [order] tag. These tags create an HTML link that causes the specified item to be ordered and transfers the shopper to the basket page. This is a built-in shortcut to the complete order process which uses an HTML form submission process. The parameter for the [order] tag is the product ID. To add these tags to the catalog, make the following change to {{FILE:pages/index.html}}:
 
 !block example;
   <tr>
   <td>[loop-code]</td>
   <td>[loop-field description]</td>
   <td align=right>[loop-field price]</td>
-+ <td>[order [loop-code]]Order Now[/order]</td>
++ <td>[order [loop-code]]Order Now</a></td>
   </tr>
   [/loop]
 !endblock
@@ -989,7 +989,7 @@ N:The search box will now appear on all catalog pages, but you still need to cre
       <td>[item-code]</td>
       <td><a href="[item-code].html">[item-field description]</a></td>
       <td align=right>[item-field price]</td>
-      <td>[order [item-code]]order now[/order]</td>
+      <td>[order [item-code]]order now</a></td>
       </tr>
     [/search-list]
     [on-match]

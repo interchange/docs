@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icfaq.sdf,v 1.9 2002-04-27 12:57:26 kwalsh Exp $
+# $Id: icfaq.sdf,v 1.10 2002-06-06 02:01:51 jon Exp $
 
 !define DOC_NAME "Frequently Asked Questions"
 !define DOC_TYPE ""
 !define DOC_CODE "icfaq"
-!define DOC_VERSION substr('$Revision: 1.9 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.10 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icfaq.html"
@@ -1452,7 +1452,7 @@ Try it on the foundation demo:
 	[benchmark]
 	<P>
 
-	[page @@MV_PAGE@@]Again[/page]
+	[page @@MV_PAGE@@]Again</a>
 
 	---- end test ---
 !endblock
