@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.32 2001-05-09 04:22:20 jon Exp $
+# $Id: ictags.sdf,v 1.33 2001-05-10 06:10:53 jon Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.32 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.33 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -77,7 +77,7 @@ its end tag will delimit contained body text:
 !block note; label="CaveatE<nbspace>E<emdash> macros: "
 Some macros look like tags or end tags. For example,
 E<lbracket>{{C[jump="#page"]/page}}E<rbracket> is a macro for
-E<lt>/AE<gt>). This allows you to conveniently write
+E<lt>/AE<gt>. This allows you to conveniently write
 E<lbracket>{{C[jump="#page"]page}}E<nbspace>I<href>]Target[C</page>],
 but 'Target' is not treated as contained body text.
 !endblock
@@ -858,8 +858,8 @@ move_combo, reverse_combo, show, options, labels, checkbox, radio, links
 {{CMD[jump="#accessories_table"]base}} (alias for C<table>)|products
 {{CMD[jump="#accessories_table"]database}} (alias for C<table>)|products
 {{CMD[jump="#accessories_table"]db}} (alias for C<table>)|products
-{{CMD[jump="#accessories_column"]col (alias for C<column>}}|I<attribute>
-{{CMD[jump="#accessories_column"]field}} (alias for C<column>}}|I<attribute>
+{{CMD[jump="#accessories_column"]col}} (alias for C<column>|I<attribute>
+{{CMD[jump="#accessories_column"]field}} (alias for C<column>|I<attribute>
 {{CMD[jump="#accessories_delimiter"]delimiter}}|comma (',')
 {{CMD[jump="#accessories_prepend"]prepend}}|I<none>
 {{CMD[jump="#accessories_append"]append}}|I<none>
@@ -879,7 +879,7 @@ move_combo, reverse_combo, show, options, labels, checkbox, radio, links
 {{CMD[jump="#accessories_empty"]empty}} (C<type>=links)|I<none>
 {{CMD[jump="#accessories_secure"]secure}} (C<type>=links)|I<none>
 {{CMD[jump="#accessories_new"]new}}|I<none>
-{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+{{CMD[jump="#attr_interpolate"]interpolate}} (reparse)|I<No>
 !endblock
 
 !block table; headings=1; colvaligns="TT"
@@ -6956,16 +6956,16 @@ as well as this the entry in the C<products> table:
 \NOTE: The examples below assume a US locale with 2 decimal places, use
 of commas to separate, and a dollar sign ($) as the currency formatting.
 
->  TAG                                             DISPLAYS
->  ----------------------------------             ---------------------------
->  [price 99-102]                                  $10.00
->  [price code="99-102"]                           $10.00
->  [price code="99-102" quantity=1]                $10.00
->  [price code="99-102" noformat=1]                10
->  [price code="99-102" quantity=5]                $9.00
->  [price code="99-102" quantity=5 size=XL]        $9.50
->  [price code="99-102" size=XL]                   $10.50
->  [price code="99-102" size=XL noformat=1]        10.5
+>  TAG                                          DISPLAYS
+>  ----------------------------------------     --------
+>  [price 99-102]                               $10.00
+>  [price code="99-102"]                        $10.00
+>  [price code="99-102" quantity=1]             $10.00
+>  [price code="99-102" noformat=1]             10
+>  [price code="99-102" quantity=5]             $9.00
+>  [price code="99-102" quantity=5 size=XL]     $9.50
+>  [price code="99-102" size=XL]                $10.50
+>  [price code="99-102" size=XL noformat=1]     10.5
 
 Product discounts for specific products, all products, or the entire
 order can be configured with the [discount ...] tag. Discounts are applied
