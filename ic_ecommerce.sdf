@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ic_ecommerce.sdf,v 1.8 2001-11-08 16:51:47 mheins Exp $
+# $Id: ic_ecommerce.sdf,v 1.9 2001-12-06 01:23:13 jon Exp $
 
 !define DOC_NAME "Interchange Ecommerce Functions"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_ecommerce"
-!define DOC_VERSION substr('$Revision: 1.8 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.9 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ic_ecommerce.html"
@@ -468,7 +468,7 @@ based on quantity, size, color or other factors read on.
 
 =head2 Price Maintenance with CommonAdjust
 
-As of Interchange 3.11, a flexible chained pricing scheme is available
+A flexible chained pricing scheme is available
 when the I<CommonAdjust> directive is set.
 
 \NOTE: For compatibility with older carts, if both PriceAdjustment

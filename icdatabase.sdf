@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.30 2001-10-29 17:02:02 racke Exp $
+# $Id: icdatabase.sdf,v 1.31 2001-12-06 01:23:13 jon Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.30 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.31 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
@@ -1612,13 +1612,9 @@ LI1: mv_search_match_count
 
 .Set by the search to indicate the total number of matches found.
 
-LI1: mv_search_over_msg
-
-.The message that should be displayed if there is an overflow condition (C<mv_matchlimit> is exceeded). Overrides the SearchOverMsg directive. It is cleared by Interchange if there is no overflow. Somewhat deprecated by match paging.
-
 LI1: mv_search_page
 
-.The Interchange-style name of the page that should display the search results. Overrides the C<FrameSearchPage> directive, and the default value of C<search>.
+.The Interchange-style name of the page that should display the search results. This overrides the default value of C<search>.
 
 LI1: mv_searchspec
 
@@ -1656,7 +1652,7 @@ LI1: mv_sort_option
 
 LI1: mv_spelling_errors
 
-.The number of spelling errors that will be tolerated. Ignored unless using Glimpse. For a large catalog, limit this to two.
+.The number of spelling errors that will be tolerated. Ignored unless using Glimpse. For a large table, limit this to two.
 
 LI1: mv_substring_match
 
@@ -1694,7 +1690,7 @@ The basic structure looks like this:
 [/search-region]
 !endblock
 
-TIP FOR MV3 PORTS: A C<[search-list][/search-list]> must always be surrounded by a C<[search-region][/search-region]> pair. This is a change from Interchange 3.
+Tip for catalogs upgraded from Minivend 3: A C<[search-list][/search-list]> must always be surrounded by a C<[search-region][/search-region]> pair. This is a change from Minivend 3.
 
 LI1: [search-list]
 

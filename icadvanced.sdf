@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icadvanced.sdf,v 1.5 2001-09-17 17:24:10 jon Exp $
+# $Id: icadvanced.sdf,v 1.6 2001-12-06 01:23:13 jon Exp $
 
 !define DOC_NAME "Advanced Interchange Topics"
 !define DOC_TYPE ""
 !define DOC_CODE "icadvanced"
-!define DOC_VERSION substr('$Revision: 1.5 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.6 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
@@ -429,7 +429,7 @@ If the directory containing the page has a file C<.access> and that file's size 
 
 .The page C<controlled/baz> is always allowed for display.
 
-.The page C<controlled/any> (or any other page in the directory not named in C<.access_gate>) will be allowed for any user logged in via I<UserDB>. NOTE: The C<.access_gate> scheme is available for database access checking if the database is defined as an C<AdminDatabase>. The C<.access_gate> file is located in C<ProductDir>.
+.The page C<controlled/any> (or any other page in the directory not named in C<.access_gate>) will be allowed for any user logged in via I<UserDB>.
 
 +If the Variable C<MV_USERDB_REMOTE_USER> is set (non-zero and non-blank), any user logged in via the UserDB feature will receive access to all pages in the directory. NOTE: If there is a C<.access_gate> file, it overrides this.
 
