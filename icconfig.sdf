@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.31 2001-03-09 21:24:22 jon Exp $
+# $Id: icconfig.sdf,v 1.32 2001-03-14 23:38:08 jon Exp $
 
 !define DOC_NAME "Interchange Configuration"
 !define DOC_TYPE ""
 !define DOC_CODE "ICCONFIG"
-!define DOC_VERSION substr('$Revision: 1.31 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.32 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icconfig.html"
@@ -2308,6 +2308,10 @@ Sets a directory which will be searched for pages if not found in the user's C<p
 !endblock
 
 The user's page, if it exists, will take precedence. There is also a catalog-specific version of this directive. If a page is found in that directory (or directories), it will take precedence.
+
+H2: TolerateGet *global*
+
+Set to 'Yes' to enable parsing of both GET data and POST data when a POST has been submitted. The default is 'No', which means that GET data is ignored during a POST. Unfortunately this has to be a global setting because at URL parse time, the Interchange daemon doesn't yet know which catalog it's dealing with (due to catalog aliases, etc.).
 
 H2: UserTag *global*
 
