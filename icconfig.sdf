@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.48 2001-09-17 17:24:10 jon Exp $
+# $Id: icconfig.sdf,v 1.49 2001-10-29 23:39:38 jon Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.48 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.49 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
@@ -1544,6 +1544,20 @@ The name of the field in the products database that is set (to 1 or Yes) if an i
 !block example
    NonTaxableField    wholesale
 !endblock
+
+H2: NoSearch
+
+Here you can provide one or more filename fragments that will be matched against the file name used in any attempted search (the mv_search_file or 'fi' attribute). You may separate multiple match strings with whitespace, and may include shell-style wildcards.
+
+The default setting is 'userdb', which means that by default you cannot use Interchange-style searches on the userdb table. (Pure SQL searches still work with it, however.)
+
+For example, consider this setting:
+
+!block example
+   NoSearch  userdb  .*  *.secret
+!endblock
+
+In this case any search file with 'userdb' in its name, or beginning with a dot, or ending in '.secret', will not be searchable.
 
 H2: OfflineDir
 
