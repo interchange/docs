@@ -1,13 +1,18 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.38 2001-03-31 04:16:22 bill Exp $
+# $Id: icconfig.sdf,v 1.39 2001-04-02 05:50:07 bill Exp $
 
 !define DOC_NAME "Interchange Configuration"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.38 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.39 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icconfig.html"
+!define EXAMPLE_SESSION "6CZ2whqo"
+!define EXAMPLE_DOMAIN "www.here.com"
+!define EXAMPLE_CATALOG "mycatalog"
+!define EXAMPLE_VLINK "mycatalog"
+!define EXAMPLE_SECURE_DOMAIN "secure.here.com"
 !build_title
 
 H1: Interchange Configuration
@@ -1148,6 +1153,7 @@ To show the user their name and the current time:
    [/perl]
 !endblock
 
+
 H2: ASP-Like Perl
 
 Interchange supports an ASP-like syntax using the E<lbracket>{{C[jump="ictags.html#mvasp"]mvasp}}] tag.
@@ -1185,6 +1191,13 @@ The C<__VARIABLE__> will be replaced by the value of C<Variable VARIABLE>, but [
 !block note; label="Important Note: "
 If using the C<SQL::Statement> module, the catalog must be set to C<AllowGlobal> in C<interchange.cfg>. It will not work in "Safe" mode due to limitations of object creation in Safe. Also, the C<Safe::Hole> module must be installed to have SQL databases work in Safe mode.
 !endblock
+
+
+H2: Error Reporting
+
+If your Perl code fails with a compile or runtime error, Interchange writes the error message from the Perl interpreter into the catalog's error log. This is typically 'I<catalog_root>/error.log'. Note that error messages do not appear on your web page as the return value of the Perl tag or routine.
+
+You will not have direct access to the 'C<strict>' and 'C<warnings>' pragmas wherever Interchange runs your perl code under C<Safe> (for example, within a [perl] or [mvasp] tag).  
 
 H1: Interchange Perl Objects
 

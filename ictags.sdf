@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.17 2001-03-31 04:35:25 bill Exp $
+# $Id: ictags.sdf,v 1.18 2001-04-02 05:50:07 bill Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.17 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.18 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -1841,47 +1841,47 @@ do:
 
 H2: calc
 
+Calculates the value of the enclosed arithmetic expression.
+
 
 H3: Summary
 
-No parameters.
+!block example;
+    [B<calc>] I<Expression> [/calc]
+!endblock
 
-Pass attribute hash as last to subroutine: B<no>
+B<No parameters>
 
-Interpolates B<container text> by default>.
+B<No attributes> (though you can break it if you set
+'C<interpolate=0>')
 
-This is a container tag, i.e. [calc] FOO [/calc].
-\Nesting: NO
-
-Invalidates cache: B<no>
-
-Called Routine: 
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<No>
+Has Subtags|I<No>
+Container tag|I<Yes>
+Nests|I<No>
+!endblock
 
 B<ASP-like Perl call:>
 
->    $Tag->calc(
->        {
->        },
->        BODY
->    )
->
-> OR
->
->    $Tag->calc($BODY);
-
+There is never a reason to call this tag from within perl or ASP code.
+Simply do the calculation directly.
  
 
 H3: Description
 
+Calculates the value of the enclosed arithmetic expression.
 
-syntax: [calc] EXPRESSION [/calc]
+Use it as follows: [calc] I<Expression> [/calc]
 
-Starts a region where the arguments are calculated according to normal
+The enclosed region where the arguments are calculated according to normal
 arithmetic symbols. For instance:
 
 >    [calc] 2 + 2 [/calc]
 
-will display:
+will expand to:
 
 >    4
 
@@ -1893,9 +1893,6 @@ tags by default, and is slightly more efficient to parse.
 you can do the equivalent of a memory store and memory recall for a loop.
 
 ASP Note: There is never a reason to use this tag in a [perl] or ASP section.
-
-
-
 
 
 H2: cart
@@ -5598,7 +5595,7 @@ H2: perl
 
 
 Executes the perl code contained by the tag.  The code will run under
-the restrictions of the 
+the restrictions of Perl's
 {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}}
 module by default.  The tag expands to the value returned by the enclosed code
 (i.e., printing to STDOUT or STDERR is useless).
@@ -5678,9 +5675,15 @@ E<lbracket>{{C[jump="#calc"]calc}}], and E<lbracket>{{C[jump="#mvasp"]mvasp}}].
 H3: Description
 
 This tag allows you to embed perl code within an Interchange page. The
-code will run under the restrictions of the 
+code will run under the restrictions of Perl's 
 {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}}
-module by default.  The tag expands to the value returned by the enclosed code
+module by default.  Perl's 'C<warnings>' and 'C<strict>' pragmas are
+both turned off, and Safe will block you from turning them on, since
+it blocks Perl's 'C<use>' command.  (This is not usually a problem,
+since you should probably use an alternative such as a usertag if your
+code is complex enough to need C<strict>.)
+
+The tag expands to the value returned by the enclosed code
 (i.e., printing to STDOUT or STDERR is useless).
 
 !block example
@@ -6700,47 +6703,129 @@ as well.
 
 
 
-
-
 H2: set_cookie
 
+Sets browser cookie(s) with the specified attributes.
 
 H3: Summary
+name value expire domain path
+!block example;
+    [B<set_cookie> I<named_attributes>]
+!endblock
 
-\Parameters: B<name value expire>
+Parameters must be named (no positional usage except in Perl call)
 
-ONLY THE B<> PARAMETERS ARE POSITIONAL.
+!block table; colvaligns="TTT"; format="262"
+Attributes|Description|Default
+{{CMD[jump="#set_cookie_name"]name}}|<<
+The name you give the cookie
+>>|I<none>
+{{CMD[jump="#set_cookie_value"]value}}|<<
+The value (automatically html-escaped by Interchange)
+>>|I<none>
+{{CMD[jump="#set_cookie_expire"]expire}}|<<
+Expiration date as
+. "Wdy, DD-Mon-YYYY HH:MM:SS GMT"
+>>|I<none>
+{{CMD[jump="#set_cookie_domain"]domain}}|<<
+Overrides the domain(s) set in {{C[jump="icconfig.html#CookieDomain"]CookieDomain}}
+>>|<<
+I<Domain(s), if any, defined in the> {{C[jump="icconfig.html#CookieDomain"]CookieDomain}} I<directive>
+>>
+{{CMD[jump="#set_cookie_path"]path}}|<<
+legal URL paths for the cookie
+>>|I<URL path(s) to your catalog, including aliases>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<Yes>
+Container tag|I<No>
+!endblock
+
+B<Usage example:>
+
+!block example
+   [set-cookie name=mycookie
+              value="the value"
+             expire="Tue, 03-Apr-2001 17:00:00 GMT" ]
+---
+   I<This tag returns no value in the page>
+!endblock
 
 
-Pass attribute hash as last to subroutine: B<no>
-
-Must pass named parameter interpolate=1 to cause interpolation.
-
-Invalidates cache: B<YES>
-
-Called Routine: 
 
 B<ASP-like Perl call:>
 
->    $Tag->set_cookie(
->        {
->         name => VALUE,
->         value => VALUE,
->         expire => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->set_cookie($name, $value, $expire);
+!block example; lang="Perl"
+    $Tag->set_cookie(  { name   => $name,
+                         value  => $value,
+                         expire => $expire,
+                         domain => $domain,
+                         path   => $path, }  );
+!endblock
 
+or similarly with positional parameters,
+
+!block example; lang='Perl'
+    $Tag->set_cookie( $name, $value, $expire, $domain, $path );
+!endblock
  
 
 H3: Description
 
-B<NO Description>
+This tag sets one or more browser cookies with your specified name,
+value, and expiration.
+
+If you need access to the cookie from outside of your Interchange
+catalog, you can also set the domain and URL paths for which the
+cookie will be valid. If you need the cookie only within your catalog
+and the domains specified by the
+{{C[jump="icconfig.html#CookieDomain"]CookieDomain}} directive, you
+probably should not override the Interchange domain and path defaults.
 
 
+H4:  {{CMD[id="set_cookie_name"]name}}
+
+This is the name of the cookie. This is the key you will use when reading the
+cookie later.
+
+H4:  {{CMD[id="set_cookie_value"]value}}
+
+This is the value to store in the cookie.
+
+H4:  {{CMD[id="set_cookie_expire"]expire}}
+
+Persistent cookies (that outlive a browser session) require an
+expiration date.  The date must be a string of the N<form:>
+
+. "Wdy,E<nbspace>DD-Mon-YYYYE<nbspace>HH:MM:SSE<nbspace>GMT"
+
+and the timezone must be GMT.
+
+If you do not supply a date, the cookie will disappear when the user
+closes the browser.
+
+H4:  {{CMD[id="set_cookie_domain"]domain}}
+
+The value you set will override the Interchange default
+domain(s). You might set this if you need access to the cookie from
+outside the Interchange catalog, but it is usually better to set the
+{{C[jump="icconfig.html#CookieDomain"]CookieDomain}} directive in your
+catalog.
+
+The default is to use your catalog's domain and all
+{{C[jump="icconfig.html#CookieDomain"]CookieDomain}} values.
+
+H4:  {{CMD[id="set_cookie_path"]path}}
+
+The value you set will override the Interchange default URL path(s).
+
+The default is to set a cookie with a path for each catalog alias (see
+the {{C[jump="icconfig.html#Catalog *global*"]Catalog}} directive).
+This ensures that the cookie will be visible regardless of how the end
+user returns to your catalog. 
 
 
 H2: seti
@@ -8342,7 +8427,13 @@ Called with:
 >    City: [value city][if value state], [value state][/if] [value country]
 >    [/quick_table]
 
-The properties for UserTag are are:
+As is the case with E<lbracket>{{C[jump="#perl"]perl}}] tag, user tags
+run under the Perl Safe.pm module with warnings disabled. Unlike
+C<[perl]> tags, however, user tags use Perl's 'C<strict>' pragma.
+
+
+The properties for UserTag are:
+
 
 
 H2: Alias
