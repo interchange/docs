@@ -1,9 +1,9 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: ictable_editor.sdf,v 1.5 2003-07-08 19:12:59 mheins Exp $
+# $Id: ictable_editor.sdf,v 1.6 2003-12-16 22:42:26 mheins Exp $
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.5 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.6 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ictable_editor.html"
@@ -308,6 +308,7 @@ date|Date selector|Selects a date, with optional time. Used in combination with 
 value|Value|Simply shows the value of the field, with no widget to set it.
 option_format|Option formatter
 show|Show all options|Shows all options for a select/radio/checbox type input, without a widget to set the value.
+uploadhelper|File Uppload|Puts the contents of a file upload in the named variable. Can be used as filter.widget="upload"
 !endblock
 
 These widgets are implemented with the Vend::Form module, and are
@@ -984,9 +985,19 @@ sure to specify a wider button with the ok_button_style setting (eg.
 ok_button_style=|font-weight: bold; width: 80px; text-align: center|)
 
 LI1: no_bottom
+
+By default, form buttons are displayed at the top and bottom of the table.
+Specifying no_bottom=1 prevents the bottom set of buttons from being displayed.
+>     no_bottom=1
+
 LI1: no_meta
 LI1: no_table_meta
 LI1: no_top
+
+By default, form buttons are displayed at the top and bottom of the table.
+Specifying no_top=1 prevents the top set of buttons from being displayed.
+>     no_top=1
+
 LI1: nodelete
 LI1: noexport
 LI1: nosave
@@ -999,10 +1010,35 @@ LI1: outboard
 LI1: override
 LI1: panel_append
 LI1: panel_height
+
+Specifies the height of the data panels used in the tabbed diaplay.
+The default is 600.
+>    panel_height=600
+
 LI1: panel_id
+
+Specifies the prefix used to identify the panels used in the tabbed display.
+The default is mvpan.
+>    panel_id=mvpan
+
 LI1: panel_prepend
 LI1: panel_style
+
+Specifies the CSS style applied to the data panels used in the tabbed display.
+The default is:
+>    font-family: sans-serif;
+>    font-size: smaller;
+>    padding: 0;
+>    border: 2px;
+>    border-color:#999999;
+>    border-style:outset;
+
 LI1: panel_width
+
+Specifiesthe width of the data panels used in the tabbed diaplay.
+The default is 800.
+>    panel_width=800
+
 LI1: passed
 LI1: pre_filter
 LI1: prepend
@@ -1018,13 +1054,58 @@ LI1: simple_row
 LI1: start_at
 LI1: start_at_index
 LI1: tab_bgcolor_template
+
+Controls the iteration over the range of bgcolor attributes of the tabs in the 
+tabbed display. If tab_bgcolor_template="#xx0000" the tabs will be set to 
+"#ff0000" "#ee0000", etc. The default is "#xxxxxx" and the values are set to 
+"#ffffff" "#eeeeee",etc. This option allows one to specify a range of colored tabs. 
+>    tab_bgcolor_template="#xx0000" 
+
 LI1: tab_height
+
+Specifies the height of the tabs in the tabbed display. The default is 20px.
+>    tab_height=20
+
 LI1: tab_horiz_offset
+
+Specifies the number of pixels that additional rows of tabs are shifted to the right.
+The default is 10px.
+>    tab_horiz_offset=10
+
 LI1: tab_style
+
+Specifies the CSS style applied to the tabs in the tabbed display.
+The default is:
+>   text-align:center;
+>   font-family: sans-serif;
+>   line-height:150%;
+>   font-size: smaller;
+>   border:2px;
+>   border-color:#999999;
+>   border-style:outset;
+>   border-bottom-style:none;
+
 LI1: tab_vert_offset
+
+Specifies the number of pixels that additional rows of tabs are shifted upward.
+The default is 20px.
+>    tab_vert_offset=20
+
 LI1: tab_width
+
+Specifies the width of the tabs in the tabbed display. The default is 120px.
+>    tab_width=120
+
 LI1: tabbed
+
+This option specifies that the tabbed display mode is to be used.  The tabbed=1 option 
+displays sections as DHTML tabbed panels.
+
 LI1: table
+
+This option specifies the table as the source / destination of the form fields.  
+The table is specified in the form: table=products.
+
 LI1: table_width
 LI1: td_extra
 LI1: template
@@ -1035,9 +1116,19 @@ LI1: ui_break_before_label
 LI1: ui_clone_id
 LI1: ui_clone_tables
 LI1: ui_data_fields
+
+Specifies the database fields that a form collects. This is a quoted space 
+delimited list of column names from the database table.
+
+>     ui_data_fields="field1 field2 field3"
+
 LI1: ui_data_fields_all
 LI1: ui_data_key_name
 LI1: ui_display_only
+
+A quoted space delimited list of fields to be displayed but not edited.
+>    ui_display_only="property_id"
+
 LI1: ui_hide_key
 
 Hides the key-field in the form. Remember that if you use the B<fields>
@@ -1050,11 +1141,20 @@ LI1: ui_new_item
 LI1: ui_profile
 LI1: ui_profile_success
 LI1: ui_wizard_fields
+
+Specifies the fields that a form collects in wizard mode.
+>     ui_wizard_fields="wiz_field1 wiz_field2 wiz_field3"
+
 LI1: widget
 LI1: widget_cell_extra
 LI1: widgets_only
 LI1: width
 LI1: wizard
+
+Specifies that the form collects data as session variables as 
+opposed to database fields. Data fields are specified using 
+the B<ui_wizard_fields> option.
+
 LI1: wizard_cancel
 LI1: wizard_next
 
