@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.71 2002-09-01 17:05:27 mheins Exp $
+# $Id: icconfig.sdf,v 1.72 2002-09-09 18:49:26 mheins Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.71 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.72 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icconfig.html"
@@ -684,9 +684,73 @@ settings that will apply for all catalogs.
    Profiles     etc/profiles.common
 !endblock
 
+H2: RobotIP *global*
+
+The RobotIP directive defines a list of IP numbers which will be classed as
+crawler robots (search engines) and causes Interchange to alter its
+behavior to improve the chance of Interchange-served content being crawled
+and listed.
+
+The directive accepts a wildcard list - * represents any number of
+characters, ? represents a single character. The elements of the list are
+separated by a comma.
+
+See {{CMD[jump="icconfig.html#RobotUA *global*"]RobotUA}} for a full description of the behavioural changes.
+
+\Example:
+
+!block example
+  RobotIP   209.135.65, 64.172.5
+!endblock
+
+H2: RobotUA *global*
+
+The RobotUA directive defines a list of User Agents which will be classed as
+crawler robots (search engines) and causes Interchange to alter its
+behavior to improve the chance of Interchange-served content being crawled
+and listed.
+
+The directive accepts a wildcard list - * represents any number of
+characters, ? represents a single character. The elements of the list are
+separated by a comma.
+
+If a User Agent is recognised as a robot, the following will be performed by Interchange:
+
+=over 4
+
+* C<mv_tmp_session> scratch variable is set to 1, causing sessions to be
+disabled and therefore avoiding the writing of session data to disk.
+
+* C<mv_no_session_id> scratch variable is set to 1, causing Interchange to
+generate URLs without a session id (eg. C<mv_session_id=KvWna2PT>).
+
+* C<mv_no_count> scratch variable is set to 1, causing Interchange to
+generate URLs without an incremental number, normally used to prevent
+proxy caching (eg. C<mv_pc=4>).
+
+=back
+
+It should be noted that once you have identified you are serving a page to a
+robot, you should not use this to massively alter your page content in an
+attempt to improve your ranking. If you do this, you stand the chance of
+being blacklisted. You have been warned!
+
+\Example:
+
+!block example
+  RobotUA   Inktomi, Scooter, *Robot*, *robot*, *Spider*, *spider*
+!endblock
+
+See also {{CMD[jump="icconfig.html#RobotIP *global*"]RobotIP}}.
+
 H2: SafeUntrap *global*
 
-Sets the codes that will be untrapped in the C<Safe.pm> module and used for embedded Perl and conditional operations. View the Safe.pm documentation by typing C<perldoc Safe> at the command prompt. The default is C<ftfile sort>, which untraps the file existence test operator and the sort operator. Define it as blank to prevent any operators but the default restrictive ones.
+Sets the codes that will be untrapped in the C<Safe.pm> module and used
+for embedded Perl and conditional operations. View the Safe.pm
+documentation by typing C<perldoc Safe> at the command prompt. The
+default is C<ftfile sort>, which untraps the file existence test
+operator and the sort operator. Define it as blank to prevent any
+operators but the default restrictive ones.
 
 !block example
    SafeUntrap     ftfile sort ftewrite rand
@@ -1534,7 +1598,7 @@ definition as well.
 
 With dynamic variables, all @_VARIABLE_@ and __VARIABLE__ settings are checked
 first to see if the source file is defined. If there is a key
-present, even if its contents are blank, it is returned. Example: in
+present, even if its contents are blank, it is returned. Example -- in
 the case of this catalog.cfg entry:
 
 !block example
