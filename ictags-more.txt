@@ -433,13 +433,13 @@ Here is what I found:
    one and note that the other is available. (This is a note that I
    will pass on to Alison for her information). 
 
-3. [discount_subtotal] is not documented.
+3. [discount_subtotal] is not documented. DONE
 
-4. [PREFIX-calc] is not documented. 
+4. [PREFIX-calc] is not documented. DONE
 
 5. [region] is now [search-region] ; [region] is still accepted. 
 
-6. [on_match] is not documented.
+6. [on_match] is not documented. DONE
 
 7. [search] in on the Tag Reference but nowhere else.
 
@@ -465,7 +465,7 @@ Here is what I found:
 
 17. [handling] is on the Tag Reference but nowhere else.
 
-18. [sql] is on the Tag Reference but nowhere else.
+18. [sql] is on the Tag Reference but nowhere else. REMOVED
 
 19. [counter] and [fcounter] are not documented.
 

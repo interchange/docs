@@ -1,0 +1,181 @@
+In no particular order
+
+* Zip code database
+  How to get the current files for your origin
+
+* All tables, purpose/context, columns and header rows explained
+
+  - Your site content data
+    > area.txt
+    > cat.txt
+    > downloadable.txt
+    > merchandising.txt
+    > options.txt
+    > pricing.txt
+    > products.txt
+    > products.txt.category
+
+  - Customer data
+    > access.asc
+    > gift_certs.txt
+    > userdb.txt
+
+  - Transaction-related data
+    > inventory.txt
+    > orderline.txt
+    > order_returns.txt
+    > transactions.txt
+
+  - Third-party relationship data
+    > affiliate.txt
+    > banner.txt
+
+  - Site administrative data
+    > component.txt
+    > files.txt
+    > ichelp.txt
+    > icmenu.txt
+    > locale.txt
+    > mv_metadata
+    > route.txt
+    > shipping.asc
+    > variable.txt
+
+  - Ancillary data
+    > 2ndDayAir.csv
+    > 450.csv
+    > country.txt
+    > Ground.csv
+    > NextDayAir.csv
+    > salestax.asc
+    > state.txt
+
+* The templates and components explained
+
+- Region Templates
+
+/home/ic/catalogs/ft/templates/regions:
+LEFTONLY_BOTTOM
+LEFTONLY_TOP
+LEFTRIGHT_BOTTOM
+LEFTRIGHT_TOP
+NOLEFT_BOTTOM
+NOLEFT_TOP
+
+- Template Pages
+
+/home/ic/catalogs/ft/pages/:
+aboutus.html
+account.html
+browse.html
+canceled.html
+change_password.html
+contact.html
+customerservice.html
+deliver.html
+flypage.html
+help.html
+index.html
+login.html
+logout.html
+lost_password.html
+modular_modify.html
+new_account.html
+privacypolicy.html
+process_return.html
+quantity.html
+results_big.html
+results_either.html
+results.html
+returns.html
+saved_carts.html
+ship_addresses_added.html
+ship_addresses.html
+ship_addresses_removed.html
+splash.html
+stock-alert-added.html
+stock-alert.html
+swap_results.html
+ 
+/home/ic/catalogs/ft/pages/admin/report_def:
+Order%20Status.html
+Products%20to%20edit.html
+ 
+/home/ic/catalogs/ft/pages/admin/reports:
+Order%20Status.html
+Products%20to%20edit.html
+ 
+/home/ic/catalogs/ft/pages/affiliate:
+index.html
+login.html
+ 
+/home/ic/catalogs/ft/pages/ord:
+basket.html
+checkout.html
+ 
+/home/ic/catalogs/ft/pages/query:
+check_orders.html
+get_password.html
+order_detail.html
+order_return.html
+
+
+- Special Pages
+
+/home/ic/catalogs/ft/special_pages/:
+badsearch.html
+canceled.html
+cc_not_valid.html
+confirmation.html
+failed.html
+interact.html
+missing.html
+needfield.html
+nomatch.html
+noproduct.html
+notfound.html
+order_security.html
+reconfig.html
+sec_faq.html
+security.html
+violation.html
+
+- Components
+
+/home/ic/catalogs/ft/templates/components:
+affiliate_receptor
+best_horizontal
+best_vertical
+cart
+cart_display
+cart_tiny
+category_horizontal
+category_vertical
+cross_horizontal
+cross_vertical
+modular_buy
+modular_update
+none
+promo
+promo_horizontal
+promo_vertical
+random
+random_horizontal
+random_vertical
+saved_carts_list_small
+search_box_small
+upsell
+upsell_horizontal
+upsell_vertical
+
+* The actions
+
+
+* The UserTags and GlobalSubs
+
+* Config files
+
+  - interchange.cfg
+  - catalog.cfg
+  - catalog_before.cfg
+  - catalog_after.cfg

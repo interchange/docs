@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.28 2001-05-03 18:54:50 jon Exp $
+# $Id: ictags.sdf,v 1.29 2001-05-04 21:16:20 bill Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.28 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.29 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -7683,56 +7683,6 @@ Attribute aliases
 H3: Description
 
 B<NO Description>
-
-
-
-
-H2: region
-
-
-H3: Summary
-
-No parameters.
-
-B<The attribute hash reference is passed> after the parameters but before
-the container text argument.
-B<This may mean that there are parameters not shown here.>
-
-Must pass named parameter interpolate=1 to cause interpolation.
-
-This is a container tag, i.e. [region] FOO [/region].
-\Nesting: NO
-
-Invalidates cache: B<no>
-
-Called Routine: 
-
-B<ASP-like Perl call:>
-
->    $Tag->region(
->        {
->        },
->        BODY
->    )
->
-> OR
->
->    $Tag->region($ATTRHASH, $BODY);
-
-Attribute aliases
-
->            args ==> arg
->            params ==> arg
->            search ==> arg
-
-
- 
-
-H3: Description
-
-B<NO Description>
-
-
 
 
 H2: row
