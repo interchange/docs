@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icupgrade.sdf,v 1.11 2001-03-29 22:37:54 bill Exp $
+# $Id: icupgrade.sdf,v 1.12 2001-04-10 21:20:44 jon Exp $
 
 !define DOC_NAME "Interchange Upgrade Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "icupgrade"
-!define DOC_VERSION substr('$Revision: 1.11 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.12 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/icupgrade.html"
@@ -13,7 +13,8 @@
 
 H1:Introduction
 
-This document contains, in rough form, notes on upgrading from MiniVend 3 to MiniVend 4, and MiniVend 4 to Interchange.
+This document contains, in rough form, notes on upgrading from Minivend 3 to Minivend 4, and Minivend 4 to Interchange.
+
 
 H1:Interchange 4.8 Deprecated Features
 
@@ -130,7 +131,7 @@ The send_mail routine has been replaced by the Vend::Mail::send routine.
 
 
 
-H1:Upgrading from MiniVend 4.0 to Interchange 4.6
+H1:Upgrading from Minivend 4.0 to Interchange 4.6
 
 if [item-price] suddenly turns 0, check PriceField in the catalog.cfg
 
@@ -307,13 +308,29 @@ Add a new field to transaction.txt called 'archived'.
 
 
 
-H1:Upgrading from MiniVend 3 to MiniVend 4
+H1:Upgrading from Minivend 3 to Minivend 4
 
-There were big changes from MiniVend 3 to MiniVend 4, some of which were incompatible.
+There were big changes from Minivend 3 to Minivend 4, some of which were incompatible.
 
 Many things were removed as redundant, deprecated, or just plain crufty:
 
 
+H2:Nested [loop]s
+
+MV3 used a different scheme for creating nested loop lists:
+
+\[loop with="-a"* arg="item item item" search="se=whatever"]
+
+allowed you to refer to the nested values with a [loop-code-a] construct. In Minivend 4, the form is:
+
+!block example
+	[loop prefix=size list="Small Medium Large"]
+		[loop prefix=color list="Red White Blue"]
+			[color-code]-[size-code]<BR>
+		[/loop]
+		<P>
+	[/loop]
+          
 H2:All frame features removed
 
 Frames are now managed by the user in HTML.
@@ -352,7 +369,7 @@ Replace with [ad ...]. See [random] above.
 
 H3:help
 
-No replacement, use data functions or variables.
+No replacement. Use data functions or variables.
 
 H3:body
 
@@ -384,7 +401,7 @@ Replace with normal data functions.
 
 H3:Compatibility routines
 
-N:Compatibility routines for many popular tags like [random], [rotate], etc. are provided in the appendix of this document. To use one, copy it to a file and put it in your usertag directory (assuming that is included by your your interchange.cfg).
+N:Compatibility routines for many popular tags like [random], [rotate], etc. are provided in the appendix of this document. To use one, copy it to a file and put it in your usertag directory. (Tags in the usertag directory are read in by interchange.cfg by default).
 
 
 H2:Directives removed
@@ -507,7 +524,7 @@ It will ensure at least that the user loads one form from you for each update. F
 
 H2:Checkout changes
 
-MiniVend 4 uses in-page error-flagging on the checkout page. Simplest way to convert is probably to use the checkout.html from the simple demo as a start, and move in any customization from the existing site's catalog.html (headers, footers, logos, etc.) A line-by-line comparison of the data fields in the checkout page should be performed, adding any custom fields as needed. Custom error checking in etc/order.profiles may have to be re-worked, or can be added into checkout.html using the in-page order profile capability.
+Minivend 4 uses in-page error-flagging on the checkout page. Simplest way to convert is probably to use the checkout.html from the simple demo as a start, and move in any customization from the existing site's catalog.html (headers, footers, logos, etc.) A line-by-line comparison of the data fields in the checkout page should be performed, adding any custom fields as needed. Custom error checking in etc/order.profiles may have to be re-worked, or can be added into checkout.html using the in-page order profile capability.
 
 Remember to update receipt.html and report/report.html with any custom fields, as well.
 
@@ -547,7 +564,7 @@ H2:Global subs
 
 Accessing globalsubs from [perl] tags is done slightly differently.
 
-MiniVend 3 method:
+Minivend 3 method:
 
 !block example
 [perl sub]
@@ -555,7 +572,7 @@ myfunsub();
 [/perl]
 !endblock
 
-MiniVend 4/IC method:
+Minivend 4/IC method:
 
 !block example
 [perl subs=1]
@@ -569,9 +586,9 @@ E:115.202.115.237 H8gbq6oK:115.202.115.237 - [28/February/2001:18:58:50 -0500] t
 
 
 
-A1:MiniVend 3 compatibility usertags and globalsubs
+A1:Minivend 3 compatibility usertags and globalsubs
 
-These files were originally distributed with MiniVend 4 in the compat/ directory. They replace MiniVend 3 functionality that was removed or greatly altered in MiniVend 4.
+These files were originally distributed with Minivend 4 in the compat/ directory. They replace Minivend 3 functionality that was removed or greatly altered in Minivend 4.
 
 
 A2:body
@@ -912,3 +929,14 @@ EOS
 AddDirective BackendOrder
 AddDirective AsciiBackend
 !endblock
+
+
+H1: History of Interchange
+
+Interchange is a descendent of Vend, an e-commerce solution originally developed by Andrew Wilcox in early 1995. Mike Heins took the first publicly-released version, Vend 0.2, and added searching and DBM catalog storage to create MiniVend. Mike released MiniVend 0.2m7 on December 28, 1995. Subsequent versions of MiniVend took parts from Vend 0.3, especially the vlink and Server.pm modules, which were adapted to run with MiniVend. In the four years that followed, Mike Heins expanded and enhanced MiniVend, creating a powerful and versatile e-commerce development platform. MiniVend grew to support thousands of businesses and their e-commerce sites.
+
+Separately, an experienced e-commerce development team founded Akopia. Their goal was to create a sophisticated open source e-commerce platform that was both feature-rich and easy to use. Their product, Tallyman, was intuitive, and had great content-management features, but lacked many of MiniVend's capabilities.
+
+Akopia acquired MiniVend in June 2000. Mike Heins and the Tallyman developers combined MiniVend with Tallyman's features to create Interchange. Interchange replaces both MiniVend and Tallyman. In order to preserve compatibility, the name "minivend" and prefixes like "mv_" and "MVC_" will still appear in source code and configuration files.
+
+In January 2001, Red Hat acquired Akopia and created its new E-Business Solutions Division. Interchange development is going forward and the user community continues to grow.
