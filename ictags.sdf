@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.68 2001-12-06 03:27:27 jon Exp $
+# $Id: ictags.sdf,v 1.69 2001-12-21 01:57:45 danb Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.68 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.69 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -6958,7 +6958,7 @@ as in Perl:
 >    <   numeric less-than
 >    lt  string less-than
 >    !=  numeric non-equivalence
->    ne  string equivalence
+>    ne  string non-equivalence
 
 Any simple perl test can be used, including some limited regex matching.
 More complex tests are best done with E<lbracket>{{C[jump="#if"]if}} explicit].
