@@ -1,0 +1,107 @@
+Date: Wed, 14 Feb 2001 10:20:18 -0600
+From: Cameron B. Prince <cameron@akopia.com>
+To: support@akopia.com
+Subject: Local Perl Install Steps
+ 
+Hi all,
+ 
+Here's the steps I took to install the local perl for the client who had an
+old system perl (5.004) and couldn't upgrade.
+ 
+This was tested on a Red Hat v5.x system as well as v7.0.
+ 
+Cameron
+
+
+
+1) Login as user. In this example, we'll call the user bob. Bob's home directory is /home/bob.
+
+2) Get the perl tarball and extract it in /home/bob. (tar -xzvf perl-5.6.0.tar.gz)
+
+3) Create a directory for the local perl. (mkdir /home/bob/local-perl)
+
+4) Compile perl.
+
+	A) cd perl-5.6.0
+
+	B) sh Configure
+
+	C) Choose all the defaults until you get to: "Directories to use for library searches?" Here you want to enter the new local perl path, as well as the defaults. So you should enter something like: /home/bob/local-perl/lib /usr/local/lib /lib /usr/lib
+
+	D) Continue choosing defaults till you get to: "Any additional ld flags (NOT including libraries)?" This should be: -L/home/bob/local-perl/lib
+
+	E) Continue choosing defaults till you get to: "Installation prefix to use? (~name ok)" This should be: /home/bob/local-perl
+
+	F) Choose all defaults till you get to: "Directory /home/bob/local-perl/bin doesn't exist.  Use that name anyway?" Enter y.
+
+	G) Continue choosing defaults till you get to: "Do you want to install perl as /usr/bin/perl?" Enter n.
+
+	H) Continue choosing defaults till you get to: "Directory /home/bob/local-perl/bin doesn't exist.  Use that name anyway?" Enter y.
+
+	I) Directory /home/bob/local-perl/bin doesn't exist.  Use that name anyway? Enter y.
+
+	J) Continue taking defaults till you return to a prompt.
+
+	K) make
+
+	L) make test
+
+	M) make install
+
+	O) /home/bob/local-perl/bin/perl -v
+
+		You should see: This is perl, v5.6.0
+
+
+5) edit /home/bob/.bash_rc
+
+		Change: PATH=$PATH:$HOME/bin
+		To: PATH=/home/bob/local-perl/bin:$PATH:$HOME/bin
+
+6) Logout and log back in.
+
+7) which perl
+
+		You should see: ~/local-perl/bin/perl or /home/bob/local-perl/bin/perl
+
+
+8) perl -MCPAN -e 'install Bundle::Interchange'
+
+Keep running this until you see:
+
+MD5 is up to date.
+MIME::Base64 is up to date.
+URI is up to date.
+Net::FTP is up to date.
+MIME::Base64 is up to date.
+Digest::MD5 is up to date.
+HTML::Tagset is up to date.
+HTML::Parser is up to date.
+HTML::HeadParser is up to date.
+LWP is up to date.
+Term::ReadKey is up to date.
+Term::ReadLine::Perl is up to date.
+Business::UPS is up to date.
+SQL::Statement is up to date.
+Storable is up to date.
+DBI is up to date.
+Safe::Hole is up to date.
+
+You may need to get the modules via ftp and install them by hand. For instance, during the test used to create this document, I had to get URI and LWP and install by hand before everything reported that it was up to date. To do this, follow these steps:
+
+1) ftp ftp.cpan.org
+2) cd /CPAN/modules/by-module/URI
+3) bin
+4) get URI-1.10.tar.gz
+5) quit
+6) tar -xzvf URI-1.10.tar.gz
+7) cd URI-1.10
+8) perl Makefile.pl
+9) make
+10) make test
+11) make install
+
+Use the same basic steps for any module not properly installed by using perl -MCPAN -e 'install Bundle::Interchange'
+
+
+9) Install Interchange as normal.
