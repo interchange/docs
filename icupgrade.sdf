@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icupgrade.sdf,v 1.18 2002-04-15 16:13:20 jon Exp $
+# $Id: icupgrade.sdf,v 1.19 2002-10-24 23:35:14 kwalsh Exp $
 
 !define DOC_NAME "Interchange Upgrade Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "icupgrade"
-!define DOC_VERSION substr('$Revision: 1.18 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.19 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icupgrade.html"
@@ -120,6 +120,8 @@ lib/Vend/Order.pm 867,868
 
 lib/Vend/Order.pm 1030
 
+=back
+
 >                        $::Values->{"mv_error_$var"} = $message;
 
 H2:Interchange 4 Deprecated Features
@@ -128,6 +130,7 @@ H2:Interchange 4 Deprecated Features
 
 The send_mail routine has been replaced by the Vend::Mail::send routine.
 
+=back
 
 
 
