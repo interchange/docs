@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.37 2002-02-18 00:41:59 mheins Exp $
+# $Id: icdatabase.sdf,v 1.38 2002-04-01 16:09:10 kwalsh Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.37 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.38 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
@@ -1318,7 +1318,7 @@ that C<[search-list]>, C<[more-list]>, and C<[more]> tags can be placed within i
    [/search-region]
 !endblock
 
-NOTE: The [item-code] above does not need to be quoted because it is replaced
+Note: The [item-code] above does not need to be quoted because it is replaced
 before the [page ...] tag is interpolated. If building large lists, this is
 worth doing because unquoted tags are twice as fast to parse.
 
