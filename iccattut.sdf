@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: iccattut.sdf,v 1.9 2001-04-12 14:17:28 alison Exp $
+# $Id: iccattut.sdf,v 1.10 2001-04-13 18:53:30 jon Exp $
 
 !define DOC_NAME "Catalog-Building Tutorial"
 !define DOC_TYPE ""
 !define DOC_CODE "iccattut"
-!define DOC_VERSION substr('$Revision: 1.9 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.10 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/iccattut.html"
@@ -15,7 +15,7 @@ H1:Purpose
 
 N:The purpose of this document is to guide you through constructing a simple Interchange catalog from scratch. The demo catalog that ships with Interchange is quite complex since it highlights some of the many capabilities that Interchange offers. As a template for your own catalog, the demos can either be an intimidating place to start or too customized to relate to your business.
 
-The simple catalog you create using this tutorial should give you a feel for the basic Interchange system. It should also be considered a stepping stone to a more complete and functional ecommerce system built with Interchange. The tutorial relies as much as possible on default settings to accentuate how Interchange works. It will use as few of Interchange's capabilities as possible, while still building a usable store. The resulting site will be simple but usable. The value of this tutorial is not in the resulting e-commerce site, but in the instruction that occurs along the way.
+The simple catalog you create using this tutorial should give you a feel for the basic Interchange system. It should also be considered a stepping stone to a more complete and functional e-commerce system built with Interchange. The tutorial relies as much as possible on default settings to accentuate how Interchange works. It will use as few of Interchange's capabilities as possible, while still building a usable store. The resulting site will be simple but usable. The value of this tutorial is not in the resulting e-commerce site, but in the instruction that occurs along the way.
 
 It is recommended that you create the files used in this tutorial yourself. You will learn more by creating the directory structure and using your favorite text editor to create files in the proper places on your own system as they are discussed.
 
@@ -93,8 +93,8 @@ N:Because it is impossible to cover all senarios, this tutorial assumes that you
 *{{B:Catalogs directory:}} /var/lib/interchange
 *{{B:cgi-bin directory:}} /var/www/cgi-bin
 *{{B:Interchange user:}} interch
-*{{B:Demo catalog name:}} construct
-*{{B:Demo catalog URL base:}} http://localhost/cgi-bin/construct
+*{{B:Demo catalog name:}} foundation
+*{{B:Demo catalog URL base:}} http://localhost/cgi-bin/foundation
 *{{B:Tutorial catalog name:}} tutorial
 *{{B:Tutorial catalog URL base:}} http://localhost/cgi-bin/tutorial
 *{{B:Tutorial catalog directory:}} /var/lib/interchange/tutorial
@@ -109,13 +109,13 @@ H2:Create the link program
 
 N:You need to make a copy of the demo link program in your cgi-bin directory and name it {{FILE:tutorial}}.
 
-N:The demo link program has the same name as your demo catalog, usually {{EX:Foundation}}. The link program links the Interchange daemon with your web server. Make sure that it has the same owner and file permissions as the one you copied from. The set-UID bit is especially (unless you installed as a regular user). Normally you will need to be root to have write permissions in the cgi-bin directory.
+N:The demo link program has the same name as your demo catalog, usually {{EX:foundation}}. The link program links the Interchange daemon with your web server. Make sure that it has the same owner and file permissions as the one you copied from. The set-UID bit is especially (unless you installed as a regular user). Normally you will need to be root to have write permissions in the cgi-bin directory.
 
 N:Type this command as root while in your cgi-bin directory:
 
-E[keep_prev=1]cp -p construct tutorial
+E[keep_prev=1]cp -p foundation tutorial
 
-N:If everything is working correctly, typing {{EX:ls -l construct tutorial}} should describe your files roughly like this:
+N:If everything is working correctly, typing {{EX:ls -l}} should describe your files roughly like this:
 
 !block example;
 -rwsr-xr-x    1 interch  interch      7708 Dec 16 22:47 foundation
@@ -134,7 +134,7 @@ chmod 770 tutorial
 
 H2:Become the Interchange user
 
-N:You should be able to do everything you need to do as the 'interch' user for the rest of this tutorial. So you can switch user now ({{EX:su interch}}). If you installed Interchange from the RPM, the user {{B:interch}} probably doesn't have a password. You'll have to set it with a command such as {{EX:passwd interch}} while root.
+N:You should be able to do everything you need to do as the 'interch' user for the rest of this tutorial. So you can switch to that user now ({{EX:su interch}}). If you installed Interchange from the RPM, the user {{B:interch}} probably doesn't have a password. You'll have to set it with a command such as {{EX:passwd interch}} while root.
 
 H2:Go to the tutorial catalog directory
 
@@ -150,7 +150,7 @@ H1:Configuration files
 
 N:Interchange configuration is controlled by a number of directives, which are specified in two files. Global configuration directives go in {{FILE:interchange.cfg}} in the Interchange software directory. Catalog-specific configuration directives go in {{FILE:catalog.cfg}} in the catalog directory.
 
-N:A complete directive consists of the directive name followed by whitespace-separated parameters. Any number of spaces or tabs can be between the directive and its options, but the directive and its options must be on the same line. The directive is case insensitive, but it is recommended that you use it consistantly for readability.
+N:A complete directive consists of the directive name followed by whitespace-separated parameters. Any number of spaces or tabs can be between the directive and its options, but the directive and its options must be on the same line. The directive is case-insensitive, but it is recommended that you use it consistently for readability.
 
 N:You can insert blank lines or comment lines (lines where the first non-blank character is '#') throughout the configuration files to improve readability. The order the lines appear in is significant, but unimportant for the simple catalog you are creating.
 
@@ -214,7 +214,7 @@ N:The {{FILE:products/products.txt}} file will serve two purposes. It will provi
 
 N:The product database is handled as a special case since Interchange expects at least the description, price, and product ID (sku) fields. In other words, the {{FILE:products.txt}} file must at least contain fields named sku, price, and description. Any other fields you decide to include are handled normally.
 
-N:The simple store that we are going to build will sell tests. You can choose another sample product line, but it is recommended that you keep it simple. 	Create the file {{FILE:products/products.txt}} to look like this, with a single tab separating each field:
+N:The simple store that we are going to build will sell tests. You can choose another sample product line, but it is recommended that you keep it simple. Create the file {{FILE:products/products.txt}} to look like this, with a single tab separating each field:
 
 !block example;
 sku	description	price
@@ -224,7 +224,7 @@ sku	description	price
 1299	Ubiquitous diff eq final	37.00
 !endblock
 
-Note:When using tab-delimited files as we are, make sure you have exactly one tab between each field. Some text editors will use spaces to simulate tabs. Interchange expects actual ASCII tab characters, no spaces or extra characters are accepted.
+Note:When using tab-delimited files as we are, make sure you have exactly one tab between each field. Some text editors will use spaces to simulate tabs. Interchange expects actual ASCII tab characters; no spaces or extra characters are accepted.
 
 N:You may notice that the columns don't line up in your text editor. This is the nature of tab-delimited files. Do not try to fix these.
 
@@ -286,7 +286,7 @@ H2:The Interchange Tag Language
 
 N:Now we need a way to pull the template pieces we just created into the proper places to make a complete page. This is done using ITL, the Interchange Tag Language.
 
-N:ITL is at the heart of almost all Interchange catalog pages. It's how you use Interchange's functionality. The ITL tags appear between square brackets like [this]. Options appear after the tag, separated by whitespace, like this: [tag option1 option2] and this: [tag option1=value1 option2=value2]. They can span multiple lines. (That can help readability when the tag has many options.) There are many ITL tags, and for this tutorial very few will be addressed. For a complete listing of the ITL tags, see the {{1:Red Hat Interchange 4.8: Tag Reference Guide}}.
+N:ITL is at the heart of almost all Interchange catalog pages. It's how you use Interchange's functionality. The ITL tags appear between square brackets like [this]. Options appear after the tag, separated by whitespace, like this: [tag option1 option2] and this: [tag option1=value1 option2=value2]. They can span multiple lines. (That can help readability when the tag has many options.) There are many ITL tags, and for this tutorial very few will be addressed. For a complete listing of the ITL tags, see the {{1:Interchange Tag Reference Guide}}.
 
 N:Your first tag will be [include], which reads the file mentioned (relative to the catalog directory), parses any Interchange tags, and puts the result in place of the tag. This is demonstrated on the next page you need to create.
 
@@ -394,7 +394,7 @@ H2:pages/flypage.html
 
 N:The next step is to create an individual page for each item. To do this, you need to create a special generic page called {{FILE:pages/flypage.html}}. When a page is requested that does not exist in the {{FILE:pages/}} directory, Interchange will check and see if the requested page has the same name as a product ID from the product database table (in this case a SKU). If it does, it will show the flypage for that product. If there's no product with that ID, the special error page {{FILE:special_pages/missing.html}} (described in the next section) will be displayed.
 
-N:For example, if the page {{FILE:0198.html}} was requested, Interchange first checks for a page with that name. If one is not found, it searchs the products database table for a product with that ID. Interchange then creates a product page "on the fly" using {{FILE:pages/flypage.html}}. When constructing the flypage, the entire product record for the requested product is available through the [item-field] tag (similar to the [loop-field] tag). To create a fly page, type the following code and save it as {{FILE:pages/flypage.html}}.
+N:For example, if the page {{FILE:0198.html}} was requested, Interchange first checks for a page with that name. If one is not found, it searches the products database table for a product with that ID. Interchange then creates a product page "on the fly" using {{FILE:pages/flypage.html}}. When constructing the flypage, the entire product record for the requested product is available through the [item-field] tag (similar to the [loop-field] tag). To create a fly page, type the following code and save it as {{FILE:pages/flypage.html}}.
 
 !block example;
 [include top]
@@ -427,7 +427,7 @@ N:As mentioned, it is a good idea to display an error page when Interchange is a
 [include left]
 <p>We're sorry, the page you requested has not been found.</p>
 
-<p>[page index]Return to the welcome page[/page]</p>
+<p>Try finding what you need on the [page index]welcome page</a>.</p>
 [include bottom]
 !endblock
 
@@ -495,8 +495,8 @@ N:The Foundation store has a full-featured shopping basket available for use, bu
 <hr>
 
 <p>
-[page checkout]Purchase now[/page]<br>
-[page index]Return to shopping[/page]
+[page checkout]Purchase now</a><br>
+[page index]Return to shopping</a>
 </p>
 
 [include bottom]
@@ -514,14 +514,14 @@ N:The basket items can be accessed one at a time by using the [item-list] tag. S
 
 *[subtotal] shows the calculated shopping basket subtotal.
 
-*[page index]...[/page] creates a link to the catalog welcome page.
+*[page index] creates the starting HTML <a href="..."> for a link to the catalog welcome page.
 
 N:You also need to put a link in the index page so that shoppers can go to their shopping cart without ordering something. Modify the end of {{FILE:pages/index.html}} by adding the following lines.
 
 !block example;
   </table>
 + <hr>
-+ <p align=center>[page order]View shopping cart[/page]</p>
++ <p align=center>[page order]View shopping cart</a></p>
   [include bottom]
 !endblock
 
@@ -621,7 +621,7 @@ Year (last two digits only):
 
 </form>
 
-<p>[page index]Return to shopping instead[/page]</p>
+<p>[page index]Return to shopping instead</a></p>
 [include bottom]
 !endblock
 
@@ -629,7 +629,7 @@ N:The HTML form begins with a method of 'post' (which sends the form data as its
 
 N:You are submitting some hidden form values that will tell Interchange how to process this form. The first value, {{2:mv_todo}} was set as {{1:submit}}. This causes the form to be submitted for validation. The second value, {{2:mv_order_profile}} was set as {{1:order_profile}}. This determines the validation process for the form. It is explained further in the next section.
 
-N:The last value, {{2:mv_cyber_mode}} was set to be {{1:minivend_test}}. The {{2:mv_cyber_mode}} value determines what method will be used to charge a credit card. The value of {{1:minivend_test}} uses the internal test method, which calculates a simple checksum against the card to determine if it is a valid number.
+N:The last value, {{2:mv_cyber_mode}}, was set to be {{1:minivend_test}}. The {{2:mv_cyber_mode}} value determines what method will be used to charge a credit card. The value of {{1:minivend_test}} uses the internal test method, which calculates a simple checksum against the card to determine if it is a valid number.
 
 N:When preparing an order for processing, Interchange looks for certain named fields in the form values for name, address, and credit card information. We are using all expected field names in this form so that no translation needs to take place.
 
@@ -657,9 +657,9 @@ N:You need to set up verification for the order form by defining an order profil
   __END__
 !endblock
 
-N:A single file can contain multiple profile definitions. First the profile is named using the __NAME__ pragma. (This is unrelated to the __VARIABLE__ syntax seen elsewhere in Interchange.) In it, there is a list the fields from the form that are required. The {{2:&fatal}} setting indicates that validation will fail if any of the requirements are not met. {{2:&final}} indicates that this form will complete the ordering process. This setting is helpful if you have a multi-page ordering process, each of which you want to validate individually. The __END__ pragma signals the end of this profile, after which you can begin another one.
+N:A single file can contain multiple profile definitions. First the profile is named using the __NAME__ pragma. (This is unrelated to the __VARIABLE__ syntax seen elsewhere in Interchange.) Then in the profile there is a list of the form fields that are required. The {{2:&fatal}} setting indicates that validation will fail if any of the requirements are not met. {{2:&final}} indicates that this form will complete the ordering process. This setting is helpful if you have a multi-page ordering process and you want to validate each page individually. The __END__ pragma signals the end of this profile, after which you can begin another one.
 
-N:In order to make your order profile effective, add the following {{2:OrderProfile}} directive to the end of {{FILE:catalog.cfg}}:
+N:In order to activate your order profile, add the following {{2:OrderProfile}} directive to the end of {{FILE:catalog.cfg}}:
 
 !block example;
   OrderProfile etc/profiles.order
@@ -672,17 +672,17 @@ N:If the submitted form lacks a required field, Interchange will display an erro
 !block example;
 [include top]
 [include left]
-<p>The following field was not completed:</p>
+<p>The following information was not given:</p>
 
 <p><b>[error all=1 show_var=1 show_error=1 joiner='<br>']</b></p>
 
-<p>Please go back to the [page checkout]checkout page[/page]
+<p>Please go back to the [page checkout]checkout page</a>
 and fill out the form properly.</p>
 
 [include bottom]
 !endblock
 
-N:The [error] tag is the most important tag on this page. The {{2:all}} parameter tells the tag to iterate through all of the errors reported from the failed verification, and the {{2:show_var}} parameter indicates that the failed variable should be displayed. For example, if the first name was left empty, {{1:fname}} would be shown. The {{2:show_error}} parameter displays the actual error for the variable. The {{2:joiner}} parameter inserts an HTML {{1:<br>}} tag between each error message, so each error is displayed on its own line. In more complex configurations, the [error] tag can be even more expressive.
+N:The [error] tag is the most important tag on this page. The {{2:all}} parameter tells the tag to iterate through all of the errors reported from the failed verification, and the {{2:show_var}} parameter indicates that the failed variable name should be displayed. For example, if the first name was left empty, {{1:fname}} would be shown. The {{2:show_error}} parameter displays the actual error for the variable. The {{2:joiner}} parameter inserts an HTML {{1:<br>}} tag between each error message, so each error is displayed on its own line. In more complex configurations, the [error] tag can be even more expressive.
 
 H2:Credit card processing
 
@@ -698,7 +698,7 @@ N:This tutorial uses a very simple order process. To accomplish this, one more d
 
 N:This issues two instructions to the credit card system.
 
-N:The first option, {{2:standard}}, uses the standard built-in encryption algorithm to encrypt the credit card number and erases the unencrypted copy from memory. We are using the standard option not to encrypt the number (in fact we aren't even going to define an encryption program) but to run the checksum verification on the number to verify that it is a potentially correct number. We will not be checking with a real payment processor to see if it acually is a valid card number. For testing purposes, you can use the card number 4111 1111 1111 1111, which will pass the checksum test.
+N:The first option, {{2:standard}}, uses the standard built-in encryption algorithm to encrypt the credit card number and erases the unencrypted copy from memory. We are using the standard option not to encrypt the number but to run the checksum verification on the number to verify that it is a potentially correct number. We will not be checking with a real payment processor to see if it actually is a valid card number. For testing purposes, you can use the card number 4111 1111 1111 1111, which will pass the checksum test.
 
 N:The second option, {{2:keep}}, keeps the credit card number from getting removed from memory. We want to keep the number in memory so that it is available when it is mailed as part of the order.
 
@@ -708,7 +708,7 @@ H2:etc/report
 
 N:When the customer's involvement in the order is complete, Interchange composes an email and sends it to the recipient defined in the MailOrderTo directive in {{FILE:catalog.cfg}}. The default location for the template for this email report is {{FILE:etc/report}}. Interchange tags can be used to fill in the body of the message.
 
-N:The report should include at least the customer's name, address, and the items they ordered. The following is a simple report template, save it as {{FILE:etc/report}}.
+N:The report should include at least the customer's name, address, and the items they ordered. The following is a simple report template; save it as {{FILE:etc/report}}.
 
 !block example;
              Name: [value fname] [value lname]
@@ -728,7 +728,7 @@ Subtotal: [subtotal]
    Total: [total-cost]
 !endblock
 
-N:This file is in plain text format where, unlike HTML, white space is relevant. It is fairly straightforward, except that  the [if] tag was added to only include the optional second address line if the customer filled it in.
+N:This file is in plain text format where, unlike HTML, white space is relevant. It is fairly straightforward, except that the [if] tag was added to only include the optional second address line if the customer filled it in.
 
 N:One of the special properties of the {{1:mv_credit_card_number}} field is that Interchange specifically precludes the credit card number from being saved. This makes it unavailable to you in the [value] tag. The {{2:[cgi]}} tag is used to circumvent this important security measure in order to get the value submitted from the last form.
 
@@ -742,7 +742,7 @@ N:Once the report has been run, Interchange will finish the order process on the
 [include top]
 [include left]
 <p>Thank you for ordering stuff from us.<br>Have a nice day!</p>
-<p>[page index]Return to our welcome page[/page]</p>
+<p>[page index]Return to our welcome page</a></p>
 [include bottom]
 !endblock
 
@@ -791,7 +791,7 @@ N:Makes the currency symbol precede the currency value. A '0' setting makes the 
 
 E:Locale en_US mon_thousands_sep ,
 
-N:Sets your thousands separator to a comma. It can be set as any value.
+N:Sets your thousands separator to a comma. It can be set to any value.
 
 E:Locale en_US mon_decimal_point .
 
@@ -829,11 +829,11 @@ N:Now make the following change to your template file {{FILE:bottom}}:
 
 N:Be sure to restart Interchange before reloading the page in your browser, since you made a change to {{FILE:catalog.cfg}}.
 
-N:Let's add another variable to your catalog. This variable demonstrates how an Interchange tag is included in the variable. This Interchange tag returns the current date in a standard format. Add the following to {{FILE:catalog.cfg}}:
+N:Let's add another variable to your catalog. This variable demonstrates how an Interchange tag can be included in the variable. This Interchange tag returns the current date in a standard format. Add the following to {{FILE:catalog.cfg}}:
 
-E:Variable DISPLAYDATE [tag time]%A, %B %d, %Y[/tag]
+E:Variable DISPLAYDATE [time]%A, %B %d, %Y[/time]
 
-Note:See the {{1:Red Hat Interchange 4.8: Tag Reference Guide}} for an explaination of the [tag] tag. 
+Note:See the {{1:Interchange Tag Reference Guide}} for an explanation of the [time] tag. 
 
 N:Now add the following to the {{FILE:left}} template piece:
 
@@ -850,7 +850,7 @@ H2:Advanced credit card expiration date selection
 
 N:To reduce the possibility of human error at checkout time, most online stores use a pull-down option menu to list the months and the years for the credit card expiration date, instead of having the user to type the numbers by hand. It also lets you avoid explaining whether the user should enter a 2- or 4-digit year.
 
-N:Make the following change to your {{FILE:pages/checkout.html}} page. The section that follows explains the code. Depending on your programming experience, you might want to read the explanation section below before typing the code so you know where tabs should be used instead of spaces and where to watch out for `backticks`.
+N:Make the following change to your {{FILE:pages/checkout.html}} page. The section that follows explains the code. Read the explanation section below before typing the code to be sure you know where tabs should be used instead of spaces and where to watch out for `backticks`.
 
 !block example;
   <tr>
@@ -910,13 +910,13 @@ N:Make the following change to your {{FILE:pages/checkout.html}} page. The secti
   </table>
 !endblock
 
-N:In the first set of <select> </select> tags a list is generated of the months to choose from. This is accomplished by using a {{2:[loop]}} tag. In this case we are looping over an explicit list. The list is provided in the {{1:list}} parameter. Use caution when typing this, as it is sensitive to formatting (which may not be reflected in this document). Make sure that the numbers are the first characters on each new line and that the elements are tab-separated. Since the columns in this list are not named, the first element can be accessed using {{2:[loop-code]}} or {{2:[loop-pos 0]}} with subsequent elements being accessed by {{2:[loop-pos N]}} where N is the element you want. Notice that the elements are zero-indexed. Each time through this loop Interchange generates a select <option> with a number as the value and the name of the month as the text for the select menu.
+N:In the first set of <select> </select> tags a list is generated of the months to choose from. This is accomplished by using a {{2:[loop]}} tag. In this case we are looping over an explicit list. The list is provided in the {{1:list}} parameter. Use caution when typing this, as it is sensitive to formatting (which may not be reflected in this document). Make sure that the numbers are the first characters on each new line and that the elements are separated by a single tab. Since the columns in this list are not named, the first element can be accessed using {{2:[loop-code]}} or {{2:[loop-pos 0]}} with subsequent elements being accessed by {{2:[loop-pos N]}} where N is the number of the element you want. Notice that the elements are zero-indexed. Each time through this loop Interchange generates a select <option> with a number as the value and the name of the month as the text for the select menu.
 
 N:For the next set of <select> </select> tags embedded Perl is used to generate the list which is iterated over. Perl code can be embedded in Interchange pages in order to extend the abilities of the system. Make sure you typed backticks (grave accents) after "list=" and before the closing bracket and not apostrophes. This code generates an entry for seven years in addition to the current year. It is not necessary at this point for you to understand this Perl code.
 
 H2:Sorting the product list
 
-N:The products listed on your welcome page are shown in the same order that you entered them into {{FILE:products/products.txt}}. As you add more products, you will want this list to show up in a more predictable order. To do this, you need to change the search parameters in {{FILE:index.html}}, which were originally:
+N:The products listed on your welcome page are shown in the same order that you entered them into {{FILE:products/products.txt}}. As you add more products, you will want this list to show up in a predictable order. To do this, you need to change the search parameters in {{FILE:index.html}}, which were originally:
 
 E:[loop search="ra=yes/fi=products"]
 
@@ -1001,8 +1001,8 @@ N:The search box will now appear on all catalog pages, but you still need to cre
   [/no-match]
 [/search-region]
 <hr>
-<p align=center>[page index]Return to welcome page[/page]</p>
-<p align=center>[page order]View shopping cart[/page]</p>
+<p align=center>[page index]Return to welcome page</a></p>
+<p align=center>[page order]View shopping cart</a></p>
 [include bottom]
 !endblock
 

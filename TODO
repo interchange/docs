@@ -57,6 +57,8 @@ http://developer.akopia.com/cgi-bin/ic/examples/icintro_5a.html )
 
 iccattut:
 
+Switch to new payment settings instead of mv_cyber_mode etc.
+
 To add
 
 Discuss profile.order verification options like 'zip=zip' and then explain why we don't actually use that one much unless it's for a U.S.-only store
