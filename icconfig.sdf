@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.53 2001-12-30 02:37:06 jon Exp $
+# $Id: icconfig.sdf,v 1.54 2002-01-03 00:06:44 jon Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.53 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.54 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
@@ -865,20 +865,23 @@ the server. Otherwise, this is the same as a catalog UserTag.
 H2: Variable *global*
 
 Defines a global variable that will be available in all catalogs with the
-notation @@VARIABLENAME@@. Variable identifiers must begin with a capital
+notation @@VARIABLE@@. Variable identifiers must begin with a capital
 letter, and can contain only word characters (B<A-Z,a-z,0-9> and underscore).
-They are case-sensitive. If using the C<ParseVariables> directive, only
-variables in ALL CAPS will be parsed. These are substituted first in any
-Interchange page, and can contain any valid Interchange tags including catalog
-variables.
+They are case-sensitive.
 
 !block example
    Variable   DOCUMENT_ROOT   /usr/local/etc/httpd/htdocs
 !endblock
 
-If a variable is called with @_VARIABLE_@, and there is no catalog Variable with its name, the global Variable value will be inserted.
+Only variables with ALL CAPS names will be parsed in catalog pages or,
+when the C<ParseVariables> directive is set, in catalog (not global)
+configuration directives (other than Variable itself). These are
+substituted first in any Interchange page, and can contain any valid
+Interchange tags including catalog variables. If a variable is called
+with the notation @_VARIABLE_@, and there is no catalog Variable with
+its name, the global Variable value will be inserted.
 
-There are several standard variables which should not be used:
+There are several standard variables which you should not set:
 
 LI1: MV_FILE
 
@@ -1683,7 +1686,7 @@ Sets a products database column which can be used to select the on-the-fly templ
 
 H2: ParseVariables
 
-Determines whether global and catalog variables will be parsed in the configuration file. Default is No. The foundation catalog.cfg turns ParseVariables on and usually expects it to be on.
+Determines whether global and catalog variables will be parsed in catalog configuration directives (not including the Variable directive itself, which never parses its settings). Applies only to variables with names in ALL CAPS. Default setting is No. The foundation catalog.cfg turns ParseVariables on and usually expects it to be on.
 
 !block example
    Variable STORE_ID  topshop
@@ -2365,11 +2368,22 @@ When the user session starts, C<[value fname] [value lname]> will be "New User."
 
 H2: Variable
 
-Defines a catalog variable that will be available in the current catalog with the notation C<__Variable__>. Variable identifiers must begin with a capital letter, and can contain only word characters (B<A-Z,a-z,0-9> and underscore). These are substituted second (right after global Variables) in any Interchange page, and can contain any valid Interchange tags except global variables.
+Defines a catalog variable that will be available in the current catalog
+with the notation C<__VARIABLE__>. Variable identifiers must begin with
+a capital letter, and can contain only word characters (B<A-Z,a-z,0-9>
+and underscore). They are case-sensitive.
 
 !block example
    Variable   DOCUMENT_ROOT   /usr/local/etc/httpd/htdocs
 !endblock
+
+Only variables with ALL CAPS names will be parsed in catalog pages or,
+when the C<ParseVariables> directive is set, in catalog configuration
+directives (other than in Variable directives themselves). These are
+substituted second (right after global Variables) in any Interchange page,
+and can contain any valid Interchange tags except global variables. If a
+variable is called with the notation @_VARIABLE_@, and there is no catalog
+Variable with its name, the global Variable value will be inserted.
 
 H2: VariableDatabase
 
