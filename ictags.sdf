@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.11 2001-03-25 03:20:01 bill Exp $
+# $Id: ictags.sdf,v 1.12 2001-03-26 06:06:56 bill Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.11 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.12 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -705,61 +705,128 @@ Each ITL tag is show below. Calling information is defined for the main tag,
 sub-tags are described in C<Sub-tags>.
 
 
-
 H2: accessories
 
-# was 'over' 4
+Allows access to Interchange's product option attributes (e.g., to
+choose or access product options such as a shirt's size or color).
 
-Short Description here
+Can build selection objects (radio, check, select boxes, etc) or
+forms, or can simply return a value.
 
-H3: CALL INFORMATION
-
-N: Parameters: B<code arg>
-
-Positional parameters in same order.
-
-
-B<The attribute hash reference is passed> to the subroutine after
-the parameters as the last argument.
-B<This may mean that there are parameters not shown here.>
-
-Must pass named parameter interpolate=1 to cause interpolation.
-
-Invalidates cache: B<no>
-
-Called Routine: 
-
-ASP/perl tag calls:
-
->    $Tag->accessories(
->        {
->         code => VALUE,
->         arg => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->accessories($code, $arg, $ATTRHASH);
-
-Attribute aliases
-
->            base ==> table
->            col ==> column
->            database ==> table
->            db ==> table
->            field ==> column
->            key ==> code
->            row ==> code
+Or more-- see also {{CMD[jump="#Item_Attributes"]Item_Attributes}} and
+{{CMD[jump="#subtags"]Looping tags and Sub-tags}}.
 
 
- 
+H3: Summary
 
-H3: DESCRIPTION
+!block example;
+    [B<accessories> code arg I<other named attributes>]
+    [B<accessories> code=[[EXAMPLE_SKU]] arg=color I<other named attributes>]
+!endblock
+
+!block table; colvaligns="TTT"
+Parameters|Description|Default
+{{CMD[jump="#accessories_code"]code}}|<<
+Value of the master key in the product (or specified other) table
+>>|I<none>
+{{CMD[jump="#accessories_arg"]arg}}|<<
+Positionally interpreted comma-delimited list of values for the
+following attributes "attribute, type, column, table, name, outboard, passed"
+* These may also be set individually as separate named attributes
+* See {{CMD[jump="#Item_Attributes"]Item Attributes}} for detail
+>>|I<none>
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#accessories_attribute"]attribute}}|I<none>
+{{CMD[jump="#accessories_type"]type}}|select
+{{CMD[jump="#accessories_column"]column}}|I<none>
+{{CMD[jump="#accessories_table"]table}}|products
+{{CMD[jump="#accessories_name"]name}}|I<none>
+{{CMD[jump="#accessories_outboard"]outboard}}|I<none>
+{{CMD[jump="#accessories_passed"]passed}}|I<none>
+key (alias for C<code>)|I<see code parameter above>
+row (alias for C<code>)|I<see code parameter above>
+{{CMD[jump="#accessories_table"]base}} (alias for C<table>)|I<see table>
+{{CMD[jump="#accessories_table"]database}} (alias for C<table>)|I<see table>
+{{CMD[jump="#accessories_table"]db}} (alias for C<table>)|I<see table>
+{{CMD[jump="#accessories_column"]col (alias for C<column>}}|I<see column>
+{{CMD[jump="#accessories_column"]field}} (alias for C<column>}}|I<see column>
+{{CMD[jump="#accessories_prepend"]prepend}}|I<none>
+{{CMD[jump="#accessories_append"]append}}|I<none>
+{{CMD[jump="#accessories_delimiter"]delimiter}}|I<none>
+{{CMD[jump="#accessories_item"]item}}|I<none>
+{{CMD[jump="#accessories_extra"]extra}}|I<none>
+{{CMD[jump="#accessories_js"]js}}|I<none>
+{{CMD[jump="#accessories_rows"]rows}}|I<none>
+{{CMD[jump="#accessories_cols"]cols}}|I<none>
+{{CMD[jump="#accessories_width"]width}}|I<none>
+{{CMD[jump="#accessories_default"]default}}|I<none>
+{{CMD[jump="#accessories_price"]price}}|I<none>
+{{CMD[jump="#accessories_contains"]contains}} (C<type> = radio or checkbox)|I<none>
+{{CMD[jump="#accessories_joiner"]joiner}} (C<type> = hyperlink)|I<none>
+{{CMD[jump="#accessories_href"]href}} (C<type> = hyperlink)|I<none>
+{{CMD[jump="#accessories_template"]template}} (C<type> = hyperlink)|I<none>
+{{CMD[jump="#accessories_selected_begin"]selected_begin}} (C<type> = hyperlink)|I<none>
+{{CMD[jump="#accessories_form"]form}} (C<type> = hyperlink)|I<none>
+{{CMD[jump="#accessories_empty"]empty}} (C<type> = hyperlink)|I<none>
+{{CMD[jump="#accessories_secure"]secure}} (C<type> = hyperlink)|I<none>
+{{CMD[jump="#accessories_new"]new}} (C<type> = combo or reverse_combo)|I<none>
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<No>
+Has Subtags|I<No>
+Container tag|I<No>
+!endblock
+
+Tag expansion example:
+
+E:    E<lbracket>accessories [[EXAMPLE_SKU]] color]
+
+This will search the product database for a field named "color". If
+an entry "beige=Almond, gold=Harvest Gold, White*, green=Avocado" is found,
+a select box like this will be built:
+
+!block example
+    <SELECT NAME="mv_order_color">
+    <OPTION VALUE="beige">Almond
+    <OPTION VALUE="gold">Harvest Gold
+    <OPTION SELECTED>White
+    <OPTION VALUE="green">Avocado
+    </SELECT>
+!endblock
 
 
-The C<[accessories ...]> tag allows you to access Interchange's option
-attribute facility in any of several ways.
+ASP-like Perl call:
+
+!block example; lang='Perl'
+    $Tag->accessories(  { code   => '[[EXAMPLE_SKU]]',
+                          arg    => 'color, radio,'
+                          table  => 'special_products', }  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang='Perl'
+    $Tag->accessories($code, $arg, $attribute_hash_reference);
+!endblock
+
+H4: See Also
+
+{{CMD[jump="#Item_Attributes"]Item Attributes}} and
+{{CMD[jump="#subtags"]Looping tags and Sub-tags}}.
+
+
+H3: Description
+
+
+Allows access to Interchange's product option attributes (e.g., to
+choose or access product options such as a shirt's size or color).
 
 If passed any of the optional arguments, initiates special processing
 of item attributes based on entries in the product database.
@@ -815,6 +882,154 @@ tags are called. They have the syntax:
 >                name=varname
 >                outboard=key
 >                passed="value=label, value2, value3=label 3" ]
+
+>	[accessories
+>				js=| onChange="set_description(simple_options, variant)"; |
+>				type=select
+>				name="[item-param o_group]"
+>				passed="=--choose--,[item-param o_value]"
+>	]
+
+
+
+H4: {{CMD[id="accessories_code"]code}}
+
+This is the master key (usually SKU) of the specified table, or the
+products table by default. The C<code> argument is implicit if looping
+on E<lbracket>item_accessories]. 
+
+
+H4:  {{CMD[id="accessories_arg"]arg}}
+
+The optional C<arg> argument
+
+
+H4: {{CMD[id="accessories_attribute"]attribute}}
+
+
+
+H4: {{CMD[id="accessories_type"]type}}
+
+
+
+H4: {{CMD[id="accessories_column"]column}}
+
+
+
+H4: {{CMD[id="accessories_table"]table}}
+
+
+
+H4: {{CMD[id="accessories_name"]name}}
+
+
+
+H4: {{CMD[id="accessories_outboard"]outboard}}
+
+
+
+H4: {{CMD[id="accessories_passed"]passed}}
+
+
+
+H4: {{CMD[id="accessories_prepend"]prepend}}
+
+
+
+H4: {{CMD[id="accessories_append"]append}}
+
+
+
+H4: {{CMD[id="accessories_delimiter"]delimiter}}
+
+
+
+H4: {{CMD[id="accessories_item"]item}}
+
+
+
+H4: {{CMD[id="accessories_extra"]extra}}
+
+
+
+H4: {{CMD[id="accessories_js"]js}}
+
+
+
+H4: {{CMD[id="accessories_rows"]rows}}
+
+
+
+H4: {{CMD[id="accessories_cols"]cols}}
+
+
+
+H4: {{CMD[id="accessories_width"]width}}
+
+
+
+H4: {{CMD[id="accessories_default"]default}}
+
+
+
+H4: {{CMD[id="accessories_price"]price}}
+
+
+
+H4: {{CMD[id="accessories_contains"]contains}} (C<type> = radio or checkbox)
+
+
+
+H4: {{CMD[id="accessories_joiner"]joiner}} (C<type> = hyperlink)
+
+
+
+H4: {{CMD[id="accessories_href"]href}} (C<type> = hyperlink)
+
+
+
+H4: {{CMD[id="accessories_template"]template}} (C<type> = hyperlink)
+
+
+
+H4: {{CMD[id="accessories_selected_begin"]selected_begin}} (C<type> = hyperlink)
+
+
+
+H4: {{CMD[id="accessories_form"]form}} (C<type> = hyperlink)
+
+
+
+H4: {{CMD[id="accessories_empty"]empty}} (C<type> = hyperlink)
+
+
+
+H4: {{CMD[id="accessories_secure"]secure}} (C<type> = hyperlink)
+
+
+
+H4: {{CMD[id="accessories_new"]new}} (C<type> = combo or reverse_combo)
+
+
+H4: Examples
+
+Tag expansion example:
+
+!block example
+   [accessories code=[[EXAMPLE_SKU]] arg=color]
+
+   TAGRESULT
+!endblock
+
+Positional call example:
+
+>    [accessories code arg]
+
+Named call example:
+
+>    [accessories code=[[EXAMPLE_SKU]] arg=color]
+
+
 
 # was 'over' 4
 
@@ -1188,7 +1403,7 @@ Parameters|Description|Default
 href|<<
 Path to Interchange page or action
 . I<Special arguments>
-** 'scan' links to search (using search arguments in B<arg>)
+** '{{C[jump="#area_search"]scan}}' links to a search (using search arguments in B<arg>)
 ** 'http://...' external link (requires B<form> attribute)
 >>|process
 arg|Interchange arguments to page or action|I<none>
@@ -1198,8 +1413,6 @@ arg|Interchange arguments to page or action|I<none>
 !block table; colvaligns="TT"
 Attributes|Default
 {{CMD[jump="#area_form"]form}}|I<none>
-{{CMD[jump="#area_alias"]alias}}|I<none> (requires B<form>)
-{{CMD[jump="#area_once"]once}}|I<none> (requires B<form> and B<alias>)
 {{CMD[jump="#area_search"]search}}|I<No>
 {{CMD[jump="#area_secure"]secure}}|I<No>
 {{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
@@ -1262,9 +1475,10 @@ are identical in operation:
 
 The optional I<arg> is used just as in the {{CMD[jump="#page"]page}} tag.
 
-. {{}}
-. {{B[id="area_form"]form}}
-. The optional C<form> argument allows you to encode a form in the link.
+
+H4: {{CMD[id="area_form"]form}}
+
+The optional C<form> argument allows you to encode a form in the link.
 
 !block example
    <A HREF="[area form="mv_order_item=[[EXAMPLE_SKU]]
@@ -1277,45 +1491,71 @@ The optional I<arg> is used just as in the {{CMD[jump="#page"]page}} tag.
 See the description of the {{CMD[jump="#page_form"]page}} tag for more
 detail.
 
-. {{}}
-. {{B[id="area_alias"]alias}}
-. See the description of the {{CMD[jump="#page_alias"]page}} tag
 
-. {{}}
-. {{B[id="area_once"]once}}
-. See the description of the {{CMD[jump="#page_once"]page}} tag
+H4: {{CMD[id="area_search"]search}}
 
-. {{}}
-. {{B[id="area_search"]search}}
-. Interchange allows you to pass a search in a URL. Just specify the
-search with the special page reference C<scan>. Here is an
-example:
+Interchange allows you to pass a search in a URL. There are two ways
+to do this:
+
+^ Place the search specification in the named C<search> attribute.
+
+** Interchange will ignore the C<href> parameter (the link will be set
+to 'scan'.
+
+** If you give the C<arg> parameter a value, that value will be
+available as E<lbracket>{{C[jump="#value"]value}} mv_arg] within the
+search display page.
+
++ Set the C<href> parameter to 'scan' and set C<arg> to the search
+specification.
+
+** Note that you can use this form positionallyE<nbspace>E<emdash> the
+values go into C<href> and C<arg>, so you do not have to name
+parameters.
+
+These are identical:
 
 !block example
    <A HREF="[area scan
-            se=Impressionists
-            sf=category]">Impressionist Paintings</A>
+                  se=Impressionists
+                  sf=category]">Impressionist Paintings</A>
+
+   <A HREF="[area href=scan
+                   arg="se=Impressionists
+                        sf=category"]">Impressionist Paintings</A>
+
+   <A HREF="[area search="se=Impressionists
+                          sf=category"]">Impressionist Paintings</A>
+
 !endblock
 
+See the description of the {{CMD[jump="#page_search"]page}} tag for more
+detail.
 
-Named call examples:
+
+H4: Examples
+
+Tag expansion example:
 
 !block example
-   <A HREF="[area scan
-            se=Impressionists
-            sf=category]">Impressionist Paintings</A>
+   [area href=dir/page.html arg="arg1=AA/arg2=BB"]
+
+   [[EXAMPLE_DOMAIN]]/cgi-bin/[[EXAMPLE_CATALOG]]/page.html?mv_session_id=[[EXAMPLE_SESSION]]&\
+   mv_pc=1&mv_arg=arg1%3dAA/arg2%3dBB
 !endblock
 
 Positional call example:
 
 >    <A HREF="[area ord/basket]">Check basket</A>
 
-HTML example (requires catalog directive
-'{{CMD[jump="icconfig.html#Pragma"]Pragma}}  no_html_parse  0'):
+Named call example:
+
+>    <A HREF="[area ord/basket]">Check basket</A>
+
+HTML-embedded example (disabled if no_html_parse {{CMD[jump="#Pragma"]Pragma}} active):
 
 >    <A MV="area dir/page" HREF="dir/page.html">
 
-# was 'back'
 
 
 H2: attr_list
@@ -1681,7 +1921,7 @@ ASP/perl tag calls:
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -1846,7 +2086,7 @@ ASP/perl tag calls:
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -1893,7 +2133,7 @@ ASP/perl tag calls:
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -2409,7 +2649,7 @@ ASP/perl tag calls:
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -2453,7 +2693,7 @@ ASP/perl tag calls:
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -2494,7 +2734,7 @@ ASP/perl tag calls:
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -2686,7 +2926,7 @@ Attribute aliases
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -3152,7 +3392,7 @@ Attribute aliases
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -3305,7 +3545,7 @@ ASP/perl tag calls:
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -3399,7 +3639,7 @@ ASP/perl tag calls:
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -3446,7 +3686,7 @@ ASP/perl tag calls:
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -4000,7 +4240,7 @@ Attribute aliases
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -4054,7 +4294,7 @@ Attribute aliases
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -4313,7 +4553,7 @@ ASP/perl tag calls:
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -4365,7 +4605,7 @@ Attribute aliases
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -4624,7 +4864,7 @@ ASP/perl tag calls:
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -4676,7 +4916,7 @@ Attribute aliases
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -4766,7 +5006,7 @@ ASP/perl tag calls:
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -4809,7 +5049,7 @@ ASP/perl tag calls:
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -4863,7 +5103,7 @@ Attribute aliases
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -5035,9 +5275,9 @@ with the session ID.  If the user did not accept the cookie,
 Interchange cannot use the cache, since the link must then include the
 I<mv_session_id> argument in order to preserve session.
 
-. {{}}
-. {{B[id="page_form"]form}}
-. The optional C<form> argument allows you to encode a form in the link.
+H4: {{CMD[id="page_form"]form}}
+
+The optional C<form> argument allows you to encode a form in the link.
 
 !block example
         [page form="mv_order_item=[[EXAMPLE_SKU]]
@@ -5084,25 +5324,56 @@ mv_pc, and any arguments supplied with the C<arg> attribute:
         cgi_1=ONE&cgi_2=TWO">External link</A>
 !endblock
 
-. {{}}
-. {{B[id="page_search"]search}}
-. Interchange allows you to pass a search in a URL. Just specify the
-search with the special page reference C<scan>. Here is an
-example:
+
+H4: {{CMD[id="page_search"]search}}
+
+Interchange allows you to pass a search in a URL. There are two ways
+to do this:
+
+^ Place the search specification in the named C<search> attribute.
+
+** Interchange will ignore the C<href> parameter (the link will be set
+to 'scan'.
+
+** If you give the C<arg> parameter a value, that value will be
+available as E<lbracket>{{C[jump="#value"]value}} mv_arg] within the
+search display page.
+
++ Set the C<href> parameter to 'scan' and set C<arg> to the search
+specification.
+
+** Note that you can use this form positionallyE<nbspace>E<emdash> the
+values go into C<href> and C<arg>, so you do not have to name
+parameters.
+
+
+These are identical:
 
 !block example
-     [page scan
-            se=Impressionists
-            sf=category]
-        Impressionist Paintings
-     [/page]
+   [page scan
+         se=Impressionists
+         sf=category]
+      Impressionist Paintings
+   [/page]
+
+   [page href=scan
+          arg="se=Impressionists
+               sf=category"]
+      Impressionist Paintings
+   </A>
+
+   [page search="se=Impressionists
+                 sf=category"]
+      Impressionist Paintings
+   [/page]
+
 !endblock
 
-Here is the same thing from a home page (assuming /cgi-bin/vlink is
-the CGI path for Interchange's vlink):
+Here is the same thing from a non-interchange page (e.g., a home
+page), assuming '/cgi-bin/[[EXAMPLE_CATALOG]]' is the CGI path to Interchange's vlink):
 
 !block example
-     <A HREF="/cgi-bin/vlink/scan/se=Impressionists/sf=category">
+     <A HREF="/cgi-bin/[[EXAMPLE_CATALOG]]/scan/se=Impressionists/sf=category">
         Impressionist Paintings
      </A>
 !endblock
@@ -5193,12 +5464,13 @@ characters, you won't have to worry about this.
 You may specify a one-click search in three different ways. The first is as
 used in previous versions, with the scan URL being specified completely as the
 page name.  The second two use the "argument" parameter to the C<[page ...]> or
-C<[area ...]> tags to specify the search (an argument to a scan is never valid
-anyway).
+E<lbracket>{{C[jump="#area"]area}} ...]> tags to specify the search
+(an argument to a scan is never valid anyway).
+
 
 # was 'over' 4
 
-H4: Original
+H4: Original syntax
 
 If you wish to do an OR search on the fields category and artist
 for the strings "Surreal" and "Gogh", while matching substrings,
@@ -5214,7 +5486,7 @@ i.e. sp=results::standard. (This may not work for some browsers, so you
 should probably either put the page in the main pages directory or define
 the page in a search profile.)
 
-H4: Ampersand
+H4: Ampersand syntax
 
 You can substitute & for / in the specification and be able to use / and
 quotes and spaces in the specification.
@@ -5225,7 +5497,7 @@ quotes and spaces in the specification.
 
 Any "unsafe" characters will be escaped. 
 
-H4: Multi-line
+H4: Multi-line syntax
 
 You can specify parameters one to a line, as well. 
 
@@ -5241,13 +5513,9 @@ You can specify parameters one to a line, as well.
 Any "unsafe" characters will be escaped. You may not search for trailing
 spaces in this method; it is allowed in the other notations.
 
+
 # was 'back'
 
-New syntax and old syntax handle the tags the same, though if by some
-odd chance you wanted to be able to search for a C<]> (right square bracket)
-you would need to use new syntax.
-
-The optional I<arg> is used just as in the I<page> tag.
 
 H4: E<lbracket>/page]
 
@@ -5259,9 +5527,7 @@ This is not an actual end tag, but simply a macro that expands to
 \TIP: A small efficiency boost in large pages is to just use the </A>
 tag.
 
-
 # was 'back'
-
 
 
 H2: perl
@@ -5553,7 +5819,7 @@ ASP/perl tag calls:
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -5596,7 +5862,7 @@ ASP/perl tag calls:
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -5648,7 +5914,7 @@ Attribute aliases
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -5689,7 +5955,7 @@ ASP/perl tag calls:
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -5735,7 +6001,7 @@ Attribute aliases
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -5785,7 +6051,7 @@ Attribute aliases
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -6007,7 +6273,7 @@ ASP/perl tag calls:
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -6067,7 +6333,7 @@ Attribute aliases
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -6254,7 +6520,7 @@ ASP/perl tag calls:
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -6299,7 +6565,7 @@ ASP/perl tag calls:
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -6343,7 +6609,7 @@ ASP/perl tag calls:
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -6443,7 +6709,7 @@ ASP/perl tag calls:
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -6488,7 +6754,7 @@ ASP/perl tag calls:
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -6536,7 +6802,7 @@ ASP/perl tag calls:
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -6577,7 +6843,7 @@ ASP/perl tag calls:
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -7488,7 +7754,7 @@ ASP/perl tag calls:
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
@@ -7531,7 +7797,7 @@ ASP/perl tag calls:
 
 H3: Description
 
-B<NO DESCRIPTION>
+B<NO Description>
 
 # was 'back'
 
