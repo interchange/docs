@@ -1,6 +1,6 @@
 Summary: Interchange documentation
 Name: interchange-doc
-Version: 4.8.7
+Version: 5.2.0
 Release: 1
 Vendor: Interchange Development Group
 License: GPL
@@ -24,8 +24,6 @@ common document formats.
 
 %setup
 
-# man pages are part of base Interchange RPM, so don't include them
-rm -f *.8
 rm -f %{name}.spec
 
 
@@ -70,6 +68,13 @@ tar cf - . | tar xf - -C $DOCDIR
 
 
 %changelog
+
+* Wed May 05 2004 Jon Jensen <jon@icdevgroup.org>
+- update for Interchange 5.2.0
+
+* Mon Dec 15 2003 Jon Jensen <jon@icdevgroup.org>
+- put manpages back since they're not in the base Interchange package anymore
+- update for Interchange 5.0.1
 
 * Mon Apr 29 2002 Jon Jensen <jon@redhat.com>
 - Delete unnecessary files in setup, not build phase.
