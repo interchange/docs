@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.11 2000-10-19 22:55:53 alison Exp $
+# $Id: icdatabase.sdf,v 1.12 2000-10-19 23:01:11 zarko Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "ICDATABASE_D2a_100800"
-!define DOC_VERSION substr('$Revision: 1.11 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.12 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
@@ -1808,7 +1808,7 @@ LI1: E<lbracket>more-list next_img* prev_img* page_img* border* border_current*]
     E<lbracket>page-anchor] Page $PAGE$ E<lbracket>/page-anchor]
     E<lbracket>more]
     E<lbracket>/more-list]
-E<lbracket>endblock
+!endblock
 
 .will display C<Forward Page 1 Page 2 Back> for 2 pages.
 
@@ -2170,6 +2170,8 @@ The return must be one of:
 LI1: quantity
 
 .The literal value quantity as the main criterion will simply count the number of items in the shopping cart and return it as the accumulated criteria. If using a database table field named C<quantity>, use the C<table::field> notation.
+
+LI1: o <field name> or <table>::<field name>
 
 .A valid database field (column) name as main criterion will cause the number of items in the shopping cart to be multiplied by the value of the field for each item to obtain the accumulated criteria. If the table is not supplied, defaults to the first C<ProductFiles> table.
 
