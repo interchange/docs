@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.61 2001-09-29 19:45:52 jon Exp $
+# $Id: ictags.sdf,v 1.62 2001-10-10 00:47:33 jon Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.61 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.62 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -26,11 +26,11 @@
 
 H1:Interchange Tag Reference
 
-Interchange functions are accessed via ITL, the Interchange Tag Language.
+Interchange functions are accessed via the Interchange Tag Language (ITL).
 The pages in a catalog may be mostly HTML, but they will use ITL tags
 to provide access to Interchange's functions. ITL is a superset of
 MML, or Minivend Markup Language. Minivend was the predecessor to
-Interchange.
+Interchange.  
 
 These tags perform various display and modification operations for
 the user session. There nearly 100 standard predefined tags, and the
@@ -39,7 +39,7 @@ functions and can be just as powerful as the built-in tags.
 
 This document covers Interchange versions 4.7-4.8.
 
-H2: Tag Syntax
+H1:Tag Syntax
 
 ITL tags are similar to HTML in syntax, in that they accept
 parameters or attributes and that there are both I<standalone> and
@@ -64,9 +64,7 @@ element, as in:
     E<lbracket>/if]
 !endblock
 
-We will usually call the ITL tags B<Interchange tags> or just B<tags>. 
-
-H3: Standard Syntax
+H2:Standard Syntax
 
 The most common syntax is to enclose the tag with its parameters and
 attributes in C<[square brackets]>. If the tag has an end tag, the tag and
@@ -93,7 +91,7 @@ If a tag name includes an underscore or dash, as in
 ending tag must match the tag (i.e., don't use
 C<E<lbracket>item-list]E<nbspace>listE<nbspace>[/item_list]>).
 
-H4: HTML-Comment
+H2: HTML-Comment
 
 ITL also allows you to use 'E<lt>!--[' and ']--E<gt>' as
 interchangeable alternatives to plain square brackets:
@@ -120,7 +118,7 @@ E<lbracket>{{C[jump="#value"]value}}E<nbspace>name] expands to 'Bill':
 E: 'E<lt>!--[value name]-->'  becomes  'Bill'
 E: 'E<lt>!-- [value name] -->'  becomes  '<!-- Bill -->'
 
-H5: Technical notes
+H3: Technical notes
 
 While '<!--[' and '[' are completely interchangeable, the Interchange
 parser does not replace ']-->' with ']' unless it also sees '<!--['
@@ -131,7 +129,7 @@ appendix if you are modifying the special administrative interface
 pages and intend to use this syntax.
 
 
-H3: HTML-Embedded
+H2: HTML-Embedded
 
 As an alternative syntax, you can usually embed an Interchange tag as
 an attribute within an HTML tag. This allows some HTML editors to
@@ -183,7 +181,7 @@ calls. This is done in the catalog by setting the pragma
 !endblock
 
 
-H3: {{CMD[id="parameters"]Named vs. Positional Parameters}}
+H2: {{CMD[id="parameters"]Named vs. Positional Parameters}}
 
 There are two styles of supplying parameters to a tag: named and positional.
 
@@ -218,7 +216,7 @@ due to whitespace.
 +When you need to use the output of a tag as the parameter or attribute
 for another tag.
 
-H4: Interpolating parameters
+H3: Interpolating parameters
 
 If you wish to use the value of a tag within a parameter of another
 tag, you cannot use a positional call. You must also double-quote the
@@ -235,7 +233,7 @@ E:    E<lbracket>{{C[jump="#page"]page}} href=scan arg="se=[{{C[jump="#scratch"]
 Note that the argument to B<href> ('scan') did not need to be quoted;
 only the argument to B<arg>, which contained a tag, needed the quotes.
 
-H3: {{CMD[id="attributes"]Universal Attributes}}
+H2: {{CMD[id="attributes"]Universal Attributes}}
 
 Universal attributes apply to all tags, though each tag specifies
 its own default for the attribute. The code implementing universal
@@ -243,7 +241,7 @@ attributes is external to the core routines that implement specific
 tags.
 
 
-H4: {{CMD[id="attr_interpolate"]interpolate}}
+H3: {{CMD[id="attr_interpolate"]interpolate}}
 
 This attribute behaves differently depending on whether the tag is a
 I<container> or I<standalone> tag. A container tag is one which has
@@ -306,7 +304,7 @@ while the second yields
 E:   Monday, January 1, 2001
 
 
-H4: {{CMD[id="attr_reparse"]reparse}}
+H3: {{CMD[id="attr_reparse"]reparse}}
 
 If true ("reparse=1"), the server will process any tags in the text
 output by the reparsed tag.
@@ -347,19 +345,19 @@ expands to
 !endblock
 
 
-H4: {{CMD[id="attr_send"]send}}
+H3: {{CMD[id="attr_send"]send}}
 
 Deprecated
 
 
-H3: Tag-specific Attributes
+H2: Tag-specific Attributes
 
 Each tag may accept additional named attributes which vary from tag to
 tag. Please see the entry for the tag in question for details about
 tag-specific attributes.
 
 
-H3: {{CMD[id="attr_array_hash"]Attribute Arrays and Hashes}}
+H2: {{CMD[id="attr_array_hash"]Attribute Arrays and Hashes}}
 
 Some tags allow you to pass an array or hash as the value of an
 attribute. For an ordinary tag, the syntax is as follows:
@@ -396,7 +394,7 @@ Note that it is up to the tag to handle an array or hash value
 properly. See the documentation for the specific tag before passing
 it an attribute array or hash value.
 
-H4: Perl calls
+H3: Perl calls
 
 Before passing attributes to a tag, the Interchange parser would
 convert the above example to an anonymous array reference. It would
@@ -425,7 +423,7 @@ Similarly to use a hash reference for the 'entry' attribute:
 !endblock
 
 
-H2: Looping tags and Sub-tags
+H1: Looping tags and Sub-tags
 
 {{CMD[id="subtags"]}}Certain tags are not standalone; these are the
 ones that are interpreted as part of a surrounding looping tag
@@ -448,20 +446,21 @@ E<lbracket>{{C[jump="#region"]region}}].
 . E<lbracket>{{C[jump="#sub_PREFIX-filter"]PREFIX-filter}}] (like filter tag but doesn't interpolate)
 . E<lbracket>{{C[jump="#sub_PREFIX-increment"]PREFIX-increment}}]
 . E<lbracket>{{C[jump="#sub_PREFIX-last"]PREFIX-last}}]
-. E<lbracket>{{C[jump="#sub_PREFIX-line"]PREFIX-line}}] (tab-delimited list of parameters returned, can do tail-slice)
+. E<lbracket>{{C[jump="#sub_PREFIX-line"]PREFIX-line}}] (tab-delimited list of parameters returned)
 . E<lbracket>{{C[jump="#sub_PREFIX-match"]PREFIX-match}}]
 . E<lbracket>{{C[jump="#sub_PREFIX-modifier"]PREFIX-modifier}}]
 . E<lbracket>{{C[jump="#sub_PREFIX-next"]PREFIX-next}}]
-. E<lbracket>{{C[jump="#sub_PREFIX-param"]PREFIX-param}}]
 . E<lbracket>{{C[jump="#sub_PREFIX-options"]PREFIX-options}}]
+. E<lbracket>{{C[jump="#sub_PREFIX-param"]PREFIX-param}}]
+. E<lbracket>{{C[jump="#sub_PREFIX-pos"]PREFIX-pos}}]
 . E<lbracket>{{C[jump="#sub_PREFIX-price"]PREFIX-price}}]
 . E<lbracket>{{C[jump="#sub_PREFIX-quantity"]PREFIX-quantity}}]
 . E<lbracket>{{C[jump="#sub_PREFIX-sub"]PREFIX-sub}}]
 . E<lbracket>{{C[jump="#sub_PREFIX-subtotal"]PREFIX-subtotal}}]
 . E<lbracket>{{C[jump="#sub_if-PREFIX-data"]if-PREFIX-data}}]
 . E<lbracket>{{C[jump="#sub_if-PREFIX-field"]if-PREFIX-field}}]
-. E<lbracket>{{C[jump="#sub_if-PREFIX-param"]if-PREFIX-param}}]
 . E<lbracket>{{C[jump="#sub_if-PREFIX-modifier"]if-PREFIX-modifier}}] (hash list only)
+. E<lbracket>{{C[jump="#sub_if-PREFIX-param"]if-PREFIX-param}}]
 . E<lbracket>{{C[jump="#sub_if-PREFIX-pos"]if-PREFIX-pos}}]
 . E<lbracket>{{C[jump="#sub_modifier-name"]modifier-name}}]
 . E<lbracket>{{C[jump="#sub_quantity-name"]quantity-name}}]
@@ -479,8 +478,10 @@ E<lbracket>{{CMD[jump="#query"]query}}]|sql|E<lbracket>sql-code], [sql-field pri
 !endblock
 
 Sub-tag behavior is consistent among the looping tags. 
+Subtags are parsed during evaluation of the enclosing loop, I<before>
+any regular tags within the loop.
 
-There are two types of looping lists; ARRAY and HASH.
+There are two types of looping lists: ARRAY and HASH.
 
 An array list is the normal output of a E<lbracket>{{C[jump="#query"]query}}], a search, or a E<lbracket>{{C[jump="#loop"]loop}}]
 tag. It returns from 1 to N C<return fields>, defined in the C<mv_return_fields>
@@ -542,15 +543,8 @@ Now the data structure will look like:
 >        { foo => 'fooN', bar => 'barN' },
 >    ]
 
-H3: Parse Order
 
-Subtags are parsed during evaluation of the enclosing loop, I<before>
-any regular tags within the loop 
-
-
-
-
-H3: E<lbracket>{{CMD[id="sub_PREFIX-accessories"]PREFIX-accessories}} arglist]
+H2: E<lbracket>{{CMD[id="sub_PREFIX-accessories"]PREFIX-accessories}} arglist]
 
 Except for the usual differences that apply to all subtags (such as
 parsing order), these are more or less equivalent for an array-type
@@ -570,7 +564,7 @@ If the list is a hash list, i.e. an [item-list], then the value of
 the current item hash is passed so that a value default can be established.
 
 
-H3: E<lbracket>{{CMD[id="sub_PREFIX-alternate"]PREFIX-alternate}} N] DIVISIBLE [else] NOT DIVISIBLE [/else][/PREFIX-alternate]
+H2: E<lbracket>{{CMD[id="sub_PREFIX-alternate"]PREFIX-alternate}} N] DIVISIBLE [else] NOT DIVISIBLE [/else][/PREFIX-alternate]
 
 Set up an alternation sequence. If the item-increment is divisible by
 `N', the text will be displayed. If an `[else]NOT DIVISIBLE TEXT[/else]'
@@ -581,12 +575,11 @@ For example:
 >    [item-alternate 2]EVEN[else]ODD[/else][/item-alternate]
 >    [item-alternate 3]BY 3[else]NOT by 3[/else][/item-alternate]
 
-H3: E<lbracket>{{CMD[id="sub_PREFIX-calc"]PREFIX-calc}}] 2 + [item-field price] [/PREFIX-calc]
+H2: E<lbracket>{{CMD[id="sub_PREFIX-calc"]PREFIX-calc}}] 2 + [item-field price] [/PREFIX-calc]
 
-Calls perl via the equivalent of the [calc] [/calc] tag pair. Much
-faster to execute.
+Executes Perl code in the tag body. This is equivalent to the [calc] [/calc] tag pair, except it's calculated at loop time instead of later when the rest of the page is parsed.
 
-H3: E<lbracket>{{CMD[id="sub_PREFIX-change"]PREFIX-change}}][condition] ... [/condition] TEXT [/PREFIX-change]
+H2: E<lbracket>{{CMD[id="sub_PREFIX-change"]PREFIX-change}}][condition] ... [/condition] TEXT [/PREFIX-change]
 
 Sets up a breaking sequence that occurs when the contents of 
 \[condition] [/condition] change. The most common one is a category
@@ -645,19 +638,19 @@ The above should put out a table that only shows the category and
 subcategory once, while showing the name for every product. (The C<&nbsp;>
 will prevent blanked table cells if you use a border.)
 
-H3: E<lbracket>{{CMD[id="sub_PREFIX-code"]PREFIX-code}}]
+H2: E<lbracket>{{CMD[id="sub_PREFIX-code"]PREFIX-code}}]
 
 The key or code of the current loop. In an [item-list] this is always
 the product code; in a loop list it is the value of the current argument;
 in a search it is whatever you have defined as the first mv_return_field (rf).
 
-H3: E<lbracket>{{CMD[id="sub_PREFIX-data"]PREFIX-data}} table field]
+H2: E<lbracket>{{CMD[id="sub_PREFIX-data"]PREFIX-data}} table field]
 
 Calls the column C<field> in database table C<table> for the current
 \[PREFIX-code]. This may or may not be equivalent to C<[PREFIX-field field]>
 depending on whether your search table is defined as one of the C<ProductFiles>.
 
-H3: E<lbracket>{{CMD[id="sub_PREFIX-description"]PREFIX-description}}]
+H2: E<lbracket>{{CMD[id="sub_PREFIX-description"]PREFIX-description}}]
 
 The description of the current item, as defined in the C<catalog.cfg> directive
 C<DescriptionField>. In the demo, it would be the value of the field C<description>
@@ -667,7 +660,7 @@ If the list is a hash list, and the lookup of C<DescriptionField> fails,
 then the attribute C<description> will be substituted. This is useful to 
 supply shopping cart descriptions for on-the-fly items.
 
-H3: E<lbracket>{{CMD[id="sub_PREFIX-discount"]PREFIX-discount}}]
+H2: E<lbracket>{{CMD[id="sub_PREFIX-discount"]PREFIX-discount}}]
 
 The price of the current item is calculated, and the difference between
 that price and the list price (quantity one) price is output. This may have
@@ -675,12 +668,12 @@ different behavior than you expect if you set the [discount] [/discount]
 tag along with quantity pricing.
 
 
-H3: E<lbracket>{{CMD[id="sub_PREFIX-discount_subtotal"]PREFIX-discount_subtotal}}]
+H2: E<lbracket>{{CMD[id="sub_PREFIX-discount_subtotal"]PREFIX-discount_subtotal}}]
 
 Inserts the discounted subtotal of the ordered items.
 
 
-H3: E<lbracket>{{CMD[id="sub_PREFIX-field"]PREFIX-field}}]
+H2: E<lbracket>{{CMD[id="sub_PREFIX-field"]PREFIX-field}}]
 
 Looks up a field value for the current item in one of several places,
 in this order:
@@ -705,10 +698,11 @@ of C<bar>. When it is found, you wish to display the value of C<foo_field>.
 Unless C<foo> is in C<ProductFiles> and the code is not present in a previous
 product file, you will get a blank or some value you don't want. What
 you really want is C<[loop-data foo foo_field]>, which specifically 
-addresses the table C<foo>.
+addresses the table C<foo>. See also E<lbracket>{{C[jump="#sub_PREFIX-param"]PREFIX-param}}]>
+and E<lbracket>{{C[jump="#sub_PREFIX-pos"]PREFIX-pos}}]>.
 
 
-H3: E<lbracket>{{CMD[id="sub_PREFIX-increment"]PREFIX-increment}}]
+H2: E<lbracket>{{CMD[id="sub_PREFIX-increment"]PREFIX-increment}}]
 
 The current count on the list, starting from either 1 in a zero-anchored
 list like E<lbracket>{{C[jump="#loop"]loop}}] or E<lbracket>{{C[jump="#item_list"]item-list}}], or from the match count in a
@@ -717,32 +711,44 @@ search list.
 If you skip items with [PREFIX-last] or [PREFIX-next], the count is NOT
 adjusted.
 
-H3: E<lbracket>{{CMD[id="sub_PREFIX-last"]PREFIX-last}}] CONDITION [/PREFIX-last]
+H2: E<lbracket>{{CMD[id="sub_PREFIX-last"]PREFIX-last}}] CONDITION [/PREFIX-last]
 
 If CONDITION evaluates true (a non-whitespace value that is not specifically
 zero) then this will be the last item displayed.
 
-H3: E<lbracket>{{CMD[id="sub_PREFIX-modifier"]PREFIX-modifier}} attribute]
+H2: E<lbracket>{{CMD[id="sub_PREFIX-line"]PREFIX-line}} start_column]
+
+Returns all array values from the current looping row in a single string, with each value separated by a tab, roughly equivalent to this:
+
+> [PREFIX-pos 0](tab)[PREFIX-pos 1](tab)[PREFIX-pos 2](tab)[...]
+
+for however many fields were returned in that row.
+
+This is useful as a quick way to see all your results at a glance and verify your search specification.
+
+If the optional C<start_column> attribute is given, the output starts with that column instead of column 0.
+
+H2: E<lbracket>{{CMD[id="sub_PREFIX-modifier"]PREFIX-modifier}} attribute]
 
 If the item is a hash list (i.e. [item-list]), this will return the value
 of the C<attribute>.
 
-H3: E<lbracket>{{CMD[id="sub_PREFIX-next"]PREFIX-next}}] CONDITION [/PREFIX-next]
+H2: E<lbracket>{{CMD[id="sub_PREFIX-next"]PREFIX-next}}] CONDITION [/PREFIX-next]
 
 If CONDITION evaluates true (a non-whitespace value that is not specifically
 zero) then this item is skipped.
 
-H3: E<lbracket>{{CMD[id="sub_PREFIX-param"]PREFIX-param}} name]
+H2: E<lbracket>{{CMD[id="sub_PREFIX-param"]PREFIX-param}} name]
 
-H3: E<lbracket>{{CMD[id="sub_PREFIX-param"]PREFIX-pos}} N]
+H2: E<lbracket>{{CMD[id="sub_PREFIX-param"]PREFIX-pos}} N]
 
-Returns the array parameter associated with the looping tag row. Each
+Returns the value of the array parameter associated with the looping tag row. Each
 looping list returns an array of C<return fields>, set in searches with
 C<mv_return_field> or C<rf>. The default is only to return the code of
-the search result, but by setting those parameters you can return more
-than one item.
+the search result, but by setting those parameters you can return
+whichever columns you wish.
 
-E<lbracket>PREFIX-pos N] outputs the I<N>th field as returned; E<lbracket>PREFIX-param] returns it by name.
+E<lbracket>PREFIX-pos N] outputs the data from the I<N>th field as returned (starting with 0); E<lbracket>PREFIX-param] lets you access the data by field name instead of number.
 
 In a E<lbracket>query ...] ITL tag you can select multiple return fields with
 something like:
@@ -756,25 +762,25 @@ C<foo> is the first returned parameter and becomes the code for this row.
 Another synonym is [prefix-pos 0]; and [prefix-pos 1] is the same
 as [prefix-param bar].
 
-H3: E<lbracket>{{CMD[id="sub_PREFIX-price"]PREFIX-price}}]
+H2: E<lbracket>{{CMD[id="sub_PREFIX-price"]PREFIX-price}}]
 
-The price of the current code, formatted for currency. If
+The price of the product identified by the current code, formatted for currency. If
 Interchange's pricing routines cannot determine the price (i.e. it is not
 a valid product or on-the-fly item) then zero is returned. If the list
 is a hash list, the price will be modified by its C<quantity> or other
 applicable attributes (like C<size> in the demo).
 
-H3: E<lbracket>{{CMD[id="sub_PREFIX-quantity"]PREFIX-quantity}}]
+H2: E<lbracket>{{CMD[id="sub_PREFIX-quantity"]PREFIX-quantity}}]
 
 The value of the C<quantity> attribute in a hash list. Most commonly
 used to display the quantity of an item in a shopping cart [item-list].
 
-H3: E<lbracket>{{CMD[id="sub_PREFIX-subtotal"]PREFIX-subtotal}}]
+H2: E<lbracket>{{CMD[id="sub_PREFIX-subtotal"]PREFIX-subtotal}}]
 
 The [PREFIX-quantity] times the [PREFIX-price]. This does take discounts
 into effect.
 
-H3: E<lbracket>{{CMD[id="sub_if-PREFIX-data"]if-PREFIX-data}} table field] IF text [else] ELSE text [/else] [/if-PREFIX-data]
+H2: E<lbracket>{{CMD[id="sub_if-PREFIX-data"]if-PREFIX-data}} table field] IF text [else] ELSE text [/else] [/if-PREFIX-data]
 
 Examines the data field, i.e. [PREFIX-data table field], and if it is
 non-blank and non-zero then the C<IF text> will be returned. If it is false,
@@ -788,11 +794,11 @@ Use C<[if type=data ...]> for that.
 
 Careful, a space is not a false value!
 
-H3: E<lbracket>{{CMD[id="sub_if-PREFIX-field"]if-PREFIX-field}} field] IF text [else] ELSE text [/else] [/if-PREFIX-field]
+H2: E<lbracket>{{CMD[id="sub_if-PREFIX-field"]if-PREFIX-field}} field] IF text [else] ELSE text [/else] [/if-PREFIX-field]
 
 Same as [if-PREFIX-data ...] except uses the same data rules as C<[PREFIX-field]>.
 
-H3: E<lbracket>{{CMD[id="sub_modifier-name"]modifier-name}} attribute]
+H2: E<lbracket>{{CMD[id="sub_modifier-name"]modifier-name}} attribute]
 
 Outputs a variable name which will set an appropriate variable name for setting
 the attribute in a form (usually a shopping cart). Outputs for successive items
@@ -804,7 +810,7 @@ in the list:
 
 etc.
 
-H3: E<lbracket>{{CMD[id="sub_quantity-name"]quantity-name}}]
+H2: E<lbracket>{{CMD[id="sub_quantity-name"]quantity-name}}]
 
 Outputs for successive items in the list:
 
@@ -12025,6 +12031,7 @@ Only used in {{CMD[jump="#xml_generator_dbdump"]dbdump}} mode
 (dbdump=1). Will skip empty fields if this attribute is set true.
 
 
+!block comment
 
 A1: Tag Entry Format
 
@@ -12153,6 +12160,8 @@ C<still-more> attribute without specifying a value for C<more>
 A4: {{CMD[id="dummy_other"]other}}
 
 'other' is another named attribute that applies to this tag.
+
+!endblock
 
 
 A1: Template Parsing Order
