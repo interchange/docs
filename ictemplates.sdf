@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ictemplates.sdf,v 1.25 2001-09-17 17:24:10 jon Exp $
+# $Id: ictemplates.sdf,v 1.26 2001-09-25 14:53:51 jon Exp $
 
 !define DOC_NAME "Template Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "ictemplates"
-!define DOC_VERSION substr('$Revision: 1.25 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.26 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictemplates.html"
@@ -130,7 +130,7 @@ Pipes can also be used as quoting characters, but have the unique behavior of st
 !block example
        [loop list="code        field    field2  field3
        k1    A1    A2    A3
-       k2      B1      B2      B3"]
+       k2    B1    B2    B3"]
        [loop-increment][loop-code]
        [/loop]
 !endblock
