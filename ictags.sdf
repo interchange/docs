@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.114 2003-12-06 04:46:41 mheins Exp $
+# $Id: ictags.sdf,v 1.115 2003-12-08 18:11:16 kwalsh Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.114 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.115 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ictags.html"
@@ -12543,7 +12543,7 @@ Does a query to find the C<shipmodes> column of the state based on the
 user value C<state>, and/or the C<shipmodes> column of the country based
 on the value C<country>
 
-NOTE: You can set the following, though most will use the Interchange
+\NOTE: You can set the following, though most will use the Interchange
 defaults:
 
 !block example
