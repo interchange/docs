@@ -5,7 +5,7 @@
 !build_title
 
 # Include the document register for this project/product
-!include "document.reg"; references; data
+!include "manuals.reg"; references; data
 
 #!subsections "Getting started,Manuals,Tutorials,Other documents"; "noprefix"
 !subsections "Manuals"; "noprefix"
