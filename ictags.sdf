@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.94 2002-07-27 00:48:10 kwalsh Exp $
+# $Id: ictags.sdf,v 1.95 2002-07-31 12:14:41 kwalsh Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.94 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.95 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -86,8 +86,8 @@ When using the [C<tagname> ...] syntax, there must be no whitespace
 between the left bracket ('[') and the tagname.
 
 If a tag name includes an underscore or dash, as in
-{{CMD[jump="#item_list"]item_list}}, a dash is just as appropriate
-(i.e. C<item-list>). The two forms are interchangeable, except that an
+E<lbracket>{{CMD[jump="#item-list"]item_list}}], a dash is just as appropriate
+(i.e. C<[item-list]>). The two forms are interchangeable, except that an
 ending tag must match the tag (i.e., don't use
 C<E<lbracket>item-list]E<nbspace>listE<nbspace>[/item_list]>).
 
@@ -190,7 +190,7 @@ tags.
 
 H3: {{CMD[id="attr_interpolate"]interpolate}}
 
-This attribute behaves differently depending on whether the tag is a
+This attribute behaves differently depending upon whether the tag is a
 I<container> or I<standalone> tag. A container tag is one which has
 an end tag, i.e. C<[tag] stuff [/tag]>. A standalone tag has no end
 tag, as in
@@ -374,7 +374,7 @@ H1: Looping tags and Sub-tags
 
 {{CMD[id="subtags"]}}Certain tags are not standalone; these are the
 ones that are interpreted as part of a surrounding looping tag
-like E<lbracket>{{CMD[jump="#loop"]loop}}], E<lbracket>{{CMD[jump="#item_list"]item-list}}], E<lbracket>{{CMD[jump="#query"]query}}], or E<lbracket>{{CMD[jump="#region"]region}}E<rbracket>.
+like E<lbracket>{{CMD[jump="#loop"]loop}}], E<lbracket>{{CMD[jump="#item-list"]item-list}}], E<lbracket>{{CMD[jump="#query"]query}}], or E<lbracket>{{CMD[jump="#search-region"]search-region}}E<rbracket>.
 
 . E<lbracket>{{CMD[jump="#PREFIX-accessories"]PREFIX-accessories}}]
 . E<lbracket>{{CMD[jump="#PREFIX-alternate"]PREFIX-alternate}}]
@@ -382,30 +382,30 @@ like E<lbracket>{{CMD[jump="#loop"]loop}}], E<lbracket>{{CMD[jump="#item_list"]i
 . E<lbracket>{{CMD[jump="#PREFIX-change"]PREFIX-change}}]
 . E<lbracket>{{CMD[jump="#PREFIX-code"]PREFIX-code}}]
 . E<lbracket>{{CMD[jump="#PREFIX-data"]PREFIX-data}}]
-. E<lbracket>{{CMD[jump="#PREFIX-description"]PREFIX-description}}] (Note safe-data and ed( ) escape)
+. E<lbracket>{{CMD[jump="#PREFIX-description"]PREFIX-description}}] (Note C<safe-data> and C<ed()> escape)
 . E<lbracket>{{CMD[jump="#PREFIX-discount"]PREFIX-discount}}]
 . E<lbracket>{{CMD[jump="#PREFIX-discount-subtotal"]PREFIX-discount-subtotal}}]
-. E<lbracket>{{CMD[jump="#PREFIX-exec"]PREFIX-exec}}] 
+. C<[if-PREFIX-exec]>
 . E<lbracket>{{CMD[jump="#PREFIX-field"]PREFIX-field}}] (Optimization note-- one query per field if you use this; we optimize around this if only one products table) 
-. E<lbracket>{{CMD[jump="#PREFIX-filter"]PREFIX-filter}}] (like filter tag but doesn't interpolate)
+. C<[if-PREFIX-filter]>
 . E<lbracket>{{CMD[jump="#PREFIX-increment"]PREFIX-increment}}]
 . E<lbracket>{{CMD[jump="#PREFIX-last"]PREFIX-last}}]
 . E<lbracket>{{CMD[jump="#PREFIX-line"]PREFIX-line}}] (tab-delimited list of parameters returned)
-. E<lbracket>{{CMD[jump="#PREFIX-match"]PREFIX-match}}]
+. C<[if-PREFIX-match]>
 . E<lbracket>{{CMD[jump="#PREFIX-modifier"]PREFIX-modifier}}]
 . E<lbracket>{{CMD[jump="#PREFIX-next"]PREFIX-next}}]
-. E<lbracket>{{CMD[jump="#PREFIX-options"]PREFIX-options}}]
+. C<[if-PREFIX-options]>
 . E<lbracket>{{CMD[jump="#PREFIX-param"]PREFIX-param}}]
 . E<lbracket>{{CMD[jump="#PREFIX-pos"]PREFIX-pos}}]
 . E<lbracket>{{CMD[jump="#PREFIX-price"]PREFIX-price}}]
 . E<lbracket>{{CMD[jump="#PREFIX-quantity"]PREFIX-quantity}}]
-. E<lbracket>{{CMD[jump="#PREFIX-sub"]PREFIX-sub}}]
+. C<[if-PREFIX-sub]>
 . E<lbracket>{{CMD[jump="#PREFIX-subtotal"]PREFIX-subtotal}}]
 . E<lbracket>{{CMD[jump="#if-PREFIX-data"]if-PREFIX-data}}]
 . E<lbracket>{{CMD[jump="#if-PREFIX-field"]if-PREFIX-field}}]
-. E<lbracket>{{CMD[jump="#if-PREFIX-modifier"]if-PREFIX-modifier}}] (hash list only)
-. E<lbracket>{{CMD[jump="#if-PREFIX-param"]if-PREFIX-param}}]
-. E<lbracket>if-I<prefix>-{{CMD[jump="#if_prefix_pos"]pos}}]
+. C<[if-PREFIX-modifier]> (hash list only)
+. C<[if-PREFIX-param]>
+. C<[if-PREFIX-pos]>
 . E<lbracket>{{CMD[jump="#modifier-name"]modifier-name}}]
 . E<lbracket>{{CMD[jump="#quantity-name"]quantity-name}}]
 
@@ -416,8 +416,8 @@ positional parameters. The default prefixes:
 !block table
 Tag|Prefix|Examples
 E<lbracket>{{CMD[jump="#loop"]loop}}]|loop|E<lbracket>loop-code], [loop-field price], [loop-increment]
-E<lbracket>{{CMD[jump="#item_list"]item-list}}]|item|E<lbracket>item-code], [item-field price], [item-increment]
-E<lbracket>{{C[jump="#search_list"]search-list}}]|item|E<lbracket>item-code], [item-field price], [item-increment]
+E<lbracket>{{CMD[jump="#item-list"]item-list}}]|item|E<lbracket>item-code], [item-field price], [item-increment]
+E<lbracket>{{C[jump="#search-list"]search-list}}]|item|E<lbracket>item-code], [item-field price], [item-increment]
 E<lbracket>{{CMD[jump="#query"]query}}]|sql|E<lbracket>sql-code], [sql-field price], [sql-increment]
 !endblock
 
@@ -497,17 +497,19 @@ parsing order), these are more or less equivalent for an array-type
 N<list:>
 
 !block example
-   [accessories code=I<current_item_code> arg=I<arglist>]
-   [item-accessories I<arglist>]
+    [accessories code=I<current_item_code> arg=I<arglist>]
+    [item-accessories I<arglist>]
 !endblock
 
-See the {{C[jump="#accessories"]accessories}} tag for more
+See the E<lbracket>{{C[jump="#accessories"]accessories}}] tag for more
 detail. Note that you must use the comma-delimited list to set
 attributesE<nbspace>E<emdash> you cannot set named attributes with the
 usual 'attribute=value' syntax.
 
-If the list is a hash list, i.e. an [item-list], then the value of
-the current item hash is passed so that a value default can be established.
+If the list is a hash list,
+i.e. an E<lbracket>{{C[jump="#item-list"]item-list}}],
+then the value of the current item hash is passed so that a value default
+can be established.
 
 
 H2: PREFIX-alternate
@@ -527,7 +529,9 @@ H2: PREFIX-calc
 
 E:   E<lbracket>PREFIX-calc] 2 + [item-field price] [/PREFIX-calc]
 
-Executes Perl code in the tag body. This is equivalent to the [calc] [/calc] tag pair, except it's calculated at loop time instead of later when the rest of the page is parsed.
+Executes Perl code in the tag body. This is equivalent to the
+E<lbracket>{{C[jump="#calc"]calc}}] ... [/calc] tag pair, except it's
+calculated at loop time instead of later when the rest of the page is parsed.
 
 H2: PREFIX-change
 
@@ -541,9 +545,10 @@ The region is only output when a field or other repeating value between
 \[condition] and [/condition] changes its value. This allows indented lists
 similar to database reports to be easily formatted. The repeating value
 must be a tag interpolated in the search process, such as
-E<lbracket>C<PREFIX-field field>] or E<lbracket>C<PREFIX-data database field>]. If you need
-access to ITL tags, you can use [PREFIX-calc] with a $Tag->foo() 
-call.
+E<lbracket>{{C[jump="#PREFIX-field"]PREFIX-field}}]
+or E<lbracket>{{C[jump="#PREFIX-field"]PREFIX-field}}C< database field>].
+If you need access to ITL tags, you can use
+E<lbracket>{{C[jump="#PREFIX-calc"]PREFIX-calc}}] with a C<$Tag->foo()> call.
 
 Of course, this will only work as you expect when the search results
 are properly sorted.
@@ -594,17 +599,21 @@ H2: PREFIX-code
 
 E:   E<lbracket>PREFIX-code]
 
-The key or code of the current loop. In an [item-list] this is always
+The key or code of the current loop.
+In an E<lbracket>{{C[jump="#item-list"]item-list}}] this is always
 the product code; in a loop list it is the value of the current argument;
-in a search it is whatever you have defined as the first mv_return_field (rf).
+in a search it is whatever you have defined as the first C<mv_return_field>
+(C<rf>).
 
 H2: PREFIX-data
 
 E:   E<lbracket>PREFIX-data table field]
 
 Calls the column C<field> in database table C<table> for the current
-E<lbracket>PREFIX-code]. This may or may not be equivalent to E<lbracket>PREFIX-field field]
-depending on whether your search table is defined as one of the C<ProductFiles>.
+E<lbracket>{{C[jump="#PREFIX-code"]PREFIX-code}}]
+This may or may not be equivalent to
+E<lbracket>{{C[jump="#PREFIX-field"]PREFIX-field}} field]
+depending upon whether your search table is defined as one of the C<ProductFiles>.
 
 H2: PREFIX-description
 
@@ -624,8 +633,8 @@ E:   E<lbracket>PREFIX-discount]
 
 The price of the current item is calculated, and the difference between
 that price and the list price (quantity one) price is output. This may have
-different behavior than you expect if you set the [discount] [/discount]
-tag along with quantity pricing.
+different behavior than you expect if you set the
+E<lbracket>{{C[jump="#discount"]discount}}] tag along with quantity pricing.
 
 
 H2: PREFIX-discount-subtotal
@@ -661,7 +670,8 @@ In this case, you are searching the table C<foo> for a string
 of C<bar>. When it is found, you wish to display the value of C<foo_field>.
 Unless C<foo> is in C<ProductFiles> and the code is not present in a previous
 product file, you will get a blank or some value you don't want. What
-you really want is C<[loop-data foo foo_field]>, which specifically 
+you really want is
+E<lbracket>{{C[jump="#PREFIX-data"]loop-data}}C< foo field>], which specifically 
 addresses the table C<foo>. See also E<lbracket>{{C[jump="#PREFIX-param"]PREFIX-param}}]
 and E<lbracket>{{C[jump="#PREFIX-pos"]PREFIX-pos}}].
 
@@ -671,7 +681,7 @@ H2: PREFIX-increment
 E:   E<lbracket>PREFIX-increment]
 
 The current count on the list, starting from either 1 in a zero-anchored
-list like E<lbracket>{{C[jump="#loop"]loop}}] or E<lbracket>{{C[jump="#item_list"]item-list}}], or from the match count in a
+list like E<lbracket>{{C[jump="#loop"]loop}}] or E<lbracket>{{C[jump="#item-list"]item-list}}], or from the match count in a
 search list.
 
 If you skip items with E<lbracket>{{C[jump="#PREFIX-last"]PREFIX-last}}]
@@ -703,7 +713,8 @@ H2: PREFIX-modifier
 
 E:   E<lbracket>PREFIX-modifier attribute]
 
-If the item is a hash list (i.e. [item-list]), this will return the value
+If the item is a hash list (i.e.
+E<lbracket>{{C[jump="#item-list"]item-list}}]), this will return the value
 of the C<attribute>.
 
 H2: PREFIX-next
@@ -723,8 +734,8 @@ C<mv_return_field> or C<rf>. The default is only to return the code of
 the search result, but by setting those parameters you can return
 whichever columns you wish.
 
-In a E<lbracket>query ...] ITL tag you can select multiple return fields with
-something like:
+In a E<lbracket>{{C[jump="#query"]query}}] ITL tag you can select multiple
+return fields with something like:
 
 >    [query prefix=prefix sql="select foo, bar from baz where foo='buz'"]
 >        [prefix-code]  [prefix-param foo]  [prefix-param bar]
@@ -813,14 +824,16 @@ H2: PREFIX-quantity
 E:   E<lbracket>PREFIX-quantity]
 
 The value of the C<quantity> attribute in a hash list. Most commonly
-used to display the quantity of an item in a shopping cart [item-list].
+used to display the quantity of an item in a shopping cart
+E<lbracket>{{C[jump="#item-list"]item-list}}].
 
 H2: PREFIX-subtotal
 
 E:   E<lbracket>PREFIX-subtotal]
 
-The [PREFIX-quantity] times the [PREFIX-price]. This does take discounts
-into effect.
+The E<lbracket>{{C[jump="#PREFIX-quantity"]PREFIX-quantity}}]
+times the E<lbracket>{{C[jump="#PREFIX-price"]PREFIX-price}}].
+This does take discounts into account.
 
 H2: if-PREFIX-data
 
@@ -831,10 +844,11 @@ non-blank and non-zero then the C<IF text> will be returned. If it is false,
 i.e. blank or zero, the C<ELSE text> will be returned to the page.
 
 This is much more efficient than the otherwise equivalent
-C<[if type=data term=table::field::[PREFIX-code]]>.
+E<lbracket>{{C[jump="#if"]if}} C<type=data term=table::field::>E<lbracket>{{C[jump="#PREFIX-code"]PREFIX-code}}]].
 
-You cannot place a condition; i.e. [if-PREFIX-data table field eq 'something'].
-Use C<[if type=data ...]> for that.
+You cannot place a condition;
+i.e. C<[if-PREFIX-data table field eq 'something']>.
+Use E<lbracket>{{C[jump="#if"]if}}C< type=data> ...] for that.
 
 Careful, a space is not a false value!
 
@@ -842,7 +856,9 @@ H2: if-PREFIX-field
 
 E:   E<lbracket>if-PREFIX-field field] IF text [else] ELSE text [/else] [/if-PREFIX-field]
 
-Same as E<lbracket>if-PREFIX-data ...] except uses the same data rules as E<lbracket>PREFIX-field].
+Same as E<lbracket>{{C[jump="#if-PREFIX-data"]if-PREFIX-data}} ...]
+except uses the same data rules as
+E<lbracket>{{C[jump="#PREFIX-field"]PREFIX-field}}].
 
 # H2: {{CMD[id="modifier-name"]modifier-name}}
 H2: modifier-name
@@ -859,6 +875,10 @@ in the list:
 
 etc.
 
+C<[modifier-name] quantity>
+would be the same as
+E<lbracket>{{C[jump="#quantity-name"]quantity-name}}].
+
 # H2: {{CMD[id="quantity-name"]quantity-name}}
 H2: quantity-name
 
@@ -870,13 +890,17 @@ Outputs for successive items in the list:
 >    2. quantity1
 >    3. quantity2
 
-etc. C<[modifier-name quantity]> would be the same as C<[quantity-name]>.
+etc.
+
+E<lbracket>{{C[jump="#modifier-name"]modifier-name}}C< quantity>]
+would be the same as C<[quantity-name]>.
 
 
 H1: Tags
 
 Each ITL tag is show below. Calling information is defined for the main tag,
-sub-tags are described in C<Sub-tags>.
+sub-tags are described in
+{{CMD[jump="#Looping tags and Sub-tags"]Looping tags and Sub-tags}}.
 
 
 H2: accessories
@@ -965,7 +989,7 @@ B<Tag expansion example:>
 
 !block example
     E<lbracket>accessories os28044 size]
----------------------------------------------------------------
+---
     <SELECT NAME="mv_order_size"><OPTION VALUE="10oz">10oz\
     <OPTION VALUE="15oz">15oz<OPTION VALUE="20oz">20oz</SELECT>
 !endblock
@@ -1015,8 +1039,9 @@ You may not use the following names for attributes:
 !endblock
 
 You can also set modifier names with the mv_UseModifier
-scratch variableE<nbspace>E<emdash> E<lbracket>{{C[jump="#set"]set}}
-mv_UseModifier]size colorE<lbracket>/set] has the same effect as
+scratch variableE<nbspace>E<emdash>
+E<lbracket>{{C[jump="#set"]set}}E<nbsp>mv_UseModifier] size color
+E<lbracket>/set] has the same effect as
 above. This allows multiple options to be set for products. Whichever
 one is in effect at order time will be used. Be careful; you cannot
 set it more than once on the same page. Setting the
@@ -1024,38 +1049,44 @@ C<mv_separate_items> or global directive I<SeparateItems> places each
 ordered item on a separate line, simplifying attribute handling. The
 scratch setting for C<mv_separate_items> has the same effect.
 
-The modifier value is accessed in the E<lbracket>{{C[jump="#item_list"]item-list}}] loop with the
-C<[item-param attribute]> tag, and form input fields are placed with the
-C<[modifier-name attribute]> tag. This is similar to the way that quantity
+The modifier value is accessed in the E<lbracket>{{C[jump="#item-list"]item-list}}] loop with the
+E<lbracket>{{C[jump="#PREFIX-param"]item-param}}C< attribute>]
+tag, and form input fields are placed with the
+E<lbracket>{{C[jump="#modifier-name"]modifier-name}}C< attribute>]
+tag. This is similar to the way that quantity
 is handled.
 
 !block note; label="Note: "
 You must be sure that no fields in your forms have digits appended to
 their names if the variable is the same name as the attribute name you
-select, as the C<[modifier-name size]> variables will be placed in the
+select, as the
+E<lbracket>{{C[jump="#modifier-name"]modifier-name}}C< size>]
+variables will be placed in the
 user session as the form variables size0, size1, size2, etc.
 !endblock
 
 Interchange will automatically generate the select boxes when the
-E<lbracket>C<accessories>E<nbspace>code=[[EXAMPLE_SKU]]E<nbspace>attribute=size]
-or C<[item-accessories size]> tags are called. They have the syntax:
+E<lbracket>{{C[jump="#accessories"]accessories}}
+C<code=>"[[EXAMPLE_SKU]]"E<nbspace>C<attribute=>"size"] or
+E<lbracket>{{C[jump="#PREFIX-accessories"]item-accessories}}C< size>]
+tags are called. They have the syntax:
 
 !block example
-   [item-accessories attribute, type, column, table, name, outboard, passed]
+    [item-accessories attribute, type, column, table, name, outboard, passed]
 
-   [accessories code=sku
+    [accessories code=sku
                 attribute=modifier
                 type=select
                 column=db_table_column_name
                 table=db_table
                 name=varname
                 outboard=key
-                passed="value=label, value2*, value3=label 3" ]
+                passed="value=label, value2*, value3=label 3"]
 
-   [accessories js=| onChange="set_description(simple_options, variant)"; |
+    [accessories js=| onChange="set_description(simple_options, variant)"; |
                 type=select
                 name="[item-param o_group]"
-                passed="=--choose--,[item-param o_value]" ]
+                passed="=--choose--,[item-param o_value]"]
 !endblock
 
 !block note; label="Notes: "
@@ -1100,9 +1131,9 @@ item attribute during an order.
 If used in an item list, and the user has changed the value, the generated
 select box will automatically retain the current value the user has selected.
 
-The value can then be displayed with E<lbracket>{{C[jump="#item_modifier"]item-modifier}} color] on the
+The value can then be displayed with E<lbracket>{{C[jump="#PREFIX-modifier"]item-modifier}} color] on the
 order report, order receipt, or any other page containing an
-E<lbracket>{{C[jump="#item_list"]item-list}}]. 
+E<lbracket>{{C[jump="#item-list"]item-list}}]. 
 
 H4: Emulating with a loop
 
@@ -1112,7 +1143,7 @@ than the tag offers. Below is a fragment from a shopping basket
 display form which shows a selectable size with "sticky" setting and a
 price that changes based upon the modifier setting. (Note that this
 example would normally be contained within the
-E<lbracket>{{C[jump="#item_list"]item_list}}]C<[/item-list]> pair.)
+E<lbracket>{{C[jump="#item-list"]item-list}}]C<[/item-list]> pair.)
 
 !block example
     <SELECT NAME="[modifier-name size]">
@@ -1131,21 +1162,21 @@ addition to the size within each option value.
 H4: {{CMD[id="accessories_hash_lists"]Hash Lists}} E<emdash> Technical Note
 
 As a technical note, some of the features of this tag work differently
-depending on whether it was called with an '$item' hash reference, for
+depending upon whether it was called with an '$item' hash reference, for
 example, as E<lbracket>C<item-accessories>] within an
-E<lbracket>{{C[jump="#item_list"]item-list}}].
+E<lbracket>{{C[jump="#item-list"]item-list}}].
 
 In this context, the tag will have access to ancillary data from the
 item (including, perhaps, a user's chosen item attribute value). For
 example, if building a TEXTAREA widget within an
-E<lbracket>{{C[jump="#item_list"]item-list}}], the widget will show
+E<lbracket>{{C[jump="#item-list"]item-list}}], the widget will show
 the chosen item attribute value. On the other hand, within an array
-list such as a E<lbracket>{{C[jump="#search_list"]search-list}}] in a
-E<lbracket>{{C[jump="#search_region"]search-region}}], the widget
+list such as a E<lbracket>{{C[jump="#search-list"]search-list}}] in a
+E<lbracket>{{C[jump="#search-region"]search-region}}], the widget
 would be empty.
 
 If you really know what you're doing, you can pass it the item hash
-reference within a {{C[jump="#perl"]perl}} tag like this:
+reference within a E<lbracket>{{C[jump="#perl"]perl}}] tag like this:
 
 !block example; lang="Perl"
    $Tag->accessories( $code,
@@ -1154,8 +1185,8 @@ reference within a {{C[jump="#perl"]perl}} tag like this:
                       $item_hashref );
 !endblock
 
-See also {{C[jump="#Looping tags and Sub-tags"]LoopingE<nbspace>tagsE<nbspace>andE<nbspace>Sub-tags}} for
-information about hash- and array-context in looping tags.
+See also {{C[jump="#Looping tags and Sub-tags"]Looping tags and Sub-tags}} for
+information about hash-context and array-context in looping tags.
 
 
 H4: {{CMD[id="accessories_code"]code}}
@@ -1174,7 +1205,8 @@ H4:  {{CMD[id="accessories_arg"]arg}}
 B<Deprecated after Interchange 4.6>
 
 This allows you to pass values for some of the more commonly used
-attributes in the manner of the E<lbracket>C<PREFIX-accessories>] tag,
+attributes in the manner of the
+E<lbracket>{{C[jump="#PREFIX-accessories"]item-accessories}}] tag,
 as a comma-delimited positional N<list:>
 
 E:  B<arg>="attribute, type, column, table, name, outboard, passed"
@@ -1193,9 +1225,12 @@ be something like the N<following:>
 E:  B<arg>="color, radio, , products"
 
 Although you must use such a comma-delimited list to pass attributes
-to the E<lbracket>C<PREFIX-accessories>] tag, please use named
-attributes instead for the E<lbracket>C<accessories>] tag. The
-'C<arg>' attribute is deprecated.
+to the
+E<lbracket>{{C[jump="#PREFIX-accessories"]item-accessories}}] tag,
+please use named
+attributes instead for the
+E<lbracket>{{C[jump="#accessories"]accessories}}] tag.
+The 'C<arg>' attribute is deprecated.
 
 For detail about a specific attribute, please see its subheading below.
 
@@ -1223,7 +1258,7 @@ select widget by default if C<type> is not set.
 display|<<
 Shows the label text for *only the selected option* if called in
 {{C[jump="#accessories_hash_lists"]Hash List}} context (e.g., within an
-E<lbracket>{{C[jump="#item_list"]item-list}}]). Ignored otherwise
+E<lbracket>{{C[jump="#item-list"]item-list}}]). Ignored otherwise
 (i.e., the tag will build the default <SELECT> menu).
 >>
 show|<<
@@ -1322,7 +1357,7 @@ textarea_XX_YY|<<
 A textarea with XX columns and YY rows. The textarea will contain the
 selected item attribute value if used in
 {{C[jump="#accessories_hash_lists"]Hash List}} context (e.g., within an
-E<lbracket>{{C[jump="#item_list"]item-list}}]).
+E<lbracket>{{C[jump="#item-list"]item-list}}]).
 
 If you simply use 'C<type>=textarea', the size will default to 4 rows
 by 40 columns, unless you have set the
@@ -1333,7 +1368,7 @@ text_YY|<<
 A text box with YY width in characters. The HTML tag's VALUE will be
 set to the selected item attribute value if used in
 {{C[jump="#accessories_hash_lists"]Hash List}} context (e.g., within an
-E<lbracket>{{C[jump="#item_list"]item-list}}]).
+E<lbracket>{{C[jump="#item-list"]item-list}}]).
 
 If you simply use 'C<type>=text', the width will default to 60, unless
 you have set the {{C[jump="#accessories_cols"]cols}} tag attribute.
@@ -1364,19 +1399,19 @@ the passed NAME attribute.
 value|<<
 Returns the selected value if called in
 {{C[jump="#accessories_hash_lists"]Hash List}} context (e.g., within an
-E<lbracket>{{C[jump="#item_list"]item-list}}]), or nothing otherwise.
+E<lbracket>{{C[jump="#item-list"]item-list}}]), or nothing otherwise.
 >>
 hidden|<<
 Creates a hidden form field. The hidden field's VALUE will be set to
 the selected item attribute value if used in
 {{C[jump="#accessories_hash_lists"]Hash List}} context (e.g., within an
-E<lbracket>{{C[jump="#item_list"]item-list}}]).
+E<lbracket>{{C[jump="#item-list"]item-list}}]).
 >>
 password_YY|<<
 A password box with YY width in characters. The HTML tag's VALUE will be
 set to the selected item attribute value if used in
 {{C[jump="#accessories_hash_lists"]Hash List}} context (e.g., within an
-E<lbracket>{{C[jump="#item_list"]item-list}}]).
+E<lbracket>{{C[jump="#item-list"]item-list}}]).
 
 If you simply use 'C<type>=password', the width will default to 12,
 unless you have set the {{C[jump="#accessories_cols"]cols}} tag
@@ -1393,7 +1428,8 @@ columns within the string that sets the type; for example,
 C<type>="textarea_6_33_wrap=virtual" specifies a TEXTAREA widget with
 ROWS=6, COLS=33, and WRAP=virtual. You should resort to this only when
 you cannot use the named parameters, for example within an
-E<lbracket>C<item-accessories>] tag. Otherwise, use the
+E<lbracket>{{C[jump="#PREFIX-accessories"]item-accessories}}]
+tag. Otherwise, use the
 {{C[jump="#accessories_rows"]rows}}=I<m> and
 {{C[jump="#accessories_cols"]cols}}=I<n> tag attributes instead.
 
@@ -1480,8 +1516,9 @@ If you have configured your database so that the attributes are kept
 in a different table from other item data,
 '{{C[jump="#accessories_code"]code}}' should be set to the master key
 in this table. See '{{C[jump="#accessories_outboard"]outboard}}') if
-you are using E<lbracket>item-accessoriesE<nbspace>...] and cannot
-specify C<code>=key.
+you are using
+E<lbracket>{{C[jump="#PREFIX-accessories"]item-accessories}}] and cannot
+specify C<code=key>.
 
 
 H4: {{CMD[id="accessories_name"]name}}
@@ -1521,7 +1558,7 @@ value of C<green> with a label of B<Sea Green>, do:
 !block example
     [accessories type=select
                  name=color
-               passed="=--select--*, blue=Blue, green=Sea Green" ]
+               passed="=--select--*, blue=Blue, green=Sea Green"]
 !endblock
 
 This will generate:
@@ -1552,16 +1589,16 @@ treated within the tag.
 
 For example,
 !block example
-   [accessories code=os28044
-                type=select
-           attribute=size
-              append="Append Me<br>"
-             prepend="Prepend Me"]
-------------------------------------------------------
-   Prepend Me<SELECT NAME="mv_order_size">\
-   <OPTION VALUE="10oz">10oz\
-   <OPTION VALUE="15oz">15oz\
-   <OPTION VALUE="20oz">20oz</SELECT>B<Append Me><br>
+    [accessories code=os28044
+                 type=select
+            attribute=size
+               append="Append Me<br>"
+              prepend="Prepend Me"]
+---
+    Prepend Me<SELECT NAME="mv_order_size">\
+    <OPTION VALUE="10oz">10oz\
+    <OPTION VALUE="15oz">15oz\
+    <OPTION VALUE="20oz">20oz</SELECT>B<Append Me><br>
 !endblock
 
 H4: {{CMD[id="accessories_append"]append}}
@@ -1578,17 +1615,17 @@ attribute of the HTML output tag. The following example illustrates
 the C<append>, C<extra> and C<js> N<options:>
 
 !block example
-   [accessories code=os28044
-                type=select
-           attribute=size
-              append="Append Me<br>"
-               extra="Last=Extra"
-                  js="javascript_here"]
-------------------------------------------------------
-   <SELECT NAME="mv_order_size" javascript_here Last=Extra>\
-   <OPTION VALUE="10oz">10oz\
-   <OPTION VALUE="15oz">15oz\
-   <OPTION VALUE="20oz">20oz</SELECT>Append Me<br>
+    [accessories code=os28044
+                 type=select
+            attribute=size
+               append="Append Me<br>"
+                extra="Last=Extra"
+                   js="javascript_here"]
+---
+    <SELECT NAME="mv_order_size" javascript_here Last=Extra>\
+    <OPTION VALUE="10oz">10oz\
+    <OPTION VALUE="15oz">15oz\
+    <OPTION VALUE="20oz">20oz</SELECT>Append Me<br>
 !endblock
 
 H4: {{CMD[id="accessories_js"]js}}
@@ -1613,7 +1650,7 @@ string that sets the {{C[jump="#accessories_type"]type}}; for example,
 {{C[jump="#accessories_type"]type}}="textarea_6_33_wrap=virtual" specifies a
 TEXTAREA widget with ROWS=6, COLS=33, and WRAP=virtual. You should resort to this
 only when you cannot use the named parameters, for example within an
-E<lbracket>C<item-accessories>] tag.
+E<lbracket>{{C[jump="#PREFIX-accessories"]item-accessories}}] tag.
 
 The result of setting conflicting values in the
 {{C[jump="#accessories_type"]type}} string and the C<rows>=I<n>
@@ -1644,14 +1681,14 @@ For example the following selects blue by default rather than green as
 it would otherwise have done,
 
 !block example
-  [accessories type=select
-               name=color
-             passed="blue=blue, green=Sea Green*"
-            default="blue"]
-------------------------
-  <SELECT NAME="color"><OPTION VALUE="blue" SELECTED>blue\
-  <OPTION VALUE="green">Sea Green</SELECT>
-------------------------
+    [accessories type=select
+                 name=color
+               passed="blue=blue, green=Sea Green*"
+              default="blue"]
+---
+    <SELECT NAME="color"><OPTION VALUE="blue" SELECTED>blue\
+    <OPTION VALUE="green">Sea Green</SELECT>
+---
 !endblock
 
 Obscure technical note: the tag ignores the 'C<default>' attribute if
@@ -1669,14 +1706,14 @@ If you are passing attribute values, you can use this to control
 the displayed price in the widget.
 
 !block example
-  [accessories type=check
-               name=color
-              price=1
-         price_data="blue=20, green=50"
-             passed="blue=Blue, green=Sea Green*" ]
----------------------------------------------------
-  <INPUT TYPE="checkbox" NAME="color" VALUE="blue" >&nbsp;Blue&nbsp;($20.00)
-  <INPUT TYPE="checkbox" NAME="color" VALUE="green" CHECKED>&nbsp;Sea Green&nbsp;($50.00)
+    [accessories type=check
+                 name=color
+                price=1
+           price_data="blue=20, green=50"
+               passed="blue=Blue, green=Sea Green*"]
+---
+    <INPUT TYPE="checkbox" NAME="color" VALUE="blue" >&nbsp;Blue&nbsp;($20.00)
+    <INPUT TYPE="checkbox" NAME="color" VALUE="green" CHECKED>&nbsp;Sea Green&nbsp;($50.00)
 !endblock
 
 
@@ -1734,9 +1771,9 @@ variable "color" to the corresponding {{C[jump="#passed"]passed}}
 value (blank, blue, or green), do N<this:>
 
 !block example
-   [accessories type=links
-                name=color
-              passed="=--select--, blue=Blue, green=Sea Green"]
+    [accessories type=links
+                 name=color
+               passed="=--select--, blue=Blue, green=Sea Green"]
 !endblock
 
 This will generate something like the following:
@@ -1778,27 +1815,27 @@ option in a combo box. For example, if item 'os28044' has size
 attribute values of "Sm=10oz,E<nbspace>Med=15oz,E<nbspace>Lg=20oz"N<:>
 
 !block example
-  [accessories code=os28044 attribute=size type=combo new="my_new_value"]
-------------------------------------------------------
-  <INPUT TYPE=text NAME="mv_order_size" SIZE=16 VALUE="">
-  <SELECT NAME="mv_order_size" SIZE="1">
-  <OPTION VALUE="my_new_value">my_new_value
-  <OPTION VALUE="Sm">10oz
-  <OPTION VALUE="Med">15oz
-  <OPTION VALUE="Lg">20oz</SELECT>
+    [accessories code=os28044 attribute=size type=combo new="my_new_value"]
+---
+    <INPUT TYPE=text NAME="mv_order_size" SIZE=16 VALUE="">
+    <SELECT NAME="mv_order_size" SIZE="1">
+    <OPTION VALUE="my_new_value">my_new_value
+    <OPTION VALUE="Sm">10oz
+    <OPTION VALUE="Med">15oz
+    <OPTION VALUE="Lg">20oz</SELECT>
 !endblock
 
 Or, with the default new value:
 
 !block example
-  [accessories code=os28044 attribute=size type=combo]
-------------------------------------------------------
-  <INPUT TYPE=text NAME="mv_order_size" SIZE=16 VALUE="">
-  <SELECT NAME="mv_order_size" SIZE="1">
-  <OPTION VALUE="">&lt;-- New
-  <OPTION VALUE="Sm">10oz
-  <OPTION VALUE="Med">15oz
-  <OPTION VALUE="Lg">20oz</SELECT>
+    [accessories code=os28044 attribute=size type=combo]
+---
+    <INPUT TYPE=text NAME="mv_order_size" SIZE=16 VALUE="">
+    <SELECT NAME="mv_order_size" SIZE="1">
+    <OPTION VALUE="">&lt;-- New
+    <OPTION VALUE="Sm">10oz
+    <OPTION VALUE="Med">15oz
+    <OPTION VALUE="Lg">20oz</SELECT>
 !endblock
 
 Default is no VALUE with option text set to '&lt;-- New' for a combo
@@ -1867,33 +1904,37 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [value name=fname set="Mike" hide=1]
-   [value name=lname set="" hide=1]
-     ...
+    [value name=fname set="Mike" hide=1]
+    [value name=lname set="" hide=1]
 
-   [if value fname]
-   [and value lname]
-      Both first and last name are present.
-   [else]
-      Missing one of "fname" and "lname" from $Values.
-   [/else]
-   [/if]
+    ...
+
+    [if value fname]
+    [and value lname]
+        Both first and last name are present.
+    [else]
+        Missing one of "fname" and "lname" from $Values.
+    [/else]
+    [/if]
 ---
-   Missing one of "fname" and "lname" from $Values.
+    Missing one of "fname" and "lname" from $Values.
 !endblock
 
 
 B<ASP-like Perl call:>
 
-Not applicable. The [and ...] tag only is used with [if ...], and Perl
-logic obviates the [if ...] tag.
+Not applicable. The [C<and> ...] tag only is used with
+E<lbracket>{{C[jump="#if"]if}} ...], and Perl
+logic obviates the
+E<lbracket>{{C[jump="#if"]if}} ...] tag.
 
 # END +++++++++++++++ and End Summary Tables ++++++++++++++++++++
 
 
 H3: Description
 
-The [and ...] tag is only used in conjunction with [if ...]. Example:
+The [and ...] tag is only used in conjunction with
+E<lbracket>{{C[jump="#if"]if}} ...].  Example:
 
 >        [if value fname]
 >        [and value lname]
@@ -1903,7 +1944,7 @@ The [and ...] tag is only used in conjunction with [if ...]. Example:
 >        [/else]
 >        [/if]
 
-See E<lbracket>{{C[jump="#if"]if}} ...].
+See the description of the E<lbracket>{{C[jump="#if"]if}}] tag.
 
 
 
@@ -1981,10 +2022,10 @@ Has end tag|I<No>
 B<Tag expansion example:>
 
 !block example
-   [area href=dir/page.html arg="arg1=AA/arg2=BB"]
+    [area href=dir/page.html arg="arg1=AA/arg2=BB"]
 
-   [[EXAMPLE_DOMAIN]]/cgi-bin/[[EXAMPLE_CATALOG]]/page.html?mv_session_id=[[EXAMPLE_SESSION]]&\
-   mv_pc=1&mv_arg=arg1%3dAA/arg2%3dBB
+    [[EXAMPLE_DOMAIN]]/cgi-bin/[[EXAMPLE_CATALOG]]/page.html?mv_session_id=[[EXAMPLE_SESSION]]&\
+    mv_pc=1&mv_arg=arg1%3dAA/arg2%3dBB
 !endblock
 
 B<ASP-like Perl call:>
@@ -2008,7 +2049,7 @@ H4: See Also
 H3: Description
 
 
-The C<area> tag is very similar to the {{CMD[jump="#page"]page}}
+The C<area> tag is very similar to the E<lbracket>{{C[jump="#page"]page}}]
 tag. It produces the URL to call an Interchange page, but it differs
 from C<page> in that it does not supply the surrounding
 E<lt>AE<nbspace>HREFE<nbspace>...E<gt> notation. This can be used to
@@ -2039,7 +2080,7 @@ The optional C<form> argument allows you to encode a form in the link.
                         mv_todo=refresh"]"> Order [[EXAMPLE_SIZE]] [[EXAMPLE_DESCRIPTION]]</A>
 !endblock
 
-See the description of the {{CMD[jump="#page_form"]page}} tag for more
+See the description of the E<lbracket>{{C[jump="#page"]page}}] tag for more
 detail.
 
 
@@ -2089,10 +2130,10 @@ H4: Examples
 B<Tag expansion example:>
 
 !block example
-   [area href=dir/page.html arg="arg1=AA/arg2=BB"]
+    [area href=dir/page.html arg="arg1=AA/arg2=BB"]
 
-   [[EXAMPLE_DOMAIN]]/cgi-bin/[[EXAMPLE_CATALOG]]/page.html?mv_session_id=[[EXAMPLE_SESSION]]&\
-   mv_pc=1&mv_arg=arg1%3dAA/arg2%3dBB
+    [[EXAMPLE_DOMAIN]]/cgi-bin/[[EXAMPLE_CATALOG]]/page.html?mv_session_id=[[EXAMPLE_SESSION]]&\
+    mv_pc=1&mv_arg=arg1%3dAA/arg2%3dBB
 !endblock
 
 Positional call example:
@@ -2195,14 +2236,14 @@ For example, the following eliminates salestax and sets shipping to
 $4.99 regardless of weight and N<destination:>
 
 !block example
-  [assign salestax=0 shipping=4.99]
+    [assign salestax=0 shipping=4.99]
 !endblock
 
 This restores the E<lbracket>{{C[jump="#salestax"]salestax}}] tag and
 eliminates handling N<charges:>
 
 !block example
-  [assign salestax="" handling=0]
+    [assign salestax="" handling=0]
 !endblock
 
 This restores the normal behavior to the
@@ -2210,7 +2251,7 @@ E<lbracket>{{C[jump="#shipping"]shipping}}] and
 E<lbracket>{{C[jump="#handling"]handling}}] N<tags:>
 
 !block example
-  [assign clear=1]
+    [assign clear=1]
 !endblock
 
 Assignment affects only the value returned by a tag. Other behavior,
@@ -2257,18 +2298,18 @@ value is not rounded.
 
 
 Note that you cannot assign to
-E<lbracket>{{C[jump="#total_cost"]total-cost}}]E<nbspace>E<emdash> it
+E<lbracket>{{C[jump="#total-cost"]total-cost}}]E<nbspace>E<emdash> it
 will always be the sum of the four above.
 
 Before using the C<assign> tag, please be sure you understand the
 dependencies within the pricing system, such as the relationship
-between E<lbracket>{{C[jump="#total_cost"]total-cost}}] and assigned
+between E<lbracket>{{C[jump="#total-cost"]total-cost}}] and assigned
 tags.
 
 
-H2: attr_list
+H2: attr-list
 
-This tag is intended for use within embedded perl rather than as a standalone tag within a template (i.e., the E<lbracket>attr_list ...] syntax does not apply).
+This tag is intended for use within embedded perl rather than as a standalone tag within a template (i.e., the E<lbracket>C<attr-list> ...] syntax does not apply).
 
 The C<$Tag-E<gt>attr_list($template, $hashref)> usage provides a shorthand for accessing values of a hash within embedded perl. It also allows you to control defaults or set up conditional values.
 
@@ -2276,7 +2317,7 @@ H3: Summary
  
 # BEGIN ############### attr_list Summary Tables ####################
 !block example;
-    [B<attr_list> hash]
+    C<$Tag-E<gt>attr_list($template, $hashref)>
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -2304,40 +2345,40 @@ Nests|I<No>
 B<Tag expansion example> (ASP-like Perl call):
 
 !block example
-  [perl tables=products]
-     my %opt = ( hashref => 1,
+    [perl tables=products]
+        my %opt = ( hashref => 1,
                  sql     => 'select * from  products', );
 
-     my $ary_of_hash = $Db{products}->query(\%opt);
+        my $ary_of_hash = $Db{products}->query(\%opt);
 
-     my B<$template> = <<EOF;
-        {sku} - {description} - {price|Call for price}
-        {image?}<IMG SRC="{image}">{/image?}
-        {image:}No image available{/image:}
-        <br>
-        More body Text here
-        <br>
+        my B<$template> = <<EOF;
+            {sku} - {description} - {price|Call for price}
+            {image?}<IMG SRC="{image}">{/image?}
+            {image:}No image available{/image:}
+            <br>
+            More body Text here
+            <br>
 EOF
 
-     foreach my B<$ref> (@$ary_of_hash) {
-        $out .= $Tag->B<attr_list($template, $ref)>;
-     }
-     return $out;
-  [/perl]
+        foreach my B<$ref> (@$ary_of_hash) {
+            $out .= $Tag->B<attr_list($template, $ref)>;
+        }
+        return $out;
+     [/perl]
 ---
-        os28113 - The Claw Hand Rake - Call for price
-        <IMG SRC="/[[EXAMPLE_CATALOG]]/images/os28113.gif">
+     os28113 - The Claw Hand Rake - Call for price
+     <IMG SRC="/[[EXAMPLE_CATALOG]]/images/os28113.gif">
 
-        <br>
-        More body Text here
-        <br>
-        os28006 - Painters Brush Set - 29.99
-        No image available
+     <br>
+     More body Text here
+     <br>
+     os28006 - Painters Brush Set - 29.99
+     No image available
 
-        <br>
-        More body Text here
-        <br>
-        ...
+     <br>
+     More body Text here
+     <br>
+     ...
 !endblock
 
 # END +++++++++++++++ attr_list End Summary Tables ++++++++++++++++++++
@@ -2427,7 +2468,7 @@ Container tag|I<No>
 B<Tag expansion example:>
 
 !block example
-   [banner category=]
+    [B<banner> category=my_category]
 !endblock
 
 B<ASP-like Perl call:>
@@ -2619,9 +2660,9 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [bounce href if]
+    [bounce href if]
 ---
-   TAG RESULT
+    TAG RESULT
 !endblock
 
 
@@ -2855,9 +2896,9 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [cart name]
+    [cart name]
 ---
-   TAG RESULT
+    TAG RESULT
 !endblock
 
 
@@ -2900,7 +2941,7 @@ The page content contained within the E<lbracket>C<catch> I<label>]E<lbracket>C<
 You can also return a result based on the error message caught in the try block with paired subtags, like N<this:>
 
 !block example
-   [I<error message>]body text[/I<error message>]
+    [I<error message>]body text[/I<error message>]
 !endblock
 
 Note that this feature excises I<all> tag/endtag pairs if interpolation is turned off, so the C<catch> tag interpolates by default.
@@ -2962,19 +3003,19 @@ B<Tag expansion example>
 Ignoring whitespace, the following would return division result if successful, 0 on a division by zero, or an error N<message:>
 
 !block example
-   [set divisor]0[/set]
-   [try label=div]
-      [perl] eval(1 / [scratch divisor]) [/perl]
-   [/try]
-   [catch div]
-      [/Illegal division by zero/]
-         0
-      [/Illegal division by zero/]
-      [/eval "string" trapped by operation mask/]
-         Perl {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}} error
-      [/eval "string" trapped by operation mask/]
-      Other division error
-   [/catch]
+    [set divisor]0[/set]
+    [try label=div]
+        [perl] eval(1 / [scratch divisor]) [/perl]
+    [/try]
+    [catch div]
+        [/Illegal division by zero/]
+            0
+        [/Illegal division by zero/]
+        [/eval "string" trapped by operation mask/]
+            Perl {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}} error
+        [/eval "string" trapped by operation mask/]
+        Other division error
+    [/catch]
 ---
    Perl {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}} error
 !endblock
@@ -2999,7 +3040,7 @@ H4: See Also
 
 # BEGIN ############### catch Summary Tables ####################
 !block example;
-    [B<catch> ]
+    [catch]
 !endblock
 
 !block table; colvaligns="TT"
@@ -3020,9 +3061,9 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [catch ]
+    [catch]
 ---
-   TAG RESULT
+    TAG RESULT
 !endblock
 
 
@@ -3049,7 +3090,7 @@ The page content contained within the E<lbracket>C<catch> I<label>]E<lbracket>C<
 You can also return a result based on the error message caught in the try block with paired subtags, like N<this:>
 
 !block example
-   [/I<error message>/]special catch block for the error[/I<error message>/]
+    [/I<error message>/]special catch block for the error[/I<error message>/]
 !endblock
 
 The error message to use in the special block will generally be part of the
@@ -3114,9 +3155,9 @@ B<Tag expansion example:>
 Assuming CGI variable 'foo' = 'bar',
 
 !block example
-   [cgi foo]
+    [cgi foo]
 ---
-   bar
+    bar
 !endblock
 
 B<ASP-like Perl call:>
@@ -3142,7 +3183,8 @@ H3: Description
 
 Displays the value of a CGI variable B<submitted to the current page>.
 This is similar to E<lbracket>{{C[jump="#value"]value}} ...], except it
-displays the transitory values that are submitted with every request.
+displays the transitory values that have been submitted with the current
+request.
 
 For instance, if you access the following URL:
 
@@ -3193,8 +3235,8 @@ This sets a return value in case the named CGI variable is missing or
 otherwise false. The following will expand to N<"Using default":>
 
 !block example
-   [cgi name=myname set=0 hide=1]
-   [cgi name=myname default="Using default"]
+    [cgi name=myname set=0 hide=1]
+    [cgi name=myname default="Using default"]
 !endblock
 
 
@@ -3261,7 +3303,6 @@ Parameters|Description|Default
 
 !block table; colvaligns="TT"
 Attributes|Default
-{{CMD[jump="#checked_ATT1"]ATT1}}|I<none>
 {{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
 !endblock
 
@@ -3278,13 +3319,11 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [value name=example set=neato]
-   <INPUT TYPE=checkbox NAME=neato VALUE=1 [checked name=neato value=1]>
-   <INPUT TYPE=checkbox NAME=silly VALUE=1 [checked name=silly value=1]>
----
-
-   <INPUT TYPE=checkbox NAME=neato VALUE=1 CHECKED>
-   <INPUT TYPE=checkbox NAME=silly VALUE=1 >
+    [value name=example set=neato]
+    <INPUT TYPE=checkbox NAME=neato VALUE=1 [checked name=neato value=1]>
+    <INPUT TYPE=checkbox NAME=silly VALUE=1 [checked name=silly value=1]>
+    <INPUT TYPE=checkbox NAME=neato VALUE=1 CHECKED>
+    <INPUT TYPE=checkbox NAME=silly VALUE=1 >
 !endblock
 
 
@@ -3351,7 +3390,7 @@ Returns named scratchpad field or copies named scratch variable to scratchpad. R
 H3: Summary
 
 !block example;
-    [B<control> name defaultI<other_named_attributes>]
+    [B<control> name default I<other_named_attributes>]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -3373,7 +3412,6 @@ Copies named scratch variable (i.e., from $::Scratch) to scratchpad with current
 
 !block table; colvaligns="TT"
 Attributes|Default
-{{CMD[jump="#control_ATT1"]ATT1}}|I<none>
 {{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
 !endblock
 
@@ -3390,9 +3428,9 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [control name default]
+    [control name default]
 ---
-   TAG RESULT
+    TAG RESULT
 !endblock
 
 
@@ -3449,11 +3487,11 @@ H3: Summary
 This example sets var_one, var_two and var_three in the scratchpad on page 5 (index begins with 0).
 
 !block example
-  [control_set index=4]
-    [var_one]I<var_one_value>[/var_one]
-    [var_two]I<var_two_value>[/var_two]
-    [var_three]I<var_three_value>[/var_three]
-  [/control_set]
+    [control_set index=4]
+        [var_one]I<var_one_value>[/var_one]
+        [var_two]I<var_two_value>[/var_two]
+        [var_three]I<var_three_value>[/var_three]
+    [/control_set]
 !endblock
 
 \Parameters: B<index>
@@ -3491,7 +3529,7 @@ B<ASP-like Perl call:>
 
 # BEGIN ############### control_set Summary Tables ####################
 !block example;
-    [B<control_set> indexI<other_named_attributes>]
+    [B<control_set> index I<other_named_attributes>]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -3502,7 +3540,6 @@ Parameters|Description|Default
 
 !block table; colvaligns="TT"
 Attributes|Default
-{{CMD[jump="#control_set_ATT1"]ATT1}}|I<none>
 {{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
 {{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
 !endblock
@@ -3520,9 +3557,9 @@ Nests|I<No>
 B<Tag expansion example:>
 
 !block example
-   [control_set index]
+    [control_set index]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -3618,9 +3655,9 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [counter file]
+    [counter file]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -3703,7 +3740,7 @@ that database ("sometable" in the below example).
 Then access it with:
 
 !block example
-  [counter sql="sometable:foo"]
+    [counter sql="sometable:foo"]
 !endblock
 
 You can create as many sequences as you like.
@@ -3725,7 +3762,7 @@ client:
 Then access it with:
 
 !block example
-  [counter sql="sequence_name:sequence_name"]
+    [counter sql="sequence_name:sequence_name"]
 !endblock
 
 Alternatively, you can create the table without Interchange definition
@@ -3739,7 +3776,7 @@ Then access it by calling the Interchange-defined table name followed
 by the table that has the AUTO_INCREMENT key:
 
 !block example
-  [counter sql="products:sequence_name"]
+    [counter sql="products:sequence_name"]
 !endblock
 
 To set up an Oracle counter, create a sequence:
@@ -3752,7 +3789,7 @@ To set up an Oracle counter, create a sequence:
 Then access via a table already connected to Oracle, in below C<sometable>:
 
 !block example
-  [counter sql="sometable:foo"]
+    [counter sql="sometable:foo"]
 !endblock
 
 !block example
@@ -3769,7 +3806,7 @@ client:
 Then access it with:
 
 !block example
-  [counter sql="sequence_name:sequence_name"]
+    [counter sql="sequence_name:sequence_name"]
 !endblock
 
 Alternatively, you can create the table without Interchange definition
@@ -3783,7 +3820,7 @@ Then access it by calling the Interchange-defined table name followed
 by the table that has the AUTO_INCREMENT key:
 
 !block example
-  [counter sql="products:sequence_name"]
+    [counter sql="products:sequence_name"]
 !endblock
 
 # END ++++++++++++ counter Subsections +++++++++++++
@@ -3857,9 +3894,9 @@ Nests|I<No>
 B<Tag expansion example:>
 
 !block example
-   [currency convert noformat]
+    [currency convert noformat]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -3967,7 +4004,7 @@ Attribute aliases
 
 # BEGIN ############### data Summary Tables ####################
 !block example;
-    [B<data> table field keyI<other_named_attributes>]
+    [B<data> table field key I<other_named_attributes>]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -4005,7 +4042,6 @@ Alias for key
 
 !block table; colvaligns="TT"
 Attributes|Default
-{{CMD[jump="#data_ATT1"]ATT1}}|I<none>
 {{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
 !endblock
 
@@ -4022,9 +4058,9 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [data table field key]
+    [data table field key]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -4056,7 +4092,7 @@ H3: Description
                   filter="uc|lc|name|namecase|no_white|etc."*
                   append=1*
                   value="value to set to"*
-                  increment=1*                         ]
+                  increment=1*]
 
 Returns the value of the field in a database table, or from the C<session>
 namespace. If the optional B<value> is supplied, the entry will be
@@ -4178,7 +4214,7 @@ B<ASP-like Perl call:>
 
 # BEGIN ############### default Summary Tables ####################
 !block example;
-    [B<default> name defaultI<other_named_attributes>]
+    [B<default> name default I<other_named_attributes>]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -4191,7 +4227,6 @@ Parameters|Description|Default
 
 !block table; colvaligns="TT"
 Attributes|Default
-{{CMD[jump="#default_ATT1"]ATT1}}|I<none>
 {{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
 !endblock
 
@@ -4208,9 +4243,9 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [default name default]
+    [default name default]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -4318,9 +4353,9 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [description code base]
+    [description code base]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -4436,9 +4471,9 @@ Nests|I<No>
 B<Tag expansion example:>
 
 !block example
-   [discount code]
+    [discount code]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -4571,7 +4606,7 @@ B<ASP-like Perl call:>
 
 # BEGIN ############### dump Summary Tables ####################
 !block example;
-    [B<dump> ]
+    [B<dump>]
 !endblock
 
 !block table; colvaligns="TT"
@@ -4592,9 +4627,9 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [dump ]
+    [dump]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -4630,7 +4665,7 @@ Uses ECML (Electronic Commerce Markup Language) module to map Interchange forms/
 H3: Summary
 
 !block example;
-    [B<ecml> name functionI<other_named_attributes>]
+    [B<ecml> name function I<other_named_attributes>]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -4644,7 +4679,6 @@ ecml function (default = 'widget')
 
 !block table; colvaligns="TT"
 Attributes|Default
-{{CMD[jump="#ecml_ATT1"]ATT1}}|I<none>
 {{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
 !endblock
 
@@ -4661,9 +4695,9 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [ecml name function]
+    [ecml name function]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -4782,13 +4816,13 @@ then subsequent pieces will be discarded without interpolation.
 H3: Summary
 
 !block example
-  [either]
-    This
-  [or]
-    That
-  [or]
-    The other
-  [/either]
+    [either]
+        This
+    [or]
+        That
+    [or]
+        The other
+    [/either]
 !endblock
 
 No parameters.
@@ -4820,7 +4854,7 @@ B<ASP-like Perl call:>
 
 # BEGIN ############### either Summary Tables ####################
 !block example;
-    [B<either> ]
+    [B<either>]
 !endblock
 
 !block table; colvaligns="TT"
@@ -4842,9 +4876,9 @@ Nests|I<No>
 B<Tag expansion example:>
 
 !block example
-   [either ]
+    [either]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -4919,7 +4953,6 @@ Parameters|Description|Default
 
 !block table; colvaligns="TT"
 Attributes|Default
-{{CMD[jump="#error_ATT1"]ATT1}}|I<none>
 {{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
 !endblock
 
@@ -4936,9 +4969,9 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [error name]
+    [error name]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -5080,7 +5113,7 @@ Exports a database to a delimited text file (see also
 H3: Summary
 
 !block example;
-    [B<export> tableI<other_named_attributes>]
+    [B<export> table I<other_named_attributes>]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -5136,7 +5169,6 @@ must be true when deleting a column
 
 !block table; colvaligns="TT"
 Attributes|Default
-{{CMD[jump="#export_ATT1"]ATT1}}|I<none>
 {{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
 !endblock
 
@@ -5153,9 +5185,9 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [export table]
+    [export table]
 ---
-   1
+    1
 !endblock
 
 
@@ -5324,9 +5356,9 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [field name code]
+    [field name code]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -5439,9 +5471,9 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [file name type]
+    [file name type]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -5555,9 +5587,9 @@ Nests|I<No>
 B<Tag expansion example:>
 
 !block example
-   [filter op]
+    [filter op]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -5931,9 +5963,9 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [flag type]
+    [flag type]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -5960,7 +5992,7 @@ flagged writable on the page calling the write tag.
 For example, you can call
 
 !block example
-  [flag type=write value=1 table=products]
+    [flag type=write value=1 table=products]
 !endblock
 
 to mark the C<products> DBM database writable. B<This must be done
@@ -6037,7 +6069,7 @@ the C<value>=0 attribute)
 
 # END +++++++++++++ flag Subsections ++++++++++++
 
-H2: fly_list
+H2: fly-list
 
 
 H3: Summary
@@ -6051,7 +6083,7 @@ Pass attribute hash as last to subroutine: B<no>
 
 Must pass named parameter interpolate=1 to cause interpolation.
 
-This is a container tag, i.e. [fly_list] FOO [/fly_list].
+This is a container tag, i.e. [fly-list] FOO [/fly-list].
 \Nesting: NO
 
 Invalidates cache: B<no>
@@ -6074,9 +6106,9 @@ B<ASP-like Perl call:>
 
  
 
-# BEGIN ############### fly_list Summary Tables ####################
+# BEGIN ############### fly-list Summary Tables ####################
 !block example;
-    [B<fly_list> code base]
+    [B<fly-list> code base]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -6106,9 +6138,9 @@ Nests|I<No>
 B<Tag expansion example:>
 
 !block example
-   [fly_list code base]
+    [fly-list code base]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -6126,7 +6158,7 @@ or similarly with positional parameters,
     $Tag->fly_list(code,base, $attribute_hash_reference, $body);
 !endblock
 
-# END +++++++++++++++ fly_list End Summary Tables ++++++++++++++++++++
+# END +++++++++++++++ fly-list End Summary Tables ++++++++++++++++++++
 
 
 H3: Description
@@ -6161,7 +6193,7 @@ be [fly-code]; C<prefix=foo> would cause C<[foo-code]>, etc.
 
 
 
-# BEGIN ########### fly_list Subsections ##############
+# BEGIN ########### fly-list Subsections ##############
 H4: {{CMD[id="fly_list_base"]base}}
 
 
@@ -6170,9 +6202,9 @@ H4: {{CMD[id="fly_list_code"]code}}
 
 
 
-# END ++++++++++++ fly_list Subsections +++++++++++++
+# END ++++++++++++ fly-list Subsections +++++++++++++
 
-H2: fly_tax
+H2: fly-tax
 
 
 H3: Summary
@@ -6204,9 +6236,9 @@ B<ASP-like Perl call:>
 
  
 
-# BEGIN ############### fly_tax Summary Tables ####################
+# BEGIN ############### fly-tax Summary Tables ####################
 !block example;
-    [B<fly_tax> area]
+    [fly-tax area]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -6233,9 +6265,9 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [fly_tax area]
+    [fly-tax area]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -6252,7 +6284,7 @@ or similarly with positional parameters,
     $Tag->fly_tax(area, $attribute_hash_reference, $body);
 !endblock
 
-# END +++++++++++++++ fly_tax End Summary Tables ++++++++++++++++++++
+# END +++++++++++++++ fly-tax End Summary Tables ++++++++++++++++++++
 
 
 H3: Description
@@ -6262,12 +6294,12 @@ Builds a tax rate from C<taxarea>, C<taxrate>, C<taxshipping>, variable values, 
 
 
 
-# BEGIN ########### fly_tax Subsections ##############
+# BEGIN ########### fly-tax Subsections ##############
 H4: {{CMD[id="fly_tax_area"]area}}
 
 
 
-# END ++++++++++++ fly_tax Subsections +++++++++++++
+# END ++++++++++++ fly-tax Subsections +++++++++++++
 
 H2: goto
 
@@ -6276,17 +6308,17 @@ Skips page content between E<lbracket>C<goto> I<name>] and E<lbracket>{{C[jump="
 H3: Summary
 
 !block example
-   [goto name=I<label_name> if=I<condition>]
-     I<content to skip>
-   [label name=I<label_name>]
+    [goto name=I<label_name> if=I<condition>]
+        I<content to skip>
+    [label name=I<label_name>]
 !endblock
 
 or positionally,
 
 !block example
-   [goto name if]
-     I<content to skip>
-   [label name]
+    [goto name if]
+        I<content to skip>
+    [label name]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -6340,8 +6372,8 @@ Condition for goto. If the argument to 'C<if>' is true, the tag will skip the te
 For example, this will not execute the goto:
 
 !block example
-   [set go]0[/set]
-   [goto name="there" if="[scratch go]"]
+    [set go]0[/set]
+    [goto name="there" if="[scratch go]"]
 !endblock
 
 
@@ -6390,7 +6422,7 @@ Attribute aliases
 
 # BEGIN ############### handling Summary Tables ####################
 !block example;
-    [B<handling> modeI<other_named_attributes>]
+    [B<handling> mode I<other_named_attributes>]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -6413,7 +6445,6 @@ Alias for table
 
 !block table; colvaligns="TT"
 Attributes|Default
-{{CMD[jump="#handling_ATT1"]ATT1}}|I<none>
 {{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
 !endblock
 
@@ -6430,9 +6461,9 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [handling mode]
+    [handling mode]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -6491,7 +6522,6 @@ This will appear in your output message (useful for distinguishing harness tags 
 
 !block table; colvaligns="TT"
 Attributes|Default
-{{CMD[jump="#harness_ATT1"]ATT1}}|I<none>
 {{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
 {{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
 !endblock
@@ -6509,9 +6539,9 @@ Nests|I<No>
 B<Tag expansion example:>
 
 !block example
-   [harness ]
+    [harness]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -6555,14 +6585,14 @@ H2: href
 Alias for [{{CMD[jump="#area"]area}}] tag.
 
 
-H2: html_table
+H2: html-table
 
 Builds an HTML table
 
 H3: Summary
 
 !block example;
-    [B<html_table> I<other_named_attributes>]
+    [html-table I<other_named_attributes>]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -6595,7 +6625,6 @@ HTML attributes for <TR>
 
 !block table; colvaligns="TT"
 Attributes|Default
-{{CMD[jump="#html_table_ATT1"]ATT1}}|I<none>
 {{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
 {{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
 !endblock
@@ -6613,9 +6642,9 @@ Nests|I<No>
 B<Tag expansion example:>
 
 !block example
-   [html_table ]
+    [html-table]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -6640,7 +6669,7 @@ Builds an HTML table
 
 
 
-# BEGIN ############ html_table Subsections ##############
+# BEGIN ############ html-table Subsections ##############
 H4: {{CMD[id="html_table_columns"]columns}}
 
 Whitespace-delimited list of columns
@@ -6681,7 +6710,7 @@ H4: {{CMD[id="html_table_tr"]tr}}
 HTML attributes for <TR>
 
 
-# END +++++++++++++ html_table Subsections ++++++++++++
+# END +++++++++++++ html-table Subsections ++++++++++++
 
 H2: if
 
@@ -6718,14 +6747,9 @@ Attribute aliases
 >            comp ==> compare
 >            condition ==> compare
 >            operator ==> op
-
-
  
 
 # BEGIN ############### if Summary Tables ####################
-!block example;
-    [B<if> type term op compare]
-!endblock
 
 !block table; colvaligns="TTT"; format="262"
 Parameters|Description|Default
@@ -6770,9 +6794,9 @@ Nests|I<No>
 B<Tag expansion example:>
 
 !block example
-   [if type term op compare]
+    [if type term op compare]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -7185,7 +7209,7 @@ Attribute aliases
 
 # BEGIN ############### import Summary Tables ####################
 !block example;
-    [B<import> table typeI<other_named_attributes>]
+    [B<import> table type I<other_named_attributes>]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -7204,7 +7228,6 @@ Alias for table
 
 !block table; colvaligns="TT"
 Attributes|Default
-{{CMD[jump="#import_ATT1"]ATT1}}|I<none>
 {{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
 {{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
 !endblock
@@ -7222,9 +7245,9 @@ Nests|I<No>
 B<Tag expansion example:>
 
 !block example
-   [import table type]
+    [import table type]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -7357,9 +7380,9 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [include file locale]
+    [include file locale]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -7409,7 +7432,7 @@ Creates an index for the specified table.
 H3: Summary
 
 !block example;
-    [B<index> tableI<other_named_attributes>]
+    [B<index> table I<other_named_attributes>]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -7453,7 +7476,6 @@ The index specification
 
 !block table; colvaligns="TT"
 Attributes|Default
-{{CMD[jump="#index_ATT1"]ATT1}}|I<none>
 {{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
 !endblock
 
@@ -7470,9 +7492,9 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [index table]
+    [index table]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -7548,7 +7570,7 @@ H4: {{CMD[id="index_table"]table}}
 
 # END +++++++++++++ index Subsections ++++++++++++
 
-H2: item_list
+H2: item-list
 
 
 H3: Summary
@@ -7561,7 +7583,7 @@ B<This may mean that there are parameters not shown here.>
 
 Must pass named parameter interpolate=1 to cause interpolation.
 
-This is a container tag, i.e. [item_list] FOO [/item_list].
+This is a container tag, i.e. [item-list] FOO [/item-list].
 \Nesting: NO
 
 Invalidates cache: B<YES>
@@ -7593,9 +7615,9 @@ Attribute aliases
 
  
 
-# BEGIN ############### item_list Summary Tables ####################
+# BEGIN ############### item-list Summary Tables ####################
 !block example;
-    [B<item_list> name I<other_named_attributes>]
+    [B<item-list> name I<other_named_attributes>]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -7609,7 +7631,6 @@ Alias for name
 
 !block table; colvaligns="TT"
 Attributes|Default
-{{CMD[jump="#item_list_ATT1"]ATT1}}|I<none>
 {{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
 {{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
 !endblock
@@ -7627,9 +7648,9 @@ Nests|I<No>
 B<Tag expansion example:>
 
 !block example
-   [item_list name]
+    [item-list name]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -7646,15 +7667,15 @@ or similarly with positional parameters,
     $Tag->item_list(name, $attribute_hash_reference, $body);
 !endblock
 
-# END +++++++++++++++ item_list End Summary Tables ++++++++++++++++++++
+# END +++++++++++++++ item-list End Summary Tables ++++++++++++++++++++
 
 
 H3: Description
 
 
-Within any page, the [item_list cart*] element shows a list of all the
+Within any page, the C<[item-list cart*]> element shows a list of all the
 items ordered by the customer so far. It works by repeating the source
-between [item_list] and [/item_list] once for each item ordered.
+between C<[item-list]> and C<[/item-list]> once for each item ordered.
 
 \NOTE: The special tags that reference item within the list are not normal
 Interchange tags, do not take named attributes, and cannot be contained in
@@ -7663,16 +7684,16 @@ a conditional container). They are interpreted only inside their
 corresponding list container. Normal Interchange tags can be interspersed,
 though they will be interpreted I<after> all of the list-specific tags.
 
-Between the item_list markers the following elements will return
+Between the [C<item-list>] markers the following elements will return
 information for the current item:
 
 
 H4: E<lbracket>if-data table column]
 
 If the database field C<column> in table I<table> is non-blank, the
-following text up to the [/if_data] tag is substituted. This can be
+following text up to the C<[/if_data]> tag is substituted. This can be
 used to substitute IMG or other tags only if the corresponding source
-item is present. Also accepts a [else]else text[/else] pair for the
+item is present. Also accepts a C<[else]>else textC<[/else]> pair for the
 opposite condition.
 
 H4: E<lbracket>if-data ! table column]
@@ -7751,14 +7772,14 @@ last on the list.
 >        [/calc][/item-last]
 
 If this is contained in your
-E<lbracket>{{C[jump="#item_list"]item-list}}] (or
-E<lbracket>{{C[jump="#search_list"]search-list}}] or
+E<lbracket>{{C[jump="#item-list"]item-list}}] (or
+E<lbracket>{{C[jump="#search-list"]search-list}}] or
 flypage) and the weight field is empty, then a numerical C<-1> will be
 output from the [calc][/calc] tags; the list will end and the item
 will B<not> be shown. If the product's weight field is less than 1, a
 numerical 1 is output. The item will be shown, but will be the last
 item shown. (If it is an
-E<lbracket>{{C[jump="#item_list"]item-list}}], any price for
+E<lbracket>{{C[jump="#item-list"]item-list}}], any price for
 the item will still be added to the subtotal.)
 
 H4: E<lbracket>item-modifier attribute]
@@ -7773,10 +7794,10 @@ the item will be skipped with no output. Example:
 
 >      [item-next][calc][item-field weight] < 1[/calc][/item-next]
 
-If this is contained in your E<lbracket>{{C[jump="#item_list"]item-list}}] (or E<lbracket>{{C[jump="#search_list"]search-list}}] or flypage)
+If this is contained in your E<lbracket>{{C[jump="#item-list"]item-list}}] (or E<lbracket>{{C[jump="#search-list"]search-list}}] or flypage)
 and the product's weight field is less than 1, then a numerical C<1> will
 be output from the [calc][/calc] operation. The item will not be shown. (If
-it is an E<lbracket>{{C[jump="#item_list"]item-list}}], any price for the item will still be added to the
+it is an E<lbracket>{{C[jump="#item-list"]item-list}}], any price for the item will still be added to the
 subtotal.)
 
 H4: E<lbracket>item-price n* noformat*]
@@ -7822,12 +7843,12 @@ customer can enter the quantity to order.
 
 
 
-# BEGIN ########### item_list Subsections ##############
+# BEGIN ########### item-list Subsections ##############
 H4: {{CMD[id="item_list_name"]name}}
 
 
 
-# END ++++++++++++ item_list Subsections +++++++++++++
+# END ++++++++++++ item-list Subsections +++++++++++++
 
 H2: label
 
@@ -7836,9 +7857,9 @@ The page label for goto. See E<lbracket>{{C[jump="#goto"]goto}}] tag for descrip
 \Parameter: B<name>
 
 !block example
-   [goto name=I<label_name> if=I<condition>]
-     I<content to skip>
-   [label name=I<label_name>]
+    [goto name=I<label_name> if=I<condition>]
+        I<content to skip>
+    [label name=I<label_name>]
 !endblock
 
 
@@ -7849,7 +7870,7 @@ NO SUMMARY SECTION
 
 # BEGIN ############### label Summary Tables ####################
 !block example;
-    [B<label> ]
+    [B<label>]
 !endblock
 
 !block table; colvaligns="TT"
@@ -7870,9 +7891,9 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [label ]
+    [label]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -7903,7 +7924,7 @@ Log contained text to specified file.
 H3: Summary
 
 !block example;
-    [B<log> fileI<other_named_attributes>]
+    [B<log> file I<other_named_attributes>]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -7940,7 +7961,6 @@ Log type
 
 !block table; colvaligns="TT"
 Attributes|Default
-{{CMD[jump="#log_ATT1"]ATT1}}|I<none>
 {{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
 {{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
 !endblock
@@ -7958,9 +7978,9 @@ Nests|I<No>
 B<Tag expansion example:>
 
 !block example
-   [log file]
+    [log file]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -8076,7 +8096,7 @@ Attribute aliases
 
 # BEGIN ############### loop Summary Tables ####################
 !block example;
-    [B<loop> listI<other_named_attributes>]
+    [B<loop> list I<other_named_attributes>]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -8093,7 +8113,6 @@ Alias for list
 
 !block table; colvaligns="TT"
 Attributes|Default
-{{CMD[jump="#loop_ATT1"]ATT1}}|I<none>
 {{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
 {{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
 !endblock
@@ -8111,9 +8130,9 @@ Nests|I<No>
 B<Tag expansion example:>
 
 !block example
-   [loop list]
+    [loop list]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -8296,7 +8315,7 @@ passed list with the lr=1 parameter).
 Outputs the B<IF> if the returned C<param> is non-empty, and the
 B<ELSE> (if any) otherwise.
 
-See E<lbracket>{{CMD[jump="#if-PREFIX-param"]if-PREFIX-param}}E<rbracket>.
+See C<[if-PREFIX-param]>.
 
 H4: E<lbracket>if-loop-pos N] IF [else] ELSE [/else][/if-loop-pos]
 
@@ -8309,7 +8328,7 @@ equivalent of [loop-code].
 Outputs the B<IF> if the returned positional parameter C<N> is
 non-empty, and the B<ELSE> (if any) otherwise.
 
-See E<lbracket>{{CMD[jump="#if-PREFIX-pos"]if-PREFIX-pos}}E<rbracket>.
+See C<[if-PREFIX-pos]>.
 
 H4: E<lbracket>loop-accessories]
 
@@ -8414,7 +8433,7 @@ Mail contained text to recipient specified by 'to' using the program specified w
 H3: Summary
 
 !block example;
-    [B<mail> toI<other_named_attributes>]
+    [B<mail> to I<other_named_attributes>]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -8440,7 +8459,6 @@ Tag return value if successful (default is 1).
 
 !block table; colvaligns="TT"
 Attributes|Default
-{{CMD[jump="#mail_ATT1"]ATT1}}|I<none>
 {{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
 {{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
 !endblock
@@ -8458,9 +8476,9 @@ Nests|I<No>
 B<Tag expansion example:>
 
 !block example
-   [mail to]
+    [mail to]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -8565,22 +8583,22 @@ Nests|I<No>
 B<Tag expansion example:>
 
 !block example
-   [mvasp tables="products" failure="ASP Broke <BR>"]
-      <P>This is HTMLE<lt>/p>
-      <% my $sku = $Values->{code}; %>
-      <P>More HTMLE<lt>/p>
-      <% my $result = "Looked up SKU $sku. It is a ";
-         $result .= $Tag->data('products', 'description', $sku );
-         $Document->write( "$result <br>\n" ); %>
-      <P>Still more HTMLE<lt>/p>
-   [/mvasp]
-------------------------------------------------------
-      <P>This is HTMLE<lt>/p>
-      
-      <P>More HTMLE<lt>/p>
-      Looked up SKU [[EXAMPLE_SKU]]. It is a [[EXAMPLE_DESCRIPTION]] <br>
+    [mvasp tables="products" failure="ASP Broke <BR>"]
+	<P>This is HTMLE<lt>/p>
+	<% my $sku = $Values->{code}; %>
+	<P>More HTMLE<lt>/p>
+	<% my $result = "Looked up SKU $sku. It is a ";
+	    $result .= $Tag->data('products', 'description', $sku );
+	    $Document->write( "$result <br>\n" ); %>
+	<P>Still more HTMLE<lt>/p>
+    [/mvasp]
+---
+    <P>This is HTMLE<lt>/p>
 
-      <P>Still more HTMLE<lt>/p>
+    <P>More HTMLE<lt>/p>
+    Looked up SKU [[EXAMPLE_SKU]]. It is a [[EXAMPLE_DESCRIPTION]] <br>
+
+    <P>Still more HTMLE<lt>/p>
 !endblock
 
 
@@ -8637,7 +8655,7 @@ protection (requires catalog directive
 
 H4: {{CMD[id="mvasp_file"]file}}
 
-Prepend the contents of the specified file or FileDatabase entry to
+Prepend the contents of the specified file or C<FileDatabase> entry to
 the perl code before C<eval>'ing it. See {{C[jump="#perl_file"]perl}} tag.
 
 
@@ -8692,9 +8710,9 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [nitems name]
+    [nitems name]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -8751,20 +8769,20 @@ Here is an illustrative example from the 'tools' sample data set of the foundati
 
 !block example
 ===
-   [options code=os28005]
+    [options code=os28005]
 ---
-   <input type=hidden name=mv_item_option value="logo">
-     <SELECT NAME="mv_order_logo">
-     <OPTION VALUE="c">Construct Something
-     <OPTION VALUE="y" SELECTED>Your Logo</SELECT><BR>
-   <input type=hidden name=mv_item_option value="color">
-     <INPUT TYPE="radio" NAME="mv_order_color" VALUE="BLK" >&nbsp;Black
-     <INPUT TYPE="radio" NAME="mv_order_color" VALUE="BEIGE" >&nbsp;Beige
-     <INPUT TYPE="radio" NAME="mv_order_color" VALUE="WHITE" >&nbsp;White<BR>
-   <input type=hidden name=mv_item_option value="bristle">
-     <SELECT NAME="mv_order_bristle">
-     <OPTION VALUE="synthetic">Synthetic
-     <OPTION VALUE="camel">Camel Hair</SELECT>
+    <input type=hidden name=mv_item_option value="logo">
+        <SELECT NAME="mv_order_logo">
+        <OPTION VALUE="c">Construct Something
+        <OPTION VALUE="y" SELECTED>Your Logo</SELECT><BR>
+    <input type=hidden name=mv_item_option value="color">
+        <INPUT TYPE="radio" NAME="mv_order_color" VALUE="BLK" >&nbsp;Black
+        <INPUT TYPE="radio" NAME="mv_order_color" VALUE="BEIGE" >&nbsp;Beige
+        <INPUT TYPE="radio" NAME="mv_order_color" VALUE="WHITE" >&nbsp;White<BR>
+    <input type=hidden name=mv_item_option value="bristle">
+        <SELECT NAME="mv_order_bristle">
+        <OPTION VALUE="synthetic">Synthetic
+        <OPTION VALUE="camel">Camel Hair</SELECT>
 ===
 !endblock
 
@@ -8866,9 +8884,9 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [options code]
+    [options code]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -9068,9 +9086,9 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [or type term op compare]
+    [or type term op compare]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -9160,11 +9178,11 @@ Has end tag|I<No> (C<[/order]> is a macro for C<E<lt>/AE<gt>>)
 B<Tag expansion example:>
 
 !block example
-   [order [[EXAMPLE_SKU]] 2]Buy [[EXAMPLE_DESCRIPTION]]E<lbracket>/order]
+    [order [[EXAMPLE_SKU]] 2]Buy [[EXAMPLE_DESCRIPTION]]E<lbracket>/order]
 ---
-   <A HREF="http://localhost.localdomain/cgi-bin/tag72/ord/basket?\
-   mv_session_id=[[EXAMPLE_SESSION]]&mv_pc=1&mv_action=refresh&\
-   mv_order_item=[[EXAMPLE_SKU]]&mv_order_quantity=3">Buy [[EXAMPLE_DESCRIPTION]]</A>
+    <A HREF="http://localhost.localdomain/cgi-bin/tag72/ord/basket?\
+    mv_session_id=[[EXAMPLE_SESSION]]&mv_pc=1&mv_action=refresh&\
+    mv_order_item=[[EXAMPLE_SKU]]&mv_order_quantity=3">Buy [[EXAMPLE_DESCRIPTION]]</A>
 !endblock
 
 B<ASP-like Perl call:>
@@ -9310,10 +9328,10 @@ Has end tag|I<No> (C<[/page]> is a macro for C<E<lt>/AE<gt>>)
 B<Tag expansion example:>
 
 !block example
-   [page href=dir/page.html arg="arg1=AA/arg2=BB"]
+    [page href=dir/page.html arg="arg1=AA/arg2=BB"]
 
-   <a href="[[EXAMPLE_DOMAIN]]/cgi-bin/[[EXAMPLE_CATALOG]]/page.html?mv_session_id=[[EXAMPLE_SESSION]]&\
-   mv_pc=1&mv_arg=arg1%3dAA/arg2%3dBB">
+    <a href="[[EXAMPLE_DOMAIN]]/cgi-bin/[[EXAMPLE_CATALOG]]/page.html?mv_session_id=[[EXAMPLE_SESSION]]&\
+    mv_pc=1&mv_arg=arg1%3dAA/arg2%3dBB">
 !endblock
 
 B<ASP-like Perl call:>
@@ -9447,23 +9465,22 @@ parameters.
 These are identical:
 
 !block example
-   [page scan
-         se=Impressionists
-         sf=category]
-      Impressionist Paintings
-   </a>
+    [page scan
+          se=Impressionists
+          sf=category]
+        Impressionist Paintings
+    </a>
 
-   [page href=scan
+    [page href=scan
           arg="se=Impressionists
                sf=category"]
-      Impressionist Paintings
-   </A>
+        Impressionist Paintings
+    </A>
 
-   [page search="se=Impressionists
-                 sf=category"]
-      Impressionist Paintings
-   </a>
-
+    [page search="se=Impressionists
+                  sf=category"]
+        Impressionist Paintings
+    </a>
 !endblock
 
 Here is the same thing from a non-Interchange page (e.g., a home
@@ -9638,17 +9655,18 @@ Container tag|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [perl tables="products" failure="Perl code error <BR>"]
+    [perl tables="products" failure="Perl code error <BR>"]
 !endblock
+
 !block example; lang="Perl"
-      my $result = "Looked up SKU $Values->{code}. It is a ";
-      $result .= $Tag->data('products', 'description', $Values->{code} );
-      return ("$result <br>\n");
+     my $result = "Looked up SKU $Values->{code}. It is a ";
+     $result .= $Tag->data('products', 'description', $Values->{code} );
+     return ("$result <br>\n");
 !endblock
 !block example
-   [/perl]
-------------------------------------------------------
-   Looked up SKU [[EXAMPLE_SKU]]. It is a [[EXAMPLE_DESCRIPTION]] <br>
+    [/perl]
+---
+    Looked up SKU [[EXAMPLE_SKU]]. It is a [[EXAMPLE_DESCRIPTION]] <br>
 !endblock
 
 B<ASP-like Perl call:> (e.g., to use it like a runtime eval() within your code)
@@ -9770,12 +9788,12 @@ E<lbracket>{{C[jump="#accessories"]accessories}}E<nbspace>...] opens
 the (default) products table:
 
 !block example;
-  [accessories code=os28044 attribute=size]
+    [accessories code=os28044 attribute=size]
 
-  [perl]
-    return $Tag->accessories( { attribute => 'size',
-                                code      => 'os28085' } );
-  [/perl]
+    [perl]
+        return $Tag->accessories( { attribute => 'size',
+                                    code      => 'os28085' } );
+    [/perl]
 !endblock
 
 If you remove the first E<lbracket>accessories ...] tag, then the
@@ -9879,7 +9897,7 @@ logs, and the tag itself will fail silently within the page.
 
 H4: {{CMD[id="perl_file"]file}}
 
-This prepends the contents of the specified file or FileDatabase entry to
+This prepends the contents of the specified file or C<FileDatabase> entry to
 the enclosed perl code (if any), then executes as usual.
 
 For example, 
@@ -9891,7 +9909,7 @@ For example,
 would execute myscript.pl and expand to its return value.
 
 Absolute filenames (or filenames containing '../') are prohibited by
-the {{C[jump="icconfig.html#NoAbsolute *global* *global*"]NoAbsolute}}
+the {{C[jump="icconfig.html#NoAbsolute *global*"]NoAbsolute}}
 catalog directive.
 
 If the filename is not absolute, Interchange first looks for a file in
@@ -9899,7 +9917,7 @@ the current directory, then in the list set with the
 {{C[jump="icconfig.html#TemplateDir *global*"]TemplateDir}} catalog
 directive. If it fails to find a file by that name, it then looks for
 an entry by that name in the database specified with the
-{{C[jump="icconfig.html#FileDatabase *global*"]FileDatabase}} catalog directive.
+C<FileDatabase> catalog directive.
 
 H4: {{CMD[id="perl_number_errors"]file}}
 
@@ -9924,7 +9942,6 @@ H4: {{CMD[id="perl_trim_errors"]trim_errors}}
 If set to a number, and the error produced includes a line number, then
 only that number of lines before and after the broken line itself will be
 displayed, instead of the whole block.
-
 
 
 
@@ -9968,7 +9985,7 @@ Attribute aliases
 
 # BEGIN ############### price Summary Tables ####################
 !block example;
-    [B<price> codeI<other_named_attributes>]
+    [B<price> code I<other_named_attributes>]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -9982,7 +9999,6 @@ Alias for mv_ib
 
 !block table; colvaligns="TT"
 Attributes|Default
-{{CMD[jump="#price_ATT1"]ATT1}}|I<none>
 {{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
 !endblock
 
@@ -9999,9 +10015,9 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [price code]
+    [price code]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -10132,10 +10148,10 @@ H2: process
 This is a shortcut for the 'process' action, expanding to your catalog URL and session ID. It is analogous to the {{C[jump="#area"]area}} tag for the 'process' page, but is more limited. The following expansion is N<illustrative:>
 
 !block example
-   [process target=targetframe]
+    [process target=targetframe]
 ---
-   http://[[EXAMPLE_DOMAIN]]/cgi-bin/[[EXAMPLE_CATALOG]]/process.html?\
-   id=[[EXAMPLE_SESSION]]" TARGET="targetframe
+    http://[[EXAMPLE_DOMAIN]]/cgi-bin/[[EXAMPLE_CATALOG]]/process.html?\
+    id=[[EXAMPLE_SESSION]]" TARGET="targetframe
 !endblock
 
 (the trailing backslash indicates continuation, i.e., the result should be only one line)
@@ -10181,10 +10197,10 @@ Container tag|I<No>
 B<Tag expansion example:>
 
 !block example
-   [process targetframe 1]
+    [process targetframe 1]
 ---
-   http://[[EXAMPLE_SECURE_DOMAIN]]/cgi-bin/[[EXAMPLE_CATALOG]]/process.html?\
-   id=[[EXAMPLE_SESSION]]" TARGET="targetframe
+    http://[[EXAMPLE_SECURE_DOMAIN]]/cgi-bin/[[EXAMPLE_CATALOG]]/process.html?\
+    id=[[EXAMPLE_SESSION]]" TARGET="targetframe
 !endblock
 
 B<ASP-like Perl call:>
@@ -10201,9 +10217,9 @@ or similarly with positional parameters,
 !endblock
 
 
-H2: process_search
+H2: process-search
 
-This is an exact alias for [area search].
+This is an exact alias for E<lbracket>{{C[jump="#area"]area}}<C search>].
 
 
 H2: query
@@ -10270,7 +10286,7 @@ may interpolate Interchange tags in the usual way if you double-quote
 the SQL statement.
 
 !block example
-   [query sql="select sku, description, price from products where price < [value mv_arg]"
+    [query sql="select sku, description, price from products where price < [value mv_arg]"
          type=list
          more=1
            ml=10]
@@ -10285,7 +10301,7 @@ the SQL statement.
       [more_list]
         [more]
       [/more_list]
-   [/query]
+    [/query]
 !endblock
 
 
@@ -10434,10 +10450,10 @@ interpolate Interchange tags within your SQL statement, backticks (`)
 to calculate a value, I<etc.>
 
 !block example
-   [query sql="select description, price from products
+    [query sql="select description, price from products
                where price < [value mv_arg]" ...]
-      ...
-   [/query]
+        ...
+    [/query]
 !endblock
 
 H4: {{CMD[id="query_table"]table}}
@@ -10530,7 +10546,7 @@ queries (see '{{C[jump="#query_type"]type}}=list' above. If you do not
 set C<more>=1, then the links to later pages will merely redisplay
 the first page of your results.
 
-H4: {{I[jump="#query_form_variables"]form variable abbreviations}}
+H4: {{CMD[id="query_form_variables"]form variable abbreviations}}
 
 Requires '{{C[jump="#query_type"]type}}=list'.
 
@@ -10575,7 +10591,7 @@ following two examples of list queries, the first using the defaults
 and the second with explicitly set C<prefix> and C<list_prefix>.
 
 !block example
-   [query sql="select sku, description, price from products
+    [query sql="select sku, description, price from products
                where price < 20"
          type=list
          more=1
@@ -10591,17 +10607,15 @@ and the second with explicitly set C<prefix> and C<list_prefix>.
       [more_list]
         [more]
       [/more_list]
-   [/query]
-
-------------------------------------------------------------
-
-   [query  sql="select sku, description, price from products
+    [/query]
+---
+    [query  sql="select sku, description, price from products
                 where price < 20"
-          type=list
-        B<prefix=foo>
-   B<list_prefix=bar>
-          more=1
-            ml=10]
+           type=list
+         B<prefix=foo>
+    B<list_prefix=bar>
+           more=1
+             ml=10]
 
       [on_match]Matched<br>[/on_match]
       [no_match]Not Found<br>[/no_match]
@@ -10613,7 +10627,7 @@ and the second with explicitly set C<prefix> and C<list_prefix>.
       [more_list]
         [more]
       [/more_list]
-   [/query]
+    [/query]
 !endblock
 
 
@@ -10631,7 +10645,7 @@ The example below would display three randomly chosen products
 priced under 20.
 
 !block example
-   [query sql="select * from products
+    [query sql="select * from products
                where price < 20"
          type=list
        random=3]
@@ -10640,7 +10654,7 @@ priced under 20.
         [sql-code] [sql-param description] [sql-price]
       [/list]
 
-   [/query]
+    [/query]
 !endblock
 
 
@@ -10702,7 +10716,7 @@ tag. The wantarray option is needed because global subs and usertags
 are also affected by this unless you set wantarray.
 
 
-H2: read_cookie
+H2: read-cookie
 
 Returns the value of the named cookie. Returns nothing if the cookie
 does not exist.
@@ -10711,8 +10725,8 @@ does not exist.
 H3: Summary
 
 !block example;
-    [B<read_cookie> name]
-    [B<read_cookie> name=mycookie]
+    [read-cookie name]
+    [read-cookie name=mycookie]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -10737,9 +10751,9 @@ Container tag|I<No>
 B<Usage example:>
 
 !block example
-   [read-cookie name=MV_SESSION_ID]
-------------------------------------------------------
-   [[EXAMPLE_SESSION]]
+    [read-cookie name=MV_SESSION_ID]
+---
+    [[EXAMPLE_SESSION]]
 !endblock
 
 
@@ -10823,9 +10837,9 @@ Container tag|I<No>
 B<Usage example:>
 
 !block example
-   [read-cookie name=MV_SESSION_ID]
-------------------------------------------------------
-   [[EXAMPLE_SESSION]]
+    [read-cookie name=MV_SESSION_ID]
+---
+    [[EXAMPLE_SESSION]]
 !endblock
 
 
@@ -10930,9 +10944,9 @@ Nests|I<No>
 B<Tag expansion example:>
 
 !block example
-   [row width]
+    [row width]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -11076,9 +11090,9 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [salestax name noformat]
+    [salestax name noformat]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -11185,9 +11199,9 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [scratch name]
+    [scratch name]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -11265,13 +11279,13 @@ Container tag|I<No>
 B<Tag expansion example:>
 
 !block example
-   [set myvar]This is myvar[/set]
-   .
-   .
-   .
-   [scratchd myvar]
+    [set myvar]This is myvar[/set]
+    .
+    .
+    .
+    [scratchd myvar]
 ---
-   This is myvar
+    This is myvar
 !endblock
 
 B<ASP-like Perl call:>
@@ -11286,14 +11300,14 @@ H3: Description
 Deletes the named scratch variable and returns its value before the deletion.
 
 
-H2: search_list
+H2: search-list
 
 Formats results returned by a search. Must be enclosed within a
-{{C[jump="#search_region"]search_region}}. Has sub-tags (see
-{{C[jump="#Looping tags and Sub-tags"]LoopingE<nbspace>tagsE<nbspace>andE<nbspace>Sub-tags}}). 
+{{C[jump="#search-region"]search-region}}. Has sub-tags (see
+{{C[jump="#Looping tags and Sub-tags"]Looping tags and Sub-tags}}). 
 
 
-H2: search_region
+H2: search-region
 
 
 H3: Summary
@@ -11306,7 +11320,7 @@ B<This may mean that there are parameters not shown here.>
 
 Must pass named parameter interpolate=1 to cause interpolation.
 
-This is a container tag, i.e. [search_region] FOO [/search_region].
+This is a container tag, i.e. [search-region] FOO [/search-region].
 \Nesting: NO
 
 Invalidates cache: B<no>
@@ -11335,9 +11349,9 @@ Attribute aliases
 
  
 
-# BEGIN ############### search_region Summary Tables ####################
+# BEGIN ############### search-region Summary Tables ####################
 !block example;
-    [B<search_region> argI<other_named_attributes>]
+    [search-region arg I<other_named_attributes>]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -11357,7 +11371,6 @@ Alias for arg
 
 !block table; colvaligns="TT"
 Attributes|Default
-{{CMD[jump="#search_region_ATT1"]ATT1}}|I<none>
 {{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
 {{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
 !endblock
@@ -11375,9 +11388,9 @@ Nests|I<No>
 B<Tag expansion example:>
 
 !block example
-   [search_region arg]
+    [search-region arg]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -11394,7 +11407,7 @@ or similarly with positional parameters,
     $Tag->search_region(arg, $attribute_hash_reference, $body);
 !endblock
 
-# END +++++++++++++++ search_region End Summary Tables ++++++++++++++++++++
+# END +++++++++++++++ search-region End Summary Tables ++++++++++++++++++++
 
 
 H3: Description
@@ -11405,12 +11418,12 @@ B<NO Description>
 
 
 
-# BEGIN ########### search_region Subsections ##############
+# BEGIN ########### search-region Subsections ##############
 H4: {{CMD[id="search_region_arg"]arg}}
 
 
 
-# END ++++++++++++ search_region Subsections +++++++++++++
+# END ++++++++++++ search-region Subsections +++++++++++++
 
 H2: selected
 
@@ -11470,7 +11483,6 @@ Parameters|Description|Default
 
 !block table; colvaligns="TT"
 Attributes|Default
-{{CMD[jump="#selected_ATT1"]ATT1}}|I<none>
 {{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
 !endblock
 
@@ -11487,13 +11499,12 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [value name=example set=neato]
-   <OPTION[selected example neato]>Neato
-   <OPTION[selected example silly]>Silly
+    [value name=example set=neato]
+    <OPTION[selected example neato]>Neato
+    <OPTION[selected example silly]>Silly
 ---
-
-   <OPTION SELECTED>Neato
-   <OPTION>Silly
+    <OPTION SELECTED>Neato
+    <OPTION>Silly
 !endblock
 
 # END +++++++++++++++ selected End Summary Tables ++++++++++++++++++++
@@ -11673,14 +11684,14 @@ H4: {{CMD[id="set_name"]name}}
 
 # END ++++++++++++ set Subsections +++++++++++++
 
-H2: set_cookie
+H2: set-cookie
 
 Sets browser cookie(s) with the specified attributes.
 
 H3: Summary
 
 !block example;
-    [B<set_cookie> I<named_attributes>]
+    [set-cookie I<named_attributes>]
 !endblock
 
 Parameters must be named (no positional usage except in Perl call)
@@ -11717,11 +11728,11 @@ Container tag|I<No>
 B<Usage example:>
 
 !block example
-   [set-cookie name=mycookie
-              value="the value"
-             expire="Tue, 03-Apr-2001 17:00:00 GMT" ]
-------------------------------------------------------
-   I<This tag returns no value in the page>
+    [set-cookie name=mycookie
+               value="the value"
+              expire="Tue, 03-Apr-2001 17:00:00 GMT"]
+---
+    I<This tag returns no value in the page>
 !endblock
 
 
@@ -11871,9 +11882,9 @@ Nests|I<No>
 B<Tag expansion example:>
 
 !block example
-   [seti name]value[/seti]
+    [seti name]value[/seti]
 ---
-
+    TODO: (tag result)
 !endblock
 
 B<ASP-like Perl call:>
@@ -11914,7 +11925,7 @@ Sets locale and/or currency for the current page. Can be made persistent for the
 H3: Summary
 
 !block example;
-    [B<setlocale> ]
+    [B<setlocale>]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -11950,9 +11961,9 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [setlocale ]
+    [setlocale]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -12069,10 +12080,10 @@ Suppresses output
 {{CMD[jump="#shipping_label"]label}}|<<
 By default, returns HTML <OPTION ...> widget for shipping mode(s), including description and cost. You can override the widget with the B<format> attribute.  Note that B<label> overrides B<noformat>.
 * Here is an example from the foundation checkout.html page:
->   [shipping
->     label=1
->     mode=|E<lbracket>{{CMD[jump="#data"]data}} table=country key='[default country US]' col=shipmodes]|
->   ]
+>    [shipping
+>        label=1
+>        mode=|E<lbracket>{{CMD[jump="#data"]data}} table=country key='[default country US]' col=shipmodes]|
+>    ]
 >>|DEFAULT_VALUE
 {{CMD[jump="#shipping_mode"]mode}}|<<
 * N<Aliases:> B<name>, B<modes>
@@ -12124,9 +12135,9 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [shipping mode]
+    [shipping mode]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -12212,10 +12223,10 @@ H4: {{CMD[id="shipping_label"]label}}
 
 By default, returns HTML <OPTION ...> widget for shipping mode(s), including description and cost. You can override the widget with the B<format> attribute.  Note that B<label> overrides B<noformat>.
 * Here is an example from the foundation checkout.html page:
->   [shipping
->     label=1
->     mode=|E<lbracket>{{CMD[jump="#data"]data}} table=country key='[default country US]' col=shipmodes]|
->   ]
+>    [shipping
+>        label=1
+>        mode=|E<lbracket>{{CMD[jump="#data"]data}} table=country key='[default country US]' col=shipmodes]|
+>    ]
 
 
 H4: {{CMD[id="shipping_mode"]mode}}
@@ -12251,23 +12262,23 @@ Whitespace-delimited list of tables containing shipping data required for perl o
 
 # END +++++++++++++ shipping Subsections ++++++++++++
 
-H2: shipping_desc
+H2: shipping-desc
 
 Returns the shipping description for the specified shipping B<mode>.  See the {{CMD[jump="icdatabase.html#Shipping"]Shipping}} section of the Database documentation.  See also shipping.asc database for shipping modes.
 
-N<Alias:> B<shipping_description>
+N<Alias:> B<shipping-description>
 
 The two tags below are identical in N<operation:>
 
->   [shipping_desc mode]
->   [shipping_description mode]
+>   [shipping-desc mode]
+>   [shipping-description mode]
 
 
 H3: Summary
 
 !block example;
-    [B<shipping_desc> mode]
-    [B<shipping_desc> mode=I<shipping_mode>]
+    [B<shipping-desc> mode]
+    [B<shipping-desc> mode=I<shipping_mode>]
 !endblock
 
 !block table; colvaligns="TTT"; format="244"
@@ -12287,9 +12298,9 @@ Container tag|I<No>
 B<Tag expansion example:>
 
 !block example
-   [shipping_desc 1DM]
+    [shipping-desc 1DM]
 ---
-   UPS Next Day Air Early AM
+    UPS Next Day Air Early AM
 !endblock
 
 B<ASP-like Perl call:>
@@ -12338,7 +12349,7 @@ B<ASP-like Perl call:>
 
 # BEGIN ############### soap Summary Tables ####################
 !block example;
-    [B<soap> call uri proxyI<other_named_attributes>]
+    [B<soap> call uri proxy I<other_named_attributes>]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -12353,7 +12364,6 @@ Parameters|Description|Default
 
 !block table; colvaligns="TT"
 Attributes|Default
-{{CMD[jump="#soap_ATT1"]ATT1}}|I<none>
 {{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
 !endblock
 
@@ -12370,9 +12380,9 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [soap call uri proxy]
+    [soap call uri proxy]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -12523,9 +12533,9 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [subtotal name noformat]
+    [subtotal name noformat]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -12620,7 +12630,7 @@ Attribute aliases
 
 # BEGIN ############### tag Summary Tables ####################
 !block example;
-    [B<tag> op argI<other_named_attributes>]
+    [B<tag> op arg I<other_named_attributes>]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -12636,7 +12646,6 @@ Alias for arg
 
 !block table; colvaligns="TT"
 Attributes|Default
-{{CMD[jump="#tag_ATT1"]ATT1}}|I<none>
 {{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
 {{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
 !endblock
@@ -12654,9 +12663,9 @@ Nests|I<No>
 B<Tag expansion example:>
 
 !block example
-   [tag op arg]
+    [tag op arg]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -12729,8 +12738,8 @@ The following tag will send every item code and description in the user's
 shopping cart to the file logs/transactions.txt:
 
 >    [tag log logs/transactions.txt]
->    [item_list][item-code]  [item-description]
->    [/item_list][/tag]
+>    [item-list][item-code]  [item-description]
+>    [/item-list][/tag]
 
 The file is relative to the catalog directory, and only may be
 an absolute path name if I<NoAbsolute> is set to C<No>.
@@ -12851,7 +12860,7 @@ B<ASP-like Perl call:>
 
 # BEGIN ############### time Summary Tables ####################
 !block example;
-    [B<time> localeI<other_named_attributes>]
+    [B<time> locale I<other_named_attributes>]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -12862,7 +12871,6 @@ Parameters|Description|Default
 
 !block table; colvaligns="TT"
 Attributes|Default
-{{CMD[jump="#time_ATT1"]ATT1}}|I<none>
 {{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
 {{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
 !endblock
@@ -12880,9 +12888,9 @@ Nests|I<No>
 B<Tag expansion example:>
 
 !block example
-   [time locale]
+    [time locale]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -13044,7 +13052,7 @@ H4: {{CMD[id="time_locale"]locale}}
 
 # END ++++++++++++ time Subsections +++++++++++++
 
-H2: timed_build
+H2: timed-build
 
 
 H3: Summary
@@ -13060,7 +13068,7 @@ B<This may mean that there are parameters not shown here.>
 
 Must pass named parameter interpolate=1 to cause interpolation.
 
-This is a container tag, i.e. [timed_build] FOO [/timed_build].
+This is a container tag, i.e. [timed-build] FOO [/timed-build].
 \Nesting: NO
 
 Invalidates cache: B<no>
@@ -13082,9 +13090,9 @@ B<ASP-like Perl call:>
 
  
 
-# BEGIN ############### timed_build Summary Tables ####################
+# BEGIN ############### timed-build Summary Tables ####################
 !block example;
-    [B<timed_build> file I<other_named_attributes>]
+    [timed-build file I<other_named_attributes>]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -13095,7 +13103,6 @@ Parameters|Description|Default
 
 !block table; colvaligns="TT"
 Attributes|Default
-{{CMD[jump="#timed_build_ATT1"]ATT1}}|I<none>
 {{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
 {{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
 !endblock
@@ -13113,9 +13120,9 @@ Nests|I<No>
 B<Tag expansion example:>
 
 !block example
-   [timed_build file]
+    [timed-build file]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -13132,7 +13139,7 @@ or similarly with positional parameters,
     $Tag->timed_build(file, $attribute_hash_reference, $body);
 !endblock
 
-# END +++++++++++++++ timed_build End Summary Tables ++++++++++++++++++++
+# END +++++++++++++++ timed-build End Summary Tables ++++++++++++++++++++
 
 
 H3: Description
@@ -13140,7 +13147,7 @@ H3: Description
 
 Allows you to build CPU-intensive regions of ITL tags on a timed basis.
 
-In the simplest case, surround a region of ITL with E<lbracket>{{C[jump="#timed_build"]timed-build}}]
+In the simplest case, surround a region of ITL with E<lbracket>{{C[jump="#timed-build"]timed-build}}]
 and C<[/timed-build]>:
 
 >        [timed-build]
@@ -13226,12 +13233,12 @@ next time a link is made for that page the static version will be presented.
 
 
 
-# BEGIN ########### timed_build Subsections ##############
+# BEGIN ########### timed-build Subsections ##############
 H4: {{CMD[id="timed_build_file"]file}}
 
 
 
-# END ++++++++++++ timed_build Subsections +++++++++++++
+# END ++++++++++++ timed-build Subsections +++++++++++++
 
 H2: tmp
 
@@ -13299,9 +13306,7 @@ Nests|I<No>
 B<Tag expansion example:>
 
 !block example
-   [tmp name]value[/tmp]
----
-
+    [tmp name]value[/tmp]
 !endblock
 
 
@@ -13443,7 +13448,7 @@ H4: {{CMD[id="tmp_name"]name}}
 # END ++++++++++++ tmpn Subsections +++++++++++++
 
 
-H2: total_cost
+H2: total-cost
 
 
 H3: Summary
@@ -13481,9 +13486,9 @@ Attribute aliases
 
  
 
-# BEGIN ############### total_cost Summary Tables ####################
+# BEGIN ############### total-cost Summary Tables ####################
 !block example;
-    [B<total_cost> name noformat]
+    [total-cost name noformat]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -13515,9 +13520,9 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [total_cost name noformat]
+    [total-cost name noformat]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -13535,7 +13540,7 @@ or similarly with positional parameters,
     $Tag->total_cost(name,noformat, $attribute_hash_reference, $body);
 !endblock
 
-# END +++++++++++++++ total_cost End Summary Tables ++++++++++++++++++++
+# END +++++++++++++++ total-cost End Summary Tables ++++++++++++++++++++
 
 
 H3: Description
@@ -13549,7 +13554,7 @@ including sales tax (if any).
 
 
 
-# BEGIN ########### total_cost Subsections ##############
+# BEGIN ########### total-cost Subsections ##############
 H4: {{CMD[id="total_cost_name"]name}}
 
 
@@ -13558,7 +13563,7 @@ H4: {{CMD[id="total_cost_noformat"]noformat}}
 
 
 
-# END ++++++++++++ total_cost Subsections +++++++++++++
+# END ++++++++++++ total-cost Subsections +++++++++++++
 
 H2: tree
 
@@ -13606,7 +13611,7 @@ Attribute aliases
 
 # BEGIN ############### tree Summary Tables ####################
 !block example;
-    [B<tree> table master subordinate startI<other_named_attributes>]
+    [B<tree> table master subordinate start I<other_named_attributes>]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -13626,7 +13631,6 @@ Alias for subordinate
 
 !block table; colvaligns="TT"
 Attributes|Default
-{{CMD[jump="#tree_ATT1"]ATT1}}|I<none>
 {{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
 {{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
 !endblock
@@ -13644,9 +13648,9 @@ Nests|I<No>
 B<Tag expansion example:>
 
 !block example
-   [tree table master subordinate start]
+    [tree table master subordinate start]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -13672,7 +13676,7 @@ or similarly with positional parameters,
 H3: Description
 
 Provides iterative list capability for binary trees. It produces
-hash-based rows use the same tags as E<lbracket>{{C[jump="#item_list"]item-list}}]; sets some additional
+hash-based rows use the same tags as E<lbracket>{{C[jump="#item-list"]item-list}}]; sets some additional
 hash key entries to describe the tree and provide display control.
 
 Works on a data set with the structure:
@@ -13963,13 +13967,13 @@ Container tag|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [set divisor]0[/set]
-   [try label=div]
-      [calc] 1 / [scratch divisor] [/calc]
-   [/try]
-   [catch div]Division error[/catch]
+    [set divisor]0[/set]
+    [try label=div]
+        [calc] 1 / [scratch divisor] [/calc]
+    [/try]
+    [catch div]Division error[/catch]
 ---
-   Division Error
+    Division Error
 !endblock
 
 
@@ -14011,11 +14015,11 @@ Technical N<note:>
 The try tag will also place a result in the $Session object.  For example, the following returns the 'Illegal division by zero...' error message if it N<occurs:>
 
 !block example
-   [try label=divide][calc] 1 / [scratch divisor] [/calc][/try]
+    [try label=divide][calc] 1 / [scratch divisor] [/calc][/try]
 
-   [catch divide]
-      [calc]$Session->{try}{divide}[/calc]
-   [/catch]
+    [catch divide]
+        [calc]$Session->{try}{divide}[/calc]
+    [/catch]
 !endblock
 
 The $Session->{try}{divide} object will be set to the empty string ('') if there was no error, or it will contain the error message if there was an error.
@@ -14100,9 +14104,9 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [update function]
+    [update function]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -14205,7 +14209,6 @@ Alias for db
 
 !block table; colvaligns="TT"
 Attributes|Default
-{{CMD[jump="#userdb_ATT1"]ATT1}}|I<none>
 {{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
 !endblock
 
@@ -14222,9 +14225,9 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [userdb function]
+    [userdb function]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -14250,7 +14253,7 @@ H3: Description
 
 Interchange provides a C<[userdb ...]> tag to access the UserDB functions.
 
-> [userdb
+>    [userdb
 >        function=function_name
 >        username="username"*
 >        password="password"*
@@ -14265,7 +14268,7 @@ Interchange provides a C<[userdb ...]> tag to access the UserDB functions.
 >        hide=1
 >        show=1
 >        ...
->        ]
+>    ]
 
 \* Optional
 
@@ -14365,9 +14368,9 @@ B<Tag expansion example:>
 Assuming form variable 'foo' = 'bar',
 
 !block example
-   [value foo]
+    [value foo]
 ---
-   bar
+    bar
 !endblock
 
 B<ASP-like Perl call:>
@@ -14458,8 +14461,8 @@ This sets a return value in case the named value is missing or
 otherwise false. The following will expand to N<"Using default":>
 
 !block example
-   [value name=myname set=0 hide=1]
-   [value name=myname default="Using default"]
+    [value name=myname set=0 hide=1]
+    [value name=myname default="Using default"]
 !endblock
 
 
@@ -14469,7 +14472,7 @@ Any '<' characters will normally be converted into '&lt;' for safety reasons.
 This conversion can be disabled using 'C<enable_html>=1'.
 
 
-H2: value_extended
+H2: value-extended
 
 
 H3: Summary
@@ -14503,9 +14506,9 @@ B<ASP-like Perl call:>
 
  
 
-# BEGIN ############### value_extended Summary Tables ####################
+# BEGIN ############### value-extended Summary Tables ####################
 !block example;
-    [B<value_extended> name I<other_named_attributes>]
+    [value-extended name I<other_named_attributes>]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
@@ -14533,9 +14536,9 @@ Nests|I<Yes>
 B<Tag expansion example:>
 
 !block example
-   [value_extended name]
+    [value-extended name]
 ---
-   TODO: (tag result)
+    TODO: (tag result)
 !endblock
 
 
@@ -14552,7 +14555,7 @@ or similarly with positional parameters,
     $Tag->value_extended(name, $attribute_hash_reference, $body);
 !endblock
 
-# END +++++++++++++++ value_extended End Summary Tables ++++++++++++++++++++
+# END +++++++++++++++ value-extended End Summary Tables ++++++++++++++++++++
 
 
 
@@ -14650,12 +14653,12 @@ fails. Defaults to the empty string.
 
 
 
-# BEGIN ########### value_extended Subsections ##############
+# BEGIN ########### value-extended Subsections ##############
 H4: {{CMD[id="value_extended_name"]name}}
 
 
 
-# END ++++++++++++ value_extended Subsections +++++++++++++
+# END ++++++++++++ value-extended Subsections +++++++++++++
 
 H1: User-defined Tags
 
@@ -14931,7 +14934,7 @@ each of the pages. The results of this code for page2 are shown below.
 	[/selected]
 	[/bar-button]
 	</tr></table>
-------------------------------------------------------
+---
 	PAGE-1    PAGE-2-selected    PAGE-3
 !endblock
 
@@ -14984,8 +14987,8 @@ This tag converts a given date format into another format.
 H3: Summary
 
 !block example;
-    [B<convert_date> day* other_named_attributes>[/convert_date]
-    [B<convert_date> day=n* other_named_attributes[/convert_date]
+    [B<convert_date> day* I<other_named_attributes>[/convert_date]
+    [B<convert_date> day=n* I<other_named_attributes>[/convert_date]
 !endblock
 
 !block note; label="Positional parameters: "
@@ -15028,7 +15031,7 @@ B<Tag expansion example:>
   i. [convert-date]200 1 -  --051 =9[/convert-date]
   j. [convert-date]2001 -  --05 -20 11 1 5[/convert-date]
   k. [convert-date raw=1]2001-05-21 11:15[/convert-date]
-------------------------------------------------------
+---
   a. 18-May-2001 03:15AM (todays day and time)
   b. 19-May-2001 03:15AM (today + 1 day)
   c. 17-May-2001 03:15AM (today - 1 day)
@@ -15114,13 +15117,13 @@ Has end tag|I<No>
 B<Tag expansion example:>
 
 !block example
-   [db-date]
-   [db-date cat]
-   [db-date table=cat format="%d %b %Y"]
-------------------------------------------------------
-   Wednesday 02 May 2001 (products.txt)
-   Wednesday 03 May 2001 (cat.txt)
-   03 May 2001 (cat.txt)
+    [db-date]
+    [db-date cat]
+    [db-date table=cat format="%d %b %Y"]
+---
+    Wednesday 02 May 2001 (products.txt)
+    Wednesday 03 May 2001 (cat.txt)
+    03 May 2001 (cat.txt)
 !endblock
 
 B<ASP-like Perl call:>
@@ -15182,9 +15185,8 @@ Has end tag|I<No>
 B<Tag expansion example:>
 
 !block example
-   [delete_cart mycart]
-   [delete_cart nickname="mycart"]
-------------------------------------------------------
+    [delete_cart mycart]
+    [delete_cart nickname="mycart"]
 !endblock
 
 B<ASP-like Perl call:>
@@ -15253,14 +15255,13 @@ Has end tag|[/email]
 B<Tag expansion example:>
 
 !block example
-   [email
-          to="foo@bar.com"
-     subject="Greetings"
-        from="bar@foo.com"
-   ]
-   Hello World
-   [/email]
-------------------------------------------------------
+    [email
+           to="foo@bar.com"
+      subject="Greetings"
+         from="bar@foo.com"
+    ]
+    Hello World
+    [/email]
 !endblock
 
 B<ASP-like Perl call:>
@@ -15338,14 +15339,13 @@ Has end tag|[/email_raw]
 B<Tag expansion example:>
 
 !block example
-   [email_raw]
+    [email_raw]
 From: foo@bar.com
 To: bar@foo.com
 Subject: baz
 
 The text of the message.
-   [/email_raw]
-------------------------------------------------------
+    [/email_raw]
 !endblock
 
 The headers must be at the beginning of the line, and the header
@@ -15440,9 +15440,8 @@ Has end tag|I<No>
 B<Tag expansion example:>
 
 !block example
-   [get-url http://demo.akopia.com/]
-   [get-url url="http://demo.akopia.com/" strip=1]
-------------------------------------------------------
+    [get-url http://demo.akopia.com/]
+    [get-url url="http://demo.akopia.com/" strip=1]
 !endblock
 
 B<ASP-like Perl call:>
@@ -15514,9 +15513,8 @@ Has end tag|I<No>
 B<Tag expansion example:>
 
 !block example
-   [load_cart mycart:990102732:c]
-   [load_cart nickname="mycart:990102732:c"]
-------------------------------------------------------
+    [load_cart mycart:990102732:c]
+    [load_cart nickname="mycart:990102732:c"]
 !endblock
 
 B<ASP-like Perl call:>
@@ -15598,9 +15596,8 @@ Has end tag|I<No>
 B<Tag expansion example:>
 
 !block example
-   [save_cart mycart]
-   [save_cart nickname=mycart recurring=1]
-------------------------------------------------------
+    [save_cart mycart]
+    [save_cart nickname=mycart recurring=1]
 !endblock
 
 B<ASP-like Perl call:>
@@ -15681,14 +15678,14 @@ Has end tag|I<No>
 B<Tag expansion example:>
 
 !block example
-   [loop list="10 20 30.5"]
-   [summary amount="[loop-code]" hide=1]
-   [/loop]
-   [summary total=1 format="%.3f"]
-   [summary total=1 currency=1]
-------------------------------------------------------
-   60.500
-   $60.50
+    [loop list="10 20 30.5"]
+        [summary amount="[loop-code]" hide=1]
+    [/loop]
+    [summary total=1 format="%.3f"]
+    [summary total=1 currency=1]
+---
+    60.500
+    $60.50
 !endblock
 
 B<ASP-like Perl call:>
@@ -15764,11 +15761,11 @@ rows based on the number of columns.
 H3: Summary
 
 !block example;
-    [B<table-organize> cols* other_named_attributes]
+    [B<table-organize> cols* I<other_named_attributes>]
 	     [loop ....] <td> [loop-tags] </td> [/loop]
 	[/table-organize]
 	
-    [B<table-organize> cols=n* other_named_attributes]
+    [B<table-organize> cols=n* I<other_named_attributes>]
 	     [loop ....] <td> [loop-tags] </td> [/loop]
 	[/table-organize]
 !endblock
@@ -15821,10 +15818,10 @@ center, left:
             td.0='align=right'
             td.1='align=center'
             td.2='align=left'
-            ]
+        ]
             [loop list="1 2 3 1a 2a 3a 1b"] <td> [loop-code] </td> [/loop]
         [/table-organize]
-------------------------------------------------------
+---
         <tr bgcolor="#EEEEEE">
                 <td align=right>1</td>
                 <td align=center>2</td>
@@ -16018,9 +16015,8 @@ Has end tag|[/title-bar]
 B<Tag expansion example:>
 
 !block example
-   [title-bar 600 5 red]My title[/title-bar]
-   [title-bar width=600 size=5 color="#ff0000"]My title[/title-bar]
-------------------------------------------------------
+    [title-bar 600 5 red]My title[/title-bar]
+    [title-bar width=600 size=5 color="#ff0000"]My title[/title-bar]
 !endblock
 
 B<ASP-like Perl call:>
@@ -16072,7 +16068,7 @@ H2: usertrack
 H2: var
 
 
-H2: xml_generator
+H2: xml-generator
 
 This is a quick and dirty tag that generates XML tags based upon one of
 two types of data (delimited and session).
@@ -16080,9 +16076,9 @@ two types of data (delimited and session).
 H3: Summary
 
 !block example;
-    [B<xml-generator> type* other_named_attributes][/xml-generator]
-    [B<xml-generator> type=value* other_named_attributes][/xml-generator]
-    [B<xml-generator> type=value* other_named_attributes][][/xml-generator]
+    [B<xml-generator> type* I<other_named_attributes>][/xml-generator]
+    [B<xml-generator> type=value* I<other_named_attributes>][/xml-generator]
+    [B<xml-generator> type=value* I<other_named_attributes>][][/xml-generator]
 
 *Optional
 !endblock
@@ -16124,27 +16120,28 @@ Has end tag|[/xml-generator]
 B<Tag expansion example:>
 
 !block example
-[xml-generator 
-    type=delimited 
-    attributes="date" 
-    date="[tag time]%d-%b-%Y[/tag]"
-    toplevel_tag=products]code	description	price
-[query list=1 sql="select sku, description, price from products" prefix=xml][xml-code]	[xml-param description]	[xml-param price]
-[/query][/xml-generator]
-------------------------------------------------------
-<products date="18-May-2001">
-	<record key="os28113">
-		<code>os28113</code>
-		<description>The Claw Hand Rake</description>
-		<price>14.99</price>
-	</record>
-	<record key="os28006">
-		<code>os28006</code>
-		<description>Painters Brush Set</description>
-		<price>29.99</price>
-	</record>
-	...
-</products>
+    [xml-generator type=delimited 
+             attributes="date" 
+                   date="[tag time]%d-%b-%Y[/tag]"
+           toplevel_tag=products
+    ]code	description	price
+        [query list=1 sql="select sku, description, price from products" prefix=xml][xml-code]	[xml-param description]	[xml-param price]
+        [/query]
+    [/xml-generator]
+---
+    <products date="18-May-2001">
+            <record key="os28113">
+                    <code>os28113</code>
+                    <description>The Claw Hand Rake</description>
+                    <price>14.99</price>
+            </record>
+            <record key="os28006">
+                    <code>os28006</code>
+                    <description>Painters Brush Set</description>
+                    <price>29.99</price>
+            </record>
+            ...
+    </products>
 !endblock
 
 B<ASP-like Perl call:>
@@ -16255,11 +16252,11 @@ H4: {{CMD[id="xml_generator_attributes"]attributes}}
 
 The attributes (if any) to pass on to the top level tag. For instance,
 !block example
-        [xml-generator
-              attributes="date"
-              date="[tag time]%d-%b-%Y[/tag]"
-              toplevel_tag=order
-        ][/xml-generator]
+    [xml-generator
+          attributes="date"
+                date="[tag time]%d-%b-%Y[/tag]"
+        toplevel_tag=order
+    ][/xml-generator]
 
 will generate a toplevel tag pair of:
 
@@ -16367,10 +16364,10 @@ whitespace or comma).
 
 !block example
     [xml-generator type="values|scratch" 
-	               values="value1|value2" 
-				   scratch="scratch1|scratch2"
-				   spacer="|"
-				   ][/xml-generator]
+                 values="value1|value2" 
+                scratch="scratch1|scratch2"
+                 spacer="|"
+    ][/xml-generator]
 !endblock
 
 H4: {{CMD[id="xml_generator_skip_empty"]skip_empty}}
@@ -16447,11 +16444,11 @@ Has end tag|[/dummy]
 B<Tag expansion example:>
 
 !block example
-   [dummy first=pig_latin second="Capitalize"]\
-   Body text acted on by the tag goes here.[/dummy]
-------------------------------------------------------
-   OdyBay ExtTaY ActedAy OnAy YBay EThay AgTay OesGay \
-   EreHay.
+    [dummy first=pig_latin second="Capitalize"]\
+    Body text acted on by the tag goes here.[/dummy]
+---
+    OdyBay ExtTaY ActedAy OnAy YBay EThay AgTay OesGay \
+    EreHay.
 !endblock
 
 !block note; label="Reading the tag expansion example: "
@@ -16526,17 +16523,16 @@ is parsed in the following order:
 
 .{{}}
 
-+ Any E<lbracket>{{C[jump="ictags.html#pragma"]pragma}}] tags anywhere
++ Any C<[pragma]> tags anywhere
 in the text are processed, and the specified pragmas are set.
 
-** Since E<lbracket>{{C[jump="ictags.html#pragma"]pragma}}] tags are
-preprocessed before any other content,
-{{C[jump="ictags.html#attr_reparse"]reparse}} will not catch them, nor
+** Since C<[pragma]> tags are preprocessed before any other content,
+{{C[jump="#attr_reparse"]reparse}} will not catch them, nor
 will they work if included in variables. Also, the specified pragma
 will apply to the entire template (not just the section after the tag).
 
 ** If you want to apply a pragma with a variable or only to part of a
-document, you must use E<lbracket>{{C[jump="ictags.html#tag"]tag}}E<nbspace>pragma="..."]
+document, you must use E<lbracket>{{C[jump="#tag"]tag}}E<nbspace>pragma="..."]
 instead.
 
 .{{}}
@@ -16555,8 +16551,8 @@ instead.
 .{{}}
 
 + False-endtag macros are expanded (e.g.,
-E<lbracket>{{C[jump="ictags.html#page"]/page}}] and
-E<lbracket>{{C[jump="ictags.html#order"]/order}}]).
+E<lbracket>{{C[jump="#page"]/page}}] and
+E<lbracket>{{C[jump="#order"]/order}}]).
 
 ..{{}}
 
@@ -16575,16 +16571,16 @@ the HTML comment delimiters and the tag, like this, '<!--E<nbspace>E<nbspace>E<l
 
 + The main tag parser is called.
 
-** Some tags parse recursively (depending on
-{{C[jump="ictags.html#attr_reparse"]reparse}} and
-{{C[jump="ictags.html#attr_interpolate"]interpolate}} settings, of course).
+** Some tags parse recursively (depending upon
+{{C[jump="#attr_reparse"]reparse}} and
+{{C[jump="#attr_interpolate"]interpolate}} settings, of course).
 
-** Some tags (e.g., E<lbracket>{{C[jump="ictags.html#loop"]loop}}])
+** Some tags (e.g., E<lbracket>{{C[jump="#loop"]loop}}])
 process PREFIX-tags in their contained body text. Hence, the PREFIX-tags are
 not handled recursively.
 
-** Some tags are interpreted in the lib/Vend/Parse.pm:start routine. You cannot call them with the '$Tag->I<tagname>' syntax. They N<are:>
-*** The E<lbracket>{{C[jump="#goto"]goto}}] tag. Note also that the {{C[jump="#goto"]goto}} tag handles the E<lbracket>{{C[jump="#label"]label}}] tag.
+** Some tags are interpreted in the lib/Vend/Parse.pm:start routine. You cannot call them with the '$Tag->I<tagname>()' syntax. They N<are:>
+*** The E<lbracket>{{C[jump="#goto"]goto}}] tag. Note also that the E<lbracket>{{C[jump="#goto"]goto}}] tag handles the E<lbracket>{{C[jump="#label"]label}}] tag.
 *** The E<lbracket>{{C[jump="#bounce"]bounce}}] tag.
 
 .{{}}
@@ -16599,7 +16595,7 @@ not handled recursively.
 A2: Nonstandard parsing within the admin interface
 
 Parsing of content via the specialized
-{{C[jump="ictags.html#UI_ut_regenerate"]regenerate}} usertag included
+{{C[jump="#UI_ut_regenerate"]regenerate}} usertag included
 with the administrative interface does not obey the above order. The
 MV_AUTOLOAD and '<!--[tagname]-->' escapes are skipped. There are
 some other more subtle differences as well; in the very unlikely event
