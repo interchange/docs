@@ -65,6 +65,7 @@ dev_html:
 %_toc.html: %.sdf
 	@echo making $@
 	@mkdir -p $(FRAMESDIR)
+	@( cd $(FRAMESDIR) ; ln -sf ../bullet.gif )
 	@$(SDFBIN) -2html_topics -n2 -DFULL_TARGETS="$(TARGETS)" -DHTML_FRAMES=1 -DFRAMES_DIR=$(FRAMESDIR)/ -DSDF_ROOT=$(FRAMESPARENT)/ -O$(FRAMESDIR) $<
 	@( cd $(FRAMESDIR) ; mv $(basename $<).html $@ )
 
