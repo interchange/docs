@@ -1,0 +1,59 @@
+#!/usr/bin/perl -w
+
+use strict;
+
+@ARGV || die <<EOF;
+Usage: $0 [-l] [-r] file1 [...fileN]
+
+-l sorts by line numbers
+-r give general reports instead of problems only
+EOF
+
+my $linesort = 0;
+my $report = 0;
+
+for my $sdf_file (@ARGV) {
+	($linesort = 1, next) if $sdf_file eq '-l';
+	($report = 1, next) if $sdf_file eq '-r';
+	unless (-e $sdf_file) {
+		warn "$sdf_file not found\n"; next;
+	}
+	unless (-f $sdf_file) {
+		warn "$sdf_file not a regular file\n"; next;
+	}
+	open SDF, "<$sdf_file" or
+		warn("Error opening $sdf_file for reading: $!\n"), next;
+	print "Checking for lint on $sdf_file\n";
+	my (%jumps, %ids);
+	while (<SDF>) {
+		$jumps{$1} = [ $., $2 ] while /{{CMD\[jump="#(.+?)"\](.+?)}}/g;
+		$ids{$1}   = [ $., $2 ] while /{{CMD\[id="(.+?)"\](.+?)}}/g;
+		$ids{$1}   = [ $., '#IMPLICIT#' ] while /[HA]\d:\s*(.+)/g;
+	}
+	close SDF;
+	print "\nJumps without corresponding target ID:\n";
+	my $found = 0;
+	my @keys;
+	@keys = $linesort
+		? sort { $jumps{$a}->[0] <=> $jumps{$b}->[0] } keys %jumps
+		: sort keys %jumps;
+	for (@keys) {
+		unless ($ids{$_} || $report) {
+			print "$jumps{$_}->[0]: $_ ($jumps{$_}->[1])\n";
+			++$found;
+		}
+	}
+	print "(all accounted for)\n" unless $found;
+	print "\nTarget IDs without corresponding jumps:\n";
+	$found = 0;
+	@keys = $linesort
+		? sort { $ids{$a}->[0] <=> $ids{$b}->[0] } keys %ids
+		: sort keys %ids;
+	for (@keys) {
+		unless ($ids{$_}->[1] eq '#IMPLICIT#' || $jumps{$_} || $report) {
+			print "$ids{$_}->[0]: $_ ($ids{$_}->[1])\n";
+			++$found;
+		}
+	}
+	print "(all accounted for)\n" unless $found;
+}
