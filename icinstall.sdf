@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icinstall.sdf,v 1.7 2000-10-18 20:18:39 zarko Exp $
+# $Id: icinstall.sdf,v 1.8 2000-10-18 20:56:39 zarko Exp $
 
 !define DOC_NAME "Interchange Installation"
 !define DOC_TYPE ""
 !define DOC_CODE "ICINSTALL_D2a_100800"
-!define DOC_VERSION substr('$Revision: 1.7 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.8 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
@@ -175,7 +175,7 @@ The default value of PARAM
 This would cause a question during makecat:
 
 !block example
-The prompt. Set PARAM to?.....[The default value of PARAM]
+The prompt. Set PARAM to?.....E<lbracket>The default value of PARAM]
 !endblock
 
 If the additional_help file is present, additional instructions for PARAM may be provided.
@@ -193,7 +193,7 @@ The prompt would now be:
 These are additional instructions for PARAM, and they
 may span multiple lines up to the first blank line.
 
-The prompt. Set PARAM to?.....[The default value of PARAM]
+The prompt. Set PARAM to?.....E<lbracket>The default value of PARAM]
 !endblock
 
 If the file config/precopy_commands exists, it will be read as a command followed by the prompt/help value.
@@ -311,7 +311,7 @@ store catalog fields.
 <--#                                  www.company.com:8000
 <--#                                  www.company.com/~yourname
 <--#
-<--Server name? [localhost]
+<--Server name? E<lbracket>localhost]
 
 -->localhost
 !endblock
@@ -333,7 +333,7 @@ Interchange will also be running on this server.
 <--#
 <--# If you are new to Interchange and not a sophisticated web designer,
 <--# use "barry" to start with.
-<--DemoType? [basic]
+<--DemoType? E<lbracket>basic]
 
 -->barry
 !endblock
@@ -351,7 +351,7 @@ being used in this walkthrough.
 <--# To have a secure catalog, either this should be a local user name and
 <--# not go over the Internet -- or use the PGP option.
 <--#
-<--MailOrderTo? [orders@barry.com]
+<--MailOrderTo? E<lbracket>orders@barry.com]
 
 -->user@localhost.com
 !endblock
@@ -367,7 +367,7 @@ completed, to the person responsible for handling orders.
 <--# works well. Remember, you will want a test catalog and an online
 <--# catalog.
 <--#
-<--CatRoot? [/home/user/catalogs/example]
+<--CatRoot? E<lbracket>/home/user/catalogs/example]
 
 -->/home/user/catalogs/example
 !endblock
@@ -383,7 +383,7 @@ default location is a good place for this.
 <--# If all of your CGI programs must end in .cgi, this is
 <--# should be the same as your HTML directory.
 <--#
-<--CgiDir? [/usr/local/httpd/cgi-bin]
+<--CgiDir? E<lbracket>/usr/local/httpd/cgi-bin]
 
 -->/usr/local/httpd/cgi-bin
 !endblock
@@ -403,7 +403,7 @@ server and the Interchange server.
 <--# 
 <--#                  ^^^^^^^^^^^^
 <--#
-<--CgiUrl? [/cgi-bin/example]
+<--CgiUrl? E<lbracket>/cgi-bin/example]
 
 -->/cgi-bin/example
 !endblock
@@ -426,7 +426,7 @@ up for your cgi-bin.
 <--# We set it to the name of the catalog by default to enable the
 <--# internal HTTTP server.
 <--#
-<--Aliases? [/example]
+<--Aliases? E<lbracket>/example]
 
 -->/example
 !endblock
@@ -442,7 +442,7 @@ documentation for minivend.cfg.
 <--# This is a directory path name, not a URL -- it is your HTML
 <--# directory.
 <--#
-<--DocumentRoot? [/usr/local/httpd/htdocs]
+<--DocumentRoot? E<lbracket>/usr/local/httpd/htdocs]
 
 -->/usr/local/httpd/htdocs
 !endblock
@@ -456,7 +456,7 @@ static elements of the catalog will be stored here.
 <--# installed. There is a difference.  Usually a subdirectory of
 <--# your HTML directory.
 <--#
-<--SampleHtml? [/usr/local/httpd/htdocs/example]
+<--SampleHtml? E<lbracket>/usr/local/httpd/htdocs/example]
 
 -->/usr/local/httpd/htdocs/example
 !endblock
@@ -469,7 +469,7 @@ order to store the static HTML pages for the demo catalog.
 <--# Where the image files should be copied. A directory path
 <--# name, not a URL.
 <--#
-<--ImageDir? [/home/sonny/public_html/example/images]
+<--ImageDir? E<lbracket>/home/sonny/public_html/example/images]
 
 -->/home/sonny/public_html/example/images
 !endblock
@@ -485,7 +485,7 @@ order to store the static HTML pages for the demo catalog.
 <--#         
 <--#                   ^^^^^^^^^^^^^^
 <--#
-<--ImageUrl? [/example/images]
+<--ImageUrl? E<lbracket>/example/images]
 !endblock
 
 .This is the URL for the images stored in the directory created
@@ -498,7 +498,7 @@ above. Interchange needs this in order to create tags for the     catalogs dynam
 <--If you already have a program there, or use a common program
 <--and the FullURL directive, select NONE. You will then need
 <--to copy the program by hand or otherwise ensure its presence.
-<--INET or UNIX mode? [UNIX]
+<--INET or UNIX mode? E<lbracket>UNIX]
 
 -->UNIX
 !endblock
@@ -508,7 +508,7 @@ will work just fine.
 
 +
 !block example; listitem=2
-<--Do you use CGIWRAP or SUEXEC? [n]
+<--Do you use CGIWRAP or SUEXEC? E<lbracket>n]
 
 -->n
 !endblock
@@ -528,12 +528,12 @@ will work just fine.
 
 +
 !block example; listitem=2
-<--Your company name: .....................[Barry's Books]
-<--Your company address: ..................[123 Any St.]
-<--Your company city/state/zip: ...........[Anytown, USA 00000]
-<--Your company phone: ....................[(555) 555-5555]
-<--Your company fax number: ...............[(555) 555-5556]
-<--Your company tollfree number (if any):..[(888) 555-5555]
+<--Your company name: .....................E<lbracket>Barry's Books]
+<--Your company address: ..................E<lbracket>123 Any St.]
+<--Your company city/state/zip: ...........E<lbracket>Anytown, USA 00000]
+<--Your company phone: ....................E<lbracket>(555) 555-5555]
+<--Your company fax number: ...............E<lbracket>(555) 555-5556]
+<--Your company tollfree number (if any):..E<lbracket>(888) 555-5555]
 !endblock
 
 .Here are several questions concerning the store's information.
@@ -561,7 +561,7 @@ groups this together on a single page.
 <--
 <--  brown1  blue1  yellow1
 <--
-<--Select color scheme: ...................[green1]
+<--Select color scheme: ...................E<lbracket>green1]
 
 -->blue1
 !endblock
@@ -574,7 +574,7 @@ are designed around the demo catalog.
 <--For the US, this is usually the state(s) your business is
 <--located in. Non-US users will probably have to set this
 <--differently depending on their tax laws.
-<--Area(s) to tax in: .....................[VA UT]
+<--Area(s) to tax in: .....................E<lbracket>VA UT]
 
 -->VA UT
 !endblock
@@ -587,7 +587,7 @@ are designed around the demo catalog.
 <--is in percent. The default below taxes Ohio at 6% and
 <--Illinois at 7.25 percent. More states can be added or
 <--you can have only one. Should correspond to TAXAREA.
-<--Percentage rate(s) for tax in different areas: ..[VA=7.5, UT=7.25]
+<--Percentage rate(s) for tax in different areas: ..E<lbracket>VA=7.5, UT=7.25]
 
 -->VA=4.5 UT=6.35
 !endblock
@@ -598,7 +598,7 @@ are designed around the demo catalog.
 !block example; listitem=2
 <--For the UPS lookup, the standard UPS tables are normally
 <--used. If you want to add a handling charge, do it here.
-<--Amount to add on to standard UPS costs: ..[3.00]
+<--Amount to add on to standard UPS costs: ..E<lbracket>3.00]
 
 -->3.00
 !endblock
@@ -608,7 +608,7 @@ the UPS shipping methods.
 
 +
 !block example; listitem=2
-<--Origin zip code for UPS lookups: .......[00000]
+<--Origin zip code for UPS lookups: .......E<lbracket>00000]
 
 -->83617
 !endblock
@@ -639,7 +639,7 @@ SQL database of choice.
 <--the database, reconfiguration of the catalog, and much more.
 <--To enable MiniMate, you will need a "super-user" account
 <--name that has full access.
-<--Account name that will control this catalog: ..[sonny]
+<--Account name that will control this catalog: ..E<lbracket>sonny]
 
 -->user
 !endblock
@@ -650,7 +650,7 @@ find it very familiar since it's based on Tallyman's interface.
 (See the Interchange Back-Office document.) This gives the user with      
 full administrative permissions complete control of the catalog.
 
-.The administrative password for [user] above is "pass." This is a
+.The administrative password for E<lbracket>user] above is "pass." This is a
 very weak password. It should be changed with the
 Administrators->Change password function in the UI.
 
@@ -676,7 +676,7 @@ Processing.
 
 +
 !block example; listitem=2
-<--Add catalog to minivend.cfg? [y]
+<--Add catalog to minivend.cfg? E<lbracket>y]
 
 -->y
 !endblock

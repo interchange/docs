@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icintro.sdf,v 1.8 2000-10-18 20:18:39 zarko Exp $
+# $Id: icintro.sdf,v 1.9 2000-10-18 20:56:39 zarko Exp $
 
 !define DOC_NAME "Interchange Introduction"
 !define DOC_TYPE ""
 !define DOC_CODE "ICINTRO_D2_100700"
-!define DOC_VERSION substr('$Revision: 1.8 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.9 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
@@ -38,11 +38,11 @@ H2: The Vend Concept
 
 The basic concept of implementing Interchange remains unchanged from Vend. Interchange maintains a unique set of pages, outside of regular HTML space, which contain special tags that are interpreted by the program. The tags provide access to special Interchange functions within the Interchange server.
 
-These Interchange tags, which are in C<[square brackets]> format, have a wide variety of functions. Some examples are:
+These Interchange tags, which are in C<E<lbracket>square brackets]> format, have a wide variety of functions. Some examples are:
 
 LI1: User Form Input
 
-.Interchange recalls input by a user so that it can be easily passed from form to form. The value of any form variable is "remembered" and inserted upon finding a C<[value input_field]> tag. The C<input_field> is a normal HTML form field.
+.Interchange recalls input by a user so that it can be easily passed from form to form. The value of any form variable is "remembered" and inserted upon finding a C<E<lbracket>value input_field]> tag. The C<input_field> is a normal HTML form field.
 
 LI1: Database Contents
 
@@ -50,7 +50,7 @@ LI1: Database Contents
 
 LI1: Session Parameters
 
-.Session parameters, as the name suggests, include information specific to the particular user and his or her current interaction with Interchange. The parameters include the location where the user originally found the catalog C<[data session referer]>), the domain they are from (C<[data session host]>), the source of the hit in a partner program (C<[data session source]>), the time of their last access (C<[data session time]>), and so on.
+.Session parameters, as the name suggests, include information specific to the particular user and his or her current interaction with Interchange. The parameters include the location where the user originally found the catalog C<E<lbracket>data session referer]>), the domain they are from (C<E<lbracket>data session host]>), the source of the hit in a partner program (C<E<lbracket>data session source]>), the time of their last access (C<E<lbracket>data session time]>), and so on.
 
 LI1: Embedded Perl Versus ASP
 
@@ -58,7 +58,7 @@ LI1: Embedded Perl Versus ASP
 
 LI1: File Contents or Program Output
 
-.The contents of an outboard file can be inserted with C<[file directory/file]> or C<[include directory/file]>. It is also possible to include the output from an arbitrary program.
+.The contents of an outboard file can be inserted with C<E<lbracket>file directory/file]> or C<E<lbracket>include directory/file]>. It is also possible to include the output from an arbitrary program.
 
 LI1: Searches of Files
 
@@ -138,7 +138,7 @@ H2: Page Delivery in HTML
 
 Interchange pages are written in regular HTML with extensions (the Interchange tags) to support catalog ordering. Interchange extensions look like this:
 
-<A HREF="[href specials]">See our specials!</A>
+<A HREF="E<lbracket>href specials]">See our specials!</A>
 
 Pages are delivered through the following steps:
 
@@ -323,8 +323,8 @@ H2: What HTML editors work with Interchange?
 None, though by accepting a performance penalty many Interchange tags can be embedded inside of regular HTML. For example:
 
 !block example
-   [pragma no_html_parse 0]
-    <A HREF="[href minivend_page]">Link</A>
+   E<lbracket>pragma no_html_parse 0]
+    <A HREF="E<lbracket>href minivend_page]">Link</A>
     <SCRIPT LANGUAGE=MV MV="set Action">
         mv_todo=return
         mv_nextpage=your_page
