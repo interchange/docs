@@ -1,4 +1,4 @@
-VERSION=4.5.6
+VERSION=4.6.1
 TARGETS=icbackoffice icconfig icdatabase icinstall icintro ictemplates
 
 .SUFFIXES: .html .pod .sdf .txt .pdf .8
@@ -22,7 +22,7 @@ TARGETS=icbackoffice icconfig icdatabase icinstall icintro ictemplates
 		--lax \
 		$< $@
 
-all :: pdf pod txt html
+all :: pdf pod txt html man
 
 dev_html:
 	@mkdir -p dev
