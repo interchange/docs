@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.8 2001-03-23 17:53:48 bill Exp $
+# $Id: ictags.sdf,v 1.9 2001-03-24 02:18:17 bill Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.8 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.9 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -206,21 +206,12 @@ body text.
 identical to the behavior of the B<reparse> attribute (see below for
 explanation and examples).
 
-H5: {{CMD[id="reparse_attr"]reparse}}
+H5: {{CMD[id="attr_reparse"]reparse}}
 
 If true ("reparse=1"), the server will process any tags in the text
 output by the reparsed tag.
 
-H5: {{CMD[id="send_attr"]send}}
-
-If true, the server will immediately send the browser the contents of the
-buffer, including the tag's output.  
-
-H5: {{CMD[id="truefalse_attr"]truefalse}}
-
-Depreciated
-
-H5: {{CMD[id="undef_attr"]undef}}
+H5: {{CMD[id="attr_send"]send}}
 
 Depreciated
 
@@ -1093,8 +1084,7 @@ Attributes|Default
 {{CMD[jump="#area_once"]once}}|I<none> (requires B<form> and B<alias>)
 {{CMD[jump="#area_search"]search}}|I<No>
 {{CMD[jump="#area_secure"]secure}}|I<No>
-{{CMD[jump="#interpolate_attr"]interpolate (reparse)}}|I<No>
-{{CMD[jump="#send_attr"]send}}|I<No>
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
 !endblock
 
 !block table; style="plain"; headings=1; colvaligns="TT"
@@ -1110,7 +1100,7 @@ Tag expansion example:
 !block example
    [area href=dir/page.html arg="arg1=AA/arg2=BB"]
 
-   http://mycat.com/cgi-bin/page.html?mv_session_id=[[EXAMPLE_SESSION]]&\
+   [[EXAMPLE_DOMAIN]]/cgi-bin/[[EXAMPLE_CATALOG]]/page.html?mv_session_id=[[EXAMPLE_SESSION]]&\
    mv_pc=1&mv_arg=arg1%3dAA/arg2%3dBB
 !endblock
 
@@ -4855,8 +4845,7 @@ Attributes|Default
 {{CMD[jump="#page_form"]form}}|I<none>
 {{CMD[jump="#page_search"]search}}|I<No>
 {{CMD[jump="#page_secure"]secure}}|I<No>
-{{CMD[jump="#interpolate_attr"]interpolate (reparse)}}|I<No>
-{{CMD[jump="#send_attr"]send}}|I<No>
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
 !endblock
 
 !block table; style="plain";headings=1; colvaligns="TT"
@@ -4872,7 +4861,7 @@ Tag expansion example:
 !block example
    [page href=dir/page.html arg="arg1=AA/arg2=BB"]
 
-   <a href="http://mycat.com/cgi-bin/page.html?mv_session_id=[[EXAMPLE_SESSION]]&\
+   <a href="[[EXAMPLE_DOMAIN]]/cgi-bin/[[EXAMPLE_CATALOG]]/page.html?mv_session_id=[[EXAMPLE_SESSION]]&\
    mv_pc=1&mv_arg=arg1%3dAA/arg2%3dBB">
 !endblock
 
@@ -8009,9 +7998,88 @@ Note that the UserTag facility, combined with AllowGlobal, allows the
 user to define tags just as powerful as the standard Interchange tags.
 This is not recommended for the novice, thoughE<nbspace>E<emdash> keep it simple. 8-)
 
-
-
 #=back
+
+H1: Standard Usertags
+
+The distribution includes a number of prebuilt usertags in the
+C<interchange_root/usertag> directory.  Some of these are used by the
+foundation catalog or its administrative interface.
+
+H2: {{CMD[id="ut_bar_button"]bar_button}}
+
+
+H2: {{CMD[id="ut_delete_cart"]delete_cart}}
+
+
+H2: {{CMD[id="ut_fedex_query"]fedex_query}}
+
+
+H2: {{CMD[id="ut_loc"]loc}}
+
+
+H2: {{CMD[id="ut_reconfig_wait"]reconfig_wait}}
+
+
+H2: {{CMD[id="ut_title_bar"]title_bar}}
+
+
+H2: {{CMD[id="ut_xml_generator"]xml_generator}}
+
+
+H2: {{CMD[id="ut_button"]button}}
+
+
+H2: {{CMD[id="ut_email"]email}}
+
+
+H2: {{CMD[id="ut_formel"]formel}}
+
+
+H2: {{CMD[id="ut_rand"]rand}}
+
+
+H2: {{CMD[id="ut_save_cart"]save_cart}}
+
+
+H2: {{CMD[id="ut_ups_query"]ups_query}}
+
+
+H2: {{CMD[id="ut_convert_date"]convert_date}}
+
+
+H2: {{CMD[id="ut_email_raw"]email_raw}}
+
+
+H2: {{CMD[id="ut_get_url"]get_url}}
+
+
+H2: {{CMD[id="ut_reconfig"]reconfig}}
+
+
+H2: {{CMD[id="ut_summary"]summary}}
+
+
+H2: {{CMD[id="ut_usertrack"]usertrack}}
+
+
+H2: {{CMD[id="ut_db_date"]db_date}}
+
+
+H2: {{CMD[id="ut_fcounter"]fcounter}}
+
+
+H2: {{CMD[id="ut_load_cart"]load_cart}}
+
+
+H2: {{CMD[id="ut_reconfig_time"]reconfig_time}}
+
+
+H2: {{CMD[id="ut_table_organize"]table_organize}}
+
+
+H2: {{CMD[id="ut_var"]var}}
+
 
 A1: Tag Entry Format
 
@@ -8027,7 +8095,7 @@ not an actual tag.
 
 #=over 4
 
-H3: Summary
+A3: Summary
 
 !block example;
     [B<dummy> first second I<other named attributes>][/dummy]
@@ -8048,6 +8116,8 @@ The first positional parameter
 any special arguments to the parameter that cause the tag to behave
 differently are listed here and described in detail in the
 B<Description> section below.
+** 'pig_latin'E<nbspace>E<emdash> For this dummy tag, let's suppose
+that an argument of 'pig_latin' rewrites the body text in pig latin.
 
 >>|default value if the parameter is not given
 second|Another example parameter|I<none>
@@ -8063,9 +8133,8 @@ Attributes|Default
 {{CMD[jump="#dummy_more"]more}}|I<none>
 {{CMD[jump="#dummy_still_more"]still-more}}|I<none> (requires B<more>)
 {{CMD[jump="#dummy_other"]other}}|I<none>
-{{CMD[jump="#interpolate_attr"]interpolate (body)}}|I<Yes>
-{{CMD[jump="#reparse_attr"]reparse}}|I<No>
-{{CMD[jump="#send_attr"]send}}|I<No>
+{{CMD[jump="#attr_interpolate"]interpolate (body)}}|I<Yes>
+{{CMD[jump="#attr_reparse"]reparse}}|I<No>
 !endblock
 
 !block table; style="plain";headings=1
@@ -8079,16 +8148,14 @@ Has end tag|[/dummy]
 Tag expansion example:
 
 !block example
-   [dummy first=special_argument second="arg1=1
-                                         arg2="]\
+   [dummy first=pig_latin second="Capitalize"]\
    Body text acted on by the tag goes here.[/dummy]
-   ---
-   <A HREF=http://mycat.com/cgi-bin/page.html?\
-E:  id=I<CurrentSessionID>&mv_arg=arg1%3dARG1%20arg2%3dARG2 >\
->   Target Name</A>
+---
+   OdyBay ExtTaY acted on YBay EThay AgTay OesGay \
+   EreHay.
 !endblock
 
-!block note; label="Reading the tag expansion example"
+!block note; label="Reading the tag expansion example: "
 
 . B<format:> The tag is listed first.  A blank line separates it from
 the expanded return value.
@@ -8113,31 +8180,31 @@ or similarly,
 !endblock
 
 
-H3: Description
+A3: Description
 
 More detailed tag description
 
-H4: first
+A4: first
 
 Section describing the first parameter
 
-H5: {{CMD[id="dummy_special_value"]special_value}}
+A5: {{CMD[id="dummy_special_value"]special_value}}
 
 Description of treatment of the special argument.  For example, giving
 the {{CMD[jump="#page"]page}} tag an B<href> of 'scan' causes it to
 link to a search specification rather than a page.
 
-H4: {{CMD[id="dummy_more"]more}}
+A4: {{CMD[id="dummy_more"]more}}
 
 C<more> is a named attribute that applies to this tag.
 
-H4: {{CMD[id="dummy_still_more"]still-more}}
+A4: {{CMD[id="dummy_still_more"]still-more}}
 
 C<still-more> is a named attribute that applies to this tag only when
 the C<more> attribute has been given.  It would be an error to use the
 C<still-more> attribute without specifying a value for C<more>
 
-H4: {{CMD[id="dummy_other"]other}}
+A4: {{CMD[id="dummy_other"]other}}
 
 'other' is another named attribute that applies to this tag.
 
