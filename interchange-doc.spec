@@ -1,6 +1,6 @@
 Summary: Interchange documentation
 Name: interchange-doc
-Version: 4.8.0
+Version: 4.8.1
 Release: 1
 Vendor: Red Hat, Inc.
 Copyright: GPL
