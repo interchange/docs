@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.35 2001-05-17 21:05:27 bill Exp $
+# $Id: ictags.sdf,v 1.36 2001-05-17 22:39:14 bill Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.35 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.36 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -10274,14 +10274,16 @@ the actual tag syntax or expansion.
 ASP-like Perl call
 
 !block example; lang="Perl"
-    $Tag->area(  { href => URI_base,
-                   arg  => CGI_GET_arguments, }  );
+    $Tag->dummy(  { first  => 'goober',
+                    second => 'foobar',
+                    more   => $snafu, },  $body_text  );
+
 !endblock
 
 or similarly,
 
 !block example; lang="Perl"
-    $Tag->area($href, $arg, $attribute_hash_reference);
+    $Tag->dummy($first, $second, $attribute_hash_reference, $body_text);
 !endblock
 
 
@@ -10370,8 +10372,8 @@ E<lbracket>{{C[jump="ictags.html#order"]/order}}]).
 with tags using the standard E<lbracket>tagname] syntax.
 
 ** However, if you want to HTML-comment out an interchange tag in content
-that will be fed raw to a browser, you must include whitespace, like
-this, '<!-- E<lbracket>tagname] -->'.
+that will be fed raw to a browser, you must include whitespace between
+the HTML comment delimiters and the tag, like this, '<!--E<nbspace>E<nbspace>E<lbracket>tagname]E<nbspace>E<nbspace>-->'.
 
 .{{}}
 
