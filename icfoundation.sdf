@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icfoundation.sdf,v 1.17 2001-05-30 21:00:57 bill Exp $
+# $Id: icfoundation.sdf,v 1.18 2001-06-08 15:54:02 alison Exp $
 
 !define DOC_NAME "Foundation Store"
 !define DOC_TYPE ""
 !define DOC_CODE "icfoundation"
-!define DOC_VERSION substr('$Revision: 1.17 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.18 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/doc/icfoundation.html"
@@ -12,44 +12,42 @@
 
 H1: The Foundation Store
 
-The Foundation store demo is designed to be relatively easy to start with, yet it is still a full-featured demonstration of a number of Interchange capabilities. This means it will take some work to understand it.
+The Foundation store is distributed with Interchange to give you a starting point with which to build your e-business. While the Foundation store is designed to be relatively easy to start with, it is still a full-featured demonstration of a number of Interchange capabilities. Once you understand the Foundation store and how it works you are well on your way to understanding the Interchange software.
 
 The following is a list of some popular features:
 
 LI1: Category Searches
 
-.If a catalog contains a small number of products, hard coded pages are sufficient, though they can be more difficult to maintain compared to database definitions. Regardless of the number of products in a catalog, consider categorizing them so they can easily be found. Pick a field in the database, perhaps named C<category>, and classify the products for search using Interchange.
+.Regardless of the number of products in a catalog, categorizing them makes them easier to find. Pick a field in the database, typically named C<category>, and classify the products for search using Interchange.
 
 LI1: Images
 
-.Place a thumbnail image (perhaps with a link to a blowup) for the items that have images. To do this, add an image field in the database. (See the 'image' field of the products database.)
+.You can display a thumbnail image for the items that have images. To do this, add an image field in the database. (See the 'image' field of the products database.)
 
 LI1: Related Items
 
-.On a product's individual display page, embed searches of similar products with the C<[query ...]> or C<[loop ...]> tags. Or, if customer data is developed, search a past order database and display products that would be of interest to that customer.
+.You can embed searches of similar products on an individual product display page with the C<[query ...]> or C<[loop ...]> tags. Or, if customer data is developed, search a past order database and display products that would be of interest to that customer.
 
 LI1: Reviews/Testimonials
 
-.Key the placement on the existence of a file in a certain directory. This is reasonable to do when a user is viewing a single product.
+.You can key the placement of a review or testimonial on the existence of a file being in a certain directory. This is reasonable to do when a user is viewing a single product.
 
 H1: Tree design
 
-Determine how users will enter and exit the catalog. Complex and intelligent conditional schemes are possible, especially if the Cookies capability is used. However, it is recommended that simplicity be used. Consumers will not buy if they can't navigate their way around the catalog.
+By determining how users will enter and exit the catalog, complex and intelligent conditional schemes are possible, especially if the Cookies capability is exercised. However, it is recommended that simplicity be used. Consumers will not make purchases if they can't navigate their way around the catalog.
 
-It is important to remember that users will lose their session (and items in their shopping cart) if their browser does not accept cookies and they leave the site. Interchange addresses this problem by using of the C<area> and C<page> tags. If using frames, source all frame panes containing Interchange links from an initial page served by Interchange. If not, the user may have multiple session IDs depending on which frame generated the link.
+It is important to remember that users will lose their session (and items in their shopping cart) if their browser does not accept cookies and they leave the site. Interchange addresses this problem by using the C<area> and C<page> tags. If you are  using frames, source all frame panes containing Interchange links from an initial page served by Interchange. If you don't do this, the user may have multiple session IDs depending on which frame generated the link.
 
-Note that Interchange does work properly even if the browser doesn't store cookies. In this situation Interchange inserts a session ID into each URL; if the ID is preserved as the user navigates from page to page then the session will remain intact.
+Note that Interchange can work properly even if the browser doesn't store cookies. In this situation Interchange inserts a session ID into each URL; if the ID is preserved as the user navigates from page to page the session will remain intact.
 
 
 H1: The Catalog Directory
 
-Interchange pages are NOT in normal HTML space. They are contained in the catalog directory. Each individual catalog must have its own base directory. The catalog directory has the following structure by default:
+Interchange pages are contained in the catalog directory. Each individual catalog has its own base directory. The catalog directory has the following structure by default:
 
 LI1: catalog.cfg
 
-.File containing configuration directives for this catalog. (Subcatalogs have differing information in a file named for the subcatalog.)
-
-What's in Foundation's catalog.cfg specifically that's of interest?
+.File containing configuration directives for a particular catalog. Configuration settings established in the catalog.cfg directory will not effect any other catalogs running under the version of Interchange you are using. Subcatalogs can have differing information in a file named for that subcatalog.
 
 LI1: config
 
@@ -63,7 +61,7 @@ LI1: config
 
 LI1: error.log
 
-.File which contains catalog-specific errors. It is also where any syntax errors in embedded Perl code will be shown.
+.File which contains catalog-specific errors. It is also where any syntax errors in embedded Perl code are shown.
 
 LI1: etc
 
@@ -80,23 +78,22 @@ C<pages/products/gold.html>.
 
 LI1: products
 
-.Directory containing database source files, including the special Interchange databases shipping.asc, pricing.asc (and other shipping database files).
+.Directory that contains database source files, including the special Interchange databases shipping.asc, pricing.asc (and other shipping database files).
 
 LI1: session
 
-.Directory which contains session files.
+.Directory that contains session files.
 
 LI1: tmp
 
-.The temporary or scratch directory for various uses like retired ID numbers, search paging files, sort tests, import temporary files, etc. This is the default set by ScratchDir. It can be redefined to be located on another partition.
+.The temporary or scratch directory used for various storage reasons, like retired ID numbers, search paging files, sort tests, import temporary files, etc. This is the default set by ScratchDir. It can be redefined to be located on another partition.
 
 
 H1: Page Templates
 
-Intro to templating in the Foundation demo. Roadmap.
+This section describes the files located in the Foundation demo. 
 
-
-H2: Template Locations
+H2: Template File Locations
 
 This diagram shows the directory and file structure used for the
 default Foundation 'templates' directory. The base will be a directory
@@ -376,12 +373,12 @@ template as well as components and options for that template.
 H3: Template Walkthrough -- leftonly
 
 This section is best read while viewing the file
-CATROOT/templates/leftonly and the 'Edit Page' page within the Content
-Editor of Interchange's admin interface.
+CATROOT/templates/leftonly and the 'Edit Page' page in the Content
+Editor of the Interchange Administration Tool.
 
 Looking at the example template definition file, all lines located
 between the E<lbracket>comment] and E<lbracket>/comment] tags (lines 1 and 53) control what is
-available in the Edit Page screen of the admin interface.
+available in the Edit Page screen of the Administration Tool.
 
 B<Lines 2-5:> Template specification
 
@@ -394,11 +391,11 @@ B<Lines 2-5:> Template specification
 
 Line 2 indicates that this file is a template for the user
 interface. Line 3 names the template, while Line 4 indicates the
-template regions that comprise the template and will make up the new
-page that is created from the template. () Line 5 provides a
-description that identifies the template that appears in a select
-(pull-down) menu on the Edit Page. This description can, of course, be
-changed to better describe a new template that is created from the
+regions that comprise the template and that will eventually make up the new
+page that is created from the template. Line 5 provides a
+description used to identify the template when it appears in a Select Template
+pull-down menu on the Edit Page of the Administration Tool. This description can be
+changed or modified to better describe a new template or a template that is created from the
 stock templates provided with Interchange.
 
 B<Lines 7-8:> Break
@@ -409,9 +406,10 @@ B<Lines 7-8:> Break
 !endblock
 
 This code creates a separation line in the Edit Page between sets of
-options. In the default Interchange installation, the line is grey,
-but the color can be changed in the file _________. (NoteE<nbspace>E<emdash> Changing
-this color will apply to any catalogs served by Interchange.)
+options. In the default Interchange installation the line is grey,
+but the color can be changed. 
+NoteE<nbspace>E<emdash> Changing
+this color applies the change to any catalog served by Interchange.
 
 B<Lines 10-11:> Page Title
 
@@ -421,7 +419,7 @@ B<Lines 10-11:> Page Title
 !endblock
 
 This code tells Interchange to display a text field on the Edit Page
-for entering the page's title ('Title of New Page' in this
+for entering the page title ('Title of New Page' in this
 example). The value entered is assigned to the scratch variable
 page_title and is set as a default value at the bottom of the template
 definition file using the following N<ITL:>
@@ -489,7 +487,7 @@ B<Lines 17-20:> Members Only
     20         description: Members only
 !endblock
 
-Creates a radio-button form element on the Edit Page with which the
+This creates a radio-button form element on the Edit Page with the
 user can specify whether the page can be accessed if a visitor is
 logged in (Yes) or not (No). The default is indicated by an asterisk.
 
@@ -511,7 +509,7 @@ if the page can be accessed without logging in or
        [set members_only]1[/set]
 !endblock
 
-if not.
+if it can not.
 
 The members_only function is handled by the following code within each
 region template N<file:>
@@ -526,8 +524,8 @@ region template N<file:>
     [/if]
 !endblock
 
-This code says if members only is set to yes and the visitor is logged
-in, display the page. Otherwise, redirect the visitor to the login
+This code says that if "members only" is set to yes, and the visitor is logged
+in, to display the page. Otherwise, redirect the visitor to the login
 page.
 
 B<Lines 22-23:> Break
@@ -615,7 +613,7 @@ B<Lines 35-38:> Horizontal Item Width
 This setting allows you to choose how many items the horizontal
 components display. For example, the horizontal best sellers component
 ("best_horizontal") uses this setting to randomly select the best
-sellers. Notice the default to 3 if nothing is defined. It is called
+sellers. Notice the default is 3 if nothing is defined. It is called
 by the following code in the promo_horizontal and random_horizontal
 components in the Foundation demo.
 
@@ -651,9 +649,9 @@ B<Lines 47-51:> Special Tag
 !endblock
 
 This setting is only viable when a promotion is used for a horizontal
-component. It tells the promotional component which rows to evaluate
+component. It tells the promotional component which row(s) to evaluate
 in the merchandising table for display within the component. This
-setting, used in the promo_horizontal component, normally correlates to
+setting, used in the promo_horizontal component, typically correlates to
 the featured column of the merchandising table as N<follows:>
 
 !block example    
@@ -667,9 +665,6 @@ the featured column of the merchandising table as N<follows:>
 !endblock
 
 H2: Edit Page Function
-
- What is generated when we create a page using the Edit Page content
-  editor?
 
 Creating a page with the following specifications using the Edit
 Page function results in the HTML and ITL code displayed below.
@@ -714,8 +709,8 @@ B<Resulting code:>
     @_LEFTONLY_BOTTOM_@
 !endblock
 
-A key point here is the inclusion of the region templates LEFTONLY_TOP
-and LEFTONLY_BOTTOM via the @_VARIABLE_NAME_@ notation. These are
+An important point demonstrated here is the inclusion of the region templates LEFTONLY_TOP
+and LEFTONLY_BOTTOM through the @_VARIABLE_NAME_@ notation. These are
 included because of line 4 of the leftonly template definition
 N<file:>
 
@@ -723,17 +718,17 @@ N<file:>
     4  ui_template_layout: LEFTONLY_TOP, UI_CONTENT, LEFTONLY_BOTTOM
 !endblock
 
-However, note that you are free to change the region templates used in
-the file, simply by editing the file itself or (better yet) using an
+However, understand that you are free to change the region templates used in
+the file by editing the file itself or, better yet, using an
 existing region as a starting point for a region of your own design.
 
 The next section explains the structure of region templates.
 
 H2: Region Templates
 
-Interchange region templates ("regions") are portions of HTML and ITL
+Interchange region templates (or "regions") are portions of HTML and ITL
 that are included in pages within a catalog. Using regions, along with
-the cascading style sheet defined in theme.cfg (described above),
+the cascading style sheet defined in theme.cfg,
 allows you to control the look and feel of specific parts of each
 catalog page.
 
@@ -752,7 +747,7 @@ CATROOT/templates/foundation/regions, includes the N<following:>
 The Foundation demo uses the Variable feature extensively to simplify
 hand page editing. Basically, a Variable is a define that permits the
 substitution of text for a simple __VARIABLE__ string in a page. For
-example, in our test page above, the variables LEFTONLY_TOP and
+example, in the test page above, the variables LEFTONLY_TOP and
 LEFTONLY_BOTTOM correspond to region templates that provide a logobar,
 menubar, leftside menu, and copyright footer. Content, consisting of
 HTML and ITL, is placed within the BEGIN and END CONTENT comments. The
@@ -781,7 +776,7 @@ MENUBAR sections, while LEFTONLY_BOTTOM contributes the COPYRIGHT
 section.
 
 The following subsections provide an inventory of where each of the
-region templates included with the Foundation demo are used in the
+region templates, included with the Foundation demo, are used in the
 pages and template definition files that make up the catalog.
 
 H3: LEFTONLY_TOP
@@ -1115,8 +1110,8 @@ H2: Components
 
 
 Interchange components are portions of HTML and ITL that are included
-in pages within a catalog depending on options set in the Admin
-UI. The default component set includes the N<following:>
+in pages within a catalog depending on options set in the Administration
+Tool. The default component set includes the N<following:>
 
 !block example
     affiliate_receptor
@@ -1183,7 +1178,7 @@ The cart component is used in the following N<page:>
 H3: cart_display
 
 The cart_display component creates a small shopping cart that is
-displayed on the search results page (pages/results.html) after an
+displayed on the search results page (pages/results.html). It is displayed after an
 item in a list of results from a search is added to the shopping
 cart. cart_display is called in results.html by the following include
 statement:
@@ -1200,7 +1195,7 @@ The cart_display component is used in the following N<pages:>
 
 H4: Component Walkthrough -- cart_display
 
-The remainder of this section is best read while viewing the file
+The remainder of this section is best read in conjunction with the file
 CATROOT/templates/components/cart_display in a text editor.
 
 B<Lines 1-6:> Component Specification
@@ -1231,7 +1226,7 @@ Interchange when you view the source of a page loaded in the browser.)
      9	[if items]
 !endblock
 
-Line 9 checks to see whether there are items in the shopping
+Line 9 checks to see if there are items in the shopping
 basket. If there are, the remaining code up to the closing E<lbracket>/if] tag
 on line 64 is executed. If not, Interchanges continues executing the
 remaining code in results.html (the file that calls the cart_display
@@ -1270,9 +1265,9 @@ Action, SKU, Description, Quantity, Price, and Extension.
     32
 !endblock
 
-Line 30 defines the remainder of the table as a section, while the
+Line 30 defines the remainder of the table as a section while the
 E<lbracket>item-list] tag on line 31 tells Interchange to execute the code up to
-the closing tag (E<lbracket>/item-list] on line 59) for each item the customer
+the closing tag (E<lbracket>/item-list] on line 59 for each item the customer
 has ordered so far.
 
 !block example
@@ -1294,7 +1289,7 @@ and "contentbar1" styles (gray and white, respectively).
 Lines 34-36 create a link to the shopping cart (basket.html) where the
 customer can remove or change the quantity of the item ordered.
 
-Line 37 displays the SKU of the item, while lines 38 and 39 provide a
+Line 37 displays the SKU of the item. Lines 38 and 39 provide a
 link to the product display page (flypage.html) for the item. The
 E<lbracket>item-description] tag providing the content of the E<lbracket>page] tag enables
 the item's name to be displayed as the link to the product display
@@ -1321,9 +1316,9 @@ page.
     58
 !endblock
 
-Line 41 checks whether the item is a gift certificate and, if it is,
-displays "Amount of gift:" and displays the E<lbracket>item-quantity] (amount of
-the gift certificate, in this case) under the headings "Quantity" and
+Line 41 checks whether the item is a gift certificate. If it is it
+displays "Amount of gift:" and the E<lbracket>item-quantity] (number of
+gift certificates, in this case) under the headings "Quantity" and
 "Price", respectively. Otherwise, lines 48 through 50 display the
 quantity and price of the item ordered. Lines 45 or 53 (depending on
 whether the item is a gift certificate) display the item subtotal
@@ -1448,7 +1443,7 @@ B<Lines 1-6:> Component Specification
 !endblock
 
 These lines control what is shown in the Edit page screen of the
-admin interface.
+Administration Tool.
 
 !block example
     23	<tr><td align="center" class="categorybar">
@@ -1575,10 +1570,6 @@ The modular_update component is used in the following N<pages:>
 !block example
     pages/modular_modify.html
 !endblock
-
-H3: none
-
- What's this ??
 
 H3: promo
 
@@ -1737,7 +1728,7 @@ The upsell_vertical component is used in the following N<templates:>
 
 H1:The Database Tables
 
-Interchange catalogs are all about the database. You can alter any of the standard databases to suit your needs, add new databases, or remove unneeded ones. 
+Interchange catalogs are centralized around the database. You can alter any of the standard databases, add new databases, or remove unneeded databases
 
 The foundation catalog includes the following tables, organized here by content:
 
@@ -1797,12 +1788,12 @@ The foundation catalog includes the following tables, organized here by content:
 .. state.txt
 
 
-The following dictionary lists each table used in the Foundation demo and each of its fields, and explains its purpose.
+The following dictionary lists and describes each table used in the Foundation demo.
 
 
 H2: 2ndDayAir.csv
 
-Shipping table from UPS (http://www.ups.com/using/services/rave/rate/).
+Shipping table from UPS (http://www.ups.com/using/services/rave/rate/). This and all shipping tables should be updated periodically.
 
 
 H2: 450.csv
@@ -1823,7 +1814,7 @@ Shipping table from UPS (http://www.ups.com/using/services/rave/rate/).
 H2: access.asc
 
 
-Administrative access table.  This table is used by the administrative interface.
+Administrative access table.  This table is used by the Administration Tool. For more description on these fields, see the Red Hat Interchange Administration Tool guide.
 
 
 B<Fields>
@@ -1907,7 +1898,7 @@ Example Data
    ic
 !endblock
 
-Either a login name for an administrator or a group name. Group names are prefixed with a colon (':').
+The login name for an administrator or an administration group. Group names are prefixed with a colon (':').
 
 
 H3: {{CMD[id="access_password"]password}}
@@ -1926,14 +1917,15 @@ H3: {{CMD[id="access_name"]name}}
 Example Data
 
 !block example
-   Administrative Users
+   Interchange Site Administrator
+   Interchange Site Associates
    Business Users
-   Goody Twoshoes
-   Mr. Bigger
-   Super User
+   2nd Shift
+   Mr. Jones
+   Inbound Sales
 !endblock
 
-Descriptive name for the administrator or group.
+Descriptive name for the administrator or administration group.
 
 
 H3: {{CMD[id="access_last_login"]last_login}}
@@ -1949,7 +1941,7 @@ Last login time (in unix time() format).
 
 H3: {{CMD[id="access_super"]super}}
 
-Boolean value.  If true (1), the administrator has superuser privilege.
+Boolean value.  If true (1), the administrator has Interchange Site Administrator privilege.
 
 
 H3: {{CMD[id="access_yes_tables"]yes_tables}}
@@ -1961,7 +1953,7 @@ Example Data
    NONE
 !endblock
 
-Tables this administrator or group may access.  This will be a space-delimited list of 'table_name=permission_flags' entries.
+Tables this administrator or administration group can access.  This is a space-delimited list of 'table_name=permission_flags' entries.
 
 
 H3: {{CMD[id="access_no_tables"]no_tables}}
@@ -1972,7 +1964,7 @@ Example Data
    access mv_metadata variable
 !endblock
 
-Tables this administrator may not use.  This will be a space-delimited list of tables names.
+Tables this administrator or administration group can not use.  This is a space-delimited list of tables names.
 
 
 H3: {{CMD[id="access_upload"]upload}}
@@ -2036,7 +2028,7 @@ Example Data
 
 Allowed Values
 
-Groups the administrator belongs to. You can set permissions for groups.
+Groups the site user belongs to. You can set permissions for groups.
 
 
 H3: {{CMD[id="access_meta"]meta}}
@@ -2052,7 +2044,7 @@ Example Data
    orderstats trafficstats
 !endblock
 
-Space-delimited list of functions explicitly disallowed for the administrator.
+Space-delimited list of functions explicitly not allowed for the site user.
 
 
 H3: {{CMD[id="access_yes_functions"]yes_functions}}
@@ -2064,7 +2056,7 @@ Example Data
    NONE
 !endblock
 
-Functions the administrator may perform. This will be a space-delimited list of functions, with permission flags if appropriate.
+Functions the site user can perform. This is a space-delimited list of functions, with permission flags if appropriate.
 
 Usage examples
 * dist/lib/UI/pages/admin/access_permissions.html
@@ -2082,7 +2074,7 @@ Usage examples
 
 H3: {{CMD[id="access_personal_css"]personal_css}}
 
-Used in the admin screens to make personal changes to the admin presentation, by creating your own personal CSS (cascading style sheet).
+Used in the Administration Tool screens to make personal changes to the page presentation. This is done by creating your own personal CSS (cascading style sheet).
 
 Usage examples
 * dist/lib/UI/pages/admin/preferences.html
@@ -2163,7 +2155,7 @@ Example Data
    coupon
 !endblock
 
-This field lists the campaigns in which the affiliate participates and is used to enable campaign features and track traffic from advertising campaigns. The foundation catalog implements a coupon campaign in the affiliate_receptor component.  If you wish to add campaigns, you will also need to develop the appropriate logic within the affiliate_receptor component and pages that use it.
+This field lists the campaigns that the affiliate participates and enables campaign features and tracks traffic from advertising campaigns. The foundation catalog implements a coupon campaign in the affiliate_receptor component.  If you want to add campaigns, you will also need to develop the appropriate logic within the affiliate_receptor component and pages that use it.
 
 
 H3: {{CMD[id="affiliate_coupon_amount"]coupon_amount}}
@@ -2212,7 +2204,7 @@ Example Data
    3600
 !endblock
 
-The value in this field is used to specify the amount of time a customer has to place an order and still give the Affiliate credit for it. If the customer goes over this amount of time, the Affiliate doesn't get credit for the customer visit. The timeout delay is measured in seconds, with the value of 0 (zero) disabling it. It is recommended that you use a value in the thousands to be sure the customer has enough time to shop.
+The value in this field is used to specify the amount of time a customer has to place an order to still give the Affiliate credit for it. If the customer goes over this amount of time, the Affiliate doesn't get credit for the customer visit. The timeout delay is measured in seconds, with the value of 0 (zero) disabling it. It is recommended that you use a value in the thousands to make sure the customer has enough time to shop.
 
 
 H3: {{CMD[id="affiliate_active"]active}}
@@ -2247,7 +2239,7 @@ H2: area
 
 C<cat_root/products/area.txt>
 
-This table is used to implement dynamic navigation bars, for example in the category_horizontal and category_vertical components. Note the similarity to the B<cat> table, since both B<area> and B<cat> tables supply data for building links to results pages.
+This table is used to implement dynamic navigation bars. For example, it is used in the category_horizontal and category_vertical components. Note the similarity to the B<cat> table, since both B<area> and B<cat> tables supply data for building links to results pages.
 
 When building entries in a navigation bar, it is the  B<bar_link> subroutine in the /dist/catalog_before.cfg configuration file that actually reads and processes the values from the table.
 
@@ -2384,7 +2376,7 @@ Example Data
 
 Lexographic (alphanumeric) sorting prefix.  Note use of '03' rather than '3', which would sort after '13'. This controls the order of the categories in your navigation bar.
 
-If not set, your navbar entries will sort in alphabetical order.
+If this is not set, your navbar entries will sort in alphabetical order.
 
 
 H3: {{CMD[id="area_display_type"]display_type}}
@@ -2428,9 +2420,9 @@ Example Data
    promo_image.gif
 !endblock
 
-This has nothing to do with banner ads.  It is useful if you want to pass your results page an image that is specific for the navbar entry (perhaps to display a banner above your results).
+This field is not related to banner ads.  It is useful if you want to pass to your results page an image that is specific for the navbar entry (perhaps to display a banner above your results).
 
-If you are using an interchange search for your links (i.e., 'simple' or 'complex' B<link_type>), then this will add 'va=banner_image=B<banner_image>' to the resultant search specification. This puts the contents of B<banner_image> into the Values hash in your search results page.  You can access it with E<lbracket>{{C[jump="ictags.html#value"]value}} banner_image] (see the {{C[jump="ictags.html#value"]value}} tag). Note that you will have to modify the standard results page (or set up and specify your own) in order to display the image.
+If you are using an Interchange search for your links (i.e., 'simple' or 'complex' B<link_type>), then this will add 'va=banner_image=B<banner_image>' to the resulting search specification. This puts the contents of B<banner_image> into the Values hash of your search results page.  You can access it with E<lbracket>{{C[jump="ictags.html#value"]value}} banner_image] (see the {{C[jump="ictags.html#value"]value}} tag). You will have to modify the standard results page (or set up and specify your own) in order to display the image.
 
 !block example
    <IMG src="[value banner_image]" alt="[value banner_text]">
@@ -2447,9 +2439,9 @@ Example Data
    This Is A Title For Hand Tools
 !endblock
 
-This has nothing to do with banner ads.  It is useful if you want to pass your results page some text that is specific for the navbar entry (perhaps to display a title above your results).
+This field is not related to banner ads.  It is useful if you want to pass to your results page some text that is specific for the navbar entry (perhaps to display a title above your results).
 
-If you are using an interchange search for your links (i.e., 'simple' or 'complex' B<link_type>), then this will add 'va=banner_text=B<banner_text>' to the resultant search specification. This puts the contents of B<banner_text> into the Values hash in your search results page.  You can access it with E<lbracket>{{C[jump="ictags.html#value"]value}} banner_text] (see the {{C[jump="ictags.html#value"]value}} tag). Note that you will have to modify the standard results page (or set up and specify your own) in order to display the text.
+If you are using an Interchange search for your links (i.e., 'simple' or 'complex' B<link_type>), then this will add 'va=banner_text=B<banner_text>' to the resulting search specification. This puts the contents of B<banner_text> into the Values hash of your search results page.  You can access it with E<lbracket>{{C[jump="ictags.html#value"]value}} banner_text] (see the {{C[jump="ictags.html#value"]value}} tag). You will have to modify the standard results page (or set up and specify your own) in order to display the text.
 
 The foundation catalog does not implement banner_text in the preconfigured navigation bars.
 
@@ -2487,7 +2479,7 @@ Allows you to fully specify an Interchange search specification. See the B<bar_l
 
 H3: {{CMD[id="area_url"]url}}
 
-Target URL (external link or internal page/search specification). See B<link_type> above. The foundation catalog navigation bars are not set up with link types that use the B<url> field.
+Target URL (external link or internal page/search specification). See B<link_type> . The foundation catalog navigation bars are not set up with link types that use the B<url> field.
 
 
 H3: {{CMD[id="area_tab"]tab}}
@@ -2520,11 +2512,11 @@ H2: banner
 
 C<cat_root/products/banner.txt>
 
-Banner ad table. The foundation catalog does not implement any banner ads with this table.
+The banner ad table. The foundation catalog does not implement any banner ads with this table.
 
-Note that you do not need to use this table to display ads served by third parties (e.g., doubleclick). Since most banner ads on the internet are served by third parties (i.e., not managed by your catalog), you will probably not need to set up banners here unless you do your own advertising.
+You do not need to use this table to display ads served by third parties (for example, doubleclick). Since most banner ads on the internet are served by third parties and are not managed by your catalog, you probably will not need to set up banners here unless you do your own advertising.
 
-Please see {{CMD[jump="ictemplates.html#Banner/Ad rotation"]Banner/Ad rotation}} in the template documentation for detailed description of the columns and content of the banner table.  See also the {{C[jump="ictags.html#banner"]banner}} tag documentation.
+See {{CMD[jump="ictemplates.html#Banner/Ad rotation"]Banner/Ad rotation}} in the template documentation for a detailed description of the columns and content of the banner table.  Also, see the {{C[jump="ictags.html#banner"]banner}} tag documentation.
 
 B<Fields>
 
@@ -2608,7 +2600,7 @@ H2: cat
 
 C<cat_root/products/cat.txt>
 
-This table contains properties of product categories.  Note the similarity to the B<area> table, since both B<area> and B<cat> tables supply data for building links to results pages.
+This table contains properties of product categories.  Notice the similarity to the B<area> table, since both the B<area> and B<cat> tables supply data for building links to results pages.
 
 
 B<Fields>
@@ -2715,7 +2707,7 @@ Category name for display.
 
 H3: {{CMD[id="cat_which_page"]which_page}}
 
-Page class. When building links, you can select categories matching a page class, so you could set up your catalog to show a different list of links on page 'foo.html' than on page 'bar.html'.
+The page class. When building links, you can select categories matching a page class. This means you could set up your catalog to show a different list of links on page 'foo.html' than on page 'bar.html'.
 
 
 H3: {{CMD[id="cat_sort"]sort}}
@@ -2727,7 +2719,7 @@ Example Data
    03
 !endblock
 
-Lexographic (alphanumeric) sorting prefix.  Note use of '03' rather than '3', which would sort after '13'. You can use this to control the order of the categories in a list of links.
+Lexographic (alphanumeric) sorting prefix.  Notice use of '03' rather than '3', which would sort after '13'. You can use this to control the order of the categories in a list of links.
 
 
 H3: {{CMD[id="cat_display_type"]display_type}}
@@ -2771,9 +2763,9 @@ Example Data
    promo_image.gif
 !endblock
 
-This has nothing to do with banner ads.  It is useful if you want to pass your results page an image that is specific for the navbar entry (perhaps to display a banner above your results).
+This field is not related to banner ads.  It is useful if you want to pass to your results page an image that is specific for the navbar entry (perhaps to display a banner above your results).
 
-If you are using an interchange search for your links (i.e., 'simple' or 'complex' B<link_type>), then this will add 'va=banner_image=B<banner_image>' to the resultant search specification. This puts the contents of B<banner_image> into the Values hash in your search results page.  You can access it with E<lbracket>{{C[jump="ictags.html#value"]value}} banner_image] (see the {{C[jump="ictags.html#value"]value}} tag). Note that you will have to modify the standard results page (or set up and specify your own) in order to display the image.  For example, you might include the following in your results N<page:>
+If you are using an Interchange search for your links (i.e., 'simple' or 'complex' B<link_type>), then this will add 'va=banner_image=B<banner_image>' to the resulting search specification. This puts the contents of B<banner_image> into the Values hash in your search results page.  You can access it with E<lbracket>{{C[jump="ictags.html#value"]value}} banner_image] (see the {{C[jump="ictags.html#value"]value}} tag). You will have to modify the standard results page (or set up and specify your own) in order to display the image.  For example, you might include the following in your results N<page:>
 
 !block example
    <IMG src="[value banner_image]" alt="[value banner_text]">
@@ -2783,9 +2775,9 @@ If you are using an interchange search for your links (i.e., 'simple' or 'comple
 H3: {{CMD[id="cat_banner_text"]banner_text}}
 
 
-This has nothing to do with banner ads.  It is useful if you want to pass your results page some text that is specific for the navbar entry (perhaps to display a title above your results).
+This field is not related to banner ads.  It is useful if you want to pass to your results page some text that is specific for the navbar entry (perhaps to display a title above your results).
 
-If you are using an interchange search for your links (i.e., 'simple' or 'complex' B<link_type>), then this will add 'va=banner_text=B<banner_text>' to the resultant search specification. This puts the contents of B<banner_text> into the Values hash in your search results page.  You can access it with E<lbracket>{{C[jump="ictags.html#value"]value}} banner_text] (see the {{C[jump="ictags.html#value"]value}} tag). Note that you will have to modify the standard results page (or set up and specify your own) in order to display the text.
+If you are using an Interchange search for your links (i.e., 'simple' or 'complex' B<link_type>), then this will add 'va=banner_text=B<banner_text>' to the resulting search specification. This puts the contents of B<banner_text> into the Values hash in your search results page.  You can access it with E<lbracket>{{C[jump="ictags.html#value"]value}} banner_text] (see the {{C[jump="ictags.html#value"]value}} tag). You will have to modify the standard results page (or set up and specify your own) in order to display the text. 
 
 
 H3: {{CMD[id="cat_link_type"]link_type}}
@@ -2800,7 +2792,7 @@ Example Data
    complex
 !endblock
 
-Link type to create.
+The link type to create.
 
 !block table; colvaligns="TT"; format="28"
 Link_type|Description
@@ -2875,7 +2867,7 @@ Example Data
    category=Toolboxes
 !endblock
 
-The selector that is used to scan the C<products> table for products in the category. Used with 'simple' B<link_type>.
+The element that is used to scan the C<products> table for products in the category. Used with 'simple' B<link_type>.
 
 H3: {{CMD[id="cat_link_template"]link_template}}
 
@@ -2884,7 +2876,7 @@ Overrides the usual HTML link template for navbar entries.  See the B<bar_link> 
 
 H2: country
 
-A list of countries used to build select boxes and select shipping modes based on countries.
+A list of countries used to build select boxes and shipping mode choices based on countries.
 
 !block example
     code
@@ -2898,9 +2890,9 @@ A list of countries used to build select boxes and select shipping modes based o
 
 H2: downloadable
 
-This table controls downloadable products. The 'reports' data set for the foundation catalog demonstrates downloadable products.  List a product's B<sku> in this table if you want to deliver it via download. A customer can then download the file specified in the B<dl_location> field after checkout.
+This table controls downloadable products. The Marketing Reports data set for the foundation catalog demonstrates downloadable products.  List a product's B<sku> in this table if you want to deliver it through a download. A customer can then download the file specified in the B<dl_location> field after checkout.
 
-See also the implementation in the following files:
+For reference, see the implementation in the following files:
 
 * catalog_root/pages/deliver.html
 * catalog_root/etc/receipt.html
@@ -2926,7 +2918,7 @@ H3: {{CMD[id="downloadable_sku"]sku}}
 
 Example Data
 
-Example Data from 'reports' catalog
+Example Data from the Marketing Reports data set:
 
 !block example
    00352as
@@ -2939,7 +2931,7 @@ Example Data from 'reports' catalog
    90773sh
 !endblock
 
-This is the unique key for this table which is also the common key into the products table.
+This is the unique key for this table that is also the common key into the products table.
 
 
 H3: {{CMD[id="downloadable_dl_location"]dl_location}}
@@ -3058,7 +3050,7 @@ H2: options
 
 This table contains data for implementing simple, matrix and modular options.
 
-Simple options are those a customer may combine arbitrarily, such as size, color and iron-on decal for a T-shirt where the customer may choose any size in any color with any decal. The selected options may affect price.  See the {{C[jump="ictags.html#accessories"]accessories}} tag for more detail on option values for simple options.
+Simple options are options that a customer can combine arbitrarily, such as size and color. The selected options might affect price.  See the {{C[jump="ictags.html#accessories"]accessories}} tag for more detail on option values for simple options.
 
 Matrix options are preconfigured combinations of options. For example, if you sell titanium and carbon-fiber bike frames, but offer only certain combinations of frame material and color, your checkout page might include a select box with only the following N<entries:>
 
@@ -3074,12 +3066,12 @@ Modular options are like a structured bill of materials, where one product is a 
 
 The foundation catalog with the computer data set uses modular options.
 
-See also the following pages and components in the foundation catalog N<itself:>
+For more information, see the following pages and components in the foundation N<catalog:>
 * cat_root/pages/flypage.html
 * cat_root/templates/components/modular_buy
 * cat_root/templates/components/modular_update
 
-Note: Subsequent foundation catalog releases may treat simple, matrix, and modular option types in separate tables.
+Note: Subsequent foundation catalog releases may place simple, matrix, and modular option types in separate tables.
 
 B<Fields>
 
@@ -3089,7 +3081,7 @@ Field|Description
 Unique ID for the product option
 >>
 {{CMD[jump="#options_o_master"]o_master}}|<<
-SKU of master for the option
+SKU of the master item for the option
 >>
 {{CMD[jump="#options_sku"]sku}}|<<
 SKU for the option (foreign key into products table)
@@ -3196,9 +3188,9 @@ SKU of the master item for the option. The master item is one level up in the mo
 * Another option in the options table (matching B<options.sku>)
 * A {{CMD[jump="#options_phantom"]phantom}} item in the B<options> table.
 
-If an option has a master item, then a customer cannot choose the option without having previously selected the master item.
+If an option has a master item, then a customer can not choose that option without having previously selected the master item.
 
-The price for a master item is the sum of the item's price and the price for each of its subitems. Since the subitems are recursively defined, the top-level item reflects the aggregate price of the top-level price and all selected options.
+The price for a master item is the sum of the master item's price and the price for each of the subitems. Because the subitems are recursively defined, the top-level item reflects the top level price plus the price of all selected options.
 
 
 H3: {{CMD[id="options_sku"]sku}}
@@ -3212,7 +3204,7 @@ Example Data
    7000030
 !endblock
 
-The sku for the item or option. Note that this may not be unique for matrix options or if an option that belongs to multiple B<o_master>s is listed for each master.
+The sku for the item or option. This may not be unique for matrix options or if an option that belongs to multiple B<o_master>s is listed for each master.
 
 H3: {{CMD[id="options_o_group"]o_group}}
 
@@ -3225,7 +3217,7 @@ Example Data
    I
 !endblock
 
-Product group (scanned to see whether it applies or not to this product)
+Product group (scanned to see whether it applies to this product or not)
 
 H3: {{CMD[id="options_o_sort"]o_sort}}
 
@@ -3249,7 +3241,7 @@ H3: {{CMD[id="options_phantom"]phantom}}
 
 Modular options only.
 
-BooleanE<nbspace>E<emdash> if true (1), then this is a phantom item acting as a placeholder for other items rather than an actual product. Note that the item's B<sku> will not match an entry in the products table, though the B<o_master> will match either the B<sku> of another phantom item in the B<options> table or the B<sku> of an item in the B<products> table.
+BooleanE<nbspace>E<emdash> if true (1), then this is a phantom item acting as a placeholder for other items rather than an actual product. The item's B<sku> will not match an entry in the products table, though the B<o_master> will match either the B<sku> of another phantom item in the B<options> table or the B<sku> of an item in the B<products> table.
 
 H3: {{CMD[id="options_o_enable"]o_enable}}
 
@@ -3356,7 +3348,7 @@ This allows you to set the height of the HTML widget, if appropriate.
 
 H3: {{CMD[id="options_o_width"]o_width}}
 
-This allows you to set the width of the HTML widget if you wish.
+This allows you to set the width of the HTML widget, if appropriate.
 
 
 H3: {{CMD[id="options_description"]description}}
@@ -3414,7 +3406,7 @@ Example Data
    -79
 !endblock
 
-The phantom bill of materials for an option group can have a differential, which is an amount to add to the base price of the master product to get to a new base price that accommodates the phantom bill of materials. Note that the differential may be negative.
+The phantom bill of materials for an option group can have a differential, which is an amount to add to the base price of the master product to get to a new base price that accommodates the phantom bill of materials. Note that the differential can be negative.
 
 For example, in the computer data set of the foundation catalog, SKU 00011 in the products table is an $849.95 pre-configured Athlon 800MHz computer that includes a 17" monitor (in this case, SKU 7000087 in the products table).
 
@@ -3435,16 +3427,16 @@ Suppose it costs $90 to upgrade the base computer to 128M of RAM and $150 for a 
 If you also sell an 128MB 800 MHz $899 computer, and the customer upgrades to the 30 GB hard disk,
 
 !block example
-        800 MHz Athlon         --  $899
-        (memory differential   --  $-90
-        128 MB RAM             --   $90
-        30 GB  disk            --  $150
+        800 MHz Athlon          --  $899
+        (memory differential)   --  $-90
+        128 MB RAM              --   $90
+        30 GB  disk             --  $150
 
-        TOTAL                  -- $1039
+        TOTAL                   -- $1039
 !endblock
 
 If you did not have the differential, you would need a different option part number for each
-item make the number come out right. This is a Very Big Pain.
+item make the number come out right. 
 
 With the differential, you can use the same part number for 128MB RAM
 no matter what the base part is. The price is always $90 -- there is just
@@ -3507,7 +3499,7 @@ H2:orderline.txt
 
 Every line item that is actually ordered is detailed in this table. The order as a whole is one record in the transactions table.
 
-See the page C<query/check_orders.html> for how it might be used. See C<etc/report> for how to add to it.
+See the page C<query/check_orders.html> for how it can be used. See C<etc/report> for how to add to it.
 
 !block example
     code
@@ -3545,7 +3537,7 @@ See the page C<query/check_orders.html> for how it might be used. See C<etc/repo
 
 H2: pricing
 
-This database works in conjunction with the C<CommonAdjust> directive to allow quantity pricing, either for one product or for a group of products (sometimes known as mix-and-match). The fields C<q2, q5, q10, etc.> are for the quantity levels; the C<price_group> field selects the mix-and-match category for the product.
+This database works in conjunction with the C<CommonAdjust> directive to allow quantity pricing for one product or for a group of products (sometimes known as mix-and-match). The fields C<q2, q5, q10, etc.> are for the quantity levels; the C<price_group> field selects the mix-and-match category for the product.
 
 B<Fields>
 
@@ -3615,58 +3607,58 @@ This field determines mix-and-match categories if you want to allow mix-and-matc
 
 H3: {{CMD[id="pricing_q2"]q2}}
 
-If set, this will be the price per item when the order quantity is 2 or greater and less than the next price break quantity with a value set.
+If set, this will be the price per item when the order quantity is 2 or greater.
 
 H3: {{CMD[id="pricing_q5"]q5}}
 
-If set, this will be the price per item when the order quantity is 5 or greater and less than the next price break quantity with a value set.
+If set, this will be the price per item when the order quantity is 5 or greater.
 
 
 H3: {{CMD[id="pricing_q10"]q10}}
 
-If set, this will be the price per item when the order quantity is 10 or greater and less than the next price break quantity with a value set.
+If set, this will be the price per item when the order quantity is 10 or greater.
 
 
 H3: {{CMD[id="pricing_q25"]q25}}
 
-If set, this will be the price per item when the order quantity is 25 or greater and less than the next price break quantity with a value set.
+If set, this will be the price per item when the order quantity is 25 or greater.
 
 
 H3: {{CMD[id="pricing_q100"]q100}}
 
-If set, this will be the price per item when the order quantity is 100 or greater and less than the next price break quantity with a value set.
+If set, this will be the price per item when the order quantity is 100 or greater.
 
 
 H3: {{CMD[id="pricing_w2"]w2}}
 
-If set, this will be the dealer price per item when the order quantity is 2 or greater and less than the next price break quantity with a value set.
+If set, this will be the dealer price per item when the order quantity is 2 or greater.
 
 
 H3: {{CMD[id="pricing_w5"]w5}}
 
-If set, this will be the dealer price per item when the order quantity is 5 or greater and less than the next price break quantity with a value set.
+If set, this will be the dealer price per item when the order quantity is 5 or greater.
 
 
 H3: {{CMD[id="pricing_w10"]w10}}
 
-If set, this will be the dealer price per item when the order quantity is 10 or greater and less than the next price break quantity with a value set.
+If set, this will be the dealer price per item when the order quantity is 10 or greater.
 
 
 H3: {{CMD[id="pricing_w25"]w25}}
 
-If set, this will be the dealer price per item when the order quantity is 25 or greater and less than the next price break quantity with a value set.
+If set, this will be the dealer price per item when the order quantity is 25 or greater.
 
 
 H3: {{CMD[id="pricing_w100"]w100}}
 
-If set, this will be the dealer price per item when the order quantity is 100 or greater and less than the next price break quantity with a value set.
+If set, this will be the dealer price per item when the order quantity is 100 or greater.
 
 
 H2: products
 
 This is the main table for product data. See also '{{CMD[jump="icdatabase.html#The Product Database"]The Product Database}}' section in the database documentation.
 
-Note that the B<sku> is also the master key in many of the related tables.
+The B<sku> is also the master key in many of the related tables.
 
 
 B<Fields>
@@ -3764,7 +3756,7 @@ Example Data
    Trim Brush
 !endblock
 
-A short description for the product that is used for displaying in the shopping cart, receipt, and order report. Keep it short.
+A short description for the product that is used for displaying in the shopping cart, receipt, and order report. 
 
 
 H3: {{CMD[id="products_title"]title}}
@@ -3782,9 +3774,9 @@ Example Data
    Trim Brush
 !endblock
 
-Despite the redundant duplication of the description field's data, this column is not used in the foundation catalog. Previously used in the Art store (simple) demo for a painting title. You probably want to use B<description> instead.
+This column is not used in the foundation catalog. Previously used in the Art store (simple) demo for a painting title. You probably want to use B<description> instead.
 
-Note that you should modify the products and other tables to suit your catalog's requirements. You might use this field if you want to show titles for books, music, or other titled merchandise. If you do not use a title that is distinct from the short description, then you probably do not need this column in the table at all.
+You should modify the products and other tables to suit your catalog's requirements. You might use this field if you want to show titles for books, music, or other titled merchandise. If you do not use a title that is distinct from the short description, then you probably do not need this column in the table at all.
 
 
 H3: {{CMD[id="products_template_page"]template_page}}
@@ -3805,7 +3797,7 @@ Example Data
    This set of disposable foam brushes is ideal for any stainin...
 !endblock
 
-This is the field for a long description of the product. If you are using an Interchange text/gdbm database, the field size is unlimited; if using another type of database, the length will be dependent on the field type selected.  If you are using a SQL database, see the appropriate cat_root/dbconf subdirectory for a place to set COLUMN_DEF values.  See also the database documentation, '{{CMD[jump="icdatabase.html#Importing from an ASCII File"]Importing from an ASCII File}}', for details about defaults for columns you do not define.
+This is the field for a long description of the product. If you are using an Interchange text/gdbm database, the field size is unlimited; if using another type of database, the length will be dependent on the field type selected.  If you are using a SQL database, see the appropriate cat_root/dbconf subdirectory for a place to set COLUMN_DEF values.  See also the database documentation, '{{CMD[jump="icdatabase.html#Importing from an ASCII File"]Importing from an ASCII File}}', for details about defaults for columns that you do not define.
 
 
 H3: {{CMD[id="products_thumb"]thumb}}
@@ -3833,7 +3825,7 @@ Example Data
    os28006.gif
 !endblock
 
-This is the filename for a regular-sized image of the product, as you would like it to appear in an HTML <img src="B<image>"> tag. Note that you do not need to specify the path if the image files are in the usual Interchange image directory.
+This is the filename for a regular-sized image of the product, as it should appear in an HTML <img src="B<image>"> tag. You do not need to specify the path if the image files are in the usual Interchange image directory.
 
 
 H3: {{CMD[id="products_price"]price}}
@@ -3974,7 +3966,7 @@ Not Documented
 
 H2: products.category.txt
 
-The products.txt.category table (actually a link to products.txt.10) is simply an automatically generated index into the products table to speed category searches.  See {{CMD[jump="icdatabase.html#Dictionary Indexing With INDEX"]Dictionary Indexing With INDEX}} in the database documentation for details about auto-indexing of text databases.
+The products.category.txt table (actually a link to products.txt.10) is an automatically generated index into the products table to speed category searches.  See {{CMD[jump="icdatabase.html#Dictionary Indexing With INDEX"]Dictionary Indexing With INDEX}} in the database documentation for details about auto-indexing of text databases.
 
 H2:route.txt
 
@@ -4037,9 +4029,9 @@ State/territory/county information
 
 H2:transactions.txt
 
-Each individual customer order has an entry in this table. Each line item is entered not here, but in the orderline table.
+Each individual customer order has an entry in this table. The line items are not entered here, but in the orderline table.
 
-See the page C<query/check_orders.html> for how it might be used. See C<etc/report> for how to add to it.
+See the page C<query/check_orders.html> for how it can be used. See C<etc/report> for how to add to it.
 
 !block example
     code
@@ -4216,32 +4208,15 @@ Instead of:
 
 H1: Images
 
-Inline images are placed in Interchange pages in the normal fashion with <IMG SRC="URL">. But since Interchange pages are served by a CGI program, do not use relative links. The Foundation store defines an image directory with the C<ImageDir> and C<ImageDirSecure> directives WHERE HOW WHAT that automatically adjusts the image path to a set base directory.
+Inline images are placed in Interchange pages in the normal fashion with <IMG SRC="URL">. But since Interchange pages are served by a CGI program, do not use relative links. The Foundation store defines an image directory with the C<ImageDir> and C<ImageDirSecure> directives that automatically adjusts the image path to a set base directory.
 
 
 H1: Browser Cookies
 
-The Foundation store enables the C<Cookies> directive so that users with cookie-capable browsers will retain session context. Then, standard HREF and Interchange page links can be intermixed without fear of losing the shopping basket. Cookie capability is also required to use search caching, page caching, and statically generated pages. If the user's browser does not support cookies, the cache will be ignored.
+The Foundation store enables the C<Cookies> directive so that users with cookie-capable browsers will retain session context. Then, standard HREF and Interchange page links can be intermixed without the fear of losing the shopping basket. Cookie capability is also required to use search caching, page caching, and statically generated pages. If the user's browser does not support cookies, the cache will be ignored.
 
 If planning to use more than one host name within the same domain for naming purposes (perhaps a secure server and non-secure server), set the domain with the C<CookieDomain> directive. This must contain at least two periods (.) as per the cookie specification, and must be located in the same server as the domain.
 
-
-H1: Standard Variables
-
-mv_this
-mv_that
-
-
-H1: Default order routes
-
-Emailed orders.
-Using PGP/GnuPG.
-Any default integration with payment processors?
-
-
-H1: Dissect the flypage ?
-
-
-H1: Dependencies in admin
+H1: Dependencies in administration
 
 In general, it's a good idea to leave fields empty if you don't want to use them, instead of removing them from the database altogether. That way nothing in admin or demo will break.
