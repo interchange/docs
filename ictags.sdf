@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.51 2001-06-27 14:49:20 heins Exp $
+# $Id: ictags.sdf,v 1.52 2001-06-27 17:53:48 heins Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.51 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.52 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -1355,21 +1355,24 @@ number of rows and I<cols> is the number of columns.
 * B<combo> (similarly for B<reverse_combo> and B<move_combo>)
 ** combo   I<(default is 1 row, 16 columns, like 'combo_1_16')>
 
-In any of the option building types, you can append the string C<numeric>
+In any of the option building types, you can append the string C<ranges>
 and a special option processing will be done -- any option matching
-the pattern \d..\d (where \d is a digit) will be expanded into a comma
-separated range of integers between the bounds. The same behavior is
-accomplished by passing the accessories tag option C<numeric>. For example:
+the pattern [A-Za-z0-0]..[A-Za-z0-0] will be expanded into a comma
+separated range between the bounds. The same behavior is
+accomplished by passing the accessories tag option C<ranges>. For example:
 
 !block example
 
-    [accessories name=foo type=select numeric=1 "1..5,10,20"]
+    [accessories name=foo type=select ranges=1 "A..C,1..5,10,20"]
       and
-    [accessories name=foo type="select numeric" passed="1..5,10,20"]
+    [accessories name=foo type="select ranges" passed="A..C,1..5,10,20"]
 
       will both output:
 
     <select NAME="foo">
+    <option VALUE="A">A
+    <option VALUE="B">B
+    <option VALUE="C">C
     <option VALUE="1">1
     <option VALUE="2">2
     <option VALUE="3">3
@@ -1383,8 +1386,9 @@ accomplished by passing the accessories tag option C<numeric>. For example:
 
 The above applies to any of the option building types -- C<check>,
 C<combo>, C<combo_move>, C<labels>, C<multiple>, C<options>, C<radio>,
-C<reverse_combo>, and C<select>.
-
+C<reverse_combo>, and C<select>. It will refuse to produce more than
+5000 options -- that limit can be changed with C<Limit option_list N> in
+C<catalog.cfg>, where N is an integer greater than 0.
 
 H4: {{CMD[id="accessories_column"]column}}
 
