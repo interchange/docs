@@ -590,52 +590,45 @@ that are included in pages within a catalog. Using regions allows you
 to control the look and feel of specific parts of each catalog
 page. The default Foundation region set includes the following:
 
-LEFTONLY_BOTTOM
 LEFTONLY_TOP
-LEFTRIGHT_BOTTOM
+LEFTONLY_BOTTOM
 LEFTRIGHT_TOP
-NOLEFT_BOTTOM
+LEFTRIGHT_BOTTOM
 NOLEFT_TOP
+NOLEFT_BOTTOM
+
+The Foundation demo uses the Variable feature extensively to simplify
+hand page editing. Basically speaking, a Variable is a define that
+permits the substitution of text for a simple __VARIABLE__ string in a
+page. For example, in our test page above, the variables LEFTONLY_TOP
+and LEFTONLY_BOTTOM correspond to region templates that provide a
+logobar, menubar, leftside menu, and copyright footer. Content,
+consisting of HTML and ITL, is placed within the BEGIN and END CONTENT
+comments. The following illustration shows how this looks on the page:
+
+   +--------------------------------------------------------+
+   |                      LOGOBAR                           |
+   |--------------------------------------------------------+
+   |                      MENUBAR                           |
+   |--------------+-----------------------------------------+
+   |              |                                         |
+   |              |                                         |
+   |              |                                         |
+   |   LEFTSIDE   |          This is your content           |
+   |              |                                         |
+   |              |					    |
+   |              |					    |
+   |              +-----------------------------------------|
+   |              |               COPYRIGHT                 |
+   +--------------------------------------------------------+
+
+In this diagram, LEFTONLY_TOP contributes the LEFTSIDE, LOGOBAR, and
+MENUBAR sections, while LEFTONLY_BOTTOM contributes the COPYRIGHT
+section.
+
+
 
 /home/ic/catalogs/ft/templates/regions:
-
-LEFTONLY_BOTTOM
-
-The LEFTONLY_BOTTOM template region is used in the following template pages:
-
-pages/aboutus.html
-pages/account.html
-pages/affiliate/index.html
-pages/affiliate/login.html
-pages/canceled.html
-pages/contact.html
-pages/customerservice.html
-pages/flypage.html
-pages/help.html
-pages/login.html
-pages/logout.html
-pages/modular_modify.html
-pages/new_account.html
-pages/ord/basket.html
-pages/privacypolicy.html
-pages/process_return.html
-pages/quantity.html
-pages/query/check_orders.html
-pages/query/order_detail.html
-pages/query/order_return.html
-pages/returns.html
-pages/saved_carts.html
-pages/ship_addresses.html
-pages/ship_addresses_added.html
-pages/ship_addresses_removed.html
-pages/stock-alert-added.html
-pages/stock-alert.html
-
-The LEFTONLY_BOTTOM template region is used in the following templates:
-
-templates/foundation/cart
-templates/foundation/leftonly
-templates/foundation/simple
 
 LEFTONLY_TOP
 
@@ -675,19 +668,43 @@ templates/foundation/cart
 templates/foundation/leftonly
 templates/foundation/simple
 
-LEFTRIGHT_BOTTOM
+LEFTONLY_BOTTOM
 
-The LEFTRIGHT_BOTTOM template region is used in the following template pages:
+The LEFTONLY_BOTTOM template region is used in the following template pages:
 
-pages/browse.html
-pages/index.html
-pages/results.html
-pages/results_big.html
-pages/swap_results.html
+pages/aboutus.html
+pages/account.html
+pages/affiliate/index.html
+pages/affiliate/login.html
+pages/canceled.html
+pages/contact.html
+pages/customerservice.html
+pages/flypage.html
+pages/help.html
+pages/login.html
+pages/logout.html
+pages/modular_modify.html
+pages/new_account.html
+pages/ord/basket.html
+pages/privacypolicy.html
+pages/process_return.html
+pages/quantity.html
+pages/query/check_orders.html
+pages/query/order_detail.html
+pages/query/order_return.html
+pages/returns.html
+pages/saved_carts.html
+pages/ship_addresses.html
+pages/ship_addresses_added.html
+pages/ship_addresses_removed.html
+pages/stock-alert-added.html
+pages/stock-alert.html
 
-The LEFTRIGHT_BOTTOM template region is used in the following templates:
+The LEFTONLY_BOTTOM template region is used in the following templates:
 
-templates/foundation/leftright
+templates/foundation/cart
+templates/foundation/leftonly
+templates/foundation/simple
 
 LEFTRIGHT_TOP
 
@@ -700,6 +717,20 @@ pages/results_big.html
 pages/swap_results.html
 
 The LEFTRIGHT_TOP template region is used in the following templates:
+
+templates/foundation/leftright
+
+LEFTRIGHT_BOTTOM
+
+The LEFTRIGHT_BOTTOM template region is used in the following template pages:
+
+pages/browse.html
+pages/index.html
+pages/results.html
+pages/results_big.html
+pages/swap_results.html
+
+The LEFTRIGHT_BOTTOM template region is used in the following templates:
 
 templates/foundation/leftright
 
