@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: icprogrammer.sdf,v 1.4 2002-07-26 16:47:09 mheins Exp $
+# $Id: icprogrammer.sdf,v 1.5 2002-07-26 17:52:23 kwalsh Exp $
 
 !define DOC_NAME "Interchange Programmer Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icprogrammer"
-!define DOC_VERSION substr('$Revision: 1.4 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.5 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icvars.html"
@@ -431,8 +431,8 @@ important part of that directive is supplying the C<script> parameter,
 which is used to initialize the pointer structure which will select the
 catalog based on the URL coming in.
 
-After Global configuration, catalog configuration commences, via the
-::config_named_catalog() routine, which calls Vend::Config::config().
+After Global configuration, catalog configuration commences,
+via the ::config_named_catalog() routine, which calls Vend::Config::config().
 Each catalog specified in the global configuration has a base directory.
 Interchange does a chdir() to that directory and parses the various
 configuration files, databases and specified command-line parameters.
