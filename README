@@ -14,3 +14,14 @@ To set up your SDF environment do the following:
 
 (3) create PERLSITELIB/sdf/home/look/akopia and add the files from the akopia
     directory
+
+(4) if you'll be making the dev_html target (if you're generating the
+	Developer website), make this patch to PERLSITELIB/sdf/tohtml.pl:
+
+37a38,41
+> # Escape '[' characters -> '&#91;' for Akopia Interchange Tags?
+> # (off by default)
+> $_ITL_ESCAPE = 0;
+>
+518a523
+>       $para =~ s/\[/&#91;/g if $_ITL_ESCAPE;

@@ -1,4 +1,4 @@
-# $Id: html.sdn,v 1.9 2000-11-30 20:04:32 jon Exp $
+# $Id: html.sdn,v 1.10 2000-12-01 04:57:00 jon Exp $
 #
 # >>Title::     HTML Tuning
 #
@@ -30,10 +30,11 @@
 # Subroutine to build the main document navigation line
 !block script
 $::_HTML_CHAR{'lbracket'} = '&#91;';
+$::_ITL_ESCAPE = 1;
 sub ::_HtmlFinalise {
     local(*body, *contents) = @_;
     local($title, @sdf_title, @title);
-    local($document,$version, @head);
+    local($document, $version, @head);
 
     # Convert the title, if any, to HTML
     $title = $var{'HTML_TITLE'};
@@ -83,10 +84,6 @@ sub ::_HtmlFinalise {
     unless ($var{'HTMLDOC'}) {
         &::_HtmlFinaliseBodyContents(*body, *contents);
     }
-
-	# Escape contents left brackets after processing so they don't get
-	# double-escaped.
-	s/\[/&#91;/g for @contents;
 
     # Return result
     push(@body,
