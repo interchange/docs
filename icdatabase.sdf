@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.33 2001-12-06 20:41:52 racke Exp $
+# $Id: icdatabase.sdf,v 1.34 2001-12-11 06:18:47 jon Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.33 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.34 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
@@ -789,7 +789,7 @@ Note: Examples of search forms and result pages are included in the demos.
 
 Two search engine interfaces are provided, and five types of searching are available. The default is a text-based search of the first products database source file (i.e., products.txt). A binary search of a dictionary-ordered file can be specified. An optional Glimpse search is enabled by placing the command specification for Glimpse in the C<catalog.cfg> directive C<Glimpse>. There is a range-based search, used in combination with one of the above. And finally, there is a fully-coordinated search with grouping.
 
-The default, a text based search, sequentially scans the lines in the target file. By default it returns the first field (delineated by the delimiter for that database, for every line matching the search specification. This corresponds to the product code, which is then used to key specific accesses to the database.
+The default, a text based search, sequentially scans the lines in the target file. By default it returns the first field (delineated by the delimiter for that database) for every line matching the search specification. This corresponds to the product code, which is then used to key specific accesses to the database.
 
 The text-based search is capable of sophisticated field-specific searches with fully-independent case-sensitivity, substring, and negated matching.
 
