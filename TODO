@@ -1,7 +1,7 @@
 DOCUMENTATION STATUS
 
 Currently only on the developer site:
-Beginner's guide (conceptual stuff, maybe should be covered by Alison?)
+Beginner's guide (conceptual stuff)
 Community-contributed usertags (was usertag.pod before 4.7.0; too messy)
 
 On developer site, also distributed with IC:
@@ -27,7 +27,7 @@ Only in Interchange distribution:
 README (brief intro, abbreviated file list, install, BSD etc. problem warnings)
 README.cvs
 README.debian
-README.rpm
+README.rpm-dist
 WHATSNEW (a log of changes to each version pair, e.g. 4.5/4.6, 4.7/4.8)
 
 Currently only in Word or FrameMaker format by Alison:
