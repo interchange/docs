@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.61 2002-05-10 20:26:56 racke Exp $
+# $Id: icconfig.sdf,v 1.62 2002-05-29 09:26:46 racke Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.61 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.62 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
@@ -588,7 +588,7 @@ Default is 0, disabling the check.
    PIDcheck   300
 !endblock
 
-If have long-running database builds, this needs to be disabled. Set it
+If you have long-running database builds, this needs to be disabled. Set it
 to a high value (perhaps 600, for 10 minutes), or use the offline script.
 
 H2: PIDfile *global*
