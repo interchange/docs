@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icfaq.sdf,v 1.15 2002-08-05 23:17:10 kwalsh Exp $
+# $Id: icfaq.sdf,v 1.16 2002-09-23 03:55:52 danb Exp $
 
 !define DOC_NAME "Frequently Asked Questions"
 !define DOC_TYPE ""
 !define DOC_CODE "icfaq"
-!define DOC_VERSION substr('$Revision: 1.15 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.16 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icfaq.html"
@@ -295,6 +295,45 @@ for catalog development.
 H2: Error -- 'make: command not found'
 
 The error is caused when the system you are installing on does not have the program called "make".  It is recommended that you install make as well as a C compiler ("cc" or "gcc") for the installation of Interchange.  If you are unsure of how to do this for your operating system, it may help to ask a mailing list related to your operating system.
+
+H2: Templates aren't showing, only the center content of the page itself
+
+Example question:  "All that's showing up is the center section of the template.  This happened after ____:  (moving my site to a new host, or uploading a new catalog.cfg or theme.cfg file, or restarting interchange)."
+
+This can happen if:
+
+ * The files were uploaded in binary instead of ASCII (when using FTP)
+
+ * Windows-style carriage returns were put in the file by a windows editor or file transfer program
+
+From unix, do an octal dump on some of the files to see if you have cr chars:
+
+!block example
+od -a templates/foundation/theme.cfg | grep cr
+od -a catalog.cfg | grep cr
+!endblock
+
+If something appears on the screen, then your file needs to be cleaned.  Among the other 10-million ways to clean it, here is one:
+
+!block example
+perl -pi -e 's/\r\n/\n/g' < old_file.cfg > new_file.cfg
+!endblock
+
+Also, if you are using FTP to transfer the files from a Windows machine, try using ASCII mode instead of binary mode.
+
+H2: When I try to install the RPM, I get "failed dependencies" errors
+
+There are two easy solutions to this problem:
+
+ * Install the modules manually, then use the --nodeps RPM option.
+
+!block example
+perl -MCPAN -e "install Bundle::Interchange"
+!endblock
+ 
+ * Install RPM modules to satisfy the dependencies.
+   Some modules are available from {{URL:http://ftp.interchange.redhat.com/perl/RHL-7.2/}}
+	While others can be found on rpmfind.net.
 
 H1: SSL problems
 
@@ -832,6 +871,14 @@ If you have SeparateItems in effect, and need the number of unique items, you co
    [/perl]
 !endblock
 
+H2: How do I delete an item from the cart in Perl?
+
+(Answered by Racke)
+
+!block example
+[calc] @$Items = grep {$_->{code} ne '123.456.789'} @$Items [/calc]
+!endblock
+
 H2: The demo doesn't do ... (pick one)
 
 That is because it is a demo. It is not intended to be a finished catalog, just
@@ -1040,8 +1087,55 @@ For example:
        </td>
 !endblock
 
+H2:How do I do a random display of items?
 
+(Answered by Bill Carr)
 
+If you are using mysql (and others probably), you should be able to add "ORDER BY RAND()" to your SQL query.  For example:
+
+!block example
+[query
+   list=1
+   sql=|SELECT * FROM products ORDER BY RAND() LIMIT 3|
+]
+[list]
+        [sql-param description]<br>
+[/list]
+[/query]
+!endblock
+
+H2:How do I setup a new real time payment processor that isn't yet supported by Interchange?
+
+If the payment processor that you would like to use isn't supported by Interchange out of the box, then a new payment module would need to be developed for that processor before you could use them.
+
+If you are up to the task of programming a new payment processor module yourself, the ICDEVGROUP would be happy to add your contribution to the growing list of Interchange-supported payment processors.  Feel free to take a look at the lib/Vend/Payment directory to see examples of current payment modules.
+
+If developing the module on your own isn't an option, you may engage a competent Interchange developer to do it for you or use one of the already-supported payment modules.
+
+H2:How do I modify orders after tehy are placed, change items, shipping, etc.?
+
+N:Example question:  "Occasionally, I need to modify orders... Add an Item, Change shipping, etc.   What is the best way or how can it be done?"
+
+The Foundation template does not have this functionality "out of the box".  While one can manually modify the tables via the Admin UI, it would not cause IC to automatically recalculate subtotals, tax, shipping, etc. to account for the  modifications.
+
+Until someone gets the "itch" to program that feature into the Admin UI, some users are solving the problem by handling all of these modifications in a Back Office / Accounting / ERP software system.  For example, IC comes with "out of the box" support for integration with Quickbooks.  At that point, however, it becomes necessary to analyze what (if any) syncronization will be performed between the two systems.
+
+H2:How do I make or get a certificate for SSL?
+
+This is handled separately and independantly from Interchange, and there are lots of documentation on buying and installing certificates for your platform and http server, as well as generating certificate signing requests (CSR).  Companies such as GeoTrust and Thawte sell certificates, and often have some documentation on what the process entails.  The Apache, mod_ssl, and OpenSSL user groups may be of assistance as well.
+
+While it is technically feasible to generate your own self-signed certificate, modern browsers will display a warning if the certificate is not signed by a signing authority known to that browser.
+
+H2: How do I perform multi-table SQL queries and/or joins using dot notation?
+
+(Answered by Mike Heins)
+
+Example question: "How come I can't use [sql-param tablename.fieldname] notation when I do a multi-table query?"
+
+DBI simply does not support tablename.fieldname in the return value.
+
+You can just refer to them by the fieldname. In the case of field names that are the same but need to be selected from different tables, you can use "SELECT orderline.quantity as o_quan,..." and refer to it as [sql-param o_quan].
+ 
 H1: Errors
 
 H2: Sorting doesn't work across multiple pages.

@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.100 2002-09-04 01:30:25 kwalsh Exp $
+# $Id: ictags.sdf,v 1.101 2002-09-23 03:55:52 danb Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.100 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.101 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -5632,6 +5632,29 @@ Another way to do this would be:
 
 Filters available include:
 
+H4: Length filter 
+
+If you pass just a numeric argument, filter will return only first N characters.  For example:
+!block example
+[filter 5]Interchange[/filter]
+!endblock
+results in:
+
+"Inter"
+
+By appending a ".", you can direct Interchange to append an ellipsis:
+!block example
+[filter 5.]Interchange[/filter]
+!endblock
+results in:
+
+"Inter..."
+
+>		if (/^(\d+)(\.?)$/) {
+>			substr($value, $1) = $2 ? '...' : ''
+>				if length($value) > $1;
+>			next;
+>		}
 
 H4: {{CMD[id="filter_op_cgi"]cgi}}
 
