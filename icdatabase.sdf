@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.63 2004-04-11 18:50:26 mheins Exp $
+# $Id: icdatabase.sdf,v 1.64 2004-04-11 18:53:13 mheins Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.63 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.64 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/icdatabase.html"
@@ -551,8 +551,8 @@ inserted into the database.
 
 If you have Interchange create the table, then you need to do:
 
-	Database foo foo.txt dbi:mysql:test
-	Database foo AUTO_SEQUENCE foo_seq
+>  Database foo foo.txt dbi:mysql:test
+>  Database foo AUTO_SEQUENCE foo_seq
 
 Then on MySQL, Pg, or Oracle, Interchange will create an integer
 key type and a sequence (or AUTO_INCREMENT in MySQL) to maintain
@@ -562,19 +562,19 @@ the count.
 
 Sets the MAXVAL to have in an AUTO_SEQUENCE counter:
 
-	Database foo AUTO_SEQUENCE_MAXVAL  1000000
+>  Database foo AUTO_SEQUENCE_MAXVAL  1000000
 
 =item AUTO_SEQUENCE_MINVAL
 
 Sets the MINVAL to have in an AUTO_SEQUENCE counter:
 
-	Database foo AUTO_SEQUENCE_MINVAL  10
+>  Database foo AUTO_SEQUENCE_MINVAL  10
 
 =item AUTO_SEQUENCE_START
 
 Sets the starting value for an AUTO_SEQUENCE counter:
 
-	Database foo AUTO_SEQUENCE_START  1000
+>  Database foo AUTO_SEQUENCE_START  1000
 
 =item COMPOSITE_KEY
 
@@ -583,10 +583,10 @@ fields combine to make the unique identifier for a record, you must
 tell Interchange so it can request data in the right way. To do
 this, set:
 
->	Database  product_spec product_spec.asc dbi:mysql:foobase
->	Database  product_spec COMPOSITE_KEY sku feature
->	Database  product_spec COLUMN_DEF    "sku=varchar(32)"
->	Database  product_spec COLUMN_DEF    "feature=varchar(128)"
+>  Database  product_spec product_spec.asc dbi:mysql:foobase
+>  Database  product_spec COMPOSITE_KEY sku feature
+>  Database  product_spec COLUMN_DEF    "sku=varchar(32)"
+>  Database  product_spec COLUMN_DEF    "feature=varchar(128)"
 
 If you want to create a custom index for the table, do so. If you
 don't specify a POSTCREATE or INDEX parameter for the table, Interchange
@@ -601,18 +601,18 @@ scope of this document to describe this in detail.
 Normally this is set as the type in the initial C<Database> 
 configuration line, i.e.
 
-  Database  foo  foo.txt  dbi:mysql:foobase
+>  Database  foo  foo.txt  dbi:mysql:foobase
 
 This has the same effect:
 
-  Database  foo  foo.txt  SQL
-  Database  foo  DSN      dbi:mysql:foobase
+>  Database  foo  foo.txt  SQL
+>  Database  foo  DSN      dbi:mysql:foobase
 
 Some other examples of DSN specs:
 
-  Database  foo  DSN  dbi:mysql:host=db.you.com;database=foobase
-  Database  foo  DSN  dbi:Pg:dbname=foobase
-  Database  foo  DSN  dbi:Oracle:host=myhost.com;sid=ORCL
+> Database  foo  DSN  dbi:mysql:host=db.you.com;database=foobase
+> Database  foo  DSN  dbi:Pg:dbname=foobase
+> Database  foo  DSN  dbi:Oracle:host=myhost.com;sid=ORCL
 	
 =item HAS_TRANSACTIONS
 
@@ -631,16 +631,16 @@ by default for MySQL, PostgreSQL, and Oracle.
 One or more SQL statements that should be performed after
 Interchange creates a table.
 
- Database foo POSTCREATE "create unique index foo_idx on foo(key1,key2)"
- Database foo POSTCREATE "create index mulkey_idx on foo(mulkey)"
+> Database foo POSTCREATE "create unique index foo_idx on foo(key1,key2)"
+> Database foo POSTCREATE "create index mulkey_idx on foo(mulkey)"
 
 =item PRECREATE
 
 One or more SQL statements that should be performed before
 Interchange creates a table.
 
- Database foo POSTCREATE "drop table foobackup"
- Database foo POSTCREATE "alter table foo rename to foobackup"
+> Database foo POSTCREATE "drop table foobackup"
+> Database foo POSTCREATE "alter table foo rename to foobackup"
 
 =item REAL_NAME
 
@@ -651,7 +651,7 @@ have different C<products> tables.  You can tell Interchange to
 name the table C<products> for its purposes, but use the C<products_a>
 table for SQL statements:
 
-	Database products REAL_NAME products_a
+> Database products REAL_NAME products_a
 
 Of course if you have SQL queries that are passed verbatim to 
 Interchange (i.e. the [query ...] tag) you must use the REAL_NAME
