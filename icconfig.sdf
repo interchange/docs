@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.50 2001-11-27 20:40:49 jon Exp $
+# $Id: icconfig.sdf,v 1.51 2001-12-06 01:21:20 jon Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.50 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.51 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
@@ -824,13 +824,15 @@ Note: As usual, the EOF should be at the beginning of a line with no leading or 
 
 H2: TemplateDir *global*
 
-Sets a directory which will be searched for pages if not found in the user's C<pages> directory. Interchange uses this; use it to supply some default pages so the user will not have them in their directory.
+This can be used to supply some default pages so catalogs will not need their own copies.
+
+Supply one or more directory names, separated by whitespace, which will be searched for pages not found in the catalog's C<PageDir> directory or the catalog-level C<TemplateDir> directory list.
 
 !block example
    TemplateDir    /usr/local/interchange/default_pages
 !endblock
 
-The user's page, if it exists, will take precedence. There is also a catalog-specific version of this directive. If a page is found in that directory (or directories), it will take precedence.
+This is undefined by default.
 
 H2: TolerateGet *global*
 
@@ -2287,6 +2289,16 @@ A comma or space-separated list of states or jurisdictions that tax shipping cos
 !block example
    TaxShipping         UT,NV,94024
 !endblock
+
+H2: TemplateDir
+
+Sets one or more directories (separated by whitespace) which will be searched (in order) for pages not found in the C<PageDir>. If a page is not found in directories specified here, the search continues with the global C<TemplateDir> setting, if defined.
+
+!block example
+   TemplateDir    /var/lib/interchange/foundation/bonus_pages
+!endblock
+
+This is undefined by default.
 
 H2: TrackFile
 
