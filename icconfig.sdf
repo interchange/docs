@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.15 2000-10-19 22:55:52 alison Exp $
+# $Id: icconfig.sdf,v 1.16 2000-10-19 23:07:16 zarko Exp $
 
 !define DOC_NAME "Interchange Configuration"
 !define DOC_TYPE ""
 !define DOC_CODE "ICCONFIG_D2_100800"
-!define DOC_VERSION substr('$Revision: 1.15 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.16 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
@@ -2911,7 +2911,7 @@ H2: OrderLineLimit
 
 The number of items that the user is allowed to place in the shopping cart. Some poorly-mannered robots may "attack" a site by following all links one after another. Some even ignore any C<robots.txt> file that may have been created. If one of these bad robots orders several dozen or more items, the time required to save and restore the shopping cart from the user session may become excessive.
 
-If the limit is exceeded, the command defined in the Global directive C<LockoutCommand will be executed and the shopping cart will be emptied. The default is 0, disabling the check. Set it to a number greater than the number of line items a user is ever expected to order.
+If the limit is exceeded, the command defined in the Global directive C<LockoutCommand> will be executed and the shopping cart will be emptied. The default is 0, disabling the check. Set it to a number greater than the number of line items a user is ever expected to order.
 
 !block example
    OrderLineLimit   50
