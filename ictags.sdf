@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.73 2002-01-23 19:37:31 mheins Exp $
+# $Id: ictags.sdf,v 1.74 2002-01-31 12:58:55 kwalsh Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.73 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.74 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -6743,7 +6743,7 @@ Oops!  This will not work. You must do instead
 or better yet
 
 >    [if type=explicit compare=`
->                        $Value->{name} =~ /$Value->{b_name}/
+>                        $Values->{name} =~ /$Values->{b_name}/
 >                        `]
 >        Shipping name matches billing name.
 >    [/if]
@@ -6837,7 +6837,7 @@ H4: {{CMD[id="if_file"]file}}
 Tests for existence of a file. Useful for placing image
 tags only if the image is present.
 
->    [if file /home/user/www/images/[item-code].gif]
+>    [if type=file term="/home/user/www/images/[item-code].gif"]
 >    <IMG SRC="[item-code].gif">
 >    [/if]
 
@@ -6907,7 +6907,7 @@ with the [set name]value[/set] element.
 H4: {{CMD[id="if_session"]session}}
 
 the Interchange session variables. of particular interest
-are i<login>, i<frames>, i<secure>, and i<browser>.
+are I<login>, I<frames>, I<secure>, and I<browser>.
 
 H4: {{CMD[id="if_validcc"]validcc}}
 
@@ -6921,7 +6921,7 @@ for targets if nothing else is passed.
 H4: {{CMD[id="if_value"]value}}
 
 the Interchange user variables, typically set in search,
-control, or order forms. variables beginning with c<mv_>
+control, or order forms. Variables beginning with C<mv_>
 are Interchange special values, and should be tested/used
 with caution.
 
