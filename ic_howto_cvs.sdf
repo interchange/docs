@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: ic_howto_cvs.sdf,v 1.15 2003-11-26 04:56:52 mheins Exp $
+# $Id: ic_howto_cvs.sdf,v 1.16 2004-05-05 15:22:29 jon Exp $
 
 !define DOC_NAME "Interchange + CVS HOWTO"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_howto_cvs"
-!define DOC_VERSION substr('$Revision: 1.15 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.16 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ic_howto_cvs.html"
@@ -1289,5 +1289,4 @@ colorizer/parser.  It is available from {{URL:http://www.jedit.org}}.
 
 Line:
 
-N:Copyright 2001,2002 Dan Browning <dan.browning@kavod.com>.  Freely
-redistributable under terms of the GNU General Public License. 
+N:Copyright 2002-2004 Interchange Development Group. Copyright 2001-2002 Dan Browning <dan.browning@kavod.com>. Freely redistributable under terms of the GNU General Public License. 

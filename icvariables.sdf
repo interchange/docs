@@ -1,14 +1,14 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual" 
-# $Id: icvariables.sdf,v 1.2 2004-01-13 20:00:45 racke Exp $
+# $Id: icvariables.sdf,v 1.3 2004-05-05 15:22:31 jon Exp $
 
 !define DOC_NAME "Interchange Programmer Variables Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icvariables"
-!define DOC_VERSION substr('$Revision: 1.2 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.3 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/icvars.html"
-!define DOC_OWNER "2002-2003 Interchange Developers Group. {{EMAIL:interchange-users@icdevgroup.org}}"
+!define DOC_OWNER "2002-2004 Interchange Developers Group."
 
 !define SHOW_COMMENTS 0
 !define EXAMPLE_SESSION "6CZ2whqo"
@@ -920,4 +920,4 @@ Used in C<code/UserTag/ups_query.tag> and C<lib/Vend/Ship/QueryUPS.pm>.
 If shipping aggregation is used, it allows you to override the
 weight in which aggregation occurs. If not set, aggregation occurs at 150.
 
-N:Copyright 2002 ICDEVGROUP. Freely redistributable under terms of the GNU General Public License.
+N:Copyright 2002-2004 Interchange Development Group. Freely redistributable under terms of the GNU General Public License.

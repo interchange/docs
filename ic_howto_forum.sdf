@@ -1,21 +1,21 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: ic_howto_forum.sdf,v 1.4 2003-11-26 04:56:52 mheins Exp $
+# $Id: ic_howto_forum.sdf,v 1.5 2004-05-05 15:22:30 jon Exp $
 
 !define DOC_NAME "Interchange + Forum/Blog HOWTO"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_howto_forum"
-!define DOC_VERSION substr('$Revision: 1.4 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.5 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc-4.9/ic_howto_forum.html"
-!define DOC_OWNER "2002 Mike Heins E<lt>{{EMAIL:mike.heins@perusion.net}}E<gt>"
+!define DOC_OWNER "2002-2004 Mike Heins E<lt>{{EMAIL:mike.heins@perusion.net}}E<gt>"
 !build_title
 
 H1:Introduction
 
 H2:Preamble
 
-N:Copyright 2002 Mike Heins <mike.heins@perusion.net> and Michael
+N:Copyright 2002-2004 Mike Heins <mike.heins@perusion.net> and Michael
 Wilk <mwilk@steppenwolf.com>. Freely redistributable under terms of the GNU
 General Public License.
 
@@ -399,6 +399,6 @@ H3: E<lbrace>KEY:} false text {/KEY:}
 Displays C<false text> if the value of {KEY} is blank or zero, and nothing
 otherwise.
 
-N:Copyright 2002 Mike Heins <mike.heins@perusion.net> and Michael
+N:Copyright 2002-2004 Mike Heins <mike.heins@perusion.net> and Michael
 Wilk <mwilk@steppenwolf.com>. Freely redistributable under terms of the GNU
 General Public License.

@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: icfoundation.sdf,v 1.28 2003-11-26 04:56:52 mheins Exp $
+# $Id: icfoundation.sdf,v 1.29 2004-05-05 15:22:30 jon Exp $
 
 !define DOC_NAME "Foundation Store"
 !define DOC_TYPE ""
 !define DOC_CODE "icfoundation"
-!define DOC_VERSION substr('$Revision: 1.28 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.29 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/icfoundation.html"
@@ -4233,6 +4233,4 @@ In general, it's a good idea to leave fields empty if you don't want to use them
 
 Line:
 
-N:Copyright 2001-2002 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.
-
-N:Copyright 2002 ICDEVGROUP. Freely redistributable under terms of the GNU General Public License.
+N:Copyright 2002-2004 Interchange Development Group. Copyright 2001-2002 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.

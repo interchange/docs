@@ -1,14 +1,14 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: icupgrade.sdf,v 1.22 2003-11-26 04:56:53 mheins Exp $
+# $Id: icupgrade.sdf,v 1.23 2004-05-05 15:22:31 jon Exp $
 
 !define DOC_NAME "Interchange Upgrade Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "icupgrade"
-!define DOC_VERSION substr('$Revision: 1.22 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.23 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/icupgrade.html"
-!define DOC_OWNER "1996-2002 Red Hat, Inc., and others"
+!define DOC_OWNER "2002-2004 Interchange Development Group, 1996-2002 Red Hat, Inc."
 !build_title
 
 H1:Introduction
@@ -615,10 +615,10 @@ Akopia acquired MiniVend in June 2000. Mike Heins and the Tallyman developers co
 
 In January 2001, Red Hat acquired Akopia and created its new E-Business Solutions Division. Red Hat sponsored the development of Interchange 4.8 and the Red Hat E-Commerce Suite.
 
-In mid-2002, Red Hat decided to stop supporting Interchange development, and a group of individuals formed the Interchange Developer Group to coordinate Interchange development independent of any company or person. Interchange continues to advance and the user community is growing. Interchange 5.0 is planned for release in late 2002.
+In mid-2002, Red Hat decided to stop supporting Interchange development, and a group of individuals formed the Interchange Development Group to coordinate Interchange development independent of any company or person. The first stable release by the new independent group of developers was Interchange 5.0.
+
+Interchange continues to advance, the user community is growing, and new Interchange sites are frequently deployed.
 
 Line:
 
-N:Copyright 2001-2002 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.
-
-N:Copyright 2002 ICDEVGROUP. Freely redistributable under terms of the GNU General Public License.
+N:Copyright 2002-2004 Interchange Development Group. Copyright 2001-2002 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.

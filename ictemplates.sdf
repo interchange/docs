@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: ictemplates.sdf,v 1.52 2004-04-11 18:08:45 mheins Exp $
+# $Id: ictemplates.sdf,v 1.53 2004-05-05 15:22:30 jon Exp $
 
 !define DOC_NAME "Template Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "ictemplates"
-!define DOC_VERSION substr('$Revision: 1.52 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.53 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ictemplates.html"
@@ -3362,6 +3362,4 @@ Replace C</cgi-bin/construct> with the path to your Interchange link.
 
 Line:
 
-N:Copyright 2001-2002 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.
-
-N:Copyright 2002 ICDEVGROUP. Freely redistributable under terms of the GNU General Public License.
+N:Copyright 2002-2004 Interchange Development Group. Copyright 2001-2002 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.

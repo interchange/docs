@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: icfaq.sdf,v 1.22 2003-11-26 04:56:52 mheins Exp $
+# $Id: icfaq.sdf,v 1.23 2004-05-05 15:22:30 jon Exp $
 
 !define DOC_NAME "Frequently Asked Questions"
 !define DOC_TYPE ""
 !define DOC_CODE "icfaq"
-!define DOC_VERSION substr('$Revision: 1.22 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.23 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/icfaq.html"
@@ -2146,6 +2146,4 @@ don't use them, you can delete them.
         
 Line:
 
-N:Copyright 2001-2002 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.
-
-N:Copyright 2002 ICDEVGROUP. Freely redistributable under terms of the GNU General Public License.
+N:Copyright 2002-2004 Interchange Development Group. Copyright 2001-2002 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.

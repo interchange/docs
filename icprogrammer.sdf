@@ -1,14 +1,14 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual" 
-# $Id: icprogrammer.sdf,v 1.9 2004-01-07 04:46:22 pvinci Exp $
+# $Id: icprogrammer.sdf,v 1.10 2004-05-05 15:22:30 jon Exp $
 
 !define DOC_NAME "Interchange Programmer Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icprogrammer"
-!define DOC_VERSION substr('$Revision: 1.9 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.10 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/icvars.html"
-!define DOC_OWNER "2002 Interchange Developers Group. {{EMAIL:interchange-users@icdevgroup.org}}"
+!define DOC_OWNER "2002-2004 Interchange Development Group."
 
 !define SHOW_COMMENTS 0
 !define EXAMPLE_SESSION "6CZ2whqo"
@@ -548,4 +548,4 @@ and the expensive initialization is done. This allows many tables
 to be ready for access while only the ones used take up CPU and
 IO time.
 
-N:Copyright 2002 ICDEVGROUP. Freely redistributable under terms of the GNU General Public License.
+N:Copyright 2002-2004 Interchange Development Group. Freely redistributable under terms of the GNU General Public License.

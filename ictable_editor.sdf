@@ -1,9 +1,9 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: ictable_editor.sdf,v 1.7 2004-03-02 17:17:16 racke Exp $
+# $Id: ictable_editor.sdf,v 1.8 2004-05-05 15:22:30 jon Exp $
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.7 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.8 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ictable_editor.html"
@@ -1160,5 +1160,5 @@ LI1: wizard_next
 
 Line:
 
-N:Copyright 2002 Interchange Development Group. Freely redistributable
+N:Copyright 2002-2004 Interchange Development Group. Freely redistributable
 under terms of the GNU General Public License.

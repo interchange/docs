@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.81 2004-05-05 14:24:57 jon Exp $
+# $Id: icconfig.sdf,v 1.82 2004-05-05 15:22:30 jon Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.81 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.82 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/icconfig.html"
@@ -2881,6 +2881,4 @@ Disables IP qualification of user sessions. {{B:This degrades catalog security.}
 
 Line:
 
-N:Copyright 2001-2002 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.
-
-N:Copyright 2002 ICDEVGROUP. Freely redistributable under terms of the GNU General Public License.
+N:Copyright 2002-2004 Interchange Development Group. Copyright 2001-2002 Red Hat, Inc. Freely redistributable under terms of the GNU General Public License.
