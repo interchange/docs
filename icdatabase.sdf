@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.32 2001-12-06 03:27:27 jon Exp $
+# $Id: icdatabase.sdf,v 1.33 2001-12-06 20:41:52 racke Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.32 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.33 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
@@ -397,6 +397,20 @@ LI1: EXCEL
 !endblock
 
 .This is normally used only with TAB-delimited files.
+
+LI1: LARGE
+
+.Interchange databases containing many records can result in a noticeable slowdown when displayed by the UI. 
+
+.Set the LARGE attribute to 1 to avoid this problem:
+
+!block example
+	Database transactions LARGE 1
+!endblock
+
+.In this case the UI supplies only input boxes to search records in the
+database instead of drawing all the records from the database, sorting
+them and creating more lists.
 
 H2: Dictionary Indexing With INDEX
 
