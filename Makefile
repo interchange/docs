@@ -1,5 +1,5 @@
-VERSION=4.6.2
-TARGETS=icbackoffice icconfig icdatabase icinstall icintro ictemplates iccattut
+VERSION=4.7.0
+TARGETS=icbackoffice icconfig icdatabase icinstall icintro ictemplates iccattut ictags
 
 .SUFFIXES: .html .pod .sdf .txt .pdf .8
 
@@ -18,7 +18,7 @@ TARGETS=icbackoffice icconfig icdatabase icinstall icintro ictemplates iccattut
 .pod.8:
 	pod2man --section=8 \
 		--release='Interchange $(VERSION)' \
-		--center='Akopia Interchange' \
+		--center='Interchange' \
 		--lax \
 		$< > $@
 
@@ -67,5 +67,9 @@ man: $(addsuffix .8,$(TARGETS))
 pdf: $(addsuffix .pdf,$(TARGETS))
 
 clean:
-	rm -f *.html *.pod *.txt *.8 *.pdf
+	@for i in $(TARGETS) ; do \
+		for j in pod txt pdf 8 html ; do \
+			rm -fv $$i.$$j ; \
+		done ; \
+	done
 	rm -rf dev
