@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.28 2001-09-17 17:24:10 jon Exp $
+# $Id: icdatabase.sdf,v 1.29 2001-10-10 00:49:24 jon Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.28 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.29 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
@@ -1563,7 +1563,31 @@ LI1: mv_record_delim
 
 LI1: mv_return_fields
 
-.The fields that should be returned by the match, specified either by field name or by column number. Specify 0 as the first field to be returned if searching the products database, since that is the key for accessing database fields.
+.The field(s) that should be returned by the match, specified either by field name or by column number, separated by commas. Do not list the same field more than once per search. Specify 0 as the first field to be returned if searching the products database, since that is the key for accessing database fields.
+
+As with SQL queries, you can use the '*' shortcut to return all fields. For example:
+
+>    [loop search="fi=nation/ra=yes/rf=*"]
+
+when used with a hypothetical 'nation' table would be equivalent to:
+
+>    [loop search="
+>          fi=nation
+>          ra=yes
+>          rf=code,sorder,region,name,tax
+>    "]
+
+as well as:
+
+>    [loop search="fi=nation/ra=yes/rf=0,1,2,3,4"]
+
+and:
+
+>    [query sql="select * from nation"][/query]
+
+However, you probably rarely need to use every single field in a row.
+For maximum maintainability and execution speed the best practice is
+to list by name only the fields you want returned.
 
 LI1: mv_return_spec
 
@@ -3584,7 +3608,7 @@ H1: SSL Support
 
 Interchange has several features that enable secure ordering via SSL (Secure Sockets Layer). Despite their mystique, SSL servers are actually quite easy to operate. The difference between the standard HTTP server and the SSL HTTPS server, from the standpoint of the user, is only in the encryption and the specification of the URL; C<https:> is used for the URL protocol specification instead of the usual http: designation.
 
-Note[label='IMPORTANT NOTE: '] Interchange attempts to perform operations securely, but no guarantees or warranties of any kind are made! Since Interchange comes with Perl source, it is possible to modify the program to create security problems. One way to minimize this possibility is to record digital signatures, using MD5 or PGP, of C<interchange>, C<interchange.cfg>, and all modules included in Interchange. Check them on a regular basis to ensure they have not been changed.
+Note[label='IMPORTANT NOTE: '] Interchange attempts to perform operations securely, but no guarantees or warranties of any kind are made! Since Interchange comes with source code, it is fairly easy to modify the program to create security problems. One way to minimize this possibility is to record digital signatures, using MD5 or PGP or GnuPG, of C<interchange>, C<interchange.cfg>, and all modules included in Interchange. Check them on a regular basis to ensure they have not been changed.
 
 Interchange uses the C<SecureURL> directive to set the base URL for secure transactions, and the C<VendURL> directive for normal non-secure transactions. Secure URLs can be enabled for forms through a form action of C<[process-target secure=1]>. An individual page can be displayed via SSL with C<[page href=mvstyle_pagename secure=1]>. A certain page can be set to be always secure with the C<AlwaysSecure> catalog.cfg directive.
 
