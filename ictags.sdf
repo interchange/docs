@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.41 2001-05-24 21:28:29 bill Exp $
+# $Id: ictags.sdf,v 1.42 2001-05-30 15:01:54 bill Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.41 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.42 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -2558,8 +2558,7 @@ You can also return a result based on the error message caught in the try block 
    [I<error message>]body text[/I<error message>]
 !endblock
 
-Note that this feature excises I<all> tag/endtag pairs, so you probably want to set 'C<interpolate=1>' if you have interchange tags inside the C<catch> block.
-
+Note that this feature excises I<all> tag/endtag pairs if interpolation is turned off, so the C<catch> tag interpolates by default.
 
 
 See also E<lbracket>{{C[jump="#try"]try}}].
@@ -2598,7 +2597,7 @@ The label shared by the paired {{C[jump="#try"]try}} and C<catch> blocks
 !block table; colvaligns="TT"
 Attributes|Default
 {{CMD[jump="#catch_exact"]exact}}|I<No>
-{{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
+{{CMD[jump="#attr_interpolate"]interpolate}}|I<Yes>
 {{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
 !endblock
 
@@ -2628,18 +2627,18 @@ Ignoring whitespace, the following would return division result if successful, 0
          0
       [/Illegal division by zero]
       [eval "string" trapped by operation mask]
-         Perl Safe error
+         Perl {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}} error
       [/eval "string" trapped by operation mask]
       Other division error
    [/catch]
 ---
-   Perl Safe error
+   Perl {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}} error
 !endblock
 
 B<ASP-like Perl call:>
 
 !block example; lang="Perl"
-    $Tag->catch(  { label => 'I<my_label>', },
+    $Tag->catch(  { label => I<'my_label'>, },
                   $body  );
 !endblock
 
@@ -2664,7 +2663,7 @@ You can also return a result based on the error message caught in the try block 
    [I<error message>]special catch block for the error[/I<error message>]
 !endblock
 
-Note that this feature excises I<all> tag/endtag pairs before they are returned for reparsing, so you probably want to set 'C<interpolate=1>' if you have interchange tags inside the C<catch> block.  For example, if you have a conditional like N<this:>
+The C<catch> tag interpolates by default because the aforementioned feature excises I<all> tag/endtag pairs before they are returned for reparsing. This includes Interchange container tags inside the C<catch> block.  For example, if you have a conditional like N<this:>
 
 !block example
    [catch I<my_label>]
@@ -2677,19 +2676,13 @@ Note that this feature excises I<all> tag/endtag pairs before they are returned 
    [/catch]
 !endblock
 
-you probably will not get what you expect without setting 'C<interpolate=1>' in the E<lbracket>C<catch>...] tag.  Note that you must then also name the label parameter, like N<this:>
-
-!block example
-   [catch label=I<my_label> interpolate=1]
-      ...
-   [/catch]
-!endblock
+you probably will not get what you expect if you set 'C<interpolate=0>' in the E<lbracket>C<catch>...] tag.
 
 The error message to use in the special block will generally be part of the entry the error generates in your error log.  For example, a division by zero error generates something like the following in the error log:
 
 !block example
    127.0.0.1 4cU3Pgsh:127.0.0.1 - [24/May/2001:14:45:07 -0400]\
-   tag /cgi-bin/tag72/tag Safe: Illegal division by zero\
+   tag /cgi-bin/tag72/tag {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}}: Illegal division by zero\
    at (eval 526) line 2.
 !endblock
 
@@ -2970,7 +2963,7 @@ The counter value is stored in the specified file. If the file name begins with 
 
 The counter is implemented using Perl's C<File::Counter> module, which protects the file against simultaneous access by multiple processes.
 
-\WARNING: This tag will not work under Safe, i.e. in embedded Perl.
+\WARNING: This tag will not work under {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}}, i.e. in embedded Perl.
 
 Additional parameters:
 
@@ -4264,11 +4257,11 @@ C<type> may be one of the following
 the C<value>=0 attribute)
 
 * transactions
-** Reopens the database in transactions mode if Safe.pm is not active
+** Reopens the database in transactions mode if {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe.pm}} is not active
 (e.g., in a global subroutine, usertag or
 E<lbracket>{{C[jump="#perl_global"]perl}}E<nbspace>global=1]
 tag). The limitation exists because it is not possible to reopen a
-database within Safe.pm.
+database within {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe.pm}}.
 
 * commit
 ** Attempts to commit transactions
@@ -6019,17 +6012,26 @@ section of {{CMD[jump="icconfig.html#Programming"]Interchange Programming}}.
 
 H2: nitems
 
+Returns the total number of items ordered.  Uses the current cart if none specified.
+
 
 H3: Summary
 
 \Parameters: B<name>
 
-Positional parameters in same order.
+* name
+** Cart name
+** N<Default:> current cart
+
+* qualifier
+** An item attribute that must be true in order to count the item.
+** N<Default:>
+
+* compare
+** Regular expression the specified qualifier attribute's value must match to be counted. This replaces the truth value comparison.
+** N<Default:> None (uses truth value of the specified qualifier attribute)
 
 
-B<The attribute hash reference is passed> to the subroutine after
-the parameters as the last argument.
-B<This may mean that there are parameters not shown here.>
 
 Must pass named parameter interpolate=1 to cause interpolation.
 
@@ -6115,17 +6117,107 @@ B<NO Description>
 
 H2: options
 
+Builds HTML widgets as defined in the options table for selecting options associated with a given product. This tag handles simple, modular or matrix options.  See also the {{C[jump="#accessories"]accessories}} tag.
+
+Here is an illustrative example from the 'tools' sample data set of the foundation N<catalog:>
+
+!block example
+===
+   [options code=os28005]
+---
+   <input type=hidden name=mv_item_option value="logo">
+     <SELECT NAME="mv_order_logo">
+     <OPTION VALUE="c">Construct Something
+     <OPTION VALUE="y" SELECTED>Your Logo</SELECT><BR>
+   <input type=hidden name=mv_item_option value="color">
+     <INPUT TYPE="radio" NAME="mv_order_color" VALUE="BLK" >&nbsp;Black
+     <INPUT TYPE="radio" NAME="mv_order_color" VALUE="BEIGE" >&nbsp;Beige
+     <INPUT TYPE="radio" NAME="mv_order_color" VALUE="WHITE" >&nbsp;White<BR>
+   <input type=hidden name=mv_item_option value="bristle">
+     <SELECT NAME="mv_order_bristle">
+     <OPTION VALUE="synthetic">Synthetic
+     <OPTION VALUE="camel">Camel Hair</SELECT>
+===
+!endblock
 
 H3: Summary
 
 \Parameters: B<code>
 
-Positional parameters in same order.
+* code
+** Product key (usually sku).
+** No default
 
+* table
+** Table to use for option attributes.  
+** N<Default:> 'options'
 
-B<The attribute hash reference is passed> to the subroutine after
-the parameters as the last argument.
-B<This may mean that there are parameters not shown here.>
+* td
+** Results as table rows. For example, compare the following example from the 'tools' sample data set with the earlier example:
+
+!block example
+===
+   [options code=os28005 td=1]
+---
+   <td><input type=hidden name=mv_item_option value="logo">
+      <SELECT NAME="mv_order_logo">
+      <OPTION VALUE="c">Construct Something
+      <OPTION VALUE="y" SELECTED>Your Logo</SELECT></td>
+   <td><input type=hidden name=mv_item_option value="color">
+      <INPUT TYPE="radio" NAME="mv_order_color" VALUE="BLK" >&nbsp;Black
+      <INPUT TYPE="radio" NAME="mv_order_color" VALUE="BEIGE" >&nbsp;Beige
+      <INPUT TYPE="radio" NAME="mv_order_color" VALUE="WHITE" >&nbsp;White</td>
+   <td><input type=hidden name=mv_item_option value="bristle">
+      <SELECT NAME="mv_order_bristle">
+      <OPTION VALUE="synthetic">Synthetic
+      <OPTION VALUE="camel">Camel Hair</SELECT></td>
+===
+!endblock
+
+(Note that the output was reformatted to fit this page)
+
+* price
+** N<Default:> False
+** Boolean. If set and the options have prices, the HTML widget(s) will show the prices. This is like the {{C[jump="#accessories_price"]price}} attribute of the accessories tag.
+
+... Note that the {{C[jump="#accessories_price_data"]price_data}} setting comes from the 'price' column of the options table.
+
+... Technical note-- If your options table has different mappings, you can control this with $::Variable->{MV_OPTION_TABLE_MAP}
+
+* label
+** Shows labels for the options with the widgets.
+** N<Default:> False
+
+The following example (using another item from the 'tools' data) illustrates the price and label N<attributes:>
+
+!block example
+===
+   [options code=os28011 label=1 price=1]
+---
+   Handle<BR>
+     <input type=hidden name=mv_item_option value="handle">
+       <SELECT NAME="mv_order_handle">
+       <OPTION VALUE="W">Wood handle
+       <OPTION VALUE="E">Ebony handle ($20.00)</SELECT><BR>
+   Blade material<BR>
+     <input type=hidden name=mv_item_option value="blade">
+       <SELECT NAME="mv_order_blade">
+       <OPTION VALUE="P">Plastic blade ($-1.22)
+       <OPTION VALUE="S" SELECTED>Steel blade
+       <OPTION VALUE="T">Titanium blade ($100.00)</SELECT>
+===
+!endblock
+
+(again, the output has been reformatted to fit the page).
+
+* bold
+** Boldfaces the labels if the C<'label'> option is set.
+** N<Default:> False
+
+* joiner
+** The joiner for the widgets.
+** N<Default:> E<lt>BR>
+
 
 Must pass named parameter interpolate=1 to cause interpolation.
 
@@ -6144,13 +6236,6 @@ B<ASP-like Perl call:>
 > OR
 >
 >    $Tag->options($code, $ATTRHASH);
-
- 
-
-H3: Description
-
-B<NO Description>
-
 
 
 
@@ -6735,7 +6820,7 @@ This tag allows you to embed perl code within an Interchange page. The
 code will run under the restrictions of Perl's 
 {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}}
 module by default. Perl's 'C<warnings>' and 'C<strict>' pragmas are
-both turned off, and Safe will block you from turning them on, since
+both turned off, and {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}} will block you from turning them on, since
 it blocks Perl's 'C<use>' command. (This is not usually a problem,
 since you should probably use an alternative such as a usertag if your
 code is complex enough to need C<strict>.)
@@ -6817,7 +6902,7 @@ products N<table:>
     [/perl]
 !endblock
 
-If you do not do this, your code will fail with a runtime Safe
+If you do not do this, your code will fail with a runtime {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}}
 error when it tries to look up 'our_cost' in the products database
 with the {{C[jump="#data"]data}} tag.
 
@@ -6833,7 +6918,7 @@ pre-opened by using an item first.
 
 Technical note:
 
-Safe objects (including database handles) may persist within
+{{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}} objects (including database handles) may persist within
 a page, and the C<perl> tag does not necessarily destroy objects
 created earlier in the page. As a result, your code may work even
 though you did not set 'C<tables>' properly, only to break later when
@@ -6853,7 +6938,7 @@ the (default) products table:
 !endblock
 
 If you remove the first E<lbracket>accessories ...] tag, then the
-$Tag->accessories call will fail with a Safe error unless you also set
+$Tag->accessories call will fail with a {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}} error unless you also set
 'C<tables>=products' in the C<perl> tag.
 
 The moral of this story is to ensure that you pass all necessary
@@ -6881,7 +6966,7 @@ For example,
 !endblock
 
 will return 'It Broke' because the $Tag->Data(...) call will fail
-under the Safe module (see {{CMD[jump="#perl_tables"]tables}} above).
+under the {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}} module (see {{CMD[jump="#perl_tables"]tables}} above).
 
 H4: {{CMD[id="perl_no_return"]no_return}}
 
@@ -7112,67 +7197,126 @@ See I<Product Discounts>.
 
 
 
-
-
 H2: process
+
+This is a shortcut for the 'process' action, expanding to your catalog URL and session ID.  It is analogous to the {{C[jump="#area"]area}} tag, but is more limited. The following expansion is N<illuastrative:>
+
+!block example
+   [process target=targetframe]
+---
+   http://[[EXAMPLE_DOMAIN]]/cgi-bin/[[EXAMPLE_CATALOG]]/process.html?\
+   id=[[EXAMPLE_SESSION]]" TARGET="targetframe
+!endblock
+
+(the trailing backslash indicates continuation, i.e., the result should be only one line)
+
+Note the mismatched quotes in the expansion.  Your surrounding HTML should supply the containing quotes, like N<this:>
+
+!block example
+   <A HREF="[process target=targetframe]">...
+!endblock
+
+N:Alias:  B<process_target>
 
 
 H3: Summary
 
-Aliases for tag
+!block example;
+    [B<process> target secure]
+    [B<process> target=I<targetframe> secure=1 I<other_named_attributes>]
+!endblock
 
-process_target
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+target|<<
+The target frame or window
+>>|I<None>
+secure|<<
+Boolean.  If true (secure=1), the URL will link to your secure server.
+>>|I<No>
+!endblock
 
-\Parameters: B<target secure>
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
 
-ONLY THE B<> PARAMETERS ARE POSITIONAL.
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<No>
+Container tag|I<No>
+!endblock
 
+B<Tag expansion example:>
 
-B<The attribute hash reference is passed> to the subroutine after
-the parameters as the last argument.
-B<This may mean that there are parameters not shown here.>
-
-Must pass named parameter interpolate=1 to cause interpolation.
-
-Invalidates cache: B<no>
-
-Called Routine: 
+!block example
+   [process targetframe 1]
+---
+   http://[[EXAMPLE_SECURE_DOMAIN]]/cgi-bin/[[EXAMPLE_CATALOG]]/process.html?\
+   id=[[EXAMPLE_SESSION]]" TARGET="targetframe
+!endblock
 
 B<ASP-like Perl call:>
 
->    $Tag->process(
->        {
->         target => VALUE,
->         secure => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->process($target, $secure, $ATTRHASH);
+!block example; lang="Perl"
+    $Tag->process(  { target => 'frametarget',
+                      secure => 1, } );
+!endblock
 
- 
+or similarly with positional parameters,
 
-H3: Description
-
-B<NO Description>
-
+!block example; lang="Perl"
+    $Tag->process($target, $secure, $attribute_hash_reference);
+!endblock
 
 
 
 H2: profile
+
+Note: Documentation incomplete for this tag.
+
+Saves and restores profile of session configuration variables and $Session->{Autoload}.
+
+If given a C<name>, 
+
+If not given a C<name>, returns the contents of the $Session->{Autoload} array delimited with the specified C<joiner>.  If not given a name, the C<restore> option restores saved session configuration and filters the 
+
 
 
 H3: Summary
 
 \Parameters: B<name>
 
-Positional parameters in same order.
+
+* name
+** Either C<name>='I<tag>-B<profilename>' or C<name>='profilename'. Specifies the profile name (and possibly also the profile tag) in the profile repository to save or restore (see {{CMD[jump="icconfig.html#ProfileRepository"]ProfileRepository}}).  The C<'restore'> option without a name restores the last saved configuration profile.
+
+* tag
+** This is the profile tag.  On restoration, the $Session->{Autoload} array will be filtered to match the given profile tag.  When saving, the current $Session->{Autoload} array is saved 
+** N<Default:> 'default'
+
+* restore
+** Restores previously saved session configuration associated. The B<profile> tag must not specify a profile C<name>N<:>
+... E<lbracket>profile restore=1]
+** N<Default:> False
+
+* joiner
+** N<Default:> Space (' ')
+
+* run
+** Internal option, set within the routine if C<name>="I<tagname>-profilename"
+
+* set
+** Causes the $Session->{Autoload} array to be filtered to match the given tag after saving the configuration.
+
+* failure
+** Return value in case of failure
+
+* success
+** Return value if the tag succeeds
 
 
-B<The attribute hash reference is passed> to the subroutine after
-the parameters as the last argument.
-B<This may mean that there are parameters not shown here.>
 
 Must pass named parameter interpolate=1 to cause interpolation.
 
@@ -7182,21 +7326,9 @@ Called Routine:
 
 B<ASP-like Perl call:>
 
->    $Tag->profile(
->        {
->         name => VALUE,
->        }
->    )
->
-> OR
->
 >    $Tag->profile($name, $ATTRHASH);
 
  
-
-H3: Description
-
-B<NO Description>
 
 
 H2: query
@@ -7370,7 +7502,7 @@ See also the example at the end of the Summary section above.
 H4: Perl and ASP usage
 
 If you are calling $Tag->query within a C<perl> tag (or whenever the
-code is secured by the Safe.pm module), you must be sure to set the
+code is secured by the {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe.pm}} module), you must be sure to set the
 {{C[jump="#perl_tables"]tables}} attribute properly in the enclosing
 C<perl> tag (see the {{C[jump="#perl"]perl}} tag documentation for
 detail).
@@ -7774,47 +7906,6 @@ since there is no name for the HTTP_COOKIE string N<input:>
 !endblock
 
 
-H2: record
-
-
-H3: Summary
-
-No parameters.
-
-B<The attribute hash reference is passed> to the subroutine after
-the parameters as the last argument.
-B<This may mean that there are parameters not shown here.>
-
-Must pass named parameter interpolate=1 to cause interpolation.
-
-Invalidates cache: B<no>
-
-Called Routine: 
-
-B<ASP-like Perl call:>
-
->    $Tag->record(
->        {
->        }
->    )
->
-> OR
->
->    $Tag->record($ATTRHASH);
-
-Attribute aliases
-
->            code ==> key
->            column ==> col
->            field ==> col
-
-
- 
-
-H3: Description
-
-B<NO Description>
-
 
 H2: row
 
@@ -7986,46 +8077,68 @@ Returns the contents of a scratch variable to the page. (A scratch
 variable is set with a [set] value [/set] container pair.)
 
 
-
-
-
 H2: scratchd
+
+Deletes the named scratch variable and returns its value before the deletion. For example,
+
+!block example;
+    [B<scratchd> I<varname_to_delete>]
+!endblock
+
+deletes the scratch variable I<varname_to_delete>.
+
+See also the {{C[jump="#scratch"]scratch}} and {{C[jump="#set"]set}} tags.
 
 
 H3: Summary
 
-\Parameters: B<name>
+!block example;
+    [B<scratchd> P_PARAM]
+    [B<scratchd> N_PARAM I<other_named_attributes>]
+!endblock
 
-Positional parameters in same order.
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+name|<<
+Name of scratch variable to delete
+>>|I<None>
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<Yes>
+Container tag|I<No>
+!endblock
 
 
-Pass attribute hash as last to subroutine: B<no>
+B<Tag expansion example:>
 
-Must pass named parameter interpolate=1 to cause interpolation.
-
-Invalidates cache: B<YES>
-
-Called Routine: 
+!block example
+   [set myvar]This is myvar[/set]
+   .
+   .
+   .
+   [scratchd myvar]
+---
+   This is myvar
+!endblock
 
 B<ASP-like Perl call:>
 
->    $Tag->scratchd(
->        {
->         name => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->scratchd($name);
-
+!block example; lang="Perl"
+    $Tag->scratchd($name, $attribute_hash_reference);
+!endblock
  
 
 H3: Description
 
-B<NO Description>
-
-
+Deletes the named scratch variable and returns its value before the deletion.
 
 
 H2: search_list
@@ -8033,6 +8146,7 @@ H2: search_list
 Formats results returned by a search. Must be enclosed within a
 {{C[jump="#search_region"]search_region}}. Has sub-tags (see
 {{C[jump="#Looping tags and Sub-tags"]LoopingE<nbspace>tagsE<nbspace>andE<nbspace>Sub-tags}}). 
+
 
 H2: search_region
 
@@ -8400,17 +8514,28 @@ it {{CMD[jump="#attr_interpolate"]interpolates}} by default.
 
 H2: setlocale
 
+Sets locale and/or currency for the current page. Can be made persistent for the user with the 'persist' option. Resets default locale if called without arguments.  See also {{CMD[jump="ictemplates.html#Setting the Locale"]Setting the Locale}} in the template documentation.
+
 
 H3: Summary
 
-\Parameters: B<locale currency>
+B<Parameters:> B<locale currency>
+
+* locale
+** The locale to use.
+** N<Default:> [scratch mv_locale] (see also 'persist' attribute)
+
+* currency
+** The currency format to use.
+** N<Default:> [scratch mv_currency] (see also 'persist' attribute)
 
 Positional parameters in same order.
 
+B<Named Attrbutes>
 
-B<The attribute hash reference is passed> to the subroutine after
-the parameters as the last argument.
-B<This may mean that there are parameters not shown here.>
+* persist
+** Setting 'C<persist=1>' also sets the scratch variables, B<mv_locale> and B<mv_currency> to specified locale and currency. This makes the locale settings persistent for the user's session. Otherwise (C<persist=0>), the C<setlocale> tag affects the remainder of the current page only.
+
 
 Must pass named parameter interpolate=1 to cause interpolation.
 
@@ -8435,24 +8560,105 @@ B<ASP-like Perl call:>
 
 H3: Description
 
-B<NO Description>
+Immediately sets the locale to C<locale>, and will cause it to persist in future user pages if the C<persist> is set to a non-zero, non-blank value. If the C<currency> attribute is set, the pricing and currency-specific locale keys and Interchange configuration directives are modified to that locale. If there are no arguments, it sets it back to the user's default locale as defined in the scratch variables C<mv_locale> and C<mv_currency>.
 
+This N<allows:>
 
+!block example
+    Dollar Pricing:
+
+    [setlocale en_US]
+    [item-list]
+    [item-code]: [item-price]<BR>
+    [/item-list]
+
+    Franc Pricing:
+
+    [setlocale fr_FR]
+    [item-list]
+    [item-code]: [item-price]<BR>
+    [/item-list]
+
+    [comment] Return to the user's default locale [/comment]
+    [setlocale]
+!endblock
 
 
 H2: shipping
+
+Returns the cost of shipping the items in the cart via the shipping mode set with the B<mode> parameter. See also the {{CMD[jump="icdatabase.html#Shipping"]Shipping}} section of the Database documentation.
 
 
 H3: Summary
 
 \Parameters: B<mode>
 
-Positional parameters in same order.
+* mode
+** N<Aliases:> B<name>, B<modes>
+** Whitespace, null or comma delimited list of modes for which to calculate shipping cost.  See also mv_shipmode.
+** N<Default:> E<lbracket>value mv_handling] if B<handling=1> or E<lbracket>value mv_shipmode] or 'default'
+
+* table
+** N<Alias:> B<tables>
+** Whitespace-delimited list of tables containing shipping data required for perl or query calculations (I<e.g.>, in the 'PERL' field of your shipping databaseE<nbspace>E<emdash> see {{CMD[jump="icdatabase.html#Shipping"]Shipping}}). You must specify the tables to get past the Perl '{{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe.pm}}' proctection. For example, you will get '{{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}}' errors if you refer to an SQL table without specifying it here.
+** N<Default:> None
+
+* cart
+** N<Alias:> B<carts>
+** Comma-delimited list of names of carts to calculate shipping cost for.
+** N<Default:> current cart
+
+* convert
+** Applies the conversion (if any) set with the {{C[jump="icconfig.html#PriceDivide"]PriceDivide}} catalog configuration directive.
+** N<Default:> True
+
+* noformat
+** Returns result as a number rather than a string formatted for the current locale's currency.
+** N<Default:> True
+
+* handling
+** Boolean-- use [value mv_handling] rather than [value mv_shipping] as first default for B<mode>. Note that this attribute matters only if you do not specify the B<mode> in the tag.
+** Note that this is set by the E<lbracket>{{C[jump="#handling"]handling}} tag (which calls the C<shipping> tag internally).  You should probably use the handling tag rather than setting this directly.
+** N<Default:> False
+
+* reset_modes
+** Clears list of modes in $Vend::Cfg->{Shipping_line}
+** N<Default:> False
+
+* add
+** Adds the argument to B<add> as data for a shipping.asc file (in $Vend::Cfg->{ScratchDir}/) and sets it.
+
+* file
+** Filename to read shipping from (default is usual shipping database, e.g., shipping.asc)
+
+* label
+** By default, returns HTML <OPTION ...> widget for shipping mode(s), including description and cost. You can override the widget with the B<format> attribute.  Note that B<label> overrides B<noformat>.
+** Here is an example from the foundation checkout.html page:
+!block example
+   [shipping
+     label=1
+     mode=|E<lbracket>{{CMD[jump="#data"]data}} table=country key='[default country US]' col=shipmodes]|
+   ]
+!endblock
+
+* format
+** Format for results with B<label> attribute.
+** N<Default:> '<OPTION VALUE="%M"%S>%D (%F)'
+** For example,
+... E<lbracket>shipping mode="FLAT"
+.... label=1
+.... format="My Format Desc %D Price %F"E<rbracket>
+
+* default
+** Resets shipping mode to default of [value mv_shipmode]
+
+* hide
+** Suppresses output
+
+* reset_message
+** Boolean. Blanks the session's current shipping message (i.e., $Session->{ship_message}).
 
 
-B<The attribute hash reference is passed> to the subroutine after
-the parameters as the last argument.
-B<This may mean that there are parameters not shown here.>
 
 Must pass named parameter interpolate=1 to cause interpolation.
 
@@ -8484,14 +8690,12 @@ Attribute aliases
 
 H3: Description
 
+This tag calculates the shipping cost for items in the current cart via the specified shipping mode (usually set in the mv_shipmode variable).  See the {{CMD[jump="icdatabase.html#Shipping"]Shipping}} section of the Database documentation for detail.
 
-The shipping cost of the items in the basket via C<mode>E<nbspace>E<emdash> the default
-mode is the shipping mode currently selected in the C<mv_shipmode>
-variable. See See the {{CMD[jump="icdatabase.html#Shipping"]Shipping}} section of the Database documentation.
 
 H4: Rounding
 
-The tag rounds the calculated shipping cost to a locale-specific
+Note that the tag rounds the calculated shipping cost to a locale-specific
 number of fractional digits (e.g., to the nearest penny, or 2 digits
 after the decimal point in the USA).
 
@@ -9495,7 +9699,7 @@ Attributes|Description|Default
 Returns 0 (failed) or 1 (succeeded) instead of page output
 >>|I<none>
 {{CMD[jump="#try_hide"]hide}}|Suppresses page output|I<No>
-{{CMD[jump="#try_partial"]partial}}|Return C<try> block output even if it has an error|I<No>
+{{CMD[jump="#try_clean"]clean}}|Suppress C<try> block output if it has an error|I<No>
 {{CMD[jump="#attr_interpolate"]interpolate}}|<<
 See {{CMD[jump="#attr_interpolate"]Interpolating Parameters}}
 >>|I<No>
@@ -9527,11 +9731,11 @@ B<Tag expansion example:>
 B<ASP-like Perl call:>
 
 !block example; lang="Perl"
-    $Tag->try(    { label  => 'I<try_catch_label>',
+    $Tag->try(    { label  => I<'try_catch_label'>,
                     status => 1, },
                   $try_body  );
 
-    $Tag->catch(  { label  => 'I<try_catch_label>', },
+    $Tag->catch(  { label  => I<'try_catch_label'>, },
                   $catch_body )
 !endblock
 
@@ -9555,36 +9759,24 @@ Note that the C<catch> block must occur after the [try] block in the document.
 
 H4: {{CMD[id="try_label"]label}}
 
-The try and catch blocks are matched by this label.  The try tag will also place a result in the $Session object.  For example, the following returns the 'Illegal division by zero...' error message if it N<occurs:>
+The try and catch blocks are matched by this label.
+
+Technical N<note:>
+
+The try tag will also place a result in the $Session object.  For example, the following returns the 'Illegal division by zero...' error message if it N<occurs:>
 
 !block example
-   [try label=I<divide>][calc] 1 / [scratch divisor] [/calc][/try]
+   [try label=divide][calc] 1 / [scratch divisor] [/calc][/try]
 
-   [catch label=I<divide> interpolate=1]
-      [calc]$Session->{try}{I<divide>}[/calc]
+   [catch divide]
+      [calc]$Session->{try}{divide}[/calc]
    [/catch]
 !endblock
 
-Note that the $Session->{try}{I<divide>} object will be set to the empty string ('') if there was no error, or it will contain the error message if there was an error.
+The $Session->{try}{divide} object will be set to the empty string ('') if there was no error, or it will contain the error message if there was an error.
 
-Note also the E<lbracket>{{C[jump="#catch"]catch}} interpolate=1] setting. The {{C[jump="#catch"]catch}} tag excises anything between tag/endtag pairs as part of its support for specific error handling (see the {{C[jump="#catch"]catch}} tag documentation for more detail).
+The E<lbracket>{{C[jump="#perl"]perl}}] and E<lbracket>{{C[jump="#calc"]calc}}] tags also set $Session->{try}->{I<active_label>} on errors.
 
-Some technical N<notes:>
-
-^ The E<lbracket>{{C[jump="#perl"]perl}}] and E<lbracket>{{C[jump="#calc"]calc}}] tags set $Session->{try}->{I<active_label>} on errors.
-+ Look at the output of the E<lbracket>{{C[jump="#dump"]dump}}] tag after an error in a E<lbracket>C<try> block, or try the following:
-
-!block example
-   [perl]
-!endblock
-!block example; lang="Perl"
-      return join( "\n",
-                   map { "$_ \=\> '$Session->{try}{$_}'" }
-                       keys %{$Session->{try}} ) . "\n";
-!endblock
-!block example
-   [/perl]
-!endblock
 
 H4: {{CMD[id="try_status"]status}}
 
@@ -9595,9 +9787,9 @@ H4: {{CMD[id="try_hide"]hide}}
 Suppresses C<try> block output (regardless of success or failure).  Executes the C<catch> block as usual in case of an error.
 
 
-H4: {{CMD[id="try_partial"]partial}}
+H4: {{CMD[id="try_clean"]clean}}
 
-Setting 'C<partial=1>' will cause the C<try> block to return its output even if it has an error. Otherwise, the C<try> block will return output only if there is no error.  The {{C[jump="#catch"]catch}} block will work as usual.
+Setting 'C<clean=1>' will cause the C<try> block to suppress its output only if it has an error. Otherwise (C<clean=0> or not set), the C<try> block will return whatever partial output it has completed before the error.  The {{C[jump="#catch"]catch}} block will work as usual.
 
 
 
@@ -9637,7 +9829,7 @@ H3: Summary
 
 * name
 ** Cart name to update (if 'function=cart')
-** Default is current cart
+** N<Default:> current cart
 
 
 Must pass named parameter interpolate=1 to cause interpolation.
@@ -10113,7 +10305,7 @@ Called with:
 >    [/quick_table]
 
 As is the case with E<lbracket>{{C[jump="#perl"]perl}}] tag, user tags
-run under the Perl Safe.pm module with warnings disabled. Unlike
+run under the Perl {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe.pm}} module with warnings disabled. Unlike
 E<lbracket>{{C[jump="#per"]per}}l] tags, however, user tags use Perl's 'C<strict>' pragma.
 
 
@@ -12084,67 +12276,67 @@ associated with it.
 
 In array-list context, subtags are processed in the following N<order:>
 
-^ Check for I<prefix>_line and prepare for it if present (does not process I<prefix>-line at this time)
-+ I<prefix>-sub definitions processed
-+ if-I<prefix>-I<etc.> nesting resolved
-+ I<prefix>-alternate processed
-+ if-I<prefix>-param  processed
-+ if-I<prefix>-pos  processed
-+ I<prefix>-pos  processed
-+ if-I<prefix>-field  processed
-+ I<prefix>-line  processed
-+ I<prefix>-increment  processed
-+ I<prefix>-accessories  processed
-+ I<prefix>-options  processed
-+ I<prefix>-code  processed
-+ I<prefix>-description  processed
-+ I<prefix>-field  processed
-+ I<prefix>-price  processed
-+ I<prefix>-change  processed
-+ I<prefix>-calc  processed
-+ I<prefix>-exec  processed
-+ I<prefix>-filter  processed
-+ I<prefix>-last  processed
-+ I<prefix>-next  processed
+^ Check for I<prefix>_B<line> and prepare for it if present (does not process I<prefix>-B<line> at this time)
++ I<prefix>-B<sub> definitions processed
++ B<if>-I<prefix>-I<etc.> nesting resolved
++ I<prefix>-B<alternate> processed
++ B<if>-I<prefix>-B<param>  processed
++ B<if>-I<prefix>-B<pos>  processed
++ I<prefix>-B<pos>  processed
++ B<if>-I<prefix>-B<field>  processed
++ I<prefix>-B<line>  processed
++ I<prefix>-B<increment>  processed
++ I<prefix>-B<accessories>  processed
++ I<prefix>-B<options>  processed
++ I<prefix>-B<code>  processed
++ I<prefix>-B<description>  processed
++ I<prefix>-B<field>  processed
++ I<prefix>-B<price>  processed
++ I<prefix>-B<change>  processed
++ I<prefix>-B<calc>  processed
++ I<prefix>-B<exec>  processed
++ I<prefix>-B<filter>  processed
++ I<prefix>-B<last>  processed
++ I<prefix>-B<next>  processed
 + User's previous HTML widget SELECTED settings restored
 + Reparse standard tags in output of above (if reparse enabled for the containing tag)
 
 
 In hash-list context, subtags are processed in the following N<order:>
 
-^ I<prefix>-sub definitions processed
-+ if-I<prefix>-I<etc.> nesting resolved
-+ I<prefix>-alternate processed
-+ I<prefix>-line  processed
-+ if-I<prefix>-param  processed
-+ if-I<prefix>-field  processed
-+ if-I<prefix>-modifier  processed (if-I<prefix>-param and if-I<prefix>-modifier are functionally identical except for parse order)
-+ I<prefix>-increment  processed
-+ I<prefix>-accessories  processed
-+ I<prefix>-options  processed
-+ I<prefix>-sku  processed
-+ I<prefix>-code  processed
-+ I<prefix>-quantity  processed
-+ I<prefix>-modifier  processed
-+ I<prefix>-param  processed
-+ I<prefix>-quantity-name  processed
-+ I<prefix>-modifier-name  processed
-+ I<prefix>-subtotal  processed
-+ I<prefix>-discount-subtotal  processed
-+ I<prefix>-code  processed again differently (operating on new instances of I<prefix>-code in output of above?)
-+ I<prefix>-field  processed
-+ I<prefix>-description  processed
-+ I<prefix>-price  processed
-+ I<prefix>-discount-price  processed
-+ I<prefix>-difference  processed
-+ I<prefix>-discount  processed
-+ I<prefix>-change  processed
-+ I<prefix>-tag  processed (*** CHECK THIS TAG NAME ***)
-+ I<prefix>-calc  processed
-+ I<prefix>-exec  processed
-+ I<prefix>-filter  processed
-+ I<prefix>-last  processed
-+ I<prefix>-next  processed
+^ I<prefix>-B<sub> definitions processed
++ B<if>-I<prefix>-I<etc.> nesting resolved
++ I<prefix>-B<alternate> processed
++ I<prefix>-B<line>  processed
++ B<if>-I<prefix>-B<param>  processed
++ B<if>-I<prefix>-B<field>  processed
++ B<if>-I<prefix>-B<modifier>  processed (B<if>-I<prefix>-B<param> and B<if>-I<prefix>-B<modifier> are functionally identical except for parse order)
++ I<prefix>-B<increment>  processed
++ I<prefix>-B<accessories>  processed
++ I<prefix>-B<options>  processed
++ I<prefix>-B<sku>  processed
++ I<prefix>-B<code>  processed
++ I<prefix>-B<quantity>  processed
++ I<prefix>-B<modifier>  processed
++ I<prefix>-B<param>  processed
++ I<prefix>-B<quantity-name>  processed
++ I<prefix>-B<modifier-name>  processed
++ I<prefix>-B<subtotal>  processed
++ I<prefix>-B<discount-subtotal>  processed
++ I<prefix>-B<code>  processed again differently (operating on new instances of I<prefix>-B<code> in output of above?)
++ I<prefix>-B<field>  processed
++ I<prefix>-B<description>  processed
++ I<prefix>-B<price>  processed
++ I<prefix>-B<discount-price>  processed
++ I<prefix>-B<difference>  processed
++ I<prefix>-B<discount>  processed
++ I<prefix>-B<change>  processed
++ I<prefix>-B<tag>  processed (*** CHECK THIS TAG NAME ***)
++ I<prefix>-B<calc>  processed
++ I<prefix>-B<exec>  processed
++ I<prefix>-B<filter>  processed
++ I<prefix>-B<last>  processed
++ I<prefix>-B<next>  processed
 + User's previous HTML widget SELECTED settings restored
 + Reparse standard tags in output of above (if reparse enabled for the containing tag)
 

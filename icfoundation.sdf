@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icfoundation.sdf,v 1.15 2001-05-24 14:32:44 bill Exp $
+# $Id: icfoundation.sdf,v 1.16 2001-05-30 15:01:54 bill Exp $
 
 !define DOC_NAME "Foundation Store"
 !define DOC_TYPE ""
 !define DOC_CODE "icfoundation"
-!define DOC_VERSION substr('$Revision: 1.15 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.16 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/doc/icfoundation.html"
@@ -3113,7 +3113,7 @@ Matrix-type option (preconfigured combinations of attributes)
 Modular-type option (master/subitem relationship like modular bill of materials)
 >>
 {{CMD[jump="#options_o_default"]o_default}}|<<
-Default selection for the option group
+Default selection for the option group or suboption for a phantom option
 >>
 {{CMD[jump="#options_o_label"]o_label}}|<<
 Short name for option display
@@ -3146,7 +3146,7 @@ Price of this option/variant
 Dealer price of this option/variant
 >>
 {{CMD[jump="#options_differential"]differential}}|<<
-No Description
+Differential to add to the base item price when using a phantom bill of materials
 >>
 {{CMD[jump="#options_weight"]weight}}|<<
 Weight difference with this option/variant (for shipping)
@@ -3412,6 +3412,43 @@ Example Data
    -40
    -79
 !endblock
+
+The phantom bill of materials for an option group can have a differential, which is an amount to add to the base price of the master product to get to a new base price that accommodates the phantom bill of materials. Note that the differential may be negative.
+
+For example, in the computer data set of the foundation catalog, SKU 00011 in the products table is an $849.95 pre-configured Athlon 800MHz computer that includes a 17" monitor (in this case, SKU 7000087 in the products table).
+
+The monitor by itself would otherwise have cost $209. It is much more convenient if you can use the same option part number and price for each item.  To do this, you need a phantom option (in this case, SKU 999105 in the options table only) with a differential of -209 and the available monitors as suboptions. When you include the phantom option in the bill of materials for the computer (SKU 00011), the $-209 differential adjustment makes the price work out properly.
+
+For instance, suppose that a $499 computer is configured as N<follows:>
+
+!block example
+        500 MHz Athlon         --  $499
+        32 MB SDRAM            --  ZERO
+        10 GB disk             --  ZERO
+
+        TOTAL                  --  $499
+!endblock
+
+Suppose it costs $90 to upgrade the base computer to 128M of RAM and $150 for a 30 GB hard disk.
+
+If you also sell an 128MB 800 MHz $899 computer, and the customer upgrades to the 30 GB hard disk,
+
+!block example
+        800 MHz Athlon         --  $899
+        (memory differential   --  $-90
+        128 MB RAM             --   $90
+        30 GB  disk            --  $150
+
+        TOTAL                  -- $1039
+!endblock
+
+If you did not have the differential, you would need a different option part number for each
+item make the number come out right. This is a Very Big Pain.
+
+With the differential, you can use the same part number for 128MB RAM
+no matter what the base part is. The price is always $90 -- there is just
+a -90 differential when ordered with the 800MHz Athlon, making the
+effective price zero.
 
 
 
