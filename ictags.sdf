@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.43 2001-05-30 21:00:57 bill Exp $
+# $Id: ictags.sdf,v 1.44 2001-05-30 23:34:16 bill Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.43 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.44 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -6013,7 +6013,7 @@ optional cart name as a parameter.
 
 H2: options
 
-Builds HTML widgets as defined in the options table for selecting options associated with a given product. This tag handles simple, modular or matrix options.  See also the {{C[jump="#accessories"]accessories}} tag.
+Builds HTML widgets as defined in the options table for selecting options associated with a given product. This tag handles simple, matrix or modular options.  See also the {{C[jump="#accessories"]accessories}} tag.
 
 Here is an illustrative example from the 'tools' sample data set of the foundation N<catalog:>
 
@@ -7350,7 +7350,7 @@ row_count, html, and textref) work as usual, returning an appropriate
 string. Note that you may also have access to the results as an array
 reference in $Vend::Interpolate::Tmp->{''} for the life of the page.
 
-If you do not set a {{CMD[jump="#query_type"]type}}, or 
+If you do not set a {{CMD[jump="#query_type"]type}}, the tag will return a reference to an array of array references, since the default with no {{CMD[jump="#query_type"]type}} is C<arrayref="">.
 
 If you call $Tag->query in scalar context and set
 {{CMD[jump="#query_arrayref"]arrayref}} or
@@ -7385,9 +7385,9 @@ The following examples should be N<illustrative:>
 !endblock
 >  [/perl]
 
-See also '{{CMD[jump="#query_wantarray"]wantarray}}=1' if you use this
-call in a GlobalSub or global UserTag.
-
+!block note; label="Technical Note: "
+The $Tag->query() call works a bit differently in GlobalSubs and UserTags than within a {{C[jump="#perl"]perl}} tag.  Specifically, in a GlobalSub or global UserTag, if you call query() in list context and want the three references (i.e., results, column hash and column array), then you need to set the '{{CMD[jump="#query_wantarray"]wantarray}}=1' attribute in the query() call.  See the {{CMD[jump="#query_wantarray"]wantarray}} attribute.
+!endblock
 
 H4: {{CMD[id="query_sql"]sql}}
 
@@ -7655,8 +7655,9 @@ to return references as it would if called within an ordinary
 E<lbracket>{{C[jump="#perl"]perl}}] tag. Note that it does not force
 list context if you call $Tag->query in scalar context.
 
-Technical noteE<nbspace>E<emdash> the ordinary E<lbracket>C<query>
-...] ... E<lbracket>C</query>] usage forces scalar context on the
+Technical noteE<nbspace>E<emdash> the ordinary
+E<lbracket>C<query>E<nbspace>...]E<nbspace>...E<nbspace>E<lbracket>C</query>]
+usage forces scalar context on the
 query call and suppresses the return value for those
 {{C[jump="#query_type"]types}} that would return references if
 $Tag->query were called within a E<lbracket>{{C[jump="#perl"]perl}}]
