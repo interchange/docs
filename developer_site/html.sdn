@@ -1,4 +1,4 @@
-# $Id: html.sdn,v 1.4 2000-10-17 18:46:09 zarko Exp $
+# $Id: html.sdn,v 1.5 2000-10-17 18:53:54 zarko Exp $
 #
 # >>Title::     HTML Tuning
 #
@@ -31,7 +31,7 @@
 sub ::_HtmlFinalise {
     local(*body, *contents) = @_;
     local($title, @sdf_title, @title);
-    local($version, @head);
+    local($document,$version, @head);
 
     # Convert the title, if any, to HTML
     $title = $SDF_USER'var{'HTML_TITLE'};
@@ -45,6 +45,7 @@ sub ::_HtmlFinalise {
     }
 
     # Build the HEAD element (and append BODY opening)
+    $document = 'foo';
     $version = $SDF_USER'var{'SDF_VERSION'};
     @head = (
         '[comment]',
@@ -52,14 +53,17 @@ sub ::_HtmlFinalise {
         'ui_template_layout: LOGOBAR, MENUBAR, UI_CONTENT, RIGHTSIDE, MENUBOTTOM, COPYRIGHT',
         'ui_control_description: members_only : Members only',
         'ui_control_description: page_title : Page title',
+        'ui_control_description: document : Document name',
         'ui_control_element: members_only : 0=No,1=Yes',
         'ui_control_element: page_title :',
+        'ui_control_element: document :',
         'ui_template: Yes',
         'ui_template_name: templates/standard',
         '[/comment]',
         '',
         '[set members_only][/set]',
         '[set page_title]'.$title.'[/set]',
+        '[set document]'.$document.'[/set]',
         '__LOGOBAR__',
         '__MENUBAR__',
         '__LEFTSIDE__',
@@ -133,7 +137,7 @@ sub ::_HtmlFinalise {
         list=1
         sql=|
                 SELECT * FROM annotation
-                WHERE code = '$document'
+                WHERE code = '[scratch document]'
         |][sql-change 1][condition]1[/condition]
 <TR>
         <TD BGCOLOR="__BARBG__" COLSPAN=2 ALIGN=center>
@@ -163,7 +167,7 @@ sub ::_HtmlFinalise {
 <A HREF="[area
                         href=add_annotation
                         form=|
-        code=$document
+        code=[scratch document]
                         |
 ]"><IMG SRC="admin/icon_pages.gif" border=0 align=textmiddle> Add note</A>
 </td>
