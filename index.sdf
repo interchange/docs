@@ -1,0 +1,28 @@
+!init OPT_LOOK="akopia"
+!define DOC_NAME "Interachange Documentation"
+!define DOC_TOC  0
+!default DOC_HTML_LOGO_BASE '../'
+!build_title
+
+# Include the document register for this project/product
+!include "document.reg"; references; data
+
+#!subsections "Getting started,Manuals,Tutorials,Other documents"; "noprefix"
+!subsections "Manuals"; "noprefix"
+
+This page lists the supporting documentation supplied with Interchange.
+
+!if $var{'OPT_TARGET'} eq 'html'
+    !on phrase 'TOC' ;; \
+        my $jump = &Value("references", $text, "Jump", undef); \
+        $style = '__inline'; \
+        $text = qq{(<A HREF="$jump/frtoc.html">frames</A>) (<A HREF="$jump/">no frames</A>)};
+    # normal mode
+#    !on phrase 'FRTOC'  ;; $attr{'jump'} = $var{'SDF_ROOT'} . "ref/re_sdf.html#$text Format"
+!endif
+
+P1: Manuals
+
+#!catalog references 'Section:Manuals'; \
+!catalog references ''; \
+  columns="PDF,POD,Document,TOC:Reference,CONCISE:Date"
