@@ -1,9 +1,9 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: ictable_editor.sdf,v 1.3 2002-09-28 02:59:13 mheins Exp $
+# $Id: ictable_editor.sdf,v 1.4 2002-09-28 15:23:48 mheins Exp $
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.3 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.4 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ictable_editor.html"
@@ -140,6 +140,7 @@ in turn -- to change SKU to "Part Number" you can do:
 To change the style of the label column, you can set the style
 information with:
 
+!block example
     [table-editor
         table=products
         key=os28004 
@@ -152,6 +153,7 @@ information with:
         width.description=50
         height.description=10
     ][/table-editor]
+!endblock
     
 This should B<bold> the label text.
 
@@ -170,7 +172,10 @@ Perl interpreter. In fact, it is the equivalent of using
 the [calc] [/calc] tag pair except that contained ITL tags are not
 interpolated.
 
-Pipe-quoting has the attribute of 
+Pipe-quoting has the attribute of stripping trailing and leading
+whitespace; it is often convenient when specifying JavaScript (which uses
+both single and double quotes frequently) in the various C<*_extra> parameters.
+
 H2: Templating
 
 The [table-editor] is templated on several levels. In the most basic
@@ -761,8 +766,9 @@ Forms using the C<imagehelper> widget need this set.
 
 LI1: filter
 
-Specifies a filter that will be applied to the widget result data before
-it is put in the database. To make sure that an integer value doesn't have
+A hash attribute with a key associated with every field. Specifies a
+filter that will be applied to the widget result data before it is put
+in the database. To make sure that an integer value doesn't have
 extraneous whitespace that could cause an error, do:
 
 !block example
@@ -782,16 +788,141 @@ of the UI, you will need to make sure you get this profile included;
 it normally resides in lib/UI/profiles.
 
 LI1: force_defaults
+
+Causes the entries in the "defaults" hash to be used to set the initial
+value of fields, disabling the preference for data coming from an
+existing record in the database.
+
 LI1: form_extra
+
+Extra information (usually scripting event calls) for the form. For instance,
+if you are maintaining a series of event monitors in and want to make sure
+the user knows that some changes will be lost, you can set up a routine
+named C<check_change()> in JavaScript. To check the change and ask for
+a confirmation before submission, you can do:
+
+!block example
+  <script>
+  var changed = new Array;
+  function is_changed (element) {
+	if(element != undefined)
+		changed[changed.length] = element.name;
+  }
+
+  function check_change () {
+	if(changed.length > 0) 
+	  return
+	  	confirm('the ' + changed.join(',') + ' elements were changed. Continue?');
+	return true;
+  }
+  </script>
+
+  [table-editor
+	foo.widget=text_50
+	foo.label="Important stuff"
+	foo.extra='onChange="is_changed(this)"
+	form_extra='onSubmit="return check_change()"'
+  /]
+!endblock
+
+You could also pass style information if that is ever appropriate. For
+form name, action, and target, 
+
 LI1: form_name
+
+The name of the form. Do not include the C<NAME=> portion, that is provided.
+Results in outputted HTML of:
+
+!block example
+	<FORM ACTION="$opt->{form_action}" METHOD=POST NAME="$opt->{form_name}">
+!endblock
+
 LI1: get
+
+Sets the method for the form to GET -- the default is POST.
+
 LI1: height
+
+A hash attribute with a key associated with every field. Sets the
+height of the widget if that is appropriate -- for example, it sets
+the ROWS parameter of a TEXTAREA, the SIZE parameter of a SELECT,
+etc. Also acts on the combination widgets according to the behavior
+of Vend::Form.
+
+If you want to set the height of a cell, you should use the C<*_extra>
+parameters.
+
 LI1: help
+
+A hash attribute with a key associated with every field. Specifies inline help
+that should be shown in the right-hand (data) portion of a widget row.
+
 LI1: help_anchor
+
+Sets the text that is used to anchor the C<help_url> link. Default is C<help>.
+Can also be used to set an image if you want to use that instead:
+
+!block example
+  [table-editor
+  	table=products
+	key=os28004
+	help_anchor='<img src="question_mark.jpg" border=0>'
+  /]
+!endblock
+
+LI1: help_cell_class
+LI1: help_cell_style
+LI1: help_cell_valign
+LI1: help_cell_width
+LI1: help_cell_align
 LI1: help_cell_extra
+
+Sets the help cell attributes. See B<data_cell_extra>.
+
 LI1: help_url
+
+A URL which leads to extended help on a field. For example:
+
+!block example
+  [table-editor
+  	table=products
+	key=os28004
+	widget.foo=text_50
+	label.foo="Important stuff"
+	help.foo="This is a complex field."
+	help_anchor="Search for more help"
+	help_url.foo="http://www.google.com/search?q=foo"
+  /]
+!endblock
+
 LI1: hidden
+
+Allows setting of extra hidden variables in a form. This is a hash attribute,
+with one key for every hidden variable you need to set.
+
+!block example
+  [table-editor
+  	table=products
+	key=os28004
+	hidden.foo=bar
+	hidden.buz=baz
+  /]
+!endblock
+
+The above will include 
+
+!block example
+	<input type="hidden" name="foo" value="bar">
+	<input type="hidden" name="buz" value="baz">
+!endblock
+
 LI1: href
+
+Sets the action for the form. By default it is {{CMD[jump="icconfig.html#VendURL"]VendURL}}/ui,
+which checks for authorization for setting table records. If the C<secure=1>
+parameter is set, {{CMD[jump="icconfig.html#SecureURL"]SecureURL}} will be used instead.
+parameter is set, the SecureURL
+the default 
 LI1: include_before
 LI1: include_form
 LI1: inner_table_width
