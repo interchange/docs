@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.77 2002-10-30 17:24:00 mheins Exp $
+# $Id: icconfig.sdf,v 1.78 2002-12-14 18:01:11 jon Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.77 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.78 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/icconfig.html"
@@ -1035,6 +1035,35 @@ been submitted. The default is 'No', which means that GET data is ignored
 during a POST. Unfortunately this has to be a global setting because at URL
 parse time, the Interchange daemon doesn't yet know which catalog it's dealing
 with (due to catalog aliases, etc.).
+
+H2: TrustProxy *global*
+
+Allows the administrator to designate certain IP addresses or hostnames
+as trusted HTTP proxies, whose claims (via the HTTP_X_FORWARDED_FOR
+environment variable set by the web server) about the original requesting
+host will be assumed accurate.
+
+When using a front-end proxy for Interchange, all requests appear to come
+from that proxy, for example, perhaps 127.0.0.1 if on the same machine.
+This is effectively the same as running with WideOpen Yes, because all sessions
+will have the same user IP address and thus can be easily hijacked. Session
+hijacking can happen when someone unknowingly includes a session ID in a URL they
+send to other users, and all those users then end up with the same session
+and shopping cart!
+
+TrustProxy takes a comma-separated list of one or more IP addresses and/or
+hostnames, which may include wildcards (* for any number of characters,
+? for a single character). For example:
+
+E:TrustProxy 127.0.0.1, 10.0.0.*
+
+I'm not sure why anyone would want to do this, but it could also be used
+with external HTTP proxies in general (which you can only hope aren't lying),
+with a simple 'TrustProxy *'.
+
+Note that the environment variables are not modified in any way; only
+Interchange's idea of the remote host is altered, as you see with
+C<[data session host]>.
 
 H2: UrlSepChar *global*
 
