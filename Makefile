@@ -7,6 +7,7 @@ FRAMESPARENT=..
 DEVDIR=dev
 DOCDBNAME=documentation.txt
 TARNAME=icdocs.tar.gz
+INSTALLDIR=/var/www/html/doc
 
 .SUFFIXES: .sdf .frames $(addprefix .,$(SUFFIXES))
 
@@ -33,6 +34,15 @@ TARNAME=icdocs.tar.gz
 	pod2man --section=8 --release='Interchange $(VERSION)' --center='Interchange' --lax $< > $@ || true
 
 all :: $(SUFFIXES) frames_html icfull
+
+install :: all
+	@mkdir -p $(INSTALLDIR)
+	@for i in $(TARGETS) icfull ; do \
+		for j in $(SUFFIXES) ; do \
+			cp -aiv $$i.$$j $(INSTALLDIR) ; \
+		done ; \
+	done
+	@cp -aiv $(FRAMESDIR) $(INSTALLDIR)
 
 docdb :: pod
 	perl scripts/makedocdb.pl
