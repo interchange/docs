@@ -42,6 +42,8 @@ Needed:
 
 * FAQ for each database (DBM, MySQL, PostgreSQL, Oracle)
 
+* FAQ for each payment processor (Cybercash, CCVS, Signio, Authorize.net, etc.)
+
 * Live, functional ITL example web pages (like Mike suggested at
 http://developer.akopia.com/cgi-bin/ic/examples/icintro_5a.html )
 

@@ -1,0 +1,29 @@
+To add
+
+Discuss profile.order verification options like 'zip=zip' and then explain why we don't actually use that one much unless it's for a U.S.-only store
+
+
+Problems?
+
+[on-match] gets used if search returned no results on an empty search string. Why?
+
+Doubled-up CC verification errors:
+mv_credit_card_valid: Card is expired. AND Card is expired.
+
+
+Docs irregularities
+
+Has the default search page changed? now pages/results.html, was special_pages/search.html.
+
+[no-match] missing doesn't seem to go to special_pages/nomatch.html anymore.
+
+[on-match] doesn't seem to be documented at all.
+
+
+Could be fixed in Interchange
+
+even missing.html won't work if pages/ dir doesn't exist! q.v. 127.0.0.1 csRgI56j:127.0.0.1 - [18/December/2000:22:32:58 -0500] tutorial /cgi-bin/tutorial/index.html Runtime error: Missing special page: ../special_pages/missing
+
+No error message is given in [error] if required form variables weren't passed at all (vs. being simply empty)
+
+No error message if profiles.order can't be found

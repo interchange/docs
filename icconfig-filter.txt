@@ -1,0 +1,41 @@
+Date: Thu, 18 Jan 2001 10:53:41 -0500
+From: Mike Heins <mikeh@minivend.com>
+Reply-To: interchange-users@lists.akopia.com
+To: interchange-users@lists.akopia.com
+Subject: Re: [ic] saving multiple values userdb.mail_list
+ 
+Quoting Andrew Waegel (andrew@benevolent-tech.com):
+> hello all,
+>
+> I'm sure there's several ways to  solve this problem, but I can't see to
+> figure out any one of them. I'd like my users to be able to select one or
+> more mail  lists to automatically join upon purchase.
+>
+> Out of the box, interchange happily writes a yes/no value to
+> userdb.mail_list, based on the value of the mail_list form widget on
+> checkout.html.
+>
+> If I try to submit multiple values for mail_list (using checkboxes or
+> <select multiple>), it only records the first value in userdb.
+ 
+No, I don't believe this is true. It actually records value1\0value2\0\value3.
+ 
+The answer is to filter that variable, either by setting
+an input filter in the page or by:
+ 
+    Filter  mail_list  null_to_space
+ 
+in catalog.cfg.
+ 
+--
+Akopia, Inc., 131 Willow Lane, Floor 2, Oxford, OH  45056
+phone +1.513.523.7621 fax 7501 <heins@akopia.com>
+ 
+Any man who is under 30, and is not liberal, has not heart; and any man
+who is over 30, and is not a conservative, has not brains.
+ -- Winston Churchill
+ 
+_______________________________________________
+Interchange-users mailing list
+Interchange-users@lists.akopia.com
+http://lists.akopia.com/mailman/listinfo/interchange-users
