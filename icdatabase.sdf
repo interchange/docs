@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.43 2002-06-22 22:52:55 edl Exp $
+# $Id: icdatabase.sdf,v 1.44 2002-06-23 01:21:28 jon Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.43 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.44 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icdatabase.html"
@@ -1539,6 +1539,10 @@ LI1: mv_index_delim
 LI1: mv_matchlimit
 
 .Function depends upon context. When the search results display is handled by one of the mechanisms which works with C<[more]> lists (such as C<[search-region]>), mv_matchlimit determines the number of results per page. If more matches than mv_matchlimit are found, the search paging mechanism will be employed if the proper C<[more-list]> is present. When the search results are displayed as one continuous list (i.e.: with C<[loop search="..."]>), mv_matchlimit is equivalent in function to mv_max_matches.
+
+.To have no matchlimit, use B<none> instead of a number. B<all> does the same thing (since returning "all" is just anothing way of looking at no matchlimit).
+
+.If no matchlimit is provided, or an invalid setting (some other string or 0) the default is taken from catalog variable MV_DEFAULT_MATCHLIMIT, and if that's not set, is 50.
 
 LI1: mv_max_matches
 
