@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.29 2001-10-10 00:49:24 jon Exp $
+# $Id: icdatabase.sdf,v 1.30 2001-10-29 17:02:02 racke Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.29 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.30 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
@@ -1127,6 +1127,7 @@ The two-letter abbreviations are mapped with these letters:
  ac  mv_all_chars
  bd  mv_base_directory
  bs  mv_begin_string
+ ck  mv_cache_key
  co  mv_coordinate
  cs  mv_case
  cv  mv_verbatim_columns
@@ -1146,8 +1147,12 @@ The two-letter abbreviations are mapped with these letters:
  hs  mv_head_skip
  ix  mv_index_delim
  lb  mv_search_label
+ lf  mv_like_field
  lo  mv_list_only
  lr  mv_search_line_return
+ ls  mv_like_spec
+ ma  mv_more_alpha
+ mc  mv_more_alpha_chars
  md  mv_more_decade
  ml  mv_matchlimit
  mm  mv_max_matches
@@ -1160,6 +1165,7 @@ The two-letter abbreviations are mapped with these letters:
  nu  mv_numeric
  op  mv_column_op
  os  mv_orsearch
+ pf  prefix
  ra  mv_return_all
  rd  mv_return_delim
  rf  mv_return_fields
@@ -1175,17 +1181,14 @@ The two-letter abbreviations are mapped with these letters:
  sf  mv_search_field
  sg  mv_search_group
  si  mv_search_immediate
+ sm  mv_start_match
  sp  mv_search_page
  sq  mv_sql_query
  sr  mv_search_relate
  st  mv_searchtype
  su  mv_substring_match
- tc  mv_sort_command
- td  mv_table_cell
  tf  mv_sort_field
- th  mv_table_header
  to  mv_sort_option
- tr  mv_table_row
  un  mv_unique
  va  mv_value
 !endblock
