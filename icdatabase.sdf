@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.9 2000-10-19 21:51:18 alison Exp $
+# $Id: icdatabase.sdf,v 1.10 2000-10-19 22:43:10 zarko Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "ICDATABASE_D2a_100800"
-!define DOC_VERSION substr('$Revision: 1.9 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.10 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
@@ -3295,7 +3295,6 @@ LI1: Why do I even need an ASCII file?
 
 LI1: Interchange overwrites my predefined table!
 
-B<Interchange overwrites my predefined table!>
 .Yes, it will if you don't create a file called C<TABLENAME.sql>, where C<TABLENAME> is the name of the Interchange table. If you want this to happen by default, then set C<NoImport TABLENAME>.
 
 H2: How can I use Interchange with Microsoft Access?
