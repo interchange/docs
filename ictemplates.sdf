@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ictemplates.sdf,v 1.6 2000-10-18 20:18:39 zarko Exp $
+# $Id: ictemplates.sdf,v 1.7 2000-10-19 20:55:31 alison Exp $
 
 !define DOC_NAME "Interchange Templates"
 !define DOC_TYPE ""
 !define DOC_CODE "ICTEMPLATES_D2a_100800"
-!define DOC_VERSION substr('$Revision: 1.6 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.7 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
@@ -451,7 +451,7 @@ Note: This tag does not nest with other C<E<lbracket>if-loop-field ...]> tags.
 
 LI1: E<lbracket>loop-alternate N] DIVISIBLE E<lbracket>else] NOT DIVISIBLE E<lbracket>/else]E<lbracket>/loop-alternate]
 
-.Set up an alternation sequence. If the loop-increment is divisible by C<N>, the text will be displayed. If an C<E<lbracket>else]NOT DIVISIBLE TEXTE<lbracket>/else]> is present, then the NOT DIVISIBLE TEXT will be displayed. For example:
+.Set up an alternation sequence. If the loop-increment is divisible by C<N>, the text will be displayed. If an C<E<lbracket>else]NOT DIVISIBLE TEXT E<lbracket>/else]> is present, then the NOT DIVISIBLE TEXT will be displayed. For example:
 
 !block example; listitem=2
     E<lbracket>loop-alternate 2]EVENE<lbracket>else]ODDE<lbracket>/else]E<lbracket>/loop-alternate]
@@ -779,6 +779,12 @@ LI1: value
 
 .The Interchange user variables, typically set in search, control, or order forms. Variables beginning with C<mv_> are Interchange special values, and should be tested/used with caution.
 
+=item variable
+
+See Interchange I<Variable> values.
+
+=back
+
 The field term is the specifier for that area. For example, C<E<lbracket>if session frames]> would return true if the C<frames> session parameter was set.
 
 As an example, consider buttonbars for frame-based setups. It would be nice to display a different buttonbar (with no frame targets) for sessions that are not using frames:
@@ -840,276 +846,198 @@ LI1: E<lbracket>/if]
 
 .Terminates an if conditional.
 
-H2: User-defined Tags
+=head1 PROGRAMMING
 
-To define a tag that is catalog-specific, place UserTag directives in the catalog.cfg file. For server-wide tags, define them in minivend.cfg. Catalog-specific tags take precedence if both are defined. In fact, the base Interchange tag set with them can be overridden. The directive takes the form:
+Interchange has a powerful paradigm for extending and enhancing its functionality.
+It uses two mechanisms, C<user-defined tags> and C<user subroutines> on two
+different security levels, global and catalog. In addition, C<Embedded Perl Code> may be used to build functionality into a site’s pages.
 
-!block example
-  UserTag  tagname  property  value
-!endblock
+C<User-defined tags> are defined with the UserTag directive in either
+C<minivend.cfg> or C<catalog.cfg>. The ones in C<minivend.cfg> are global, i.e., they are not constrained by the C<Safe> Perl module as to which opcodes and  routines they may use. Normally, the user-defined tags in  C<catalog.cfg> are constrained by C<Safe>, but if the C<AllowGlobal> global directive is set for the particular catalog in use, its C<UserTag> and C<Sub> definitions will have global capability.
 
-where C<tagname> is the name of the tag, C<property> is the attribute (described below), and C<value> is the value of the property for that tag name.
+Many of the internal Interchange routines can be accessed by the savvy programmer
+who reads the source and finds the entry points. Also, many internal Interchange
+routines can be overridden:
 
-The user tags can either be based on Perl subroutines or just be aliases for existing tags. Some quick examples follow:
-
-An alias:
-
-!block example
-   UserTag product_name Alias     data products title
-!endblock
-
-This will change C<E<lbracket>product_name 99-102]> into C<E<lbracket>data products title 99-102]>,
-which will output the C<title> database field for product code C<99-102>.
-Don't use this with C<E<lbracket>item-data ...]> and C<E<lbracket>item-field ...]>, as they
-are parsed separately. C<E<lbracket>product-name E<lbracket>item-code]]> can be used, though.
-
-A simple subroutine:
-
-!block example
-   UserTag company_name Routine   sub { "Your company name" }
-!endblock
-
-When you place a C<E<lbracket>company-name]> tag in an Interchange page, the text 
-C<Your company name> will be substituted.
-
-A subroutine with a passed text as an argument:
-
-!block example
-   UserTag caps   Routine   sub { return "\U@_" }
-   UserTag caps   HasEndTag 
-!endblock
-
-The tag C<E<lbracket>caps]This text should be all upper caseE<lbracket>/caps]> will become
-C<THIS TEXT SHOULD BE ALL UPPER CASE>.
-
-Here is a useful one to use:
-
-!block example
-   UserTag quick_table HasEndTag
-   UserTag quick_table Interpolate
-   UserTag quick_table Order   border
-   UserTag quick_table Routine <<EOF
-   sub {
-       my ($border,$input) = @_;
-       $border = " BORDER=$border" if $border;
-       my $out = "<TABLE ALIGN=LEFT$border>";
-       my @rows = split /\n+/, $input;
-       my ($left, $right);
-       for(@rows) {
-           $out .= '<TR><TD ALIGN=RIGHT VALIGN=TOP>';
-           ($left, $right) = split /\s*:\s*/, $_, 2;
-           $out .= '<B>' unless $left =~ /</;
-           $out .= $left;
-           $out .= '</B>' unless $left =~ /</;
-           $out .= '</TD><TD VALIGN=TOP>';
-           $out .= $right;
-           $out .= '</TD></TR>';
-           $out .= "\n";
-       }
-       $out .= '</TABLE>';
-   }
-   EOF
-!endblock
-
-Called with:
-
-!block example
-   E<lbracket>quick-table border=2]
-   Name: E<lbracket>value name]
-   City: E<lbracket>value city]E<lbracket>if value state], E<lbracket>value state]E<lbracket>/if] E<lbracket>value country]
-   E<lbracket>/quick_table]
-!endblock
-
-The properties for UserTag are are:
-
-LI1: AddAttr
-
-.Add the attribute hash to the parameters already defined to be sent by the Order setting. This includes the canned attributes C<true>, C<false>, C<undef>, C<interpolate>, and any other attributes set in the tag. Allows the tag routine to take a hash reference with the important parameters. Example:
-
-!block example; listitem=2
-    UserTag echo-params AddAttr
-    UserTag echo-params Routine <<EOR
-    sub {
-        my($ref) = @_;
-        my $out;
-        for (sort keys %$ref) {
-            # skip these meaningless parameters
-            next if /^(undef|true|false)$/;
-
-            $out .= "$_=";
-            $out .= '"';
-            $out .= $ref->{$_};
-            $out .= '"'
-            $out .= "\n";
+    GlobalSub <<EOS
+    sub just_for_overriding {
+        package Vend::Module;
+        use MyModule;
+        sub to_override {
+            &MyModule::do_something_funky($Values->{my_variable});
         }
-        return $out;
     }
-    EOR
-!endblock
+    EOS
 
-.If the above UserTag is defined and put on an Interchange page:
+The effect of the above is to override the C<to_override> routine in the
+module C<Vend::Module>. This is preferable to hacking on the code if the functionality change is expected to last long. Then, the Interchange code can be updated, in most cases, while still keeping your hack.
 
-!block example; listitem=2
-    <PRE>
-    E<lbracket>echo-params  Param1=1 param2=2 param3=three]
-    </PRE>
-!endblock
+=head2 Embedded Perl Code
 
-.The resulting output will be:
+Perl code can be directly embedded in Interchange pages. The code is specified as:
 
-!block example; listitem=2
-    interpolate="0"
-    param1="1"
-    param2="2"
-    param3="three"
-!endblock
+    [perl]
+        $name    = $Values->{name};
+        $browser = $Session->{browser};
+        return "Hi, $name! How do you like your $browser?";
+    [/perl]
 
-.The C<interpolate> parameter is always present for every tag, and defines the behavior of container text or output depending on the value of C<HasEndTag>.
+ASP syntax can be used with:
 
-LI1: Alias
+    [mvasp]
+        <%
+        $name    = $Values->{name};
+        $browser = $Session->{browser};
+        %>
+        Hi, <%= $name %>!
+        <%
+            HTML "How do you like your $browser?";
+        %>
+    [/mvasp]
 
-.An alias for an existing (or other user-defined) tag. It takes the form:
+The two snippets above are essentially equivalent.
 
-!block example; listitem=2
-    UserTag tagname Alias    tag to insert
-!endblock
 
-.An Alias is the only property that does not require a Routine to process the tag.
 
-LI1: attrAlias
+=head2 Export
 
-.An alias for an existing attribute for defined tag. It takes the form:
+Parameters: table 
+Positional parameters in same order. 
 
-!block example; listitem=2
-    UserTag tagname attrAlias   alias attr
-!endblock
+The attribute hash reference is passed to the subroutine after the parameters as the last argument. This may mean that there are parameters not shown here. 
+Must pass named parameter interpolate=1 to cause interpolation. 
 
-.As an example, the standard Interchange C<value> tag takes a named attribute of C<name> for the variable name, meaning that C<E<lbracket>value name=var]> will display the value of form field C<var>. If this line is put in catalog.cfg:
+Invalidates cache: YES 
 
-!block example; listitem=2
-    UserTag value attrAlias   identifier name
-!endblock
+Called Routine:
+ 
+ASP/perl tag calls: 
 
-.then, C<E<lbracket>value identifier=var]> will be an equivalent tag.
+    $Tag->export(
+        {
+         table => VALUE,
+        }
+    )
+  
+ OR
+ 
+    $Tag->export($table, $ATTRHASH);
 
-LI1: CanNest
+Attribute aliases: 
 
-.Notifies Interchange that this tag must be checked for nesting. Only applies to tags that have HasEndTag defined, of course. NOTE: A routine must handle the subtleties of nesting, so don't use this unless quite conversant with parsing routines. See the routines C<tag_loop_list> and C<tag_if> in lib/Vend/Interpolate.pm for an example of a nesting tag.
+	base ==> table
+	database ==> table
 
-!block example; listitem=2
-    UserTag tagname CanNest
-!endblock
+=head2 Time
 
-LI1: Gobble
+Parameters: locale 
+Positional parameters in same order. 
 
-.If there is no end tag present for a container tag, the normal behavior is to not process the tag call. If C<Gobble> is set, the tag will work for all the remaining text on the page. The C<timed-build> and C<mvasp> tags are the tags Interchange defines to C<Gobble>.
+The attribute hash reference is passed after the parameters but before the container text argument. This may mean that there are parameters not shown here. 
+Must pass named parameter interpolate=1 to cause interpolation. 
+This is a container tag, i.e., [time] FOO [/time]. Nesting: NO. Invalidates cache: NO. 
 
-LI1: HasEndTag
+Called Routine: 
 
-.Defines an ending C<E<lbracket>/tag]> to encapsulate text; the text between the beginning C<E<lbracket>tagname]> and ending C<E<lbracket>/tagname]> will be the last argument sent to the defined subroutine.
+ASP/perl tag calls: 
 
-!block example; listitem=2
-    UserTag tagname HasEndTag
-!endblock
+    $Tag->time(
+        {
+         locale => VALUE,
+        },
+        BODY
+    )
+  
+ OR
+ 
+    $Tag->time($locale, $ATTRHASH, $BODY);
 
-LI1: Implicit
+=head2 Import
 
-.This defines an attribute as implicit, meaning it can just be an C<attribute> instead of an C<attribute=value> pair. It must be a recognized attribute in the tag definition, or there will be big problems. Use this with caution!
+Parameters: table type 
+Positional parameters in same order. 
 
-!block example; listitem=2
-    UserTag tagname Implicit attribute value
-!endblock
+The attribute hash reference is passed after the parameters but before the container text argument. This may mean that there are parameters not shown here. Interpolates container text by default>. 
 
-.To set a standard include file to a fixed value by default, but without having to specify C<E<lbracket>include file="/long/path/to/file"]> every time, just put:
+This is a container tag, i.e., [import] FOO [/import]. Nesting: NO 
+Invalidates cache: YES. 
 
-!block example; listitem=2
-    UserTag include Implicit file file=/long/path/to/file
-!endblock
+Called Routine: 
 
-.and C<E<lbracket>include file]> will be the equivalent. Another value can still be specified with C<E<lbracket>include file="/another/path/to/file"]>.
+ASP/perl tag calls: 
 
-LI1: Interpolate
+    $Tag->import(
+        {
+         table => VALUE,
+         type => VALUE,
+        },
+        BODY
+    )
+  
+ OR
+ 
+    $Tag->import($table, $type, $ATTRHASH, $BODY);
 
-.The behavior for this attribute depends on whether the tag is a container (i.e., C<HasEndTag> is defined). If it is not a container, the C<Interpolate> attribute causes the B<the resulting HTML> from the C<UserTag> will be re-parsed for more Interchange tags. If it is a container, C<Interpolate> causes the contents of the tag to be parsed before the tag routine is run.
+Attribute aliases:
+ 
+	base ==> table
+	database ==> table
+ 
+Description:
+ 
+Named attributes: 
+    [import table=table_name
+            type=(TAB|PIPE|CSV|%%|LINE)
+            continue=(NOTES|UNIX|DITTO)
+            separator=c]
 
-!block example; listitem=2
-    UserTag tagname Interpolate
-!endblock
+Import one or more records into a database. The type is any of the valid Interchange delimiter types, with the default being defined by the setting of the database DELIMITER. The table must already be a defined Interchange database table; it cannot be created on-the-fly. (Use SQL for on-the-fly tables.) 
 
-LI1: InvalidateCache
+The type of LINE and continue setting of NOTES is particularly useful, for it allows the naming of fields so that the order in which they appear in the database will not have to be remembered. The following two imports are identical in effect: 
 
-.If this is defined, the presence of the tag on a page will prevent search cache, page cache, and static builds from operating on the page.
+    [import table=orders]
+    code: [value mv_order_number]
+    shipping_mode: [shipping-description]
+    status: pending
+    [/import]
+  
+    [import table=orders]
+    shipping_mode: [shipping-description]
+    status: pending
+    code: [value mv_order_number]
+    [/import]
 
-!block example; listitem=2
-    UserTag tagname InvalidateCache
-!endblock
+The code or key must always be present, and is always named code. If NOTES mode is not used, import the fields in the same order as they appear in the ASCII source file. 
+The [import ....] TEXT [/import] region may contain multiple records. If using NOTES mode, use a separator, which by default is a form-feed character (^L). 
 
-.It does not override C<E<lbracket>tag flag build]E<lbracket>/tag]>, though.
+=head2 Log
 
-LI1: Order
+Parameters: file 
+Positional parameters in same order. 
 
-.The optional arguments that can be sent to the tag. This defines not only the order in which they will be passed to Routine, but the name of the tags. If encapsulated text is appropriate (HasEndTag is set), it will be the last argument.
+The attribute hash reference is passed after the parameters but before the container text argument. This may mean that there are parameters not shown here. 
+Must pass named parameter interpolate=1 to cause interpolation. This is a container tag, i.e., [log] FOO [/log]. Nesting: NO. Invalidates cache: NO.
+ 
+Called Routine: 
 
-!block example; listitem=2
-    UserTag tagname Order param1 param2
-!endblock
+ASP/perl tag calls: 
 
-LI1: PosRoutine
+    $Tag->log(
+        {
+         file => VALUE,
+        },
+        BODY
+    )
+  
+ OR
+ 
+    $Tag->log($file, $ATTRHASH, $BODY);
 
-.Identical to the Routine argument, a subroutine that will be called when the positional call is made, i.e., C<E<lbracket>usertag argument]> instead of C<E<lbracket>usertag ARG=argument]>. If not defined, Routine is used, and Interchange will usually do the right thing.
+Attribute aliases:
+ 
+	arg ==> file
 
-LI1: ReplaceAttr
-
-.Works in concert with InsertHTML, defining a single attribute which will be replaced in the insertion operation.
-
-!block example; listitem=2
-  UserTag tagname ReplaceAttr  htmltag attr
-!endblock
-
-.An example is the standard HTML <A HREF=...> tag. If the Interchange tag C<E<lbracket>area pagename]> is used inside of it, replace the HREF attribute. The equivalent to the following is defined within Interchange:
-
-!block example; listitem=2
-  UserTag  area  ReplaceAttr  a  href
-!endblock
-
-.Causing this:
-
-!block example; listitem=2
-    <A MV="area pagename" HREF="a_test_page.html">
-!endblock
-
-.to become:
-
-!block example; listitem=2
-    <A HREF="http://yourserver/cgi/simple/pagename?X8sl2lly;;44">
-!endblock
-
-.when interpreted.
-
-LI1: Routine
-
-.An inline subroutine that will be used to process the arguments of the tag. It must not be named, and will be allowed to access unsafe elements only if the C<minivend.cfg> parameter AllowGlobal is set for the catalog.
-
-!block example; listitem=2
-    UserTag tagname Routine  sub { "your perl code here!" }
-!endblock
-
-.The routine may use a "here" document for readability:
-
-!block example; listitem=2
-    UserTag tagname Routine <<EOF
-    sub {
-        my ($param1, $param2, $text) = @_;
-        return "Parameter 1 is $param1, Parameter 2 is $param2";
-    }
-    EOF
-!endblock
-
-.The usual I<here documents> caveats apply.
-
-.Parameters defined with the Order property will be sent to the routine first, followed by any encapsulated text (HasEndTag is set).
-
-Note that the UserTag facility, combined with AllowGlobal, allows the user to define tags just as powerful as the standard Interchange tags. This is not recommended for the novice, though. Keep it simple.
+=head2 Header
 
 H2: PRICE, DESCRIPTION, ACCESSORIES
 
@@ -1536,7 +1464,7 @@ LI1: E<lbracket>if-item-data table column]
 
 Note: This tag does not nest with other C<E<lbracket>if-item-data ...]> tags.
 
-LI1: E<lbracket>if-item-data ! table column]
+LI1: E<lbracket>if-item-data table column]
 
 .Reverses sense for C<E<lbracket>if-item-data]>.
 
@@ -1550,7 +1478,7 @@ LI1: E<lbracket>if-item-field fieldname]
 
 Note: This tag does not nest with other C<E<lbracket>if-item-field ...]> tags.
 
-LI1: E<lbracket>if-item-field ! fieldname]
+LI1: E<lbracket>if-item-field fieldname]
 
 .Reverses sense for C<E<lbracket>if-item-field]>.
 
@@ -1655,7 +1583,7 @@ LI1: E<lbracket>quantity-name]
 
 .Evaluates to the name to give an input box in which the customer can enter the quantity to order.
 
-H1: Interchange Page display
+H1: INTERCHANGE PAGE DISPLAY
 
 Interchange has several methods for displaying pages:
 
@@ -2307,7 +2235,7 @@ LI1: no
 
 .The value that will be returned if a test is false or a file write fails. It defaults to the empty string.
 
-H2: Updating Interchange Database Tables With a Form
+H2: Updating Interchange Database Tables with a Form
 
 Any Interchange database can be updated with a form using the following method.
 The Interchange user interface uses this facility extensively.
