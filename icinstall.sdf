@@ -1,9 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
+# $Id: icinstall.sdf,v 1.6 2000-10-18 19:24:21 zarko Exp $
 
 !define DOC_NAME "Interchange Installation"
 !define DOC_TYPE ""
 !define DOC_CODE "ICINSTALL_D2a_100800"
-!define DOC_VERSION "0.0.3"
+!define DOC_VERSION substr('$Revision: 1.6 $',11)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"

@@ -1,5 +1,8 @@
 !init OPT_LOOK="akopia"
+# $Id: index.sdf,v 1.4 2000-10-18 19:24:22 zarko Exp $
+
 !define DOC_NAME "Interchange Documentation"
+!define DOC_VERSION substr('$Revision: 1.4 $',11)
 !define DOC_TOC  0
 !define HTML_URL_CATALOG ''
 !build_title
@@ -25,4 +28,4 @@ P1: Manuals
 
 #!catalog references 'Section:Manuals'; \
 !catalog references ''; \
-  columns="PDF,POD,Document,TOC:Reference,CONCISE:Date"
+  columns="PDF,POD,TXT,Document,TOC:Reference,CONCISE:Date"
