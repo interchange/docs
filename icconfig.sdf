@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.58 2002-02-18 00:41:59 mheins Exp $
+# $Id: icconfig.sdf,v 1.59 2002-04-01 14:54:51 racke Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.58 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.59 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
@@ -2269,7 +2269,7 @@ As with Perl "here documents," the EOF (or other end marker) must be the ONLY th
 !block example
    [perl]
        my $cart = $Carts->{main};
-       return sort_cart($cart);
+       return sort_cart_by_quantity($cart);
    [/perl]
 !endblock
 
