@@ -3,7 +3,7 @@
 !define DOC_NAME "Interchange + CVS HOWTO"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_howto_cvs"
-!define DOC_VERSION substr('$Revision: 1.1 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.2 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/iccattut.html"
@@ -524,7 +524,7 @@ N:The first line tells cvs that for every commit on modules that start with "fou
 
 H2:Automatic e-mail on commit
 
-M:Often it is very helpful to have a commit mailing list that keeps developers up-to-date on every commit happening to the CVS.  To setup automatic e-mails on every commit, put the following in 
+N:Often it is very helpful to have a commit mailing list that keeps developers up-to-date on every commit happening to the CVS.  To setup automatic e-mails on every commit, put the following in 
 
 !block example;
 {{B:/rep/CVSROOT/loginfo:}}
