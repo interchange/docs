@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.97 2002-08-06 00:01:32 kwalsh Exp $
+# $Id: ictags.sdf,v 1.98 2002-08-30 05:14:38 kwalsh Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.97 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.98 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -13307,7 +13307,7 @@ B<ASP-like Perl call:>
 > OR
 >
 >    $Tag->tmp($name, $BODY);
-
+>
  
 
 # BEGIN ############### tmp Summary Tables ####################
@@ -13323,7 +13323,7 @@ Parameters|Description|Default
 
 !block table; colvaligns="TT"
 Attributes|Default
-{{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
+{{CMD[jump="#attr_interpolate"]interpolate}}|I<Yes>
 {{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
 !endblock
 
@@ -13363,11 +13363,16 @@ or similarly with positional parameters,
 H3: Description
 
 
-Sets a scratch variable to I<value>, but at the end of the user session the
-Scratch key is deleted. This saves session write time in many cases.
+Sets a C<Scratch> variable to the value specified in the tag body.
+This is just as the
+E<lbracket>{{C[jump="#seti"]seti}}] tag would do it,
+except that the I<name> is added to the list of C<Scratch> keys that are to
+be deleted immediately after the current page has been processed and served.
+This saves session write time in many cases.
 
 This tag interpolates automatically. (Interpolation
 can be turned off with C<interpolate=0>.)
+See also: E<lbracket>{{C[jump="#tmpn"]tmpn}}].
 
 IMPORTANT NOTE: the [tmp ...][/tmp] tag is not appropriate for setting
 order profiles or C<mv_click> actions. If you want to avoid that, use
@@ -13418,12 +13423,12 @@ B<ASP-like Perl call:>
 > OR
 >
 >    $Tag->tmpn($name, $BODY);
-
+>
  
 
 # BEGIN ############### tmpn Summary Tables ####################
 !block example;
-    [B<tmpn> name]
+    [B<tmpn> name]value[/tmp]
 !endblock
 
 !block table; colvaligns="TTT"; format="262"
