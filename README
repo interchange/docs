@@ -16,16 +16,24 @@ To set up your SDF environment do the following:
     directory
 
 (4) if you'll be making the dev_html target (if you're generating the
-    Developer website), make this patch to PERLSITELIB/sdf/tohtml.pl:
+    Akopia Developer Resource documentation pages), make this patch to
+    PERLSITELIB/sdf/tohtml.pl:
 
-37a38,41
-> # Escape '[' characters -> '&#91;' for Akopia Interchange Tags
-> # and __VARIABLE__ -> '&#95;_VARIABLE__'? (off by default)
-> $_ITL_ESCAPE = 0;
->
-518a523,524
->	$para =~ s/\[/&#91;/g if $_ITL_ESCAPE;
->	$para =~ s/_(_([^_]+_?)+__)/&#95;$1/g if $_ITL_ESCAPE;
-
-    You'll need to set $_ITL_ESCAPE = 1 before building the developer site.
-    NOTE! Remember to turn it off again when you're done!
+*** tohtml.pl	Mon May 24 04:44:27 1999
+--- /usr/lib/perl5/site_perl/5.6.0/sdf/tohtml.pl	Tue Jan 16 16:01:55 2001
+***************
+*** 516,521 ****
+--- 516,528 ----
+      else {
+          $para = &_HtmlParaText($para_text);
+      }
++     if ($SDF_USER::var{ITL_ESCAPE}) {
++         # escape ITL [tags] and __VAR__, @_VAR_@, and @@VAR@@ so HTML
++         # can be served through Akopia Interchange
++         $para =~ s/\[/&#91;/g;
++         $para =~ s/_(_[A-Za-z0-9]\w*?[A-Za-z0-9]__)/&#95;$1/g;
++         $para =~ s/@(([_@])([A-Za-z0-9]\w*?[A-Za-z0-9])\2@)/&#64;$1/g;
++     }
+  
+      # Add surrounding lines for a note
+      $note_line_width = 80;              # Hard-coded for now

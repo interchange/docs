@@ -1,4 +1,4 @@
-VERSION=4.6.1
+VERSION=4.6.2
 TARGETS=icbackoffice icconfig icdatabase icinstall icintro ictemplates iccattut
 
 .SUFFIXES: .html .pod .sdf .txt .pdf .8
@@ -20,7 +20,7 @@ TARGETS=icbackoffice icconfig icdatabase icinstall icintro ictemplates iccattut
 		--release='Interchange $(VERSION)' \
 		--center='Akopia Interchange' \
 		--lax \
-		$< $@
+		$< > $@
 
 all :: pdf pod txt html man
 
@@ -30,7 +30,7 @@ dev_html:
 		base=`basename $$target .sdf`; \
 		echo building $$base; \
 		( echo '1s/akopia/developer_site/' ; echo 'wq dev/'$$target ) | ed $$target > /dev/null 2>&1 ; \
-		( cd dev ; sdf -2html_topics -n2 -k=developer_site $$target); \
+		( cd dev ; sdf -2html_topics -DITL_ESCAPE -n2 -k=developer_site $$target); \
 	done
 	@echo building index
 	@( echo '1s/akopia/developer_site/' ; echo 'wq dev_index.sdf' ) | ed index.sdf > /dev/null 2>&1
