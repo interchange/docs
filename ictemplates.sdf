@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ictemplates.sdf,v 1.40 2002-07-15 13:52:16 mheins Exp $
+# $Id: ictemplates.sdf,v 1.41 2002-07-22 01:48:53 mheins Exp $
 
 !define DOC_NAME "Template Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "ictemplates"
-!define DOC_VERSION substr('$Revision: 1.40 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.41 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictemplates.html"
@@ -902,6 +902,11 @@ You will not have direct access to the 'C<strict>' and 'C<warnings>' pragmas whe
 
 H1: Interchange Perl Objects
 
+.Interchange gives you access to the power of Perl with the [perl], [calc], and
+.[mvasp] tags. They all support the same set of Perl objects and variables.
+
+H2: A note about Safe
+
 You can access all objects associated with the catalog and the user settings with opcode restrictions based on the standard Perl module {{C[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe.pm}}. There are some unique things to know about programming with Interchange.
 
 Under C<Safe>, certain things cannot be used. For instance, the following can not be used when running Safe:
@@ -927,6 +932,8 @@ This will also cause a trap, and the code will fail to compile. However, equival
    $users = $Tag->file('userlist');
 !endblock
 
+H2: Standard objects and variables
+
 The following is a list of Interchange Perl standard objects are:
 
 LI1: $CGI
@@ -940,7 +947,20 @@ LI1: $CGI
 .use
 
 !block example; listitem=2
-    <% $Document->write("Value of foo is $CGI->{foo}"); %>
+    [perl]
+		return "Value of foo is $CGI->{foo}";
+	[/perl]
+!endblock
+
+Actually, you should not do that -- if someone sends you a value you should
+not output it willy-nilly for security reasons. Filter it first with the [filter]
+tag as accessed by the $Tag object:
+
+!block example; listitem=2
+    [perl]
+		my $val = $Tag->filter('encode_entities', $CGI->{foo});
+		return "Value of foo is $val";
+	[/perl]
 !endblock
 
 .Remember, multiple settings of the same variable are separated by a NULL character. To get the array value, use $CGI_array.
@@ -1015,97 +1035,129 @@ LI1: %Db
 
 .A hash of databases shared with the C<[mvasp tables="foo"]> parameter to the tag call. Once the database is shared, it is open and can be accessed by any of its methods. This will not work with SQL unless AllowGlobal is set for the catalog.
 
+{{B:NOTE}}: This object is not present and the below will not work with [calc].
+
 .To get a reference to a particular table, specify its hash element:
 
 !block example; listitem=2
-    $ref = $Db{products};
+    my $db = $Db{products};
 !endblock
 
 .The available methods are:
 
 !block example; listitem=2
     # access an element of the table
-    $field = $ref->field($key, $column);
+    $field = $db->field($key, $column);
 
     # set an element of the table
-    $ref->set_field($key, $column_name, $value);
+    $db->set_field($key, $column_name, $value);
 
     # atomic increment of an element of the table
-    $ref->inc_field($key, $column_name, 1);
+    $db->inc_field($key, $column_name, 1);
+
+    # Return a complete hash of the database row (minus the key)
+    $hashref = $db->row_hash($key);
+
+    # Return some fields from a row
+    my @fields = qw/sku price description/;
+    $array_ref = $db->get_slice($key, \@fields);
+
+    # Set some fields in a row (slice)
+    my $key = 'os28004';
+    my @fields = qw/price description/;
+    my @values = (5.95, "Ergo Roller");
+    $array_ref = $db->set_slice($key, \@fields, \@values);
+
+    # Alternate way to set slice
+    my $key = 'os28004';
+    my %fields = ( price => 5.95, description => "Ergo Roller");
+    $array_ref = $db->set_slice($key, \%fields);
+
+    # Perform a SQL query, returning an array of arrays
+    # (the equivalent of DBI $sth->fetchall_arrayref)
+    $ary = $db->query($sql);
+
+    # Same as above, except receive 
+    # hash reference of pointers to field positions and
+    # array reference containing list of fields
+    my $sql = 'select * from products';
+    ($ary, $index_hash, $name_ary) = $db->query($sql);
+    $fields_returned = join ",", @$name_ary;
+    $pointer_to_price = $index_hash->{price};
+
+    # Perform a SQL query, returning an array of hashes
+    $ary = $db->query({ sql => $sql, hashref => 1 });
 
     # see if element of the table is numeric
-    $is_numeric = $ref->numeric($column_name);
+    $is_numeric = $db->numeric($column_name);
 
     # Quote for SQL query purposes
-    $quoted = $ref->quote($value, $column_name);
+    $quoted = $db->quote($value, $column_name);
 
     # Check configuration of the database
-    $delimiter = $ref->config('DELIMITER');
+    $delimiter = $db->config('DELIMITER');
 
     # Find the names of the columns (not including the key)
-    @columns = $ref->columns();
+    @columns = $db->columns();
     # Insert the key column name
-    unshift @columns, $ref->config('KEY');
+    unshift @columns, $db->config('KEY');
 
     # See if a column is in the table
-    $is_a_column = defined $ref->test_column($column_name);
+    $is_a_column = defined $db->test_column($column_name);
 
     # See if a row is in the table
-    $is_present = $ref->record_exists($key);
+    $is_present = $db->record_exists($key);
 
     # Create a subroutine to return a single column from the table
-    $sub = $ref->field_accessor($column);
+    $sub = $db->field_accessor($column);
     for (@keys) {
         push @values, $sub->($key);
     }
 
     # Create a subroutine to set a single column in the database
-    $sub = $ref->field_settor($column);
+    $sub = $db->field_settor($column);
     for (@keys) {
         $sub->($key, $value);
     }
 
     # Create a subroutine to set a slice of the database
-    $sub = $ref->row_settor(@columns);
+    $sub = $db->row_settor(@columns);
     for (@keys) {
         $sub->($key, @values);
     }
 
     # Return a complete array of the database (minus the key)
-    @values = $ref->row($key);
-
-    # Return a complete hash of the database row (minus the key)
-    $hashref = $ref->row_hash($key);
+    @values = $db->row($key);
 
     # Delete a record/row from the table
-    $ref->delete_record($key);
+    $db->delete_record($key);
 !endblock
 
 LI1: %Sql
 
-.A hash of SQL databases that you shared with the C<[mvasp tables="foo"]> parameter to the tag call. It returns the DBI database handle, so operations like the following can be performed:
+.A hash of SQL databases that you shared with the C<[perl tables="foo"]> parameter to the tag call. It returns the DBI database handle, so operations like the following can be performed:
+
+{{B:NOTE}}: This object is not present and the below will not work with [calc].
 
 !block example; listitem=2
-  <%
+  [perl products]
     my $dbh = $Sql{products}
-        or return HTML "Database not shared.";
+        or return "Database not shared.";
     my $sth = $dbh->prepare('select * from products')
-        or return HTML "Couldn't open database.";
+        or return "Couldn't open database.";
     $sth->execute();
     my @record;
     while(@record = $sth->fetchrow()) {
         foo();
     }
     $sth = $dbh->prepare('select * from othertable')
-        or return HTML "Couldn't open database.";
+        or return "Couldn't open database.";
     $sth->execute();
     while(@record = $sth->fetchrow()) {
         bar();
     }
-  %>
+  [/perl]
 !endblock
-
-.This will not work with unless AllowGlobal is set for your catalog.
 
 LI1: $DbSearch
 
@@ -1143,7 +1195,30 @@ LI1: $DbSearch
 
 LI1: $Document
 
-.This is an object that has several routines associated with it.
+This is an object which will allow you to write and manipulate the output
+of your embedded Perl. For instance, you can emulate a non-parsed-header
+program with:
+
+!block example; listitem=2
+[perl]
+        $Document->hot(1);
+        for(1 .. 20) {
+                $Document->write("Counting to $_...<br>");
+                $Document->write( " " x 4096);
+                $Tag->sleep(1);
+        }
+        $Document->write("Finished counting!");
+        return;
+[/perl]
+!endblock
+
+Note the write of 4096 spaces. Because Interchange's link program is
+parsed by default, and your web server (and the link program) have
+buffers, you need to fill up the buffer to cause a write. You can do it
+without the extra padding if you set the link up as a non-parsed-header
+program -- see your web server documentation on how to do that.
+
+There are several methods associated with $Document:
 
 !block example; listitem=2
  HTML $foo;                     # Append $foo to the write buffer array
@@ -1294,28 +1369,27 @@ LI1: $Tag
 
 .Using the $Tag object, any Interchange tag including user-defined tags can be accessed.
 
-Note[label='IMPORTANT NOTE: '] If the tag will access a database that has not been previously opened, the table name must be passed in the ASP call. For example:
+Note[label='IMPORTANT NOTE: '] If the tag will access a database that has not been previously opened, the table name must be passed in the ITL call. For example:
 
 .Named parameters:
 !block example; listitem=2
-    [mvasp tables="products pricing"]
+    [perl tables="products pricing"]
 !endblock
 
 .or
 
 .Positional parameters:
 !block example; listitem=2
-    [mvasp products pricing]
+    [perl products pricing]
 !endblock
 
 .Any tag can be called.
 
 !block example; listitem=2
-    <%
+    [perl]
         my $user = $Session->{username};
-        my $name_from_db = $Tag->data('userdb', 'name', $user );
-        $Document->write($name_from_db);
-    %>
+        return $Tag->data('userdb', 'name', $user );
+    [/perl]
 !endblock
 
 .is the same as:
@@ -1395,7 +1469,8 @@ LI1: &Log
     %>
 !endblock
 
-.It prepends the normal timestamp with user and page information. To suppress that information, begin the message with a backslash (C<\>).
+.It prepends the normal timestamp with user and page information. To
+suppress that information, begin the message with a backslash (C<\>).
 
 !block example; listitem=2
     <%
@@ -1445,8 +1520,8 @@ H2: Export
 .Attribute aliases:
 
 !block example; listitem=2
-	base ==> table
-	database ==> table
+        base ==> table
+        database ==> table
 !endblock
 
 H2: Time
@@ -1519,8 +1594,8 @@ H2: Import
 .Attribute aliases:
 
 !block example; listitem=2
-	base ==> table
-	database ==> table
+        base ==> table
+        database ==> table
 !endblock
 
 .Description:
@@ -1579,7 +1654,7 @@ H2: Log
 .Attribute aliases:
 
 !block example; listitem=2
-	arg ==> file
+        arg ==> file
 !endblock
 
 H2: Header
@@ -3010,10 +3085,10 @@ H2: Special Locale Keys for Price Representation
 Interchange honors the standard POSIX keys:
 
 !block example
-   mon_decimal_point	or 	decimal_point
-   mon_thousands_sep	or 	thousands_sep
-   currency_symbol	or	int_currency_symbol
-   frac_digits	or	p_cs_precedes
+   mon_decimal_point    or      decimal_point
+   mon_thousands_sep    or      thousands_sep
+   currency_symbol      or      int_currency_symbol
+   frac_digits  or      p_cs_precedes
 !endblock
 
 See the POSIX setlocale(3) man page for more information. These keys will be used for formatting prices and approximates the number format used in most countries. To set a custom price format, use these special keys:
