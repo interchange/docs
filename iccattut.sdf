@@ -1,11 +1,11 @@
-# $Id: iccattut.sdf,v 1.1 2000-12-29 08:12:04 jon Exp $
+# $Id: iccattut.sdf,v 1.2 2001-01-04 03:14:24 jon Exp $
 
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
 
 !define DOC_NAME "Catalog-Building Tutorial"
 !define DOC_TYPE ""
 !define DOC_CODE "ICCATTUT"
-!define DOC_VERSION substr('$Revision: 1.1 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.2 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/iccattut.html"
@@ -500,7 +500,7 @@ H2:pages/checkout.html
 
 N:We can now complete the site by adding the ability to check out with the shopping cart and finalize the order. To do this we want the customer to provide a shipping address (which we will lazily assume is the same as the billing address), and payment information. We will process the order by verifying their payment information and sending an email to the merchant (ourselves) detailing the order.
 
-N:We'll start by creating a checkout page. The checkout page will consist of a form that takes the pertinent information from the customer and submits it to a credit card check. In this case we'll use the built-in test that only checks to see if a given card number could be valid. If all of the information is acceptable the customer will move on to the next phase of the order process. If it is not, an error page will be displayed.
+N:We'll start by creating a checkout page. The checkout page will consist of a form that takes the pertinent information from the customer and performs a simple credit card number check. In this case we'll use the built-in test that only checks to see if a given card number could be valid. If all of the information is acceptable the customer will move on to the next phase of the order process. If it is not, an error page will be displayed.
 
 N:Let's create {{FILE:pages/checkout.html}} and then we can discuss it step by step. This page is a bit more complex than the others, but don't be intimidated. Most of it is just standard HTML form coding.
 
@@ -602,6 +602,8 @@ N:When preparing an order for processing, Interchange looks for certain named fi
 
 H2:etc/profiles.order
 
+N:First, we need to create a new directory in the catalog directory called {{FILE:etc/}} for this next file.
+
 N:Now we need to set up verification for the order form. This involves defining an order profile for the form. Create {{FILE:etc/profiles.order}} as follows and then we'll discuss the various features:
 
 !block example;
@@ -622,7 +624,7 @@ N:Now we need to set up verification for the order form. This involves defining 
 
 N:A single file can contain multiple profile definitions. First the profile is named using the {{1:__NAME__}} pragma. (This is unrelated to the __VARIABLE__ syntax seen elsewhere in Interchange.) We then list the fields from the form which are required. The {{2:&fatal}} setting indicates that validation will fail if any of the requirements are not met. {{2:&final}} indicates that this form will complete the ordering process. This setting is useful if you have a multi-page ordering process, each of which you wish to validate as you go through them. The {{1:__END__}} pragma signals the end of this profile, after which you are free to begin another one.
 
-N:In order to make your order profile effective, you must add the following {{2:OrderProfile}} directive to {{FILE:catalog.cfg}}:
+N:In order to make your order profile effective, add the following {{2:OrderProfile}} directive to the bottom of {{FILE:catalog.cfg}}:
 
 !block example;
   OrderProfile etc/profiles.order
@@ -671,7 +673,7 @@ H2:etc/report
 
 N:When the customer's involvement in the order is complete, Interchange will then compose an email and send it to the recipient defined in the MailOrderTo directive in {{FILE:catalog.cfg}}. The default location for the template of this email report is {{FILE:etc/report}}. Interchange tags can be used to fill in blanks in the body of the message.
 
-N:For it to be useful the report will need to include the customer's name and address, as well as the items they ordered. The following is a simple report template which will report this information. Save it as {{FILE:etc/report}}.
+N:For it to be useful, the report will need to include the customer's name and address, as well as the items they ordered. The following is a simple report template which will report this information. Save it as {{FILE:etc/report}}.
 
 !block example;
              Name: [value fname] [value lname]
@@ -985,7 +987,7 @@ Variable BOTTOM <bottom
 
 H1:Ideas for further enhancements
 
-N:Here are some ideas of how to further enhance your catalog:
+N:You can expand your skill with Interchange by adding more functionality to your test catalog. Here are some relatively simple ideas to get you started:
 
 *Send the customer a receipt by email
 *Allow customer to specify item quantities
@@ -1038,7 +1040,7 @@ N:December 2000. Edited and expanded by Jon Jensen.
 A1:To do
 
 A2:Write up
-*Case-sensitivity issues, IC vs. Unix
+*Case-sensitivity issues, both IC and Unix
 *catalog error.log, Interchange error.log
 *template pages MUST end in .html
 *deal with "cgi-bin/test" and no page -- shouldn't give a 404
@@ -1055,3 +1057,5 @@ A2:Docs irregularities
 
 A2:Think about fixing
 *even missing.html won't work if pages/ dir doesn't exist! q.v. 127.0.0.1 csRgI56j:127.0.0.1 - [18/December/2000:22:32:58 -0500] test /cgi-bin/test/index.html Runtime error: Missing special page: ../special_pages/missing
+*No error message is given in [error] if required form variables weren't passed at all (vs. being simply empty)
+*No error message if profiles.order can't be found
