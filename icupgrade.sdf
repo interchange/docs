@@ -211,6 +211,7 @@ ORDER MANAGER:
     --  Add these fields to userdb:
 		    inactive  char(1)
 		    credit_limit char(14) or decimal(12,2)
+			dealer    char(3)
 
     --- Create the directory 'logs'.
     --- Create the directory 'orders' if it doesn't already exist.
@@ -222,13 +223,15 @@ ORDER MANAGER:
 	--- Add this to catalog.cfg:
 
 			## Don't want people setting their credit_limit directly
-			UserDB default scratch credit_limit
+			UserDB default scratch "credit_limit dealer"
 
 AFFILIATES:
 
 	Add an affiliate table:
 
 	affiliate	name	campaigns	join_date	url	timeout	active	password
+	You can find a recommended database configuration in
+	foundation/dbconf/*/affiliate.*sql.
 
 PAGE EDITOR:
 
@@ -237,14 +240,34 @@ PAGE EDITOR:
 
 ITEM EDITOR:
 
-	-- If you want the merchandising feature, add the fields blurb_begin
-	   and blurb end; char(128) or whatever will hold your promo data works.
+	Add a merchandising table with the following fields:
+
+	Database  merchandising  merchandising.txt __SQLDSN__
+	Database  merchandising  DEFAULT_TYPE text
+
+		sku                 char(32)
+		featured			char(32)
+		banner_text
+		banner_image
+		blurb_begin
+		blurb_end
+		timed_promotion     char(16)
+		start_date          char(24)
+		finish_date         char(24)
+		upsell_to
+		cross_sell
+		cross_category      char(64)
+		others_bought
+		times_ordered
+
+    Index the fields with char(*) types. You can find the recommended 
+	database configuration in foundation/dbconf/*/merchandising.*sql.
 
 KNAR EDITOR:
 
 	Create the file variable.txt with these fields:
 
-		code	Variable
+		code	Variable	pref_group
 
 	Add this as the *first* line of catalog.cfg:
 
