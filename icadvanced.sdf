@@ -1,0 +1,1301 @@
+!init OPT_LOOK="akopia"; OPT_STYLE="manual"
+# $Id: icadvanced.sdf,v 1.1 2001-04-10 21:28:33 jon Exp $
+
+!define DOC_NAME "Advanced Interchange Topics"
+!define DOC_TYPE ""
+!define DOC_CODE "icadvanced"
+!define DOC_VERSION substr('$Revision: 1.1 $',11, -2)
+!define DOC_STATUS "Draft"
+!define DOC_PROJECT "Interchange"
+!define DOC_URL "http://help.akopia.com/interchange/doc/icadvanced.html"
+!build_title
+
+H1: Advanced Interchange Topics
+
+* Maintaining production Interchange servers
+* Interchange Administration Tool Development
+* Making catalog skeletons for use with makecat
+
+
+H1: Maintaining Interchange
+
+Some utilities are supplied in the VendRoot/bin directory:
+
+!block example
+ compile_link Compiles an Interchange vlink or tlink CGI link
+ configdump   Dumps the configuration directives for a particular catalog
+ dump         Dumps the session file for a particular catalog
+ expire       Expires sessions for a particular catalog
+ expireall    Expires all catalogs
+ makecat      Make catalog
+!endblock
+
+Some example scripts for other functions are in the C<eg/> directory of the software distribution.
+
+Some thought should be given to where the databases, error logs, and session files should be located, especially on an ISP that might have multiple users sharing an Interchange server. In particular, put all of the session files and logs in a directory that is not writable by the user. This eliminates the possibility that the catalog may crash if the directory or file is corrupted.
+
+To test the format of user catalog configuration files before restarting the server, set (from VendRoot):
+
+!block example
+   bin/interchange -test
+!endblock
+
+This will check all configuration files for syntax errors, which might otherwise prevent a catalog from booting. Once a catalog configures properly, user reconfiguration will not crash it. It will just cause an error. But, it must come up when the server is started.
+
+H2: Starting, Stopping, and Re-starting the Servers
+
+The following commands need to have VENDROOT changed to the main directory where Interchange is installed. If the Interchange base directory is C</home/interchange/>, the start command would be C</home/interchange/bin/interchange>.
+
+Do a C<perldoc VENDROOT/bin/interchange> for full documentation.
+
+To start the server with default settings:
+
+!block example
+   VENDROOT/bin/interchange
+!endblock
+
+Assuming the server starts correctly, the names of catalogs as they are configured will be displayed, along with a message stating the process ID it is running under.
+
+It is usually best to issue a restart instead. It doesn't hurt to do a restart if you're actually starting the first time. And, if a server is already running (from this VENDROOT), a new start attempt will fail. To restart the server:
+
+!block example
+   VENDROOT/bin/interchange -restart
+!endblock
+
+The C<-r> option is the same as C<-restart>.
+
+This is typically done to force Interchange to re-read its configuration. A message will be displayed stating that a TERM signal has been sent to the process ID the servers are running under. This information is also sent to C<VENDROOT/error.log>. Check the error.log file for confirmation that the server has restarted properly.
+
+To stop the server:
+
+!block example
+   VENDROOT/bin/interchange -stop
+!endblock
+
+A message will be displayed stating that a TERM signal has been sent to the process ID the server is running under. This information is also sent to C<VENDROOT/error.log>.
+
+Because processes waiting for selection on some operating systems block signals, they may have to wait for HouseKeeping seconds to stop. The default is 60.
+
+To terminate the Interchange server with prejudice, in the event it will not stop:
+
+!block example
+   VENDROOT/bin/interchange -kill
+!endblock
+
+H2: UNIX and INET modes
+
+Both UNIX-domain and INET-domain sockets can be used for communication. INET domain sockets are useful when more than one web server, connected via a local-area network (LAN), is used for accessing an Interchange server.
+
+{{B:Important note:}} When sending sensitive information like credit card numbers over a network, always ensure that the data is secured by a firewall, or that the Interchange server runs on the same machine as any SSL-based server used for encryption.
+
+Use the C<->i and C<->u flags if you only want to use one communication method:
+
+!block example
+   # Start only in UNIX mode
+   VENDROOT/bin/interchange -r -u
+
+   # Start only in INET mode
+   VENDROOT/bin/interchange -r -i
+!endblock
+
+H2: User Reconfiguration
+
+The individual catalogs can be reconfigured by the user by running the [reconfig] support tag. This should be protected by one of the several forms of Interchange authentication, preferably by HTTP basic authorization. See C<RemoteUser>.
+
+The command line can be reconfigured (as the Interchange user) with:
+
+!block example
+   VENDROOT/bin/interchange -reconfig <catalog>
+!endblock
+
+It is easy for the administrator to manually reconfigure a catalog. Interchange simply looks for a file C<etc/reconfig> (based in the Interchange software directory) at HouseKeeping time. If it finds a script name that matches one of the catalogs, it will reconfigure that catalog.
+
+H2: Expiring Sessions
+
+If Interchange is using DBM capability to store the sessions, periodically expire old sessions to keep the session database file from growing too large.
+
+!block example
+   expire -c catalog
+!endblock
+
+There is also an C<expireall> script which reads all catalog entries in C<interchange.cfg> and runs C<expire> on them. The C<expire> script accepts a C<-r> option which tells it to recover lost disk space.
+
+On a UNIX server, add a crontab entry such as the following:
+
+!block example
+   # once a day at 4:40 am
+   40 4 * * *    perl /home/interchange/bin/expireall -r
+!endblock
+
+Interchange will wait until the current transaction is finished before expiring, so this can be done at any time without disabling web access. Any search paging files for the affected session (kept in C<ScratchDir>) will be removed as well.
+
+If not running DBM sessions, use a Perl script to delete all files not modified in the last one or two days. The following will work if given an argument of a session directory or session files:
+
+!block example
+   #!perl
+   # expire_sessions.pl -- delete files 2 days old or older
+
+   my @files;
+   my $dir;
+   foreach $dir (@ARGV) {
+       # just push files on the list
+       if (-f $dir) { push @files, $_; next; }
+
+       next unless -d $dir;
+
+       # get all the file names in the directory
+       opendir DIR, $dir or die "opendir $dir: $!\n";
+       push @files, ( map { "$dir/$_" } grep(! /^\.\.?$/, readdir DIR) ) ;
+   }
+
+   for (@files) {
+       unless (-f $_) {
+           warn "skipping $_, not a file.\n";
+           next;
+       }
+       next unless -M $_ >= 2;
+       unlink $_ or die "unlink $_: $!\n";
+   }
+!endblock
+
+It would be run with a command invocation like:
+
+!block example
+   perl expire_sessions.pl /home/you/catalogs/simple/session
+!endblock
+
+Multiple directory names are acceptable, if there is more than one catalog.
+
+This script can be adjusted as necessary. Refinements might include reading the file to "eval" the session reference and expire only customers who are not members.
+
+H2: My session files change to owner root every day!
+
+You have the expireall C<-r> entry in the root crontab, and it should either be in the Interchange user crontab or run as:
+
+!block example
+44 4 * * * su -c "/INTERCHANGE_ROOT/bin/expireall -r" INTERCHANGE_USERNAME
+!endblock
+
+
+H1: Interchange Administration Tool Development
+
+This section describes how to administer a commerce site with Interchange's back-office functionality, and discusses site management and security.
+
+H1: Tracking and Back-End Order Entry
+
+Interchange allows the entry of orders into a system through one of several methods. The C<AsciiBackend> capability allows submission of parameters to an external order entry script. Support for SQL allows the entry of orders directly into an SQL database. Orders can be written to an ASCII file. They can be formatted precisely for e-mail-based systems. The orders can be placed in a DBM file. Finally, embedded Perl allows completely flexible order entry, including real-time credit card verification and settlement.
+
+H2: ASCII Backup Order Tracking
+
+If C<AsciiTrack> is set to a legal file name (based in VendRoot unless it has a leading "/"). A copy of the order is saved and sent in an e-mail.
+
+If the file name string begins with a pipe "|," a program will be run and the output "piped" to that program. This allows easy back-end entry of orders with an external program.
+
+H2: Database Tracking
+
+Once the order report is processed, the order is complete. Therefore, it is the ideal place to put Interchange tags that make order entries in database tables.
+
+A good model is to place a single record in a database summarizing the order and a series of lines that correspond to each line item in the order. This can be in the same database table. If the order number itself is the key for the summary, a line number can be appended to the order number to show each line of the order.
+
+The following would summarize a sample order number S00001 for part number 00-0011 and 99-102:
+
+!block example
+   code     order_number part_number  quantity   price    shipping  tax
+   S00001   S00001                    3          2010     12.72     100.50
+   S00001-1 S00001       00-0011      2          1000     UPS       yes
+   S00001-2 S00001       99-102       1          10       UPS       yes
+!endblock
+
+Fields can be added where needed, perhaps with order status, shipping tracking number, address, customer number, or other information.
+
+The above is accomplished with Interchange's C<[import ....]> tag using the convenient C<NOTES> format:
+
+!block example
+   [set import_status]
+   [import table=orders type=LINE continue=NOTES]
+
+   code: [value mv_order_number]
+   order_number: [value mv_order_number]
+   quantity: [nitems]
+   price: [subtotal noformat=1]
+   shipping: [shipping noformat=1]
+   tax: [salestax noformat=1]
+
+   [/import]
+
+   [item-list]
+   [import table=orders type=LINE continue=NOTES]
+
+   code: [value mv_order_number]-[item-increment]
+   order_number: [value mv_order_number]
+   quantity: [item-quantity]
+   price: [item-price noformat=1]
+   shipping: [shipping-description]
+   tax: [if-item-field nontaxable]No[else]Yes[/else][/if]
+
+   [/import][/item-list]
+!endblock
+
+H2: Custom Order Routing
+
+Interchange can send order emails and perform custom credit card charges and/or logging for each item. The Route directive is used to control this behavior, along with the C<mv_order_route> item attribute and C<mv_order_route> form variable.
+
+Routes are established with the C<Route> directive, which is similar to the C<Locale> directive. Each route is like a locale, so that key-value pairs can be set. Here is an example setting:
+
+!block example
+   Route  VEN  pgp_key         0x67798115
+   Route  VEN  email           orders@akopia.com
+   Route  VEN  reply           service@akopia.com
+   Route  VEN  encrypt         1
+   Route  VEN  encrypt_program "/usr/bin/pgpe -fat -q -r %s"
+   Route  VEN  report          etc/report_mail
+!endblock
+
+This route would be used whenever the value C<VEN> was contained in the form variable C<mv_order_route>.
+
+The last route that is defined provides the defaults for all other routes. For example, if C<encrypt_program> is set there, then the same value will be the default for all routes.
+
+The attributes that can be set are:
+
+LI1: attach
+.Determines whether the order report should be attached to the main order report e-mail. This is useful if certain items must be printed separately from others, perhaps for FAX to a fulfillment house.
+
+LI1: counter
+.The location of a counter file which should be used instead of C<OrderCounter> for this route. It will generate a different value for C<mv_order_number> for the route.
+
+LI1: credit_card
+.Determines whether credit card encryption should be done for this order. Either this or C<encrypt> should always be set.
+
+LI1: cybermode
+.If this is set, enables I<CyberCash> for the route. Variables can also be set for C<CYBER_CONFIGFILE>, C<CYBER_SECRET>, and all other normal CYBERCASH variables. For example:
+
+!block example; listitem=2
+   Route VEN cybermode         mauthonly
+   Route VEN CYBER_CONFIGFILE  config/vendor1_cfg
+   Route VEN CYBER_VERSION     3.2
+!endblock
+
+LI1: email
+.The email address(es) where the order should be sent. Set just like the C<MailOrderTo> directive, which is also the default.
+
+LI1: encrypt
+.Whether the entire order should be encrypted with the B<encrypt_program>.
+If C<credit_card> is set, the credit card will first be encrypted, then the entire order encrypted.
+
+LI1: encrypt_program
+.The encryption program incantaton which should be used. Set identically to the C<EncryptProgram> directive, except that %s will be replaced with the C<pgp_key>. Default is C<pgpe -fat -r %s>.
+
+LI1: errors_to
+.Sets the C<Errors-To:> e-mail header so that bounced orders will go to the proper address. Default is the same as C<MailOrderTo>.
+
+LI1: increment
+.Whether the order number should be incremented as a result of this result. Default is not to increment, as the order number should usually be the same for different routes within the same customer order.
+
+LI1: individual_track
+.A directory where individual order tracking files will be placed. The file name will correspond to the value of C<mv_order_number>. This can be useful for batching orders via download.
+
+LI1: individual_track_ext
+.The extension that will be added to the file name for C<individual_track>.
+Must contain a period (C<.>), if that is desired.
+
+!block example
+   individual_track_ext     .pgp
+!endblock
+
+LI1: pgp_cc_key
+.The PGP key selector that is used to determine which public key is used for encryption of credit cards only. With PGP 5 and 6, see appropriate values by using the command C<pgpk -l>.
+
+LI1: pgp_key
+.The PGP key selector that is used to determine which public key is used for encryption. If C<pgp_cc_key> is set, that key will be used for credit card encryption instead of C<pgp_key>. With PGP 5 and 6, see appropriate values by using the command C<pgpk -l>.
+
+LI1: profile
+.The custom order profile which should be performed to check the order. If it fails, the route will not be performed. See C<OrderProfile> and C<mv_order_profile>.
+
+LI1: receipt
+.The receipt page that should be used for this routing. This only applies if supplant is set for the route.
+
+LI1: report
+.The report page that should be used for this routing. If C<attach> is defined, the contents of the report will be placed in a MIME attachment in the main order report.
+
+LI1: reply
+.The C<Reply-To> header that should be set. Default is the same as C<email>.
+.If there are only word characters (A-Za-z0-9 and underscore), it describes an Interchange variable name where the address can be found.
+
+LI1: supplant
+.Whether this route should supplant the main order report. If set, the C<AsciiTrack> operation will use this route and the normal Interchange order e-mail sequence will not be performed.
+
+LI1: track
+.The name of a file which should be used for tracking. If the C<supplant> attribute is set, the normal order tracking will be used as well.
+
+LI1: track_mode
+.A number representing the mode to change either C<track> or C<individual_track> files.
+
+An individual item routing causes all items labeled with that route to be placed in a special sub-cart that will be used for the order report. This means that the C<[item-list] LIST [/item-list]> will only contain those items, allowing operations to be performed on subsets of the complete order.
+
+Here is an example of an order routing:
+
+!block example
+   Route  HARD  pgp_key          0x67798115
+   Route  HARD  email            hardgoods@akopia.com
+   Route  HARD  reply            service@akopia.com
+   Route  HARD  encrypt          1
+   Route  HARD  encrypt_program  "/usr/bin/pgpe -fat -q -r %s"
+   Route  HARD  report           etc/report_mail
+
+   Route  SOFT  email            ""
+   Route  SOFT  profile          create_download_link
+   Route  SOFT  empty            1
+
+   Route  main  cybermode        mauthonly
+   Route  main  CYBER_VERSION    3.2
+   Route  main  CYBER_CONFIGFILE etc/cybercash.cfg
+   Route  main  pgp_key          0x67798115
+   Route  main  email            orders@akopia.com
+   Route  main  reply            service@akopia.com
+   Route  main  encrypt          1
+   Route  main  encrypt_program  "/usr/bin/pgpe -fat -q -r %s"
+   Route  main  report           etc/report_all
+!endblock
+
+To tell Interchange that order routing is in effect, the variable
+C<mv_order_route> is set on the final order submission form:
+
+!block example
+   <INPUT TYPE="hidden" NAME="mv_order_route" VALUE="main">
+!endblock
+
+To set the order routing for individual items, some method of determining their status must be made and the C<mv_order_route> attribute must be set. This could be set at the time of the item being placed in the basket, or have a database field called C<goods_type> set to the appropriate value. The following example uses a Perl routine on the final order form:
+
+!block example
+[perl arg=carts interpolate=1]
+   my $string = <<'EOF';
+[item-list][item-code]  [item-field goods_type]
+[/item-list]
+EOF
+   my @items;
+   my %route;
+   @items = grep /\S/, split /\n+/, $string;
+   for(@items) {
+       my ($code, $keycode) = split /\t/, $_;
+       $route{$code} = $keycode;
+   }
+   my $cart = $Carts->{'main'};
+   my $item;
+   foreach $item ( @{ $Carts->{'main'} } ) {
+       $item->{mv_order_route} = $route{$item->{'code'}} || undef;
+   }
+   return '';
+[/perl]
+!endblock
+
+Now the individual items are labeled with a C<mv_order_route> value which causes their inclusion in the appropriate order routing.
+
+Upon submission of the order form, any item labeled C<HARD> will be accumulated and sent to the e-mail address C<hardgoods@akopia.com>, where the item will be pulled from inventory and shipped.
+
+Any item labeled C<SOFT> will be passed to the order profile C<create_download_link>, which will place it in a staging area for customer download. (This would be supported by a link on the receipt, possibly by reading a value set in the profile).
+
+The C<main> order routing will use CyberCash to charge the order, and will be completely encrypted for e-mailing.
+
+H1: Administering Interchange
+
+Some utilities are supplied with Interchange and are located in the VendRoot/bin directory:
+
+!block example
+ compile_link Compiles an Interchange vlink or tlink CGI link
+ dump         Dumps the session file for a particular catalog
+ expire       Expires sessions for a particular catalog
+ expireall    Expires all catalogs
+ offline      Does offline build of the database(s)
+ update       Does in-place update of the database(s)
+ makecat      Make catalog
+!endblock
+
+Some example scripts for other functions are in the C<eg/> directory of the software distribution.
+
+Some thought should be given to where the databases, error logs, and session files should be located, especially on an Internet Service Provider (ISP) that might have multiple users sharing an Interchange server. In particular, it is recommended that all of the session files and logs be put in a directory that is not writable by the user. If the directory or file is corrupted, the catalog may crash.
+
+To test the format of user catalog configuration files before restarting the server, perform the following test (from VendRoot):
+
+!block example
+   bin/interchange -test
+!endblock
+
+This will check all configuration files for syntax errors, which might otherwise prevent a catalog from loading. Once a catalog configures properly, user reconfiguration will not crash it, but cause an error. It must be loaded when the server is started.
+
+H2: Starting, Stopping, and Re-starting the Servers
+
+The following commands need to have VENDROOT replaced with the main directory where Interchange is installed. If /usr/local/interchange is the site's Interchange base directory, the start command would be:
+
+C</usr/local/interchange/bin/interchange>.
+
+Do a C<perldoc VENDROOT/bin/interchange> for full documentation.
+
+To start the server with default settings:
+
+!block example
+   VENDROOT/bin/interchange
+!endblock
+
+It is recommended to issue a restart, otherwise the server will not run anew if a server is already running.
+
+!block example
+   VENDROOT/bin/interchange -restart
+!endblock
+
+Assuming the server starts correctly, the names of catalogs as they are configured will be displayed, along with a message stating the process ID it is running under.
+
+To re-start the server:
+
+!block example
+   VENDROOT/bin/interchange -restart
+!endblock
+
+C<-r> is the same as C<-restart>.
+
+This is typically done to force Interchange to re-read its configuration. A message will be displayed stating that a C<TERM> signal has been sent to the process ID the server is running under. This information is also sent to /usr/local/interchange/error.log. Check the error.log file for confirmation that the server has restarted properly.
+
+To stop the server:
+
+!block example
+   VENDROOT/bin/interchange -stop
+!endblock
+
+A message will be displayed stating that a C<TERM> signal has been sent to the process ID the server is running under. This information is also sent to /usr/local/interchange/error.log.
+
+Because processes waiting for selection on some operating systems block signals, they may have to wait for HouseKeeping seconds to stop. The default is 60.
+
+To terminate the Interchange server with prejudice, in case it will not stop, set:
+
+!block example
+   VENDROOT/bin/interchange -kill
+!endblock
+
+H2: UNIX and INET Modes
+
+Both UNIX-domain and INET-domain sockets can be used for communication. INET domain sockets are useful when more than one Web server, connected via a local-area network (LAN), is used for accessing an Interchange server.
+
+IMPORTANT NOTE: When sending sensitive information like credit card numbers over a network, always ensure that the data is secured by a firewall, or that the Interchange server runs on the same machine as any SSL-based server used for encryption.
+
+If only running a site with one method of communication, use the C<->i and C<->u flags.
+
+!block example
+   # Start only in UNIX mode
+   VENDROOT/bin/interchange -r -u
+
+   # Start only in INET mode
+   VENDROOT/bin/interchange -r -i
+!endblock
+
+H2: User Reconfiguration
+
+The individual catalogs can be reconfigured by the user by running the C<[reconfig]> support tag. This should be protected by one of the several forms of Interchange authentication, preferably by HTTP basic authorization. See C<RemoteUser>.
+
+Use reconfigure from the command line (as the Interchange user) with:
+
+!block example
+   VENDROOT/bin/interchange -reconfig <catalog>
+!endblock
+
+It is easy to manually reconfigure a catalog as an administrator. Interchange simply looks for a file C<etc/reconfig> (based in the Interchange software directory) at HouseKeeping time. If it finds a script name that matches one of the catalogs, it will reconfigure that catalog.
+
+H2: Making the Product Database
+
+The DBM product databases can be built off-line with the C<offline> command. The directory to be used for output is specified either on the command line with the C<-d> option, or is taken from the C<catalog.cfg> directive OfflineDir; C<offline> in the catalog directory by default. The directory must exist. The source ASCII files should be present in that directory, and the DBM files are created there. Existing files will be overwritten.
+
+!block example
+   offline -c catalog [-d offline_dir]
+!endblock
+
+Do a C<perldoc VENDROOT/bin/offline> for full documentation.
+
+H2: Updating Individual Records
+
+If a site has a very large DBM database that takes time to build, consider using the C<bin/update> script to change just one field in a record, or to add from a corrections list.
+
+The following updates the products database C<price> field for item 19-202 with the new value 25.00
+
+!block example
+   update -c catalog -k 19-202 -f price 25.00
+!endblock
+
+More than one field can be updated on a single command line.
+
+!block example
+   update -c catalog -k 19-202 -f price -f comment 25.00 "That pitchfork couple"
+!endblock
+
+The following takes input from C<file>, which must be B<formatted exactly like the original database> and adds/corrects any records contained therein.
+
+!block example
+   update -c catalog -i file
+!endblock
+
+Invoke the command without any arguments for a usage message describing the options.
+
+H2: Expiring Sessions
+
+If a site has DBM capability and Interchange is using it to store the sessions, periodically expire old sessions to keep the session database file from growing too large.
+
+!block example
+   expire -c catalog
+!endblock
+
+There is also an C<expireall> script which reads all catalog entries in C<interchange.cfg> and runs C<expire> on them.
+
+The C<expire> script accepts a C<-r> option which tells it to recover lost disk space.
+
+On a UNIX server, add a crontab entry such as the following:
+
+!block example
+   # once a day at 4:40 am
+   40 4 * * *    perl /usr/local/interchange/bin/expireall -r
+!endblock
+
+Interchange will wait until the current transaction is finished before expiring, so that this can be done at any time without disabling Web access. Any search paging files for the affected session (kept in C<ScratchDir>) will be removed as well.
+
+If not running DBM sessions, a Perl script can be used to delete all files not modified in the last one or two days. The following will work if given an argument of the session directory or session files:
+
+!block example
+   #!perl
+   # expire_sessions.pl -- delete files 2 days old or older
+
+   my @files;
+   my $dir;
+   foreach $dir (@ARGV) {
+       # just push files on the list
+       if (-f $dir) { push @files, $_; next; }
+
+       next unless -d $dir;
+
+       # get all the file names in the directory
+       opendir DIR, $dir or die "opendir $dir: $!\n";
+       push @files, ( map { "$dir/$_" } grep(! /^\.\.?$/, readdir DIR) ) ;
+   }
+
+   for (@files) {
+       unless (-f $_) {
+           warn "skipping $_, not a file.\n";
+           next;
+       }
+       next unless -M $_ >= 2;
+       unlink $_ or die "unlink $_: $!\n";
+   }
+!endblock
+
+It would be run with a command invocation like:
+
+!block example
+   perl expire_sessions.pl /usr/local/interchange/catalogs/construct/session
+!endblock
+
+Give it multiple directory names, if there is more than one catalog.
+
+This script can be adjusted or refined as needed. Refinements might include reading the file to "eval" the session reference and expire only customers who are not members.
+
+H2: Administrator Permissions
+
+Select which operations each administrator can perform in the back office. Each section of the back office can be restricted with fine-grained control. An administrator can be given access to view the list of all orders, for instance, but not allowed to view details. Access to the rows of Interchange's internal tables can also be restricted on a per-table basis for each administrator.
+
+H2: Administrators
+
+The Access Manager allows an administrator to create user accounts or groups of users and restrict the use of certain features. This feature is especially useful if a company has employees that need the ability to check orders, but not change Web content. Note that, by default, users in the back office are stored and managed separately from customer login accounts. Users can have permissions granted on an individual basis, or by group. If a user is a "super-user," all other permissions settings will be ignored and the user will be allowed to do anything.
+
+H2: Administrators: Edit Affiliates
+
+Affiliates have the following attributes:
+
+"Affiliate ID" is displayed in the order and traffic statistics along with the orders and traffic they produce.
+
+"Affiliate Name" is the name of the affiliate.
+
+"Campaigns" can be used to track traffic from advertising campaigns.
+
+"Join_date" can be used to keep track of when the affiliate signed up.
+
+"URL" is used, if present, to redirect visitors coming from this affiliate to a special home page just for visitors from that affiliate's site. This should not be the URL of the Affiliate's home site.
+
+"Timeout delay" can be used to specify that orders attributed to this affiliate must happen within a certain amount of time from the time they were referred to the site by the affiliate. Measured in seconds.
+
+H2: Direct Table Edit
+
+Edit any of Interchange's internal tables. Select a table to edit, or search a table for selected rows to edit.
+
+H2: Direct Table Edit: Select for Table Edit
+
+Having selected a table to edit, a new row can be added, an existing row edited, all rows edited spreadsheet-style, or a row deleted.
+
+H2: File Transfer
+
+Transfer pages, templates, and configuration files to and from the Interchange installation. Select C<Pages> to transfer files that will be visible to site visitors. Select C<catalog.cfg> to edit the configuration file for the store. C<Upload> (send a file to the server), C<download> (send a file from the server to a computer), C<view>, or C<edit> available files.
+
+H2: Import/Export
+
+Interchange makes it easy to import and export data to and from a commerce Web site.
+
+Use C<Database Upload> to import a tab delimited database of all product information to Interchange to make set-up faster and easier. C<Database Download> does just the opposite, allowing data to be downloaded from Interchange.
+
+Use C<Layout Upload> to upload a site's layout information. Use C>Layout Download> to download a site's layout information.
+
+H2: Logout
+
+This feature will only be useful if there are multiple users in the Access Manager. When C<logout> is clicked, a user will be asked to log in again. If C<logout> is pressed in error, the user must log in again.
+
+H2: Meta Field Information
+
+Interchange can store meta information for selected columns of tables in a site's database. This meta information is used when the user interacts with the database. For example, the meta informaton for a C<Hide Item> field might specify that a checkbox be displayed when the user edits that field, since the only reasonable values are C<on> and C<off>. Or, the meta information might specify a filter on data entered for a C<Filename> field which makes sure that the characters entered are safe for use in a filename.
+
+C<Widget type> specifies the C<HTML INPUT> tag type to use when displaying the field in, say, the item editor.
+
+C<Width> and C<Height> only apply to some of the C<Widget type> options, for instance the C<Textarea> widget.
+
+C<Label> is displayed instead of the internal column name. For example, the C<category> column of the C<products> table might have a label of C<Product Category>.
+
+C<Help> is displayed below the column label, and helps describe the purpose of the field to the user.
+
+C<Help url> can be used to link to a page giving more information on the field.
+
+C<Lookup> can be used when a field is acting like a foreign key into another table. In that case, use some sort of select box as the widget type, and if referencing multiple rows in the destination table, use a multi select box, with C<colons_to_null> as the C<pre_filter>, and C<::> as the C<lookup_exclude>.
+
+C<Filter> and C<pre_filter> can be used to filter data destined for that field or data read from that field, respectively.
+
+H1: Interchange Security
+
+H2: SSL Support
+
+Interchange has several features that enable secure ordering via SSL (Secure Sockets Layer). Despite their mystique, SSL servers are actually quite easy to operate. The difference between the standard HTTP server and the SSL HTTPS server, from the standpoint of the user, is only in the encryption and the specification of the URL; C<https:> is used for the URL protocol specification instead of the usual http: designation.
+
+Note[label='IMPORTANT NOTE: '] Interchange attempts to perform operations securely, but no guarantees or warranties of any kind are made! Since Interchange comes with Perl source, it is possible to modify the program to create security problems. One way to minimize this possibility is to record digital signatures, using MD5 or PGP, of C<interchange>, C<interchange.cfg>, and all modules included in Interchange. Check them on a regular basis to ensure they have not been changed.
+
+Interchange uses the C<SecureURL> directive to set the base URL for secure transactions, and the C<VendURL> directive for normal non-secure transactions. Secure URLs can be enabled for forms through a form action of C<[process-target secure=1]>. An individual page can be displayed via SSL with C<[page href=mvstyle_pagename secure=1]>. A certain page can be set to be always secure with the C<AlwaysSecure> catalog.cfg directive.
+
+Interchange incorporates additional security for credit card numbers. The field C<mv_credit_card_number> will not ever be written to disk.
+
+To enable automated encryption of the credit card information, the directive C<CreditCardAuto> needs to be defined as C<Yes>. C<EncryptProgram> also needs to be defined with some value, one which will, hopefully, encrypt the number. PGP is now recommended above all other encryption program. The entries should look something like:
+
+!block example
+ CreditCardAuto   Yes
+ EncryptProgram   /usr/bin/pgpe -fat -r sales@company.com
+!endblock
+
+See C<CreditCardAuto> for more information on how to set the form variables.
+
+H2: Administrative Pages
+
+With Interchange's C<GlobalSub> capability, very complex add-on schemes can be implemented with Perl subroutines. And with the new writable database, pages that modify the catalog data can be made. See C<MasterHost>, C<RemoteUser>, and C<Password>.
+
+In addition, any Interchange page subdirectory can be protected from access by anyone except the administrator if a file called '.access' is present and non-zero in size.
+
+H2: Controlling Access to Certain Pages
+
+If the directory containing the page has a file C<.access> and that file's size is zero bytes, access can be gated in one of several ways.
+
+^If the file C<.access_gate> is present, it will be read and scanned for page-based access. The file has the form:
+
+!block example
+  page: condition
+  *: condition
+!endblock
+
+.The C<page> is the file name of the file to be controlled (the .html extension is optional). The C<condition> is either a literal C<Yes/No> or Interchange tags which would produce a C<Yes> or C<No> (1/0 work just fine, as do true/false).
+
+.The entry for C<*> sets the default action if the page name is not found. If pages will be allowed by default, set it to C<1> or C<Yes>. If pages are to be denied by default in this directory, leave blank or set to C<No>. Here is an example, for the directory C<controlled>, having the following files:
+
+!block example
+ -rw-rw-r--   1 mike     mike            0 Jan  8 14:19 .access
+ -rw-rw-r--   1 mike     mike          185 Jan  8 16:00 .access_gate
+ -rw-rw-r--   1 mike     mike          121 Jan  8 14:59 any.html
+ -rw-rw-r--   1 mike     mike          104 Jan  8 14:19 bar.html
+ -rw-rw-r--   1 mike     mike          104 Jan  8 14:19 baz.html
+ -rw-rw-r--   1 mike     mike          104 Jan  8 14:19 foo.html
+!endblock
+
+.The contents of C<.access_gate>:
+
+!block example
+   foo.html: [if session username eq 'flycat']
+               Yes
+             [/if]
+   bar:      [if session username eq 'flycat']
+             [or scratch allow_bar]
+               Yes
+             [/if]
+   baz:      yes
+   *:        [data session logged_in]
+!endblock
+
+.The page C<controlled/foo> is only allowed for the logged-in user B<flycat>.
+
+.The page C<controlled/bar> is allowed for the logged-in user B<flycat>, or if the scratch variable C<allow_bar> is set to a non-blank, non-zero value.
+
+.The page C<controlled/baz> is always allowed for display.
+
+.The page C<controlled/any> (or any other page in the directory not named in C<.access_gate>) will be allowed for any user logged in via I<UserDB>. NOTE: The C<.access_gate> scheme is available for database access checking if the database is defined as an C<AdminDatabase>. The C<.access_gate> file is located in C<ProductDir>.
+
++If the Variable C<MV_USERDB_REMOTE_USER> is set (non-zero and non-blank), any user logged in via the UserDB feature will receive access to all pages in the directory. NOTE: If there is a C<.access_gate> file, it overrides this.
+
++If the variables C<MV_USERDB_ACL_TABLE> is set to a valid database identifier, the UserDB module can control access with simple ACL logic. See USER DATABASE. NOTE: If there is a C<.access_gate> file, it overrides this. Also, if C<MV_USERDB_REMOTE_USER> is set, this capability is not available.
+
+
+H1:[display] tag and mv_metadata
+
+The Interchange back office UI uses the mv_metadata table to discover formatting information for field, table, and view display. The information is kept in fields in the mv_metadata table, and is used to select the display, the HTML input type, the size (height and width where appropriate), label, help text, additional help URL, and default value display.
+
+It works in conjunction with the [display ...] usertag defined in the Interchange UI as well as in specific pages in the UI. The [display] tag has this syntax:
+
+N:[display table=tablename column=fieldname key=key arbitrary=tag filter=op ...]
+
+In the simplest use, the formatting information for a table form field is called with:
+
+.[display table=products column=category key="os28007"]
+
+The mv_metadata table is scanned for the following keys:
+
+.products::category::os28007
+.products::category
+
+If a row is found with one of those keys, then the information in the row is used to set the display widget. If no row is found, an INPUT TYPE=TEXT widget is displayed. If the data is all digits, a size of 8 is used, otherwise the size is 60.
+
+If the following row were found (not all fields shown, would be tab-separated in the actual data):
+
+!block example
+  code                type   width height label     options
+  products::category  text   20           Category
+!endblock
+
+Then this would be output:
+
+!block example
+<INPUT TYPE=text SIZE=20 VALUE="*category*">
+!endblock
+
+If the following row were found:
+
+!block example
+  code                type   width height label     options
+  products::category  select              Category  =none, product=Hardware
+!endblock
+
+Then the following would be output:
+
+!block example
+	<SELECT NAME=category>
+	<OPTION VALUE="">none
+	<OPTION VALUE="product">Hardware
+	</SELECT>
+!endblock
+
+The standard widget types are:
+
+LI1:text
+
+.The default. Uses the fields:
+
+!block example
+    width   size of input box
+!endblock
+
+LI1:textarea
+
+.Format a <TEXTAREA> </TEXTAREA> pair. Uses the fields:
+
+!block example
+	width   COLS for textarea
+	height  ROWS for textarea
+!endblock
+
+LI1:select
+
+.Format a <SELECT> </SELECT> pair with appropriate options. Uses the fields:
+
+!block example
+  height          SIZE for select
+  default         Default for SELECTED
+  options         Options for a fixed list (or prepended to a lookup)
+  lookup          signals a lookup (used as field name if "field" empty)
+  field           field to look up possible values in
+  db              table to look up in if not current table
+  lookup_exclude  regular expression to exclude certain values from lookup
+!endblock
+
+
+H1: Usertag Reference
+
+Admin Tool-specific usertags.
+
+
+H1: Admin Tool Database Tables
+
+
+H2:icmenu.txt
+
+Used for back-office administration UI menus and wizards.
+
+!block example
+    code
+		Arbitrary primary key
+    mgroup
+		Menu group (for grouping searches)
+    msort
+		Sort order within the group
+    next_line
+		Set to 1 if submenu
+    indicator
+    exclude_on
+    depends_on
+    page
+    form
+    name
+    super
+    inactive
+    special
+    help_name
+	img_dn
+	img_up
+	img_sel
+	img_icon
+	url
+!endblock
+
+
+H2:mv_metadata.asc
+
+!block example
+    code
+        Table::Column to be operated on.
+        Database table
+    type
+        Widget type (Select the basic display type for the field)
+            textarea = Textarea
+            text = Text Entry (default)
+            select = Select Box
+            yesno = Yes/No (Yes=1)
+            noyes = No/Yes (No=1)
+            multiple = Multiple Select
+            combo = Combo Select
+            reverse_combo = Reverse Combo
+            move_combo = Combo move
+            display = Text of option
+            hidden_text = Hidden(show text)
+            radio = Radio box
+            radio_nbsp = Radio (nbsp)
+            checkbox = Checkbox
+            check_nbsp = Checkbox (nbsp)
+            imagedir = Image listing
+            imagehelper = Image upload
+            date = Date selector
+            value = Value
+            option_format = Option formatter
+            show = Show all options
+    width
+        Width (SIZE for TEXT, COLS for TEXTAREA, Label limit for SELECT)
+    height
+        Height (SIZE for SELECT, ROWS for TEXTAREA)
+    field
+        Field for lookup (can be two comma separated fields, in which case
+        second is used as the label text.  Both must be in the same table.)
+    db
+    name
+        Variable name (normally left empty, changes variable name to send in
+        form)
+    outboard
+        Select directory for image listing widget
+    options
+        options in the format <blockquote>value=label*</blockquote>
+    attribute
+        Column name (Do not set this.)
+    label
+    help
+        Help (displays at top of page)
+    lookup
+        Lookup select (Whether lookup is performed to get options for a select
+        type.  If nothing is in the field, then used as the name of the field
+        to lookup in.  Use lookup table if you want to look up in a different
+        table.
+    filter
+        Filters (Filters which can transform or constrain your data.  Some
+        widgets require filters.)
+    help_url
+        Help URL (links below help text)
+        A URL which will provide more help
+    pre_filter
+    lookup_exclude
+        ADVANCED: regular expression that excludes certain keys from the lookup
+    prepend
+    append
+        Append HTML (HTML to be appended to the widget.  Will substitute in the
+        macros _UI_TABLE_, _UI_COLUMN_, _UI_KEY_, and _UI_VALUE_, and will
+        resolve relative links with absolute links.)
+    display_filter
+!endblock
+
+
+H1: makecat - Set Up a Catalog from a Template
+
+After Interchange is installed, you need to set up at least one catalog. Interchange will not function properly until a catalog is created. 
+
+The supplied C<makecat> script, which is in the Interchange program directory C<bin>, is designed to set up a catalog based on the user's server configuration. It interrogates the user for parameters like which directories to use, a URL to base the catalog in, HTTP server definitions, and file ownership. It gives relevant examples of the entries it expects to receive.
+
+Note: A catalog can only be created once. All further configuration is done by editing the files within the catalog directory.
+
+The C<makecat> script requires a catalog skeleton to work from. The Foundation demo is distributed with Interchange. See the icfoundation document for information on building the Foundation demo store. Other demo catalogs are available at C<http://developer.akopia.com/>.
+
+It is not normally necessary for you to understand how to build catalog skeletons for use with makecat, but the following information will help you if you should ever need to.
+
+H2: Catalog Skeletons
+
+A catalog skeleton contains an image of a configured catalog. The best way to see what the makecat program does is to configure the simple demo and then run a recursive C<diff> on the template and configured catalog directories:
+
+!block example
+	cd /usr/local/interchange
+	diff -r construct catalogs/construct
+!endblock
+
+The files are mostly identical, except that certain macro strings have been replaced with the answers given to the script. For example, if C<www.mydomain.com> was answered at the prompt for a server name, this difference would appear in the catalog.cfg file:
+
+!block example
+       # template
+       Variable SERVER_NAME  __MVC_SERVERNAME__
+
+       # configured catalog
+       Variable SERVER_NAME  www.mydomain.com
+!endblock
+
+The macro string __MVC_SERVERNAME__ was substituted with the answer to the question about server name. In the same way, other variables are substituted, and include:
+
+!block example
+MVC_BASEDIR      MVC_IMAGEDIR
+MVC_CATROOT      MVC_IMAGEURL
+MVC_CATUSER      MVC_MAILORDERTO
+MVC_CGIBASE      MVC_MINIVENDGROUP
+MVC_CGIDIR       MVC_MINIVENDUSER
+MVC_CGIURL       MVC_SAMPLEHTML
+MVC_DEMOTYPE     MVC_SAMPLEURL
+MVC_DOCUMENTROOT MVC_VENDROOT
+MVC_ENCRYPTOR
+!endblock
+
+Note: Not all of these variables are present in the "construct" template, and more may be defined. In fact, any environment variable that is set and begins with MVC_ will be substituted for by the C<makecat> script. For example, to set up a configurable parameter to customize the COMPANY variable in catalog.cfg, run a pre-qualifying script that set the environment variable MVC_COMPANY and then place in the catalog.cfg file:
+
+Variable   COMPANY   __MVC_COMPANY__
+
+All files within a template directory are substituted for macros, not just the catalog.cfg file. There are two special directories named C<html> and C<images>. These will be recursively copied to the directories defined as SampleHTML and ImageDir.
+
+Note: The template directory is located in the Interchange software directory,
+i.e., where C<interchange.cfg> resides. Avoid editing files in the template
+directory. To create a new template, it is recommended that it should be named
+something besides 'construct' and a copy of the C<construct> demo directory be
+used as a starting point. Templates are normally placed in the Interchange base
+directory, but can be located anywhere. The script will prompt for the location
+if it cannot find a template.
+
+In addition to the standard parameters prompted for by Interchange, and the standard catalog creation procedure, four other files in the C<config> directory of the template may be defined:
+
+!block example
+additional_fields -- file with more parameters for macro substitution
+additional_help   -- extended description for the additional_fields
+precopy_commands  -- commands passed to the system prior to catalog copy
+postcopy_commands -- commands passed to the system after catalog copy
+!endblock
+
+All files are paragraph-based. In other words, a blank line (with no spaces) terminates the individual setting.
+
+The additional_fields file contains:
+
+!block example
+PARAM
+The prompt. Set PARAM to?
+The default value of PARAM
+!endblock
+
+This would cause a question during makecat:
+
+!block example
+The prompt. Set PARAM to?.....[The default value of PARAM]
+!endblock
+
+If the additional_help file is present, additional instructions for PARAM may be provided.
+
+!block example
+PARAM
+
+These are additional instructions for PARAM, and they
+may span multiple lines up to the first blank line.
+!endblock
+
+The prompt would now be:
+
+!block example
+These are additional instructions for PARAM, and they
+may span multiple lines up to the first blank line.
+
+The prompt. Set PARAM to?.....[The default value of PARAM]
+!endblock
+
+If the file config/precopy_commands exists, it will be read as a command followed by the prompt/help value.
+
+!block example
+mysqladmin create __MVC_CATALOGNAME__
+We need to create an SQL database for your Interchange
+database tables.
+!endblock
+
+This will cause the prompt:
+
+!block example
+We need to create an SQL database for your Interchange
+database tables.
+
+Run command "mysqladmin create simple"?
+!endblock
+
+If the response is "y" or "yes," the command will be run by passing it through the Perl system() function. As with any of the additional configuration files, MVC_PARAM macro substitution is performed on the command and help. Proper permissions for the command are required.
+
+The file config/postcopy_commands is exactly the same as <precopy_commands>, except the prompt occurs after the catalog files are copied and macro substitution is performed on all files.
+
+There may also be SubCatalog directives:
+
+!block example
+SubCatalog easy simple /home/catalogs/simple /cgi-bin/easy
+!endblock
+
+easy
+.The name of the subcatalog, which also controls the name of the subcatalog configuration file. In this case, it is C<easy.cfg>.
+
+simple
+.The name of the base configuration that will be the basis for the catalog. Parameters in the easy.cfg file that are different will override those in the catalog.cfg file for the base configuration.
+
+The remaining parameters are similar to the Catalog directive.
+
+Additional interchange.cfg parameters set up administrative parameters that are catalog wide. See the server configuration file for details on each of these.
+
+Each catalog can be completely independent with different databases, or catalogs can share pages, databases, and session files. This means that several catalogs can share the same information, allowing "virtual malls."
+
+
+H2: Manual Installation of Catalogs
+
+An Interchange installation is complex, and requires quite a few distinct steps. Normally you will want to use the interactive catalog builder, C<makecat>, described above. It makes the process much easier. Please see the C<iccattut> document for a full tutorial on building a catalog by hand.
+
+
+H1: Link Programs
+
+Interchange requires a web server that is already installed on a system. It does have an internal server which can be used for administration, testing, and maintenance, but this will not be useful or desireable in a production environment.
+
+As detailed previously, Interchange is always running in the background as a daemon, or resident program. It monitors either a UNIX-domain file-based socket or a series of INET-domain sockets. The small CGI link program, called in the demo C<simple>, is run to connect to one of those sockets and provide the link to a browser.
+
+Note: Since Apache is the most popular web server, these instructions will focus on it. If using another type of web server, some translation of terms may be necessary.
+
+A C<ScriptAlias> or other CGI execution capability is needed to use the link program. (The default C<ScriptAlias> for many web servers is C</cgi-bin>.) If C<ExecCGI> is set for all directories, then any program ending in a particular file suffix (usually C<.cgi>) will be seen as a CGI program.
+
+Interchange, by convention, names the link program the same name as the catalog ID, though this is not required. In the distribution demo, this would yield a program name or SCRIPT_PATH of C</cgi-bin/simple> or C</simple.cgi>. This SCRIPT_PATH can be used to determine which Interchange catalog will be used when the link program is accessed.
+
+H2: UNIX-Domain Sockets
+
+This is a socket which is not reachable from the Internet directly, but which must come from a request on the server. The link program C<vlink> is the provided facility for such communication with Interchange. This is the most secure way to run a catalog, for there is no way for systems on the Internet to interact with Interchange except through its link program.
+
+The most important issue with UNIX-domain sockets on Interchange is the permissions with which the CGI program and the Interchange server run. To improve security, Interchange normally runs with the socket file having 0600 permissions (rw-------), which mandates that the CGI program and the server run as the same user ID. This means that the C<vlink> program must be SUID to the same user ID as the server executes under. (Or that CGIWRAP is used on a single catalog system).
+
+With Interchange's multiple catalog capability, the permissions situation gets a bit tricky. Interchange comes with a program, C<makecat>, which configures catalogs for a multiple catalog system. It should properly set up ownership and permissions for multiple users if run as the superuser.
+
+H2: INET-Domain Sockets
+
+These are sockets which are reachable from the Internet directly. The link program C<tlink> is the provided facility for such communication with Interchange. Other browsers can talk to the socket directly if mapped to a catalog with the global C<TcpMap> directive. To improve security, Interchange usually checks that the request comes from one of a limited number of systems, defined in the global C<TcpHost> directive. (This check is not made for the internal HTTP server.)
+
+H2: Internal HTTP Server
+
+If the socket is contacted directly (only for INET-domain sockets), Interchange will perform the HTTP server function itself, talking directly to the browser. It can monitor any number of ports and map them to a particular catalog. By default, it only maps the special catalog mv_admin, which performs administrative functions. The default port is 7786, which is the default compiled into the distribution tlink program. This port can be changed via the C<TcpMap> directive.
+
+To prevent catalogs that do not wish access to be made in this way from being served from the internal server, Interchange has a fixed SCRIPT_PATH of C</catalogname> (/simple for the distribution demo) which needs to be placed as an alias in the Catalog directive to enable access. See C<TcpMap> for more details.
+
+H2: Setting Up VLINK and TLINK
+
+The C<vlink> and C<tlink> programs, compiled from C<vlink.c> and C<tlink.c>, are small C programs which contact and interface to a running Interchange daemon. The VLINK executable is normally made setuid to the user account which runs Interchange, so that the UNIX-domain socket file can be set to secure permissions (user read-write only). It is normally not necessary for the user to do anything. They will be compiled by the configuration program. If the Interchange daemon is not running, either of the programs will display a message indicating that the server is not available. The following defines in the produced C<config.h> should be set:
+
+LI1: LINK_FILE
+
+.Set this to the name of the socket file that will be used for configuration, usually "/usr/local/lib/interchange/etc/socket" or the "etc/socket" under the directory chosen for the VendRoot.
+
+LI1: LINK_HOST
+
+.Set this to the IP number of the host which should be contacted. The default of 127.0.0.1 (the local machine) is probably best for many installations.
+
+LI1: LINK_PORT
+
+.Set this to the TCP port number that the Interchange server will monitor. The default is 7786 (the decimal ASCII codes for 'M' and 'V') and does not normally need to be changed.
+
+LI1: LINK_TIMEOUT
+
+.Set this to the number of seconds C<vlink> or C<tlink> should wait before announcing that the Interchange server is not running. The default of 45 is probably a reasonable value.
+
+H2: Compiling VLINK and TLINK
+
+There is a C<compile_link> program which will assist with this. Do:
+
+!block example
+   perldoc VENDROOT/bin/compile_link
+!endblock
+
+for its documentation.
+
+H2: Manually Compiling VLINK and TLINK
+
+Change directories to the C<src> directory, then run the GNU configure script:
+
+!block example
+   cd src
+   ./configure
+!endblock
+
+There will be some output displayed as the configure script checks the system. Then, compile the programs:
+
+!block example
+   perl compile.pl
+!endblock
+
+To compile manually:
+
+!block example
+   cc vlink.c -o vlink
+   cc tlink.c -o tlink
+!endblock
+
+On manual compiles, ensure that the C compiler will be invoked properly with this little ditty:
+
+!block example
+   perl -e 'do "syscfg"; system("$CC $LIBS $CFLAGS $DEFS -o tlink tlink.c");'
+   perl -e 'do "syscfg"; system("$CC $LIBS $CFLAGS $DEFS -o vlink vlink.c");'
+!endblock
+
+On some systems, the executable can be made smaller with the strip program, if available. It is not required.
+
+!block example
+   strip vlink
+   strip tlink
+!endblock
+
+If Interchange is to run under a different user account than the individual configuring the program, make that user the owner of C<vlink>. Do not make C<vlink> owned by root, because making C<vlink> SETUID root is an huge and unnecessary security risk. It should also not normally run as the default Web user (often C<nobody> or C<http>)).
+
+!block example
+   chown interchange vlink
+!endblock
+
+Move the C<vlink> executable to the cgi-bin directory:
+
+!block example
+   mv vlink /the/cgi-bin/directory
+!endblock
+
+Make C<vlink> SETUID:
+
+!block example
+   chmod u+s /the/cgi-bin/directory/vlink
+!endblock
+
+Most systems unset the SUID bit when moving the file, so change it after moving.
+
+The SCRIPT_NAME, as produced by the HTTP server, must match the name of the program. (As usual, let the makecat program do the work.)
+
+H2: VLINK or TLINK Compile Problems
+
+The latest version of C<vlink.c> and C<tlink.c> have been compiled on the following systems:
+
+!block example
+   AIX 4.1
+   BSD2.0 (Pentium/x86)
+   Debian GNU/Linux
+   Digital Unix (OSF/Alpha)
+   FreeBSD 2.x, 3.x, 4.x
+   IRIX 5.3, IRIX 6.1
+   OpenBSD 2.7
+   Red Hat Linux 6.2, 7.0, 7.1
+   SCO OpenServer 5.x
+   Solaris 2.x (Sun compiler and GCC)
+   Solaris 7 (Sun compiler and GCC)
+   SunOS 4.1.4
+!endblock
+
+Some problems may occur. In general, ignore warnings about pointers.
+
+Make sure that you have run the configure program in the src directory. If you use Interchange's makecat program, it will try to compile an appropriate link at that time, and will substitute tlink.pl if that doesn't work.
+
+You can compile manually with the proper settings with this series of commands:
+
+!block example
+   cd src
+   ./configure
+   perl -e 'do "syscfg"; system ("$CC $CFLAGS $DEFS $LIBS -o tlink tlink.c")'
+   perl -e 'do "syscfg"; system ("$CC $CFLAGS $DEFS $LIBS -o vlink vlink.c")'
+!endblock
+
+There is also a C<compile_link> program which has docmentation embedded and which will compile an approprate link. If you cannot compile, try using the C<tlink.pl> script, written in Perl instead of C, which should work on most any system. Since vlink needs to have values set before compilation, a pre-compiled version will not work unless it has the exact values you need on your system. If you can use the defaults of 'localhost' and port 7786, you may be in luck.
+
+
+H1: Installing Perl Modules without Root Access
+
+Installing Interchange without root access is no problem. However, installing Perl modules without root access is a little trickier.
+
+You must build your makefile to work in your home dir. Something like:
+ 
+!block example
+PREFIX=~/usr/local \
+INSTALLPRIVLIB=~/usr/local/lib/perl5 \
+INSTALLSCRIPT=~/usr/local/bin \
+INSTALLSITELIB=~/usr/local/lib/perl5/site_perl \
+INSTALLBIN=~/usr/local/bin \
+INSTALLMAN1DIR=~/usr/local/lib/perl5/man \
+INSTALLMAN3DIR=~/usr/local/lib/perl5/man/man3
+!endblock
+ 
+Put this in a file, say 'installopts', and use it for the Makefile.PL.
+ 
+E:perl Makefile.PL `cat installopts`
+ 
+Then, forget ./config. Just do:
+ 
+!block example
+make
+make test
+make install
+!endblock
+ 
+Some of the tests may fail, but that's probably ok.
+
+Also make sure to install Bundle::Interchange, which will need the same config data as you put into 'installopts'.
+
+
+H1: Installation Troubleshooting
+
+Interchange uses the services of other complex programs, such as Perl, Web servers, and relational databases, to work. Therefore, when there is a problem, check these programs before checking Interchange. Many more basic installation problems have to do with those than with Interchange itself.
+
+If an error message is received about not being able to find libraries, or a core dump has occurred, or a segment fault message, it is always an improperly built or configured Perl. Contact the system administrator or install a new Perl.
+
+The C<makecat> program is intended to be used to create the starting point for the catalog. If the demo does not work the first time, keep trying. If it still does not work, try running in INET mode.
+
+Check the two error log files: C<error.log> in the Interchange home directory (where interchange.cfg resides) and C<error.log> in the catalog directory (where catalog.cfg resides; there can be many of these). Many problems can be diagnosed quickly if these error logs are consulted.
+
+Check the README file, the FAQ, and mail list archive at the official Interchange web site for information:
+
+!block example
+       http://developer.akopia.com/
+!endblock
+
+Double check the following items:
+
+^Using UNIX sockets?
+
+-Check that the C<vlink> program is SUID, or the appropriate changes have been made in the SocketPerms directive. Unless the files are world-writable, the vlink program and the Interchange server must run as the same user ID! If running CGI-WRAP or SUEXEC, the C<vlink> program must not be SUID.
+
+-If having trouble with the vlink program (named C<construct> in the demo configuration), try re-running C<makecat> and using INET mode instead. (Or copy the C<tlink> INET mode link program over C<vlink>). This should work unchanged for many systems.
+
+-If using an ISP or have a non-standard network configuration, some changes to interchange.cfg are necessary. For C<tlink> to work, the proper host name(s) must be configured into the TcpHost directive in interchange.cfg. The program selects port 7786 by default (the ASCII codes for "M" and "V"). If another port is used, it must be set to the same number in both the tlink program (by running C<compile_link>) and the C<minivend.cfg> file. The C<tlink> program does not need to be SUID.
+
++Proper file permissions?
+
+-The Interchange server should not run as the user C<nobody>! The program files can be owned by anyone, but any databases, ASCII database source files, error logs, and the directory that holds them must be writable by the proper user ID, that is the one that is executing the MiniVend program.
+
+-The best way to operate in multi-user, multiple catalog setups is to create a special C<interch> user, then put that user in the group that contains each catalog user. If a group is defined for each individual user, this provides the best security. All associated files can be in 660 or 770 mode. There should be no problems with permissions and no problems with security.
+
++Is the C<vlink> program being executed on a machine that has the socket file C<etc/socket> on a directly attached disk?
+
+-UNIX-domain sockets will not work on NFS-mounted file systems! This means that the server C<minivend> and the CGI program C<vlink> must be executing on the same machine.
+
+-The C<tlink> program does not have this problem, but it must have the proper host name(s) and TCP ports set in the TcpHost and TcpPort directives in C<interchange.cfg>. Also, be careful of security if sensitive information, like customer credit card numbers, is being placed on a network wire.
