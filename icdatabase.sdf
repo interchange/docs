@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.47 2002-07-15 13:52:15 mheins Exp $
+# $Id: icdatabase.sdf,v 1.48 2002-07-16 12:41:44 jon Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.47 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.48 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icdatabase.html"
@@ -1841,6 +1841,19 @@ minimum match on the page, and the maximum match on the page:
     $PAGE$       Page number
     $MINPAGE$    Minimum match on page
     $MAXPAGE$    Maximum match on page
+!endblock
+
+.You can customize the HTML hyperlink with [link-template] [/link-template]. This is useful for adding a JavaScript onclick attribute, or setting the link target to a different window, etc.
+
+!block example; listitem=2
+    [link-template]<a href="$URL$" target="_top">$ANCHOR$</a>[/link-template]
+!endblock
+
+.There are two tokens you can use as many times as needed in [link-template], which will be replaced as follows:
+
+!block example; listitem=2
+    $URL$      The URL for the 'more' page in question
+    $ANCHOR$   The page number or the word "Next" or "Previous" for the link in question.
 !endblock
 
 .If have many pages of matches and don't wish to have all displayed at once, set C<[decade-next][/decade-next]> and C<[decade-prev][/decade-prev]>. If set them empty, a search with 31 pages will display pages 21-30 like:
