@@ -68,7 +68,7 @@ man: $(addsuffix .8,$(TARGETS))
 
 pdf: $(addsuffix .pdf,$(TARGETS))
 
-full :: txt html
+full :: txt
 	@for i in $(FULLSUFFIXES) ; do \
 		echo "" > $(FULLDOCNAME).$$i ; \
 		echo "Interchange $(VERSION)" >> $(FULLDOCNAME).$$i ; \
