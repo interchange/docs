@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.30 2001-05-08 20:17:28 jon Exp $
+# $Id: ictags.sdf,v 1.31 2001-05-09 04:12:58 jon Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.30 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.31 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -318,12 +318,12 @@ Assuming that C<name> is 'Kilroy',
 !block example
   1.   E<lbracket>{{C[jump="#perl"]perl}} reparse=0]
           my $tagname = 'value';
-          return "\[$tagname name\] was here\n"
+          return "[$tagname name] was here\n"
        [/perl]
 
   2.   E<lbracket>{{C[jump="#perl"]perl}} reparse=1]
           my $tagname = 'value';
-          return "\[$tagname name\] was here\n"
+          return "[$tagname name] was here\n"
        [/perl]
 !endblock   
 
@@ -416,8 +416,7 @@ Similarly to use a hash reference for the 'entry' attribute:
 
 H2: Looping tags and Sub-tags
 
-{{CMD[id="subtags"]}}
-Certain tags are not standalone; these are the
+{{CMD[id="subtags"]}}Certain tags are not standalone; these are the
 ones that are interpreted as part of a surrounding looping tag
 like E<lbracket>{{C[jump="#loop"]loop}}],
 E<lbracket>{{C[jump="#item_list"]item-list}}],
@@ -1681,9 +1680,11 @@ attribute values of "Sm=10oz,E<nbspace>Med=15oz,E<nbspace>Lg=20oz"N<:>
   <OPTION VALUE="Sm">10oz
   <OPTION VALUE="Med">15oz
   <OPTION VALUE="Lg">20oz</SELECT>
+!endblock
 
-======================================================
+Or, with the default new value:
 
+!block example
   [accessories code=os28044 attribute=size type=combo]
 ------------------------------------------------------
   <INPUT TYPE=text NAME="mv_order_size" SIZE=16 VALUE="">
@@ -6790,6 +6791,7 @@ Here is an example:
 !endblock
 
 This will put the same price on the page as our earlier example, but
+#$Session->{mv_perl_result} will be either 'too low' or 'ok'.
 C<$Session-E<gt>{mv_perl_result}> will be either 'too low' or 'ok'.
 
 The [{{C[jump="#mvasp"]mvasp}}] tag is very similar to
@@ -9575,10 +9577,10 @@ Assuming form variable 'foo' = 'bar',
 B<ASP-like Perl call:>
 
 !block example; lang="Perl"
-    $Tag->value(  { name => I<var_name>, }  );
+    $Tag->value(  { name => var_name, }  );
 
     # or if you simply want the value,
-    $::Values->{I<var_name>};
+    $::Values->{var_name};
 !endblock
 
 or similarly with positional parameters,
