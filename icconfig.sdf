@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.20 2000-11-22 21:53:06 jon Exp $
+# $Id: icconfig.sdf,v 1.21 2000-11-25 04:35:44 heins Exp $
 
 !define DOC_NAME "Interchange Configuration"
 !define DOC_TYPE ""
 !define DOC_CODE "ICCONFIG_D2_100800"
-!define DOC_VERSION substr('$Revision: 1.20 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.21 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
@@ -1768,6 +1768,23 @@ Specifies catalog identifiers that may define subroutines and UserTag entries th
    AllowGlobal  simple
 !endblock
 
+H2: AutoVariable *global*
+
+Specifies directives which should be translated to Variable settings.
+For scalars, the directive name becomes the Variable name and yields its
+value, i.e. C<DescriptionField> becomes C<__>C<DescriptionField__>,
+which would by default be C<description>. Array variables have a
+C<_N> added, where C<_N> is the ordinal index, i.e. C<ProductFiles>
+becomes C<__>C<ProductFiles_0__>, C<__>C<ProductFiles_1__>,
+etc. Hash variables have a _KEY added, i.e.  C<SpecialPage> becomes
+C<__>C<SpecialPage_missing__>, C<__>C<SpecialPage_violation>, etc. Doesn't
+handle hash keys that have non-word characters or whitespace. Only
+single-level arrays and hashes are translated properly.
+
+!block example
+   AutoVariable  PriceField DescriptionField ProductFiles SpecialPage
+!endblock
+
 H2: Catalog *global*
 
 Specifies a catalog that can run using this Interchange server. There are three required parameters, separated by spaces and/or tabs.
@@ -1798,10 +1815,6 @@ Global directives may be specified that will change for that catalog only. This 
    Catalog simple directive ErrorFile /var/log/interchange/simple_error.log
 !endblock
 
-H2: Catch
-
-
-
 H2: CheckHTML *global*
 
 Set to the name of an external program that will check the users HTML when they set C<[flag checkhtml]> or C<[tag flag checkhtml][/tag]> in their page.
@@ -1826,17 +1839,19 @@ The name of a file (or files) which should be read as a part of every catalog's 
    ConfigAllBefore   set_actions.cfg set_variables.cfg
 !endblock
 
-H2: Counter
+H2: Database *global*
 
-Inserts the value of a persistent counter. The counter value is stored in the given file, which is created if necessary. If the file name begins with a "/," then it is an absolute path. Otherwise, it is relative to VendRoot. If the tag causes the counter file to be created, the value is initialized to start. If value is given, the counter's value is set to the given value. If value is not supplied, the counter is incremented and its value is returned, unless decrement is supplied. In this case, the counter is decremented and its value is returned. The counter is implemented using Perl's C<File::Counter> module, which protects the file against simultaneous access by multiple processes.
+Defines a database which is global and available to all catalogs. Writing can
+be controlled by catalog. See C<Database>.
+
+H2: DebugFile
+
+Names a file, relative to the Interchange root directory, which should store
+the output of C<logDebug> statements, and warnings if warnings are enabled.
 
 !block example
-   [counter file=FILE start=START value=VALUE decrement*]
+	DebugFile  /tmp/icdebug
 !endblock
-
-H2: Discount-Subtotal
-
-Inserts the discounted subtotal of the ordered items.
 
 H2: DisplayErrors *global*
 
@@ -1886,24 +1901,6 @@ write that file.
 
 Optionally, syslog error logging can be set up as well. See C<SysLog>.
 
-H2: Export
-
-
-
-H2: Filter
-
-Applies any of Interchange's standard filters to an arbitray value, or custom filters may be defined. The filters are also available as parameters to the C<cgi>, C<data>, and C<value> tags. Filters can be applied in sequence and as many as needed can be applied. Here is an example. If author or artist names are stored in the database ``LAST, First'' so that they sort properly, they may be displayed normally as ``First Last''. This call
->    [filter op="name namecase"]WOOD, Grant[/filter]
-will display as
->    Grant Wood
-Another way to do this would be:
->    [data table=products column=artist key=99-102 filter="name namecase"]
-
-H2: Fly-Tax
-
-Builds a tax rate from C<taxarea>, C<taxrate>, C<taxshipping>, variable values, and the C<SalesTax> directive value.
-
-
 
 H2: FormAction *global*
 
@@ -1917,14 +1914,23 @@ Allows a form action (like the standard ones C<return, submit, refresh,> etc.) t
    EOR
 !endblock
 
-If it returns a true (non-zero, non-empty) value, Interchange will display the
-page defined in $CGI->{mv_nextpage}. Otherwise, Interchange will not display
-any page. The default Interchange actions can be overridden, if desired. There is also a catalog-specific version of this directive, which overrides any action of the same name.
+If it returns a true (non-zero, non-empty) value, Interchange will display
+the page defined in $CGI->{mv_nextpage}. Otherwise, Interchange will
+not display any page. The default Interchange actions can be overridden,
+if desired. There is also a catalog-specific version of this directive,
+which overrides any action of the same name.
+
+The global version affects all catalogs -- there is also a
+catalog-specific version of FormAction which is protected by Safe.
 
 H2: FullUrl *global*
 
 Normally Interchange determines which catalog to call by determining the
-SCRIPT_NAME from the CGI call. This means that different (and maybe virtual) hosts cannot use the same SCRIPT_NAME to call different catalogs. Set C<FullUrl> to Yes to differentiate based on the calling host. Then, set the server name in the Catalog directive accordingly, such as C<yourdomain.com/cgi-bin/simple>. A yes/no directive, the default is No.
+SCRIPT_NAME from the CGI call. This means that different (and maybe virtual)
+hosts cannot use the same SCRIPT_NAME to call different catalogs. Set
+C<FullUrl> to Yes to differentiate based on the calling host. Then, set the
+server name in the Catalog directive accordingly, such as
+C<yourdomain.com/cgi-bin/simple>. A yes/no directive, the default is No.
 
 !block example
    FullUrl  Yes
@@ -1957,19 +1963,34 @@ C<GlobalSub> routines are subject to full Perl use strict checking, so errors ar
 
 H2: HammerLock *global*
 
-The number of seconds after which a locked session could be considered to be lost due to malfunction. This will kill the lock on the session. Only here for monitoring of session hand-off. If this error shows up in the error log, the system setup should be examined. Default is 30.
+The number of seconds after which a locked session could be considered to be
+lost due to malfunction. This will kill the lock on the session. Only here for
+monitoring of session hand-off. If this error shows up in the error log, the
+system setup should be examined. Default is 30.
 
 !block example
    HammerLock          60
 !endblock
 
-H2: Handling
+This mostly doesn't apply to Interchange when using the default file-based
+sessions.
 
-Calculates and inserts handling costs. Accepts the same noformat and convert arguments as the shipping tag.
+H2: HitCount *global*
+
+Increments a counter in C<ConfDir> for every access to the catalog. The
+file is named C<hits.catalogname>, where C<catalogname> is the short
+catalog identifier. A Yes/No directive, default is C<No>.
+
+!block example
+   HitCount  Yes
+!endblock
 
 H2: HouseKeeping *global*
 
-How often, in seconds, the Interchange server will "wake up" and look for user reconfiguration requests and hung search processes. On some systems, this wakeup is the only time the server will terminate in response to a stop command. Default is 60.
+How often, in seconds, the Interchange server will "wake up" and look for user
+reconfiguration requests and hung search processes. On some systems, this
+wakeup is the only time the server will terminate in response to a stop
+command. Default is 60.
 
 !block example
    HouseKeeping    5
@@ -1977,9 +1998,14 @@ How often, in seconds, the Interchange server will "wake up" and look for user r
 
 H2: IpHead *global*
 
-Implements the domain/IP session qualifiers so that only the first C<IpQuad> dot-quads of the IP address are used to qualify the session ID. The default is 1. This is a slight compromise on security, but it allows non-cookie-accepting browsers, like AOL's V2.0, to use multiple proxy servers.
+Implements the domain/IP session qualifiers so that only the first C<IpQuad>
+dot-quads of the IP address are used to qualify the session ID. The default is
+1. This is a slight compromise on security, but it allows non-cookie-accepting
+browsers, like AOL's V2.0, to use multiple proxy servers.
 
-C<DomainTail> is preferable unless one of your HTTP servers does not do host name lookups. Default is C<No>, and DomainTail must be set to C<No> for it to operate.
+C<DomainTail> is preferable unless one of your HTTP servers does not do host
+name lookups. Default is C<No>, and DomainTail must be set to C<No> for it to
+operate.
 
 !block example
    IpHead Yes
@@ -1993,14 +2019,14 @@ The number of dot-quads that IpHead will look at. Default is 1.
    IpQuad  2
 !endblock
 
-H2: Legacy *global*
-
-Makes a few optimizations for newer catalogs. Set to C<Yes> for the maximum
-compatibility with older Interchange catalogs.
-
 H2: Locale *global*
 
-Sets the global C<Locale> for use in error messages.
+Sets the global C<Locale> for use in error messages. Normally set from a
+file's contents, as in the example before:
+
+!block example
+   Locale <locale.error
+!endblock
 
 H2: LockoutCommand *global*
 
@@ -2020,19 +2046,26 @@ A script can be written which modifies an appropriate access control file, such 
    LockoutCommand   lockout %s
 !endblock
 
-H2: Log
-
-
-
 H2: Mall *global*
 
-Set to C<Yes> to issue cookies only for the current catalog's script. By default, when Interchange issues a cookie it does so for the base domain. This will allow multiple catalogs to operate on the same domain without interfering with each others session ID.
+Set to C<Yes> to issue cookies only for the current catalog's script. By
+default, when Interchange issues a cookie it does so for the base
+domain. This will allow multiple catalogs to operate on the same domain
+without interfering with each others session ID.
 
 A yes/no directive.
 
+!block example
+   Mall   Yes
+!endblock
+
 H2: MaxServers *global*
 
-The maximum number of servers that will be spawned to handle page requests. If more than MaxServers requests are pending, they will be queued (within the defined capability of the operating system, usually five pending requests) until the number of active servers goes below that value.
+The maximum number of servers that will be spawned to handle page
+requests. If more than MaxServers requests are pending, they will be
+queued (within the defined capability of the operating system, usually
+five pending requests) until the number of active servers goes below
+that value.
 
 !block example
    MaxServers     4
@@ -2042,7 +2075,10 @@ Default is 10.
 
 H2: NoAbsolute *global*
 
-Whether Interchange C<[file ...]> and other tags can read any file on the system (that is readable by the user id running the Interchange daemon). The default is No, which allows any file to be read. This should be changed in a multi-user environment to minimize security problems.
+Whether Interchange C<[file ...]> and other tags can read any file
+on the system (that is readable by the user id running the Interchange
+daemon). The default is No, which allows any file to be read. This should
+be changed in a multi-user environment to minimize security problems.
 
 !block example
    NoAbsolute     Yes
@@ -2050,7 +2086,11 @@ Whether Interchange C<[file ...]> and other tags can read any file on the system
 
 H2: PIDcheck *global*
 
-If non-zero, enables a check of running Interchange processes during the housekeeping routine. If a process has been running (or is hung) for longer than PIDcheck seconds then a kill -9 will be issued and the server count decremented. During the housekeeping routine, the number of servers checked by C<MaxServers> will be recounted based on PID files.
+If non-zero, enables a check of running Interchange processes during
+the housekeeping routine. If a process has been running (or is hung)
+for longer than PIDcheck seconds then a kill -9 will be issued and the
+server count decremented. During the housekeeping routine, the number
+of servers checked by C<MaxServers> will be recounted based on PID files.
 
 Default is 0, disabling the check.
 
@@ -2058,11 +2098,14 @@ Default is 0, disabling the check.
    PIDcheck   300
 !endblock
 
-If have long-running database builds, this needs to be disabled. Set it to a high value (perhaps 600, for 10 minutes), or use the offline script.
+If have long-running database builds, this needs to be disabled. Set it
+to a high value (perhaps 600, for 10 minutes), or use the offline script.
 
 H2: PIDfile *global*
 
-The file which will contain the Interchange server process ID so that it can be read to determine which proces should be sent a signal for stopping or reconfiguring the server.
+The file which will contain the Interchange server process ID so that
+it can be read to determine which proces should be sent a signal for
+stopping or reconfiguring the server.
 
 !block example
    PIDfile  /var/run/interchange/interchange.pid
@@ -2070,9 +2113,23 @@ The file which will contain the Interchange server process ID so that it can be 
 
 This file must be writable by the Interchange server user ID.
 
+H2: Profiles *global*
+
+Names a file (or files) which contain C<OrderProfile> and C<SearchProfile>
+settings that will apply for all catalogs.
+
+!block example
+   Profiles     etc/profiles.common
+!endblock
+
 H2: SafeUntrap *global*
 
-Sets the codes that will be untrapped in the C<Safe.pm> module and used for embedded Perl and conditional operations. The Safe.pm documentation is visible by typing C<perldoc Safe> at the command prompt. The default is C<249 148> for Perl 5.003, and C<ftfile sort> for Perl 5.003_20 and above, which untraps the file existence test operator and the sort operator. Define it as blank to prevent any operators but the default restrictive ones.
+Sets the codes that will be untrapped in the C<Safe.pm> module and used for
+embedded Perl and conditional operations. The Safe.pm documentation is visible
+by typing C<perldoc Safe> at the command prompt. The default is C<249 148> for
+Perl 5.003, and C<ftfile sort> for Perl 5.003_20 and above, which untraps the
+file existence test operator and the sort operator. Define it as blank to
+prevent any operators but the default restrictive ones.
 
 !block example
    SafeUntrap     ftfile sort ftewrite
@@ -2080,17 +2137,21 @@ Sets the codes that will be untrapped in the C<Safe.pm> module and used for embe
 
 H2: SendMailProgram *global*
 
-Specifies the program used to send email. Defaults to '/usr/lib/sendmail'. If it is not found at startup, Interchange will return an error message and refuse to start.
+Specifies the program used to send email. Defaults to '/usr/lib/sendmail'. If
+it is not found at startup, Interchange will return an error message and refuse
+to start.
 
 !block example
    SendMailProgram     /bin/mailer
 !endblock
 
-A value of 'none' will disable the sending of emailed orders. Orders must be read from a tracking file, log, or by other means.
+A value of 'none' will disable the sending of emailed orders. Orders must be
+read from a tracking file, log, or by other means.
 
 H2: SocketFile *global*
 
-The name of the file which is used for UNIX-domain socket communications. Must be in a directory where the Interchange user has write permission.
+The name of the file which is used for UNIX-domain socket communications. Must
+be in a directory where the Interchange user has write permission.
 
 !block example
    SocketFile  /var/run/interchange/interchange.socket
@@ -2152,10 +2213,6 @@ and cause system log entries something like:
 
 A custom wrapper can be created around it to get it to behave as desired.
 
-H2: Tag
-
-
-
 H2: TcpHost *global*
 
 When running in INET mode, using C<tlink>, specifies the hosts that are
@@ -2214,32 +2271,32 @@ C<pages> directory. Interchange uses this; use it to supply some default pages s
 
 The user's page, if it exists, will take precedence. There is also a catalog-specific version of this directive. If a page is found in that directory (or directories), it will take precedence.
 
-H2: Time
-
-
-
-H2: Try
-
-
-
 H2: UserTag *global*
 
 This defines a UserTag which is global in nature, meaning not limited by the C<Safe.pm> module, and is is available to all Interchange catalogs running on the server. Otherwise, this is the same as a catalog UserTag.
 
 H2: Variable *global*
 
-Defines a global variable that will be available in all catalogs with the notation @@Variable@@. Variable identifiers must begin with a capital letter, and can contain only word characters (B<A-Z,a-z,0-9> and underscore). They are case-sensitive. If using the C<ParseVariables> directive, only variables in ALL CAPS will be parsed. These are substituted first in any Interchange page, and can contain any valid Interchange tags including catalog variables.
+Defines a global variable that will be available in all catalogs
+with the notation @@Variable@@. Variable identifiers must begin with a
+capital letter, and can contain only word characters (B<A-Z,a-z,0-9> and
+underscore). They are case-sensitive. If using the C<ParseVariables>
+directive, only variables in ALL CAPS will be parsed. These are
+substituted first in any Interchange page, and can contain any valid
+Interchange tags including catalog variables.
 
 !block example
    Variable   DOCUMENT_ROOT   /usr/local/etc/httpd/htdocs
 !endblock
+
+If a variable is called with @_VARIABLE_@, and there is no catalog
+Variable with its name, the global Variable value will be inserted.
 
 There are several standard variables which should not be used:
 
 LI1: MV_FILE
 
 .Name of the last file read in, as in C<[file ...]> or an externally located perl routine.
-
 
 LI1: MV_NO_CRYPT
 
@@ -2249,11 +2306,11 @@ LI1: MV_PAGE
 
 .Name of the last page read in, as in the page called with mv_nextpage or mv_orderpage.
 
-LI1: CURRENCY
+LI1: CURRENCY, MV_CURRENCY
 
 .The current locale for currency.
 
-LI1: LANG
+LI1: LANG, MV_LANG
 
 .The current locale for language.
 
@@ -2481,6 +2538,26 @@ A file name to log formatted orders in. Unless preceded by a leading '/', will b
 
 If a C<Route> is set up to C<supplant>, this is ignored.
 
+H2: Autoend
+
+Sets an action that is automatically performed at the end every access. It is performed after any page parsing occurs, just before the transaction ends. See C<Autoload>.
+
+H2: Autoload
+
+Sets an action that is automatically performed for every access. It is
+performed before any page parsing occurs, and before the action or page
+is even determined. Can contain ITL tags or a global subroutine name. If
+the return value is true, a normal display of $CGI->{mv_nextpage} will
+occur -- if it returns a false (zero, undef, or blank) value, no page will
+be processed.
+
+As an example, to remap any C<mv_nextpage> accesses to the C<private>
+subdirectory of pages, set:
+
+!block example
+   Autoload   [perl] $CGI->{mv_nextpage} =~ s:^private/:public/:; [/perl]
+!endblock
+
 H2: AutoModifier
 
 Sets an attribute in a shopping cart entry to the field of the same name in the C<ProductsFile> pertaining to this item. This is useful when doing shipping calculations or other embedded Perl that is based on item attributes. To set whether an item is defined as "heavy" and requires truck shipment, set:
@@ -2504,15 +2581,6 @@ Some values are used by Interchange and are not legal:
        item
 !endblock
 
-H2: Autoload
-
-Sets an action that is automatically performed for every access. It is performed before any page parsing occurs, and before the action or page is even determined.
-
-As an example, to remap any C<mv_nextpage> accesses to the C<private> subdirectory of pages, set:
-
-!block example
-   Autoload   [perl] $CGI->{mv_nextpage} =~ s:^private/:public/:; [/perl]
-!endblock
 
 H2: CommonAdjust
 
@@ -4605,5 +4673,36 @@ Expect lots of crashes if this isn't done.
 Apache with SUEXEC: VLINK/UNIX socket mode will not work well unless installed as a normal user. If supporting multiple users, the TLINK/INET mode must be used.
 
 Note[label='Windows: '] Interchange will not work properly with Windows. No strategy has been yet developed for providing reliable operation on Windows.
+
+H1: Extra tags
+
+H2: Counter
+
+Inserts the value of a persistent counter. The counter value is stored in the given file, which is created if necessary. If the file name begins with a "/," then it is an absolute path. Otherwise, it is relative to VendRoot. If the tag causes the counter file to be created, the value is initialized to start. If value is given, the counter's value is set to the given value. If value is not supplied, the counter is incremented and its value is returned, unless decrement is supplied. In this case, the counter is decremented and its value is returned. The counter is implemented using Perl's C<File::Counter> module, which protects the file against simultaneous access by multiple processes.
+
+!block example
+   [counter file=FILE start=START value=VALUE decrement*]
+!endblock
+
+H2: Discount-Subtotal
+
+Inserts the discounted subtotal of the ordered items.
+
+H2: Filter
+
+Applies any of Interchange's standard filters to an arbitray value, or custom filters may be defined. The filters are also available as parameters to the C<cgi>, C<data>, and C<value> tags. Filters can be applied in sequence and as many as needed can be applied. Here is an example. If author or artist names are stored in the database ``LAST, First'' so that they sort properly, they may be displayed normally as ``First Last''. This call
+>    [filter op="name namecase"]WOOD, Grant[/filter]
+will display as
+>    Grant Wood
+Another way to do this would be:
+>    [data table=products column=artist key=99-102 filter="name namecase"]
+
+H2: Fly-Tax
+
+Builds a tax rate from C<taxarea>, C<taxrate>, C<taxshipping>, variable values, and the C<SalesTax> directive value.
+
+H2: Handling
+
+Calculates and inserts handling costs. Accepts the same noformat and convert arguments as the shipping tag.
 
 **Akopia and Interchange are registered trademarks of Akopia, Inc. All other product names are trademarks or registered trademarks of their respective manufacturers. This version of the document supersedes any and all previous versions.
