@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.40 2001-05-24 14:32:44 bill Exp $
+# $Id: ictags.sdf,v 1.41 2001-05-24 21:28:29 bill Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.40 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.41 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -832,7 +832,7 @@ Or moreE<nbspace>E<emdash> see also {{CMD[jump="#Looping tags and Sub-tags"]Loop
 H3: Summary
 
 !block example;
-    [B<accessories> code arg I<other_named_attributes>]
+    [B<accessories> code arg]
     [B<accessories> code=[[EXAMPLE_SKU]] arg="size, radio, ... " I<other_named_attributes>] I<deprecated>
     [B<accessories> code=[[EXAMPLE_SKU]] attribute=size type=radio ... I<other_named_attributes>]
 !endblock
@@ -1786,7 +1786,7 @@ equivalent:
 H3: Summary
 
 !block example;
-    [B<area> href arg I<other_named_attributes>]
+    [B<area> href arg]
     [B<area> href=dir/page arg=page_arguments I<other_named_attributes>]
 !endblock
 
@@ -2208,7 +2208,7 @@ Implements random or rotating banner ads. See also
 H3: Summary
 
 !block example;
-    [B<banner> category I<other_named_attributes>]
+    [B<banner> category]
     [B<banner> category=my_category I<other_named_attributes>]
 !endblock
 
@@ -2552,46 +2552,160 @@ H2: catch
 
 The page content contained within the E<lbracket>C<catch> I<label>]E<lbracket>C</catch>] block executes if the correspondingly labelled  {{C[jump="#try"]try}} block fails.
 
+You can also return a result based on the error message caught in the try block with paired subtags, like N<this:>
+
+!block example
+   [I<error message>]body text[/I<error message>]
+!endblock
+
+Note that this feature excises I<all> tag/endtag pairs, so you probably want to set 'C<interpolate=1>' if you have interchange tags inside the C<catch> block.
+
+
+
 See also E<lbracket>{{C[jump="#try"]try}}].
 
-Process body text if the corresponding E<lbracket>{{C[jump="#try"]try}} block generates an error.
 
 H3: Summary
 
-\Parameters: B<label>
 
-* label
-** The label specifying the corresponding E<lbracket>{{C[jump="#try"]try}} block. Defaults to 'default'.
+!block example;
+    [B<try> I<my_label>]
+        I<Body text to return if no error>
+    [B</try>]
+    .
+    .
+    .
+    [B<catch> label=I<my_label> I<other_named_attributes>]
+        [I<Error message 1>]
+            Return this if error 1 occurs
+        [I</Error message 1>]
 
+        [I<Error message 2>]
+            Return this if error 2 occurs, I<etc.>
+        [I</Error message 2>]
 
-This is a container tag, i.e. [catch] FOO [/catch].
-\Nesting: NO
+        I<Default body text to process if try block caused an error>
+    [B</catch>]
+!endblock
 
-Invalidates cache: B<no>
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#catch_label"]label}}|<<
+The label shared by the paired {{C[jump="#try"]try}} and C<catch> blocks
+>>|'default'
+!endblock
 
-Called Routine: 
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#catch_exact"]exact}}|I<No>
+{{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
+{{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<No>
+Container tag|Yes
+Has Subtags|<<
+. E<lbracket>I<Error message text>]
+.. body
+. E<lbracket>I</Error message text>]
+>>
+!endblock
+
+B<Tag expansion example>
+
+Ignoring whitespace, the following would return division result if successful, 0 on a division by zero, or an error N<message:>
+
+!block example
+   [set divisor]0[/set]
+   [try label=div]
+      [perl] eval(1 / [scratch divisor]) [/perl]
+   [/try]
+   [catch div]
+      [Illegal division by zero]
+         0
+      [/Illegal division by zero]
+      [eval "string" trapped by operation mask]
+         Perl Safe error
+      [/eval "string" trapped by operation mask]
+      Other division error
+   [/catch]
+---
+   Perl Safe error
+!endblock
 
 B<ASP-like Perl call:>
 
->    $Tag->catch(
->        {
->         label => VALUE,
->        },
->        BODY
->    )
->
-> OR
->
->    $Tag->catch($label, $ATTRHASH, $BODY);
+!block example; lang="Perl"
+    $Tag->catch(  { label => 'I<my_label>', },
+                  $body  );
+!endblock
 
- 
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->catch($label, $attribute_hash_reference, $body);
+!endblock
+
+H4: See Also
+
+{{CMD[jump="#try"]try}}
+
 
 H3: Description
 
+The page content contained within the E<lbracket>C<catch> I<label>]E<lbracket>C</catch>] block executes if the correspondingly labelled  {{C[jump="#try"]try}} block fails. The catch block executes in place on the page if triggered (I<i.e.>, it does not return its result in place of the try block).
 
-Process body text if the  E<lbracket>{{C[jump="#try"]try}} block generates an error.
+You can also return a result based on the error message caught in the try block with paired subtags, like N<this:>
 
-See also E<lbracket>{{C[jump="#try"]try}}.
+!block example
+   [I<error message>]special catch block for the error[/I<error message>]
+!endblock
+
+Note that this feature excises I<all> tag/endtag pairs before they are returned for reparsing, so you probably want to set 'C<interpolate=1>' if you have interchange tags inside the C<catch> block.  For example, if you have a conditional like N<this:>
+
+!block example
+   [catch I<my_label>]
+      [if scratch condition]
+         Do this
+      [else]
+         Do that
+      [/else]
+      [/if]
+   [/catch]
+!endblock
+
+you probably will not get what you expect without setting 'C<interpolate=1>' in the E<lbracket>C<catch>...] tag.  Note that you must then also name the label parameter, like N<this:>
+
+!block example
+   [catch label=I<my_label> interpolate=1]
+      ...
+   [/catch]
+!endblock
+
+The error message to use in the special block will generally be part of the entry the error generates in your error log.  For example, a division by zero error generates something like the following in the error log:
+
+!block example
+   127.0.0.1 4cU3Pgsh:127.0.0.1 - [24/May/2001:14:45:07 -0400]\
+   tag /cgi-bin/tag72/tag Safe: Illegal division by zero\
+   at (eval 526) line 2.
+!endblock
+
+(note that trailing backslashes in the example indicate a continued line).
+
+Ignore the caller stamp (the part before the colon ': '). Unless you have set 'exact=1', you can also leave out the ' at (eval I<nnn>)...', so the above error message would match error subtags containing 'IllegalE<nbspace>divisionE<nbspace>byE<nbspace>zero' (as in the example in the Summary section above).
+
+
+H4: {{CMD[id="catch_label"]label}}
+
+This is the label specifying the corresponding E<lbracket>{{C[jump="#try"]try}} block. Defaults to 'default'.
+
+
+H4: {{CMD[id="catch_exact"]exact}}
+
+If set (exact=1), your tag/endtag pair must match the line numbers also.  In other words, it needs to include the 'at (eval I<nnn>) line I<n>I<newline>' text. You probably do not need to use this.
 
 
 H2: cgi
@@ -5785,7 +5899,7 @@ and '%>' ASP delimiters allow you to mix HTML and perl code.
 H3: Summary
 
 !block example;
-    [B<mvasp> tables I<other_named_attributes>] I<ASP here> [/mvasp]
+    [B<mvasp> tables] I<ASP here> [/mvasp]
     [B<mvasp> tables="db1 db2 ..." I<other_named_attributes>] I<ASP here> [/mvasp]
 !endblock
 
@@ -6220,7 +6334,7 @@ equivalent:
 H3: Summary
 
 !block example;
-    [B<page> href arg I<other_named_attributes>]
+    [B<page> href arg]
     [B<page> href=dir/page arg=page_arguments I<other_named_attributes>]
 !endblock
 
@@ -6548,7 +6662,7 @@ See also {{CMD[jump="icconfig.html#Programming"]Interchange Programming}}.
 H3: Summary
 
 !block example;
-    [B<perl> tables I<other_named_attributes>] I<Code here> [/perl]
+    [B<perl> tables] I<Code here> [/perl]
     [B<perl> tables="db1 db2 ..." I<other_named_attributes>] I<Code here> [/perl]
 !endblock
 
@@ -7096,7 +7210,7 @@ module (included with Bundle::Interchange from CPAN).
 H3: Summary
 
 !block example;
-    [B<query> sql I<other_named_attributes>]
+    [B<query> sql]
     [B<query> sql="SQL_query_text" I<other_named_attributes>]
 !endblock
 
@@ -8373,7 +8487,7 @@ H3: Description
 
 The shipping cost of the items in the basket via C<mode>E<nbspace>E<emdash> the default
 mode is the shipping mode currently selected in the C<mv_shipmode>
-variable. See I<SHIPPING>.
+variable. See See the {{CMD[jump="icdatabase.html#Shipping"]Shipping}} section of the Database documentation.
 
 H4: Rounding
 
@@ -8383,48 +8497,52 @@ after the decimal point in the USA).
 
 
 
-
-
 H2: shipping_desc
+
+Returns the shipping description for the specified shipping B<mode>.  See the {{CMD[jump="icdatabase.html#Shipping"]Shipping}} section of the Database documentation.  See also shipping.asc database for shipping modes.
+
+N<Alias:> B<shipping_description>
+
+The two tags below are identical in N<operation:>
+
+>   [shipping_desc mode]
+>   [shipping_description mode]
 
 
 H3: Summary
 
-Aliases for tag
+!block example;
+    [B<shipping_desc> mode]
+    [B<shipping_desc> mode=I<shipping_mode>]
+!endblock
 
-shipping_description
+!block table; colvaligns="TTT"; format="244"
+Parameters|Description|Default
+mode|<<
+Shipping mode. This is a key into the shipping.asc database. See {{CMD[jump="icdatabase.html#Shipping"]Shipping}} documentation.
+>>|C<mv_shipmode>, or 'default' if C<mv_shipmode> not set
+!endblock
 
-\Parameters: B<mode>
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|Yes, but only if no B<mode> given
+Container tag|I<No>
+!endblock
 
-Positional parameters in same order.
+B<Tag expansion example:>
 
-
-Pass attribute hash as last to subroutine: B<no>
-
-Must pass named parameter interpolate=1 to cause interpolation.
-
-Invalidates cache: B<no>
-
-Called Routine: 
+!block example
+   [shipping_desc 1DM]
+---
+   UPS Next Day Air Early AM
+!endblock
 
 B<ASP-like Perl call:>
 
->    $Tag->shipping_desc(
->        {
->         mode => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->shipping_desc($mode);
-
- 
-
-H3: Description
-
-B<NO Description>
-
+!block example; lang="Perl"
+    $Tag->shipping_desc( $mode );
+!endblock
 
 
 
@@ -8472,40 +8590,36 @@ B<NO Description>
 
 H2: strip
 
+Strips leading and trailing whitespace from the contained body text.
 
 H3: Summary
 
+!block example;
+    [B<strip>]
+       Body text to strip
+    [B</strip>]
+!endblock
+
 No parameters.
 
-Pass attribute hash as last to subroutine: B<no>
-
-Must pass named parameter interpolate=1 to cause interpolation.
-
-This is a container tag, i.e. [strip] FOO [/strip].
-\Nesting: NO
-
-Invalidates cache: B<no>
-
-Called Routine: 
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<No>
+Container tag|I<Yes>
+Has Subtags|I<No>
+!endblock
 
 B<ASP-like Perl call:>
 
->    $Tag->strip(
->        {
->        },
->        BODY
->    )
->
-> OR
->
->    $Tag->strip($BODY);
+E:   $Tag->strip($BODY);
 
- 
+or even better, just do it directly like this
 
-H3: Description
-
-B<NO Description>
-
+!block example; lang="Perl"
+   $BODY =~ s/^\s+//;
+   $BODY =~ s/\s+$//;
+!endblock
 
 
 
@@ -9350,7 +9464,7 @@ with C<option=1>, set the tag prefix with C<prefix>, etc.
 
 H2: try
 
-Allows you to trap errors. Interchange processes the body text of the E<lbracket>C<try>]E<lbracket>C</try>] block and returns it normally if it does not generate an error. If it does generate an error, interchange executes and returns the E<lbracket>C<catch>]E<lbracket>C</catch>] block.
+Allows you to trap errors. Interchange processes the body text of the E<lbracket>C<try>]E<lbracket>C</try>] block and returns it normally if it does not generate an error. If it does generate an error, interchange executes the E<lbracket>C<catch>]E<lbracket>C</catch>] block.
 
 See also '{{C[jump="#catch"]catch}}'.
 
@@ -9425,7 +9539,7 @@ or similarly with positional parameters,
 
 !block example; lang="Perl"
     $Tag->try($label, $attribute_hash_reference, $try_body);
-    $Tag->catch($label, $attribute_hash_reference, $try_body);
+    $Tag->catch($label, $attribute_hash_reference, $catch_body);
 !endblock
 
 H4: See Also
@@ -9435,13 +9549,9 @@ H4: See Also
 
 H3: Description
 
-Allows you to trap errors. Interchange processes the body text of the E<lbracket>C<try>]E<lbracket>C</try>] block and returns it normally if it does not generate an error. If it does generate an error, interchange executes and returns the E<lbracket>C<catch>]E<lbracket>C</catch>] block.
+Allows you to trap errors. Interchange processes the body text of the E<lbracket>C<try>]E<lbracket>C</try>] block and returns it normally if it does not generate an error. If it does generate an error, interchange executes the E<lbracket>C<catch>]E<lbracket>C</catch>] block. The catch block executes where it is on the page (I<i.e.>, it does not replace the output of the try block).
 
 Note that the C<catch> block must occur after the [try] block in the document.
-
-!block note; label="Documentation note (Interchange 4.73): "
-At the time this documentation is being written, the 'partial' option is not implemented yet (try blocks behave as if 'partial=1' set rather than suppressing output in case of an error). The C<catch> block executes on error in any case.
-!endblock
 
 H4: {{CMD[id="try_label"]label}}
 
@@ -9459,14 +9569,30 @@ Note that the $Session->{try}{I<divide>} object will be set to the empty string 
 
 Note also the E<lbracket>{{C[jump="#catch"]catch}} interpolate=1] setting. The {{C[jump="#catch"]catch}} tag excises anything between tag/endtag pairs as part of its support for specific error handling (see the {{C[jump="#catch"]catch}} tag documentation for more detail).
 
+Some technical N<notes:>
+
+^ The E<lbracket>{{C[jump="#perl"]perl}}] and E<lbracket>{{C[jump="#calc"]calc}}] tags set $Session->{try}->{I<active_label>} on errors.
++ Look at the output of the E<lbracket>{{C[jump="#dump"]dump}}] tag after an error in a E<lbracket>C<try> block, or try the following:
+
+!block example
+   [perl]
+!endblock
+!block example; lang="Perl"
+      return join( "\n",
+                   map { "$_ \=\> '$Session->{try}{$_}'" }
+                       keys %{$Session->{try}} ) . "\n";
+!endblock
+!block example
+   [/perl]
+!endblock
 
 H4: {{CMD[id="try_status"]status}}
 
-Suppresses C<try> block output and returns 1 if no error or 0 if an error occurred instead.  Executes the C<catch> block in case of an error.
+Suppresses C<try> block output and returns 1 if no error or 0 if an error occurred instead.  Executes the C<catch> block as usual in case of an error.
 
 H4: {{CMD[id="try_hide"]hide}}
 
-Suppresses C<try> block output (regardless of success or failure).  Executes the C<catch> block in case of an error.
+Suppresses C<try> block output (regardless of success or failure).  Executes the C<catch> block as usual in case of an error.
 
 
 H4: {{CMD[id="try_partial"]partial}}
@@ -9657,7 +9783,7 @@ Can also set a new value within the current page.
 H3: Summary
 
 !block example;
-    [B<value> name I<other_named_attributes>]
+    [B<value> name]
     [B<value> name=I<form_var_name> I<other_named_attributes>]
 !endblock
 
@@ -10977,7 +11103,7 @@ This tag calculates column totals.
 H3: Summary
 
 !block example;
-    [B<summary> amount I<other_named_attributes>]
+    [B<summary> amount]
     [B<summary> amount=n.nn I<other_named_attributes>]
 !endblock
 
@@ -11727,7 +11853,7 @@ not an actual tag.
 A3: Summary
 
 !block example;
-    [B<dummy> first second I<other_named_attributes>][/dummy]
+    [B<dummy> first second][/dummy]
     [B<dummy> first=first_args second=second_args I<other_named_attributes>][/dummy]
 !endblock
 
