@@ -1,5 +1,5 @@
-#!/home/mike/perl/bin/perl
-    eval 'exec /home/mike/perl/bin/perl -S $0 ${1+"$@"}'
+#!/usr/bin/perl
+    eval 'exec /usr/bin/perl -S $0 ${1+"$@"}'
 	if $running_under_some_shell;
 =pod
 

@@ -1,13 +1,12 @@
 #!/usr/bin/perl
-#!/home/mike/perl/bin/perl
 
 use Getopt::Std;
 
 getopts('d:t:') or die "$@\n";;
 
-$dir = $opt_d || $opt_d || '.';
+$dir = $opt_d || '.';
 
-$head_title = $opt_t || $opt_t || 'Interchange Documentation';
+$head_title = $opt_t || 'Interchange Documentation';
 
 $fr_toc = <<EOF;
 <html>
@@ -203,18 +202,18 @@ EOF
 
 print NAV $foot;
 
-	chomp(@overview);
-	chomp(@items);
-	my %location;
-	for (@overview, @items) {
-		/^(.*)/ or next;
-		my $code = $1;
-		while( /<A NAME="([^"]+)"/g) {
-			$location{$1} = $location{$1} ? "$location{$1} $code" : $code;
-		}
+chomp(@overview);
+chomp(@items);
+my %location;
+for (@overview, @items) {
+	/^(.*)/ or next;
+	my $code = $1;
+	while( /<A NAME="([^"]+)"/g) {
+		$location{$1} = $location{$1} ? "$location{$1} $code" : $code;
 	}
-	for (@overview, @items) {
-		s/<A HREF="#([^"]+)"/<A HREF="_DOCURL_$location{$1}#$1"/g;
-	}
-	open(DOCDB, ">$dir/docdb.txt") or die "creat $dir/docdb.txt: $!\n";
-	print DOCDB join "\n", sort(@overview, @items), '';
+}
+for (@overview, @items) {
+	s/<A HREF="#([^"]+)"/<A HREF="_DOCURL_$location{$1}#$1"/g;
+}
+open(DOCDB, ">$dir/docdb.txt") or die "create $dir/docdb.txt: $!\n";
+print DOCDB join "\n", sort(@overview, @items), '';

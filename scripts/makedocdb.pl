@@ -7,7 +7,6 @@ use File::Spec;
 
 my $curdir = cwd();
 
-
 my $tried;
 
 CHECKPATH: {
@@ -29,11 +28,11 @@ my $DOCDEST= "$curdir/icdocdb";
 
 getopt('n');
 
-my $NOTOC= $opt_n || $opt_n;
+my $NOTOC = $opt_n;
 
 my $DOCDIR = $curdir;
 
-my $DBDEST  = "$DOCDIR/documentation.txt";
+my $DBDEST = "$DOCDIR/documentation.txt";
 
 if(-d $DOCDEST) {
 	File::Path::rmtree($DOCDEST)
@@ -44,7 +43,7 @@ File::Path::mkpath($DOCDEST)
 	or die "Couldn't clean $dest: $!\n";
 
 open(DBDEST, ">$DBDEST")
-	or die "creat $DBDEST: $!\n";
+	or die "create $DBDEST: $!\n";
 print DBDEST <<EOF;
 code
 %%
