@@ -1,0 +1,361 @@
+#!/usr/bin/perl -w
+#-------------------------------------------------------------------------------
+# tagfilter.pl
+#
+# Begun 10/4/2001 by William Dawkins
+# v0.01
+#
+# Formats incomplete tags from sdf source
+#
+# Usage:
+#
+#-------------------------------------------------------------------------------
+
+use strict;
+
+my %tag = ();
+my $raw = '';
+my $ref;
+my $parameter = '';
+my $section = '';
+my $extra = '';
+my $alias_flag = 0;
+
+while (<>) {
+	if (/!!!!!+ (\w+) !+$/) {
+		if ($tag{raw}) {
+			raw_output( \%tag, \$raw );
+		} else {
+			output( \%tag, \$raw ) if %tag;
+		}
+
+		%tag = ( tagname     => $1,
+				 positional  => '',
+				 interpolate => 'No',
+				 reparse     => 'Yes',
+				 cache       => 'No',
+				 container   => 'No',
+				 subtags     => 'No',
+				 nests       => 'Yes',
+				 aliases     => {},
+				 raw         => 1,
+			   );
+
+		$raw = '';
+		$ref = \$tag{bang_header};
+	}
+
+	$raw .= $_;
+
+	if ( /^h2:\s+(\w+)$/i ) {
+		$ref = \$tag{heading};
+		$section = 'h';
+
+	} elsif ( /^h3:\s+summary$/i ) {
+		$ref = \$tag{summary};
+		$section = 's';
+
+	} elsif ( /^h3:\s+description$/i ) {
+		$ref = \$tag{description};
+		$section = 'd';
+
+	}
+
+	$$ref .= $_;
+
+	if ( $section eq 's' ) {
+		$tag{more_attributes} = 1
+		  if ( /This may mean that there are parameters not shown here/i );
+		$tag{container} = 'Yes' if ( /^this is a container tag/i );
+		$tag{cache} = $1 if ( /^invalidates cache: b\<(\w+)\>/i );
+		$tag{nests} = 'No' if ( /^\\nesting:\s+no\s*$/i );
+
+		if ($alias_flag) {
+			if ( /^\>\s+(\w+)\s+==\>\s+(\w+)\s*$/ ) {
+				$tag{parameters}->{$1} = "Alias for $2\n";
+				$tag{aliases}->{$1} = $2;
+
+			} else {
+				$alias_flag = m/^\s*$/;
+			}
+		}
+
+		$alias_flag = 1 if ( /^attribute aliases$/i );
+	}
+
+#CHECK THIS LOGIC
+	if ( /^\\Parameters:\s+B\<(.+?)\>/ ) {
+		$tag{parameters} = { ( map { $_ => '' } split(/\s+/, $1) ) };
+		$tag{positional} = $1;
+		next;
+
+	} elsif ( /^\*\s+(\w+)$/ ) {
+		if ($parameter) {
+			$tag{parameters}->{$parameter} .= $extra;
+			$tag{parameters}->{$parameter} =~ s/\@\@\@ NL\n*/\n/g;
+			$tag{parameters}->{$parameter} =~ s/\n+$/\n/;
+			$extra = '';			
+		}
+		$parameter = $1;
+		$tag{raw} = 0;
+		next;
+
+	} elsif ( $parameter && /^\*(\*+)\s+(.+)$/ ) {
+		$tag{parameters}->{$parameter} .= $extra;
+		$tag{parameters}->{$parameter} .= ($1) ? "$1 $2\n" : "$2\n";
+		$tag{parameters}->{$parameter} =~ s/\n+$/\n/;
+		$extra = '';
+		next;
+
+	} elsif ( $parameter && ! m/^\s*$/ ) {
+		$extra .= $_;
+		next;
+
+	} else {
+		if ( $parameter ) {
+			$tag{parameters}->{$parameter} .= $extra if $parameter;
+			$extra = '';
+			$tag{parameters}->{$parameter} =~ s/\@\@\@ NL\n*/\n/g;
+			$tag{parameters}->{$parameter} =~ s/\n+$/\n/;
+			$parameter = '';
+			next;
+
+		}
+	}
+
+}
+
+if ($tag{raw}) {
+	raw_output( \%tag, \$raw );
+} else {
+	output( \%tag, \$raw ) if %tag;
+}
+
+
+sub raw_output {
+	my ($t, $r) = @_;
+
+	print STDERR "no heading for $t->{tagname}\n" and
+	  return 0 unless $t->{heading};
+
+	print $t->{bang_header};
+	print $t->{heading};
+
+	print "N:Alias: $t->{alias}\n\n" if exists $t->{alias};
+
+	print ( $t->{summary} ? $t->{summary} : "H3: Summary\n\n" );
+
+	my $more = ( exists($t->{more_attributes}) ) ? 'I<other_named_attributes>' : '';
+	print <<EOT;
+\# BEGIN ############### $t->{tagname} Summary Tables ####################
+!block example;
+    \[B\<$t->{tagname}> $t->{positional}$more]
+!endblock
+
+EOT
+
+	if ( exists($t->{parameters}) ) {
+		print '!block table; colvaligns="TTT"; format="262"', "\n";
+		print "Parameters\|Description\|Default\n";
+		my $p = $t->{parameters};
+
+		foreach my $k ( sort keys %$p ) {
+			my $a = ( exists($t->{aliases}->{$k}) ) ? $t->{aliases}->{$k} : '';
+			print '{{CMD[jump="#' . "$t->{tagname}_" . ( $a ? $a : $k );
+			print '"]' . $k . '}}|<<' . "\n$p->{$k}\>\>\|DEFAULT_VALUE\n";
+		}
+
+		print "\!endblock\n\n";
+	}
+
+	print <<TABLETOP;
+!block table; colvaligns="TT"
+Attributes|Default
+TABLETOP
+
+	print '{{CMD[jump="#', $t->{tagname}, '_ATT1"]ATT1}}|I<none>', "\n" if $more;
+	if ( $t->{container} eq 'Yes' ) {
+		print '{{CMD[jump="#attr_interpolate"]interpolate}}|I<', "$t->{interpolate}>\n";
+		print '{{CMD[jump="#attr_reparse"]reparse}}|I<', "$t->{reparse}>\n";
+
+	} else {
+		print '{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<', "$t->{interpolate}>\n";
+	}
+
+	print <<MORETABLE;
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I\<$t->{cache}\>
+Container tag|I\<$t->{container}\>
+Has Subtags|I\<$t->{subtags}\>
+Nests|I\<$t->{nests}\>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   \[$t->{tagname} $t->{positional}\]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+MORETABLE
+
+    print "   \$Tag->$t->{tagname}(  \{ ",
+		join( "\n" . ( " " x (15 + length($t->{tagname})) ),
+			map { "$_ => VALUE_$_" } sort split( /\s+/, $t->{positional}) ),
+				"\n\}, \$body  \)\;\n";
+
+	my $positional = $t->{positional};
+	$positional =~ y/ /,/;
+
+	print <<TABLEBOTTOM;
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    \$Tag->$t->{tagname}($positional, \$attribute_hash_reference, \$body);
+!endblock
+
+\# END +++++++++++++++ $t->{tagname} End Summary Tables ++++++++++++++++++++
+
+
+TABLEBOTTOM
+
+	print $t->{description};
+
+	if ( exists($t->{parameters}) ) {
+		print "\# BEGIN ########### $t->{tagname} Subsections ##############\n";
+
+		my $p = $t->{parameters};
+		print map { 'H4: {{CMD[id="' .
+						"$t->{tagname}_$_\"\]$_\}\}\n\n$p->{$_}\n\n" }
+			grep { ! exists($t->{aliases}->{$_}) } sort keys %$p;
+
+		print "\# END ++++++++++++ $t->{tagname} Subsections +++++++++++++\n\n";
+	}
+
+	return 1;
+}
+
+
+
+sub output {
+	my ($t, $r) = @_;
+
+	print STDERR "no heading for $t->{tagname}\n" and
+	  return 0 unless $t->{heading};
+
+	print $t->{bang_header};
+	print $t->{heading};
+
+	print "N:Alias: $t->{alias}\n\n" if exists $t->{alias};
+
+	print "H3: Summary\n\n";
+
+	my $more = ( exists($t->{more_attributes}) ) ? 'I<other_named_attributes>' : '';
+	print <<EOT;
+!block example;
+    \[B\<$t->{tagname}> $t->{positional}$more]
+!endblock
+
+EOT
+
+	if ( exists($t->{parameters}) ) {
+		print '!block table; colvaligns="TTT"; format="262"', "\n";
+		print "Parameters\|Description\|Default\n";
+		my $p = $t->{parameters};
+
+		foreach my $k ( sort keys %$p ) {
+			my $a = ( exists($t->{aliases}->{$k}) ) ? $t->{aliases}->{$k} : '';
+			print '{{CMD[jump="#' . "$t->{tagname}_" . ( $a ? $a : $k );
+			print '"]' . $k . '}}|<<' . "\n$p->{$k}\>\>\|DEFAULT_VALUE\n";
+		}
+
+		print "\!endblock\n\n";
+	}
+
+	print <<TABLETOP;
+!block table; colvaligns="TT"
+Attributes|Default
+TABLETOP
+
+	print '{{CMD[jump="#', $t->{tagname}, '_ATT1"]ATT1}}|I<none>', "\n" if $more;
+	if ( $t->{container} eq 'Yes' ) {
+		print '{{CMD[jump="#attr_interpolate"]interpolate}}|I<', "$t->{interpolate}>\n";
+		print '{{CMD[jump="#attr_reparse"]reparse}}|I<', "$t->{reparse}>\n";
+
+	} else {
+		print '{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<', "$t->{interpolate}>\n";
+	}
+
+	print <<MORETABLE;
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I\<$t->{cache}\>
+Container tag|I\<$t->{container}\>
+Has Subtags|I\<$t->{subtags}\>
+Nests|I\<$t->{nests}\>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   \[$t->{tagname} $t->{positional}\]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+MORETABLE
+
+    print "   \$Tag->$t->{tagname}(  \{ ",
+		join( "\n" . ( " " x (15 + length($t->{tagname})) ),
+			map { "$_ => VALUE_$_" } sort split( /\s+/, $t->{positional}) ),
+				"\n\}, \$body  \)\;\n";
+
+	my $positional = $t->{positional};
+	$positional =~ y/ /,/;
+
+	print <<TABLEBOTTOM;
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    \$Tag->$t->{tagname}($positional, \$attribute_hash_reference, \$body);
+!endblock
+
+TABLEBOTTOM
+
+	print $t->{description};
+
+	if ( exists($t->{parameters}) ) {
+		print "# BEGIN ############ $t->{tagname} Subsections ##############\n";
+
+		my $p = $t->{parameters};
+		print map { 'H4: {{CMD[id="' .
+						"$t->{tagname}_$_\"\]$_\}\}\n\n$p->{$_}\n\n" }
+			grep { ! exists($t->{aliases}->{$_}) } sort keys %$p;
+
+		print "# END +++++++++++++ $t->{tagname} Subsections ++++++++++++\n\n";
+	}
+
+	return 1;
+}

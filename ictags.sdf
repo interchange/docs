@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.62 2001-10-10 00:47:33 jon Exp $
+# $Id: ictags.sdf,v 1.63 2001-10-11 18:24:22 bill Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.62 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.63 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictags.html"
@@ -1788,6 +1788,75 @@ Attribute aliases
 
  
 
+# BEGIN ############### and Summary Tables ####################
+!block example;
+    [B<and> type term op compare]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#and_type"]base}}|<<
+Alias for type
+>>|DEFAULT_VALUE
+{{CMD[jump="#and_compare"]comp}}|<<
+Alias for compare
+>>|DEFAULT_VALUE
+{{CMD[jump="#and_compare"]compare}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#and_op"]op}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#and_op"]operator}}|<<
+Alias for op
+>>|DEFAULT_VALUE
+{{CMD[jump="#and_term"]term}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#and_type"]type}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<no>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [and type term op compare]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->and(  { compare => VALUE_compare
+                  op => VALUE_op
+                  term => VALUE_term
+                  type => VALUE_type
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->and(type,term,op,compare, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ and End Summary Tables ++++++++++++++++++++
+
+
 H3: Description
 
 The [and ...] tag is only used in conjunction with [if ...]. Example:
@@ -1804,6 +1873,26 @@ See E<lbracket>{{C[jump="#if"]if}} ...].
 
 
 
+
+
+# BEGIN ########### and Subsections ##############
+H4: {{CMD[id="and_compare"]compare}}
+
+
+
+H4: {{CMD[id="and_op"]op}}
+
+
+
+H4: {{CMD[id="and_term"]term}}
+
+
+
+H4: {{CMD[id="and_type"]type}}
+
+
+
+# END ++++++++++++ and Subsections +++++++++++++
 
 H2: area
 
@@ -1990,7 +2079,7 @@ H2: assign
 Allows you to assign numeric values to preempt calculation of one or more of the
 following N<tags:>
 
-* E<lbracket>{{C[jump="#handling"]handling}}],
+E<lbracket>{{C[jump="#handling"]handling}}],
 E<lbracket>{{C[jump="#salestax"]salestax}}],
 E<lbracket>{{C[jump="#shipping"]shipping}}], and
 E<lbracket>{{C[jump="#subtotal"]subtotal}}]
@@ -2055,7 +2144,7 @@ H3: Description
 The C<assign> tag allows you to assign numeric override values to one
 or more of the following N<tags:>
 
-* E<lbracket>{{C[jump="#handling"]handling}}],
+E<lbracket>{{C[jump="#handling"]handling}}],
 E<lbracket>{{C[jump="#salestax"]salestax}}],
 E<lbracket>{{C[jump="#shipping"]shipping}}], and
 E<lbracket>{{C[jump="#subtotal"]subtotal}}]
@@ -2181,6 +2270,58 @@ B<ASP-like Perl call:>
 
  
 
+# BEGIN ############### attr_list Summary Tables ####################
+!block example;
+    [B<attr_list> hash]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#attr_list_hash"]hash}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
+{{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<no>
+Container tag|I<Yes>
+Has Subtags|I<No>
+Nests|I<No>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [attr_list hash]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->attr_list(  { hash => VALUE_hash
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->attr_list(hash, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ attr_list End Summary Tables ++++++++++++++++++++
+
+
 H3: Description
 
 Tags an attribute list with values from a hash. Designed for use in
@@ -2232,6 +2373,14 @@ H4: E<lbrace>key:} false text {/key:}
 Displays C<false text> if the value of {key} is blank or zero, and nothing
 otherwise.
 
+
+
+# BEGIN ########### attr_list Subsections ##############
+H4: {{CMD[id="attr_list_hash"]hash}}
+
+
+
+# END ++++++++++++ attr_list Subsections +++++++++++++
 
 H2: banner
 
@@ -2437,6 +2586,60 @@ None. This tag doesn't work with embedded Perl due to special processing.
 
  
 
+# BEGIN ############### bounce Summary Tables ####################
+!block example;
+    [B<bounce> href if]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#bounce_href"]href}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#bounce_if"]if}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<no>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [bounce href if]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->bounce(  { href => VALUE_href
+                     if => VALUE_if
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->bounce(href,if, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ bounce End Summary Tables ++++++++++++++++++++
+
+
 H3: Description
 
 The [bounce ...] tag is designed to send an HTTP redirect (302 status code)
@@ -2476,6 +2679,18 @@ do:
 
 
 
+
+
+# BEGIN ########### bounce Subsections ##############
+H4: {{CMD[id="bounce_href"]href}}
+
+
+
+H4: {{CMD[id="bounce_if"]if}}
+
+
+
+# END ++++++++++++ bounce Subsections +++++++++++++
 
 H2: calc
 
@@ -2565,6 +2780,57 @@ B<ASP-like Perl call:>
 
  
 
+# BEGIN ############### cart Summary Tables ####################
+!block example;
+    [B<cart> name]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#cart_name"]name}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<YES>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [cart name]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->cart(  { name => VALUE_name
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->cart(name, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ cart End Summary Tables ++++++++++++++++++++
+
+
 H3: Description
 
 
@@ -2572,6 +2838,14 @@ Sets the name of the current shopping cart for display of shipping, price,
 total, subtotal, shipping, and nitems tags. 
 
 
+
+
+# BEGIN ########### cart Subsections ##############
+H4: {{CMD[id="cart_name"]name}}
+
+
+
+# END ++++++++++++ cart Subsections +++++++++++++
 
 H2: catch
 
@@ -2677,6 +2951,51 @@ H4: See Also
 {{CMD[jump="#try"]try}}
 
 
+# BEGIN ############### catch Summary Tables ####################
+!block example;
+    [B<catch> ]
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<No>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [catch ]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->catch(  { 
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->catch(, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ catch End Summary Tables ++++++++++++++++++++
+
+
 H3: Description
 
 The page content contained within the E<lbracket>C<catch> I<label>]E<lbracket>C</catch>] block executes if the correspondingly labelled  {{C[jump="#try"]try}} block fails. The catch block executes in place on the page if triggered (I<i.e.>, it does not return its result in place of the try block).
@@ -2702,6 +3021,7 @@ error generates something like the following in the error log:
 H4: {{CMD[id="catch_label"]label}}
 
 This is the label specifying the corresponding E<lbracket>{{C[jump="#try"]try}} block. Defaults to 'default'.
+
 
 
 H2: cgi
@@ -2736,6 +3056,57 @@ B<ASP-like Perl call:>
 
  
 
+# BEGIN ############### cgi Summary Tables ####################
+!block example;
+    [B<cgi> name]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#cgi_name"]name}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<YES>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [cgi name]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->cgi(  { name => VALUE_name
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->cgi(name, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ cgi End Summary Tables ++++++++++++++++++++
+
+
 H3: Description
 
 Displays the value of a CGI variable B<submitted to the current page>. This
@@ -2753,6 +3124,14 @@ This is the same as $CGI->{foo} in embedded Perl.
 
 
 
+
+
+# BEGIN ########### cgi Subsections ##############
+H4: {{CMD[id="cgi_name"]name}}
+
+
+
+# END ++++++++++++ cgi Subsections +++++++++++++
 
 H2: checked
 
@@ -2789,6 +3168,61 @@ B<ASP-like Perl call:>
 
  
 
+# BEGIN ############### checked Summary Tables ####################
+!block example;
+    [B<checked> name valueI<other_named_attributes>]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#checked_name"]name}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#checked_value"]value}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#checked_ATT1"]ATT1}}|I<none>
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<YES>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [checked name value]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->checked(  { name => VALUE_name
+                      value => VALUE_value
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->checked(name,value, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ checked End Summary Tables ++++++++++++++++++++
+
+
 H3: Description
 
 
@@ -2821,6 +3255,18 @@ C<cgi=1>.
 
 
 
+
+# BEGIN ########### checked Subsections ##############
+H4: {{CMD[id="checked_name"]name}}
+
+
+
+H4: {{CMD[id="checked_value"]value}}
+
+
+
+# END ++++++++++++ checked Subsections +++++++++++++
+
 H2: control
 
 Returns named scratchpad field or copies named scratch variable to scratchpad. Returns value specified by 'default' attribute if scratchpad variable is undefined or empty. Calling without a name moves to next scratchpad. Calling without a name and 'reset=1' returns to first scratchpad page.
@@ -2828,52 +3274,95 @@ Returns named scratchpad field or copies named scratch variable to scratchpad. R
 
 H3: Summary
 
-\Parameters: B<name default>
+!block example;
+    [B<control> name defaultI<other_named_attributes>]
+!endblock
 
-* name
-** Name of scratchpad variable to set or return
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#control_default"]default}}|<<
+Value to return if scratchpad variable missing or empty
+>>|DEFAULT_VALUE
+{{CMD[jump="#control_name"]name}}|<<
+Name of scratchpad variable to set or return
+>>|DEFAULT_VALUE
+{{CMD[jump="#control_reset"]reset}}|<<
+Resets scratchpad (i.e. $::Control array) by setting special scratch variable 'control_index' to 0. Control_index is an index into the $::Control == $Vend::Session->{control} array of hashrefs.
+* (must not specify name; may specify default)
+>>|DEFAULT_VALUE
+{{CMD[jump="#control_set"]set}}|<<
+Copies named scratch variable (i.e., from $::Scratch) to scratchpad with current control index.
+>>|DEFAULT_VALUE
+!endblock
 
-* default
-** Value to return if scratchpad variable missing or empty
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#control_ATT1"]ATT1}}|I<none>
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
 
-Attributes
-* reset (must not specify name; may specify default)
-** Resets scratchpad (i.e. $::Control array) by setting special scratch variable 'control_index' to 0. Control_index is an index into the $::Control == $Vend::Session->{control} array of hashrefs.
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<no>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
 
-* set
-** Copies named scratch variable (i.e., from $::Scratch) to scratchpad with current control index.
 
+B<Tag expansion example:>
 
+!block example
+   [control name default]
+---
+   TAGRESULT
+!endblock
 
-B<The attribute hash reference is passed> to the subroutine after
-the parameters as the last argument.
-B<This may mean that there are parameters not shown here.>
-
-Must pass named parameter interpolate=1 to cause interpolation.
-
-Invalidates cache: B<no>
-
-Called Routine: 
 
 B<ASP-like Perl call:>
 
->    $Tag->control(
->        {
->         name => VALUE,
->         default => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->control($name, $default, $ATTRHASH);
+!block example; lang="Perl"
+   $Tag->control(  { default => VALUE_default
+                      name => VALUE_name
+}, $body  );
+!endblock
 
- 
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->control(name,default, $attribute_hash_reference, $body);
+!endblock
 
 H3: Description
 
 Returns named scratchpad field or copies named scratch variable to scratchpad. Returns value specified by 'default' attribute if scratchpad variable is undefined or empty. Calling without a name moves to next scratchpad. Calling without a name and 'reset=1' returns to first scratchpad page.
 
+
+
+# BEGIN ############ control Subsections ##############
+H4: {{CMD[id="control_default"]default}}
+
+Value to return if scratchpad variable missing or empty
+
+
+H4: {{CMD[id="control_name"]name}}
+
+Name of scratchpad variable to set or return
+
+
+H4: {{CMD[id="control_reset"]reset}}
+
+Resets scratchpad (i.e. $::Control array) by setting special scratch variable 'control_index' to 0. Control_index is an index into the $::Control == $Vend::Session->{control} array of hashrefs.
+* (must not specify name; may specify default)
+
+
+H4: {{CMD[id="control_set"]set}}
+
+Copies named scratch variable (i.e., from $::Scratch) to scratchpad with current control index.
+
+
+# END +++++++++++++ control Subsections ++++++++++++
 
 H2: control_set
 
@@ -2924,10 +3413,71 @@ B<ASP-like Perl call:>
 
  
 
+# BEGIN ############### control_set Summary Tables ####################
+!block example;
+    [B<control_set> indexI<other_named_attributes>]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#control_set_index"]index}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#control_set_ATT1"]ATT1}}|I<none>
+{{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
+{{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<no>
+Container tag|I<Yes>
+Has Subtags|I<No>
+Nests|I<No>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [control_set index]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->control_set(  { index => VALUE_index
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->control_set(index, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ control_set End Summary Tables ++++++++++++++++++++
+
+
 H3: Description
 
 Bulk-sets scratchpad variables on the scratchpad page specified by 'index'. Note that, unlike [control], this does not copy values from scratch.
 
+
+
+# BEGIN ########### control_set Subsections ##############
+H4: {{CMD[id="control_set_index"]index}}
+
+
+
+# END ++++++++++++ control_set Subsections +++++++++++++
 
 H2: counter
 
@@ -2958,6 +3508,60 @@ Attribute aliases
 
 >            name ==> file
 
+# BEGIN ############### counter Summary Tables ####################
+!block example;
+    [B<counter> file]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#counter_file"]file}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#counter_file"]name}}|<<
+Alias for file
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<YES>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [counter file]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->counter(  { file => VALUE_file
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->counter(file, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ counter End Summary Tables ++++++++++++++++++++
+
+
 H3: Description
 
 Manipulates a persistent counter, by default incrementing it and returning the new value.
@@ -2985,6 +3589,14 @@ Shows the value of the counter without incrementing or decrementing it.
 
 
 
+
+
+# BEGIN ########### counter Subsections ##############
+H4: {{CMD[id="counter_file"]file}}
+
+
+
+# END ++++++++++++ counter Subsections +++++++++++++
 
 H2: currency
 
@@ -3023,6 +3635,61 @@ B<ASP-like Perl call:>
 
  
 
+# BEGIN ############### currency Summary Tables ####################
+!block example;
+    [B<currency> convert noformat]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#currency_convert"]convert}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#currency_noformat"]noformat}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
+{{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<no>
+Container tag|I<Yes>
+Has Subtags|I<No>
+Nests|I<No>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [currency convert noformat]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->currency(  { convert => VALUE_convert
+                       noformat => VALUE_noformat
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->currency(convert,noformat, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ currency End Summary Tables ++++++++++++++++++++
+
+
 H3: Description
 
 
@@ -3048,6 +3715,18 @@ will cause the number 8.982,04 to be displayed.
 
 
 
+
+
+# BEGIN ########### currency Subsections ##############
+H4: {{CMD[id="currency_convert"]convert}}
+
+
+
+H4: {{CMD[id="currency_noformat"]noformat}}
+
+
+
+# END ++++++++++++ currency Subsections +++++++++++++
 
 H2: data
 
@@ -3095,6 +3774,85 @@ Attribute aliases
 
 
  
+
+# BEGIN ############### data Summary Tables ####################
+!block example;
+    [B<data> table field keyI<other_named_attributes>]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#data_table"]base}}|<<
+Alias for table
+>>|DEFAULT_VALUE
+{{CMD[jump="#data_key"]code}}|<<
+Alias for key
+>>|DEFAULT_VALUE
+{{CMD[jump="#data_field"]col}}|<<
+Alias for field
+>>|DEFAULT_VALUE
+{{CMD[jump="#data_field"]column}}|<<
+Alias for field
+>>|DEFAULT_VALUE
+{{CMD[jump="#data_table"]database}}|<<
+Alias for table
+>>|DEFAULT_VALUE
+{{CMD[jump="#data_field"]field}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#data_key"]key}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#data_field"]name}}|<<
+Alias for field
+>>|DEFAULT_VALUE
+{{CMD[jump="#data_key"]row}}|<<
+Alias for key
+>>|DEFAULT_VALUE
+{{CMD[jump="#data_table"]table}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#data_ATT1"]ATT1}}|I<none>
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<no>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [data table field key]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->data(  { field => VALUE_field
+                   key => VALUE_key
+                   table => VALUE_table
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->data(table,field,key, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ data End Summary Tables ++++++++++++++++++++
+
 
 H3: Description
 
@@ -3152,6 +3910,22 @@ would be better not to use that name at all.
 
 
 
+
+# BEGIN ########### data Subsections ##############
+H4: {{CMD[id="data_field"]field}}
+
+
+
+H4: {{CMD[id="data_key"]key}}
+
+
+
+H4: {{CMD[id="data_table"]table}}
+
+
+
+# END ++++++++++++ data Subsections +++++++++++++
+
 H2: default
 
 
@@ -3187,6 +3961,61 @@ B<ASP-like Perl call:>
 
  
 
+# BEGIN ############### default Summary Tables ####################
+!block example;
+    [B<default> name defaultI<other_named_attributes>]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#default_default"]default}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#default_name"]name}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#default_ATT1"]ATT1}}|I<none>
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<YES>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [default name default]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->default(  { default => VALUE_default
+                      name => VALUE_name
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->default(name,default, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ default End Summary Tables ++++++++++++++++++++
+
+
 H3: Description
 
 
@@ -3197,6 +4026,18 @@ default supplied. Got that? This tag is DEPRECATED anyway.
 
 
 
+
+
+# BEGIN ########### default Subsections ##############
+H4: {{CMD[id="default_default"]default}}
+
+
+
+H4: {{CMD[id="default_name"]name}}
+
+
+
+# END ++++++++++++ default Subsections +++++++++++++
 
 H2: description
 
@@ -3231,6 +4072,60 @@ B<ASP-like Perl call:>
 
  
 
+# BEGIN ############### description Summary Tables ####################
+!block example;
+    [B<description> code base]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#description_base"]base}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#description_code"]code}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<no>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [description code base]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->description(  { base => VALUE_base
+                          code => VALUE_code
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->description(code,base, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ description End Summary Tables ++++++++++++++++++++
+
+
 H3: Description
 
 
@@ -3247,6 +4142,18 @@ for example C<desc_en> for English, C<desc_fr> for French, etc.
 
 
 
+
+
+# BEGIN ########### description Subsections ##############
+H4: {{CMD[id="description_base"]base}}
+
+
+
+H4: {{CMD[id="description_code"]code}}
+
+
+
+# END ++++++++++++ description Subsections +++++++++++++
 
 H2: discount
 
@@ -3283,6 +4190,58 @@ B<ASP-like Perl call:>
 >    $Tag->discount($code, $BODY);
 
  
+
+# BEGIN ############### discount Summary Tables ####################
+!block example;
+    [B<discount> code]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#discount_code"]code}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
+{{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<YES>
+Container tag|I<Yes>
+Has Subtags|I<No>
+Nests|I<No>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [discount code]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->discount(  { code => VALUE_code
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->discount(code, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ discount End Summary Tables ++++++++++++++++++++
+
 
 H3: Description
 
@@ -3358,6 +4317,14 @@ doesn't correspond to a standard Interchange tag, you can use the [calc] tag:
 
 
 
+
+# BEGIN ########### discount Subsections ##############
+H4: {{CMD[id="discount_code"]code}}
+
+
+
+# END ++++++++++++ discount Subsections +++++++++++++
+
 H2: dump
 
 Dumps client connection information, cart contents, query value, contents of environment, session, and CGI with Data::Dumper to the page. This is useful for debugging.
@@ -3387,10 +4354,56 @@ B<ASP-like Perl call:>
 
  
 
+# BEGIN ############### dump Summary Tables ####################
+!block example;
+    [B<dump> ]
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<no>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [dump ]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->dump(  { 
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->dump(, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ dump End Summary Tables ++++++++++++++++++++
+
+
 H3: Description
 
 
 Dumps client connection information, cart contents, query value, contents of environment, session, and CGI with Data::Dumper to the page. This is useful for debugging.
+
 
 
 
@@ -3401,55 +4414,57 @@ Uses ECML (Electronic Commerce Markup Language) module to map Interchange forms/
 
 H3: Summary
 
-\Parameters: B<name function>
-
-* function (default = 'widget')
-
-!block example
-Place form boxes on page:
-
-	 [ecml name]
-	 [ecml address]
-
-Magic database entry from country database:
-
-	[ecml country]
-
-Map values back to Interchange variables for saving in UserDB:
-
-	<INPUT TYPE=hidden NAME=mv_click CHECKED VALUE="ECML_map">
-	[set ECML_map]
-	[ecml function=mapback]
-	[/set]
+!block example;
+    [B<ecml> name functionI<other_named_attributes>]
 !endblock
 
-Positional parameters in same order.
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#ecml_function"]function}}|<<
+ecml function (default = 'widget')
+>>|DEFAULT_VALUE
+{{CMD[jump="#ecml_name"]name}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#ecml_ATT1"]ATT1}}|I<none>
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<no>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
 
 
-B<The attribute hash reference is passed> to the subroutine after
-the parameters as the last argument.
-B<This may mean that there are parameters not shown here.>
+B<Tag expansion example:>
 
-Must pass named parameter interpolate=1 to cause interpolation.
+!block example
+   [ecml name function]
+---
+   TAGRESULT
+!endblock
 
-Invalidates cache: B<no>
-
-Called Routine: 
 
 B<ASP-like Perl call:>
 
->    $Tag->ecml(
->        {
->         name => VALUE,
->         function => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->ecml($name, $function, $ATTRHASH);
+!block example; lang="Perl"
+   $Tag->ecml(  { function => VALUE_function
+                   name => VALUE_name
+}, $body  );
+!endblock
 
- 
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->ecml(name,function, $attribute_hash_reference, $body);
+!endblock
 
 H3: Description
 
@@ -3529,6 +4544,19 @@ split it into first name and last name for ECML purposes and map the results
 back. If you have C<fname> and C<lname>, then it will not.
 
 
+
+# BEGIN ############ ecml Subsections ##############
+H4: {{CMD[id="ecml_function"]function}}
+
+ecml function (default = 'widget')
+
+
+H4: {{CMD[id="ecml_name"]name}}
+
+
+
+# END +++++++++++++ ecml Subsections ++++++++++++
+
 H2: either
 
 The [either]this[or]that[/either] implements a check for the first
@@ -3575,9 +4603,56 @@ B<ASP-like Perl call:>
 
  
 
+# BEGIN ############### either Summary Tables ####################
+!block example;
+    [B<either> ]
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
+{{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<no>
+Container tag|I<Yes>
+Has Subtags|I<No>
+Nests|I<No>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [either ]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->either(  { 
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->either(, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ either End Summary Tables ++++++++++++++++++++
+
+
 H3: Description
 
 B<NO Description>
+
 
 
 
@@ -3615,6 +4690,58 @@ B<ASP-like Perl call:>
 >    $Tag->error($name, $ATTRHASH);
 
  
+
+# BEGIN ############### error Summary Tables ####################
+!block example;
+    [B<error> nameI<other_named_attributes>]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#error_name"]name}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#error_ATT1"]ATT1}}|I<none>
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<no>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [error name]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->error(  { name => VALUE_name
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->error(name, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ error End Summary Tables ++++++++++++++++++++
+
 
 H3: Description
 
@@ -3721,6 +4848,14 @@ you have {REQUIRED: HTML}, but only when the field is required.
 
 
 
+
+# BEGIN ########### error Subsections ##############
+H4: {{CMD[id="error_name"]name}}
+
+
+
+# END ++++++++++++ error Subsections +++++++++++++
+
 H2: export
 
 Exports a database to a delimited text file (see also
@@ -3729,89 +4864,162 @@ Exports a database to a delimited text file (see also
 
 H3: Summary
 
-\Parameters: B<table>
-
-Positional parameters in same order.
-
-* table
-** The table to export
-
-* file
-* Filename to export to. Note that the NoAbsolute directive and other conditions may affect actual location of the output file.
-
-* type
-** Specifies the [line, record] delimiter types. Either NOTES or one of the following:
-
-!block example; lang="Perl"
-  my %Delimiter = (
-	2 => ["\n", "\n\n"],
-	3 => ["\n%%\n", "\n%%%\n"],
-	4 => ["CSV","\n"],
-	5 => ['|', "\n"],
-	6 => ["\t", "\n"],
-	7 => ["\t", "\n"],
-	8 => ["\t", "\n"],
-	LINE => ["\n", "\n\n"],
-	'%%%' => ["\n%%\n", "\n%%%\n"],
-	'%%' => ["\n%%\n", "\n%%%\n"],
-	CSV => ["CSV","\n"],
-	PIPE => ['|', "\n"],
-	TAB => ["\t", "\n"],
-	);
+!block example;
+    [B<export> tableI<other_named_attributes>]
 !endblock
 
-** If using NOTES
-*** notes_separator (defaults to "\f")
-*** notes_field (defaults to "notes_field")
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#export_table"]base}}|<<
+Alias for table
+>>|DEFAULT_VALUE
+{{CMD[jump="#export_table"]database}}|<<
+Alias for table
+>>|DEFAULT_VALUE
+{{CMD[jump="#export_delete"]delete}}|<<
+If 'verify' attribute also set, deletes column specified by 'field' attribute rather than adding a column.
+>>|DEFAULT_VALUE
+{{CMD[jump="#export_field"]field}}|<<
+The column to add (or delete if delete and verify are true)
+>>|DEFAULT_VALUE
+{{CMD[jump="#export_file"]file}}|<<
+Filename to export to. Note that the NoAbsolute directive and other conditions may affect actual location of the output file.
+>>|DEFAULT_VALUE
+{{CMD[jump="#export_sort"]sort}}|<<
+Output sorted rows (N<usage:> sort="I<sort_field>:I<sort_option>") (see search/form variable 'mv_sort_option' for sort options)
+>>|DEFAULT_VALUE
+{{CMD[jump="#export_table"]table}}|<<
+The table to export
+>>|DEFAULT_VALUE
+{{CMD[jump="#export_type"]type}}|<<
+Specifies the [line, record] delimiter types. Either NOTES or one of the following:
 
-* field
-** The column to add (or delete if delete and verify are true)
+>  my %Delimiter = (
+>	2 => ["\n", "\n\n"],
+>	3 => ["\n%%\n", "\n%%%\n"],
+>	4 => ["CSV","\n"],
+>	5 => ['|', "\n"],
+>	6 => ["\t", "\n"],
+>	7 => ["\t", "\n"],
+>	8 => ["\t", "\n"],
+>	LINE => ["\n", "\n\n"],
+>	'%%%' => ["\n%%\n", "\n%%%\n"],
+>	'%%' => ["\n%%\n", "\n%%%\n"],
+>	CSV => ["CSV","\n"],
+>	PIPE => ['|', "\n"],
+>	TAB => ["\t", "\n"],
+>	);
 
-* delete
-** If 'verify' attribute also set, deletes column specified by 'field' attribute rather than adding a column.
+* If using NOTES
+** notes_separator (defaults to "\f")
+** notes_field (defaults to "notes_field")
+>>|DEFAULT_VALUE
+{{CMD[jump="#export_verify"]verify}}|<<
+must be true when deleting a column
+>>|DEFAULT_VALUE
+!endblock
 
-* verify
-** must be true when deleting a column
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#export_ATT1"]ATT1}}|I<none>
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
 
-* sort
-** Output sorted rows (N<usage:> sort="I<sort_field>:I<sort_option>") (see search/form variable 'mv_sort_option' for sort options)
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<YES>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
 
 
+B<Tag expansion example:>
 
-B<The attribute hash reference is passed> to the subroutine after
-the parameters as the last argument.
-B<This may mean that there are parameters not shown here.>
+!block example
+   [export table]
+---
+   TAGRESULT
+!endblock
 
-Must pass named parameter interpolate=1 to cause interpolation.
-
-Invalidates cache: B<YES>
-
-Called Routine: 
 
 B<ASP-like Perl call:>
 
->    $Tag->export(
->        {
->         table => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->export($table, $ATTRHASH);
+!block example; lang="Perl"
+   $Tag->export(  { table => VALUE_table
+}, $body  );
+!endblock
 
-Attribute aliases
+or similarly with positional parameters,
 
->            base ==> table
->            database ==> table
-
-
- 
+!block example; lang="Perl"
+    $Tag->export(table, $attribute_hash_reference, $body);
+!endblock
 
 H3: Description
 
 Exports 'table' to a delimited text file. See also {{C[jump="#import"]import}} tag which imports files into databases.
 
+
+
+# BEGIN ############ export Subsections ##############
+H4: {{CMD[id="export_delete"]delete}}
+
+If 'verify' attribute also set, deletes column specified by 'field' attribute rather than adding a column.
+
+
+H4: {{CMD[id="export_field"]field}}
+
+The column to add (or delete if delete and verify are true)
+
+
+H4: {{CMD[id="export_file"]file}}
+
+Filename to export to. Note that the NoAbsolute directive and other conditions may affect actual location of the output file.
+
+
+H4: {{CMD[id="export_sort"]sort}}
+
+Output sorted rows (N<usage:> sort="I<sort_field>:I<sort_option>") (see search/form variable 'mv_sort_option' for sort options)
+
+
+H4: {{CMD[id="export_table"]table}}
+
+The table to export
+
+
+H4: {{CMD[id="export_type"]type}}
+
+Specifies the [line, record] delimiter types. Either NOTES or one of the following:
+
+>  my %Delimiter = (
+>	2 => ["\n", "\n\n"],
+>	3 => ["\n%%\n", "\n%%%\n"],
+>	4 => ["CSV","\n"],
+>	5 => ['|', "\n"],
+>	6 => ["\t", "\n"],
+>	7 => ["\t", "\n"],
+>	8 => ["\t", "\n"],
+>	LINE => ["\n", "\n\n"],
+>	'%%%' => ["\n%%\n", "\n%%%\n"],
+>	'%%' => ["\n%%\n", "\n%%%\n"],
+>	CSV => ["CSV","\n"],
+>	PIPE => ['|', "\n"],
+>	TAB => ["\t", "\n"],
+>	);
+
+* If using NOTES
+** notes_separator (defaults to "\f")
+** notes_field (defaults to "notes_field")
+
+
+H4: {{CMD[id="export_verify"]verify}}
+
+must be true when deleting a column
+
+
+# END +++++++++++++ export Subsections ++++++++++++
 
 H2: field
 
@@ -3855,6 +5063,75 @@ Attribute aliases
 
  
 
+# BEGIN ############### field Summary Tables ####################
+!block example;
+    [B<field> name code]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#field_code"]code}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#field_name"]col}}|<<
+Alias for name
+>>|DEFAULT_VALUE
+{{CMD[jump="#field_name"]column}}|<<
+Alias for name
+>>|DEFAULT_VALUE
+{{CMD[jump="#field_name"]field}}|<<
+Alias for name
+>>|DEFAULT_VALUE
+{{CMD[jump="#field_code"]key}}|<<
+Alias for code
+>>|DEFAULT_VALUE
+{{CMD[jump="#field_name"]name}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#field_code"]row}}|<<
+Alias for code
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<no>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [field name code]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->field(  { code => VALUE_code
+                    name => VALUE_name
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->field(name,code, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ field End Summary Tables ++++++++++++++++++++
+
+
 H3: Description
 
 
@@ -3872,6 +5149,18 @@ C<[field column key]> is the same as E<lbracket>{{C[jump="#data"]data}} products
 
 
 
+
+
+# BEGIN ########### field Subsections ##############
+H4: {{CMD[id="field_code"]code}}
+
+
+
+H4: {{CMD[id="field_name"]name}}
+
+
+
+# END ++++++++++++ field Subsections +++++++++++++
 
 H2: file
 
@@ -3906,6 +5195,60 @@ B<ASP-like Perl call:>
 
  
 
+# BEGIN ############### file Summary Tables ####################
+!block example;
+    [B<file> name type]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#file_name"]name}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#file_type"]type}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<no>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [file name type]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->file(  { name => VALUE_name
+                   type => VALUE_type
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->file(name,type, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ file End Summary Tables ++++++++++++++++++++
+
+
 H3: Description
 
 
@@ -3920,6 +5263,18 @@ on the file before it is sent.
 
 
 
+
+
+# BEGIN ########### file Subsections ##############
+H4: {{CMD[id="file_name"]name}}
+
+
+
+H4: {{CMD[id="file_type"]type}}
+
+
+
+# END ++++++++++++ file Subsections +++++++++++++
 
 H2: filter
 
@@ -3956,6 +5311,58 @@ B<ASP-like Perl call:>
 >    $Tag->filter($op, $BODY);
 
  
+
+# BEGIN ############### filter Summary Tables ####################
+!block example;
+    [B<filter> op]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#filter_op"]op}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
+{{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<no>
+Container tag|I<Yes>
+Has Subtags|I<No>
+Nests|I<No>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [filter op]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->filter(  { op => VALUE_op
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->filter(op, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ filter End Summary Tables ++++++++++++++++++++
+
 
 H3: Description
 
@@ -4222,6 +5629,14 @@ C<[value name=foo filter="lookup.products.price.extra"]> will send
 
 
 
+
+# BEGIN ########### filter Subsections ##############
+H4: {{CMD[id="filter_op"]op}}
+
+
+
+# END ++++++++++++ filter Subsections +++++++++++++
+
 H2: flag
 
 Controls Interchange flags. For example, flags affect database access
@@ -4230,81 +5645,97 @@ features. See also the E<lbracket>{{C[jump="#tag"]tag}}] tag.
 
 H3: Summary
 
-\Parameters: B<type>
+!block example;
+    [B<flag> type]
+!endblock
 
-C<type> may be one of the following
-
-* read
-** Flags the table read-only
-
-* write
-** Flags the table writeable by default (or read-only if you also set
-the C<value>=0 attribute)
-
-* transactions
-** Reopens the database in transactions mode if {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe.pm}} is not active
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#flag_build"]build}}|<<
+Forces build of static Interchange page specified by the C<name> attribute
+>>|DEFAULT_VALUE
+{{CMD[jump="#flag_checkhtml"]checkhtml}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#flag_commit"]commit}}|<<
+Attempts to commit transactions
+>>|DEFAULT_VALUE
+{{CMD[jump="#flag_type"]flag}}|<<
+Alias for type
+>>|DEFAULT_VALUE
+{{CMD[jump="#flag_type"]name}}|<<
+Alias for type
+>>|DEFAULT_VALUE
+{{CMD[jump="#flag_read"]read}}|<<
+Flags the table read-only
+>>|DEFAULT_VALUE
+{{CMD[jump="#flag_rollback"]rollback}}|<<
+Attempts to rollback transactions
+>>|DEFAULT_VALUE
+{{CMD[jump="#flag_show"]show}}|<<
+Normally, the E<lbracket>C<flag>] tag returns nothing to the
+page. Setting 'C<show>=1' causes the tag to return status, if any.
+>>|DEFAULT_VALUE
+{{CMD[jump="#flag_tables"]table}}|<<
+Alias for tables
+>>|DEFAULT_VALUE
+{{CMD[jump="#flag_tables"]tables}}|<<
+The name of the table to flag
+* 'C<table>' is an alias
+>>|DEFAULT_VALUE
+{{CMD[jump="#flag_transactions"]transactions}}|<<
+Reopens the database in transactions mode if {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe.pm}} is not active
 (e.g., in a global subroutine, usertag or
 E<lbracket>{{C[jump="#perl_global"]perl}}E<nbspace>global=1]
 tag). The limitation exists because it is not possible to reopen a
 database within {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe.pm}}.
+>>|DEFAULT_VALUE
+{{CMD[jump="#flag_type"]type}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#flag_value"]value}}|<<
+The boolean value of the flag
+>>|DEFAULT_VALUE
+{{CMD[jump="#flag_write"]write}}|<<
+Flags the table writeable by default (or read-only if you also set
+the C<value>=0 attribute)
+>>|DEFAULT_VALUE
+!endblock
 
-* commit
-** Attempts to commit transactions
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
 
-* rollback
-** Attempts to rollback transactions
-
-* build
-** Forces build of static Interchange page specified by the C<name> attribute
-
-* checkhtml
-
-
-H3: Attributes
-
-* 'C<flag>' and 'C<name>'
-** Aliases for 'C<type>' (except for 'C<type>=build')
-
-* tables
-** The name of the table to flag
-** 'C<table>' is an alias
-
-* value
-** The boolean value of the flag
-
-* name
-** Name of page to build or alias for 'C<type>'
-
-* show
-** Normally, the E<lbracket>C<flag>] tag returns nothing to the
-page. Setting 'C<show>=1' causes the tag to return status, if any.
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<YES>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
 
 
-Must pass named parameter interpolate=1 to cause interpolation.
+B<Tag expansion example:>
 
-Invalidates cache: B<YES>
+!block example
+   [flag type]
+---
+   TAGRESULT
+!endblock
 
-Called Routine: 
 
 B<ASP-like Perl call:>
 
->    $Tag->flag(
->        {
->         type => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->flag($type, $ATTRHASH);
+!block example; lang="Perl"
+   $Tag->flag(  { type => VALUE_type
+}, $body  );
+!endblock
 
-Attribute aliases
+or similarly with positional parameters,
 
->            flag ==> type
->            name ==> type
->           table ==> tables
-
- 
+!block example; lang="Perl"
+    $Tag->flag(type, $attribute_hash_reference, $body);
+!endblock
 
 H3: Description
 
@@ -4328,6 +5759,70 @@ database itself, and in-memory databases will never be written.
 Using E<lbracket>C<flag> build] forces static build of a page, even if
 it contains dynamic elements.
 
+
+
+# BEGIN ############ flag Subsections ##############
+H4: {{CMD[id="flag_build"]build}}
+
+Forces build of static Interchange page specified by the C<name> attribute
+
+
+H4: {{CMD[id="flag_checkhtml"]checkhtml}}
+
+
+
+H4: {{CMD[id="flag_commit"]commit}}
+
+Attempts to commit transactions
+
+
+H4: {{CMD[id="flag_read"]read}}
+
+Flags the table read-only
+
+
+H4: {{CMD[id="flag_rollback"]rollback}}
+
+Attempts to rollback transactions
+
+
+H4: {{CMD[id="flag_show"]show}}
+
+Normally, the E<lbracket>C<flag>] tag returns nothing to the
+page. Setting 'C<show>=1' causes the tag to return status, if any.
+
+
+H4: {{CMD[id="flag_tables"]tables}}
+
+The name of the table to flag
+* 'C<table>' is an alias
+
+
+H4: {{CMD[id="flag_transactions"]transactions}}
+
+Reopens the database in transactions mode if {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe.pm}} is not active
+(e.g., in a global subroutine, usertag or
+E<lbracket>{{C[jump="#perl_global"]perl}}E<nbspace>global=1]
+tag). The limitation exists because it is not possible to reopen a
+database within {{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe.pm}}.
+
+
+H4: {{CMD[id="flag_type"]type}}
+
+
+
+H4: {{CMD[id="flag_value"]value}}
+
+The boolean value of the flag
+
+
+H4: {{CMD[id="flag_write"]write}}
+
+Flags the table writeable by default (or read-only if you also set
+the C<value>=0 attribute)
+
+
+# END +++++++++++++ flag Subsections ++++++++++++
 
 H2: fly_list
 
@@ -4366,6 +5861,61 @@ B<ASP-like Perl call:>
 
  
 
+# BEGIN ############### fly_list Summary Tables ####################
+!block example;
+    [B<fly_list> code base]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#fly_list_base"]base}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#fly_list_code"]code}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
+{{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<no>
+Container tag|I<Yes>
+Has Subtags|I<No>
+Nests|I<No>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [fly_list code base]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->fly_list(  { base => VALUE_base
+                       code => VALUE_code
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->fly_list(code,base, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ fly_list End Summary Tables ++++++++++++++++++++
+
+
 H3: Description
 
 
@@ -4396,6 +5946,18 @@ be [fly-code]; C<prefix=foo> would cause C<[foo-code]>, etc.
 
 
 
+
+
+# BEGIN ########### fly_list Subsections ##############
+H4: {{CMD[id="fly_list_base"]base}}
+
+
+
+H4: {{CMD[id="fly_list_code"]code}}
+
+
+
+# END ++++++++++++ fly_list Subsections +++++++++++++
 
 H2: fly_tax
 
@@ -4429,11 +5991,70 @@ B<ASP-like Perl call:>
 
  
 
+# BEGIN ############### fly_tax Summary Tables ####################
+!block example;
+    [B<fly_tax> area]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#fly_tax_area"]area}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<no>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [fly_tax area]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->fly_tax(  { area => VALUE_area
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->fly_tax(area, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ fly_tax End Summary Tables ++++++++++++++++++++
+
+
 H3: Description
 
 Builds a tax rate from C<taxarea>, C<taxrate>, C<taxshipping>, variable values, and the C<SalesTax> directive value.
 
 
+
+
+# BEGIN ########### fly_tax Subsections ##############
+H4: {{CMD[id="fly_tax_area"]area}}
+
+
+
+# END ++++++++++++ fly_tax Subsections +++++++++++++
 
 H2: goto
 
@@ -4554,12 +6175,84 @@ Attribute aliases
 
  
 
+# BEGIN ############### handling Summary Tables ####################
+!block example;
+    [B<handling> modeI<other_named_attributes>]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#handling_cart"]carts}}|<<
+Alias for cart
+>>|DEFAULT_VALUE
+{{CMD[jump="#handling_mode"]mode}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#handling_mode"]modes}}|<<
+Alias for mode
+>>|DEFAULT_VALUE
+{{CMD[jump="#handling_mode"]name}}|<<
+Alias for mode
+>>|DEFAULT_VALUE
+{{CMD[jump="#handling_table"]tables}}|<<
+Alias for table
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#handling_ATT1"]ATT1}}|I<none>
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<YES>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [handling mode]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->handling(  { mode => VALUE_mode
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->handling(mode, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ handling End Summary Tables ++++++++++++++++++++
+
+
 H3: Description
 
 Calculates and inserts handling costs. Accepts the same noformat and convert arguments as the shipping tag.
 
 
 
+
+
+# BEGIN ########### handling Subsections ##############
+H4: {{CMD[id="handling_mode"]mode}}
+
+
+
+# END ++++++++++++ handling Subsections +++++++++++++
 
 H2: harness
 
@@ -4569,48 +6262,58 @@ Returns DIED, OK, or NOT OK message along with your result if not the expected v
 
 H3: Summary
 
-!block example
-  [harness expected="good" name=my_test_number_1]
-    [good]The Expected Return Value[/good]
-    [not]Some Specifically Bad Return Value[/not]
-    I<Tags and code to test here>
-  [/harness]
+!block example;
+    [B<harness> I<other_named_attributes>]
 !endblock
 
-No parameters.
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#harness_expected"]expected}}|<<
+Tagname for delimiting your expected return value (default "OK")
+>>|DEFAULT_VALUE
+{{CMD[jump="#harness_name"]name}}|<<
+This will appear in your output message (useful for distinguishing harness tags from one another) (default "testI<nnn>")
+>>|DEFAULT_VALUE
+!endblock
 
-* expected (default "OK")
-** Tagname for delimiting your expected return value
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#harness_ATT1"]ATT1}}|I<none>
+{{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
+{{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
+!endblock
 
-* name (default "testI<nnn>")
-** This will appear in your output message (useful for distinguishing harness tags from one another)
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<no>
+Container tag|I<Yes>
+Has Subtags|I<No>
+Nests|I<No>
+!endblock
 
-B<The attribute hash reference is passed> after the parameters but before
-the container text argument.
-B<This may mean that there are parameters not shown here.>
 
-Must pass named parameter interpolate=1 to cause interpolation.
+B<Tag expansion example:>
 
-This is a container tag, i.e. [harness] FOO [/harness].
-\Nesting: NO
+!block example
+   [harness ]
+---
+   TAGRESULT
+!endblock
 
-Invalidates cache: B<no>
-
-Called Routine: 
 
 B<ASP-like Perl call:>
 
->    $Tag->harness(
->        {
->        },
->        BODY
->    )
->
-> OR
->
->    $Tag->harness($ATTRHASH, $BODY);
+!block example; lang="Perl"
+   $Tag->harness(  { 
+}, $body  );
+!endblock
 
- 
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->harness(, $attribute_hash_reference, $body);
+!endblock
 
 H3: Description
 
@@ -4619,6 +6322,20 @@ Test harness block. Similar to try/catch. Interprets the body text and checks th
 
 Returns DIED, OK, or NOT OK message along with the harness name and your result if not the expected value.
 
+
+
+# BEGIN ############ harness Subsections ##############
+H4: {{CMD[id="harness_expected"]expected}}
+
+Tagname for delimiting your expected return value (default "OK")
+
+
+H4: {{CMD[id="harness_name"]name}}
+
+This will appear in your output message (useful for distinguishing harness tags from one another) (default "testI<nnn>")
+
+
+# END +++++++++++++ harness Subsections ++++++++++++
 
 H2: href
 
@@ -4631,57 +6348,76 @@ Builds an HTML table
 
 H3: Summary
 
-* columns
-** Whitespace-delimited list of columns
+!block example;
+    [B<html_table> I<other_named_attributes>]
+!endblock
 
-* delimiter (default "\t")
-** Line delimiter to use if tag body is delimited text rather than an array reference
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#html_table_columns"]columns}}|<<
+Whitespace-delimited list of columns
+>>|DEFAULT_VALUE
+{{CMD[jump="#html_table_delimiter"]delimiter}}|<<
+Line delimiter to use if tag body is delimited text rather than an array reference (default "\t")
+>>|DEFAULT_VALUE
+{{CMD[jump="#html_table_fc"]fc}}|<<
+HTML attributes for <TD> in the first cell
+>>|DEFAULT_VALUE
+{{CMD[jump="#html_table_fr"]fr}}|<<
+HTML attributes for <TR> in the first row
+>>|DEFAULT_VALUE
+{{CMD[jump="#html_table_record_delim"]record_delim}}|<<
+Record delimiter to use if tag body is delimited text rather than an array reference (default "\n")
+>>|DEFAULT_VALUE
+{{CMD[jump="#html_table_td"]td}}|<<
+HTML attributes for <TD>
+>>|DEFAULT_VALUE
+{{CMD[jump="#html_table_th"]th}}|<<
+HTML attributes for <TH>
+>>|DEFAULT_VALUE
+{{CMD[jump="#html_table_tr"]tr}}|<<
+HTML attributes for <TR>
+>>|DEFAULT_VALUE
+!endblock
 
-* record_delim (default "\n")
-** Record delimiter to use if tag body is delimited text rather than an array reference
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#html_table_ATT1"]ATT1}}|I<none>
+{{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
+{{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
+!endblock
 
-* tr
-** HTML attributes for <TR>
-
-* td
-** HTML attributes for <TD>
-
-* th
-** HTML attributes for <TH>
-
-* fc
-** HTML attributes for <TD> in the first cell
-
-* fr
-** HTML attributes for <TR> in the first row
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<no>
+Container tag|I<Yes>
+Has Subtags|I<No>
+Nests|I<No>
+!endblock
 
 
-B<The attribute hash reference is passed> after the parameters but before
-the container text argument.
-B<This may mean that there are parameters not shown here.>
+B<Tag expansion example:>
 
-Must pass named parameter interpolate=1 to cause interpolation.
+!block example
+   [html_table ]
+---
+   TAGRESULT
+!endblock
 
-This is a container tag, i.e. [html_table] FOO [/html_table].
-\Nesting: NO
-
-Invalidates cache: B<no>
-
-Called Routine: 
 
 B<ASP-like Perl call:>
 
->    $Tag->html_table(
->        {
->        },
->        BODY
->    )
->
-> OR
->
->    $Tag->html_table($ATTRHASH, $BODY);
+!block example; lang="Perl"
+   $Tag->html_table(  { 
+}, $body  );
+!endblock
 
- 
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->html_table(, $attribute_hash_reference, $body);
+!endblock
 
 H3: Description
 
@@ -4689,6 +6425,50 @@ H3: Description
 Builds an HTML table
 
 
+
+
+# BEGIN ############ html_table Subsections ##############
+H4: {{CMD[id="html_table_columns"]columns}}
+
+Whitespace-delimited list of columns
+
+
+H4: {{CMD[id="html_table_delimiter"]delimiter}}
+
+Line delimiter to use if tag body is delimited text rather than an array reference (default "\t")
+
+
+H4: {{CMD[id="html_table_fc"]fc}}
+
+HTML attributes for <TD> in the first cell
+
+
+H4: {{CMD[id="html_table_fr"]fr}}
+
+HTML attributes for <TR> in the first row
+
+
+H4: {{CMD[id="html_table_record_delim"]record_delim}}
+
+Record delimiter to use if tag body is delimited text rather than an array reference (default "\n")
+
+
+H4: {{CMD[id="html_table_td"]td}}
+
+HTML attributes for <TD>
+
+
+H4: {{CMD[id="html_table_th"]th}}
+
+HTML attributes for <TH>
+
+
+H4: {{CMD[id="html_table_tr"]tr}}
+
+HTML attributes for <TR>
+
+
+# END +++++++++++++ html_table Subsections ++++++++++++
 
 H2: if
 
@@ -4728,6 +6508,79 @@ Attribute aliases
 
 
  
+
+# BEGIN ############### if Summary Tables ####################
+!block example;
+    [B<if> type term op compare]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#if_type"]base}}|<<
+Alias for type
+>>|DEFAULT_VALUE
+{{CMD[jump="#if_compare"]comp}}|<<
+Alias for compare
+>>|DEFAULT_VALUE
+{{CMD[jump="#if_compare"]compare}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#if_compare"]condition}}|<<
+Alias for compare
+>>|DEFAULT_VALUE
+{{CMD[jump="#if_op"]op}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#if_op"]operator}}|<<
+Alias for op
+>>|DEFAULT_VALUE
+{{CMD[jump="#if_term"]term}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#if_type"]type}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
+{{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<YES>
+Container tag|I<Yes>
+Has Subtags|I<No>
+Nests|I<No>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [if type term op compare]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->if(  { compare => VALUE_compare
+                 op => VALUE_op
+                 term => VALUE_term
+                 type => VALUE_type
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->if(type,term,op,compare, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ if End Summary Tables ++++++++++++++++++++
+
 
 H3: Description
 
@@ -5052,6 +6905,26 @@ those will be passed as arguments are in the E<lbracket>{{I[jump="#per"]per}}l] 
 
 
 
+
+# BEGIN ########### if Subsections ##############
+H4: {{CMD[id="if_compare"]compare}}
+
+
+
+H4: {{CMD[id="if_op"]op}}
+
+
+
+H4: {{CMD[id="if_term"]term}}
+
+
+
+H4: {{CMD[id="if_type"]type}}
+
+
+
+# END ++++++++++++ if Subsections +++++++++++++
+
 H2: import
 
 
@@ -5096,6 +6969,68 @@ Attribute aliases
 
 
  
+
+# BEGIN ############### import Summary Tables ####################
+!block example;
+    [B<import> table typeI<other_named_attributes>]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#import_table"]base}}|<<
+Alias for table
+>>|DEFAULT_VALUE
+{{CMD[jump="#import_table"]database}}|<<
+Alias for table
+>>|DEFAULT_VALUE
+{{CMD[jump="#import_table"]table}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#import_type"]type}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#import_ATT1"]ATT1}}|I<none>
+{{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
+{{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<YES>
+Container tag|I<Yes>
+Has Subtags|I<No>
+Nests|I<No>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [import table type]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->import(  { table => VALUE_table
+                     type => VALUE_type
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->import(table,type, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ import End Summary Tables ++++++++++++++++++++
+
 
 H3: Description
 
@@ -5143,6 +7078,18 @@ a form-feed character (^L).
 
 
 
+
+# BEGIN ########### import Subsections ##############
+H4: {{CMD[id="import_table"]table}}
+
+
+
+H4: {{CMD[id="import_type"]type}}
+
+
+
+# END ++++++++++++ import Subsections +++++++++++++
+
 H2: include
 
 
@@ -5166,6 +7113,60 @@ B<ASP-like Perl call:>
 Not applicable.
  
 
+# BEGIN ############### include Summary Tables ####################
+!block example;
+    [B<include> file locale]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#include_file"]file}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#include_locale"]locale}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<no>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [include file locale]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->include(  { file => VALUE_file
+                      locale => VALUE_locale
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->include(file,locale, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ include End Summary Tables ++++++++++++++++++++
+
+
 H3: Description
 
 
@@ -5176,69 +7177,163 @@ and variables. Does NOT do locale translations.
 
 
 
+
+# BEGIN ########### include Subsections ##############
+H4: {{CMD[id="include_file"]file}}
+
+
+
+H4: {{CMD[id="include_locale"]locale}}
+
+
+
+# END ++++++++++++ include Subsections +++++++++++++
+
 H2: index
 
 Creates an index for the specified table.
 
 H3: Summary
 
-\Parameters: B<table>
+!block example;
+    [B<index> tableI<other_named_attributes>]
+!endblock
 
-Positional parameters in same order.
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#index_table"]base}}|<<
+Alias for table
+>>|DEFAULT_VALUE
+{{CMD[jump="#index_basefile"]basefile}}|<<
+Database filename. Exports the table to this filename if old or missing before indexing. See also the {{C[jump="#export"]export}} tag for additional relevent attributes such as delimiter type, etc.
+>>|DEFAULT_VALUE
+{{CMD[jump="#index_col"]col}}|<<
+alias for fields
+>>|DEFAULT_VALUE
+{{CMD[jump="#index_columns"]columns}}|<<
+alias for fields
+>>|DEFAULT_VALUE
+{{CMD[jump="#index_table"]database}}|<<
+Alias for table
+>>|DEFAULT_VALUE
+{{CMD[jump="#index_export_only"]export_only}}|<<
+Just do the export if necessary (not the index).
+>>|DEFAULT_VALUE
+{{CMD[jump="#index_extension"]extension}}|<<
+Index file extension (default "idx")
+>>|DEFAULT_VALUE
+{{CMD[jump="#index_fields"]fields}}|<<
+field(s) to index
+>>|DEFAULT_VALUE
+{{CMD[jump="#index_fn"]fn}}|<<
+alias for fields
+>>|DEFAULT_VALUE
+{{CMD[jump="#index_show_status"]show_status}}|<<
+Return '1' to the page if successful
+>>|DEFAULT_VALUE
+{{CMD[jump="#index_spec"]spec}}|<<
+The index specification
+>>|DEFAULT_VALUE
+{{CMD[jump="#index_table"]table}}|<<
+>>|DEFAULT_VALUE
+!endblock
 
-* extension (default "idx")
-** Index file extension
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#index_ATT1"]ATT1}}|I<none>
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
 
-* basefile
-** Database filename. Exports the table to this filename if old or missing before indexing. See also the {{C[jump="#export"]export}} tag for additional relevent attributes such as delimiter type, etc.
-
-* export_only
-** Just do the export if necessary (not the index).
-
-* spec
-** The index specification
-
-* fn or fields or col or columns
-** field(s) to index
-
-* show_status
-** Return '1' to the page if successful
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<YES>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
 
 
-B<The attribute hash reference is passed> to the subroutine after
-the parameters as the last argument.
-B<This may mean that there are parameters not shown here.>
+B<Tag expansion example:>
 
-Must pass named parameter interpolate=1 to cause interpolation.
+!block example
+   [index table]
+---
+   TAGRESULT
+!endblock
 
-Invalidates cache: B<YES>
-
-Called Routine: 
 
 B<ASP-like Perl call:>
 
->    $Tag->index(
->        {
->         table => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->index($table, $ATTRHASH);
+!block example; lang="Perl"
+   $Tag->index(  { table => VALUE_table
+}, $body  );
+!endblock
 
-Attribute aliases
+or similarly with positional parameters,
 
->            base ==> table
->            database ==> table
-
- 
+!block example; lang="Perl"
+    $Tag->index(table, $attribute_hash_reference, $body);
+!endblock
 
 H3: Description
 
 Creates an index for the specified table.
 
 
+
+
+# BEGIN ############ index Subsections ##############
+H4: {{CMD[id="index_basefile"]basefile}}
+
+Database filename. Exports the table to this filename if old or missing before indexing. See also the {{C[jump="#export"]export}} tag for additional relevent attributes such as delimiter type, etc.
+
+
+H4: {{CMD[id="index_col"]col}}
+
+alias for fields
+
+
+H4: {{CMD[id="index_columns"]columns}}
+
+alias for fields
+
+
+H4: {{CMD[id="index_export_only"]export_only}}
+
+Just do the export if necessary (not the index).
+
+
+H4: {{CMD[id="index_extension"]extension}}
+
+Index file extension (default "idx")
+
+
+H4: {{CMD[id="index_fields"]fields}}
+
+field(s) to index
+
+
+H4: {{CMD[id="index_fn"]fn}}
+
+alias for fields
+
+
+H4: {{CMD[id="index_show_status"]show_status}}
+
+Return '1' to the page if successful
+
+
+H4: {{CMD[id="index_spec"]spec}}
+
+The index specification
+
+
+H4: {{CMD[id="index_table"]table}}
+
+
+
+# END +++++++++++++ index Subsections ++++++++++++
 
 H2: item_list
 
@@ -5287,6 +7382,62 @@ Attribute aliases
 
 
  
+
+# BEGIN ############### item_list Summary Tables ####################
+!block example;
+    [B<item_list> nameI<other_named_attributes>]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#item_list_name"]cart}}|<<
+Alias for name
+>>|DEFAULT_VALUE
+{{CMD[jump="#item_list_name"]name}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#item_list_ATT1"]ATT1}}|I<none>
+{{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
+{{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<YES>
+Container tag|I<Yes>
+Has Subtags|I<No>
+Nests|I<No>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [item_list name]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->item_list(  { name => VALUE_name
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->item_list(name, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ item_list End Summary Tables ++++++++++++++++++++
+
 
 H3: Description
 
@@ -5460,6 +7611,14 @@ customer can enter the quantity to order.
 
 
 
+
+# BEGIN ########### item_list Subsections ##############
+H4: {{CMD[id="item_list_name"]name}}
+
+
+
+# END ++++++++++++ item_list Subsections +++++++++++++
+
 H2: label
 
 The page label for goto. See E<lbracket>{{C[jump="#goto"]goto}}] tag for description.  Note that this is not a standard tag, but is simply a marker used by {{C[jump="#goto"]goto}}.
@@ -5473,6 +7632,59 @@ The page label for goto. See E<lbracket>{{C[jump="#goto"]goto}}] tag for descrip
 !endblock
 
 
+H3: Summary
+
+NO SUMMARY SECTION
+
+
+# BEGIN ############### label Summary Tables ####################
+!block example;
+    [B<label> ]
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<No>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [label ]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->label(  { 
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->label(, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ label End Summary Tables ++++++++++++++++++++
+
+
+H3: Description
+
+NO DESCRIPTION SECTION
 
 H2: log
 
@@ -5480,68 +7692,128 @@ Log contained text to specified file.
 
 H3: Summary
 
-\Parameters: B<file>
+!block example;
+    [B<log> fileI<other_named_attributes>]
+!endblock
 
-* file
-** name of file to log to. 'file="E<gt>I<filename>"' also sets 'create' attribute.
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#log_file"]arg}}|<<
+Alias for file
+>>|DEFAULT_VALUE
+{{CMD[jump="#log_create"]create}}|<<
+Set create=1 to create the file if not present
+>>|DEFAULT_VALUE
+{{CMD[jump="#log_delim"]delim}}|<<
+Line delimiter
+>>|DEFAULT_VALUE
+{{CMD[jump="#log_file"]file}}|<<
+name of file to log to. 'file="E<gt>I<filename>"' also sets 'create' attribute.
+>>|DEFAULT_VALUE
+{{CMD[jump="#log_hide"]hide}}|<<
+Suppress status otherwise returned by tag to the page.
+>>|DEFAULT_VALUE
+{{CMD[jump="#log_process"]process}}|<<
+Processing (if any) to apply to the content while logging
+* nostrip (don't strip leading/trailing whitespace and convert "\r\n" to "\n"
+>>|DEFAULT_VALUE
+{{CMD[jump="#log_record_delim"]record_delim}}|<<
+Record delimiter
+>>|DEFAULT_VALUE
+{{CMD[jump="#log_type"]type}}|<<
+Log type
+* text (ordinary text file)
+* quot (delimited entries)
+* error (add Interchange error formatting and time/location stamps)
+>>|DEFAULT_VALUE
+!endblock
 
-* create 
-** Set create=1 to create the file if not present
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#log_ATT1"]ATT1}}|I<none>
+{{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
+{{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
+!endblock
 
-* process
-** Processing (if any) to apply to the content while logging
-*** nostrip (don't strip leading/trailing whitespace and convert "\r\n" to "\n"
-
-* delim and record_delim
-** Line and record delimiters, respectively
-
-* type
-** Log type
-*** text (ordinary text file)
-*** quot (delimited entries)
-*** error (add Interchange error formatting and time/location stamps)
-
-* hide
-** Suppress status otherwise returned by tag to the page.
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<no>
+Container tag|I<Yes>
+Has Subtags|I<No>
+Nests|I<No>
+!endblock
 
 
-B<The attribute hash reference is passed> after the parameters but before
-the container text argument.
-B<This may mean that there are parameters not shown here.>
+B<Tag expansion example:>
 
-Must pass named parameter interpolate=1 to cause interpolation.
+!block example
+   [log file]
+---
+   TAGRESULT
+!endblock
 
-This is a container tag, i.e. [log] FOO [/log].
-\Nesting: NO
-
-Invalidates cache: B<no>
-
-Called Routine: 
 
 B<ASP-like Perl call:>
 
->    $Tag->log(
->        {
->         file => VALUE,
->        },
->        BODY
->    )
->
-> OR
->
->    $Tag->log($file, $ATTRHASH, $BODY);
+!block example; lang="Perl"
+   $Tag->log(  { file => VALUE_file
+}, $body  );
+!endblock
 
-Attribute aliases
+or similarly with positional parameters,
 
->            arg ==> file
-
-
- 
+!block example; lang="Perl"
+    $Tag->log(file, $attribute_hash_reference, $body);
+!endblock
 
 H3: Description
 
 Log contained text to specified file.
 
+
+
+# BEGIN ############ log Subsections ##############
+H4: {{CMD[id="log_create"]create}}
+
+Set create=1 to create the file if not present
+
+
+H4: {{CMD[id="log_delim"]delim}}
+
+Line delimiter
+
+
+H4: {{CMD[id="log_file"]file}}
+
+name of file to log to. 'file="E<gt>I<filename>"' also sets 'create' attribute.
+
+
+H4: {{CMD[id="log_hide"]hide}}
+
+Suppress status otherwise returned by tag to the page.
+
+
+H4: {{CMD[id="log_process"]process}}
+
+Processing (if any) to apply to the content while logging
+* nostrip (don't strip leading/trailing whitespace and convert "\r\n" to "\n"
+
+
+H4: {{CMD[id="log_record_delim"]record_delim}}
+
+Record delimiter
+
+
+H4: {{CMD[id="log_type"]type}}
+
+Log type
+* text (ordinary text file)
+* quot (delimited entries)
+* error (add Interchange error formatting and time/location stamps)
+
+
+# END +++++++++++++ log Subsections ++++++++++++
 
 H2: loop
 
@@ -5591,6 +7863,65 @@ Attribute aliases
 
 
  
+
+# BEGIN ############### loop Summary Tables ####################
+!block example;
+    [B<loop> listI<other_named_attributes>]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#loop_list"]arg}}|<<
+Alias for list
+>>|DEFAULT_VALUE
+{{CMD[jump="#loop_list"]args}}|<<
+Alias for list
+>>|DEFAULT_VALUE
+{{CMD[jump="#loop_list"]list}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#loop_ATT1"]ATT1}}|I<none>
+{{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
+{{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<no>
+Container tag|I<Yes>
+Has Subtags|I<No>
+Nests|I<No>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [loop list]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->loop(  { list => VALUE_list
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->loop(list, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ loop End Summary Tables ++++++++++++++++++++
+
 
 H3: Description
 
@@ -5805,65 +8136,122 @@ is set, then currency formatting will not be applied.
 
 
 
+
+# BEGIN ########### loop Subsections ##############
+H4: {{CMD[id="loop_list"]list}}
+
+
+
+# END ++++++++++++ loop Subsections +++++++++++++
+
 H2: mail
 
 Mail contained text to recipient specified by 'to' using the program specified with the SendMailProgram catalog directive.
 
 H3: Summary
 
-\Parameters: B<to>
+!block example;
+    [B<mail> toI<other_named_attributes>]
+!endblock
 
-Positional parameters in same order.
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#mail_extra"]extra}}|<<
+Additional headers (these will also be added to 'raw' messages)
+>>|DEFAULT_VALUE
+{{CMD[jump="#mail_hide"]hide}}|<<
+Suppress tag return value. This would otherwise be the 'success' attribute setting.
+>>|DEFAULT_VALUE
+{{CMD[jump="#mail_raw"]raw}}|<<
+Send it raw without creating headers and checking content, recipient, subject, etc.
+>>|DEFAULT_VALUE
+{{CMD[jump="#mail_show"]show}}|<<
+The tag will return the final message with headers in the page
+>>|DEFAULT_VALUE
+{{CMD[jump="#mail_success"]success}}|<<
+Tag return value if successful (default is 1).
+>>|DEFAULT_VALUE
+{{CMD[jump="#mail_to"]to}}|<<
+>>|DEFAULT_VALUE
+!endblock
 
-* raw
-** Send it raw without creating headers and checking content, recipient, subject, etc.
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#mail_ATT1"]ATT1}}|I<none>
+{{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
+{{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
+!endblock
 
-* extra
-** Additional headers (these will also be added to 'raw' messages)
-
-* success
-** Tag return value if successful (default is 1).
-
-* hide
-** Suppress tag return value. This would otherwise be the 'success' attribute setting.
-
-* show
-** The tag will return the final message with headers in the page
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<YES>
+Container tag|I<Yes>
+Has Subtags|I<No>
+Nests|I<No>
+!endblock
 
 
-B<The attribute hash reference is passed> after the parameters but before
-the container text argument.
-B<This may mean that there are parameters not shown here.>
+B<Tag expansion example:>
 
-Must pass named parameter interpolate=1 to cause interpolation.
+!block example
+   [mail to]
+---
+   TAGRESULT
+!endblock
 
-This is a container tag, i.e. [mail] FOO [/mail].
-\Nesting: NO
-
-Invalidates cache: B<YES>
-
-Called Routine: 
 
 B<ASP-like Perl call:>
 
->    $Tag->mail(
->        {
->         to => VALUE,
->        },
->        BODY
->    )
->
-> OR
->
->    $Tag->mail($to, $ATTRHASH, $BODY);
+!block example; lang="Perl"
+   $Tag->mail(  { to => VALUE_to
+}, $body  );
+!endblock
 
- 
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->mail(to, $attribute_hash_reference, $body);
+!endblock
 
 H3: Description
 
 
 Mail contained text to recipient specified by 'to' using the program specified with the SendMailProgram catalog directive.
 
+
+
+# BEGIN ############ mail Subsections ##############
+H4: {{CMD[id="mail_extra"]extra}}
+
+Additional headers (these will also be added to 'raw' messages)
+
+
+H4: {{CMD[id="mail_hide"]hide}}
+
+Suppress tag return value. This would otherwise be the 'success' attribute setting.
+
+
+H4: {{CMD[id="mail_raw"]raw}}
+
+Send it raw without creating headers and checking content, recipient, subject, etc.
+
+
+H4: {{CMD[id="mail_show"]show}}
+
+The tag will return the final message with headers in the page
+
+
+H4: {{CMD[id="mail_success"]success}}
+
+Tag return value if successful (default is 1).
+
+
+H4: {{CMD[id="mail_to"]to}}
+
+
+
+# END +++++++++++++ mail Subsections ++++++++++++
 
 H2: mvasp
 
@@ -6003,41 +8391,62 @@ Returns the total number of items ordered.  Uses the current cart if none specif
 
 H3: Summary
 
-\Parameters: B<name>
+!block example;
+    [B<nitems> name]
+!endblock
 
-* name
-** Cart name
-** N<Default:> current cart
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#nitems_compare"]compare}}|<<
+Regular expression the specified qualifier attribute's value must match to be counted. This replaces the truth value comparison.
+* N<Default:> None (uses truth value of the specified qualifier attribute)
+>>|DEFAULT_VALUE
+{{CMD[jump="#nitems_name"]name}}|<<
+Cart name
+* N<Default:> current cart
+>>|DEFAULT_VALUE
+{{CMD[jump="#nitems_qualifier"]qualifier}}|<<
+An item attribute that must be true in order to count the item.
+* N<Default:> None
+>>|DEFAULT_VALUE
+!endblock
 
-* qualifier
-** An item attribute that must be true in order to count the item.
-** N<Default:> None
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
 
-* compare
-** Regular expression the specified qualifier attribute's value must match to be counted. This replaces the truth value comparison.
-** N<Default:> None (uses truth value of the specified qualifier attribute)
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<YES>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
 
 
+B<Tag expansion example:>
 
-Must pass named parameter interpolate=1 to cause interpolation.
+!block example
+   [nitems name]
+---
+   TAGRESULT
+!endblock
 
-Invalidates cache: B<YES>
-
-Called Routine: 
 
 B<ASP-like Perl call:>
 
->    $Tag->nitems(
->        {
->         name => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->nitems($name, $ATTRHASH);
+!block example; lang="Perl"
+   $Tag->nitems(  { name => VALUE_name
+}, $body  );
+!endblock
 
- 
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->nitems(name, $attribute_hash_reference, $body);
+!endblock
 
 H3: Description
 
@@ -6048,6 +8457,28 @@ optional cart name as a parameter.
 
 
 
+
+
+# BEGIN ############ nitems Subsections ##############
+H4: {{CMD[id="nitems_compare"]compare}}
+
+Regular expression the specified qualifier attribute's value must match to be counted. This replaces the truth value comparison.
+* N<Default:> None (uses truth value of the specified qualifier attribute)
+
+
+H4: {{CMD[id="nitems_name"]name}}
+
+Cart name
+* N<Default:> current cart
+
+
+H4: {{CMD[id="nitems_qualifier"]qualifier}}
+
+An item attribute that must be true in order to count the item.
+* N<Default:> None
+
+
+# END +++++++++++++ nitems Subsections ++++++++++++
 
 H2: options
 
@@ -6076,102 +8507,214 @@ Here is an illustrative example from the 'tools' sample data set of the foundati
 
 H3: Summary
 
-\Parameters: B<code>
-
-* code
-** Product key (usually sku).
-** No default
-
-* table
-** Table to use for option attributes.  
-** N<Default:> 'options'
-
-* td
-** Results as table rows. For example, compare the following example from the 'tools' sample data set with the earlier example:
-
-!block example
-===
-   [options code=os28005 td=1]
----
-   <td><input type=hidden name=mv_item_option value="logo">
-      <SELECT NAME="mv_order_logo">
-      <OPTION VALUE="c">Construct Something
-      <OPTION VALUE="y" SELECTED>Your Logo</SELECT></td>
-   <td><input type=hidden name=mv_item_option value="color">
-      <INPUT TYPE="radio" NAME="mv_order_color" VALUE="BLK" >&nbsp;Black
-      <INPUT TYPE="radio" NAME="mv_order_color" VALUE="BEIGE" >&nbsp;Beige
-      <INPUT TYPE="radio" NAME="mv_order_color" VALUE="WHITE" >&nbsp;White</td>
-   <td><input type=hidden name=mv_item_option value="bristle">
-      <SELECT NAME="mv_order_bristle">
-      <OPTION VALUE="synthetic">Synthetic
-      <OPTION VALUE="camel">Camel Hair</SELECT></td>
-===
+!block example;
+    [B<options> code]
 !endblock
 
-(Note that the output was reformatted to fit this page)
-
-* price
-** N<Default:> False
-** Boolean. If set and the options have prices, the HTML widget(s) will show the prices. This is like the {{C[jump="#accessories_price"]price}} attribute of the accessories tag.
-
-... Note that the {{C[jump="#accessories_price_data"]price_data}} setting comes from the 'price' column of the options table.
-
-... Technical note-- If your options table has different mappings, you can control this with $::Variable->{MV_OPTION_TABLE_MAP}
-
-* label
-** Shows labels for the options with the widgets.
-** N<Default:> False
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#options_bold"]bold}}|<<
+Boldfaces the labels if the C<'label'> option is set.
+* N<Default:> False
+>>|DEFAULT_VALUE
+{{CMD[jump="#options_code"]code}}|<<
+Product key (usually sku).
+* No default
+>>|DEFAULT_VALUE
+{{CMD[jump="#options_joiner"]joiner}}|<<
+The joiner for the widgets.
+* N<Default:> E<lt>BR>
+>>|DEFAULT_VALUE
+{{CMD[jump="#options_label"]label}}|<<
+Shows labels for the options with the widgets.
 
 The following example (using another item from the 'tools' data) illustrates the price and label N<attributes:>
 
-!block example
-===
-   [options code=os28011 label=1 price=1]
----
-   Handle<BR>
-     <input type=hidden name=mv_item_option value="handle">
-       <SELECT NAME="mv_order_handle">
-       <OPTION VALUE="W">Wood handle
-       <OPTION VALUE="E">Ebony handle ($20.00)</SELECT><BR>
-   Blade material<BR>
-     <input type=hidden name=mv_item_option value="blade">
-       <SELECT NAME="mv_order_blade">
-       <OPTION VALUE="P">Plastic blade ($-1.22)
-       <OPTION VALUE="S" SELECTED>Steel blade
-       <OPTION VALUE="T">Titanium blade ($100.00)</SELECT>
-===
-!endblock
+>===
+>   [options code=os28011 label=1 price=1]
+>---
+>   Handle<BR>
+>     <input type=hidden name=mv_item_option value="handle">
+>       <SELECT NAME="mv_order_handle">
+>       <OPTION VALUE="W">Wood handle
+>       <OPTION VALUE="E">Ebony handle ($20.00)</SELECT><BR>
+>   Blade material<BR>
+>     <input type=hidden name=mv_item_option value="blade">
+>       <SELECT NAME="mv_order_blade">
+>       <OPTION VALUE="P">Plastic blade ($-1.22)
+>       <OPTION VALUE="S" SELECTED>Steel blade
+>       <OPTION VALUE="T">Titanium blade ($100.00)</SELECT>
+>===
 
 (again, the output has been reformatted to fit the page).
 
-* bold
-** Boldfaces the labels if the C<'label'> option is set.
-** N<Default:> False
+* N<Default:> False
+>>|DEFAULT_VALUE
+{{CMD[jump="#options_price"]price}}|<<
+Boolean. If set and the options have prices, the HTML widget(s) will show the prices. This is like the {{C[jump="#accessories_price"]price}} attribute of the accessories tag.
 
-* joiner
-** The joiner for the widgets.
-** N<Default:> E<lt>BR>
+. Note that the {{C[jump="#accessories_price_data"]price_data}} setting comes from the 'price' column of the options table.
+
+. Technical note-- If your options table has different mappings, you can control this with $::Variable->{MV_OPTION_TABLE_MAP}
+>>|False
+{{CMD[jump="#options_table"]table}}|<<
+Table to use for option attributes.  
+* N<Default:> 'options'
+>>|DEFAULT_VALUE
+{{CMD[jump="#options_td"]td}}|<<
+Results as table rows. For example, compare the following example from the 'tools' sample data set with the earlier example:
+
+>===
+>   [options code=os28005 td=1]
+>---
+>   <td><input type=hidden name=mv_item_option value="logo">
+>      <SELECT NAME="mv_order_logo">
+>      <OPTION VALUE="c">Construct Something
+>      <OPTION VALUE="y" SELECTED>Your Logo</SELECT></td>
+>   <td><input type=hidden name=mv_item_option value="color">
+>      <INPUT TYPE="radio" NAME="mv_order_color" VALUE="BLK" >&nbsp;Black
+>      <INPUT TYPE="radio" NAME="mv_order_color" VALUE="BEIGE" >&nbsp;Beige
+>      <INPUT TYPE="radio" NAME="mv_order_color" VALUE="WHITE" >&nbsp;White</td>
+>   <td><input type=hidden name=mv_item_option value="bristle">
+>      <SELECT NAME="mv_order_bristle">
+>      <OPTION VALUE="synthetic">Synthetic
+>      <OPTION VALUE="camel">Camel Hair</SELECT></td>
+>===
+
+(Note that the output was reformatted to fit this page)
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<no>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
 
 
-Must pass named parameter interpolate=1 to cause interpolation.
+B<Tag expansion example:>
 
-Invalidates cache: B<no>
+!block example
+   [options code]
+---
+   TAGRESULT
+!endblock
 
-Called Routine: 
 
 B<ASP-like Perl call:>
 
->    $Tag->options(
->        {
->         code => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->options($code, $ATTRHASH);
+!block example; lang="Perl"
+   $Tag->options(  { code => VALUE_code
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->options(code, $attribute_hash_reference, $body);
+!endblock
+
+H3: Description
+
+NO DESCRIPTION SECTION
 
 
+
+# BEGIN ############ options Subsections ##############
+H4: {{CMD[id="options_bold"]bold}}
+
+Boldfaces the labels if the C<'label'> option is set.
+* N<Default:> False
+
+
+H4: {{CMD[id="options_code"]code}}
+
+Product key (usually sku).
+* No default
+
+
+H4: {{CMD[id="options_joiner"]joiner}}
+
+The joiner for the widgets.
+* N<Default:> E<lt>BR>
+
+
+H4: {{CMD[id="options_label"]label}}
+
+Shows labels for the options with the widgets.
+
+The following example (using another item from the 'tools' data) illustrates the price and label N<attributes:>
+
+>===
+>   [options code=os28011 label=1 price=1]
+>---
+>   Handle<BR>
+>     <input type=hidden name=mv_item_option value="handle">
+>       <SELECT NAME="mv_order_handle">
+>       <OPTION VALUE="W">Wood handle
+>       <OPTION VALUE="E">Ebony handle ($20.00)</SELECT><BR>
+>   Blade material<BR>
+>     <input type=hidden name=mv_item_option value="blade">
+>       <SELECT NAME="mv_order_blade">
+>       <OPTION VALUE="P">Plastic blade ($-1.22)
+>       <OPTION VALUE="S" SELECTED>Steel blade
+>       <OPTION VALUE="T">Titanium blade ($100.00)</SELECT>
+>===
+
+(again, the output has been reformatted to fit the page).
+
+* N<Default:> False
+
+
+H4: {{CMD[id="options_price"]price}}
+
+Boolean. If set and the options have prices, the HTML widget(s) will show the prices. This is like the {{C[jump="#accessories_price"]price}} attribute of the accessories tag.
+
+. Note that the {{C[jump="#accessories_price_data"]price_data}} setting comes from the 'price' column of the options table.
+
+. Technical note-- If your options table has different mappings, you can control this with $::Variable->{MV_OPTION_TABLE_MAP}
+
+* N<Default:> False
+
+H4: {{CMD[id="options_table"]table}}
+
+Table to use for option attributes.  
+* N<Default:> 'options'
+
+
+H4: {{CMD[id="options_td"]td}}
+
+Results as table rows. For example, compare the following example from the 'tools' sample data set with the earlier example:
+
+>===
+>   [options code=os28005 td=1]
+>---
+>   <td><input type=hidden name=mv_item_option value="logo">
+>      <SELECT NAME="mv_order_logo">
+>      <OPTION VALUE="c">Construct Something
+>      <OPTION VALUE="y" SELECTED>Your Logo</SELECT></td>
+>   <td><input type=hidden name=mv_item_option value="color">
+>      <INPUT TYPE="radio" NAME="mv_order_color" VALUE="BLK" >&nbsp;Black
+>      <INPUT TYPE="radio" NAME="mv_order_color" VALUE="BEIGE" >&nbsp;Beige
+>      <INPUT TYPE="radio" NAME="mv_order_color" VALUE="WHITE" >&nbsp;White</td>
+>   <td><input type=hidden name=mv_item_option value="bristle">
+>      <SELECT NAME="mv_order_bristle">
+>      <OPTION VALUE="synthetic">Synthetic
+>      <OPTION VALUE="camel">Camel Hair</SELECT></td>
+>===
+
+(Note that the output was reformatted to fit this page)
+
+
+# END +++++++++++++ options Subsections ++++++++++++
 
 H2: or
 
@@ -6218,10 +8761,99 @@ Attribute aliases
 
  
 
+# BEGIN ############### or Summary Tables ####################
+!block example;
+    [B<or> type term op compare]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#or_type"]base}}|<<
+Alias for type
+>>|DEFAULT_VALUE
+{{CMD[jump="#or_compare"]comp}}|<<
+Alias for compare
+>>|DEFAULT_VALUE
+{{CMD[jump="#or_compare"]compare}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#or_op"]op}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#or_op"]operator}}|<<
+Alias for op
+>>|DEFAULT_VALUE
+{{CMD[jump="#or_term"]term}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#or_type"]type}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<no>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [or type term op compare]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->or(  { compare => VALUE_compare
+                 op => VALUE_op
+                 term => VALUE_term
+                 type => VALUE_type
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->or(type,term,op,compare, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ or End Summary Tables ++++++++++++++++++++
+
+
 H3: Description
 
 B<NO Description>
 
+
+
+# BEGIN ########### or Subsections ##############
+H4: {{CMD[id="or_compare"]compare}}
+
+
+
+H4: {{CMD[id="or_op"]op}}
+
+
+
+H4: {{CMD[id="or_term"]term}}
+
+
+
+H4: {{CMD[id="or_type"]type}}
+
+
+
+# END ++++++++++++ or Subsections +++++++++++++
 
 H2: order
 
@@ -7063,6 +9695,61 @@ Attribute aliases
 
  
 
+# BEGIN ############### price Summary Tables ####################
+!block example;
+    [B<price> codeI<other_named_attributes>]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#price_mv_ib"]base}}|<<
+Alias for mv_ib
+>>|DEFAULT_VALUE
+{{CMD[jump="#price_code"]code}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#price_ATT1"]ATT1}}|I<none>
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<no>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [price code]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->price(  { code => VALUE_code
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->price(code, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ price End Summary Tables ++++++++++++++++++++
+
+
 H3: Description
 
 
@@ -7160,6 +9847,14 @@ add the discount=1 parameter.
 See I<Product Discounts>.
 
 
+
+
+# BEGIN ########### price Subsections ##############
+H4: {{CMD[id="price_code"]code}}
+
+
+
+# END ++++++++++++ price Subsections +++++++++++++
 
 H2: process
 
@@ -7931,6 +10626,58 @@ B<ASP-like Perl call:>
 
  
 
+# BEGIN ############### row Summary Tables ####################
+!block example;
+    [B<row> width]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#row_width"]width}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
+{{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<no>
+Container tag|I<Yes>
+Has Subtags|I<No>
+Nests|I<No>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [row width]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->row(  { width => VALUE_width
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->row(width, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ row End Summary Tables ++++++++++++++++++++
+
+
 H3: Description
 
 
@@ -7975,6 +10722,14 @@ Terminates the column field.
 
 
 
+
+# BEGIN ########### row Subsections ##############
+H4: {{CMD[id="row_width"]width}}
+
+
+
+# END ++++++++++++ row Subsections +++++++++++++
+
 H2: salestax
 
 
@@ -8013,6 +10768,63 @@ Attribute aliases
 
  
 
+# BEGIN ############### salestax Summary Tables ####################
+!block example;
+    [B<salestax> name noformat]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#salestax_name"]cart}}|<<
+Alias for name
+>>|DEFAULT_VALUE
+{{CMD[jump="#salestax_name"]name}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#salestax_noformat"]noformat}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<YES>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [salestax name noformat]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->salestax(  { name => VALUE_name
+                       noformat => VALUE_noformat
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->salestax(name,noformat, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ salestax End Summary Tables ++++++++++++++++++++
+
+
 H3: Description
 
 
@@ -8025,6 +10837,18 @@ currency formatting will be given.
 
 
 
+
+
+# BEGIN ########### salestax Subsections ##############
+H4: {{CMD[id="salestax_name"]name}}
+
+
+
+H4: {{CMD[id="salestax_noformat"]noformat}}
+
+
+
+# END ++++++++++++ salestax Subsections +++++++++++++
 
 H2: scratch
 
@@ -8058,12 +10882,71 @@ B<ASP-like Perl call:>
 
  
 
+# BEGIN ############### scratch Summary Tables ####################
+!block example;
+    [B<scratch> name]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#scratch_name"]name}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<YES>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [scratch name]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->scratch(  { name => VALUE_name
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->scratch(name, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ scratch End Summary Tables ++++++++++++++++++++
+
+
 H3: Description
 
 
 Returns the contents of a scratch variable to the page. (A scratch
 variable is set with a [set] value [/set] container pair.)
 
+
+
+# BEGIN ########### scratch Subsections ##############
+H4: {{CMD[id="scratch_name"]name}}
+
+
+
+# END ++++++++++++ scratch Subsections +++++++++++++
 
 H2: scratchd
 
@@ -8181,12 +11064,82 @@ Attribute aliases
 
  
 
+# BEGIN ############### search_region Summary Tables ####################
+!block example;
+    [B<search_region> argI<other_named_attributes>]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#search_region_arg"]arg}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#search_region_arg"]args}}|<<
+Alias for arg
+>>|DEFAULT_VALUE
+{{CMD[jump="#search_region_arg"]params}}|<<
+Alias for arg
+>>|DEFAULT_VALUE
+{{CMD[jump="#search_region_arg"]search}}|<<
+Alias for arg
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#search_region_ATT1"]ATT1}}|I<none>
+{{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
+{{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<no>
+Container tag|I<Yes>
+Has Subtags|I<No>
+Nests|I<No>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [search_region arg]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->search_region(  { arg => VALUE_arg
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->search_region(arg, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ search_region End Summary Tables ++++++++++++++++++++
+
+
 H3: Description
 
 B<NO Description>
 
 
 
+
+
+# BEGIN ########### search_region Subsections ##############
+H4: {{CMD[id="search_region_arg"]arg}}
+
+
+
+# END ++++++++++++ search_region Subsections +++++++++++++
 
 H2: selected
 
@@ -8222,6 +11175,61 @@ B<ASP-like Perl call:>
 >    $Tag->selected($name, $value, $ATTRHASH);
 
  
+
+# BEGIN ############### selected Summary Tables ####################
+!block example;
+    [B<selected> name valueI<other_named_attributes>]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#selected_name"]name}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#selected_value"]value}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#selected_ATT1"]ATT1}}|I<none>
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<YES>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [selected name value]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->selected(  { name => VALUE_name
+                       value => VALUE_value
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->selected(name,value, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ selected End Summary Tables ++++++++++++++++++++
+
 
 H3: Description
 
@@ -8260,6 +11268,18 @@ C<cgi=1>.
 
 
 
+
+# BEGIN ########### selected Subsections ##############
+H4: {{CMD[id="selected_name"]name}}
+
+
+
+H4: {{CMD[id="selected_value"]value}}
+
+
+
+# END ++++++++++++ selected Subsections +++++++++++++
+
 H2: set
 
 
@@ -8296,6 +11316,58 @@ B<ASP-like Perl call:>
 
  
 
+# BEGIN ############### set Summary Tables ####################
+!block example;
+    [B<set> name]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#set_name"]name}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
+{{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<YES>
+Container tag|I<Yes>
+Has Subtags|I<No>
+Nests|I<No>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [set name]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->set(  { name => VALUE_name
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->set(name, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ set End Summary Tables ++++++++++++++++++++
+
+
 H3: Description
 
 
@@ -8325,6 +11397,14 @@ Any of these profile values can be set in the OrderProfile files
 as well.
 
 
+
+
+# BEGIN ########### set Subsections ##############
+H4: {{CMD[id="set_name"]name}}
+
+
+
+# END ++++++++++++ set Subsections +++++++++++++
 
 H2: set_cookie
 
@@ -8494,11 +11574,71 @@ B<ASP-like Perl call:>
 
  
 
+# BEGIN ############### seti Summary Tables ####################
+!block example;
+    [B<seti> name]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#seti_name"]name}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
+{{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<YES>
+Container tag|I<Yes>
+Has Subtags|I<No>
+Nests|I<No>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [seti name]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->seti(  { name => VALUE_name
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->seti(name, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ seti End Summary Tables ++++++++++++++++++++
+
+
 H3: Description
 
 Equivalent to the E<lbracket>{{C[jump="#set"]set}}] tag, except that
 it {{CMD[jump="#attr_interpolate"]interpolates}} by default.
 
+
+
+# BEGIN ########### seti Subsections ##############
+H4: {{CMD[id="seti_name"]name}}
+
+
+
+# END ++++++++++++ seti Subsections +++++++++++++
 
 H2: setlocale
 
@@ -8507,44 +11647,61 @@ Sets locale and/or currency for the current page. Can be made persistent for the
 
 H3: Summary
 
-B<Parameters:> B<locale currency>
+!block example;
+    [B<setlocale> ]
+!endblock
 
-* locale
-** The locale to use.
-** N<Default:> [scratch mv_locale] (see also 'persist' attribute)
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#setlocale_currency"]currency}}|<<
+The currency format to use.
+* N<Default:> [scratch mv_currency] (see also 'persist' attribute)
+>>|DEFAULT_VALUE
+{{CMD[jump="#setlocale_locale"]locale}}|<<
+The locale to use.
+* N<Default:> [scratch mv_locale] (see also 'persist' attribute)
+>>|DEFAULT_VALUE
+{{CMD[jump="#setlocale_persist"]persist}}|<<
+Setting 'C<persist=1>' also sets the scratch variables, B<mv_locale> and B<mv_currency> to specified locale and currency. This makes the locale settings persistent for the user's session. Otherwise (C<persist=0>), the C<setlocale> tag affects the remainder of the current page only.
+>>|DEFAULT_VALUE
+!endblock
 
-* currency
-** The currency format to use.
-** N<Default:> [scratch mv_currency] (see also 'persist' attribute)
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
 
-Positional parameters in same order.
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<no>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
 
-B<Named Attrbutes>
 
-* persist
-** Setting 'C<persist=1>' also sets the scratch variables, B<mv_locale> and B<mv_currency> to specified locale and currency. This makes the locale settings persistent for the user's session. Otherwise (C<persist=0>), the C<setlocale> tag affects the remainder of the current page only.
+B<Tag expansion example:>
 
+!block example
+   [setlocale ]
+---
+   TAGRESULT
+!endblock
 
-Must pass named parameter interpolate=1 to cause interpolation.
-
-Invalidates cache: B<no>
-
-Called Routine: 
 
 B<ASP-like Perl call:>
 
->    $Tag->setlocale(
->        {
->         locale => VALUE,
->         currency => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->setlocale($locale, $currency, $ATTRHASH);
+!block example; lang="Perl"
+   $Tag->setlocale(  { 
+}, $body  );
+!endblock
 
- 
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->setlocale(, $attribute_hash_reference, $body);
+!endblock
 
 H3: Description
 
@@ -8572,6 +11729,27 @@ This N<allows:>
 !endblock
 
 
+
+# BEGIN ############ setlocale Subsections ##############
+H4: {{CMD[id="setlocale_currency"]currency}}
+
+The currency format to use.
+* N<Default:> [scratch mv_currency] (see also 'persist' attribute)
+
+
+H4: {{CMD[id="setlocale_locale"]locale}}
+
+The locale to use.
+* N<Default:> [scratch mv_locale] (see also 'persist' attribute)
+
+
+H4: {{CMD[id="setlocale_persist"]persist}}
+
+Setting 'C<persist=1>' also sets the scratch variables, B<mv_locale> and B<mv_currency> to specified locale and currency. This makes the locale settings persistent for the user's session. Otherwise (C<persist=0>), the C<setlocale> tag affects the remainder of the current page only.
+
+
+# END +++++++++++++ setlocale Subsections ++++++++++++
+
 H2: shipping
 
 Returns the cost of shipping the items in the cart via the shipping mode set with the B<mode> parameter. See also the {{CMD[jump="icdatabase.html#Shipping"]Shipping}} section of the Database documentation.
@@ -8579,102 +11757,125 @@ Returns the cost of shipping the items in the cart via the shipping mode set wit
 
 H3: Summary
 
-\Parameters: B<mode>
-
-* mode
-** N<Aliases:> B<name>, B<modes>
-** Whitespace, null or comma delimited list of modes for which to calculate shipping cost.  See also mv_shipmode.
-** N<Default:> E<lbracket>value mv_handling] if B<handling=1> or E<lbracket>value mv_shipmode] or 'default'
-
-* table
-** N<Alias:> B<tables>
-** Whitespace-delimited list of tables containing shipping data required for perl or query calculations (I<e.g.>, in the 'PERL' field of your shipping databaseE<nbspace>E<emdash> see {{CMD[jump="icdatabase.html#Shipping"]Shipping}}). You must specify the tables to get past the Perl '{{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe.pm}}' proctection. For example, you will get '{{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}}' errors if you refer to an SQL table without specifying it here.
-** N<Default:> None
-
-* cart
-** N<Alias:> B<carts>
-** Comma-delimited list of names of carts to calculate shipping cost for.
-** N<Default:> current cart
-
-* convert
-** Applies the conversion (if any) set with the {{C[jump="icconfig.html#PriceDivide"]PriceDivide}} catalog configuration directive.
-** N<Default:> True
-
-* noformat
-** Returns result as a number rather than a string formatted for the current locale's currency.
-** N<Default:> True
-
-* handling
-** Boolean-- use [value mv_handling] rather than [value mv_shipping] as first default for B<mode>. Note that this attribute matters only if you do not specify the B<mode> in the tag.
-** Note that this is set by the E<lbracket>{{C[jump="#handling"]handling}} tag (which calls the C<shipping> tag internally).  You should probably use the handling tag rather than setting this directly.
-** N<Default:> False
-
-* reset_modes
-** Clears list of modes in $Vend::Cfg->{Shipping_line}
-** N<Default:> False
-
-* add
-** Adds the argument to B<add> as data for a shipping.asc file (in $Vend::Cfg->{ScratchDir}/) and sets it.
-
-* file
-** Filename to read shipping from (default is usual shipping database, e.g., shipping.asc)
-
-* label
-** By default, returns HTML <OPTION ...> widget for shipping mode(s), including description and cost. You can override the widget with the B<format> attribute.  Note that B<label> overrides B<noformat>.
-** Here is an example from the foundation checkout.html page:
-!block example
-   [shipping
-     label=1
-     mode=|E<lbracket>{{CMD[jump="#data"]data}} table=country key='[default country US]' col=shipmodes]|
-   ]
+!block example;
+    [B<shipping> mode]
 !endblock
 
-* format
-** Format for results with B<label> attribute.
-** N<Default:> '<OPTION VALUE="%M"%S>%D (%F)'
-** For example,
-... E<lbracket>shipping mode="FLAT"
-.... label=1
-.... format="My Format Desc %D Price %F"E<rbracket>
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#shipping_add"]add}}|<<
+Adds the argument to B<add> as data for a shipping.asc file (in $Vend::Cfg->{ScratchDir}/) and sets it.
+>>|DEFAULT_VALUE
+{{CMD[jump="#shipping_cart"]cart}}|<<
+* N<Alias:> B<carts>
+Comma-delimited list of names of carts to calculate shipping cost for.
+* N<Default:> current cart
+>>|DEFAULT_VALUE
+{{CMD[jump="#shipping_cart"]carts}}|<<
+Alias for cart
+>>|DEFAULT_VALUE
+{{CMD[jump="#shipping_convert"]convert}}|<<
+Applies the conversion (if any) set with the {{C[jump="icconfig.html#PriceDivide"]PriceDivide}} catalog configuration directive.
+* N<Default:> True
+>>|DEFAULT_VALUE
+{{CMD[jump="#shipping_default"]default}}|<<
+Resets shipping mode to default of [value mv_shipmode]
+>>|DEFAULT_VALUE
+{{CMD[jump="#shipping_file"]file}}|<<
+Filename to read shipping from (default is usual shipping database, e.g., shipping.asc)
+>>|DEFAULT_VALUE
+{{CMD[jump="#shipping_format"]format}}|<<
+Format for results with B<label> attribute.
+* N<Default:> '<OPTION VALUE="%M"%S>%D (%F)'
+* For example,
+>    [shipping mode="FLAT"
+>             label=1
+>            format="My Format Desc %D Price %F"]
+>>|DEFAULT_VALUE
+{{CMD[jump="#shipping_handling"]handling}}|<<
+Boolean-- use [value mv_handling] rather than [value mv_shipping] as first default for B<mode>. Note that this attribute matters only if you do not specify the B<mode> in the tag.
+* Note that this is set by the E<lbracket>{{C[jump="#handling"]handling}} tag (which calls the C<shipping> tag internally).  You should probably use the handling tag rather than setting this directly.
+* N<Default:> False
+>>|DEFAULT_VALUE
+{{CMD[jump="#shipping_hide"]hide}}|<<
+Suppresses output
+>>|DEFAULT_VALUE
+{{CMD[jump="#shipping_label"]label}}|<<
+By default, returns HTML <OPTION ...> widget for shipping mode(s), including description and cost. You can override the widget with the B<format> attribute.  Note that B<label> overrides B<noformat>.
+* Here is an example from the foundation checkout.html page:
+>   [shipping
+>     label=1
+>     mode=|E<lbracket>{{CMD[jump="#data"]data}} table=country key='[default country US]' col=shipmodes]|
+>   ]
+>>|DEFAULT_VALUE
+{{CMD[jump="#shipping_mode"]mode}}|<<
+* N<Aliases:> B<name>, B<modes>
+Whitespace, null or comma delimited list of modes for which to calculate shipping cost.  See also mv_shipmode.
+* N<Default:> E<lbracket>value mv_handling] if B<handling=1> or E<lbracket>value mv_shipmode] or 'default'
+>>|DEFAULT_VALUE
+{{CMD[jump="#shipping_mode"]modes}}|<<
+Alias for mode
+>>|DEFAULT_VALUE
+{{CMD[jump="#shipping_mode"]name}}|<<
+Alias for mode
+>>|DEFAULT_VALUE
+{{CMD[jump="#shipping_noformat"]noformat}}|<<
+Returns result as a number rather than a string formatted for the current locale's currency.
+* N<Default:> True
+>>|DEFAULT_VALUE
+{{CMD[jump="#shipping_reset_message"]reset_message}}|<<
+Boolean. Blanks the session's current shipping message (i.e., $Session->{ship_message}).
+>>|DEFAULT_VALUE
+{{CMD[jump="#shipping_reset_modes"]reset_modes}}|<<
+Clears list of modes in $Vend::Cfg->{Shipping_line}
+* N<Default:> False
+>>|DEFAULT_VALUE
+{{CMD[jump="#shipping_table"]table}}|<<
+* N<Alias:> B<tables>
+Whitespace-delimited list of tables containing shipping data required for perl or query calculations (I<e.g.>, in the 'PERL' field of your shipping databaseE<nbspace>E<emdash> see {{CMD[jump="icdatabase.html#Shipping"]Shipping}}). You must specify the tables to get past the Perl '{{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe.pm}}' proctection. For example, you will get '{{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}}' errors if you refer to an SQL table without specifying it here.
+* N<Default:> None
+>>|DEFAULT_VALUE
+{{CMD[jump="#shipping_table"]tables}}|<<
+Alias for table
+>>|DEFAULT_VALUE
+!endblock
 
-* default
-** Resets shipping mode to default of [value mv_shipmode]
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
 
-* hide
-** Suppresses output
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<YES>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
 
-* reset_message
-** Boolean. Blanks the session's current shipping message (i.e., $Session->{ship_message}).
 
+B<Tag expansion example:>
 
+!block example
+   [shipping mode]
+---
+   TAGRESULT
+!endblock
 
-Must pass named parameter interpolate=1 to cause interpolation.
-
-Invalidates cache: B<YES>
-
-Called Routine: 
 
 B<ASP-like Perl call:>
 
->    $Tag->shipping(
->        {
->         mode => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->shipping($mode, $ATTRHASH);
+!block example; lang="Perl"
+   $Tag->shipping(  { mode => VALUE_mode
+}, $body  );
+!endblock
 
-Attribute aliases
+or similarly with positional parameters,
 
->            carts ==> cart
->            modes ==> mode
->            name ==> mode
->            tables ==> table
-
-
- 
+!block example; lang="Perl"
+    $Tag->shipping(mode, $attribute_hash_reference, $body);
+!endblock
 
 H3: Description
 
@@ -8688,6 +11889,101 @@ number of fractional digits (e.g., to the nearest penny, or 2 digits
 after the decimal point in the USA).
 
 
+
+
+# BEGIN ############ shipping Subsections ##############
+H4: {{CMD[id="shipping_add"]add}}
+
+Adds the argument to B<add> as data for a shipping.asc file (in $Vend::Cfg->{ScratchDir}/) and sets it.
+
+
+H4: {{CMD[id="shipping_cart"]cart}}
+
+* N<Alias:> B<carts>
+Comma-delimited list of names of carts to calculate shipping cost for.
+* N<Default:> current cart
+
+
+H4: {{CMD[id="shipping_convert"]convert}}
+
+Applies the conversion (if any) set with the {{C[jump="icconfig.html#PriceDivide"]PriceDivide}} catalog configuration directive.
+* N<Default:> True
+
+
+H4: {{CMD[id="shipping_default"]default}}
+
+Resets shipping mode to default of [value mv_shipmode]
+
+
+H4: {{CMD[id="shipping_file"]file}}
+
+Filename to read shipping from (default is usual shipping database, e.g., shipping.asc)
+
+
+H4: {{CMD[id="shipping_format"]format}}
+
+Format for results with B<label> attribute.
+* N<Default:> '<OPTION VALUE="%M"%S>%D (%F)'
+* For example,
+>    [shipping mode="FLAT"
+>             label=1
+>            format="My Format Desc %D Price %F"]
+
+
+H4: {{CMD[id="shipping_handling"]handling}}
+
+Boolean-- use [value mv_handling] rather than [value mv_shipping] as first default for B<mode>. Note that this attribute matters only if you do not specify the B<mode> in the tag.
+* Note that this is set by the E<lbracket>{{C[jump="#handling"]handling}} tag (which calls the C<shipping> tag internally).  You should probably use the handling tag rather than setting this directly.
+* N<Default:> False
+
+
+H4: {{CMD[id="shipping_hide"]hide}}
+
+Suppresses output
+
+
+H4: {{CMD[id="shipping_label"]label}}
+
+By default, returns HTML <OPTION ...> widget for shipping mode(s), including description and cost. You can override the widget with the B<format> attribute.  Note that B<label> overrides B<noformat>.
+* Here is an example from the foundation checkout.html page:
+>   [shipping
+>     label=1
+>     mode=|E<lbracket>{{CMD[jump="#data"]data}} table=country key='[default country US]' col=shipmodes]|
+>   ]
+
+
+H4: {{CMD[id="shipping_mode"]mode}}
+
+* N<Aliases:> B<name>, B<modes>
+Whitespace, null or comma delimited list of modes for which to calculate shipping cost.  See also mv_shipmode.
+* N<Default:> E<lbracket>value mv_handling] if B<handling=1> or E<lbracket>value mv_shipmode] or 'default'
+
+
+H4: {{CMD[id="shipping_noformat"]noformat}}
+
+Returns result as a number rather than a string formatted for the current locale's currency.
+* N<Default:> True
+
+
+H4: {{CMD[id="shipping_reset_message"]reset_message}}
+
+Boolean. Blanks the session's current shipping message (i.e., $Session->{ship_message}).
+
+
+H4: {{CMD[id="shipping_reset_modes"]reset_modes}}
+
+Clears list of modes in $Vend::Cfg->{Shipping_line}
+* N<Default:> False
+
+
+H4: {{CMD[id="shipping_table"]table}}
+
+* N<Alias:> B<tables>
+Whitespace-delimited list of tables containing shipping data required for perl or query calculations (I<e.g.>, in the 'PERL' field of your shipping databaseE<nbspace>E<emdash> see {{CMD[jump="icdatabase.html#Shipping"]Shipping}}). You must specify the tables to get past the Perl '{{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe.pm}}' proctection. For example, you will get '{{CMD[jump="http://www.perl.com/pub/doc/manual/html/lib/Safe.html"]Safe}}' errors if you refer to an SQL table without specifying it here.
+* N<Default:> None
+
+
+# END +++++++++++++ shipping Subsections ++++++++++++
 
 H2: shipping_desc
 
@@ -8774,11 +12070,85 @@ B<ASP-like Perl call:>
 
  
 
+# BEGIN ############### soap Summary Tables ####################
+!block example;
+    [B<soap> call uri proxyI<other_named_attributes>]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#soap_call"]call}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#soap_proxy"]proxy}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#soap_uri"]uri}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#soap_ATT1"]ATT1}}|I<none>
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<YES>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [soap call uri proxy]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->soap(  { call => VALUE_call
+                   proxy => VALUE_proxy
+                   uri => VALUE_uri
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->soap(call,uri,proxy, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ soap End Summary Tables ++++++++++++++++++++
+
+
 H3: Description
 
 B<NO Description>
 
 
+
+
+# BEGIN ########### soap Subsections ##############
+H4: {{CMD[id="soap_call"]call}}
+
+
+
+H4: {{CMD[id="soap_proxy"]proxy}}
+
+
+
+H4: {{CMD[id="soap_uri"]uri}}
+
+
+
+# END ++++++++++++ soap Subsections +++++++++++++
 
 H2: strip
 
@@ -8853,6 +12223,63 @@ Attribute aliases
 
  
 
+# BEGIN ############### subtotal Summary Tables ####################
+!block example;
+    [B<subtotal> name noformat]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#subtotal_name"]cart}}|<<
+Alias for name
+>>|DEFAULT_VALUE
+{{CMD[jump="#subtotal_name"]name}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#subtotal_noformat"]noformat}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<YES>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [subtotal name noformat]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->subtotal(  { name => VALUE_name
+                       noformat => VALUE_noformat
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->subtotal(name,noformat, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ subtotal End Summary Tables ++++++++++++++++++++
+
+
 H3: Description
 
 
@@ -8868,6 +12295,18 @@ tag is present and non-zero, the raw number with no currency formatting
 will be given.
 
 
+
+
+# BEGIN ########### subtotal Subsections ##############
+H4: {{CMD[id="subtotal_name"]name}}
+
+
+
+H4: {{CMD[id="subtotal_noformat"]noformat}}
+
+
+
+# END ++++++++++++ subtotal Subsections +++++++++++++
 
 H2: tag
 
@@ -8912,6 +12351,65 @@ Attribute aliases
 
 
  
+
+# BEGIN ############### tag Summary Tables ####################
+!block example;
+    [B<tag> op argI<other_named_attributes>]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#tag_arg"]arg}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#tag_arg"]description}}|<<
+Alias for arg
+>>|DEFAULT_VALUE
+{{CMD[jump="#tag_op"]op}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#tag_ATT1"]ATT1}}|I<none>
+{{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
+{{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<no>
+Container tag|I<Yes>
+Has Subtags|I<No>
+Nests|I<No>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [tag op arg]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->tag(  { arg => VALUE_arg
+                  op => VALUE_op
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->tag(op,arg, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ tag End Summary Tables ++++++++++++++++++++
+
 
 H3: Description
 
@@ -9035,6 +12533,18 @@ on the page.
 
 
 
+
+# BEGIN ########### tag Subsections ##############
+H4: {{CMD[id="tag_arg"]arg}}
+
+
+
+H4: {{CMD[id="tag_op"]op}}
+
+
+
+# END ++++++++++++ tag Subsections +++++++++++++
+
 H2: time
 
 
@@ -9072,6 +12582,59 @@ B<ASP-like Perl call:>
 >    $Tag->time($locale, $ATTRHASH, $BODY);
 
  
+
+# BEGIN ############### time Summary Tables ####################
+!block example;
+    [B<time> localeI<other_named_attributes>]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#time_locale"]locale}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#time_ATT1"]ATT1}}|I<none>
+{{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
+{{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<no>
+Container tag|I<Yes>
+Has Subtags|I<No>
+Nests|I<No>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [time locale]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->time(  { locale => VALUE_locale
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->time(locale, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ time End Summary Tables ++++++++++++++++++++
+
 
 H3: Description
 
@@ -9172,6 +12735,14 @@ Strips leading zeroes from numbers.
 
 
 
+
+# BEGIN ########### time Subsections ##############
+H4: {{CMD[id="time_locale"]locale}}
+
+
+
+# END ++++++++++++ time Subsections +++++++++++++
+
 H2: timed_build
 
 
@@ -9209,6 +12780,59 @@ B<ASP-like Perl call:>
 >    $Tag->timed_build($file, $ATTRHASH, $BODY);
 
  
+
+# BEGIN ############### timed_build Summary Tables ####################
+!block example;
+    [B<timed_build> fileI<other_named_attributes>]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#timed_build_file"]file}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#timed_build_ATT1"]ATT1}}|I<none>
+{{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
+{{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<no>
+Container tag|I<Yes>
+Has Subtags|I<No>
+Nests|I<No>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [timed_build file]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->timed_build(  { file => VALUE_file
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->timed_build(file, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ timed_build End Summary Tables ++++++++++++++++++++
+
 
 H3: Description
 
@@ -9300,6 +12924,14 @@ next time a link is made for that page the static version will be presented.
 
 
 
+
+# BEGIN ########### timed_build Subsections ##############
+H4: {{CMD[id="timed_build_file"]file}}
+
+
+
+# END ++++++++++++ timed_build Subsections +++++++++++++
+
 H2: tmp
 
 
@@ -9336,6 +12968,58 @@ B<ASP-like Perl call:>
 
  
 
+# BEGIN ############### tmp Summary Tables ####################
+!block example;
+    [B<tmp> name]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#tmp_name"]name}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
+{{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<YES>
+Container tag|I<Yes>
+Has Subtags|I<No>
+Nests|I<No>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [tmp name]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->tmp(  { name => VALUE_name
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->tmp(name, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ tmp End Summary Tables ++++++++++++++++++++
+
+
 H3: Description
 
 
@@ -9352,6 +13036,14 @@ a profile stored via the catalog.cfg directive C<OrderProfile>.
 
 
 
+
+
+# BEGIN ########### tmp Subsections ##############
+H4: {{CMD[id="tmp_name"]name}}
+
+
+
+# END ++++++++++++ tmp Subsections +++++++++++++
 
 H2: total_cost
 
@@ -9391,6 +13083,63 @@ Attribute aliases
 
  
 
+# BEGIN ############### total_cost Summary Tables ####################
+!block example;
+    [B<total_cost> name noformat]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#total_cost_name"]cart}}|<<
+Alias for name
+>>|DEFAULT_VALUE
+{{CMD[jump="#total_cost_name"]name}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#total_cost_noformat"]noformat}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<YES>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [total_cost name noformat]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->total_cost(  { name => VALUE_name
+                         noformat => VALUE_noformat
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->total_cost(name,noformat, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ total_cost End Summary Tables ++++++++++++++++++++
+
+
 H3: Description
 
 
@@ -9400,6 +13149,18 @@ including sales tax (if any).
 
 
 
+
+
+# BEGIN ########### total_cost Subsections ##############
+H4: {{CMD[id="total_cost_name"]name}}
+
+
+
+H4: {{CMD[id="total_cost_noformat"]noformat}}
+
+
+
+# END ++++++++++++ total_cost Subsections +++++++++++++
 
 H2: tree
 
@@ -9446,6 +13207,71 @@ Attribute aliases
 
 
  
+
+# BEGIN ############### tree Summary Tables ####################
+!block example;
+    [B<tree> table master subordinate startI<other_named_attributes>]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#tree_master"]master}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#tree_start"]start}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#tree_subordinate"]sub}}|<<
+Alias for subordinate
+>>|DEFAULT_VALUE
+{{CMD[jump="#tree_subordinate"]subordinate}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#tree_table"]table}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#tree_ATT1"]ATT1}}|I<none>
+{{CMD[jump="#attr_interpolate"]interpolate}}|I<No>
+{{CMD[jump="#attr_reparse"]reparse}}|I<Yes>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<no>
+Container tag|I<Yes>
+Has Subtags|I<No>
+Nests|I<No>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [tree table master subordinate start]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->tree(  { master => VALUE_master
+                   start => VALUE_start
+                   subordinate => VALUE_subordinate
+                   table => VALUE_table
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->tree(table,master,subordinate,start, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ tree End Summary Tables ++++++++++++++++++++
+
 
 H3: Description
 
@@ -9669,6 +13495,26 @@ in force. For example, you can set a "SELECTED" value on an option list
 with C<option=1>, set the tag prefix with C<prefix>, etc.
 
 
+
+# BEGIN ########### tree Subsections ##############
+H4: {{CMD[id="tree_master"]master}}
+
+
+
+H4: {{CMD[id="tree_start"]start}}
+
+
+
+H4: {{CMD[id="tree_subordinate"]subordinate}}
+
+
+
+H4: {{CMD[id="tree_table"]table}}
+
+
+
+# END ++++++++++++ tree Subsections +++++++++++++
+
 H2: try
 
 Allows you to trap errors. Interchange processes the body text of the E<lbracket>C<try>]E<lbracket>C</try>] block and returns it normally if it does not generate an error. If it does generate an error, interchange executes the E<lbracket>C<catch>]E<lbracket>C</catch>] block.
@@ -9806,54 +13652,76 @@ Forces an update of the specified interchange function. Function may be one of t
 
 H3: Summary
 
-\Parameters: B<function>
+!block example;
+    [B<update> function]
+!endblock
 
-* function
-** cart
-*** Upates current or named cart (see C<name> attribute)
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#update_function"]function}}|<<
+* cart
+** Upates current or named cart (see C<name> attribute)
 
-** process
-*** Updates an order or a search page
+* process
+** Updates an order or a search page
 
-** values
-*** Updates user-entered fields
+* values
+** Updates user-entered fields
 
-** data
-*** Updates database, using current B<mv_> CGI form variables, for N<example:>
-**** B<mv_data_table> Table to update
-**** B<mv_data_key> Key into table
-**** B<mv_data_fields> Fields to update (space or null delimited)
-**** B<mv_data_function> One of the N<following:>
-***** delete
-***** update
-***** insert
-***** delete
-**** etc.
+* data
+** Updates database, using current B<mv_> CGI form variables, for N<example:>
+*** B<mv_data_table> Table to update
+*** B<mv_data_key> Key into table
+*** B<mv_data_fields> Fields to update (space or null delimited)
+*** B<mv_data_function> One of the N<following:>
+**** delete
+**** update
+**** insert
+**** delete
+*** etc.
+>>|DEFAULT_VALUE
+{{CMD[jump="#update_name"]name}}|<<
+Cart name to update (if 'function=cart')
+* N<Default:> current cart
+>>|DEFAULT_VALUE
+!endblock
 
-* name
-** Cart name to update (if 'function=cart')
-** N<Default:> current cart
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<YES>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
 
 
-Must pass named parameter interpolate=1 to cause interpolation.
+B<Tag expansion example:>
 
-Invalidates cache: B<YES>
+!block example
+   [update function]
+---
+   TAGRESULT
+!endblock
 
-Called Routine: 
 
 B<ASP-like Perl call:>
 
->    $Tag->update(
->        {
->         function => VALUE,
->        }
->    )
->
-> OR
->
->    $Tag->update($function, $ATTRHASH);
+!block example; lang="Perl"
+   $Tag->update(  { function => VALUE_function
+}, $body  );
+!endblock
 
- 
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->update(function, $attribute_hash_reference, $body);
+!endblock
 
 H3: Description
 
@@ -9863,6 +13731,40 @@ Forces an update of the specified interchange function. Function may be one of t
 * B<values> (updates user-entered fields)
 * B<data> (updates database, using current B<mv_> CGI form variables)
 
+
+
+# BEGIN ############ update Subsections ##############
+H4: {{CMD[id="update_function"]function}}
+
+* cart
+** Upates current or named cart (see C<name> attribute)
+
+* process
+** Updates an order or a search page
+
+* values
+** Updates user-entered fields
+
+* data
+** Updates database, using current B<mv_> CGI form variables, for N<example:>
+*** B<mv_data_table> Table to update
+*** B<mv_data_key> Key into table
+*** B<mv_data_fields> Fields to update (space or null delimited)
+*** B<mv_data_function> One of the N<following:>
+**** delete
+**** update
+**** insert
+**** delete
+*** etc.
+
+
+H4: {{CMD[id="update_name"]name}}
+
+Cart name to update (if 'function=cart')
+* N<Default:> current cart
+
+
+# END +++++++++++++ update Subsections ++++++++++++
 
 H2: userdb
 
@@ -9903,6 +13805,64 @@ Attribute aliases
 
 
  
+
+# BEGIN ############### userdb Summary Tables ####################
+!block example;
+    [B<userdb> functionI<other_named_attributes>]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#userdb_function"]function}}|<<
+>>|DEFAULT_VALUE
+{{CMD[jump="#userdb_nickname"]name}}|<<
+Alias for nickname
+>>|DEFAULT_VALUE
+{{CMD[jump="#userdb_db"]table}}|<<
+Alias for db
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#userdb_ATT1"]ATT1}}|I<none>
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<YES>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [userdb function]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->userdb(  { function => VALUE_function
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->userdb(function, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ userdb End Summary Tables ++++++++++++++++++++
+
 
 H3: Description
 
@@ -9966,6 +13926,14 @@ call to C<userdb>. The global parameters (default in parens):
 >    db_acl       Set field for database access control storage (db_acl)
 
 
+
+
+# BEGIN ########### userdb Subsections ##############
+H4: {{CMD[id="userdb_function"]function}}
+
+
+
+# END ++++++++++++ userdb Subsections +++++++++++++
 
 H2: value
 
@@ -10144,6 +14112,58 @@ B<ASP-like Perl call:>
 
  
 
+# BEGIN ############### value_extended Summary Tables ####################
+!block example;
+    [B<value_extended> nameI<other_named_attributes>]
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#value_extended_name"]name}}|<<
+>>|DEFAULT_VALUE
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#value_extended_ATT1"]ATT1}}|I<none>
+{{CMD[jump="#attr_interpolate"]interpolate (reparse)}}|I<No>
+!endblock
+
+!block table; headings=1; colvaligns="TT"
+A|B
+Other_Charactreristics|
+Invalidates cache|I<YES>
+Container tag|I<No>
+Has Subtags|I<No>
+Nests|I<Yes>
+!endblock
+
+
+B<Tag expansion example:>
+
+!block example
+   [value_extended name]
+---
+   TAGRESULT
+!endblock
+
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+   $Tag->value_extended(  { name => VALUE_name
+}, $body  );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->value_extended(name, $attribute_hash_reference, $body);
+!endblock
+
+# END +++++++++++++++ value_extended End Summary Tables ++++++++++++++++++++
+
+
 H3: Description
 
 
@@ -10230,7 +14250,12 @@ fails. Defaults to the empty string.
 
 
 
+# BEGIN ########### value_extended Subsections ##############
+H4: {{CMD[id="value_extended_name"]name}}
 
+
+
+# END ++++++++++++ value_extended Subsections +++++++++++++
 
 H1: User-defined Tags
 
