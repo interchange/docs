@@ -38,7 +38,8 @@ dev_html:
 	mv $(basename $<).html $@
 
 %_frames.html: %.sdf
-	echo '\
+	@echo making $@
+	@echo '\
 <html><head>\
   <title>'$$title'</title>\
 </head><frameset cols="200,*">\
