@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ictemplates.sdf,v 1.36 2002-04-29 23:04:16 jon Exp $
+# $Id: ictemplates.sdf,v 1.37 2002-05-03 21:59:25 racke Exp $
 
 !define DOC_NAME "Template Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "ictemplates"
-!define DOC_VERSION substr('$Revision: 1.36 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.37 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ictemplates.html"
@@ -2974,7 +2974,7 @@ You can also place an entirely new page in place of the default one if the local
 If a page index.html exists, it will be the default. If the current locale is C<fr_FR>, a page "index.fr_FR" exists, and C<Locale> looks like this:
 
 !block example
-   Locale fr_FR HTMLsuffix  fr_FR
+   Locale fr_FR HTMLsuffix  .fr_FR
 !endblock
 
 Then, the C<.fr_FR> page will be used instead of the C<.html> page. For a longer series of strings, the configuration file recognizes:
