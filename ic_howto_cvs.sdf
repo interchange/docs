@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: ic_howto_cvs.sdf,v 1.7 2001-10-17 06:26:15 danb Exp $
+# $Id: ic_howto_cvs.sdf,v 1.8 2002-04-01 21:26:46 kwalsh Exp $
 
 !define DOC_NAME "Interchange + CVS HOWTO"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_howto_cvs"
-!define DOC_VERSION substr('$Revision: 1.7 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.8 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/ic_howto_cvs.html"
@@ -548,7 +548,7 @@ This tells CVS to pipe the commit output to a shell script, which in turn update
  echo -n $2"  ";
  date;
  echo;
- cat) | tee $1 | /usr/bin/Mail -s "[foundation-cvs] $3" foundation-cvs@example.com 
+ cat) | tee -a $1 | /usr/bin/Mail -s "[foundation-cvs] $3" foundation-cvs@example.com 
 !endblock
 
 N:Your commit logs will now be archived in the CVSROOT/commitlog file and e-mailed to the  foundation-cvs@example.com address (which is especially useful when you have a {{SECT:Mailserver for CVS updates}}).  Here is what a sample e-mail looks like:
@@ -834,7 +834,7 @@ N:Further, jEdit has a CVS plugin, written by Ben Sarsgard {{EMAIL:bsarsgard@vmt
 
 H2:Seperate servers for development and live catalogs
 
-N:If you have the luxury of seperate server ardware for the development and live catalogs, you might find the following utility helpful:
+N:If you have the luxury of seperate server hardware for the development and live catalogs, you might find the following utility helpful:
 
 *CVSviaFTP ({{URL:http://www.cvshome.org/dev/addoncvsftp.html}}) - from the CVS Add-ons page ({{URL:http://www.cvshome.org/dev/addons.html}}).
 
