@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icinstall.sdf,v 1.14 2001-03-02 15:47:12 jon Exp $
+# $Id: icinstall.sdf,v 1.15 2001-03-02 17:27:59 jon Exp $
 
 !define DOC_NAME "Interchange Installation"
 !define DOC_TYPE ""
 !define DOC_CODE "ICINSTALL_D2a_100800"
-!define DOC_VERSION substr('$Revision: 1.14 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.15 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
@@ -127,13 +127,13 @@ The files are mostly identical, except that certain macro strings have been repl
 
 !block example
        # template
-       Variable SERVER_NAME  &#32;_MVC_SERVERNAME__
+       Variable SERVER_NAME  __MVC_SERVERNAME__
 
        # configured catalog
        Variable SERVER_NAME  www.mydomain.com
 !endblock
 
-The macro string &#32;_MVC_SERVERNAME__ was substituted with the answer to the question about server name. In the same way, other variables are substituted, and include:
+The macro string __MVC_SERVERNAME__ was substituted with the answer to the question about server name. In the same way, other variables are substituted, and include:
 
 !block example
 MVC_BASEDIR      MVC_IMAGEDIR
