@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.36 2001-05-17 22:39:14 bill Exp $
+# $Id: ictags.sdf,v 1.37 2001-05-18 03:39:29 jon Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.36 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.37 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -173,7 +173,7 @@ in the cart.
 
 Avoid the HTML-embedded usage if you can.
 
-The foundation catalog included with interchange disables parsing of
+The Foundation catalog included with Interchange disables parsing of
 the HTML-embedded syntax. This is for better performance, since it
 saves the server from checking every HTML tag for Interchange tag
 calls. This is done in the catalog by setting the pragma
@@ -252,7 +252,7 @@ that E<lbracket>{{CMD[jump="#page"]page}} ...] and
 E<lbracket>{{CMD[jump="#order"]order}} ..] are B<not> container tags.)
 
 I<For container tags (interpolated)>
-* If true ("interpolate=1"), the interchange server will first process
+* If true ("interpolate=1"), the Interchange server will first process
 any tags within the body text before passing it to the enclosing tag.
 * If false ("interpolate=0"), the enclosing tag will receive the raw
 body text.
@@ -264,7 +264,7 @@ explanation and examples).
 
 (Note: The mixing of 'interpolate' and 'reparse' logic occurred
 because 'interpolate' already worked this way when 'reparse' was added
-to interchange. This may be fixed in a later release...)
+to Interchange. This may be fixed in a later release...)
 
 Most standalone tags are not reparsed by default (i.e., interpolate=0
 by default). There are some exceptions, such as the
@@ -396,7 +396,7 @@ it an attribute array or hash value.
 
 H4: Perl calls
 
-Before passing attributes to a tag, the interchange parser would
+Before passing attributes to a tag, the Interchange parser would
 convert the above example to an anonymous array reference. It would
 use the resulting arrayref as the value for the 'search' attribute in
 this example.
@@ -4137,7 +4137,7 @@ C<[value name=foo filter="lookup.products.price.extra"]> will send
 
 H2: flag
 
-Controls interchange flags. For example, flags affect database access
+Controls Interchange flags. For example, flags affect database access
 and transactions for those databases able to support these
 features. See also the E<lbracket>{{C[jump="#tag"]tag}}] tag.
 
@@ -4722,7 +4722,7 @@ the defaults).
 >    Auto credit card validation is enabled.
 >    [/if]
 
-H4: {{CMD[id="if_data"]data  database::field::key}}
+H4: {{CMD[id="if_data"]data database::field::key}}
 
 The Interchange databases. Retrieves a field in the database and
 returns true or false based on the value.
@@ -4838,7 +4838,7 @@ with the [set name]value[/set] element.
 
 H4: {{CMD[id="if_session"]session}}
 
-the interchange session variables. of particular interest
+the Interchange session variables. of particular interest
 are i<login>, i<frames>, i<secure>, and i<browser>.
 
 H4: {{CMD[id="if_validcc"]validcc}}
@@ -4852,9 +4852,9 @@ for targets if nothing else is passed.
 
 H4: {{CMD[id="if_value"]value}}
 
-the interchange user variables, typically set in search,
+the Interchange user variables, typically set in search,
 control, or order forms. variables beginning with c<mv_>
-are interchange special values, and should be tested/used
+are Interchange special values, and should be tested/used
 with caution.
 
 
@@ -5457,7 +5457,7 @@ H3: Summary
 ** Log type
 *** text (ordinary text file)
 *** quot (delimited entries)
-*** error (add interchange error formatting and time/location stamps)
+*** error (add Interchange error formatting and time/location stamps)
 
 * hide
 ** Suppress status otherwise returned by tag to the page.
@@ -6358,10 +6358,10 @@ mv_pc, and any arguments supplied with the C<arg> attribute:
        [page  href="http://www.elsewhere.net/cgi/script"
               form="cgi_1=ONE
                     cgi_2=TWO"
-               arg="interchange argument"]External link</A>
+               arg="Interchange argument"]External link</A>
 
        <A HREF="http://www.elsewhere.net/cgi/script?\
-        mv_session_id=[[EXAMPLE_SESSION]]&mv_pc=1&mv_arg=interchange%20argument&\
+        mv_session_id=[[EXAMPLE_SESSION]]&mv_pc=1&mv_arg=Interchange%20argument&\
         cgi_1=ONE&cgi_2=TWO">External link</A>
 !endblock
 
@@ -6410,7 +6410,7 @@ These are identical:
 
 !endblock
 
-Here is the same thing from a non-interchange page (e.g., a home
+Here is the same thing from a non-Interchange page (e.g., a home
 page), assuming '/cgi-bin/[[EXAMPLE_CATALOG]]' is the CGI path to Interchange's vlink):
 
 !block example
@@ -6821,14 +6821,14 @@ catalog directive, setting C<global=1> will turn off
 protection within the tag.
 
 The code within the tag will then be able to do anything the user ID
-running interchange can. This seriously compromises security, and
+running Interchange can. This seriously compromises security, and
 you should know what you are doing before using it in a public site. It
 is especially dangerous if a single Interchange server is shared by
 multiple companies or user IDs.
 
 Also, full 'C<use strict>' checking is turned on by default when in
 global mode. You can turn it off by using 'C<no strict;>' within your
-code. Note that any C<strict> errors will go to the interchange error
+code. Note that any C<strict> errors will go to the Interchange error
 logs, and the tag itself will fail silently within the page.
 
 H4: {{CMD[id="perl_file"]file}}
@@ -6848,7 +6848,7 @@ Absolute filenames (or filenames containing '../') are prohibited by
 the {{C[jump="icconfig.html#NoAbsolute *global* *global*"]NoAbsolute}}
 catalog directive.
 
-If the filename is not absolute, interchange first looks for a file in
+If the filename is not absolute, Interchange first looks for a file in
 the current directory, then in the list set with the
 {{C[jump="icconfig.html#TemplateDir *global*"]TemplateDir}} catalog
 directive. If it fails to find a file by that name, it then looks for
@@ -7139,7 +7139,7 @@ B<Tag usage example:>
 
 This will list sku, description and price for ten products per page,
 followed by hyperlinks to the other pages of the list. Note that you
-may interpolate interchange tags in the usual way if you double-quote
+may interpolate Interchange tags in the usual way if you double-quote
 the SQL statement.
 
 !block example
@@ -8709,7 +8709,7 @@ The following is the string for Thursday, April 30, 1997.
 
 >    [tag time]%A, %B %d, %Y[/tag]
 
-H4: {{CMD[id="tag_touch"]touch }}
+H4: {{CMD[id="tag_touch"]touch}}
 
 Touches a database to allow use of the tag_data() routine in 
 user-defined subroutines. If this is not done, the routine
@@ -8793,7 +8793,7 @@ which doesn't display zone, use the C<tz> parameter, or manage it yourself.
 
 \NOTE: You can adjust time globally for an Interchange installation by
 setting the $ENV{TZ} variable on many systems. Set TZ in your environment
-and then restart interchange:
+and then restart Interchange:
 
 >        ## bash/ksh/sh
 >        TZ=PST7PDT; export TZ
@@ -9537,7 +9537,7 @@ call to C<userdb>. The global parameters (default in parens):
 H2: value
 
 Returns the the current value of the named form input field.
-HTML-escapes interchange tags in the result for security.
+HTML-escapes Interchange tags in the result for security.
 
 Can also set a new value within the current page.
 
@@ -10104,83 +10104,873 @@ This is not recommended for the novice, thoughE<nbspace>E<emdash> keep it simple
 
 H1: Standard Usertags
 
-The distribution includes a number of prebuilt usertags in the
-C<interchange_root/usertag> directory. Some of these are used by the
-foundation catalog or its administrative interface.
-
-H2: {{CMD[id="ut_bar_button"]bar_button}}
+The distribution includes a number of prebuilt usertags in the C<usertag>
+directory in the Interchange software directory. Some of these are used
+by the foundation catalog or its administrative interface.
 
 
-H2: {{CMD[id="ut_delete_cart"]delete_cart}}
+H2: bar_button
+
+Displays content based on current page. Could be used for building e.g. menu bars.
+
+H3: Summary
+
+!block example;
+    [B<bar-button> page current]...[selected]...[/selected][/bar-button]
+    [B<bar-button> page=page current=current-page]...[selected]...[/selected][/bar-button]
+!endblock
+
+!block note; label="Positional parameters: "
+The first line shows the usage with positional parameters (given in
+order). The second line shows usage with named parameters.
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#bar_button_page"]page}}|Name of page for which this bar-button is defined|I<none>
+{{CMD[jump="#bar_button_current"]current}}|Name of the current page|Current page: MV_PAGE
+!endblock
+
+!block table;headings=1
+A|B
+Other_Charactreristics|
+Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
+{{CMD[jump="#macro_tags"]Macro}}|I<No>
+Has end tag|[/bar-button]
+!endblock
+
+B<Tag expansion example:>
+
+To build a simple '3-button' menu bar one could put the following on
+each of the pages. The results of this code for page2 are shown below.
+
+!block example
+	<table><tr>
+	[bar-button page=page1]
+	<TD><A HREF="[area page1]">PAGE-1</A></TD>
+	[selected]
+	<TD bgcolor="red"><A HREF="[area page1]"><B>PAGE-1-selected</B></A></TD>
+	[/selected]
+	[/bar-button]
+	[bar-button page=page2]
+	<TD><A HREF="[area page2]">PAGE-2</A></TD>
+	[selected]
+	<TD bgcolor="red"><A HREF="[area page2]"><B>PAGE-2-selected</B></A></TD>
+	[/selected]
+	[/bar-button]
+	[bar-button page=page3]
+	<TD><A HREF="[area page3]">PAGE-3</A></TD>
+	[selected]
+	<TD bgcolor="red"><A HREF="[area page3]"><B>PAGE-3-selected</B></A></TD>
+	[/selected]
+	[/bar-button]
+	</tr></table>
+------------------------------------------------------
+	PAGE-1    PAGE-2-selected    PAGE-3
+!endblock
 
 
-H2: {{CMD[id="ut_fedex_query"]fedex_query}}
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+    $Tag->button_bar(  { page => $page,
+                     current  => $current, 
+                         body => $body}  );
+!endblock
+
+or similarly,
+
+!block example; lang="Perl"
+    $Tag->area($page, $current, $body);
+!endblock
 
 
-H2: {{CMD[id="ut_loc"]loc}}
+H4: See Also
+
+bar_link routine
 
 
-H2: {{CMD[id="ut_reconfig_wait"]reconfig_wait}}
+H3: Description
+
+Displays content based on current page. The content between the
+E<lbracket>selected][/selected] tags will be displayed only if the name
+of the curent page matches the name that was passed to the page parameter
+(page=page-name). The default content will be displayed when there is
+no match.
+
+H4: {{CMD[id="bar_button_page"]page}}
+
+The name of the page for which this definition of the bar-button 
+is defined.
+
+H4: {{CMD[id="bar_button_current"]current}}
+
+The name of the current page. Defaults to current page MV_PAGE.
 
 
-H2: {{CMD[id="ut_title_bar"]title_bar}}
+H2: button
 
 
-H2: {{CMD[id="ut_xml_generator"]xml_generator}}
+H2: convert_date
 
 
-H2: {{CMD[id="ut_button"]button}}
+H2: db_date
+
+This tag returns the time of last access of the database source file. 
+
+H3: Summary
+
+!block example;
+    [B<db_date> table* format*]
+!endblock
+
+!block note; label="Positional parameters: "
+The first line shows the usage with positional parameters (given in
+order). The second line shows usage with named parameters.
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#db_date_table"]table}}|Table name.|products
+{{CMD[jump="#db_date_format"]format}}|POSIX time format string|%A %d %b %Y
+!endblock
+
+!block table;headings=1
+A|B
+Other_Charactreristics|
+Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
+{{CMD[jump="#macro_tags"]Macro}}|I<No>
+Has end tag|I<No>
+!endblock
+
+B<Tag expansion example:>
+
+!block example
+   [db-date]
+   [db-date cat]
+   [db-date table=cat format="%d %b %Y"]
+------------------------------------------------------
+   Wednesday 02 May 2001 (products.txt)
+   Wednesday 03 May 2001 (cat.txt)
+   03 May 2001 (cat.txt)
+!endblock
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+    $Tag->db_date( { table => cat,
+                    format => "%d %b %Y", } );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->db_date( "cat", "%d %b %Y" );
+!endblock
+
+H3: Description
+
+This tag returns the time of last access of the database source file. 
+
+H4: {{CMD[id="db_date_table"]table}}
+
+Table name. Defaults to products if not specified.
+
+H4: {{CMD[id="db_date_format"]format}}
+
+POSIX time format string. See Unix strftime(3) manpage for details.
+Defaults to '%A %d %b %Y' when not specified.
 
 
-H2: {{CMD[id="ut_email"]email}}
+H2: delete_cart
+
+This tag deletes a cart from the userdb.
+
+H3: Summary
+
+!block example;
+    [B<delete_cart> nickname]
+    [B<delete_cart> nickname="cart-name"]
+!endblock
+
+!block note; label="Positional parameters: "
+The first line shows the usage with positional parameters (given in
+order). The second line shows usage with named parameters.
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#delete_cart_nickname"]nickname}}|Must be an existing nickname|I<none>
+!endblock
+
+!block table;headings=1
+A|B
+Other_Charactreristics|
+Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
+{{CMD[jump="#macro_tags"]Macro}}|I<No>
+Has end tag|I<No>
+!endblock
+
+B<Tag expansion example:>
+
+!block example
+   [delete_cart mycart]
+   [delete_cart nickname="mycart"]
+------------------------------------------------------
+!endblock
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+    $Tag->delete_cart( { nickname => "mycart", } );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->delete_cart( "mycart" );
+!endblock
+
+H4: See Also
+
+{{CMD[jump="#userdb"]userdb}}, {{CMD[jump="#load_cart"]load_cart}}, 
+{{CMD[jump="#save_cart"]save_cart}} and pages templates/components/saved_carts_list_small,
+pages/saved_carts.html for more examples.
+
+H3: Description
+
+Deletes a cart with name nickname from the user database. Basically 
+the same as E<lbracket>userdb function=delete_cart nickname=mcart].
+
+H4: {{CMD[id="delete_cart_nickname"]nickname}}
+
+Nickname of cart to be deleted.
 
 
-H2: {{CMD[id="ut_formel"]formel}}
+H2: email
+
+This tag takes a recipient address and a body text and uses the 
+SendmailProgram with -t option to send email.
+
+H3: Summary
+
+!block example;
+    [B<email> to subject* reply* from* extra*]Your message[/email]
+    [B<email> to=to_address subject=subject reply=reply_address 
+        from=from_address extra=extra_headers]Your message[/email]
+!endblock
+
+!block note; label="Positional parameters: "
+The first line shows the usage with positional parameters (given in
+order). The second line shows usage with named parameters.
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+to|Email address of recipient|I<none>
+subject|Subject line|String: <no subject>
+reply|Email address to be used for the reply-to header|I<none>
+from|Senders email address|First address in MailOrderTo configuration variable
+extra|Additional headers to be included|I<none>
+!endblock
+
+!block table;headings=1
+A|B
+Other_Charactreristics|
+Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
+{{CMD[jump="#macro_tags"]Macro}}|I<No>
+Has end tag|[/email]
+!endblock
+
+B<Tag expansion example:>
+
+!block example
+   [email
+          to="foo@bar.com"
+     subject="Greetings"
+        from="bar@foo.com"
+   ]
+   Hello World
+   [/email]
+------------------------------------------------------
+!endblock
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+    $Tag->email(  { to => $to,
+                  from => $from, 
+               subject => $subject,
+                 reply => $reply,
+                 extra => $extra,
+                  body => $body }  );
+!endblock
+
+or similarly,
+
+!block example; lang="Perl"
+    $Tag->email($to, $subject, $reply, $from, $extra, $body);
+!endblock
+
+H4: See Also
+
+{{CMD[jump="#email_raw"]email_raw}} and
+etc/mail_receipt, pages/process_return.html, pages/stock-alert-added.html for examples.
+
+H3: Description
+
+Will send the content between the E<lbracket>email][/email] tags as 
+an email to the recipient (to) using the SendmailProgram with -t option.
+
+H4: extra
+
+Extra headers to be included. Example:
+Errors-To: errors@yourdomain.com 
+
+H4: from
+
+Email address identifying the sender of the message. Will use the 
+first email address of the MailOrderTo configuration variable if 
+it is not supplied.
+
+H4: reply
+
+Email address to be used for the Reply-to header. No Reply-to header 
+will be present if this parameter is omitted.
+
+H4: subject
+
+Short text describing the content of the message. The Subject line of an email message.
+The string <no subject> will be substituted if this parameter is omitted.
+
+H4: to
+
+Valid email address(es) of the recipient(s). This parameter is required.
 
 
-H2: {{CMD[id="ut_rand"]rand}}
+H2: email_raw
+
+This tag takes a raw email message, B<including headers>, and
+uses the SendmailProgram with -t option.
+
+H3: Summary
+
+!block example;
+    [B<email_raw>]Your message incuding headers[/email_raw]
+!endblock
+
+!block table;headings=1
+A|B
+Other_Charactreristics|
+Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
+{{CMD[jump="#macro_tags"]Macro}}|I<No>
+Has end tag|[/email_raw]
+!endblock
+
+B<Tag expansion example:>
+
+!block example
+   [email_raw]
+From: foo@bar.com
+To: bar@foo.com
+Subject: baz
+
+The text of the message.
+   [/email_raw]
+------------------------------------------------------
+!endblock
+
+The headers must be at the beginning of the line, and the header
+must have a valid To: or it will not be delivered.
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+    $Tag->email_raw(  { body => $body }  );
+!endblock
+
+or similarly,
+
+!block example; lang="Perl"
+    $Tag->email_raw($body);
+!endblock
+
+H4: See Also
+
+{{CMD[jump="#email"]email}}
+
+H3: Description
+
+Will send the content between the E<lbracket>email_raw][/email_raw] 
+tags as a raw email message to the recipient specified in the supplied 
+headers using the SendmailProgram with -t option.
 
 
-H2: {{CMD[id="ut_save_cart"]save_cart}}
+H2: fcounter
 
 
-H2: {{CMD[id="ut_ups_query"]ups_query}}
+H2: fedex_query
 
 
-H2: {{CMD[id="ut_convert_date"]convert_date}}
+H2: formel
 
 
-H2: {{CMD[id="ut_email_raw"]email_raw}}
+H2: get-url
+
+Fetch a URL and return the contents.
+
+H3: Summary
+
+!block example;
+    [B<get-url> url]
+    [B<get-url> url="valid-url" strip=1*]
+!endblock
+
+!block note; label="Positional parameters: "
+The first line shows the usage with positional parameters (given in
+order). The second line shows usage with named parameters.
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#get_url_url"]url}}|<<
+Must be a valid URL. Meaning, you have to supply the protocol. 
+. Example 
+** http://demo.akopia.com/
+** ftp://ftp.akopia.com/
+>>|I<none>
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#get_url_strip"]strip}}|I<none>
+!endblock
+
+!block table;headings=1
+A|B
+Other_Charactreristics|
+Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
+{{CMD[jump="#macro_tags"]Macro}}|I<No>
+Has end tag|I<No>
+!endblock
+
+B<Tag expansion example:>
+
+!block example
+   [get-url http://demo.akopia.com/]
+   [get-url url="http://demo.akopia.com/" strip=1]
+------------------------------------------------------
+!endblock
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+    $Tag->get_url( { url => "http://demo.akopia.com/", } );
+					   
+    $Tag->get_url( { url => "http://demo.akopia.com/",
+                   strip => 1, } );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->get_url( "http://demo.akopia.com/" );
+!endblock
+
+H3: Description
+
+Uses the LWP libraries (LWP::Simple) to fetch a URL and returns
+the contents.
+
+H4: {{CMD[id="get_url_strip"]strip}}
+
+If the strip option is set, strips everything up 
+to E<lt>body> and everything after E<lt>/body>.
+
+H4: {{CMD[id="get_url_url"]url}}
+
+Must be a valid URL (including protocol).
 
 
-H2: {{CMD[id="ut_get_url"]get_url}}
+
+H2: load_cart
+
+This tag loads a cart by name from the userdb.
+
+H3: Summary
+
+!block example;
+    [B<load_cart> nickname]
+    [B<load_cart> nickname="cart-name"]
+!endblock
+
+!block note; label="Positional parameters: "
+The first line shows the usage with positional parameters (given in
+order). The second line shows usage with named parameters.
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#load_cart_nickname"]nickname}}|<<
+Must be an existing nickname.
+. Nickname is constructed from:
+** a name part
+** time modified (time the cart was saved by save_cart tag)
+** type (c for cart, r for recurring) 
+>>|I<none>
+!endblock
+
+!block table;headings=1
+A|B
+Other_Charactreristics|
+Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
+{{CMD[jump="#macro_tags"]Macro}}|I<No>
+Has end tag|I<No>
+!endblock
+
+B<Tag expansion example:>
+
+!block example
+   [load_cart mycart:990102732:c]
+   [load_cart nickname="mycart:990102732:c"]
+------------------------------------------------------
+!endblock
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+    $Tag->load_cart( { nickname => "mycart:990102732:c", } );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->load_cart( "mycart:990102732:c" );
+!endblock
+
+H4: See Also
+
+{{CMD[jump="#userdb"]userdb}}, {{CMD[jump="#delete_cart"]delete_cart}}, 
+{{CMD[jump="#save_cart"]save_cart}} and pages templates/components/saved_carts_list_small,
+pages/saved_carts.html for more examples.
+
+H3: Description
+
+Loads a cart with name nickname from the user database. It will 
+be merged with the current cart. Basically the same as
+E<lbracket>userdb function=get_cart nickname=cartname merge=1].
+
+H4: {{CMD[id="load_cart_nickname"]nickname}}
+
+Nickname of cart to be loaded. See above.
 
 
-H2: {{CMD[id="ut_reconfig"]reconfig}}
+
+H2: loc
 
 
-H2: {{CMD[id="ut_summary"]summary}}
+H2: rand
 
 
-H2: {{CMD[id="ut_usertrack"]usertrack}}
+H2: reconfig
 
 
-H2: {{CMD[id="ut_db_date"]db_date}}
+H2: reconfig_time
 
 
-H2: {{CMD[id="ut_fcounter"]fcounter}}
+H2: reconfig_wait
 
 
-H2: {{CMD[id="ut_load_cart"]load_cart}}
+H2: save_cart
+
+This tag saves the current cart or recurring order in the userdb under
+a given name.
+
+H3: Summary
+
+!block example;
+    [B<save_cart> nickname recurring]
+    [B<save_cart> nickname="cart-name" recurring=1]
+!endblock
+
+!block note; label="Positional parameters: "
+The first line shows the usage with positional parameters (given in
+order). The second line shows usage with named parameters.
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#save_cart_nickname"]nickname}}|Label for the cart.|I<none>
+{{CMD[jump="#save_cart_recurring"]recurring}}|Set to true if recurring. Set to false, or ommit if cart.|I<none>
+!endblock
+
+!block table;headings=1
+A|B
+Other_Charactreristics|
+Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
+{{CMD[jump="#macro_tags"]Macro}}|I<No>
+Has end tag|I<No>
+!endblock
+
+B<Tag expansion example:>
+
+!block example
+   [save_cart mycart]
+   [save_cart nickname=mycart recurring=1]
+------------------------------------------------------
+!endblock
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+    $Tag->save_cart( { nickname => mycart,
+                      recurring => 1, } );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->save_cart( "mycart", "1" );
+!endblock
+
+H4: See Also
+
+{{CMD[jump="#userdb"]userdb}}, {{CMD[jump="#delete_cart"]delete_cart}}, 
+{{CMD[jump="#load_cart"]load_cart}} and pages templates/components/saved_carts_list_small,
+pages/saved_carts.html for more examples.
+
+H3: Description
+
+Saves the current cart with name nickname in the user database. Basically 
+the same as E<lbracket>userdb function=set_cart nickname=cartname]
+
+H4: {{CMD[id="save_cart_nickname"]nickname}}
+
+Nickname for the current cart to be saved. You can use same nickname for 
+different carts. An index will be added if there are more carts 
+with the same nickname.  
+
+H4: {{CMD[id="save_cart_recurring"]recurring}}
+
+Set to true if recurring. Set to false, or simply ommit it, if it 
+is a cart.
 
 
-H2: {{CMD[id="ut_reconfig_time"]reconfig_time}}
+H2: summary
+
+This tag calculates column totals.
+
+H3: Summary
+
+!block example;
+    [B<summary> amount I<other_named_attributes>]
+    [B<summary> amount=n.nn I<other_named_attributes>]
+!endblock
+
+!block note; label="Positional parameters: "
+The first line shows the usage with positional parameters (given in
+order). The second line shows usage with named parameters.
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+amount|Numerical value to be added to previous total|I<none>
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#summary_currency"]currency}}|I<none>
+{{CMD[jump="#summary_format"]format}}|I<none>
+{{CMD[jump="#summary_hide"]hide}}|I<none>, no hiding
+{{CMD[jump="#summary_name"]name}}|ONLY0000, internal use only
+{{CMD[jump="#summary_reset"]reset}}|I<none>
+{{CMD[jump="#summary_total"]total}}|I<none>
+!endblock
+
+!block table;headings=1
+A|B
+Other_Charactreristics|
+Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
+{{CMD[jump="#macro_tags"]Macro}}|I<No>
+Has end tag|I<No>
+!endblock
+
+B<Tag expansion example:>
+
+!block example
+   [loop list="10 20 30.5"]
+   [summary amount="[loop-code]" hide=1]
+   [/loop]
+   [summary total=1 format="%.3f"]
+   [summary total=1 currency=1]
+------------------------------------------------------
+   60.500
+   $60.50
+!endblock
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+    $Tag->summary( { amount => 10.5,
+                       hide => 1, } );
+					   
+    $Tag->summary( { amount => 25,
+                       name => mytotal,
+                   currency => 1, } );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->summary( 10.5, $attribute_hash_reference );
+!endblock
+
+H4: See Also
+
+templates/components/cart, pages/ord/checkout.html for more examples.
+
+H3: Description
+
+The summary tag provides you with an easy way to calculate and 
+display totals. The display of the amounts is fully customizable. 
+You can hide diplay, or you can show the amounts with the proper 
+currency formatting according to the locale, or you can define 
+your own formatting. Any number of summaries can be kept on a page.
+
+H4: {{CMD[id="summary_currency"]currency}}
+
+The amount or total will be diplayed according to the currency 
+formatting of the current locale if this attribute is set to 
+true (non blank or zero).
+
+H4: {{CMD[id="summary_format"]format}}
+
+You can choose any formatting of the amount you like. Just set 
+the format attribute to the desired formatting string (%s, %.2f 
+etc.). When both, currency and format attributes are set, the 
+format attribute will take precedence. So it doesn't make much 
+sense to set them both at the same time.
+
+H4: {{CMD[id="summary_hide"]hide}}
+
+Will suppress the display of amount when set to true.
+
+H4: {{CMD[id="summary_name"]name}}
+
+You can calculate as many totals as you like on the same 
+page. Just supply a different label for each summary.
+
+H4: {{CMD[id="summary_reset"]reset}}
+
+Will erase the total(s) if set to true. Be careful tough.
+It will reset ALL totals when you have no name attribute supplied.
+If you have provided a label for the name atribute then it will 
+only reset the total for that particular label. All others won't be 
+touched.
+
+H4: {{CMD[id="summary_total"]total}}
+
+Will show the total instead of the amount if set to true.
 
 
-H2: {{CMD[id="ut_table_organize"]table_organize}}
+H2: table_organize
 
 
-H2: {{CMD[id="ut_var"]var}}
+H2: title_bar
+
+Creates a quick title bar.
+
+H3: Summary
+
+!block example;
+    [B<title-bar> width size color]My title[/title-bar]
+    [B<title-bar> width=600 size=5 color="#ff0000"]My title[/title-bar]
+!endblock
+
+!block note; label="Positional parameters: "
+The first line shows the usage with positional parameters (given in
+order). The second line shows usage with named parameters.
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#title_bar_color"]color}}|<<
+Background color the bar. 
+. Defaults to 
+** variable HEADERBG or 
+** #444444
+>>|HEADERBG or #444444
+{{CMD[jump="#title_bar_size"]size}}|Font size|6
+{{CMD[jump="#title_bar_width"]width}}|Width of the title bar|500
+!endblock
+
+!block table;headings=1
+A|B
+Other_Charactreristics|
+Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
+{{CMD[jump="#macro_tags"]Macro}}|I<No>
+Has end tag|[/title-bar]
+!endblock
+
+B<Tag expansion example:>
+
+!block example
+   [title-bar 600 5 red]My title[/title-bar]
+   [title-bar width=600 size=5 color="#ff0000"]My title[/title-bar]
+------------------------------------------------------
+!endblock
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+    $Tag->title_bar( { body => "My Title", } );
+					   
+    $Tag->title_bar( { width => 400,
+                       color => "#0000ff",
+                        body => "My title", } );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->title_bar( 600, 5, "red", "My title" );
+!endblock
+
+
+H3: Description
+
+Quickly adds a title bar to your pages without having to type the 
+html each time. Background color, width of the bar and size of the 
+text can be customized by setting the appropriate parameter. The 
+text color defaults to variable HEADERTEXT or when its not present 
+to white.
+
+H4: {{CMD[id="title_bar_color"]color}}
+
+Sets the background color of the bar. You can set the color as 'red', 
+'#ff000', or 'bgcolor="#ff0000"'.
+
+H4: {{CMD[id="title_bar_size"]size}}
+
+Determines the size of the text. Parameter shoud be set to a value accepted 
+by the html font-tag size attribute.
+
+H4: {{CMD[id="title_bar_width"]width}}
+
+Sets the width of the bar.
+
+
+H2: ups_query
+
+
+H2: usertrack
+
+
+H2: var
+
+
+H2: xml_generator
+
 
 
 A1: Tag Entry Format
@@ -10203,7 +10993,7 @@ A3: Summary
     [B<dummy> first=first_args second=second_args I<other_named_attributes>][/dummy]
 !endblock
 
-!block note; label="Positional parameters"
+!block note; label="Positional parameters: "
 
 The first line shows the usage with positional parameters (given in
 order). The second line shows usage with named parameters.
@@ -10271,7 +11061,7 @@ the continuation. Note that such a trailing backslash is *not* part of
 the actual tag syntax or expansion.
 !endblock
 
-ASP-like Perl call
+B<ASP-like Perl call:>
 
 !block example; lang="Perl"
     $Tag->dummy(  { first  => 'goober',
@@ -10371,7 +11161,7 @@ E<lbracket>{{C[jump="ictags.html#order"]/order}}]).
 ** This can be a convenience for your HTML editor if it has trouble
 with tags using the standard E<lbracket>tagname] syntax.
 
-** However, if you want to HTML-comment out an interchange tag in content
+** However, if you want to HTML-comment out an Interchange tag in content
 that will be fed raw to a browser, you must include whitespace between
 the HTML comment delimiters and the tag, like this, '<!--E<nbspace>E<nbspace>E<lbracket>tagname]E<nbspace>E<nbspace>-->'.
 
