@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.80 2003-07-08 19:12:58 mheins Exp $
+# $Id: icconfig.sdf,v 1.81 2004-05-05 14:24:57 jon Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.80 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.81 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/icconfig.html"
@@ -163,7 +163,7 @@ Adds a configuration directive that will be parsed for every C<catalog.cfg> file
    AddDirective  Foo  bar "Hello, world!"
 !endblock
 
-If the parser is not defined, the directive value will be scalar and the same as what the user passes in the config file. If defined, the parser must be extant before it can be referenced, is always resident in Vend::Config, and begins with the string C<parse_>. Examples can be found in the files in the distribution software directory C<compat/>.
+If the parser is not defined, the directive value will be scalar and the same as what the user passes in the config file. If defined, the parser must be extant before it can be referenced, is always resident in Vend::Config, and begins with the string C<parse_>.
 
 H2: AllowGlobal *global*
 
