@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.27 2001-03-01 21:44:06 heins Exp $
+# $Id: icconfig.sdf,v 1.28 2001-03-09 17:04:48 jon Exp $
 
 !define DOC_NAME "Interchange Configuration"
 !define DOC_TYPE ""
 !define DOC_CODE "ICCONFIG_D2_100800"
-!define DOC_VERSION substr('$Revision: 1.27 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.28 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
@@ -3419,13 +3419,13 @@ The name of the Interchange database to be used for sessions if DBI is specified
 
 H2: SessionExpire
 
-A customer can exit their browser or leave the catalog pages at any time, and no indication is given to the HTTPD server aside from the lack of further requests that have the same session ID. Old session information needs to be periodically expired. The C<SessionExpire> specifies the minimum time to keep track of session information. Defaults to one day. Format is an integer number, followed by s(econds), m(inutes), h(ours), d(ays), or w(eeks).
+A customer can exit the browser or leave the catalog pages at any time, and no indication is given to the web server aside from the lack of further requests that have the same session ID. Old session information needs to be periodically expired. The C<SessionExpire> specifies the minimum time to keep track of session information. Defaults to one day. Format is an integer number, followed by s(econds), m(inutes), h(ours), d(ays), or w(eeks).
 
 !block example
    SessionExpire       20 minutes
 !endblock
 
-If C<CookieLogin> is in use, this can be a small value.
+If C<CookieLogin> is in use, this can be a small value. If the customer's browser has the Interchange session cookie stored, he/she will be automatically logged back in with the next request. Note, however, that the customer's cart and session values will be reset.
 
 H2: SessionLockFile
 
