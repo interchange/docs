@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icinstall.sdf,v 1.12 2000-11-22 21:53:07 jon Exp $
+# $Id: icinstall.sdf,v 1.13 2001-02-07 13:05:00 heins Exp $
 
 !define DOC_NAME "Interchange Installation"
 !define DOC_TYPE ""
 !define DOC_CODE "ICINSTALL_D2a_100800"
-!define DOC_VERSION substr('$Revision: 1.12 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.13 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
@@ -98,10 +98,12 @@ Note: Any pages with Interchange elements/tags go in the directory set by the C<
 
 If working with an ISP where all of the files are in HTML document space, disable all access to the Interchange catalog directory with the proper HTTP access restrictions. Normally that is done by creating a .htaccess file like this:
 
-<Limit GET POST>
-order allow,deny
-deny from all
-</Limit>
+!block example
+	<Limit GET POST>
+	order allow,deny
+	deny from all
+	</Limit>
+!endblock
 
 If unable to do this, do not run Interchange unless file permissions can be set such that files will not be served. However, security will be a problem and customers' personal information could be placed at risk.
 
@@ -116,8 +118,10 @@ Note: A catalog can only be created once. All further configuration is done by e
 
 A catalog template contains an image of a configured catalog. The best way to see what the makecat program does is to configure the simple demo and then run a recursive C<diff> on the template and configured catalog directories:
 
-cd /usr/local/interchange
-diff -r construct catalogs/construct
+!block example
+	cd /usr/local/interchange
+	diff -r construct catalogs/construct
+!endblock
 
 The files are mostly identical, except that certain macro strings have been replaced with the answers given to the script. For example, if C<www.mydomain.com> was answered at the prompt for a server name, this difference would appear in the catalog.cfg file:
 
@@ -149,7 +153,13 @@ Variable   COMPANY   __MVC_COMPANY__
 
 All files within a template directory are substituted for macros, not just the catalog.cfg file. There are two special directories named C<html> and C<images>. These will be recursively copied to the directories defined as SampleHTML and ImageDir.
 
-Note: The template directory is located in the Interchange software directory, i.e., where C<interchange.cfg> resides. Avoid editing files in the template directory. To create a new template, it is recommended that it should be named something besides 'construct' and a copy of the C<construct> demo directory be used as a starting point. Templates are normally placed in the Interchange base directory, but can be located anywhere. The script will prompt for the location if it cannot find a template.
+Note: The template directory is located in the Interchange software directory,
+i.e., where C<interchange.cfg> resides. Avoid editing files in the template
+directory. To create a new template, it is recommended that it should be named
+something besides 'construct' and a copy of the C<construct> demo directory be
+used as a starting point. Templates are normally placed in the Interchange base
+directory, but can be located anywhere. The script will prompt for the location
+if it cannot find a template.
 
 In addition to the standard parameters prompted for by Interchange, and the standard catalog creation procedure, four other files in the C<config> directory of the template may be defined:
 
