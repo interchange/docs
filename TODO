@@ -4,15 +4,15 @@ Currently only on the developer site:
 Beginner's guide (conceptual stuff, maybe should be covered by Alison?)
 
 On developer site, also distributed with IC:
-icconfig.sdf (SDF -> dev_html, PDF, POD)
 icbackoffice.sdf (SDF -> dev_html, PDF, POD)
 iccattut.sdf (SDF -> dev_html, PDF, POD)
+icconfig.sdf (SDF -> dev_html, PDF, POD)
 icdatabase.sdf (includes mv_metadata.pod; SDF -> dev_html, PDF, POD)
 icinstall.sdf (from QuickStart and new stuff; SDF -> dev_html, PDF, POD)
 icintro.sdf (SDF -> dev_html, PDF, POD)
-icupgrade.sdf (new, from UPGRADE_FROM_MV3, compat/, deprecated.sdf, and various notes)
 ictags.sdf (new, from Tagref.pm/mvtags.pod)
 ictemplates.sdf (SDF -> dev_html, PDF, POD)
+icupgrade.sdf (new, from UPGRADE_FROM_MV3, compat/, deprecated.sdf, and various notes)
 usertag.pod (./pod/usertag.pod, developer.akopia.com in database as HTML)
 
 On developer site, in docs repository as POD:
@@ -32,6 +32,9 @@ Currently only in Word or FrameMaker format by Alison:
 ?
 
 Needed:
+
+* Single unified file with all references docs for easy searching.
+
 * Documentation explaining what every default table and column is for, its spec, and the format of the data there (in icdatabase.sdf; started by Jason Kohles)
 
 * FAQ for each catalog (foundation, construct, barry, artstore)

@@ -1,6 +1,6 @@
 VERSION=4.7.0
 TARGETS=icintro icinstall iccattut icconfig ictemplates icdatabase ictags icbackoffice icupgrade
-SUFFIXES=txt html pdf pod 8
+SUFFIXES=txt mif html pdf pod 8
 TARNAME=icdocs.tar.gz
 FULLSUFFIXES=txt html
 FULLDOCNAME=icfull
@@ -15,6 +15,9 @@ FULLDOCNAME=icfull
 
 .sdf.txt:
 	sdf -2txt $<
+
+.sdf.mif:
+	sdf -2mif $<
 
 .sdf.pdf:
 	sdf -2pdf_html $<
@@ -78,6 +81,8 @@ html:: $(addsuffix .html,$(TARGETS))
 pod: $(addsuffix .pod,$(TARGETS))
 
 txt: $(addsuffix .txt,$(TARGETS))
+
+mif: $(addsuffix .mif,$(TARGETS))
 
 8: $(addsuffix .8,$(TARGETS))
 man: 8
