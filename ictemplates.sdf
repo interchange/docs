@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: ictemplates.sdf,v 1.50 2003-03-30 16:27:39 racke Exp $
+# $Id: ictemplates.sdf,v 1.51 2003-11-26 04:56:53 mheins Exp $
 
 !define DOC_NAME "Template Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "ictemplates"
-!define DOC_VERSION substr('$Revision: 1.50 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.51 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ictemplates.html"
@@ -675,7 +675,8 @@ LI1: ordered
 
     [if type=ordered term="99-102" compare="size =~ /large/i"]
 
-    To make sure it is the size that is large and not another attribute, you could use:
+    To make sure it is the size that is large and not another attribute,
+    you could use:
 
     [if ordered 99-102 main size eq 'large'] ... [/if]
 

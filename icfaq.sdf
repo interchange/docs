@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: icfaq.sdf,v 1.21 2003-07-08 19:12:59 mheins Exp $
+# $Id: icfaq.sdf,v 1.22 2003-11-26 04:56:52 mheins Exp $
 
 !define DOC_NAME "Frequently Asked Questions"
 !define DOC_TYPE ""
 !define DOC_CODE "icfaq"
-!define DOC_VERSION substr('$Revision: 1.21 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.22 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/icfaq.html"
@@ -424,11 +424,11 @@ the form ACTION.)
 
 To make individual order links secure, use this instead of "[order]":
 
-		<A HREF="[area
-					href=order
-					secure=1
-					form='mv_order_item=SKU_OF_ITEM'
-		]">Order it</A>
+    <A HREF="[area
+                href=order
+                secure=1
+                form='mv_order_item=SKU_OF_ITEM'
+    ]">Order it</A>
 
 To make a form-based order button secure, use "[process secure=1]" as
 the ACTION.
@@ -710,23 +710,23 @@ of the C<main> shopping cart you would see something like:
 
 !block example
 	[
-		{
-			mv_ip       => '0',
-			price_group => 'general',
-			mv_ib       => 'products',
-			code        => 'os28080',
-			quantity    => '1',
-		},
-		{
-			mv_ip       => '1',
-			price_group => 'general',
-			mv_ib       => 'products',
-			code        => 'os28080',
-			size        => 'L',
-			color       => 'black',
-			quantity    => '1',
-		},
-	 ]
+        {
+            mv_ip       => '0',
+            price_group => 'general',
+            mv_ib       => 'products',
+            code        => 'os28080',
+            quantity    => '1',
+        },
+        {
+            mv_ip       => '1',
+            price_group => 'general',
+            mv_ib       => 'products',
+            code        => 'os28080',
+            size        => 'L',
+            color       => 'black',
+            quantity    => '1',
+        },
+     ]
 !endblock
 
 Each key of the hash is an attribute. There are a number of
@@ -1551,7 +1551,8 @@ sub {
             }
         }
         return $current_total if ! $opt->{verbose};
-        return "total=$current_total user=$times[0] sys=$times[1] cuser=$times[2] csys=$times[3]";
+        return  "total=$current_total user=$times[0] sys=$times[1] " .
+                "cuser=$times[2] csys=$times[3]";
     }
     return;
 }
@@ -1589,17 +1590,17 @@ H3: Optimizations
 * [PREFIX-tag] is faster than [parsed-tag]
 
 !block example
-                [loop prefix=foo search="ra=yes"]
+    [loop prefix=foo search="ra=yes"]
 
-                        [foo-data products image]
-                                is slightly faster than
-                        [foo-field image]
-                                which is MUCH faster than
-                        [data products image [foo-code]]
-                                which is faster than
-                        [data table=products column=image key="[foo-code]"]
+        [foo-data products image]
+                is slightly faster than
+        [foo-field image]
+                which is MUCH faster than
+        [data products image [foo-code]]
+                which is faster than
+        [data table=products column=image key="[foo-code]"]
 
-                [/loop]
+    [/loop]
 !endblock
 
 The loop tags are interpreted by means of fast regular expression
@@ -1706,49 +1707,51 @@ of "No" or " " or somesuch, but it is anywhere from 20-35% faster.
 Try it on the foundation demo:
 
 !block example
-        ---- begin test ---
+    ---- begin test ---
 
-        Overhead: 
-        [benchmark start=1]
-                <!-- [loop search="ra=yes"][set cert][loop-field gift_cert][/set][/loop] -->
-        [benchmark]
-        <P>
+    Overhead: 
+    [benchmark start=1]
+        <!-- [loop search="ra=yes"]
+                    [set cert][loop-field gift_cert][/set]
+            [/loop] -->
+    [benchmark]
+    <P>
 
 
-        if scratch compare: 
-        [benchmark start=1]
-                <!--
-                [loop search="ra=yes"]
-                [set cert][loop-field gift_cert][/set]
-                [loop-code] [if scratch cert] YES [else] NO [/else][/if]
-                [loop-code] [if scratch cert] YES [else] NO [/else][/if]
-                [loop-code] [if scratch cert] YES [else] NO [/else][/if]
-                [loop-code] [if scratch cert] YES [else] NO [/else][/if]
-                [loop-code] [if scratch cert] YES [else] NO [/else][/if]
-                [/loop]
-                -->
+    if scratch compare: 
+    [benchmark start=1]
+        <!--
+        [loop search="ra=yes"]
+        [set cert][loop-field gift_cert][/set]
+        [loop-code] [if scratch cert] YES [else] NO [/else][/if]
+        [loop-code] [if scratch cert] YES [else] NO [/else][/if]
+        [loop-code] [if scratch cert] YES [else] NO [/else][/if]
+        [loop-code] [if scratch cert] YES [else] NO [/else][/if]
+        [loop-code] [if scratch cert] YES [else] NO [/else][/if]
+        [/loop]
+        -->
 
-        [benchmark]
-        <P>
+    [benchmark]
+    <P>
 
-        if scratch compare eq 1: 
-        [benchmark start=1]
-                <!--
-                [loop search="ra=yes"]
-                [set cert][loop-field gift_cert][/set]
-                [loop-code] [if scratch cert == 1] YES [else] NO [/else][/if]
-                [loop-code] [if scratch cert == 1] YES [else] NO [/else][/if]
-                [loop-code] [if scratch cert == 1] YES [else] NO [/else][/if]
-                [loop-code] [if scratch cert == 1] YES [else] NO [/else][/if]
-                [loop-code] [if scratch cert == 1] YES [else] NO [/else][/if]
-                [/loop]
-                -->
-        [benchmark]
-        <P>
+    if scratch compare eq 1: 
+    [benchmark start=1]
+        <!--
+        [loop search="ra=yes"]
+        [set cert][loop-field gift_cert][/set]
+        [loop-code] [if scratch cert == 1] YES [else] NO [/else][/if]
+        [loop-code] [if scratch cert == 1] YES [else] NO [/else][/if]
+        [loop-code] [if scratch cert == 1] YES [else] NO [/else][/if]
+        [loop-code] [if scratch cert == 1] YES [else] NO [/else][/if]
+        [loop-code] [if scratch cert == 1] YES [else] NO [/else][/if]
+        [/loop]
+        -->
+    [benchmark]
+    <P>
 
-        [page @@MV_PAGE@@]Again</a>
+    [page @@MV_PAGE@@]Again</a>
 
-        ---- end test ---
+    ---- end test ---
 !endblock
 
 * Use [PREFIX-calc] instead of [calc] or [perl]
@@ -1799,34 +1802,34 @@ faster than separate [PREFIX-calc] calls.
 .Example:
 
 !block example
-        [benchmark start=1]
-        loop-calc:
-          <!--
-                [loop search="st=db/fi=country/ra=yes/ml=1000"]
-                [loop-calc]
-                        my $code = q{[loop-code]};
-                        return "code '$code' reversed is " . reverse($code);
-                [/loop-calc]
-                [/loop]
-          -->
-                        
-        [benchmark]
+    [benchmark start=1]
+    loop-calc:
+      <!--
+            [loop search="st=db/fi=country/ra=yes/ml=1000"]
+            [loop-calc]
+                    my $code = q{[loop-code]};
+                    return "code '$code' reversed is " . reverse($code);
+            [/loop-calc]
+            [/loop]
+      -->
+                    
+    [benchmark]
 
-        <P>
+    <P>
 
-        [benchmark start=1]
-        loop-sub and loop-exec:
-          <!--
-                [loop search="st=db/fi=country/ra=yes/ml=1000"]
-                [loop-sub country_compare]
-                        my $code = shift;
-                        return "code '$code' reversed is " . reverse($code);
-                [/loop-sub]
-                [loop-exec country_compare][loop-code][/loop-exec]
-                [/loop]
-          -->
-                        
-        [benchmark]
+    [benchmark start=1]
+    loop-sub and loop-exec:
+      <!--
+            [loop search="st=db/fi=country/ra=yes/ml=1000"]
+            [loop-sub country_compare]
+                    my $code = shift;
+                    return "code '$code' reversed is " . reverse($code);
+            [/loop-sub]
+            [loop-exec country_compare][loop-code][/loop-exec]
+            [/loop]
+      -->
+                    
+    [benchmark]
 !endblock
 
 * ADVANCED: Execute and save with [query ...], then use an embedded Perl
@@ -1842,42 +1845,46 @@ This is the fastest possible method to display a list.
 .Observe:
 
 !block example
-        --- begin test code ---
-        [set waiting_for]os28004[/set]
-
-        [benchmark start=1] Embedded Perl
-        <!--
-        [query arrayref=myref sql="select sku, price, description from products"]
-                <!-- make query, this container text is not used. -->
-        [/query]
-
-        [perl]
-                # Get the query results, has multiple fields
-                my $ary = $Tmp->{myref};
-                my $out = '';
-                foreach $line (@$ary) {
-                        my ($sku, $price, $desc) = @$line;
-                        if($sku eq $Scratch->{waiting_for}) {
-                                $out .= "We were waiting for this one!!!!\n";
-                        }
-                        $out .= "sku: $sku price: $price description: $desc\n";
-                }
-                return $out;
-        [/perl]
-        -->
-        TIME: [benchmark]
-
-        [benchmark start=1] All loop
-        <!--
-        [query list=1 sql="select sku, price, description from products"]
-                [if scratch waiting_for eq '[sql-code]']We were waiting for this one!!!!
-                [/if] sku: [sql-code]price: [sql-param price] desc: [sql-param description]  
-        [/query]
-        -->
-
-        TIME: [benchmark]
-
-        --- end test code ---
+  --- begin test code ---
+  [set waiting_for]os28004[/set]
+  
+  [benchmark start=1] Embedded Perl
+  <!--
+  [query arrayref=myref sql="select sku,price,description from products"]
+        <!-- make query, this container text is not used. -->
+  [/query]
+  
+  [perl]
+    # Get the query results, has multiple fields
+    my $ary = $Tmp->{myref};
+    my $out = '';
+    foreach $line (@$ary) {
+        my ($sku, $price, $desc) = @$line;
+        if($sku eq $Scratch->{waiting_for}) {
+                $out .= "We were waiting for this one!!!!\n";
+        }
+        $out .= "sku: $sku price: $price description: $desc\n";
+    }
+    return $out;
+  [/perl]
+  -->
+  TIME: [benchmark]
+  
+  [benchmark start=1] All loop
+  <!--
+  [query list=1 sql="select sku,price,description from products"]
+        [if scratch waiting_for eq '[sql-code]']
+            We were waiting for this one!!!!
+        [/if]
+        sku: [sql-code]
+        price: [sql-param price]
+        desc: [sql-param description]  
+  [/query]
+  -->
+  
+  TIME: [benchmark]
+  
+  --- end test code ---
 !endblock
 
 * Other things that help:

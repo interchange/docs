@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: ic_howto_cvs.sdf,v 1.14 2003-07-08 19:12:58 mheins Exp $
+# $Id: ic_howto_cvs.sdf,v 1.15 2003-11-26 04:56:52 mheins Exp $
 
 !define DOC_NAME "Interchange + CVS HOWTO"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_howto_cvs"
-!define DOC_VERSION substr('$Revision: 1.14 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.15 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ic_howto_cvs.html"
@@ -368,7 +368,9 @@ cvspserver	2401/tcp
 !block example;
 N:{{B:/etc/inetd.conf:}}
 
-cvspserver stream tcp nowait root /usr/sbin/tcpd /usr/bin/cvs --allow-root=/home/interch/rep pserver 
+cvspserver stream tcp nowait \
+	root /usr/sbin/tcpd /usr/bin/cvs \
+	--allow-root=/home/interch/rep pserver 
 !endblock
 
 H3:Testing your pserver
@@ -494,7 +496,8 @@ rm -Rf \
 	logs/* \
 	#done.
 	
-# The ".empty" files make it so that CVS will still checkout the directory, even though it is empty.
+# The ".empty" files make it so that CVS will still checkout the
+# directory, even though it is empty.
 touch \
 	orders/.empty \ 
 	logs/.empty \ 
@@ -628,6 +631,7 @@ cvs -q up -d foundation	# -q for quiet, -d for directory prune/update
 
 N:Additionally, you might test making a change to one of your checked-out
 source files, saving it, then committing it. 
+
 !block example;
 {{B:index.html:}}
 <!--this is a test comment at the top of index.html-->
@@ -689,7 +693,9 @@ H2:Automatic updates on commit
 N:Start by modifying $CVSROOT/CVSROOT/loginfo
 
 !block example;
-^foundation	(date; cat; (sleep 1; cd /var/lib/interchange/foundation; cvs -q update -d) &) >> $CVSROOT/CVSROOT/updatelog 2>&1
+^foundation	(date; cat; ( \
+	sleep 1; cd /var/lib/interchange/foundation; cvs -q update -d \
+	) &) >> $CVSROOT/CVSROOT/updatelog 2>&1
 !endblock
 
 N:The first line tells CVS that for every commit on modules that start with
@@ -924,8 +930,8 @@ N:Perform the necessary modifications to {{F:interchange.cfg}}.  For example:
 
 !block example;
 {{B:/usr/local/interchange/interchange.cfg:}}
-Catalog foundation     /var/lib/interchange/foundation     /cgi-bin/foundation
-Catalog foundation_dev /var/lib/interchange/foundation_dev /cgi-bin/foundation_dev
+Catalog found     /var/lib/interchange/foundation     /cgi-bin/foundation
+Catalog found_dev /var/lib/interchange/foundation_dev /cgi-bin/foundation_dev
 !endblock
 
 H3:Configure the catalog specifics
@@ -951,7 +957,11 @@ environment is such that the tags may be changed by other sources.
 
 !block example;
 {{B:$CVSROOT/CVSROOT/loginfo:}}
-^foundation      (date; cat; (sleep 1; cd /var/lib/interchange/foundation_dev; cvs -q up -d; cd /var/lib/interchange/foundation; cvs -q up -d) &) >> $CVSROOT/CVSROOT/updatelog 2>&1
+foundation   \
+	(date; cat; ( \
+	sleep 1; cd /var/lib/interchange/foundation_dev; cvs -q up -d; \
+	cd /var/lib/interchange/foundation; \
+	cvs -q up -d) &) >> $CVSROOT/CVSROOT/updatelog 2>&1
 ALL     /usr/bin/cvs-log     $CVSROOT/CVSROOT/commitlog $USER "%{sVv}"
 !endblock
 

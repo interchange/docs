@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: icadvanced.sdf,v 1.14 2003-07-08 19:12:58 mheins Exp $
+# $Id: icadvanced.sdf,v 1.15 2003-11-26 04:56:52 mheins Exp $
 
 !define DOC_NAME "Advanced Interchange Topics"
 !define DOC_TYPE ""
 !define DOC_CODE "icadvanced"
-!define DOC_VERSION substr('$Revision: 1.14 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.15 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/icadvanced.html"
@@ -147,7 +147,7 @@ If not running DBM sessions, use a Perl script to delete all files not modified 
 
        # get all the file names in the directory
        opendir DIR, $dir or die "opendir $dir: $!\n";
-       push @files, ( map { "$dir/$_" } grep(! /^\.\.?$/, readdir DIR) ) ;
+       push @files, ( map { "$dir/$_" } grep(! /^\.\.?$/, readdir DIR));
    }
 
    for (@files) {
@@ -175,7 +175,7 @@ H2: My session files change to owner root every day!
 You have the expireall C<-r> entry in the root crontab, and it should either be in the Interchange user crontab or run as:
 
 !block example
-44 4 * * * su -c "/INTERCHANGE_ROOT/bin/expireall -r" INTERCHANGE_USERNAME
+44 4 * * * su -c "/ICROOT/bin/expireall -r" ICUSERNAME
 !endblock
 
 
@@ -294,11 +294,11 @@ This setting is only viable when a promotion is used for a horizontal component.
 
 !block example
         [query arrayref=main
-                   sql="
-                        SELECT sku,timed_promotion,start_date,finish_date
-                        FROM merchandising
-                        WHERE featured = '[scratch hpromo_type]'
-                        "][/query]
+			   sql="
+				SELECT sku,timed_promotion,start_date,finish_date
+				FROM merchandising
+				WHERE featured = '[scratch hpromo_type]'
+			   "][/query]
 !endblock
 
 H3: Before/After Banner
@@ -576,12 +576,13 @@ H2:mv_metadata.asc
     height
         Height (SIZE for SELECT, ROWS for TEXTAREA)
     field
-        Field for lookup (can be two comma separated fields, in which case
-        second is used as the label text.  Both must be in the same table.)
+        Field for lookup (can be two comma separated fields, in which
+        case second is used as the label text. Both must be in the
+        same table.)
     db
     name
-        Variable name (normally left empty, changes variable name to send in
-        form)
+        Variable name (normally left empty, changes variable name to
+        send in form)
     outboard
         Select directory for image listing widget
     options
@@ -592,13 +593,13 @@ H2:mv_metadata.asc
     help
         Help (displays at top of page)
     lookup
-        Lookup select (Whether lookup is performed to get options for a select
-        type.  If nothing is in the field, then used as the name of the field
-        to lookup in.  Use lookup table if you want to look up in a different
-        table.
+        Lookup select (Whether lookup is performed to get options for a
+        select type. If nothing is in the field, then used as the name
+        of the field to lookup in. Use lookup table if you want to look
+        up in a different table.
     filter
-        Filters (Filters which can transform or constrain your data.  Some
-        widgets require filters.)
+        Filters (Filters which can transform or constrain your data.
+        Some widgets require filters.)
     help_url
         Help URL (links below help text)
         A URL which will provide more help
@@ -607,9 +608,9 @@ H2:mv_metadata.asc
         ADVANCED: regular expression that excludes certain keys from the lookup
     prepend
     append
-        Append HTML (HTML to be appended to the widget.  Will substitute in the
-        macros _UI_TABLE_, _UI_COLUMN_, _UI_KEY_, and _UI_VALUE_, and will
-        resolve relative links with absolute links.)
+        Append HTML (HTML to be appended to the widget. Will substitute
+        in the macros _UI_TABLE_, _UI_COLUMN_, _UI_KEY_, and _UI_VALUE_,
+        and will resolve relative links with absolute links.)
     display_filter
 !endblock
 
@@ -681,10 +682,10 @@ the standard catalog creation procedure, four other files in the
 C<config> directory of the template may be defined:
 
 !block example
-    additional_fields -- file with more parameters for macro substitution
-    additional_help   -- extended description for the additional_fields
-    precopy_commands  -- commands passed to the system prior to catalog copy
-    postcopy_commands -- commands passed to the system after catalog copy
+ additional_fields -- file with more parameters for macro substitution
+ additional_help   -- extended description for the additional_fields
+ precopy_commands  -- commands passed to the system prior to catalog copy
+ postcopy_commands -- commands passed to the system after catalog copy
 !endblock
 
 All files are paragraph-based. In other words, a blank line (with no
@@ -1041,7 +1042,8 @@ The second location are the HTTP headers. You can configure Apache to
 write this header into the access logs.
 
 !block example
-LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %T %v \"%{X-Track}o\"" track
+LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" \
+			%T %v \"%{X-Track}o\"" track
 CustomLog /var/log/apache/access.log track
 !endblock
 

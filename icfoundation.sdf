@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: icfoundation.sdf,v 1.27 2002-10-30 17:24:00 mheins Exp $
+# $Id: icfoundation.sdf,v 1.28 2003-11-26 04:56:52 mheins Exp $
 
 !define DOC_NAME "Foundation Store"
 !define DOC_TYPE ""
 !define DOC_CODE "icfoundation"
-!define DOC_VERSION substr('$Revision: 1.27 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.28 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/icfoundation.html"
@@ -562,8 +562,10 @@ B<Lines 25-28:> Horizontal Before Component
 
 !block example
     25 component_before:
-    26         options: =none, best_horizontal=Best Sellers, cross_horizontal=Cross sell, \
-                promo_horizontal=Promotion, random_horizontal=Random items, \
+    26         options: =none, best_horizontal=Best Sellers, \
+                cross_horizontal=Cross sell, \
+                promo_horizontal=Promotion, \
+                random_horizontal=Random items, \
                 upsell_horizontal=Upsell
     27         widget: select
     28         description: Component before content
@@ -595,8 +597,10 @@ B<Lines 30-33:> Horizontal After Component
 
 !block example
     30 component_after:
-    31         options: =none, best_horizontal=Best Sellers, cross_horizontal=Cross sell, \
-                promo_horizontal=Promotion, random_horizontal=Random items, \
+    31         options: =none, best_horizontal=Best Sellers, \
+	            cross_horizontal=Cross sell, \
+                promo_horizontal=Promotion, \
+				random_horizontal=Random items, \
                 upsell_horizontal=Upsell
     32         widget: select
     33         description: Component after content
@@ -646,8 +650,10 @@ B<Lines 40-45:> Before/After Banner
 
 !block example
     40 hbanner:
-    41         options: =--custom--, Also see..., Best Sellers, New items, \
-                Some of our fine products, Specials, You might also like
+    41         options: =--custom--, Also see..., Best Sellers, \
+			    New items, \
+                Some of our fine products, \
+				Specials, You might also like
     42         widget: move_combo
     43         width: 40
     44         description: Before/after Banner
@@ -846,74 +852,82 @@ The LEFTONLY_TOP template region is used in the following N<templates:>
 H4: Region Template Walkthrough -- LEFTONLY_TOP
 
 !block example
-     1  <!-- BEGIN LEFTONLY_TOP -->
-     2  [if scratch members_only]
-     3      [set members_only][/set]
-     4      [if !session logged_in]
-     5      [set mv_successpage]@@MV_PAGE@@[/set]
-     6      [bounce page=login]
-     7      [/if]
-     8  [/if]
-     9  
-    10  <html>
-    11  <head>
-    12    <title>[scratch page_title]</title>
-    13    __THEME_CSS__
-    14  </head>
-    15  
-    16  <body marginheight="0" marginwidth="0">
-    17  
-    18  <!--- top left and right logo --->
-    19  <table width="100%" border="0" cellspacing="0" cellpadding="0">
-    20  <tr>
-    21    <td align="left" valign="middle" class="maincontent">
-    22      &nbsp;<img src="__THEME_IMG_DIR____LOGO__">
-    23    </td>         
-    24    <td align="right" valign="middle" class="maincontent">
-    25      <img width="174" height="60" src="__THEME_IMG_DIR__logo2.gif">&nbsp;
-    26    </td>
-    27  </tr>
-    28  </table>
-    29  
-    30  <!--- menu bar along the top --->
-    31  <table width="100%" border="0" cellspacing="0" cellpadding="0">
-    32  <tr>
-    33    <td width="100%" class="menubar">
-    34      <a href="[area index]"><img name="Home" border="0" src="__THEME_IMG_DIR__home.gif"></a>
-    35        <img src="__THEME_IMG_DIR__sep.gif">
-    36      <a href="[area login]">
-    37      [if session logged_in]
-    38        <img alt="Log Out" border="0" src="__THEME_IMG_DIR__logout.gif"></a>
-    39      [else]
-    40        <img alt="Log In" border="0" src="__THEME_IMG_DIR__login.gif"></a>
-    41      [/else]
-    42      [/if]
-    43        <img src="__THEME_IMG_DIR__sep.gif">
-    44      <a href="[area ord/basket]"><img alt="Your Cart" border="0" src="__THEME_IMG_DIR__cart.gif"></a>
-    45        <img src="__THEME_IMG_DIR__sep.gif">
-    46      <a href="[area ord/checkout]"><img alt="Check Out" border="0" src="__THEME_IMG_DIR__checkout.gif"></a>
-    47        <img src="__THEME_IMG_DIR__sep.gif">
-    48      <a href="[area customerservice]"><img alt="Customer Service" border="0" src="__THEME_IMG_DIR__service.gif"></a>
-    49        <img src="__THEME_IMG_DIR__sep.gif">
-    50      <a href="[area aboutus]"><img alt="About Us" border="0" src="__THEME_IMG_DIR__about.gif"></a>
-    51    </td>
-    52  </tr>
-    53  </table>
-    54  
-    55  <!--- left category column, main content column, and right special column --->
-    56  <table width="100%" border="0" cellspacing="0" cellpadding="0">
-    57  <tr> 
-    58    <td width="20%" valign="top" align="left" class="categorybar"> 
-    59      <!--Left Sidebar-->
-    60      <table width="100%" border="0" cellspacing="0" cellpadding="0">
-    61        [include file="templates/components/[control component none]"][control]
-    62        [include file="templates/components/[control component none]"][control]
-    63        [include file="templates/components/[control component none]"][control]
-    64      </table>                              
-    65    </td>
-    66    <td width="80%" valign="top" align="center" class="maincontent"> 
-    67      [include file="templates/components/[control component none]"][control]
-    68  
+ 1  <!-- BEGIN LEFTONLY_TOP -->
+ 2  [if scratch members_only]
+ 3      [set members_only][/set]
+ 4      [if !session logged_in]
+ 5      [set mv_successpage]@@MV_PAGE@@[/set]
+ 6      [bounce page=login]
+ 7      [/if]
+ 8  [/if]
+ 9  
+10  <html>
+11  <head>
+12    <title>[scratch page_title]</title>
+13    __THEME_CSS__
+14  </head>
+15  
+16  <body marginheight="0" marginwidth="0">
+17  
+18  <!--- top left and right logo --->
+19  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+20  <tr>
+21    <td align="left" valign="middle" class="maincontent">
+22      &nbsp;<img src="__THEME_IMG_DIR____LOGO__">
+23    </td>         
+24    <td align="right" valign="middle" class="maincontent">
+25      <img width="174" height="60" src="__THEME_IMG_DIR__logo2.gif">&nbsp;
+26    </td>
+27  </tr>
+28  </table>
+29  
+30  <!--- menu bar along the top --->
+31  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+32  <tr>
+33    <td width="100%" class="menubar">
+34      <a href="[area index]"> \
+         <img name="Home" border="0" src="__THEME_IMG_DIR__home.gif"></a>
+35        <img src="__THEME_IMG_DIR__sep.gif">
+36      <a href="[area login]">
+37      [if session logged_in]
+38        <img alt="Log Out" border="0" src="__THEME_IMG_DIR__logout.gif"></a>
+39      [else]
+40        <img alt="Log In" border="0" src="__THEME_IMG_DIR__login.gif"></a>
+41      [/else]
+42      [/if]
+43        <img src="__THEME_IMG_DIR__sep.gif">
+44      <a href="[area ord/basket]"> 
+        <img alt="Your Cart" border="0" src="__THEME_IMG_DIR__cart.gif"></a>
+45        <img src="__THEME_IMG_DIR__sep.gif">
+46      <a href="[area ord/checkout]"> \
+          <img alt="Check Out" border="0" src="__THEME_IMG_DIR__checkout.gif">\
+		  </a>
+47        <img src="__THEME_IMG_DIR__sep.gif">
+48      <a href="[area customerservice]">
+        <img alt="Customer Service" border="0"
+		  src="__THEME_IMG_DIR__service.gif"></a>
+49        <img src="__THEME_IMG_DIR__sep.gif">
+50      <a href="[area aboutus]">
+			<img alt="About Us" border="0"
+			src="__THEME_IMG_DIR__about.gif"></a>
+51    </td>
+52  </tr>
+53  </table>
+54  
+55  <!--- left category column, main content column, and right special column --->
+56  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+57  <tr> 
+58    <td width="20%" valign="top" align="left" class="categorybar"> 
+59      <!--Left Sidebar-->
+60      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+61        [include file="templates/components/[control component none]"][control]
+62        [include file="templates/components/[control component none]"][control]
+63        [include file="templates/components/[control component none]"][control]
+64      </table>                              
+65    </td>
+66    <td width="80%" valign="top" align="center" class="maincontent"> 
+67      [include file="templates/components/[control component none]"][control]
+68  
 !endblock
 
 H3: LEFTONLY_BOTTOM
@@ -1292,7 +1306,10 @@ the closing tag (E<lbracket>/item-list] on line 59 for each item the customer
 has ordered so far.
 
 !block example
-    33      <tr class="[item-alternate 2]maincontent[else]contentbar1[/else][/item-alternate]">
+    33      <tr class="[item-alternate 2]
+							maincontent
+							[else]contentbar1[/else]
+						[/item-alternate]">
     34        <td align=center valign=top>
     35          [page ord/basket]edit</A>
     36        </TD>

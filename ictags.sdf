@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.112 2003-08-04 05:20:25 mheins Exp $
+# $Id: ictags.sdf,v 1.113 2003-11-26 04:56:52 mheins Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.112 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.113 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ictags.html"
@@ -1742,8 +1742,10 @@ the displayed price in the widget.
            price_data="blue=20, green=50"
                passed="blue=Blue, green=Sea Green*"]
 ---
-    <INPUT TYPE="checkbox" NAME="color" VALUE="blue" >&nbsp;Blue&nbsp;($20.00)
-    <INPUT TYPE="checkbox" NAME="color" VALUE="green" CHECKED>&nbsp;Sea Green&nbsp;($50.00)
+    <INPUT TYPE="checkbox" NAME="color"
+	       VALUE="blue" >&nbsp;Blue&nbsp;($20.00)
+    <INPUT TYPE="checkbox" NAME="color"
+		   VALUE="green" CHECKED>&nbsp;Sea Green&nbsp;($50.00)
 !endblock
 
 H4: {{CMD[id="accessories_price_data"]price_data}}
@@ -8584,10 +8586,12 @@ Parameters|Description|Default
 Additional headers (these will also be added to 'raw' messages)
 >>|DEFAULT_VALUE
 {{CMD[jump="#mail_hide"]hide}}|<<
-Suppress tag return value. This would otherwise be the 'success' attribute setting.
+Suppress tag return value. This would otherwise be the 'success'
+attribute setting.
 >>|DEFAULT_VALUE
 {{CMD[jump="#mail_raw"]raw}}|<<
-Send it raw without creating headers and checking content, recipient, subject, etc.
+Send it raw without creating headers and checking content, recipient,
+subject, etc.
 >>|DEFAULT_VALUE
 {{CMD[jump="#mail_show"]show}}|<<
 The tag will return the final message with headers in the page
@@ -8717,13 +8721,13 @@ B<Tag expansion example:>
 
 !block example
     [mvasp tables="products" failure="ASP Broke <BR>"]
-	<P>This is HTMLE<lt>/p>
-	<% my $sku = $Values->{code}; %>
-	<P>More HTMLE<lt>/p>
-	<% my $result = "Looked up SKU $sku. It is a ";
-	    $result .= $Tag->data('products', 'description', $sku );
-	    $Document->write( "$result <br>\n" ); %>
-	<P>Still more HTMLE<lt>/p>
+        <P>This is HTMLE<lt>/p>
+        <% my $sku = $Values->{code}; %>
+        <P>More HTMLE<lt>/p>
+        <% my $result = "Looked up SKU $sku. It is a ";
+            $result .= $Tag->data('products', 'description', $sku );
+            $Document->write( "$result <br>\n" ); %>
+        <P>Still more HTMLE<lt>/p>
     [/mvasp]
 ---
     <P>This is HTMLE<lt>/p>
@@ -8812,7 +8816,8 @@ H3: Summary
 !block table; colvaligns="TTT"; format="262"
 Parameters|Description|Default
 {{CMD[jump="#nitems_compare"]compare}}|<<
-Regular expression the specified qualifier attribute's value must match to be counted. This replaces the truth value comparison.
+Regular expression the specified qualifier attribute's value must match
+to be counted. This replaces the truth value comparison.
 * N<Default:> None (uses truth value of the specified qualifier attribute)
 >>|DEFAULT_VALUE
 {{CMD[jump="#nitems_name"]name}}|<<
@@ -8942,7 +8947,8 @@ The joiner for the widgets.
 {{CMD[jump="#options_label"]label}}|<<
 Shows labels for the options with the widgets.
 
-The following example (using another item from the 'tools' data) illustrates the price and label N<attributes:>
+The following example (using another item from the 'tools' data)
+illustrates the price and label N<attributes:>
 
 >===
 >   [options code=os28011 label=1 price=1]
@@ -8965,34 +8971,42 @@ The following example (using another item from the 'tools' data) illustrates the
 * N<Default:> False
 >>|DEFAULT_VALUE
 {{CMD[jump="#options_price"]price}}|<<
-Boolean. If set and the options have prices, the HTML widget(s) will show the prices. This is like the {{C[jump="#accessories_price"]price}} attribute of the accessories tag.
+Boolean. If set and the options have prices, the HTML widget(s) will
+show the prices. This is like the {{C[jump="#accessories_price"]price}}
+attribute of the accessories tag.
 
-. Note that the {{C[jump="#accessories_price_data"]price_data}} setting comes from the 'price' column of the options table.
+. Note that the {{C[jump="#accessories_price_data"]price_data}} setting
+comes from the 'price' column of the options table.
 
-. Technical note-- If your options table has different mappings, you can control this with $::Variable->{MV_OPTION_TABLE_MAP}
+. Technical note-- If your options table has different mappings, you
+can control this with $::Variable->{MV_OPTION_TABLE_MAP}
 >>|False
 {{CMD[jump="#options_table"]table}}|<<
 Table to use for option attributes.  
 * N<Default:> 'options'
 >>|DEFAULT_VALUE
 {{CMD[jump="#options_td"]td}}|<<
-Results as table rows. For example, compare the following example from the 'tools' sample data set with the earlier example:
+Results as table rows. For example, compare the following example from
+the 'tools' sample data set with the earlier example:
 
 >===
 >   [options code=os28005 td=1]
 >---
->   <td><input type=hidden name=mv_item_option value="logo">
->      <SELECT NAME="mv_order_logo">
->      <OPTION VALUE="c">Construct Something
->      <OPTION VALUE="y" SELECTED>Your Logo</SELECT></td>
->   <td><input type=hidden name=mv_item_option value="color">
->      <INPUT TYPE="radio" NAME="mv_order_color" VALUE="BLK" >&nbsp;Black
->      <INPUT TYPE="radio" NAME="mv_order_color" VALUE="BEIGE" >&nbsp;Beige
->      <INPUT TYPE="radio" NAME="mv_order_color" VALUE="WHITE" >&nbsp;White</td>
->   <td><input type=hidden name=mv_item_option value="bristle">
->      <SELECT NAME="mv_order_bristle">
->      <OPTION VALUE="synthetic">Synthetic
->      <OPTION VALUE="camel">Camel Hair</SELECT></td>
+> <td><input type=hidden name=mv_item_option value="logo">
+>    <SELECT NAME="mv_order_logo">
+>    <OPTION VALUE="c">Construct Something
+>    <OPTION VALUE="y" SELECTED>Your Logo</SELECT></td>
+> <td><input type=hidden name=mv_item_option value="color">
+>    <INPUT TYPE="radio" NAME="mv_order_color"
+>           VALUE="BLK" >&nbsp;Black
+>    <INPUT TYPE="radio" NAME="mv_order_color"
+>           VALUE="BEIGE" >&nbsp;Beige
+>    <INPUT TYPE="radio" NAME="mv_order_color"
+>           VALUE="WHITE" >&nbsp;White</td>
+> <td><input type=hidden name=mv_item_option value="bristle">
+>    <SELECT NAME="mv_order_bristle">
+>    <OPTION VALUE="synthetic">Synthetic
+>    <OPTION VALUE="camel">Camel Hair</SELECT></td>
 >===
 
 (Note that the output was reformatted to fit this page)
@@ -9365,7 +9379,7 @@ This can also be done more easily with the C<area> option to the C<order> tag:
 
 !block example
     <A HREF="[order code=[[EXAMPLE_SKU]] quantity=2 area=1]"
-	 TARGET=newframe> Order [[EXAMPLE_DESCRIPTION]]</A>
+         TARGET=newframe> Order [[EXAMPLE_DESCRIPTION]]</A>
 !endblock
 
 To order with a form, you set the form variable C<mv_order_item> to
@@ -10575,13 +10589,13 @@ The following examples should be N<illustrative:>
     # $Vend::Interpolate::Tmp->{''} == $results == $same_results
 
     my $out = "The returned structure is\n";
-	$out .= $Tag->uneval( $results );
+        $out .= $Tag->uneval( $results );
     
     #loop through each row & display the fields
     foreach my $row (@$hash_results) {
        $out .= '<p>sku: ' . $row->{sku}
-	   $out .= '<br>price: ' . $row->{price};
-	   $out .= '<br>description: ' . $row->{description};
+           $out .= '<br>price: ' . $row->{price};
+           $out .= '<br>description: ' . $row->{description};
     }
     return $out;
 
@@ -10946,7 +10960,7 @@ Example of a nested query:
             Nothing was found in the outer query<br>
         [/no-match]
         [more-list]
-		<br>[matches] in the outer query<br>
+                <br>[matches] in the outer query<br>
         [/more-list]
     [/query]
 !endblock
@@ -12335,20 +12349,29 @@ Format for results with B<label> attribute.
 >            format="My Format Desc %D Price %F"]
 >>|DEFAULT_VALUE
 {{CMD[jump="#shipping_handling"]handling}}|<<
-Boolean-- use [value mv_handling] rather than [value mv_shipping] as first default for B<mode>. Note that this attribute matters only if you do not specify the B<mode> in the tag.
-* Note that this is set by the E<lbracket>{{C[jump="#handling"]handling}} tag (which calls the C<shipping> tag internally).  You should probably use the handling tag rather than setting this directly.
+Boolean-- use [value mv_handling] rather than [value mv_shipping] as
+first default for B<mode>. Note that this attribute matters only if you
+do not specify the B<mode> in the tag.
+* Note that this is set by the E<lbracket>{{C[jump="#handling"]handling}}
+tag (which calls the C<shipping> tag internally).  You should probably
+use the handling tag rather than setting this directly.
 * N<Default:> False
 >>|DEFAULT_VALUE
 {{CMD[jump="#shipping_hide"]hide}}|<<
 Suppresses output
 >>|DEFAULT_VALUE
 {{CMD[jump="#shipping_label"]label}}|<<
-By default, returns HTML <OPTION ...> widget for shipping mode(s), including description and cost. You can override the widget with the B<format> attribute.  Note that B<label> overrides B<noformat>.
+By default, returns HTML <OPTION ...> widget for shipping mode(s),
+including description and cost. You can override the widget with the
+B<format> attribute.  Note that B<label> overrides B<noformat>.
 * Here is an example from the foundation checkout.html page:
->    [shipping
->        label=1
->        mode=|[data table=country key='[default country US]' col=shipmodes]|
->    ]
+> [shipping
+>     label=1
+>     mode=|[data
+>            table=country
+>			 key='[default country US]'
+>			 col=shipmodes]|
+> ]
 >>|DEFAULT_VALUE
 {{CMD[jump="#shipping_mode"]mode}}|<<
 * N<Aliases:> B<name>, B<modes>
@@ -16414,7 +16437,9 @@ B<Tag expansion example:>
                    date="[tag time]%d-%b-%Y[/tag]"
            toplevel_tag=products
     ]code       description     price
-        [query list=1 sql="select sku, description, price from products" prefix=xml][xml-code]  [xml-param description] [xml-param price]
+        [query list=1
+                        sql="select sku, description, price from products"
+                        prefix=xml][xml-code]  [xml-param description] [xml-param price]
         [/query]
     [/xml-generator]
 ---

@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: ic_howto_forum.sdf,v 1.3 2002-10-30 17:24:00 mheins Exp $
+# $Id: ic_howto_forum.sdf,v 1.4 2003-11-26 04:56:52 mheins Exp $
 
 !define DOC_NAME "Interchange + Forum/Blog HOWTO"
 !define DOC_TYPE ""
 !define DOC_CODE "ic_howto_forum"
-!define DOC_VERSION substr('$Revision: 1.3 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.4 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc-4.9/ic_howto_forum.html"
@@ -88,32 +88,107 @@ FORUM_PRODUCTS|1|Forums
 FORUM_EMAIL_NOTIFY|sales@yourcompany.com|Forums
 !endblock
 
-Add the following lines to C<products/mv_metadata.asc> (change | to TAB):
+Add the following records to C<products/mv_metadata.asc> (shown in key: value
+format, edit file to match with "te" or some other tool):
 
 !block example
-variable::Variable::FORUM_EMAIL_NOTIFY|text|50||||||||Forum notify email|An email address to send copies of user comments on products.||||||||||
-variable::Variable::FORUM_ANON_NAME|text|20||||||||Forum Anonymous Name|Name to use when a user posts anonymously to a forum||||||||||
-variable::Variable::FORUM_PRODUCTS|yesno|||||||||Enable Product Forums|This enables user comments on products in the flypage. Only enabled by default if using MySQL or Postgres, as it will not work well on DBM and is not tested on Oracle.||||||||||
+#
+# This is a temporary file, automatically generated from the
+# database file:
+#
+# /tmp/what.txt
+#
+# If you change anything in it, it will be converted back into the
+# original format and will replace the original file.
+#
+code:variable::Variable::FORUM_EMAIL_NOTIFY
+type:text
+width:50
+height:
+field:
+db:
+name:
+outboard:
+options:
+attribute:
+label:Forum notify email
+help:An email address to send copies of user comments on products.
+lookup:
+filter:
+help_url:
+pre_filter:
+lookup_exclude:
+prepend:
+append:
+display_filter:
+default:
+extended:
+#
+code:variable::Variable::FORUM_ANON_NAME
+type:text
+width:20
+height:
+field:
+db:
+name:
+outboard:
+options:
+attribute:
+label:Forum Anonymous Name
+help:Name to use when a user posts anonymously to a forum
+lookup:
+filter:
+help_url:
+pre_filter:
+lookup_exclude:
+prepend:
+append:
+display_filter:
+default:
+extended:
+#
+code:variable::Variable::FORUM_PRODUCTS
+type:yesno
+width:
+height:
+field:
+db:
+name:
+outboard:
+options:
+attribute:
+label:Enable Product Forums
+help:This enables user comments on products in the flypage.
+lookup:
+filter:
+help_url:
+pre_filter:
+lookup_exclude:
+prepend:
+append:
+display_filter:
+default:
+extended:
 !endblock
 
 Add the following block to pages/flypage.html:
 
 !block example
-	[if variable FORUM_PRODUCTS]
-	  <tr>
-		<td>
-			[forum top="[item-code]" display_page="forum/display" /]
-			<p>
-			[page href="forum/reply"
-					form="
-						product=1
-						mv_arg=[item-code]
-					"
-			]Comment on this product.</A>
-			</p>
-		</td>
-	  </tr>
-	[/if]
+        [if variable FORUM_PRODUCTS]
+          <tr>
+                <td>
+                        [forum top="[item-code]" display_page="forum/display" /]
+                        <p>
+                        [page href="forum/reply"
+                                        form="
+                                                product=1
+                                                mv_arg=[item-code]
+                                        "
+                        ]Comment on this product.</A>
+                        </p>
+                </td>
+          </tr>
+        [/if]
 !endblock
 
 This would normally go at the end of the table displaying the product,
@@ -133,7 +208,7 @@ message that is the top of the thread to display.
 This is a complete forum display for a product:
 
 !block example
-	[forum top="[item-code]" /]
+        [forum top="[item-code]" /]
 !endblock
 
 You will see something like that in the snip from C<pages/flypage.html>
@@ -150,7 +225,7 @@ but on a product flypage it will not work. You must pass in a different
 page.
 
 !block example
-	[forum top="[item-code]" display-page="forum/display" /]
+        [forum top="[item-code]" display-page="forum/display" /]
 !endblock
 
 LI1: show-level
@@ -160,7 +235,7 @@ the current thread. If you want to display more levels, set
 the C<show-level> parameter to 1 or higher:
 
 !block example
-	[forum top="[data session arg]" show-level=3 /]
+        [forum top="[data session arg]" show-level=3 /]
 !endblock
 
 The above will show the first four levels of replies, with links to any
@@ -181,7 +256,10 @@ If you want to totally disable the appearance of the link and message,
 set the C<scrub-template> to something:
 
 !block example
-	[forum top=THREAD scrub-score="-1" scrub-template="<!-- killed! -->" /]
+        [forum top=THREAD
+                   scrub-score="-1"
+               scrub-template="<!-- killed! -->"
+        /]
 !endblock
 
 LI1: show-score
@@ -197,27 +275,27 @@ with this parameter. You can also pass this as the container text
 for the C<[forum]> tag, i.e.:
 
 !block example
-	[forum top="[data session arg]"]
-	<table cellspacing=0 cellpadding=2 width="65%">
-		  <tr>
-			<td class=contentbar1>
-				<A HREF="{DISPLAY_URL}"><b>{SUBJECT}</b></A>
-				by <b>{USERINFO}</b>
-				on {DATE}
-			</td>
-			<td class=contentbar1 align=right>
-				&#91;
-					<A HREF="{REPLY_URL}"><b>Reply</b></A>
-				&#93;
-			</td>
-		  </tr>
-		  <tr>
-			<td colspan=2>
-			{COMMENT}
-			</td>
-		  </tr>
-		</table>
-	[/forum]
+        [forum top="[data session arg]"]
+        <table cellspacing=0 cellpadding=2 width="65%">
+                  <tr>
+                        <td class=contentbar1>
+                                <A HREF="{DISPLAY_URL}"><b>{SUBJECT}</b></A>
+                                by <b>{USERINFO}</b>
+                                on {DATE}
+                        </td>
+                        <td class=contentbar1 align=right>
+                                &#91;
+                                        <A HREF="{REPLY_URL}"><b>Reply</b></A>
+                                &#93;
+                        </td>
+                  </tr>
+                  <tr>
+                        <td colspan=2>
+                        {COMMENT}
+                        </td>
+                  </tr>
+                </table>
+        [/forum]
 !endblock
 
 See C<pages/forum/display.html> for an example.
@@ -273,22 +351,22 @@ They use the substitution style found in Interchange's C<attr-list> ITL tag.
 The following values are available for templating:
 
 !block example
-   ADDITIONAL    Additional text normally only used at the top level
-   COMMENT       Text of the message
-   CREATED       Created date in ISO format
-   DATE          Date the comment was made
-   DISPLAY_URL   URL to display the forum with a new starting point
-   FORUM_APPEND  End indent </UL> tags for item (automatic, don't use)
-   FORUM_PREPEND Begin indent <UL> tags for item (automatic, don't use)
-   MOD_TIME      Modified date in ISO format
-   PARENT_URL    URL to call the parent of the comment
-   REASON        Text indicating reason for scoring
-   REPLY_URL     URL to reply to the commetn
-   SCORE         Score of the article
-   SUBJECT       Subject of the message
-   SUBMIT_URL    URL to submit a new top-level thread
-   TOP_URL       URL to call the top level of the thread (if not at top)
-   USERINFO      User information based on login status and anonymity
+ ADDITIONAL    Additional text normally only used at the top level
+ COMMENT       Text of the message
+ CREATED       Created date in ISO format
+ DATE          Date the comment was made
+ DISPLAY_URL   URL to display the forum with a new starting point
+ FORUM_APPEND  End indent </UL> tags for item (automatic, don't use)
+ FORUM_PREPEND Begin indent <UL> tags for item (automatic, don't use)
+ MOD_TIME      Modified date in ISO format
+ PARENT_URL    URL to call the parent of the comment
+ REASON        Text indicating reason for scoring
+ REPLY_URL     URL to reply to the commetn
+ SCORE         Score of the article
+ SUBJECT       Subject of the message
+ SUBMIT_URL    URL to submit a new top-level thread
+ TOP_URL       URL to call the top level of the thread (if not at top)
+ USERINFO      User information based on login status and anonymity
 !endblock
 
 You can see how the above are used by examining the

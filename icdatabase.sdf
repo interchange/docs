@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.58 2003-11-26 03:33:05 mheins Exp $
+# $Id: icdatabase.sdf,v 1.59 2003-11-26 04:56:52 mheins Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.58 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.59 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/icdatabase.html"
@@ -291,12 +291,12 @@ H2: Character Usage Restrictions
 To review, database identifiers, field names, and product codes (database keys) are restricted in the characters they may use. The following table shows the restrictions:
 
 !block example
-                                      Legal characters
-                                      ---------------------
-   Database identifiers               A-Z a-z 0-9 _
-   Field names                        A-Z a-z 0-9 _
-   Database keys (product code/SKU)   A-Z a-z 0-9 _ # - . /
-   Database values                    Any (subject to field/record delimiter)
+                                  Legal characters
+                                  ---------------------
+ Database identifiers             A-Z a-z 0-9 _
+ Field names                      A-Z a-z 0-9 _
+ Database keys (product code/SKU) A-Z a-z 0-9 _ # - . /
+ Database values                  Any (subject to field/record delimiter)
 !endblock
 
 Some SQL databases have reserved words which cannot be used as field names; Interchange databases do not have this restriction.
@@ -1441,7 +1441,7 @@ LI1: Ampersand
 .Substitute & for / in the specification and be able to use / and quotes and spaces in the specification.
 
 !block example; listitem=2
- [page href=scan se="Van Gogh"&sp=lists/surreal&os=yes&su=yes&sf=artist&sf=category]
+ [page href=scan se="Van Gogh"&sp=lists/surreal&os=yes&su=yes&sf=artist]
     Van Gogh -- compare to surrealists
  </a>
 !endblock
@@ -1968,28 +1968,28 @@ LI1: [search-list]
 .The standard set of Interchange iterative ITL tags are available. They are interpolated in this order:
 
 !block example; listitem=2
-        [item-alternate N] true [else] false [/else] [/item-alternate]
-        [if-item-param named_field] true [else] false [/else] [/if-item-param]
-        [item-param named_field]
-        [if-item-pos N] true [else] false [/else] [/if-item-pos]
-        [item-pos N]
-        [if-item-field products_field] true [else] false [/else] [/if-item-field]
-        [item-field products_column]
-        [item-increment]
-        [item-accessories]
-        [item-code]
-        [item-description]
-        [if-item-data table column] true [else] false [/else] [/if-item-data]
-        [item-data table column]
-        [item-price N* noformat=1*]
-        [item-calc] [/item-calc]
-        [item-change marker]
-            [condition]variable text[/condition]
-            true
-            [else] false [/else]
-        [/item-change marker]
-        [item-last] condition [/item-last]
-        [item-next] condition [/item-next]
+ [item-alternate N] true [else] false [/else] [/item-alternate]
+ [if-item-param named_field] true [else] false [/else] [/if-item-param]
+ [item-param named_field]
+ [if-item-pos N] true [else] false [/else] [/if-item-pos]
+ [item-pos N]
+ [if-item-field products_field] true [else] false [/else] [/if-item-field]
+ [item-field products_column]
+ [item-increment]
+ [item-accessories]
+ [item-code]
+ [item-description]
+ [if-item-data table column] true [else] false [/else] [/if-item-data]
+ [item-data table column]
+ [item-price N* noformat=1*]
+ [item-calc] [/item-calc]
+ [item-change marker]
+ 	[condition]variable text[/condition]
+ 	true
+ 	[else] false [/else]
+ [/item-change marker]
+ [item-last] condition [/item-last]
+ [item-next] condition [/item-next]
 !endblock
 
 Note: those that reference the shopping cart do not apply, i.e., [item-quantity], [item-modifier ...] and friends.
@@ -2134,14 +2134,15 @@ minimum match on the page, and the maximum match on the page:
 .You can customize the HTML hyperlink with [link-template] [/link-template]. This is useful for adding a JavaScript onclick attribute, or setting the link target to a different window, etc.
 
 !block example; listitem=2
-    [link-template]<a href="$URL$" target="_top">$ANCHOR$</a>[/link-template]
+  [link-template]<a href="$URL$" target="_top">$ANCHOR$</a>[/link-template]
 !endblock
 
 .There are two tokens you can use as many times as needed in [link-template], which will be replaced as follows:
 
 !block example; listitem=2
     $URL$      The URL for the 'more' page in question
-    $ANCHOR$   The page number or the word "Next" or "Previous" for the link in question.
+    $ANCHOR$   The page number or the word "Next" or "Previous"
+	           for the link in question.
 !endblock
 
 .If have many pages of matches and don't wish to have all displayed at once, set C<[decade-next][/decade-next]> and C<[decade-prev][/decade-prev]>. If set them empty, a search with 31 pages will display pages 21-30 like:
@@ -2576,27 +2577,27 @@ Here is an example shipping file using all of the methods of determining shippin
 Note: The columns are lined up for reading convenience. The actual entries should have B<one> tab between fields.
 
 !block example
-global Option   n/a               0   0      g PriceDivide
+global Option   n/a               0   0  g PriceDivide
 
-rpsg   RPS      quantity          0   0      R RPS products/rps.csv
-rpsg   RPS      quantity          0   5      7.00
-rpsg   RPS      quantity          6   10     10.00
-rpsg   RPS      quantity          11  150    x .95
+rpsg  RPS     quantity         0   0     R RPS products/rps.csv
+rpsg  RPS     quantity         0   5     7.00
+rpsg  RPS     quantity         6   10    10.00
+rpsg  RPS     quantity         11  150   x .95
 
-usps   US Post  price             0   0      0
-usps   US Post  price             0   50     f 7 + (1 * @@TOTAL@@ / 10)
-usps   US Post  price             50  100    f 12 + (.90 * @@TOTAL@@ / 10)
-usps   US Post  price             100 99999  f @@TOTAL@@ * .05
+usps  US Post price            0   0     0
+usps  US Post price            0   50    f 7 + (1 * @@TOTAL@@ / 10)
+usps  US Post price            50  100   f 12 + (.90 * @@TOTAL@@ / 10)
+usps  US Post price            100 99999 f @@TOTAL@@ * .05
 
-upsg   UPS      weight [value state]  0   0    e Nothing to ship.
-upsg   UPS      AK HI             0   150    u upsg [default zip 980] 12.00 round
-upsg   UPS                        0   150    u Ground [default zip 980] 2.00 round
-upsg   UPS                        150 9999   e @@TOTAL@@ lb too heavy for UPS
+upsg  UPS     weight [value state]  0   0   e Nothing to ship.
+upsg  UPS     AK HI            0   150   u upsg [default zip 980] 12.00 round
+upsg  UPS                      0   150   u Ground [default zip 980] 2.00 round
+upsg  UPS                      150 9999  e @@TOTAL@@ lb too heavy for UPS
 
-upsca  UPS/CA   weight            0   0      c C UPS_Canada products/can.csv
-upsca  UPS/CA   weight            -1   -1    o PriceDivide=0
-upsca  UPS/CA   weight            0   150    C upsca [default zip A7G] 5.00
-upsca  UPS/CA   weight            150 99999  e @@TOTAL@@ lb too heavy for UPS
+upsca UPS/CA  weight           0   0     c C UPS_Canada products/can.csv
+upsca UPS/CA  weight           -1   -1   o PriceDivide=0
+upsca UPS/CA  weight           0   150   C upsca [default zip A7G] 5.00
+upsca UPS/CA  weight           150 99999 e @@TOTAL@@ lb too heavy for UPS
 !endblock
 
 LI1: global
@@ -2707,11 +2708,16 @@ The C<low> entry is the low bound of the geographic location; C<high> is the hig
 
 The first operative row of the zone file (one without leading quotes) is used to determine the zone column name. In the US, it looks something like:
 
-> Dest. ZIP,Ground,3 Day Select,2nd Day Air,2nd Day Air A.M.,Next Day Air Saver,Next Day Air
+!block example
+ Dest. ZIP,Ground,3 Day Select,2nd Day Air,2nd Day Air A.M.,\
+  Next Day Air Saver,Next Day Air
+!endblock
 
 Interchange strips all non-alpha characters and comes up with:
 
-> DestZIP,Ground,3DaySelect,2ndDayAir,2ndDayAirAM,NextDayAirSaver,NextDayAir
+!block example
+ DestZIP,Ground,3DaySelect,2ndDayAir,2ndDayAirAM,NextDayAirSaver,NextDayAir
+!endblock
 
 Therefore, the zone column (shipping type) that would be used for UPS ground would be "Ground," and that is what the database should be named. To support the above, use a C<shipping.asc> line that reads:
 
@@ -2790,9 +2796,9 @@ H2:  Geographic Qualification
 If the return value in the main criterion includes whitespace, the remaining information in the field is used as a qualifier for the subsidiary shipping modes. This can be used to create geographic qualifications for shipping, as in:
 
 !block example
-upsg   UPS Ground   weight [value state]   0     0     e No items selected
-upsg   UPS Ground   AK HI                  0     150   u Ground [value zip] 12.00
-upsg   UPS Ground                          0     150   u Ground [value zip] 3.00
+upsg  UPS Ground  weight [value state]  0   0    e No items selected
+upsg  UPS Ground  AK HI                 0   150  u Ground [value zip] 12.00
+upsg  UPS Ground                        0   150  u Ground [value zip] 3.00
 !endblock
 
 If C<upsg> is the mode selected, the value of the user session variable C<state> is examined to see if it matches the geographic qualification on a whole-word boundary. If it is C<AK> or C<HI>, UPS Ground with an adder of 12 will be selected. If it "falls through," UPS Ground with an adder of 3 will be selected.

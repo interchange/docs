@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual"
-# $Id: icupgrade.sdf,v 1.21 2002-10-30 17:24:00 mheins Exp $
+# $Id: icupgrade.sdf,v 1.22 2003-11-26 04:56:53 mheins Exp $
 
 !define DOC_NAME "Interchange Upgrade Guide"
 !define DOC_TYPE ""
 !define DOC_CODE "icupgrade"
-!define DOC_VERSION substr('$Revision: 1.21 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.22 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/icupgrade.html"
@@ -40,60 +40,73 @@ interchange.PL 308,313
 interchange.PL 321,323
 
 >        $CGI::values{mv_nextpage} = $CGI::values{mv_orderpage}
->                                                                || find_special_page('order')
+>                                   || find_special_page('order')
 >                if ! $CGI::values{mv_nextpage};
 
 =item $decode
 
 interchange.PL 493
 
->                        HTML::Entities::decode($value) if $decode;
+>      HTML::Entities::decode($value) if $decode;
 
 =item mv_orderpage
 
 interchange.PL 854,855
 
->                                        $CGI::values{mv_nextpage} = $CGI::values{mv_orderpage}
->                                                if $CGI::values{mv_orderpage};
+!block example
+      $CGI::values{mv_nextpage} = $CGI::values{mv_orderpage}
+                                    if $CGI::values{mv_orderpage};
+!endblock
 
 =item ROUTINES and LANG
 
 interchange.PL 1552,1579
 
->        ROUTINES: {
->                last ROUTINES unless index($Vend::FinalPath, '/process/') == 0;
->                while ($Vend::FinalPath =~ s:/process/(locale|language|currency)/([^/]*)/:/process/:) {
->                        $::Scratch->{"mv_$1"} = $2;
->                }
->                $Vend::FinalPath =~ s:/process/page/:/:;
->        }
->        my $locale;
->        if($locale = $::Scratch->{mv_language}) {
->                $Global::Variable->{LANG}
->                        = $::Variable->{LANG} = $locale;
->        }
->
->        if ($Vend::Cfg->{Locale}                                                                and
->                $locale = $::Scratch->{mv_locale}       and
->                defined $Vend::Cfg->{Locale_repository}->{$locale}
->                )
->        {
->                $Global::Variable->{LANG}
->                                = $::Variable->{LANG}
->                                = $::Scratch->{mv_language}
->                                = $locale
->                         if ! $::Scratch->{mv_language};
->                Vend::Util::setlocale(  $locale,
->                                                                ($::Scratch->{mv_currency} || undef),
->                                                                { persist => 1 }                                                        );
->        }
+!block example
+   ROUTINES: {
+       last ROUTINES
+            unless index($Vend::FinalPath, '/process/') == 0;
+       while (
+           $Vend::FinalPath =~
+              s{/process/(locale|language|currency)/([^/]*)/}
+               {/process/}
+          )
+       {
+               $::Scratch->{"mv_$1"} = $2;
+       }
+       $Vend::FinalPath =~ s:/process/page/:/:;
+   }
+   my $locale;
+   if($locale = $::Scratch->{mv_language}) {
+           $Global::Variable->{LANG}
+                   = $::Variable->{LANG} = $locale;
+   }
+
+   if ($Vend::Cfg->{Locale}
+   		and $locale = $::Scratch->{mv_locale}
+		and defined $Vend::Cfg->{Locale_repository}->{$locale}
+       )
+   {
+           $Global::Variable->{LANG}
+                           = $::Variable->{LANG}
+                           = $::Scratch->{mv_language}
+                           = $locale
+                    if ! $::Scratch->{mv_language};
+           Vend::Util::setlocale(  $locale,
+                                   ($::Scratch->{mv_currency} || undef),
+                                   { persist => 1 }
+								);
+   }
+!endblock
 
 =item list_compat
 
 lib/Vend/Interpolate.pm 2808
 
->        list_compat($opt->{prefix}, \$text);
-
+!block example
+         list_compat($opt->{prefix}, \$text);
+!endblock
+  
 lib/Vend/Interpolate.pm 3538
 
 >        list_compat($opt->{prefix}, \$text);
@@ -327,12 +340,12 @@ MV3 used a different scheme for creating nested loop lists:
 allowed you to refer to the nested values with a [loop-code-a] construct. In Minivend 4, the form is:
 
 !block example
-	[loop prefix=size list="Small Medium Large"]
-		[loop prefix=color list="Red White Blue"]
-			[color-code]-[size-code]<BR>
-		[/loop]
-		<P>
-	[/loop]
+    [loop prefix=size list="Small Medium Large"]
+        [loop prefix=color list="Red White Blue"]
+            [color-code]-[size-code]<BR>
+        [/loop]
+        <P>
+    [/loop]
 !endblock
           
 H2:All frame features removed
@@ -561,8 +574,10 @@ Embedded Perl changes quite a bit. While there are the $Safe{values} and other v
 
 There are a number of other objects, see the docs.
 
-Most other issues have more to do with the catalog skeleton (i.e. simple or barry or basic or art) than they do the core. For instance, the "basic" catalog produced for MV3 ran unchanged except for the issues discussed above.
-
+Most other issues have more to do with the catalog skeleton (i.e. simple
+or barry or basic or art) than they do the core. For instance, the
+"basic" catalog produced for MV3 ran unchanged except for the issues
+discussed above.
 
 H2:Global subs
 
@@ -586,354 +601,9 @@ myfunsub();
 
 If you do this wrong, you'll get an error that looks like this:
 
-E:115.202.115.237 H8gbq6oK:115.202.115.237 - [28/February/2001:18:58:50 -0500] testcat /cgi-bin/testcat.cgi Safe: Undefined subroutine &MVSAFE::myfunsub called at (eval 283) line 2.
-
-
-
-A1:Minivend 3 compatibility usertags and globalsubs
-
-These files were originally distributed with Minivend 4 in the compat/ directory. They replace Minivend 3 functionality that was removed or greatly altered in Minivend 4.
-
-
-A2:body
-
-!block example
-UserTag body PosNumber 2
-UserTag body Order type extra
-UserTag body Routine <<EOR
-!endblock
-!block example; lang="Perl"
-use vars qw($C);
-sub parse_color {
-    my ($var, $value) = @_;
-    return '' unless $value;
-    $var = lc $var;
-    $C->{Color}->{$var} = [];
-    @{$C->{'Color'}->{$var}} = split /\s+/, $value;
-    return $value;
-}
-
-sub {
-    my($scheme, $extra) = @_;
-    my $r = '<BODY';
-    my ($var,$tag);
-    #return '<BODY>' unless (int($scheme) < 16 and int($scheme) > 1);
-
-    my %color = qw( mv_bgcolor BGCOLOR mv_textcolor TEXT
-                    mv_linkcolor LINK mv_vlinkcolor VLINK
-                    mv_alinkcolor ALINK mv_background BACKGROUND );
-    if (defined $::Values->{mv_resetcolors}
-            and $::Values->{mv_resetcolors}) {
-        delete $::Values->{mv_customcolors};
-        undef $::Values->{mv_resetcolors};
-    }
-    if (defined $::Values->{mv_customcolors}) {
-        foreach $var (keys %color) {
-            $r .= qq| $color{$var}="| . $::Values->{$var} . '"'
-                if $::Values->{$var};
-        }
-    }
-    else {
-        foreach $var (keys %color) {
-            $r .= qq| $color{$var}="| . ${$Vend::Cfg->{Color}->{$var}}[$scheme] . '"'
-                if defined ${$Vend::Cfg->{Color}->{$var}}[$scheme]
-                    &&  ${$Vend::Cfg->{Color}->{$var}}[$scheme] !~ /\bnone\b/;
-        }
-    }
-    $r =~ s#(BACKGROUND="(?!http:))([^/])#$1$Vend::Cfg->{ImageDir}$2#;
-    $r .= " $extra" if defined $extra;
-    $r .= '>';
-}
-!endblock
-!block example
-EOR
-
-AddDirective Mv_Background   color
-AddDirective Mv_BgColor      color
-AddDirective Mv_TextColor    color
-AddDirective Mv_LinkColor    color
-AddDirective Mv_AlinkColor   color
-AddDirective Mv_VlinkColor   color
-!endblock
-
-
-A2:buttonbar
-
-!block example
-# Returns a buttonbar by number
-UserTag buttonbar Order type
-UserTag buttonbar PosNumber 1
-UserTag buttonbar Interpolate 1
-UserTag buttonbar Routine <<EOR
-!endblock
-!block example; lang="Perl"
-sub get_files {
-    my($dir, @files) = @_;
-    my(@out);
-    my($file, $contents);
-    foreach $file (@files) {
-        config_error(
-          "No leading ../.. allowed if NoAbsolute set. Contact administrator.\n")
-        if $file =~ m#^\.\./.*\.\.# and $Global::NoAbsolute;
-        push(@out,"\n") unless
-            push(@out,readfile("$dir/$file.html"));
-    }
-    
-    @out;
-}
-
-sub parse_buttonbar {
-    my ($var, $value) = @_;
-    return [] unless $value;
-    my @c;
-    my @vals = grep /\S/, split /\s+/, $value;
-    for(@vals) {
-        push @c, Vend::Util::readfile("pages/$_.html");
-    }
-    return \@c;
-}
-
-sub {
-    my($buttonbar) = @_;
-    if (defined $Vend::Cfg->{'ButtonBars'}->[$buttonbar]) {
-        return $Vend::Cfg->{'ButtonBars'}->[$buttonbar];
-    }
-    else {
-        return '';
-    }
-}
-!endblock
-!block example
-EOR
-
-AddDirective ButtonBars  buttonbar
-!endblock
-
-
-A2:form_mail.cfg
-
-!block example
-GlobalSub <<EndOfSub
-!endblock
-!block example; lang="Perl"
-sub form_mail {
-    my($to, $subject, $reply, $body) = @_;
-    my($ok);
-
-    $subject = '<no subject>' unless defined $subject && $subject;
-
-    $reply = '' unless defined $reply;
-    $reply = "Reply-to: $reply\n" if $reply;
-
-    $ok = 0;
-    SEND: {
-        open(Vend::MAIL,"|$Vend::Cfg->{'SendMailProgram'} -t") or last SEND;
-        print Vend::MAIL
-            "To: $to\n",
-            $reply,
-            "Subject: $subject\n",
-            "Errors-To: $Vend::Cfg->{MailOrderTo}\n\n",
-            $body
-            or last SEND;
-        close Vend::MAIL or last SEND;
-        $ok = ($? == 0);
-    }
-
-    if (!$ok) {
-        logError("Unable to send mail using $Vend::Cfg->{'SendMailProgram'}\n" .
-            "To '$to'\n" .
-            "With subject '$subject'\n" .
-            "With reply-to '$reply'\n" .
-            "And body:\n$body");
-    }
-    $ok;
-}
-!endblock
-!block example
-EndOfSub
-!endblock
-
-
-A2:help
-
-!block example
-UserTag help PosNumber 1
-UserTag help Order name
-UserTag help Routine <<EOR
-!endblock
-!block example; lang="Perl"
-sub parse_help {
-    my ($var, $value) = @_;
-    my (@files);
-    my (@items);
-    my ($c, $chunk, $item, $help, $key);
-    unless (defined $value && $value) {
-        $c = {};
-        return $c;
-    }
-    $c = $C->{'Help'};
-    $var = lc $var;
-    $C->{'Source'}->{'Help'} = $value;
-    @files = get_files($C->{'PageDir'}, split /\s+/, $value);
-    foreach $chunk (@files) {
-        @items = split /\r?\n\r?\n/, $chunk;
-        foreach $item (@items) {
-            ($key,$help) = split /\s*\n/, $item, 2;
-            if(defined $c->{$key}) {
-                $c->{$key} .= $help;
-            }
-            else {
-                $c->{$key} = $help;
-            }
-                
-        }
-    }
-    return $c;
-}
-
-sub {
-    my($help) = shift;
-    # Move this to control section?
-    if ($::Values->{mv_helpon}) {
-        delete $::Values->{mv_helpoff};
-        undef $::Values->{mv_helpon};
-    }
-    return '' if defined $::Values->{'mv_helpoff'};
-    if (defined $Vend::Cfg->{'Help'}{$help}) {
-        return $Vend::Cfg->{'Help'}{$help};
-    }
-    else {
-        return '';
-    }
-}
-!endblock
-!block example
-EOR
-
-AddDirective Help help
-!endblock
-
-
-A2:random_rotate
-
-!block example
-UserTag random PosNumber 0
-UserTag random Interpolate 1
-UserTag random Routine <<EOR
-!endblock
-!block example; lang="Perl"
-package Vend::Config;
-sub parse_random {
-    my ($var, $value) = @_;
-    return '' unless (defined $value && $value);
-    my $c = [];
-    $var = lc $var;
-    my @files = grep /\S/, split /\s+/, $value;
-    local ($Vend::Cfg) = $C;
-    for (@files) { push @$c, Vend::Util::readin($_) }
-    return $c;
-}
-
-package Vend::Interpolate;
-sub {
-    my $random = int rand(scalar(@{$Vend::Cfg->{'Random'}}));
-    if (defined $Vend::Cfg->{'Random'}->[$random]) {
-        return $Vend::Cfg->{'Random'}->[$random];
-    }
-    else {
-        return '';
-    }
-}
-!endblock
-!block example
-EOR
-
-UserTag rotate PosNumber 2
-UserTag rotate Order ceiling floor
-UserTag rotate Interpolate 1
-UserTag rotate Routine <<EOR
-!endblock
-!block example; lang="Perl"
-sub {
-    return '' unless $Vend::Cfg->{Rotate};
-    my $ceiling = $_[0] || @{$Vend::Cfg->{'Rotate'}} || return '';
-    my $floor   = $_[1] || 1;
-
-    $ceiling--;
-    $floor--;
-
-    my $marker = "rotate$floor$ceiling";
-
-    if($ceiling < 0 or $floor < 0) {
-        $floor = 0;
-        $ceiling = scalar  @{$Vend::Cfg->{'Rotate'}} - 1;
-        logError "Bad ceiling or floor for rotate";
-    }
-
-    my $rotate;
-    $rotate = $Vend::Session->{$marker} || $floor;
-
-    if($rotate > $ceiling or $rotate < $floor ) {
-        $rotate = $floor;
-    }
-
-    $Vend::Session->{$marker} = $rotate + 1;
-    return $Vend::Cfg->{'Rotate'}->[$rotate];
-}
-!endblock
-!block example
-EOR
-
-AddDirective Random random
-AddDirective Rotate random
-!endblock
-
-
-A2:AsciiBackend
-
-!block example
-GlobalSub <<EOS
-!endblock
-!block example; lang="Perl"
-sub AsciiBackend {
-    package Vend::Order;
-    $Vend::Order::override_track_order = \&track_order;
-    sub track_order_backend {
-        my ($order_no,$order_report) = @_;
-        my ($c,$i);
-        my (@backend);
-        
-        @backend = split /\s*,\s*/, $Vend::Cfg->{BackendOrder};
-        
-        if(@backend and $Vend::Cfg->{AsciiBackend}) {
-            my(@ary);
-            push @ary, $order_no;
-            for(@backend) {
-                push @ary, $::Values->{$_};
-            }
-            foreach $i (0 .. $#$Vend::Items) {
-                push @ary, $Vend::Items->[$i]{'code'};
-                push @ary, $Vend::Items->[$i]{'quantity'};
-                if ($Vend::Cfg->{UseModifier}) {
-                    foreach $j (@{$Vend::Cfg->{UseModifier}}) {
-                        push @ary, $Vend::Items->[$i]->{$j}
-                    }
-                }
-            }
-            logData ($Vend::Cfg->{AsciiBackend}, @ary);
-        }
-        $Vend::Order::override_track_order->($order_no, $order_report);
-    }
-    *track_order = \&Vend::Order::override_track_order;
-}
-!endblock
-!block example
-EOS
-
-AddDirective BackendOrder
-AddDirective AsciiBackend
-!endblock
-
+> 115.202.115.237 H8gbq6oK:115.202.115.237 - \
+>  [28/February/2001:18:58:50 -0500] testcat /cgi-bin/testcat.cgi \
+>  Safe: Undefined subroutine &MVSAFE::myfunsub called at (eval 283) line 2.
 
 H1: History of Interchange
 
