@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icinstall.sdf,v 1.8 2000-10-18 20:56:39 zarko Exp $
+# $Id: icinstall.sdf,v 1.9 2000-10-18 21:38:38 alison Exp $
 
 !define DOC_NAME "Interchange Installation"
 !define DOC_TYPE ""
 !define DOC_CODE "ICINSTALL_D2a_100800"
-!define DOC_VERSION substr('$Revision: 1.8 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.9 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icbackoffice.html"
@@ -16,48 +16,46 @@ Akopia Interchange is the industry's most widely distributed and implemented e-c
 
 H1: GETTING READY -- BEFORE INSTALLING INTERCHANGE
 
-^ Verify that you have Perl 5.005 or newer installed. At a shell prompt, enter the command C<perl -v> to see what version you have.
-
-+ Install the necessary Perl modules from CPAN (from C<Bundle::Interchange>)
-
+^ Verify that Perl 5.005 or newer is installed. At a shell prompt, enter the command C<perl -v> to see what version you have.
++ Install the necessary Perl modules from CPAN (from C<Bundle::Interchange>).
 + Make sure Apache (or some other web server) is installed and works.
 
-** Know where the Apache configuration file is located. This is not required, but if available, can help the installer answer the next two questions automatically. The file is usually called httpd.conf or apache.conf and is often located somewhere like
+** Know where the Apache configuration file is located. This is not required, but if available, can help the installer answer the next two questions automatically. The file is usually called httpd.conf or apache.conf and is often located somewhere like:
 . /etc/httpd/conf/httpd.conf
 . /usr/local/apache/conf/httpd.conf
 
-** Know where the document root directory is located and have write access to it. It's usually something like
+** Know where the document root directory is located and have write access to it. It's usually something like:
 . /var/www/html
 . /home/httpd/html
 . /usr/local/apache/htdocs
 
-** Know where the cgi-bin directory is located and have write access to it. It's usually something like
+** Know where the cgi-bin directory is located and have write access to it. It's usually something like:
 . /var/www/cgi-bin
 . /home/httpd/cgi-bin
 . /usr/local/apache/cgi-bin
 
 + Install and test your database server (MySQL, PostgreSQL, Oracle, etc.) unless you plan to use Interchange's built-in database system. Know:
 
-** The DSN (data source name), which is what tells the Perl DBI how to connect to your database. If the database server is on the same host as the web server, it will probably be something like the following:
+** The DSN (data source name), which is what tells the Perl DBI how to connect to the database. If the database server is on the same host as the Web server, it will probably be something like the following:
 . dbi:mysql:
 . dbi:Pg:
 . dbi:Oracle:
 
 ** The database administrator user name and password
 
-+ Create a new Unix username and group or choose an existing one (default is C<interch>).
++ Create a new UNIX username and group or choose an existing one (default is C<interch>).
 
-+ Decide where you want to install the Interchange software, and make sure you have write access there. Common choices are:
++ Decide where to install the Interchange software, and make sure to have write access there. Common choices are:
 . /usr/local/interchange
 . /usr/lib/interchange
 . /home/someuser/interchange
 
-+ Decide where you want the Interchange catalogs to be located, and make sure your C<interch> user has write access there. Common choices are:
++ Decide where the Interchange catalogs are to be located, and make sure the C<interch> user has write access there. Common choices are:
 . /usr/local/interchange/catalogs
 . /var/lib/interchange
 . /home/someuser/interchange/catalogs
 
-+ Choose a name for your first demo catalog, usually C<construct>.
++ Choose a name for the first demo catalog, usually C<construct>.
 
 
 H1: INSTALLING INTERCHANGE
@@ -96,7 +94,7 @@ After completing the above script, Interchange can be installed. Installation of
 
 Begin by separating the directories that hold the catalog pages and databases. The C<makecat> program supplied with Interchange does this.
 
-Note: Any pages with Interchange elements/tags go in the directory set by the PageDir directive (the default is C<~/catalogs/catalog_name/pages>). For the demos supplied with Interchange, this means that only one or a few pages will be copied to the HTML directory, with the remainder of the pages staying in the directory defined as PageDir.
+Note: Any pages with Interchange elements/tags go in the directory set by the C<PageDir> directive (the default is C<~/catalogs/catalog_name/pages>). For the demos supplied with Interchange, this means that only one or a few pages will be copied to the HTML directory, with the remainder of the pages staying in the directory defined as PageDir.
 
 If working with an ISP where all of the files are in HTML document space, disable all access to the Interchange catalog directory with the proper HTTP access restrictions. Normally that is done by creating a .htaccess file like this:
 
@@ -105,7 +103,7 @@ order allow,deny
 deny from all
 </Limit>
 
-If unable to do this, do not run Interchange unless file permissions can be set such that files will not be served. However, security will be a problem and you could be placing customers' personal information at risk.
+If unable to do this, do not run Interchange unless file permissions can be set such that files will not be served. However, security will be a problem and customers' personal information could be placed at risk.
 
 
 H2: makecat - Setup a Catalog from a Template
@@ -217,7 +215,6 @@ If the response is "y" or "yes," the command will be run by passing it through t
 
 The file config/postcopy_commands is exactly the same as <precopy_commands>, except the prompt occurs after the catalog files are copied and macro substitution is performed on all files.
 
-
 There may also be SubCatalog directives:
 
 !block example
@@ -225,14 +222,14 @@ SubCatalog easy simple /home/catalogs/simple /cgi-bin/easy
 !endblock
 
 easy
-.The name of the subcatalog, which also controls the name of the subcatalog configuration file,in this case C<easy.cfg>.
+.The name of the subcatalog, which also controls the name of the subcatalog configuration file. In this case, it is C<easy.cfg>.
 
 simple
 .The name of the base configuration that will be the basis for the catalog. Parameters in the easy.cfg file that are different will override those in the catalog.cfg file for the base configuration.
 
 The remaining parameters are similar to the Catalog directive.
 
-Additional interchange.cfg parameters set up administrative parameters that are catalog wide. See the Server Configuration File for details on each of these.
+Additional interchange.cfg parameters set up administrative parameters that are catalog wide. See the server configuration file for details on each of these.
 
 Each catalog can be completely independent with different databases, or catalogs can share pages, databases, and session files. This means that several catalogs can share the same information, allowing "virtual malls."
 
@@ -244,17 +241,17 @@ The installation program (makecat) can be used to install a custom catalog templ
 
 H2: Needed Directories
 
-The Interchange program, and its supporting libraries, should go into one directory as installed by the installation program. User catalog pages, user databases, and user configuration files should all go into their private directories. Because the catalog pages are served through the Interchange cgi-bin program and contain nonstandard elements, they should not be put into a public Web directory, nor do they need to have world-readable file permissions.
+The Interchange program, and its supporting libraries, should go into one directory as installed by the installation program. User catalog pages, user databases, and user configuration files should all go into their private directories. Because the catalog pages are served through the Interchange CGI-bin program and contain nonstandard elements, they should not be put into a public Web directory, nor do they need to have world-readable file permissions.
 
 Note[label='IMPORTANT NOTE: '] Since catalogs are all run under one server, permissions are complex and very important. The Interchange configuration program is capable of doing the work!
 
 A public Web directory for inline image graphic files is needed. Interchange does not serve the images, only the HTML tags calling them. A useful convention is to place all buttonbars, backgrounds, and icons in the /images directory, with the catalog items located in the /images/catalog directory. Regardless of the directory structure, an I<absolute path> must be used. Relative paths are unacceptable. Interchange supports the I<ImageDir> directive, which places that as the absolute path in front of all relative IMG and INPUT SRC specifications.
 
-A cgi-bin directory in which to put the vlink or tlink program is also needed.
+A CGI-bin directory in which to put the vlink or tlink program is also needed.
 
-H1: FOUNDATION STORE INSTALLATION PROCESS
+H1: DEMO STORE INSTALLATION PROCESS
 
-This detailed process describes the entire installation and setup process of the foundation store. The text seen during this process will be displayed with <-- next to it. The text marked with --> identifies the required response. 
+This detailed process describes the entire installation and setup process of the demo store. The text seen during this process will be displayed with <-- next to it. The text marked with --> identifies the required response. 
 
 In order to begin, the following permissions on the server are needed:
 
@@ -727,7 +724,7 @@ At this point the Interchange is running and waiting for connections.
 
 H2: Installation Troubleshooting
 
-Interchange uses the services of other complex programs, such as web servers and relational databases, to work. Therefore, when there is a problem, check these programs before checking Interchange. It may have to do with Perl or the HTTP server setup. In fact, over the past four years, many more basic installation problems have to do with those than with Interchange itself.
+Interchange uses the services of other complex programs, such as Web servers and relational databases, to work. Therefore, when there is a problem, check these programs before checking Interchange. It may have to do with Perl or the HTTP server setup. In fact, over the past four years, many more basic installation problems have to do with those than with Interchange itself.
 
 If an error message is received about not being able to find libraries, or a core dump has occurred, or a segment fault message, it is always improperly built or configured Perl. Contact the system administrator or install a new Perl.
 
@@ -749,7 +746,7 @@ Double check the following items:
 
 -If having trouble with the vlink program (named C<construct> in the demo configuration), try re-running C<makecat> and using INET mode instead. (Or copy the C<tlink> INET mode link program over C<vlink>). This should work unchanged for many systems. 
 
--If using an ISP or have a non-standard network configuration, some changes to interchange.cfg are necessary. For C<tlink> to work, the proper host name(s) must be configured into the TcpHost directive in interchange.cfg. The program selects port 7786 by default (the ASCII codes for "M" and "V"). If another port is used, it must be set to the same number in both the tlink program (by running C<compile_link>) and the C<minivend.cfg> file. The C<tlink> program does B<not> need to be SUID.
+-If using an ISP or have a non-standard network configuration, some changes to interchange.cfg are necessary. For C<tlink> to work, the proper host name(s) must be configured into the TcpHost directive in interchange.cfg. The program selects port 7786 by default (the ASCII codes for "M" and "V"). If another port is used, it must be set to the same number in both the tlink program (by running C<compile_link>) and the C<minivend.cfg> file. The C<tlink> program does not need to be SUID.
 
 +Proper file permissions? 
 
