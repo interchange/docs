@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icfoundation.sdf,v 1.9 2001-05-11 22:24:36 larry Exp $
+# $Id: icfoundation.sdf,v 1.10 2001-05-14 13:20:01 bill Exp $
 
 !define DOC_NAME "Foundation Store"
 !define DOC_TYPE ""
 !define DOC_CODE "icfoundation"
-!define DOC_VERSION substr('$Revision: 1.9 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.10 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/doc/icfoundation.html"
@@ -2203,42 +2203,6 @@ Example Data
 
 See {{CMD[jump="ictemplates.html#Banner/Ad rotation"]Banner/Ad rotation}}.
 
-<<<<<<< icfoundation.sdf
-
-H2: cat.txt
-
-Categories.
-
-!block example
-    code
-    sel
-    name
-    which_page
-    sort
-    display_type
-            name = Name
-            url = URL only
-            icon = Icon and name
-            image = Image
-    image
-    image_prop
-    banner_image
-    banner_text
-    link_type
-        Type of link:
-            none = No link
-            external = External link (http://...)
-            internal = Interchange page
-            simple = Simple search
-            complex = Complex search
-    url
-    tab
-    page
-    search
-    selector
-    link_template
-!endblock
-=======
 
 H2: cat
 
@@ -2516,25 +2480,6 @@ The selector that is used to scan the C<products> table for products in the cate
 H3: {{CMD[id="cat_link_template"]link_template}}
 
 Overrides the usual HTML link template for navbar entries.  See the B<bar_link> subroutine in the /dist/catalog_before.cfg configuration file if you need to modify link templates.
-
-
-H2: component.txt
-
-!block example
-    code
-    group
-    name
-    width
-    height
-    pieces
-    label
-    banner
-    help
-    help_url
-    filter
-    controls
-    Variable
-!endblock
 
 
 H2: country
