@@ -57,10 +57,14 @@ my $i = 1;
 	print NAV $nav_base;
 
 for(@chunks) {
-	/<a\s+name\s*=\s*"([^"]+)">([^<]+)/i;
+	m{<a\s+name\s*=\s*"([^"]+)">(.*?)</a>}is;
 	$secname[$i] = $1;
-	$secname[$i] =~ s/([^-.\w])/'%' . sprintf("%02x", ord($1))/eg;
 	$title[$i] = $2;
+	$title[$i] =~ s/<.*?>//sg;
+	$title[$i] =~ s/^\s+//;
+	$title[$i] =~ s/\s+$//;
+	$secname[$i] =~ s/([^-.\w])/'%' . sprintf("%02x", ord($1))/eg;
+warn("empty title for $secname[$i]") unless $title[$i] =~ /\S/;
 	$i++;
 }
 
@@ -101,7 +105,7 @@ EOF
 	($rest,@bits) = split /<H2>/i, $chunk;
 	my $dbtitle = $title[$i];
 	my $sectype = 'overview';
-	if($dbtitle =~ /^\s*NAME\s*$/) {
+	if($secname[$i] = /^s*name\s*$/i) {
 		$sectype = 'filler';
 	}
 	elsif($dbtitle =~ /^\s*DESCRIPTION\s*$/) {
@@ -131,10 +135,13 @@ EOF
 	my $j = 1;
 
 	for(@bits) {
-		/<a\s+name\s*=\s*"([^"]+)">([^<]+)/i;
+		m{<a\s+name\s*=\s*"([^"]+)">(.*?)</A>}si;
 		$subname[$j] = $1;
-		$subname[$j] =~ s/([^-.\w])/'%' . sprintf("%02x", ord($1))/eg;
 		$subtitle[$j] = $2;
+		$subtitle[$j] =~ s/<.*?>//sg;
+		$subtitle[$j] =~ s/^\s+//;
+		$subtitle[$j] =~ s/\s+$//;
+		$subname[$j] =~ s/([^-.\w])/'%' . sprintf("%02x", ord($1))/eg;
 		$j++;
 	}
 
@@ -167,7 +174,7 @@ $ENV{DOCUMENT}$section.$sub
 %%
 $ENV{DOCUMENT}
 %%
-$secname[$i]
+$secname[$j]
 %%
 item
 %%
