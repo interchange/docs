@@ -78,10 +78,10 @@ foreach $pod (glob("$DOCDIR/*.pod")) {
 	File::Path::mkpath($dest)
 		or die "Couldn't make directory $dest: $!\n";
 
-	system "$POD2 --netscape --noindex $pod > $DOCDEST/$base.html 2>/dev/null";
+	system "perl $POD2 --netscape --noindex $pod > $DOCDEST/$base.html 2>/dev/null";
 
 	$ENV{DOCUMENT} = $base;
-	system "$BREAK -d $dest $DOCDEST/$base.html > /dev/null";
+	system "perl $BREAK -d $dest $DOCDEST/$base.html > /dev/null";
 	system "cat $dest/docdb.txt >> $DBDEST";
 }
 
