@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.106 2002-10-30 17:24:00 mheins Exp $
+# $Id: ictags.sdf,v 1.107 2003-01-03 05:03:05 jon Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.106 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.107 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ictags.html"
@@ -6976,7 +6976,7 @@ Checks to see if a discount is present for an item.
 
 H4: {{CMD[id="if_explicit"]explicit}}
 
-A test for an explicit value. If perl code is placed between
+A test for an explicit value. If Perl code is placed between
 a [condition] [/condition] tag pair, it will be used to make
 the comparison. Arguments can be passed to import data from
 user space, just as with the [perl] tag.
@@ -7000,6 +7000,32 @@ you will run into many situations where it is useful.
 This will work for I<Variable> values:
 
 >    [if type=explicit compare="__MYVAR__"] .. [/if]
+
+However, note that the 'compare' option is equivalent to the
+\[condition] block in that both evaluate as Perl code. That means
+you need to watch out when you put in user-supplied values (so that
+users can't inject Perl code on your server) and data from your own
+variables or tables which may look different than you expected.
+
+For example, say you're in a loop checking whether at least one of the
+fields 'foo' and 'bar' has a value ("true" according to Perl):
+
+>    [if type=explicit compare="[loop-param foo][loop-param bar]"]
+
+Most of the time this works fine. But if 'foo' contains a string
+beginning with '0', such as '0009', Perl will try to interpret it as
+an octal number, where the digit '9' is invalid, resulting in this
+unexpected error in the catalog error log:
+
+>    Bad if 'explicit   0009': Illegal octal digit '9' at (eval 155) line 1, at end of line
+
+A safer way to check is:
+
+>    [if type=explicit compare="q{[loop-param foo][loop-param bar]}"]
+
+Although then your data should not contain a '}'. To be extra safe you
+can surround your interpolated data with a [filter X] ... [/filter] tag
+pair appropriate for the quoting method you've used.
 
 H4: {{CMD[id="if_file"]file}}
 
