@@ -1,9 +1,9 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.38 2001-05-18 03:52:21 jon Exp $
+# $Id: ictags.sdf,v 1.39 2001-05-18 17:51:41 jon Exp $
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.38 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.39 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://developer.akopia.com/ic/dev/ictags.html"
@@ -31,9 +31,9 @@ MML, or Minivend Markup Language. Minivend was the predecessor to
 Interchange.
 
 These tags perform various display and modification operations for
-the user session. There nearly 100 standard predefined tags, and
-the C<UserTag> facility allows you to create tags fully as powerful
-that perform your own functions.
+the user session. There nearly 100 standard predefined tags, and the
+C<UserTag> facility allows you to create tags that perform your own
+functions and can be just as powerful as the built-in tags.
 
 This document covers Interchange versions 4.7-4.8.
 
@@ -819,7 +819,7 @@ sub-tags are described in C<Sub-tags>.
 
 H2: accessories
 
-A swiss-army-knife widget builder, this provides access to
+A Swiss-army-knife widget builder, this provides access to
 Interchange's product option attributes (e.g., to choose or access
 product options such as a shirt's size or color).
 
@@ -1566,7 +1566,7 @@ H4: {{CMD[id="accessories_price"]price}}
 
 When combined with the C<price_data> tag attribute, this allows you to
 force prices for item attributes. You probably do not want to use
-this; just let the tag pick pu prices from your database table(s) when
+this; just let the tag pick up prices from your database table(s) when
 appropriate.
 
 If you are passing attribute values, you can use this to control
@@ -1662,7 +1662,8 @@ H4: {{CMD[id="accessories_empty"]empty}}
 Requires '{{CMD[jump="#accessories_type"]type}}=links'.
 
 Setting 'C<empty=1>' includes a hyperlink for the empty "--select--"
-option. See the example in C<form> above. 
+option. See the example in C<form> above; if C<empty=1> had been
+specified, three links would have been generated.
 
 
 H4: {{CMD[id="accessories_secure"]secure}}
@@ -8854,8 +8855,9 @@ savings time, the digit is the number of hours displacement from GMT, and
 the second alphabetical string is the zone name when in daylight savings
 time. NOTE: This may not work on all operating systems.
 
+H4: {{CMD[id="time_zerofix"]zerofix}}
 
-
+Strips leading zeroes from numbers.
 
 
 
@@ -10213,6 +10215,108 @@ H2: button
 
 H2: convert_date
 
+This tag converts a given date format into another format.
+
+H3: Summary
+
+!block example;
+    [B<convert_date> day* other_named_attributes>[/convert_date]
+    [B<convert_date> day=n* other_named_attributes[/convert_date]
+!endblock
+
+!block note; label="Positional parameters: "
+The first line shows the usage with positional parameters (given in
+order). The second line shows usage with named parameters.
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+days|The number of days from or before today|I<none>
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#convert_date_format"]format}}|'%d-%b-%Y %I:%M%p' or '%d-%b-%Y'
+fmt - Alias for format|I<none>
+{{CMD[jump="#convert_date_raw"]raw}}|I<none>
+{{CMD[jump="#convert_date_zerofix"]zerofix}}|I<none>
+!endblock
+
+!block table;headings=1
+A|B
+Other_Charactreristics|
+Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
+{{CMD[jump="#macro_tags"]Macro}}|I<No>
+Has end tag|[/convert_date]
+!endblock
+
+B<Tag expansion example:>
+
+!block example
+  a. [convert-date][/convert-date]
+  b. [convert-date 1][/convert-date]
+  c. [convert-date -1][/convert-date]
+  d. [convert-date]2001-5-1[/convert-date]
+  e. [convert-date]2001-05-01[/convert-date]
+  f. [convert-date]20010515[/convert-date]
+  g. [convert-date raw=1]2001-05-18[/convert-date]
+  h. [convert-date fmt="%d-%m-%Y"]2001-05-18[/convert-date]
+  i. [convert-date]200 1 -  --051 =9[/convert-date]
+  j. [convert-date]2001 -  --05 -20 11 1 5[/convert-date]
+  k. [convert-date raw=1]2001-05-21 11:15[/convert-date]
+------------------------------------------------------
+  a. 18-May-2001 03:15AM (todays day and time)
+  b. 19-May-2001 03:15AM (today + 1 day)
+  c. 17-May-2001 03:15AM (today - 1 day)
+  d. 01-May-2001
+  e. 01-May-2001
+  f. 15-May-2001
+  g. 20010518
+  h. 18-05-2001
+  i. 19-May-2001
+  j. 20-May-2001 11:15AM
+  k. 200105211115
+!endblock
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+    $Tag->convert_date( { day => 1 } );
+					   
+    $Tag->convert_date( { body => "2001-05-19 15:35",
+                       format => "%d-%m-%Y %H:%M", } );
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->convert_date( 1 );
+!endblock
+
+H3: Description
+
+This tag converts almost any given date format into another, 
+possibly user defined, format.
+
+H4: {{CMD[id="convert_date_days"]days}}
+
+Number of days from or before today's date and time. Will only be 
+used if nothing is supplied between the tags.
+
+H4: {{CMD[id="convert_date_format"]format}}
+
+POSIX time format string of your choice. See Unix strftime(3) manpage
+for complete details.
+
+H4: {{CMD[id="convert_date_raw"]raw}}
+
+If this option is set to true, will display given date in raw 
+format, e.g. yyyymmdd or yyyymmddHHMM.
+
+H4: {{CMD[id="convert_date_zerofix"]zerofix}}
+
+Strips leading zeroes from numbers.
+
 
 H2: db_date
 
@@ -10875,6 +10979,226 @@ Will show the total instead of the amount if set to true.
 
 H2: table_organize
 
+Takes an unorganized set of table cells and organizes them into
+rows based on the number of columns.
+
+H3: Summary
+
+!block example;
+    [B<table-organize> cols* other_named_attributes]
+	     [loop ....] <td> [loop-tags] </td> [/loop]
+	[/table-organize]
+	
+    [B<table-organize> cols=n* other_named_attributes]
+	     [loop ....] <td> [loop-tags] </td> [/loop]
+	[/table-organize]
+!endblock
+
+!block note; label="Positional parameters: "
+The first line shows the usage with positional parameters (given in
+order). The second line shows usage with named parameters.
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#table_organize_cols"]cols}}|Number of columns.|2
+columns|Alias for cols.|2
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#table_organize_caption"]caption}}|I<none>
+{{CMD[jump="#table_organize_columnize"]columnize}}|I<none>
+{{CMD[jump="#table_organize_embed"]embed}}|I<none>
+{{CMD[jump="#table_organize_filler"]filler}}|&nbsp;
+{{CMD[jump="#table_organize_limit"]limit}}|I<none>
+{{CMD[jump="#table_organize_pretty"]pretty}}|I<none>
+{{CMD[jump="#table_organize_rows"]rows}}|I<none>
+{{CMD[jump="#table_organize_table"]table}}|I<none>
+{{CMD[jump="#table_organize_td"]td}}|I<none>
+{{CMD[jump="#table_organize_tr"]tr}}|I<none>
+!endblock
+
+!block table;headings=1
+A|B
+Other_Charactreristics|
+Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
+{{CMD[jump="#macro_tags"]Macro}}|I<No>
+Has end tag|[/table-organize]
+!endblock
+
+B<Tag expansion example:>
+
+This example produces a table that (1) alternates rows with background
+colors "#EEEEEE" and "#FFFFFF", and (2) aligns the columns right,
+center, left:
+
+!block example
+        [table-organize
+            cols=3
+            pretty=1
+            tr.0='bgcolor="#EEEEEE"'
+            tr.1='bgcolor="#FFFFFF"'
+            td.0='align=right'
+            td.1='align=center'
+            td.2='align=left'
+            ]
+            [loop list="1 2 3 1a 2a 3a 1b"] <td> [loop-code] </td> [/loop]
+        [/table-organize]
+------------------------------------------------------
+        <tr bgcolor="#EEEEEE">
+                <td align=right>1</td>
+                <td align=center>2</td>
+                <td align=left>3</td>
+        </tr>
+        <tr bgcolor="#FFFFFF">
+                <td align=right>1a</td>
+                <td align=center>2a</td>
+                <td align=left>3a</td>
+        </tr>
+        <tr bgcolor="#EEEEEE">
+                <td align=right>1b</td>
+                <td align=center>&nbsp;</td>
+                <td align=left>&nbsp;</td>
+        </tr>
+!endblock
+
+If the attribute columnize=1 is present, the result will look like:
+
+!block example
+            <tr bgcolor="#EEEEEE">
+                    <td align=right>1</td>
+                    <td align=center>1a</td>
+                    <td align=left>1b</td>
+            </tr>
+            <tr bgcolor="#FFFFFF">
+                    <td align=right>2</td>
+                    <td align=center>2a</td>
+                    <td align=left>&nbsp;</td>
+            </tr>
+            <tr bgcolor="#EEEEEE">
+                    <td align=right>3</td>
+                    <td align=center>3a</td>
+                    <td align=left>&nbsp;</td>
+            </tr>
+!endblock
+
+See the source for more ideas on how to extend this tag.
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+    $Tag->table_organize( { cols => 3,
+                            pretty => 1, }, $BODY );
+!endblock
+
+or similarly with positional parameters:
+
+!block example; lang="Perl"
+    $Tag->table_organize( $cols, $attribute_hash_reference, $BODY );
+!endblock
+
+H4: See Also
+
+pages/flypage.html, pages/quantity.html, templates/components/best_horizontal,
+templates/components/cart, templates/components/cross_horizontal,
+templates/components/random, templates/components/random_vertical,
+templates/components/upsell
+
+H3: Description
+
+Takes an unorganized set of table cells and organizes them into
+rows based on the number of columns; it will also break them into
+separate tables.
+
+If the number of cells are not on an even modulus of the number of columns,
+then "filler" cells are pushed on.
+
+H4: {{CMD[id="table_organize_cols"]cols (or columns)}}
+
+Number of columns. This argument defaults to 2 if not present.
+
+H4: {{CMD[id="table_organize_rows"]rows}}
+
+Optional number of rows. Implies "table" parameter.
+
+H4: {{CMD[id="table_organize_table"]table}}
+
+If present, will cause a surrounding E<lt>TABLE> E<lt>/TABLE> pair with the attributes
+specified in this option.
+
+H4: {{CMD[id="table_organize_caption"]caption}}
+
+Table E<lt>CAPTION> container text, if any. Can be an array.
+
+H4: {{CMD[id="table_organize_td"]td}}
+
+Attributes for table cells. Can be an array.
+
+H4: {{CMD[id="table_organize_tr"]tr}}
+
+Attributes for table rows. Can be an array.
+
+H4: {{CMD[id="table_organize_columnize"]columnize}}
+
+Will display cells in (newspaper) column order, i.e. rotated.
+
+H4: {{CMD[id="table_organize_pretty"]pretty}}
+
+Adds newline and tab characters to provide some reasonable indenting.
+
+H4: {{CMD[id="table_organize_filler"]filler}}
+
+Contents to place in empty cells put on as filler. Defaults to "&nbsp;".
+
+H4: {{CMD[id="table_organize_limit"]limit}}
+
+Maximum number of cells to use. Truncates extra cells silently.
+
+H4: {{CMD[id="table_organize_embed"]embed}}
+
+If you want to embed other tables inside, make sure they are 
+called with lower case E<lt>td> elements, then set the embed 
+tag and make the cells you wish to organize be E<lt>TD> elements. 
+To switch that sense, and make the upper-case or mixed case be 
+the ignored cells, set the embed parameter to "lc".
+
+!block example
+    [table-organize embed=lc]
+                <td>
+                        <TABLE>
+                                <TR>
+                                <TD> something 
+                                </TD>
+                                </TR>
+                        </TABLE>
+                </td>
+    [/table-organize]
+!endblock
+
+or
+
+!block example
+    [table-organize embed=uc]
+                <TD>
+                        <table>
+                                <tr>
+                                <td> something 
+                                </td>
+                                </tr>
+                        </table>
+                </TD>
+    [/table-organize]
+!endblock
+
+The "tr", "td", and "caption" attributes can be specified with 
+indexes; if they are, then they will alternate according to the 
+modulus.
+
+The "td" option array size should probably always equal the number 
+of columns; if it is bigger, then trailing elements are ignored. 
+If it is smaller, no attribute is used.
+
 
 H2: title_bar
 
@@ -10970,6 +11294,310 @@ H2: var
 
 
 H2: xml_generator
+
+This is a quick and dirty tag that generates XML tags based upon one of
+two types of data (delimited and session).
+
+H3: Summary
+
+!block example;
+    [B<xml-generator> type* other_named_attributes][/xml-generator]
+    [B<xml-generator> type=value* other_named_attributes][/xml-generator]
+    [B<xml-generator> type=value* other_named_attributes][][/xml-generator]
+
+*Optional
+!endblock
+
+!block note; label="Positional parameters: "
+The first line shows the usage with positional parameters (given in
+order). The second line shows usage with named parameters.
+!endblock
+
+!block table; colvaligns="TTT"; format="262"
+Parameters|Description|Default
+{{CMD[jump="#xml_generator_type"]type}}|Data type. Delimited or session|delimited
+!endblock
+
+!block table; colvaligns="TT"
+Attributes|Default
+{{CMD[jump="#xml_generator_attributes"]attributes}}|I<none>
+{{CMD[jump="#xml_generator_dbdump"]dbdump}}|I<none>
+{{CMD[jump="#xml_generator_delimiter"]delimiter}}|\t
+{{CMD[jump="#xml_generator_field_names"]field_names}}|&nbsp;
+{{CMD[jump="#xml_generator_separator"]separator}}|\n
+{{CMD[jump="#xml_generator_toplevel_tag"]toplevel_tag}}|'table' for delimited type and 'session' for other type
+{{CMD[jump="#xml_generator_record_tag"]record_tag}}|record
+{{CMD[jump="#xml_generator_field_tag"]field_tag}}|field
+{{CMD[jump="#xml_generator_key_name"]key_name}}|I<none>
+{{CMD[jump="#xml_generator_spacer"]spacer}}|[\s,]+
+{{CMD[jump="#xml_generator_no_second"]no_second}}|I<none>
+{{CMD[jump="#xml_generator_skip_empty"]skip_empty}}|I<none>
+!endblock
+
+!block table;headings=1
+A|B
+Other_Charactreristics|
+Invalidates {{CMD[jump="#static_cache"]cache}}|I<No>
+{{CMD[jump="#macro_tags"]Macro}}|I<No>
+Has end tag|[/xml-generator]
+!endblock
+
+B<Tag expansion example:>
+
+!block example
+[xml-generator 
+    type=delimited 
+    attributes="date" 
+    date="[tag time]%d-%b-%Y[/tag]"
+    toplevel_tag=products]code	description	price
+[query list=1 sql="select sku, description, price from products" prefix=xml][xml-code]	[xml-param description]	[xml-param price]
+[/query][/xml-generator]
+------------------------------------------------------
+<products date="18-May-2001">
+	<record key="os28113">
+		<code>os28113</code>
+		<description>The Claw Hand Rake</description>
+		<price>14.99</price>
+	</record>
+	<record key="os28006">
+		<code>os28006</code>
+		<description>Painters Brush Set</description>
+		<price>29.99</price>
+	</record>
+	...
+</products>
+!endblock
+
+B<ASP-like Perl call:>
+
+!block example; lang="Perl"
+    $Tag->xml_generator( {type => delimited,
+	              toplevel_tag => apex,  }, $BODY );
+					   
+!endblock
+
+or similarly with positional parameters,
+
+!block example; lang="Perl"
+    $Tag->xml_generator( $type, $attribute_hash_reference, $BODY );
+!endblock
+
+H3: Description
+
+H4: {{CMD[id="xml_generator_type"]type}}
+
+delimited
+
+Accepts a delimited and separated (default is TAB delimiter and 
+newline separator) list of records such as that generated by an 
+'[item-list]', '[sql]', or '[loop search=""]' ITL tag.
+
+session
+
+When the type is not delimited, it can contain any hash reference into
+the Interchange session. Examples are:
+
+!block example
+        values       The form values
+        scratch      Scratch values
+        errors       Error values
+        other        Any other Session key, for example "source" for
+                     [data session source]
+!endblock
+
+If the value is a hash, then it will be sent as an XML record with the
+top level equal to "session", and a second_level tag equal to the hash
+name, and keys as separate XML container tags. If the parameter "that is equal
+to the type" is given, only those fields will be shown. Otherwise the
+entire hash will be shown. For example, this tag:
+
+!block example
+        [xml-generator type="values" values="fname lname"][/xml-generator]
+
+will generate:
+
+        <session>
+                <values>
+                        <fname>First</fname>
+                        <lname>Last</lname>
+                </values>
+        </session>
+
+if it is a scalar, then only the second level will be done:
+
+        [xml-generator type="cybercash_id"][/xml-generator]
+
+will do the equivalent of:
+
+        <session>
+                <cybercash_id>[data session cybercash_id]</cybercash_id>
+        </session>
+
+So bringing it all together, the following:
+
+        [xml-generator type="values scratch source"
+                       values="fname lname"
+                       scratch="downloads"][/xml-generator]
+will generate:
+
+        <session>
+                <values>
+                        <fname>First</fname>
+                        <lname>Last</lname>
+                </values>
+                <scratch>
+                        <downloads>0</downloads>
+                </scratch>
+                <source>Partner1</source>
+        </session>
+!endblock
+
+H4: {{CMD[id="xml_generator_no_second"]no_second}}
+
+Prevents the second-level tags from being generated. Extending the
+last example in the "session" type above, this
+
+!block example
+        [xml-generator  type="values scratch source"
+                        no_second=1
+                        values="fname lname"
+                        scratch="downloads"][/xml-generator]
+will generate:
+
+        <session>
+                <fname>First</fname>
+                <lname>Last</lname>
+                <downloads>0</downloads>
+                <source>Partner1</source>
+        </session>
+!endblock
+
+H4: {{CMD[id="xml_generator_attributes"]attributes}}
+
+The attributes (if any) to pass on to the top level tag. For instance,
+!block example
+        [xml-generator
+              attributes="date"
+              date="[tag time]%d-%b-%Y[/tag]"
+              toplevel_tag=order
+        ][/xml-generator]
+
+will generate a toplevel tag pair of:
+
+        <order date="18-Mar-2001">
+        </order>
+!endblock
+
+H4: {{CMD[id="xml_generator_dbdump"]dbdump}}
+
+Will dump all tables in the catalog when this attribute is set 
+true. Used attributes are "toplevel_tag", "record_tag", 
+"field_tag", and "skip_empty" or default values (resp. 'table', 
+'record', 'field').
+
+!block example
+Output format:
+    <database name="catalogname">
+        <toplevel_tag name="tablename1">
+            <record_tag key="value of first field-1">
+                <field_tag name="fieldname1">fieldvalue1</field_tag>
+                <field_tag name="fieldname2">fieldvalue2</field_tag>
+			</record_tag>
+            <record_tag key="value of first field-2">
+                <field_tag name="fieldname1">fieldvalue1</field_tag>
+                <field_tag name="fieldname2">fieldvalue2</field_tag>
+			</record_tag>
+		</toplevel_tag>
+        <toplevel_tag name="tablename2">
+            <record_tag key="value of first field-1">
+                <field_tag name="fieldname1">fieldvalue1</field_tag>
+                <field_tag name="fieldname2">fieldvalue2</field_tag>
+			</record_tag>
+		</toplevel_tag>
+	</database>
+!endblock
+
+B<Important note:> All tables are read into memory. So be warned, this
+could be a real memory hog.
+
+N:Ton Verhagen's proposal: 
+
+^ Add option to select tables. E.g. dump_tables="products cat area" and/or
+
++ Add option to select an output file. E.g. dump_file="tabledump.XML". Send 
+   output to file line by line.
+
+H4: {{CMD[id="xml_generator_delimiter"]delimiter}}
+
+Character used as delimiter of fields in delimited data type. 
+Defaults to a tab character.
+
+H4: {{CMD[id="xml_generator_field_names"]field_names}}
+
+Space or comma-delimited list of field names to be used for
+delimited data type. Should be in the same order as in the data 
+list provided (between the tags).
+
+Another way of providing the field names would be:
+
+!block example
+    [xml-generator .....]fieldname-1	fieldname-2	fieldname-3
+	[field value list 
+	 delimited by option delimiter and 
+	 separated by option separator][/xml-generator]
+!endblock
+
+Note: Field name list B<must> be tab delimited. 
+
+N:Ton Verhagen's humble opinion: This should change in future versions! Use option delimiter instead.
+
+H4: {{CMD[id="xml_generator_separator"]separator}}
+
+Character used as line separator in list between 
+E<lbracket>xml-separator]E<lbracket>xml-separator] tags and 
+in output 'session' data type. Defaults to a newline, "\n".
+
+H4: {{CMD[id="xml_generator_toplevel_tag"]toplevel_tag}}
+
+The toplevel tag name to use. Defaults to "table" for the 
+'dbdump mode' and delimited type, and "session" for the other.
+
+H4: {{CMD[id="xml_generator_record_tag"]record_tag}}
+
+Defines the tag name for the record tag. Defaults to 'record'.
+Used for 'dbdump mode' and delimited type.
+
+H4: {{CMD[id="xml_generator_field_tag"]field_tag}}
+
+Defines the tag name for the field tag. Defaults to 'field'.
+Only used in 'dbdump mode'.
+
+H4: {{CMD[id="xml_generator_key_name"]key_name}}
+
+Only used in delimited data type.
+Defines fieldname to determine key value in "record_tag".
+!block example
+    <record_tag key="value of field with name defined by key_name"> ....
+!endblock
+
+H4: {{CMD[id="xml_generator_spacer"]spacer}}
+
+Character used as delimiter in type parameter definition and 
+corresponding attributes. Defaults to '[\s,]+' (one or more 
+whitespace or comma).
+
+!block example
+    [xml-generator type="values|scratch" 
+	               values="value1|value2" 
+				   scratch="scratch1|scratch2"
+				   spacer="|"
+				   ][/xml-generator]
+!endblock
+
+H4: {{CMD[id="xml_generator_skip_empty"]skip_empty}}
+
+Only used in {{CMD[jump="#xml_generator_dbdump"]dbdump}} mode 
+(dbdump=1). Will skip empty fields if this attribute is set true.
 
 
 
