@@ -3,4 +3,7 @@
 *.mif
 *.pdf
 *.pod
+*.tar.gz
 *.txt
+dev
+frames
