@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icdatabase.sdf,v 1.23 2001-04-13 17:19:43 alison Exp $
+# $Id: icdatabase.sdf,v 1.24 2001-04-13 17:31:10 bill Exp $
 
 !define DOC_NAME "Interchange Databases"
 !define DOC_TYPE ""
 !define DOC_CODE "icdatabase"
-!define DOC_VERSION substr('$Revision: 1.23 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.24 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://help.akopia.com/interchange/doc/icdatabase.html"
@@ -3195,63 +3195,153 @@ The above is accomplished with Interchange's C<[import ....]> tag using the conv
    [/import][/item-list]
 !endblock
 
-H2: Custom Order Routing
 
-Interchange can send order emails and perform custom credit card charges and/or logging for each item. The Route directive is used to control this behavior, along with the C<mv_order_route> item attribute and C<mv_order_route> form variable.
+H2: Order Routing
 
-Routes are established with the C<Route> directive, which is similar to the C<Locale> directive. Each route is like a locale, so that key-value pairs can be set. Here is an example setting:
+Interchange can send order emails and perform custom credit card
+charges and/or logging for each item. The Route directive is used to
+control this behavior, along with the C<mv_order_route> item attribute.
+
+If no Route is in the catalog, Interchange uses a default "mail out the
+order and show a receipt" model.
+
+Routes are established with the C<Route> directive, which is similar
+to the C<Locale> directive. Each route is like a locale, so that
+key-value pairs can be set. Here is an example setting:
 
 !block example
-   Route  VEN  pgp_key         0x67798115
-   Route  VEN  email           orders@akopia.com
-   Route  VEN  reply           service@akopia.com
-   Route  VEN  encrypt         1
-   Route  VEN  encrypt_program "/usr/bin/pgpe -fat -q -r %s"
-   Route  VEN  report          etc/report_mail
+   Route  mail  pgp_key         0x67798115
+   Route  mail  email           orders@akopia.com
+   Route  mail  reply           service@akopia.com
+   Route  mail  encrypt         1
+   Route  mail  encrypt_program "/usr/bin/pgpe -fat -q -r %s"
+   Route  mail  report          etc/report_mail
 !endblock
 
-This route would be used whenever the value C<VEN> was contained in the form variable C<mv_order_route>.
+Note: Values with whitespace in them must be quoted.
 
-The last route that is defined provides the defaults for all other routes. For example, if C<encrypt_program> is set there, then the same value will be the default for all routes.
+You can also set the route in a valid Perl hash reference string:
+
+!block example
+   Route  mail <<EOR
+   {
+        pgp_key         => '0x67798115',
+        email           => 'orders@akopia.com',
+        reply           => 'service@akopia.com',
+        encrypt         => 1,
+        encrypt_program => q{/usr/bin/gpg -e -a -r '%s' --batch},
+        report          => 'etc/report_mail',
+  }
+  EOR
+!endblock
+
+
+This route would be used whenever the I<mail> route was called by one
+of the three possible methods:
+
+LI1: route called from master route
+.Called via the C<cascade> parameter from the master route. This is the way that most
+routes are
+called in Interchange's L<Foundation> demo. These routes treat the order as a
+whole.
+
+LI1: route set in item
+.An item in the shopping cart has C<mail> as the value in
+the attribute  C<mv_order_route>. This method is item-specific to
+this item (or group of items in route C<mail>).
+
+LI1: route set in the form variable mv_order_route
+.By setting a value in the C<mv_order_route> form variable, you can specify
+one or more routes to run.
+This is the deprecated method used in earlier Interchange 4.6.x and Minivend 4 routes. It
+will still work fine.
+
+The last route that is defined is the C<master> route, by
+convention named I<main>. Besides setting the global behavior of the
+routing, it provides some defaults for other routes. For example, if
+C<encrypt_program> is set there, then the same value will be the default
+for all routes. Most settings do not fall through.
 
 The attributes that can be set are:
 
 LI1: attach
-.Determines whether the order report should be attached to the main order report e-mail. This is useful if certain items must be printed separately from others, perhaps for FAX to a fulfillment house.
+.Determines whether the order report should be attached to the main order
+report e-mail. This is useful if certain items must be printed separately from
+others, perhaps for FAX to a fulfillment house.
+
+L1: cascade
+.A list of routes which should be pushed on the stack of routes to
+run, I<after all currently scheduled routes are done>. NOTE: cascades
+can cause endless loops, so only one setting is recommended, that being the
+main route.
+
+LI1: commit
+.Perl code which should be performed on a route commit.
+
+LI1: commit_tables
+.Tables that are to be pre-opened before running the Perl commit code.
 
 LI1: counter
-.The location of a counter file which should be used instead of C<OrderCounter> for this route. It will generate a different value for C<mv_order_number> for the route.
+.The location of a counter file which should be used instead of C<OrderCounter>
+for this route. It will generate a different value for C<mv_order_number> for
+the route. This is normally used to obtain unique order references for 
+multi-vendor routing.
 
 LI1: credit_card
-.Determines whether credit card encryption should be done for this order. Either this or C<encrypt> should always be set.
+.Determines whether credit card encryption should be done for this order.
+Either this or C<encrypt> should always be set.
 
-LI1: cybermode
-.If this is set, enables I<CyberCash> for the route. Variables can also be set for C<CYBER_CONFIGFILE>, C<CYBER_SECRET>, and all other normal CYBERCASH variables. For example:
-
-!block example; listitem=2
-   Route VEN cybermode         mauthonly
-   Route VEN CYBER_CONFIGFILE  config/vendor1_cfg
-   Route VEN CYBER_VERSION     3.2
-!endblock
+LI1: dynamic_routes
+.If set in the L<master> route, will cause the L<RouteDatabase> to be 
+checked for a route. If it exists, it will be read in and the database
+copy used instead of the static copy build at catalog configuration
+time. If set in a subsidiary route, that route will be ignored during
+catalog.cfg, and C<dynamic_routes> must be active for it to be seen.
 
 LI1: email
-.The email address(es) where the order should be sent. Set just like the C<MailOrderTo> directive, which is also the default.
+.The email address(es) where the order should be sent. Set just like the
+C<MailOrderTo> directive, which is also the default.
 
 LI1: encrypt
 .Whether the entire order should be encrypted with the B<encrypt_program>.
-If C<credit_card> is set, the credit card will first be encrypted, then the entire order encrypted.
+If C<credit_card> is set, the credit card will first be encrypted, then the
+entire order encrypted.
 
 LI1: encrypt_program
-.The encryption program incantaton which should be used. Set identically to the C<EncryptProgram> directive, except that %s will be replaced with the C<pgp_key>. Default is C<pgpe -fat -r %s>.
+.The encryption program incantaton which should be used. Set identically to the
+C<EncryptProgram> directive, except that %s will be replaced with the
+C<pgp_key>. Default is empty.
 
 LI1: errors_to
-.Sets the C<Errors-To:> e-mail header so that bounced orders will go to the proper address. Default is the same as C<MailOrderTo>.
+.Sets the C<Errors-To:> e-mail header so that bounced orders will go to the
+proper address. Default is the same as C<MailOrderTo>.
+
+LI1: expandable
+.If set in the L<master> route, route settings will be expanded for ITL
+tags. No effect if the route is not the master.
+
+LI1: extended
+.Extended route settings that take the form of an Interchange option list;
+normally a Perl hash reference that will be read. These settings always
+overwrite any that currently exist, regardless of the order in which they
+are specified. For example:
+
+!block example
+        Route  main   extended    { email => 'milton@akopia.com' }
+        Route  main   email       papabear@minivend.com
+!endblock
+
+The ultimate setting of C<email> will be C<milton@akopia.com>.
 
 LI1: increment
-.Whether the order number should be incremented as a result of this result. Default is not to increment, as the order number should usually be the same for different routes within the same customer order.
+.Whether the order number should be incremented as a result of this result.
+Default is not to increment, as the order number should usually be the same for
+different routes within the same customer order.
 
 LI1: individual_track
-.A directory where individual order tracking files will be placed. The file name will correspond to the value of C<mv_order_number>. This can be useful for batching orders via download.
+.A directory where individual order tracking files will be placed. The file
+name will correspond to the value of C<mv_order_number>. This can be useful for
+batching orders via download.
 
 LI1: individual_track_ext
 .The extension that will be added to the file name for C<individual_track>.
@@ -3261,99 +3351,187 @@ Must contain a period (C<.>), if that is desired.
    individual_track_ext     .pgp
 !endblock
 
+LI1: individual_track_mode
+.A number representing the final permission mode for the C<individual_track> file.
+Usually expressed in octal:
+
+!block example
+   individual_track_mode    0444
+!endblock
+
+LI1: master
+.If set, this route becomes the master route for C<supplant>,
+C<dynamic_routes>, C<errors_to>, and C<expandable>, and supplies the setting
+for C<receipt> and the C<attach> report.  Switching C<master> in midstream is
+unlikely to be successful -- it should certainly be the first route in a cascade.
+
+LI1: payment_mode
+.If this is set, enables a payment mode for the route. (Payment modes
+are also set in the C<Route> directive.)
+
 LI1: pgp_cc_key
-.The PGP key selector that is used to determine which public key is used for encryption of credit cards only. With PGP 5 and 6, see appropriate values by using the command C<pgpk -l>.
+.The PGP/GPG key selector that is used to determine which public key is used for
+encryption of credit cards only. With PGP 5 and 6, see appropriate values by
+using the command C<pgpk -l>. For GPG, use C<gpg --list-keys>. Defaults to
+the value of L<pgp_key>.
 
 LI1: pgp_key
-.The PGP key selector that is used to determine which public key is used for encryption. If C<pgp_cc_key> is set, that key will be used for credit card encryption instead of C<pgp_key>. With PGP 5 and 6, see appropriate values by using the command C<pgpk -l>.
+.The PGP key selector that is used to determine which public key is used for
+encryption. If C<pgp_cc_key> is set, that key will be used for credit card
+encryption instead of C<pgp_key>. With PGP 5 and 6, see appropriate values by
+using the command C<pgpk -l>. For GPG, use C<gpg --list-keys>. Defaults to
+the value of L<pgp_key>.
 
 LI1: profile
-.The custom order profile which should be performed to check the order. If it fails, the route will not be performed. See C<OrderProfile> and C<mv_order_profile>.
+.The custom order profile which should be performed to check the order I<prior>
+to actually running the route. If it fails, the route will not be performed.
+See C<OrderProfile> and C<mv_order_profile>.
 
 LI1: receipt
-.The receipt page that should be used for this routing. This only applies if supplant is set for the route.
+.The receipt page that should be used for this routing. This only applies if
+supplant is set for the route, and that normally would only be in the 
+default route.
 
 LI1: report
-.The report page that should be used for this routing. If C<attach> is defined, the contents of the report will be placed in a MIME attachment in the main order report.
+.The report page that should be used for this routing. If C<attach> is defined,
+the contents of the report will be placed in a MIME attachment in the main
+order report.
 
 LI1: reply
 .The C<Reply-To> header that should be set. Default is the same as C<email>.
-.If there are only word characters (A-Za-z0-9 and underscore), it describes an Interchange variable name where the address can be found.
+.If there are only word characters (A-Za-z0-9 and underscore), it describes an
+Interchange variable name where the address can be found.
+
+LI1: rollback
+.Perl code which should be performed on a route rollback.
+
+LI1: rollback_tables
+.Tables that are to be pre-opened before running the Perl rollback code.
 
 LI1: supplant
-.Whether this route should supplant the main order report. If set, the C<AsciiTrack> operation will use this route and the normal Interchange order e-mail sequence will not be performed.
+.Whether the master route should supplant the main order report. If set, the
+C<AsciiTrack> operation will use this route and the normal Interchange order
+e-mail sequence will not be performed. This is normally set in the master
+route.
 
 LI1: track
-.The name of a file which should be used for tracking. If the C<supplant> attribute is set, the normal order tracking will be used as well.
+.The name of a file which should be used for tracking. If the C<supplant>
+attribute is set, the normal order tracking will be used as well.
 
 LI1: track_mode
-.A number representing the mode to change either C<track> or C<individual_track> files.
+.A number representing the final permission mode for the C<track> file.
+Usually expressed in octal:
 
-An individual item routing causes all items labeled with that route to be placed in a special sub-cart that will be used for the order report. This means that the C<[item-list] LIST [/item-list]> will only contain those items, allowing operations to be performed on subsets of the complete order.
+!block example
+   track_mode    0444
+!endblock
+
+LI1: transactions
+.A list of tables to put in transactions mode at the beginning of the route.
+Used to ensure that orders get rolled back if another route fails.
+.The I<first> route to open a table must have this parameter, otherwise
+transactions will not work. If any route fails (except ones marked
+error_ok) then a rollback will be done on these tables. If all routes
+succeed, a commit will be performed at the end of all order routes.
+
+Individual item routing causes all items labeled with that route to be
+placed in a special sub-cart that will be used for the order report. This means
+that the C<[item-list] LIST [/item-list]> will only contain those items,
+allowing operations to be performed on subsets of the complete order. The
+C<[subtotal]>, C<[salestax]>, C<[shipping]>, C<[handling]>, and C<[total-cost]>
+tags are also affected.
 
 Here is an example of an order routing:
 
 !block example
-   Route  HARD  pgp_key          0x67798115
-   Route  HARD  email            hardgoods@akopia.com
-   Route  HARD  reply            service@akopia.com
-   Route  HARD  encrypt          1
-   Route  HARD  encrypt_program  "/usr/bin/pgpe -fat -q -r %s"
-   Route  HARD  report           etc/report_mail
+   Route  HARD      pgp_key          0x67798115
+   Route  HARD      email            hardgoods@akopia.com
+   Route  HARD      reply            service@akopia.com
+   Route  HARD      encrypt          1
+   Route  HARD      report           etc/report_mail
+                   
+   Route  SOFT      email            ""
+   Route  SOFT      profile          create_download_link
+   Route  SOFT      empty            1
+                   
+   Route  mail      pgp_key          0x67798115
+   Route  mail      email            orders@akopia.com
+   Route  mail      reply            service@akopia.com
+   Route  mail      encrypt          1
+   Route  mail      report           etc/report_all
+                   
+   Route  user      error_ok         1
+   Route  user      email            email
+   Route  user      reply            service@akopia.com
+   Route  user      report           etc/user_copy
+                   
+   Route  log       empty            1
+   Route  log       report           etc/log_transaction
+   Route  log       transactions     "transactions orderline inventory"
+   Route  log       track            logs/log
+ 
+   Route  main      supplant         1
+   Route  main      receipt          etc/receipt.html
+   Route  main      master           log mail user
+   Route  main      cascade          log mail user
+   Route  main      encrypt_program  "/usr/bin/gpg -e -a r '%s' --batch"
 
-   Route  SOFT  email            ""
-   Route  SOFT  profile          create_download_link
-   Route  SOFT  empty            1
-
-   Route  main  cybermode        mauthonly
-   Route  main  CYBER_VERSION    3.2
-   Route  main  CYBER_CONFIGFILE etc/cybercash.cfg
-   Route  main  pgp_key          0x67798115
-   Route  main  email            orders@akopia.com
-   Route  main  reply            service@akopia.com
-   Route  main  encrypt          1
-   Route  main  encrypt_program  "/usr/bin/pgpe -fat -q -r %s"
-   Route  main  report           etc/report_all
 !endblock
 
-To tell Interchange that order routing is in effect, the variable
-C<mv_order_route> is set on the final order submission form:
+This will have the following behavior:
+
+LI1: Order
+.The master order route is I<main>, the last one defined. It cascades the
+routes I<log>, I<mail>, and I<user>, which means they will run in that
+order at the completion of the I<main> route. The individual item routes
+C<HARD> and C<SOFT>, if applicable, will run before those.
+
+LI1: Transactions
+.The route I<log> specifies the tables that will be put in transaction
+mode, in this case C<transactions> C<orderline>, and C<inventory>.
+
+LI1: Failure
+.All order routes must succeed except I<user>, which has C<error_ok> set to 1.
+
+LI1: Encryption
+The I<mail> order route and the C<HARD> order route will be sent by email,
+and encrypted against different GPG key IDs. They will get their C<encrypt_program>
+setting from the main route.
+
+To set the order routing for individual items, some method of determining their
+status must be made and the C<mv_order_route> attribute must be set. This could
+be set at the time of the item being placed in the basket, or have a database
+field called C<goods_type> set to the appropriate value. The following example
+uses a Perl routine on the final order form:
 
 !block example
-   <INPUT TYPE="hidden" NAME="mv_order_route" VALUE="main">
+  [perl table=products]
 !endblock
-
-To set the order routing for individual items, some method of determining their status must be made and the C<mv_order_route> attribute must be set. This could be set at the time of the item being placed in the basket, or have a database field called C<goods_type> set to the appropriate value. The following example uses a Perl routine on the final order form:
-
+!block example; lang="Perl"
+     my %route;
+     my $item;
+     foreach $item (@{$Items}) {
+         my $code = $item->{code};
+         my $keycode = $Tag->data('products', 'goods_type', $code);
+         $item->{mv_order_route} = $keycode;
+     }
+     return;
+!endblock
 !block example
-[perl arg=carts interpolate=1]
-   my $string = <<'EOF';
-[item-list][item-code]  [item-field goods_type]
-[/item-list]
-EOF
-   my @items;
-   my %route;
-   @items = grep /\S/, split /\n+/, $string;
-   for(@items) {
-       my ($code, $keycode) = split /\t/, $_;
-       $route{$code} = $keycode;
-   }
-   my $cart = $Carts->{'main'};
-   my $item;
-   foreach $item ( @{ $Carts->{'main'} } ) {
-       $item->{mv_order_route} = $route{$item->{'code'}} || undef;
-   }
-   return '';
-[/perl]
+  [/perl]
 !endblock
 
-Now the individual items are labeled with a C<mv_order_route> value which causes their inclusion in the appropriate order routing.
+Now the individual items are labeled with a C<mv_order_route> value which
+causes their inclusion in the appropriate order routing.
 
-Upon submission of the order form, any item labeled C<HARD> will be accumulated and sent to the e-mail address C<hardgoods@akopia.com>, where the item will be pulled from inventory and shipped.
+Upon submission of the order form, any item labeled C<HARD> will be accumulated
+and sent to the e-mail address C<hardgoods@akopia.com>, where the item will be
+pulled from inventory and shipped.
 
-Any item labeled C<SOFT> will be passed to the order profile C<create_download_link>, which will place it in a staging area for customer download. (This would be supported by a link on the receipt, possibly by reading a value set in the profile).
-
-The C<main> order routing will use CyberCash to charge the order, and will be completely encrypted for e-mailing.
+Any item labeled C<SOFT> will be passed to the order profile
+C<create_download_link>, which will place it in a staging area for customer
+download. (This would be supported by a link on the receipt, possibly by
+reading a value set in the profile).
 
 
 H1: SSL Support
