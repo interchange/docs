@@ -478,3 +478,11 @@ Thanks,
 
 Jeff;
 
+
+
+---------------------
+
+16:36:48 GlassBanjo: I also notice that I forgot to remove the depreciated [region] tag from ictags.
+16:37:37 GlassBanjo: If you wish, you could remove it and update CVS
+16:38:24 GlassBanjo: It's a complex tag and best not to have our generous contributors waste their time on it.
+16:39:19 GlassBanjo: Note that search region is still relevant, still complicated, and similar to the [query] tag docs
