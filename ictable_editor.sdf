@@ -1,0 +1,680 @@
+!init OPT_LOOK="akopia"; OPT_STYLE="manual"
+# $Id: ictable_editor.sdf,v 1.1 2002-09-26 02:26:14 mheins Exp $
+
+!define DOC_NAME "Configuration Reference"
+!define DOC_TYPE ""
+!define DOC_CODE "icconfig"
+!define DOC_VERSION substr('$Revision: 1.1 $',11, -2)
+!define DOC_STATUS "Draft"
+!define DOC_PROJECT "Interchange"
+!define DOC_URL "http://interchange.redhat.com/doc/icconfig.html"
+!build_title
+
+H1: Interchange Table Editor
+
+Interchange has a powerful, highly-configurable table editor application
+implemented via its C<[table-editor] ...> tag.
+
+It is called in an Interchange page as simply as:
+
+!block example
+    [table-editor cgi=1]
+!endblock
+
+Given that call, it reads the passed CGI query information and builds a
+table editor for an interchange table.
+
+Each field within the table editor is completely configurable for HTML
+widget type, label, help links, and more. These configurations can be
+saved in the C<mv_metadata> database, or can be specified in the table-editor
+tag call itself.
+
+The table editor is portable. It will work with any DBI/SQL database, with
+LDAP databases, and with Interchange DBM and plain-file databases.
+
+Much of the Interchange administrative user interface (UI) is built
+around the table editor.
+
+Its features include:
+
+LI1: Complete range of widgets and data filters
+
+Interchange has 18 different HTML widget types with data filters to
+condition the data.
+
+LI1: Link fields from any table
+
+Though the table editor uses one table as its base, fields from other
+tables can be brought in, and entire sets of records relationally linked
+to the base record can be edited within the table editor.
+
+LI1: Tabbed display
+
+Interchange automatically builds a tabbed interface from your
+fields specification.
+
+LI1: "Wizard" mode
+
+The table editor has a "wizard" mode that can collect information for
+accomplishing installation or setup tasks, with Next, Back, Cancel
+and Finish modes.
+
+LI1: Templatable setup 
+
+You can completely control the way the table editor displays
+the widgets without interfering with its functionality.
+
+LI1: Complex data structures
+
+Interchange can build arbitrarily-deep data structures from
+form input. The collected data is serialized with the equivalent
+of Perl's Data::Dumper and stored in a single database field.
+
+H2: Calling the table editor
+
+In its simplest form, table-editor is called in an ITL page with:
+
+!block example
+    [table-editor table=products key=os28004][/table-editor]
+!endblock
+
+That will edit the table products using its default configuration,
+for the SKU C<os28004>. 
+
+If no metadata is defined for the table, all fields are edited.
+To limit it with the tag call:
+
+!block example
+    [table-editor
+        table=products
+        key=os28004 
+        fields="sku price description" ][/table-editor]
+!endblock
+
+To specify that the field description should have a different
+widget type, height, and width, you can specify:
+
+!block example
+    [table-editor
+        table=products
+        key=os28004 
+        fields="sku price description"
+        widget.description=textarea
+        width.description=50
+        height.description=10
+    ][/table-editor]
+!endblock
+
+If you do this with the default C<foundation> demo catalog, you will see:
+
+!block example
+   SKU            __________________________________
+
+   Product Price  __________
+
+                  +---------------------------------------------+
+                  |                                             |
+   Short          |                                             |
+   Description    |                                             |
+                  |                                             |
+                  +---------------------------------------------+
+!endblock
+
+Note that the labels are pulled from the C<mv_metadata> definition -- any
+attributes not specified in the options do that. You can override each
+in turn -- to change SKU to "Part Number" you can do:
+
+!block example
+    [table-editor
+        table=products
+        key=os28004 
+        fields="sku price description"
+
+        label.sku="Part number"
+
+        widget.description=textarea
+        width.description=50
+        height.description=10
+    ][/table-editor]
+!endblock
+
+To change the style of the label column, you can set the style
+information with:
+
+    [table-editor
+        table=products
+        key=os28004 
+        fields="sku price description"
+
+        label_cell_style="font-weight: bold"
+
+        label.sku="Part number"
+        widget.description=textarea
+        width.description=50
+        height.description=10
+    ][/table-editor]
+    
+This should B<bold> the label text.
+
+These are just a few small examples. There are more than 150 options
+for table editor which we will discuss below.
+
+H2: Attributes and attribute quoting
+
+The [table-editor] is capable of accepting a large number of attributes.
+It uses standard ITL tag quoting, explained in
+the {{CMD[jump="ictags.html#Tag Syntax"]Interchange Tag Reference}}.
+
+You can quote with single-quote (<'>), double-quote (C<">), backtick (C<`>),
+or pipe (C<|>). Material placed in backticks is run through a safe
+Perl interpreter. In fact, it is the equivalent of using
+the [calc] [/calc] tag pair except that contained ITL tags are not
+interpolated.
+
+Pipe-quoting has the attribute of 
+H2: Templating
+
+The [table-editor] is templated on several levels. In the most basic
+use, where you rely on it to build the table rows, there is the
+row_template option. By default, it is:
+
+!block example
+   <td$opt->{label_cell_extra}> 
+     {BLABEL}{LABEL}{ELABEL}{META_STRING}
+   </td>
+   <td$opt->{data_cell_extra}>
+     <table cellspacing=0 cellmargin=0 width="100%">
+       <tr> 
+         <td$opt->{widget_cell_extra}>
+           {WIDGET}
+         </td>
+         <td$opt->{help_cell_extra}>
+            {TKEY}
+            {HELP?}<i>{HELP}</i>{/HELP?}
+            {HELP_URL?}<BR><A HREF="{HELP_URL}">help</A>{/HELP_URL?}
+         </td>
+       </tr>
+     </table>
+   </td>
+!endblock
+
+The values of $opt->{*_cell_extra} are constructed from the *_cell_class,
+*_cell_width, *_cell_valign, *_cell_align, *_cell_style, and *_cell_extra
+options. You can watch the effect by trying different settings:
+
+!block example
+  [table-editor
+            table=products
+            key=os28004
+            label_cell_class=myclass
+            label_cell_width=10%
+            label_cell_valign=top
+            label_cell_extra=|bgcolor="cyan"|
+            ][/table-editor]
+!endblock
+
+The values specified with {LABEL}, {WIDGET}, etc. are what are used
+to substitute the widget values constructed from the metadata. A perfectly
+functional template would be:
+
+  <td>{LABEL}</td><td>{WIDGET}</td>
+
+That would show the label and widget without any help being shown (even
+if it is available) and using the default styles for at table data cell.
+
+There is also the overall template, which is passed as the container
+text for [table-editor]. Something equivalent to the default can be
+achieved with:
+
+    {TOP_OF_FORM}
+    {HIDDEN_FIELDS}
+    <table>
+        <tr>
+            <td>&nbsp;</td>
+            <td>{TOP_BUTTONS}</td>
+        </tr>
+        {:REST}
+        <tr>
+            <td>&nbsp;</td>
+            <td>{BOTTOM_BUTTONS}</td>
+        </tr>
+    </table>
+    {BOTTOM_OF_FORM}
+
+There are two other templates -- the break_template and the
+combo_template. See "Templates".
+
+H2: Metadata
+
+Interchange's foundation demonstration catalog and UI rely on
+a table named C<mv_metadata>, which contains the definitions for
+table and field appearance. This table is supported with a
+table definition editor (pages/admin/db_metaconfig) and a field
+definition editor (pages/admin/meta_editor).
+
+The C<mv_metadata> table has the following fields:
+
+LI1: code
+
+The key for the table. Normally, it takes the form
+
+!block example
+    table::column
+!endblock
+
+where table is the table the field is contained in, and column
+is the table column name. It can also take the forms:
+
+!block example
+    view::table::column::key
+    view::table::column
+    table::column::key
+!endblock
+
+Each is checked in turn to see if it exists, then applied. If
+none of the above is found, then the field is displayed with
+a default widget (a text box with size 50).
+
+LI1: type
+
+The widget type. The following, at least, are supported:
+
+!block table
+Type|Name|Description
+text|Text entry|The normal HTML text entry field.
+textarea|Textarea|The normal HTML textarea entry for putting in multiple lines of data.
+select|Select box|Also known as as a dropdown menu. Interchange has many ways to populate the options via automatic database lookup, and you can specify options to add or replace a lookup.
+yesno|Yes/No (Yes=1)|A dropdown/select looking for a Yes (1) or No (0) answer.
+noyes|No/Yes (No=1)|A dropdown/select looking for a Yes (0) or No (1) answer.
+yesno radio|Yes/No (radio)|Same as the yesno widget except implmented with a radio box.
+noyes radio|No/Yes (radio)|Same as the noyes widget except implmented with a radio box.
+multiple|Multiple Select|A dropdown/select with SIZE greater than 1.
+combo|Combo Select|A dropdown/select with a preceding text entry field that can add a new entry. Needs the C<nullselect> filter; usually combined with a lookup.
+reverse_combo|Reverse Combo|A dropdown/select with a following text entry field that can add a new entry. Needs the C<last_non_null> filter; usually combined with a lookup.
+move_combo|Combo move|A dropdown select that sends clicked items to a textarea.
+display|Text of option|Displays the label (only) for a select/radio choice.
+hidden_text|Hidden (show text)|Shows the value of a field and includes a hidden field to put the value in the form. Usually used when you want to display a key for a record but not give the opportunity to change it (and create a new record).
+radio|Radio box|Select one of many options with a check box. Usually can be used instead of a select; can be grouped in matrices.
+radio_nbsp|Radio (nbsp)| Select one of many options with a check box. Usually can be used instead of a select; can be grouped in matrices. This version puts no spaces in the outputted HTML, guaranteeing no wrap. (You can use the newer nowrap styles in CSS instead, often.)
+checkbox|Checkbox|Select one or more options with a checkbox. Usually can be used instead of a multiple select.
+check_nbsp|Checkbox (nbsp)|Select one or more options with a checkbox. Usually can be used instead of a multiple select. This version puts no spaces in the outputted HTML, guaranteeing no wrap. (You can use the newer nowrap styles in CSS instead, often.)
+imagedir|Image listing|Shows a list of already existing images in a directory, with a link to a dialog to upload a new one.
+imagehelper|Image upload|Combines input of an image name along with upload of the image.
+date|Date selector|Selects a date, with optional time. Used in combination with the C<date_change> filter.
+value|Value|Simply shows the value of the field, with no widget to set it.
+option_format|Option formatter
+show|Show all options|Shows all options for a select/radio/checbox type input, without a widget to set the value.
+!endblock
+
+These widgets are implemented with the Vend::Form module, and are
+discussed in more detail later in this document.
+
+LI1: width
+
+The width of the widget. Meaningful in some way for most types.
+
+LI1: height
+
+In the field metadata, it is meaning ful for textarea, multiple select
+types (including the combo widgets), and for groups of radio and checkboxes.
+
+In the table metadata context, defines the number of rows that will
+be shown on the record select page before a "more" list will be built.
+
+LI1: field
+
+The fields for an options lookup query if more than one. Default is
+none -- the field in "lookup" is used.
+
+LI1: db
+
+The table to do the lookup query in. Default is the same table
+as the column is in.
+
+LI1: name
+
+The name of the generated HTML form element. Default is the same
+name as the column for the widget.
+
+LI1: outboard
+
+Catchall field used in several ways by different widgets. Normally
+used to specify a foreign key, it can also contain a directory name
+or other information needed for a widget.
+
+LI1: options
+
+Hard-coded options for the select, checkbox, and radio box widget
+types.
+
+LI1: attribute
+
+Not normally used for table editor. Used in Interchange in the context
+of an [item-list ...] for generating option names.
+
+LI1: label
+
+The label associated with the field for display in the table editor.
+In the below example, "Foo" is the label:
+
+!block example
+    Foo: <input type=text value="bar" size=30>
+!endblock
+
+LI1: help
+
+Inline help to be displayed in the table editor.
+
+LI1: lookup
+
+A field name to look up options in. Normally this would be the same
+field as the widget, to generate a list of unique values. The equivalent
+to the query:
+
+!block example
+  SELECT DISTINCT foo FROM table ORDER BY foo
+!endblock
+
+is done.
+
+LI1: filter
+
+A filter which should be applied to the data coming from a widget
+before saving in the database. A few examples of the dozens of
+standard filters are:
+
+LI2: nullselect
+
+.Select first non-null from HTML fields, used for combo box widget
+
+LI2: digits_dot
+
+.Helps keep currency symbols and punctuation from polluting decimal values.
+
+LI2: uc
+
+.Uppercases the data.
+
+LI2: NN
+
+.Where NN is an integer. A number that limits length of input.
+
+There are many more filters, and it is easy to specify custom
+filters. See Interchange's filters documentation.
+
+LI1: help_url
+
+A URL for extended help on a field.
+
+LI1: pre_filter
+
+For advanced use only. Specifies a filter that is run on the data before
+it is used to set the widget value. Not normally used.
+
+LI1: lookup_exclude
+
+A regular expression that can exclude certain values from a lookup list.
+
+LI1: prepend
+LI1: append
+
+Valuse that are prepended and appended to the widget HTML, perhaps to
+call an external formatter or tool.
+
+LI1: display_filter
+
+Not normally used.
+
+LI1: default
+
+The default value that should be given to a column when it is of length
+zero.
+
+LI1: extended
+
+The repository for the serialized extended values set in metadata.
+
+H2: Extended settings
+
+Interchange's meta editors use the table editor's serialization capability
+to set many more than just the fields mentioned above. There are over
+150 different metadata settings, and it would be impossible to have each
+occupy a field in a table.
+
+Many of these settings can be passed in a CGI query string if
+the cgi=1 option is specified.
+
+LI1: across
+
+The number of label-widget pairs which should be placed on each
+table row. The default is 1. Not passable by CGI.
+
+LI1: action
+
+The Interchange form action to use for the generated form. In normal
+mode, the default is "set". In wizard mode, the default is "return".
+Not passable by CGI.
+
+LI1: action_click
+
+An mv_click action that should be run on the Wizard next function.
+The default is "ui_override_next", which is usually a no-op on
+most systems.  Not passable by CGI.
+
+LI1: all_errors
+
+Specifies that all form field entries should be checked for errors and their
+label fields set to the CONTRAST setting if an error is found.
+
+LI1: all_opts
+
+An ITL tag option that specifies that the table-editor options should
+be retrieved from one source.
+
+If the option is a HASH reference, it will be used directly as a structure
+that will set all options.
+
+If it is a scalar value, it will be used as a key to select the mv_metadata
+record which contains the options.
+
+LI1: append
+
+Active for every column in ui_data_fields. A value containing HTML which
+should be appended to the widget HTML.
+
+LI1: auto_secure
+
+Instructs Interchange to build a write enable only for the tables, columns,
+and keys that are specified in the table-editor call. Note that you can
+allow unfettered writes by setting the scratch variable C<mv_data_enable>,
+but that it is rarely right to do so.
+
+This prevents people from hacking together a duplicate of the [table-editor]
+form and writing columns or records they 
+
+This option is automatically disabled if the C<cgi> option is enabled. Still,
+you should pay attention to what you are allowing users to write to your
+database.
+
+LI1: back_text
+
+The text that should be used in the Wizard B<Back> button. Automatially
+translated for locale.
+
+LI1: bottom_buttons
+
+Indicates that buttons should always be only on the bottom.
+Normally, C<[table-editor]> provides a top row of buttons if more than four
+rows are in the table.
+
+LI1: break_cell_extra
+
+Extra HTML attributes for the table cell in the standard break_row
+template. You might pass a valign, align, class, or other attribute:
+
+!block example
+    break-cell-extra=|class="myclass"|
+!endblock
+
+break_row_extra
+break_template
+cancel_button_style
+cancel_text
+cell_span
+cgi
+check
+clear_image
+color_fail
+color_success
+combo_row_extra
+combo_template
+data_cell_extra
+data_row_extra
+database
+default
+default_ref
+defaults
+elabel
+enctype
+end_label
+error
+extra
+field
+file_upload
+filter
+force_defaults
+form_extra
+form_name
+get
+height
+help
+help_anchor
+help_cell_extra
+help_url
+hidden
+href
+include_before
+include_form
+inner_table_width
+item_id
+js_changed
+keep_errors
+label
+label_cell_extra
+label_cell_width
+layer_panel_style
+layer_tab_style
+left_width
+link_before
+link_extra
+link_fields
+link_key
+link_label
+link_sort
+link_table
+link_template
+link_view
+lookup
+lookup_query
+mailto
+message_label
+meta
+meta_anchor
+meta_anchor_specific
+meta_append
+meta_class
+meta_extra
+meta_prepend
+meta_style
+method
+mv_auto_export
+mv_blob_field
+mv_blob_label
+mv_blob_nick
+mv_blob_only
+mv_blob_pointer
+mv_blob_title
+mv_cancelpage
+mv_data_auto_number
+mv_data_fields
+mv_data_function
+mv_data_table
+mv_failpage
+mv_nextpage
+mv_prevpage
+next_text
+no_bottom
+no_meta
+no_table_meta
+no_top
+nodelete
+noexport
+nosave
+notable
+ok_button_style
+options
+orig_back_text
+orig_cancel_text
+outboard
+override
+panel_append
+panel_height
+panel_id
+panel_prepend
+panel_style
+panel_width
+passed
+pre_filter
+prepend
+promiscuous
+reload
+reparse
+restrict_allow
+row_template
+save_meta
+secure
+show_reset
+simple_row
+start_at
+start_at_index
+tab_bgcolor_template
+tab_height
+tab_horiz_offset
+tab_style
+tab_vert_offset
+tab_width
+tabbed
+table
+table_width
+td_extra
+template
+ui_blob_hidden
+ui_blob_widget
+ui_break_before
+ui_break_before_label
+ui_clone_id
+ui_clone_tables
+ui_data_fields
+ui_data_fields_all
+ui_data_key_name
+ui_display_only
+ui_hide_key
+ui_meta_specific
+ui_meta_view
+ui_new_item
+ui_profile
+ui_profile_success
+ui_wizard_fields
+widget
+widget_cell_extra
+widgets_only
+width
+wizard
+wizard_cancel
+wizard_next
+
+Line:
+
+N:Copyright 2002 Interchange Development Group. Freely redistributable
+under terms of the GNU General Public License.
+
