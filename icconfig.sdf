@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.52 2001-12-11 06:17:26 jon Exp $
+# $Id: icconfig.sdf,v 1.53 2001-12-30 02:37:06 jon Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.52 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.53 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
@@ -557,6 +557,10 @@ be changed in a multi-user environment to minimize security problems.
 !block example
    NoAbsolute     Yes
 !endblock
+
+Note that this does not apply to tests for whether a file exists, as
+with C<[if file ...]>. Such operations are allowed regardless of the
+C<NoAbsolute> setting.
 
 H2: PIDcheck *global*
 
