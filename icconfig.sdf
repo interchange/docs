@@ -1,10 +1,10 @@
 !init OPT_LOOK="akopia"; OPT_STYLE="manual"
-# $Id: icconfig.sdf,v 1.49 2001-10-29 23:39:38 jon Exp $
+# $Id: icconfig.sdf,v 1.50 2001-11-27 20:40:49 jon Exp $
 
 !define DOC_NAME "Configuration Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "icconfig"
-!define DOC_VERSION substr('$Revision: 1.49 $',11, -2)
+!define DOC_VERSION substr('$Revision: 1.50 $',11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://interchange.redhat.com/doc/icadvanced.html"
@@ -893,6 +893,22 @@ LI1: CURRENCY, MV_CURRENCY
 LI1: LANG, MV_LANG
 
 .The current locale for language.
+
+Some global variables can be set to affect Interchange:
+
+LI1: MV_DOLLAR_ZERO
+
+.This determines what Interchange does to Perl's $0 variable, which contains the operating system's name of the running process, for example in the ps(1) or top(1) commands. Valid settings are:
+
+!block table
+Setting|Result
+(not set)|'interchange'
+0|(do nothing)
+1|'interchange --> (CATROOT)'
+string|'string'
+!endblock
+
+.Note that this is set globally once only when the Interchange daemon is started, so it's pointless to change the variable after that.
 
 H2: VarName *global*
 
