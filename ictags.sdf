@@ -1,10 +1,10 @@
 !init OPT_LOOK="icdevgroup"; OPT_STYLE="manual" 
-# $Id: ictags.sdf,v 1.122 2004-11-29 19:29:04 jon Exp $
+# $Id: ictags.sdf,v 1.123 2005-07-20 02:22:20 jon Exp $
 
 !define DOC_NAME "Interchange Tags Reference"
 !define DOC_TYPE ""
 !define DOC_CODE "ictags"
-!define DOC_VERSION substr('$Revision: 1.122 $', 11, -2)
+!define DOC_VERSION substr('$Revision: 1.123 $', 11, -2)
 !define DOC_STATUS "Draft"
 !define DOC_PROJECT "Interchange"
 !define DOC_URL "http://www.icdevgroup.org/doc/ictags.html"
@@ -12478,7 +12478,7 @@ Adds the argument to B<add> as data for a shipping.asc file (in $Vend::Cfg->{Scr
 >>|DEFAULT_VALUE
 {{CMD[jump="#shipping_cart"]cart}}|<<
 * N<Alias:> B<carts>
-Comma-delimited list of names of carts to calculate shipping cost for.
+Space- and/or comma-delimited list of names of carts to calculate aggregate shipping cost for.
 * N<Default:> current cart
 >>|DEFAULT_VALUE
 {{CMD[jump="#shipping_cart"]carts}}|<<
