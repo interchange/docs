@@ -1,5 +1,5 @@
 RELEASING A NEW VERSION OF INTERCHANGE
-$Id: release-notes.txt,v 1.3 2005-03-24 19:15:31 jon Exp $
+$Id: release-notes.txt,v 1.4 2005-12-24 00:21:27 jon Exp $
 
 
 Pre-release:
@@ -9,7 +9,6 @@ Update copyright dates as appropriate if new year since last release
 Make sure version numbers are correct in all files:
 	README
 	README.rpm-dist
-	configure
 	Makefile.PL
 	scripts/interchange.PL
 	dist/foundation/products/mv_metadata.asc (ui-version)
@@ -45,7 +44,6 @@ http://www.icdevgroup.org/i/dev/download.html
 
 Make announcements at:
 
-interchange-users@icdevgroup.org
 interchange-announce@icdevgroup.org
 Freshmeat.net
 
