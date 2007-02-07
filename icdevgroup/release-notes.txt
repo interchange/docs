@@ -1,5 +1,5 @@
 RELEASING A NEW VERSION OF INTERCHANGE
-$Id: release-notes.txt,v 1.4 2005-12-24 00:21:27 jon Exp $
+$Id: release-notes.txt,v 1.5 2007-02-07 15:37:01 jon Exp $
 
 
 Pre-release:
@@ -17,20 +17,28 @@ Double-check MANIFEST (create using LC_ALL=C)
 Do a clean checkout from CVS to make sure no sticky tags exist in local checkout
 Tag or re-tag CVS repository with REL_4_6_3 (or whatever)
 Run regression test catalog
-Build tarball and note MD5 sum
-Build RPMs
+Build tarball (and re-build with --owner=0 --group=0)
 Test clean install of Standard demo, place order, use admin
+Create .tar.bz2 file
+Note MD5 and SHA1 sums for .tar.gz and .tar.bz2
+Create detached PGP signature of tarballs: gpg -ba interchange-*.tar.*
+
+Somewhat separate steps:
+
+Build RPMs
 Build docs tarball & RPMs (for stable releases)
-Sign RPMs with personal GnuPG key
+Sign RPMs with PGP key
 Have Racke build and sign Debian packages (using same tarball so MD5 sum is identical)
+
+With release candidate:
+
 Have people test the packages
-Make md5sums to mention in release notes, and in files on FTP server
 
 
 Upload tarball, RPMs, README, WHATSNEW to:
-
 root@ftp.icdevgroup.org:/var/ftp/pub/interchange...
-Update interchange-latest.tar.gz symlinks for stable releases
+
+Update interchange-x.y.z.tar.{gz,bz2} and interchange-latest.tar.gz symlinks for stable releases
 Rename README to README.txt so Apache will display it
 Rename README.rpm-dist to README.txt in rpm directory
 Update WHATSNEW file to latest (no need to keep old ones in same branch, as their contents are still included in the latest file)
@@ -38,13 +46,21 @@ Update WHATSNEW file to latest (no need to keep old ones in same branch, as thei
 
 Update developer website:
 
-http://www.icdevgroup.org/i/dev/index.html
-http://www.icdevgroup.org/i/dev/download.html
+catalog/products/news.txt - announcement
+catalog/products/variable.txt - version variable
+make commit publish
+(or make commit restart if necessary)
+
+Then verify changes were made:
+
+http://www.icdevgroup.org/i/dev/index
+http://www.icdevgroup.org/i/dev/download
+http://www.icdevgroup.org/i/dev/releases
 
 
 Make announcements at:
 
-interchange-announce@icdevgroup.org
+interchange-announce@icdevgroup.org (then upload ANNOUNCEMENT-x.y.z.txt to icdevgroup.org ftp area)
 Freshmeat.net
 
 
@@ -55,5 +71,5 @@ http://demo.icdevgroup.org/
 
 Post-release:
 
-Fork off stable branch if second version component is even, e.g. 4.8.0:
+Fork off stable branch if second version component just became even, e.g. 4.8.0:
 tag STABLE_4_8-root, branch STABLE_4_8-branch.
