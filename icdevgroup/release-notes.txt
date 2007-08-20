@@ -1,5 +1,5 @@
 RELEASING A NEW VERSION OF INTERCHANGE
-$Id: release-notes.txt,v 1.5 2007-02-07 15:37:01 jon Exp $
+$Id: release-notes.txt,v 1.6 2007-08-20 15:41:57 racke Exp $
 
 
 Pre-release:
@@ -11,7 +11,7 @@ Make sure version numbers are correct in all files:
 	README.rpm-dist
 	Makefile.PL
 	scripts/interchange.PL
-	dist/foundation/products/mv_metadata.asc (ui-version)
+	dist/standard/products/mv_metadata.asc (ui-version)
 	SPECS/interchange.spec
 Double-check MANIFEST (create using LC_ALL=C)
 Do a clean checkout from CVS to make sure no sticky tags exist in local checkout
