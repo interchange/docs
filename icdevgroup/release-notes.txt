@@ -1,5 +1,4 @@
 RELEASING A NEW VERSION OF INTERCHANGE
-$Id: release-notes.txt,v 1.8 2008-05-21 23:35:54 jon Exp $
 
 
 Pre-release:
@@ -64,6 +63,7 @@ Make announcements at:
 interchange-announce@icdevgroup.org
 Freshmeat.net
 SourceForge Interchange project: http://sourceforge.net/projects/interchange/
+LinkedIn Interchange group
 
 
 Update demo stores, one editable, one static:
