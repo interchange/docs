@@ -1,4 +1,5 @@
-This is the Interchange documentation repository.
+This is the old Interchange documentation repository. The current
+documentation lives in the "xmldocs" repository.
 
 The reference documents are currently maintained in SDF, Simple Document
 Format. The canonical documents are listed in the Makefile TARGETS=
@@ -8,7 +9,7 @@ The other files in this repository are notes or old/unfinished docs for
 internal use.
 
 You need our modified version of SDF to build these documents. To avoid
-the need to frequent re-installation as we hack on the SDF core, we have
+the need for frequent re-installation as we hack on the SDF core, we have
 modified our SDF to run directly out of this repository. Using 'make'
 takes care of things for you:
 
