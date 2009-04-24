@@ -37,23 +37,6 @@ icstart - Getting Started Guide
 
 -----------------------------------------------------------------------------
 
-Further technical doc ideas:
-
-* FAQ for each demo catalog (foundation, construct, barry, artstore)
-
-* FAQ for each database (DBM, MySQL, PostgreSQL, Oracle)
-
-* FAQ for each payment processor (CCVS, Cybercash, Signio, Authorize.net, etc.)
-
-* Live, functional ITL example web pages (like Mike suggested at
-http://developer.akopia.com/cgi-bin/ic/examples/icintro_5a.html )
-
-* Downloadable mail archives -- big zip or tarball or pointer to pipermail?
-
-* Best of interchange-users -- developer site only?
-
------------------------------------------------------------------------------
-
 $Session->{source} bzw. [data session source] comes from:
 
 http://host/cgi-bin/cat?;;thesource      (old MV 3 way, still works)
