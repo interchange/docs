@@ -3,7 +3,7 @@ RELEASING A NEW VERSION OF INTERCHANGE
 
 Pre-release:
 
-Check WHATSNEW against CVS logs, add release date
+Check WHATSNEW against Git log, add release date
 Update copyright dates as appropriate if new year since last release
 Make sure version numbers are correct in all files:
 	README
@@ -13,8 +13,8 @@ Make sure version numbers are correct in all files:
 	dist/standard/products/mv_metadata.asc (ui-version)
 	SPECS/interchange.spec
 Double-check MANIFEST (create using LC_ALL=C)
-Do a clean checkout from CVS to make sure no sticky tags exist in local checkout
-Tag or re-tag CVS repository with REL_4_6_3 (or whatever)
+Review "git status" to make sure no junk is in the local checkout
+Tag or re-tag Git repository with e.g. REL_4_6_3
 Run regression test catalog
 Build tarball (and re-build with --owner=0 --group=0)
 Test clean install of Standard demo, place order, use admin
