@@ -3,38 +3,68 @@ RELEASING A NEW VERSION OF INTERCHANGE
 
 Pre-release:
 
-Check WHATSNEW against Git log, add release date
+Check WHATSNEW
+* review Git log and add anything missing
+* add release date
+
 Update copyright dates as appropriate if new year since last release
+* dist/standard/variables/COPYRIGHT
+* README
+* Makefile.PL
+* configure
+* scripts/interchange.PL  # header and /^sub version and /COPYRIGHT
+
 Make sure version numbers are correct in all files:
-	README
-	README.rpm-dist
-	Makefile.PL
-	scripts/interchange.PL
-	dist/standard/products/mv_metadata.asc (ui-version)
-	SPECS/interchange.spec
-Double-check MANIFEST (create using LC_ALL=C)
+* README
+* README.rpm-dist
+* Makefile.PL
+* scripts/interchange.PL
+* dist/standard/products/mv_metadata.asc (ui-version)
+* SPECS/interchange.spec
+
+Double-check MANIFEST:
+* perl Makefile.PL nocopy
+* make clean
+* perl Makefile.PL nocopy
+* rm -f MANIFEST
+* LC_ALL=C make manifest
+* git status   # should show no changes to MANIFEST; commit changes if needed
+
 Review "git status" to make sure no junk is in the local checkout
-Tag or re-tag Git repository with e.g. REL_4_6_3
+
+Tag Git repository:
+* git tag -a REL_5_7_2
+* git push origin tag REL_5_7_2  # tags are not pushed automatically
+(Re-tagging requires tag -f and shouldn't normally be done after a tag has been pushed.)
+
 Run regression test catalog
-Build tarball (and re-build with --owner=0 --group=0)
-Test clean install of Standard demo, place order, use admin
-Create .tar.bz2 file
+
+Build tarballs:
+* make tardist
+* tar xzpf interchange-5.7.2.tar.gz
+* tar cpf interchange-5.7.2.tar --owner=0 --group=0 interchange-5.7.2
+* gzip -9c interchange-5.7.2.tar > interchange-5.7.2.tar.gz
+* bzip2 interchange-5.7.2.tar
+
+Test clean install:
+* untar somewhere else
+* build
+* makecat of Standard demo
+* place order
+* use admin
+
 Note MD5 and SHA1 sums for .tar.gz and .tar.bz2
+
 Create detached PGP signature of tarballs: gpg -ba interchange-*.tar.*
 
 Somewhat separate steps:
-
-Build RPMs
-Build docs tarball & RPMs (for stable releases)
-Sign RPMs with PGP key
-Have Racke build and sign Debian packages (using same tarball so MD5 sum is identical)
-
-With release candidate:
+* Build RPMs (signed with PGP key)
+* Have Racke build and sign Debian packages (using same tarball so MD5 sum is identical)
 
 Have people test the packages
 
 
-Upload tarball, RPMs, README, WHATSNEW to:
+Upload tarballs, RPMs, README, WHATSNEW to:
 root@ftp.icdevgroup.org:/var/ftp/pub/interchange...
 
 Update interchange-x.y.z.tar.{gz,bz2} and interchange-latest.tar.gz symlinks for stable releases
@@ -46,10 +76,11 @@ Update WHATSNEW file to latest (no need to keep old ones in same branch, as thei
 
 Update developer website:
 
-catalog/products/news.txt - announcement
-catalog/products/variable.txt - version variable(s)
-make commit publish (or make commit restart if necessary)
-Save ANNOUNCEMENT-x.y.z.txt to icdevgroup.org ftp area, then run user icdevgroup's cron job generate-past-releases-list.pl, which updates the list that the "releases" page uses.
+* te catalog/products/news.txt   # announcement
+* te catalog/products/variable.txt   # version variable(s)
+* git commit; git push
+* on server, git pull and restart Interchange if needed
+* Save ANNOUNCEMENT-x.y.z.txt to icdevgroup.org ftp area, then run user icdevgroup's cron job generate-past-releases-list.pl, which updates the list that the "releases" page uses.
 
 Then verify changes were made:
 
