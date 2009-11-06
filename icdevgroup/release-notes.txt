@@ -32,19 +32,20 @@ Double-check MANIFEST:
 
 Review "git status" to make sure no junk is in the local checkout
 
+Run regression test catalog
+
 Tag Git repository:
 * git tag -a REL_5_7_2
 * git push origin tag REL_5_7_2  # tags are not pushed automatically
 (Re-tagging requires tag -f and shouldn't normally be done after a tag has been pushed.)
-
-Run regression test catalog
 
 Build tarballs:
 * make tardist
 * tar xzpf interchange-5.7.2.tar.gz
 * tar cpf interchange-5.7.2.tar --owner=0 --group=0 interchange-5.7.2
 * gzip -9c interchange-5.7.2.tar > interchange-5.7.2.tar.gz
-* bzip2 interchange-5.7.2.tar
+* bzip2 -c interchange-5.7.2.tar > interchange-5.7.2.tar.bz2
+* xz -9 interchange-5.7.2.tar
 
 Test clean install:
 * untar somewhere else
@@ -53,9 +54,9 @@ Test clean install:
 * place order
 * use admin
 
-Note MD5 and SHA1 sums for .tar.gz and .tar.bz2
+Note MD5 and SHA1 sums for .tar.gz, .tar.bz2, and .tar.xz
 
-Create detached PGP signature of tarballs: gpg -ba interchange-*.tar.*
+Create detached PGP signature of tarballs: for i in interchange-*.tar.*; do gpg -ba $i; done
 
 Somewhat separate steps:
 * Build RPMs (signed with PGP key)
@@ -64,10 +65,10 @@ Somewhat separate steps:
 Have people test the packages
 
 
-Upload tarballs, RPMs, README, WHATSNEW to:
+Upload tarballs, README, WHATSNEW (and RPM & Debian packages if ready) to:
 root@ftp.icdevgroup.org:/var/ftp/pub/interchange...
 
-Update interchange-x.y.z.tar.{gz,bz2} and interchange-latest.tar.gz symlinks for stable releases
+Update interchange-latest.tar.gz symlink for stable releases
 Rename README to README.txt so Apache will display it
 Rename README.rpm-dist to README.txt in rpm directory
 Update UPGRADE file to latest
@@ -79,8 +80,9 @@ Update developer website:
 * te catalog/products/news.txt   # announcement
 * te catalog/products/variable.txt   # version variable(s)
 * git commit; git push
-* on server, git pull and restart Interchange if needed
-* Save ANNOUNCEMENT-x.y.z.txt to icdevgroup.org ftp area, then run user icdevgroup's cron job generate-past-releases-list.pl, which updates the list that the "releases" page uses.
+* on server, git pull and restart Interchange
+* Save ANNOUNCEMENT-x.y.z.txt to icdevgroup.org ftp area
+* Run user icdevgroup's cron job generate-past-releases-list.pl, which updates the list that the "releases" page uses.
 
 Then verify changes were made:
 
