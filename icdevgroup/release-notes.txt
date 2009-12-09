@@ -37,7 +37,7 @@ Run regression test catalog
 Build tarballs:
 * make tardist
 * tar xzpf interchange-5.7.2.tar.gz
-* tar cpf interchange-5.7.2.tar --owner=0 --group=0 interchange-5.7.2
+* tar cpf interchange-5.7.2.tar --owner=0 --group=0 --numeric-owner interchange-5.7.2
 * gzip -9c interchange-5.7.2.tar > interchange-5.7.2.tar.gz
 * bzip2 -c interchange-5.7.2.tar > interchange-5.7.2.tar.bz2
 * xz -9 interchange-5.7.2.tar
