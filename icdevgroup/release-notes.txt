@@ -34,11 +34,6 @@ Review "git status" to make sure no junk is in the local checkout
 
 Run regression test catalog
 
-Tag Git repository:
-* git tag -a REL_5_7_2
-* git push origin tag REL_5_7_2  # tags are not pushed automatically
-(Re-tagging requires tag -f and shouldn't normally be done after a tag has been pushed.)
-
 Build tarballs:
 * make tardist
 * tar xzpf interchange-5.7.2.tar.gz
@@ -53,6 +48,11 @@ Test clean install:
 * makecat of Standard demo
 * place order
 * use admin
+
+Tag Git repository:
+* git tag -a REL_5_7_2
+* git push origin tag REL_5_7_2  # tags are not pushed automatically
+(Re-tagging requires tag -f and shouldn't normally be done after a tag has been pushed.)
 
 Note MD5 and SHA1 sums for .tar.gz, .tar.bz2, and .tar.xz
 
