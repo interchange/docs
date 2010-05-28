@@ -97,6 +97,7 @@ interchange-announce@icdevgroup.org
 Freshmeat.net
 SourceForge Interchange project: http://sourceforge.net/projects/interchange/
 LinkedIn Interchange group
+Wikipedia: http://en.wikipedia.org/wiki/Interchange_(software) and http://en.wikipedia.org/wiki/List_of_free_and_open_source_eCommerce_software
 
 
 Update demo stores, one editable, one static:
