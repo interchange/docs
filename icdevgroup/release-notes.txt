@@ -8,18 +8,16 @@ Check WHATSNEW
 * add release date
 
 Update copyright dates as appropriate if new year since last release
-* dist/standard/variables/COPYRIGHT
-* README
+* README.md
 * Makefile.PL
 * configure
 * scripts/interchange.PL  # header and /^sub version and /COPYRIGHT
 
 Make sure version numbers are correct in all files:
-* README
-* README.rpm-dist
+* README.md
 * Makefile.PL
 * scripts/interchange.PL
-* dist/standard/products/mv_metadata.asc (ui-version)
+* dist/strap/products/mv_metadata.asc (ui-version)
 * SPECS/interchange.spec
 
 Double-check MANIFEST:
@@ -37,15 +35,14 @@ Run regression test catalog
 Build tarballs:
 * make tardist
 * tar xzpf interchange-5.7.2.tar.gz
+* rm -f interchange-5.7.2.tar.gz
 * tar cpf interchange-5.7.2.tar --owner=0 --group=0 --numeric-owner interchange-5.7.2
-* gzip -9c interchange-5.7.2.tar > interchange-5.7.2.tar.gz
-* bzip2 -c interchange-5.7.2.tar > interchange-5.7.2.tar.bz2
-* xz -9 interchange-5.7.2.tar
+* gzip -9 interchange-5.7.2.tar
 
 Test clean install:
 * untar somewhere else
 * build
-* makecat of Standard demo
+* makecat of Strap demo
 * place order
 * use admin
 
@@ -54,23 +51,17 @@ Tag Git repository:
 * git push origin tag REL_5_7_2  # tags are not pushed automatically
 (Re-tagging requires tag -f and shouldn't normally be done after a tag has been pushed.)
 
-Note MD5 and SHA1 sums for .tar.gz, .tar.bz2, and .tar.xz
+Note sha256sum output for .tar.gz
 
-Create detached PGP signature of tarballs: for i in interchange-*.tar.*; do gpg -ba $i; done
-
-Somewhat separate steps:
-* Build RPMs (signed with PGP key)
-* Have Racke build and sign Debian packages (using same tarball so MD5 sum is identical)
+Create detached PGP signature of tarball: for i in interchange-*.tar.gz; do gpg -ba $i; done
 
 Have people test the packages
 
 
-Upload tarballs, README, WHATSNEW (and RPM & Debian packages if ready) to:
-root@ftp.icdevgroup.org:/var/ftp/pub/interchange...
+Upload tarballs, README.md, WHATSNEW to:
+interchangecommerce.org:~ftp/public_html/interchange...
 
 Update interchange-latest.tar.gz symlink for stable releases
-Rename README to README.txt so Apache will display it
-Rename README.rpm-dist to README.txt in rpm directory
 Update UPGRADE file to latest
 Update WHATSNEW file to latest (no need to keep old ones in same branch, as their contents are still included in the latest file)
 
@@ -80,32 +71,24 @@ Update developer website:
 * te catalog/products/news.txt   # announcement
 * te catalog/products/variable.txt   # version variable(s)
 * git commit; git push
-* on server, git pull and restart Interchange
-* Save ANNOUNCEMENT-x.y.z.txt to icdevgroup.org ftp area
+* on server, git pull
+* Save ANNOUNCEMENT-x.y.z.txt to interchangecommerce.org ftp area
 * Run user icdevgroup's cron job generate-past-releases-list.pl, which updates the list that the "releases" page uses.
 
-Then verify changes were made:
+Then verify changes appear publicly:
 
-http://www.icdevgroup.org/i/dev/index
-http://www.icdevgroup.org/i/dev/download
-http://www.icdevgroup.org/i/dev/releases
+https://www.interchangecommerce.org/i/dev/index
+https://www.interchangecommerce.org/i/dev/news
+https://www.interchangecommerce.org/i/dev/download
 
 
 Make announcements at:
 
-interchange-announce@icdevgroup.org
-Freshmeat.net
-SourceForge Interchange project: http://sourceforge.net/projects/interchange/
-LinkedIn Interchange group
-Wikipedia: http://en.wikipedia.org/wiki/Interchange_(software) and http://en.wikipedia.org/wiki/List_of_free_and_open_source_eCommerce_software
+interchange-announce@interchangecommerce.org
+interchange-users@interchangecommerce.org (not everyone is on both lists)
+LinkedIn Interchange group: https://www.linkedin.com/groups/114593/
 
 
-Update demo stores, one editable, one static:
+Verify live demo shows latest code (normally built from latest Git checkout every day):
 
-http://demo.icdevgroup.org/
-
-
-Post-release:
-
-Fork off stable branch if second version component just became even, e.g. 4.8.0:
-tag STABLE_4_8-root, branch STABLE_4_8-branch.
+https://www.interchangecommerce.org/i/dev/demo
